@@ -1,0 +1,350 @@
+
+.search_form {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 8px;
+  box-shadow: 0 0 1px #232329;
+  border-radius: 5px;
+  /*background-color: #738598;*/
+  background-color: $color-blue;
+  /*color: #232329;*/
+
+  @include directify($directions) {
+    text-align: directed('left');
+    direction: directed('direction');
+  }
+
+  .search_btn {
+    background-color: #e7eaf6;
+    color: #222831;
+    padding-top: 4px;
+    cursor: pointer;
+    border-radius: 0;
+  }
+
+  select {
+    background: transparent;
+    font-weight: bold;
+    color: $color-light-gray;
+    border: 1px solid #d8dfe9;
+
+    &::-webkit-input-placeholder {
+      color: $color-light-gray;
+    }
+    &::-moz-placeholder {
+      color: $color-light-gray;
+    }
+    /* Firefox 19+ */
+    &:-moz-placeholder {
+      color: $color-light-gray;
+    }
+    /* Firefox 18- */
+    &:-ms-input-placeholder {
+      color: $color-light-gray;
+    }
+
+    @include themify($themes) {
+      border: 1px solid themed('colorFieldsBorder');
+      /*color: themed('colorText');*/
+      /*color: themed('colorText');*/
+    }
+
+    option {
+      color: black;
+    }
+  }
+
+  input {
+    width: 120px;
+    padding: 5px 10px;
+    font-size: 9px;
+    height: 20px;
+    /*height: 39px;*/
+    transition: border 0.3s;
+    background: transparent;
+    font-weight: bold;
+
+    &::-webkit-input-placeholder {
+      color: $color-light-gray;
+    }
+    &::-moz-placeholder {
+      color: $color-light-gray;
+    }
+    /* Firefox 19+ */
+    &:-moz-placeholder {
+      color: $color-light-gray;
+    }
+    /* Firefox 18- */
+    &:-ms-input-placeholder {
+      color: $color-light-gray;
+    }
+
+    @include themify($themes) {
+      border: 1px solid themed('colorFieldsBorder');
+      color: themed('colorText');
+    }
+
+    &[disabled] {
+
+      @include themify($themes) {
+        background: themed('colorBackgroundBody');
+      }
+
+      &:focus, &:active {
+
+        @include themify($themes) {
+          border-color: themed('colorBorder');
+        }
+      }
+    }
+
+    &:focus, &:active {
+      outline: none;
+      border-color: $color-accent;
+    }
+  }
+
+  h5 {
+    &.search_panel__subhead {
+      font-size: 10px;
+      color: $color-light-gray;
+      line-height: 12px;
+      font-weight: bold;
+    }
+  }
+
+
+}
+
+/*common----------------------------------------------------------------------------------------------common*/
+
+.col-md-12 {
+  /*padding-left: 5px;*/
+}
+
+.col-lg-12 {
+  /*padding-left: 5px;*/
+}
+
+
+
+/*btn----------------------------------------------------------------------------------------------------btn*/
+
+.search_btn_span {
+  cursor: pointer;
+  /*float: left;*/
+  color: #ffffff;
+  padding: 2px 3px;
+  /*border-radius: 2px;*/
+  font-weight: 400;
+  background-color: #6c757d;
+  /*width: 18px;
+  height: 17px;*/
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+
+
+/*circle----------------------------------------------------------------------------------------------circle*/
+.circle-legend {
+  padding: 0;
+  list-style: none;
+
+  span {
+    /*background-color: #2C86A2;*/
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    @include directify($directions) {
+      #{directed('margin-right')}: 10px;
+    }
+    // didn't rtl
+    margin-right: 10px;
+  }
+
+  li {
+    margin-top: 5px;
+
+    @include themify($themes) {
+      color: themed('colorText');
+    }
+  }
+}
+
+
+.circle__btc {
+  background-color: #e85a71;
+}
+
+.circle__eth {
+  background-color: #5e62e6;
+}
+
+.circle__neo {
+  background-color: #3ddb42;
+}
+
+.circle__ste {
+  background-color: #4ea1d3;
+}
+
+.circle__eos {
+  background-color: #6d6a6a;
+}
+
+.circle__lit {
+  background-color: #b7b3b3;
+}
+
+
+
+/*assets----------------------------------------------------------------------------------------------assets*/
+
+.form__assets_sch {
+  width: calc(100% - 10px);
+  height: 100%;
+
+  select {
+    color:#6c757d;
+    border: 1px solid #dee2e6;
+    background: transparent;
+  }
+
+  input {
+    padding: 5px 10px;
+    color:#6c757d;
+    height: 17px;
+    border: 1px solid #dee2e6;
+    background: transparent;
+  }
+
+  @include directify($directions) {
+    #{directed('margin-right')}: 30px;
+  }
+
+  .form__button-toolbar {
+    float: right;
+  }
+
+  @media screen and (max-width: 1200px) {
+    width: 100%;
+    @include directify($directions) {
+      #{directed('margin-right')}: 0px;
+    }
+  }
+}
+
+
+/*common----------------------------------------------------------------------------------------------common*/
+
+.input_col_1 {
+  width: 10%
+}
+.input_col_2 {
+  width: 20%
+}
+.input_col_3 {
+  width: 30%
+}
+.input_col_4 {
+  width: 40%
+}
+.input_col_5 {
+  width: 50%
+}
+.input_col_6 {
+  width: 60%
+}
+.input_col_7 {
+  width: 70%
+}
+.input_col_8 {
+  width: 80%
+}
+.input_col_9 {
+  width: 90%
+}
+.input_col_10 {
+  width: 100%
+}
+
+.select_col_1 {
+  width: 10%
+}
+.select_col_2 {
+  width: 20%
+}
+.select_col_3 {
+  width: 30%
+}
+.select_col_4 {
+  width: 40%
+}
+.select_col_5 {
+  width: 50%
+}
+.select_col_6 {
+  width: 60%
+}
+.select_col_7 {
+  width: 70%
+}
+.select_col_8 {
+  width: 80%
+}
+.select_col_9 {
+  width: 90%
+}
+.select_col_10 {
+  width: 100%
+}
+
+.text_cor_green {
+  color: $color-green;
+}
+
+.text_cor_red {
+  color: $color-red;
+}
+
+.text_cor_orange {
+  color: #fd5f00;
+}
+
+.mouse_over_list {
+  &:hover {
+    color: #d63447;
+    background-color: #f6eedf;
+    text-decoration: underline;
+  }
+}
+/*
+.mouse_over_input {
+  &:hover {
+    color: #000839;
+    background-color: #ffa41b;
+    text-decoration: underline;
+  }
+}*/
+
+.badge_btn {
+  cursor: pointer;
+  padding: 3px;
+  margin: 4px;
+  border: 1px solid $color-gray;
+}
+
+/*common----------------------------------------------------------------------------------------------common*/
+
+@media screen and (max-width: 768px) {
+
+}
+
+@media screen and (max-width: 420px) {
+
+}

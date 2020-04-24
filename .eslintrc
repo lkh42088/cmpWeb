@@ -1,0 +1,59 @@
+{
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+
+  "plugins": [
+    "react"
+  ],
+
+  "env": {
+    "browser": true,
+    "node": true,
+    "mocha": true,
+    "es6": true
+  },
+
+  "rules": {
+    "jsx-a11y/anchor-is-valid": [ "error", {
+      "components": [ "Link" ],
+      "specialLink": [ "to", "hrefLeft", "hrefRight" ],
+      "aspects": [ "noHref", "invalidHref", "preferButton" ]
+    }],
+    "jsx-a11y/label-has-associated-control": [0, {}],
+    "jsx-a11y/label-has-for": [ "error", {
+      "required": {
+        "some": [ "id" ]
+      }
+    }],
+    "max-len": ["error", {"code": 150, "ignoreRegExpLiterals": true, "tabWidth": 2}],
+
+    "quotes": "off",
+    "no-console": "off",
+    "no-unused-vars": "off",
+    "no-trailing-spaces": "off",
+
+    "linebreak-style": "off",
+    "spaced-comment": "off",
+    "object-curly-spacing": "off",
+
+    "indent": "off",
+    "react/jsx-indent": "off",
+    "react/jsx-indent-props": "off",
+
+    "react/jsx-tag-spacing": "off",
+
+    "react/jsx-closing-tag-": "off",
+    "react/jsx-closing-tag-location": "off",
+    "react/jsx-closing-brac": "off",
+    "react/jsx-closing-bracket-location": "off",
+
+    "react/jsx-first-prop-n": "off",
+    "react/jsx-first-prop-new-line": "off",
+
+    "react/jsx-max-props-per-line": "off",
+
+    "react/jsx-one-expression-per-line": [0, { "allow": "literal" }],
+
+    /*"arrow-body-style": ["error", "never"]*/
+  }
+}

@@ -1,0 +1,201 @@
+.material-table {
+  th {
+    white-space: nowrap;
+    /*background-color: #dee2e6;*/
+    border-top: 1px solid rgba(224, 224, 224, 1);
+    /*border-bottom: 1px solid rgba(224, 224, 224, 1);*/
+    border-bottom: 2px solid #232329;
+    border-right: 1px solid rgba(224, 224, 224, 1);
+    /*padding: 2px;*/
+  }
+
+  th:last-child {
+    border-right: 0px solid rgba(224, 224, 224, 1);
+  }
+}
+
+.material-table__toolbar-wrap {
+  position: absolute;
+  top: 80px;
+  @include directify($directions) {
+    #{directed('right')}: 0px;
+  }
+
+  .material-table__toolbar {
+    padding: 0 30px;
+  }
+
+  .material-table__toolbar-button {
+    height: 36px;
+    width: 36px;
+    padding: 0;
+  }
+}
+
+.material-table__toolbar-selected {
+  @include directify($directions) {
+    #{directed('margin-right')}: 10px;
+  }
+}
+
+.material-table__row {
+  font-size: x-small;
+  transition: 0.3s;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(224, 224, 224, 1);
+
+  &[aria-checked="true"] {
+
+    @include themify($themes) {
+      background-color: themed('colorHover');
+    }
+
+    .material-table__checkbox span {
+      color: $color-accent;
+    }
+  }
+
+  &:hover {
+
+    @include themify($themes) {
+      background-color: themed('colorBackgroundBody');
+    }
+  }
+}
+
+.material-table__checkbox--checked span {
+  color: $color-accent;
+}
+
+th.material-table__cell {
+  font-size: 12px;
+  font-weight: bold;
+  /*padding: 0 0 0 3px;*/
+  /*padding: 1px;*/
+}
+
+td.material-table__cell {
+  /*border: 1px solid red;*/
+  padding: 0 0 0 4px;
+  font-size: 11px;
+}
+
+.material-table__cell-right{
+  @include directify($directions) {
+    text-align: directed('left');
+  }
+}
+
+.material-table__cell.material-table__cell--sort {
+
+  span {
+    transition: 0.3s;
+
+    @include themify($themes) {
+      color: themed('colorText');
+    }
+
+    &:hover {
+      color: $color-accent;
+    }
+  }
+}
+
+.material-table__cell, .material-table__sort-label, .material-table__toolbar-button {
+
+  @include themify($themes) {
+    color: themed('colorText');
+  }
+}
+
+.material-table__checkbox {
+  transition: 0.3s;
+
+  @include themify($themes) {
+    /*color: themed('colorIcon');*/
+    color: #6c757d;
+    padding: 5px;
+  }
+}
+
+.material-table__pagination {
+  @include directify($directions) {
+    float: directed('right');
+  }
+
+  button:hover {
+    @include themify($themes) {
+      background-color: themed('colorHover') !important;
+    }
+  }
+
+  & > div {
+    padding: 0;
+  }
+
+  span, div, svg {
+
+    @include themify($themes) {
+      color: themed('colorText');
+    }
+  }
+}
+
+.material-table__wrap {
+  overflow-x: auto;
+}
+
+.material-table__filter-menu {
+
+  div:last-child {
+    box-shadow: 0 10px 30px 1px rgba(0, 0, 0, 0.06);
+  }
+
+  .material-table__filter-menu-item {
+    color: #646777;
+    transition: 0.3s;
+    font-size: 13px;
+    padding: 7px 24px;
+    height: auto;
+
+    &:hover {
+      background: #fafbfe;
+    }
+  }
+}
+
+/*material-table__checkbox*/
+@media screen and (max-width: 768px) {
+
+  .material-table__pagination {
+
+    div {
+      margin-left: 8px;
+      margin-right: 8px;
+
+      &:last-child {
+        @include directify($directions) {
+          #{directed('margin-right')}: 0px;
+        }
+      }
+
+      &:first-child {
+        margin: 0;
+      }
+    }
+
+    div > span:first-of-type {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 420px) {
+
+  .material-table__toolbar-selected {
+
+    span {
+      display: none;
+    }
+  }
+}
