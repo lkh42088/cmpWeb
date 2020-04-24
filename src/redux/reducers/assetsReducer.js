@@ -1,19 +1,20 @@
 // 초기 상태 정의
 const initialState = {
-    assets: [{
-        id: 213,
-        equCode: 'equCode',
-        division: 'division',
-        manufacturer: 'manufacturer',
-        model: 'model',
-        ip: 'ip',
-        ownership: 'ownership',
-        ownershipDivision: 'ownershipDivision',
-        customer: 'customer',
-        idc: 'idc',
-        size: 'size',
-        usage: 'usage',
-    },
+    assets: [
+        {
+            id: 213,
+            equCode: 'equCode',
+            division: 'division',
+            manufacturer: 'manufacturer',
+            model: 'model',
+            ip: 'ip',
+            ownership: 'ownership',
+            ownershipDivision: 'ownershipDivision',
+            customer: 'customer',
+            idc: 'idc',
+            size: 'size',
+            usage: 'usage',
+        },
         {
             id: 212,
             equCode: 'equCode2',

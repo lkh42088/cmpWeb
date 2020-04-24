@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dd1f5b2a-4de3-4b30-80a4-997b72c35bcd" name="Default Changelist" comment="" />
+    <list default="true" id="dd1f5b2a-4de3-4b30-80a4-997b72c35bcd" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/modules/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/DefaultPage/TempPage/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/DefaultPage/TempPage/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/reducers/assetsReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/reducers/assetsReducer.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1aviPaqDIfgXLCQpTv6tnB5jSZM" />
   <component name="ProjectViewState">
@@ -15,10 +31,11 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="go.import.settings.migrated" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/shared" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../nubes" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -44,6 +61,7 @@
       <updated>1587622444307</updated>
       <workItem from="1587622446530" duration="13195000" />
       <workItem from="1587706705577" duration="37000" />
+      <workItem from="1587707300257" duration="6395000" />
     </task>
     <servers />
   </component>
@@ -51,6 +69,10 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="2413" y="287" key="FileChooserDialogImpl" timestamp="1587707604336">
+      <screen x="1920" y="9" width="1920" height="1040" />
+    </state>
+    <state x="2413" y="287" key="FileChooserDialogImpl/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587707604336" />
     <state width="1150" height="266" key="GridCell.Tab.0.bottom" timestamp="1587706610623">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>

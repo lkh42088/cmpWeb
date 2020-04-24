@@ -17,6 +17,10 @@ const style = {
 /*/v1/devices/:type/:outFlag*/
 const NotFound404 = () => {
     const [data, setData] = useState(null);
+
+    const res = axios.get(`${API_ROUTE}/devices/server/0/list`);
+    console.log("res : ", res);
+
     const onClick = () => {
         axios.get(`${API_ROUTE}/devices/server/0/list`, {}).then((response) => {
             console.log('response is data : ', response.data);
