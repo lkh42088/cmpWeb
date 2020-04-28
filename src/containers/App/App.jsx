@@ -59,7 +59,7 @@ class App extends Component {
       this.setState({ loading: false });
       setTimeout(() => this.setState({ loaded: true }), 200);
     });
-    firebase.initializeApp(firebaseConfig);
+    /*firebase.initializeApp(firebaseConfig);*/
   }
 
   /*onRedirectCallbackAuth0 = (appState) => {

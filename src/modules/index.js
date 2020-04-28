@@ -1,4 +1,6 @@
+// eslint-disable-next-line import/no-unresolved
 import { createAction, handleActions } from 'redux-actions';
+// eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
 import { Map, List } from 'immutable';
 
 // 액션 타입

@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dd1f5b2a-4de3-4b30-80a4-997b72c35bcd" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/modules/assets.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/App/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/App/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/actions/titleActions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/actions/titleActions.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +36,8 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="go.import.settings.migrated" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../nubes" />
+    <property name="go.vendoring.notification.had.been.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Forum-App-React-Frontend" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -58,7 +64,7 @@
       <workItem from="1587622446530" duration="13195000" />
       <workItem from="1587706705577" duration="37000" />
       <workItem from="1587707300257" duration="8193000" />
-      <workItem from="1587946932260" duration="778000" />
+      <workItem from="1587946932260" duration="18314000" />
     </task>
     <servers />
   </component>
@@ -66,25 +72,29 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2413" y="287" key="FileChooserDialogImpl" timestamp="1587946967192">
+    <state x="2413" y="287" key="FileChooserDialogImpl" timestamp="1587985073420">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state x="2413" y="287" key="FileChooserDialogImpl/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587946967192" />
-    <state width="1150" height="266" key="GridCell.Tab.0.bottom" timestamp="1587706610623">
+    <state x="2413" y="287" key="FileChooserDialogImpl/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587985073420" />
+    <state width="1877" height="188" key="GridCell.Tab.0.bottom" timestamp="1587973460160">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state width="1150" height="266" key="GridCell.Tab.0.bottom/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587706610623" />
-    <state width="1150" height="266" key="GridCell.Tab.0.center" timestamp="1587706610623">
+    <state width="1877" height="188" key="GridCell.Tab.0.bottom/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587973460160" />
+    <state width="1877" height="188" key="GridCell.Tab.0.center" timestamp="1587973460160">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state width="1150" height="266" key="GridCell.Tab.0.center/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587706610623" />
-    <state width="1150" height="266" key="GridCell.Tab.0.left" timestamp="1587706610623">
+    <state width="1877" height="188" key="GridCell.Tab.0.center/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587973460160" />
+    <state width="1877" height="188" key="GridCell.Tab.0.left" timestamp="1587973460160">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state width="1150" height="266" key="GridCell.Tab.0.left/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587706610623" />
-    <state width="1150" height="266" key="GridCell.Tab.0.right" timestamp="1587706610623">
+    <state width="1877" height="188" key="GridCell.Tab.0.left/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587973460160" />
+    <state width="1877" height="188" key="GridCell.Tab.0.right" timestamp="1587973460160">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state width="1150" height="266" key="GridCell.Tab.0.right/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587706610623" />
+    <state width="1877" height="188" key="GridCell.Tab.0.right/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587973460160" />
+    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup" timestamp="1587987755546">
+      <screen x="1920" y="9" width="1920" height="1040" />
+    </state>
+    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587987755546" />
   </component>
 </project>
