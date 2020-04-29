@@ -1,5 +1,47 @@
 // 초기 상태 정의
+import {List, Map} from "immutable";
+import {GET_DEVICES} from "../actions/assetsAction";
+
 const initialState = {
+    devices: List([
+        Map({
+            Idx: '',
+            OutFlag: '',
+            Num: '',
+            CommentCnt: '',
+            CommentLastDate: '',
+            Option: '',
+            Hit: '',
+            RegisterId: '',
+            Password: '',
+            RegisterName: '',
+            RegisterEmail: '',
+            RegisterDate: '',
+            DeviceCode: '',
+            Model: '',
+            Contents: '',
+            Customer: '',
+            Manufacture: '',
+            DeviceType: '',
+            WarehousingDate: '',
+            RentDate: '',
+            Ownership: '',
+            OwnerCompany: '',
+            HwSn: '',
+            IDC: '',
+            Rack: '',
+            Cost: '',
+            Purpos: '',
+            Ip: '',
+            Size: '',
+            Spla: '',
+            Cpu: '',
+            Memory: '',
+            Hdd: '',
+            MonitoringFlag: '',
+            MonitoringMethod: '',
+        }),
+    ]),
     assets: [
         {
             id: 213,
@@ -42,6 +84,7 @@ function getId(state) {
 // action.type 에 따라 다른 작업을 하고, 새 상태를 만들어서 반환
 // state 값을 직접 수정하면 안되고, 기존 상태 값에 원하는 값을 덮어쓴 새로운 객체를 만들어서 반환
 const assetsReducer = (state = initialState, action) => {
+    const {payload, type} = action;
     switch (action.type) {
         case 'ADD_ASSETS':
             return Object.assign({}, state, {
@@ -60,6 +103,11 @@ const assetsReducer = (state = initialState, action) => {
                     id: getId(state),
                 }, ...state.assets],
             }); // ... 은 자바스크립트의 전개연산자, 기존의 객체안에 있는 내용을 해당 위치에다가 풀어준다는 의미
+        case GET_DEVICES:
+            return {
+                ...state,
+                devices: payload,
+            };
         default:
             return state;
     }

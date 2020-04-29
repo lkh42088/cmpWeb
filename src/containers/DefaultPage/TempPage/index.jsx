@@ -19,11 +19,18 @@ const NotFound404 = () => {
     const [data, setData] = useState(null);
 
     const res = axios.get(`${API_ROUTE}/devices/server/0/list`);
-    console.log("res : ", res);
+    console.log("res catch : ", res.catch());
+    console.log("res finally : ", res.finally());
+    console.log("res symbol.toStringTag : ", res[Symbol.toStringTag]);
+    console.log("res then : ", res.then((response) => {
+        console.log("---> : ", response.data);
+    }));
 
     const onClick = () => {
         axios.get(`${API_ROUTE}/devices/server/0/list`, {}).then((response) => {
             console.log('response is data : ', response.data);
+            const deviceVal = axios.get(`${API_ROUTE}/devices/server/0/list`);
+            console.log("deviceVal : ", deviceVal.data);
         }).catch((error) => {
             if (error.response) {
                 console.log("error.response : ", error.response.headers);

@@ -2,12 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dd1f5b2a-4de3-4b30-80a4-997b72c35bcd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/modules/assets.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/ComAssets.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/modules/post.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/App/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/App/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/modules/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/actions/titleActions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/actions/titleActions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/App/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/App/store.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/Assets.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/__Assets.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/DefaultPage/TempPage/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/DefaultPage/TempPage/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/modules/assets.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/modules/Assets/assets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/actions/assetsAction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/actions/assetsAction.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/reducers/assetsReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/reducers/assetsReducer.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,14 +45,20 @@
     <property name="go.vendoring.notification.had.been.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../Forum-App-React-Frontend" />
     <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.standard" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="yarn" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\workspace\front\src\modules\Assets" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\workspace\nubes_cmp\src\shared" />
     </key>
@@ -64,7 +76,8 @@
       <workItem from="1587622446530" duration="13195000" />
       <workItem from="1587706705577" duration="37000" />
       <workItem from="1587707300257" duration="8193000" />
-      <workItem from="1587946932260" duration="18314000" />
+      <workItem from="1587946932260" duration="25916000" />
+      <workItem from="1588070798761" duration="21134000" />
     </task>
     <servers />
   </component>
@@ -72,29 +85,37 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2413" y="287" key="FileChooserDialogImpl" timestamp="1587985073420">
+    <state x="2472" y="188" key="#ESLint" timestamp="1588128950663">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state x="2413" y="287" key="FileChooserDialogImpl/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587985073420" />
-    <state width="1877" height="188" key="GridCell.Tab.0.bottom" timestamp="1587973460160">
+    <state x="2472" y="188" key="#ESLint/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588128950663" />
+    <state x="2413" y="287" key="FileChooserDialogImpl" timestamp="1588119598782">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state width="1877" height="188" key="GridCell.Tab.0.bottom/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587973460160" />
-    <state width="1877" height="188" key="GridCell.Tab.0.center" timestamp="1587973460160">
+    <state x="2413" y="287" key="FileChooserDialogImpl/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588119598782" />
+    <state width="1877" height="347" key="GridCell.Tab.0.bottom" timestamp="1588148008596">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state width="1877" height="188" key="GridCell.Tab.0.center/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587973460160" />
-    <state width="1877" height="188" key="GridCell.Tab.0.left" timestamp="1587973460160">
+    <state width="1877" height="347" key="GridCell.Tab.0.bottom/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588148008596" />
+    <state width="1877" height="347" key="GridCell.Tab.0.center" timestamp="1588148008596">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state width="1877" height="188" key="GridCell.Tab.0.left/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587973460160" />
-    <state width="1877" height="188" key="GridCell.Tab.0.right" timestamp="1587973460160">
+    <state width="1877" height="347" key="GridCell.Tab.0.center/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588148008596" />
+    <state width="1877" height="347" key="GridCell.Tab.0.left" timestamp="1588148008596">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state width="1877" height="188" key="GridCell.Tab.0.right/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587973460160" />
-    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup" timestamp="1587987755546">
+    <state width="1877" height="347" key="GridCell.Tab.0.left/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588148008596" />
+    <state width="1877" height="347" key="GridCell.Tab.0.right" timestamp="1588148008596">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1587987755546" />
+    <state width="1877" height="347" key="GridCell.Tab.0.right/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588148008596" />
+    <state x="2460" y="272" key="IDE.errors.dialog" timestamp="1588142688084">
+      <screen x="1920" y="9" width="1920" height="1040" />
+    </state>
+    <state x="2460" y="272" key="IDE.errors.dialog/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588142688084" />
+    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup" timestamp="1588044560830">
+      <screen x="1920" y="9" width="1920" height="1040" />
+    </state>
+    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588044560830" />
   </component>
 </project>

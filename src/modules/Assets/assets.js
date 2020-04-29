@@ -2,6 +2,7 @@
 import { createAction, handleActions } from 'redux-actions';
 // eslint-disable-next-line import/no-extraneous-dependencies,import/no-unresolved
 import { Map, List } from 'immutable';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import produce from 'immer';
 
 // 액션 타입
@@ -14,7 +15,7 @@ export const toggleDevice = createAction(TOGGLE_DEVICE, id => id);
 
 // 초기 상태를 정의합니다
 const initialState = Map({
-    assets: List([
+    devices: List([
         Map({
             idx: '',
             out_flag: '',
@@ -62,8 +63,8 @@ export default handleActions({
     [LIST_DEVICE]: (state, action) => state,
     [TOGGLE_DEVICE]: (state, { payload: id }) => ({
        ...state,
-       listes: state.listes.map(list =>
-       list.id === id ? { ...list, done: !list.done } : list,
+        devices: state.devices.map(device =>
+            device.id === id ? { ...device, done: !device.done } : device,
        ),
     }),
 }, initialState);

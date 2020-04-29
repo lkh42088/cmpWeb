@@ -8,7 +8,7 @@ import AssetsWrite from './AssetsWrite';
 
 import VerticalFormHalf from './VerticalFormHalf';
 
-export default class Assets extends PureComponent {
+export default class __Assets extends PureComponent {
     static propTypes = {
         onSubmit: PropTypes.func.isRequired,
     };

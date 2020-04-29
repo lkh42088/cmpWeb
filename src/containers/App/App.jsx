@@ -6,9 +6,10 @@ import { BrowserRouter } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import i18next from 'i18next';
 import * as firebase from 'firebase/app';
-import 'firebase/auth';
+/*import 'firebase/auth';*/
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { hot } from 'react-hot-loader';
+import axios from 'axios';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -44,6 +45,7 @@ ThemeComponent.propTypes = {
 };
 
 const ConnectedThemeComponent = connect(state => ({ themeName: state.theme.className }))(ThemeComponent);
+
 
 class App extends Component {
   constructor() {

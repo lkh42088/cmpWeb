@@ -1,5 +1,7 @@
-import {combineReducers, createStore} from 'redux';
+import {combineReducers, createStore, applyMiddleware } from 'redux';
 import {reducer as reduxFormReducer} from 'redux-form';
+import ReduxThunk from "redux-thunk";
+
 import {
     cryptoTableReducer,
     newOrderTableReducer,
@@ -30,6 +32,6 @@ const reducer = combineReducers({
 });
 
 //  리듀서를 파라미터로 받으며, 스토어를 만듬 => createStore()
-const store = createStore(reducer);
+const store = createStore(reducer, applyMiddleware(ReduxThunk));
 
 export default store;
