@@ -2,10 +2,12 @@
 import {List, Map} from "immutable";
 import {GET_DEVICES} from "../actions/assetsAction";
 
-const initialState = {
+export const initialState = {
+    posts: [],
+    post: {},
     devices: List([
-        Map({
-            Idx: '',
+        Map({ // 굳이 작성하지 않아도 상관없음 편리하게 불변함 유지
+            Idx: '0',
             OutFlag: '',
             Num: '',
             CommentCnt: '',
@@ -73,7 +75,7 @@ const initialState = {
         },
 
     ],
-    priorityFilter: '',
+    priorityFilter: 'test',
 };
 
 function getId(state) {
@@ -85,7 +87,7 @@ function getId(state) {
 // state 값을 직접 수정하면 안되고, 기존 상태 값에 원하는 값을 덮어쓴 새로운 객체를 만들어서 반환
 const assetsReducer = (state = initialState, action) => {
     const {payload, type} = action;
-    switch (action.type) {
+    switch (type) {
         case 'ADD_ASSETS':
             return Object.assign({}, state, {
                 assets: [{
@@ -104,9 +106,13 @@ const assetsReducer = (state = initialState, action) => {
                 }, ...state.assets],
             }); // ... 은 자바스크립트의 전개연산자, 기존의 객체안에 있는 내용을 해당 위치에다가 풀어준다는 의미
         case GET_DEVICES:
+            console.log("payload --> : ", payload);
             return {
                 ...state,
                 devices: payload,
+                posts: payload,
+                post: payload,
+                priorityFilter: 'not',
             };
         default:
             return state;

@@ -1,49 +1,49 @@
-import React, { PureComponent } from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import { RTLProps } from '../../../../shared/prop-types/ReducerProps';
+import {RTLProps} from '../../../../shared/prop-types/ReducerProps';
 
 const rows = [
     {
-        id: 'no', disablePadding: false, label: 'No.',
+        id: 'Idx', disablePadding: false, label: 'No.',
     },
     {
-        id: 'equCode', disablePadding: false, label: '장비코드',
+        id: 'DeviceCode', disablePadding: false, label: '장비코드',
     },
     {
-        id: 'division', disablePadding: false, label: '구분',
+        id: 'DeviceType', disablePadding: false, label: '구분',
     },
     {
-        id: 'manufacturer', disablePadding: false, label: '제조사',
+        id: 'Manufacture', disablePadding: false, label: '제조사',
     },
     {
-        id: 'model', disablePadding: false, label: '모델명',
+        id: 'Model', disablePadding: false, label: '모델명',
     },
     {
-        id: 'ip', disablePadding: false, label: 'IP',
+        id: 'Ip', disablePadding: false, label: 'IP',
     },
     {
-        id: 'ownership', disablePadding: false, label: '소유권',
+        id: 'Ownership', disablePadding: false, label: '소유권',
     },
     {
-        id: 'ownershipDivision', disablePadding: false, label: '소유권 구분',
+        id: 'OwnerCompany', disablePadding: false, label: '소유권 구분',
     },
     {
-        id: 'customer', disablePadding: false, label: '고객사',
+        id: 'Customer', disablePadding: false, label: '고객사',
     },
     {
-        id: 'idc', disablePadding: false, label: 'IDC/위치',
+        id: 'IDC', disablePadding: false, label: 'IDC/위치',
     },
     {
-        id: 'size', disablePadding: false, label: '크기',
+        id: 'Size', disablePadding: false, label: '크기',
     },
     {
-        id: 'usage', disablePadding: false, label: '용도',
+        id: 'Purpos', disablePadding: false, label: '용도',
     },
 ];
 
@@ -59,7 +59,7 @@ class AssetsHead extends PureComponent {
     };
 
     createSortHandler = property => (event) => {
-        const { onRequestSort } = this.props;
+        const {onRequestSort} = this.props;
         onRequestSort(event, property);
     };
 

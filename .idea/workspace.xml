@@ -2,8 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dd1f5b2a-4de3-4b30-80a4-997b72c35bcd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/_README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/containers/App/BackUP.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsHead.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsHead.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/ComAssets.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/ComAssets.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/__Assets.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/__Assets.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/actions/assetsAction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/actions/assetsAction.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/reducers/assetsReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/reducers/assetsReducer.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +24,7 @@
       </list>
     </option>
   </component>
+  <component name="GOROOT" path="C:\Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -32,8 +40,9 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="go.import.settings.migrated" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
     <property name="go.vendoring.notification.had.been.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Forum-App-React-Frontend" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -44,6 +53,7 @@
     <property name="node.js.selected.package.standard" value="" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JavaScript" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -69,7 +79,8 @@
       <workItem from="1587707300257" duration="8193000" />
       <workItem from="1587946932260" duration="25916000" />
       <workItem from="1588070798761" duration="21134000" />
-      <workItem from="1588148848500" duration="592000" />
+      <workItem from="1588148848500" duration="765000" />
+      <workItem from="1588723503289" duration="20253000" />
     </task>
     <servers />
   </component>
@@ -77,14 +88,14 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2472" y="188" key="#ESLint" timestamp="1588128950663">
+    <state x="2472" y="188" key="#ESLint" timestamp="1588744375031">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state x="2472" y="188" key="#ESLint/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588128950663" />
-    <state x="2413" y="287" key="FileChooserDialogImpl" timestamp="1588119598782">
+    <state x="2472" y="188" key="#ESLint/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588744375031" />
+    <state x="2413" y="287" key="FileChooserDialogImpl" timestamp="1588727319970">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state x="2413" y="287" key="FileChooserDialogImpl/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588119598782" />
+    <state x="2413" y="287" key="FileChooserDialogImpl/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588727319970" />
     <state width="1877" height="347" key="GridCell.Tab.0.bottom" timestamp="1588148008596">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
@@ -105,9 +116,13 @@
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
     <state x="2460" y="272" key="IDE.errors.dialog/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588142688084" />
-    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup" timestamp="1588044560830">
+    <state x="2541" y="153" key="SettingsEditor" timestamp="1588741147374">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588044560830" />
+    <state x="2541" y="153" key="SettingsEditor/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588741147374" />
+    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup" timestamp="1588748406151">
+      <screen x="1920" y="9" width="1920" height="1040" />
+    </state>
+    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588748406151" />
   </component>
 </project>
