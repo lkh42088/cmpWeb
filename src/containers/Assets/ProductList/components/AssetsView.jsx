@@ -19,19 +19,16 @@ class AssetsView extends PureComponent {
     static propTypes = {
         title: PropTypes.string,
         message: PropTypes.string,
-        modalType: PropTypes.string,
         closeToggle: PropTypes.func,
-        color: PropTypes.string.isRequired,
         colored: PropTypes.bool,
         header: PropTypes.bool,
-        btn: PropTypes.string.isRequired,
-        rtl: RTLProps.isRequired,
+        assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
+        dispatch: PropTypes.func.isRequired,
     };
 
     static defaultProps = {
         title: '',
         message: '',
-        modalType: 'write',
         colored: false,
         header: false,
         closeToggle: '',
@@ -64,8 +61,9 @@ class AssetsView extends PureComponent {
     };
 
     render() {
+        const {assetState, dispatch} = this.props;
         const {
-            color, btn, title, message, colored, header, rtl, modalType,
+            title, message, colored, header,
         } = this.props;
         const {modal} = this.state;
         let Icon;
@@ -82,7 +80,11 @@ class AssetsView extends PureComponent {
             'assets_write__modal-dialog--header': header,
         });
 
-        switch (color) {
+        console.log("★★★ assetState.device : ", assetState.device);
+        console.log("★★★ assetState.device.DeviceCode : ", assetState.device.DeviceCode);
+
+
+        /*switch (color) {
             case 'primary':
                 Icon = <span className="lnr lnr-pushpin assets_write__modal__title-icon"/>;
                 break;
@@ -97,7 +99,7 @@ class AssetsView extends PureComponent {
                 break;
             default:
                 break;
-        }
+        }*/
 
         return (
             <div>
@@ -115,7 +117,7 @@ class AssetsView extends PureComponent {
                             <span className="modal_form__form-group-label text_cor_green">장비코드</span>
                             <div className="modal_form__form-group-field" style={{display: "block"}}>
                                 <div className="float-left">
-                                    <b><h6 style={deviceStyle}>CBS04912</h6></b>
+                                    <b><h6 style={deviceStyle}>{assetState.device.Idx}</h6></b>
                                 </div>
                                 <div className="assets_write__form_comment_confirm float-right" type="button"
                                      onClick={this.commentToggle} onKeyDown={this.commentToggle}
@@ -267,7 +269,8 @@ class AssetsView extends PureComponent {
                     </form>
                 </div>
                 <br/>
-                <Collapse title="댓글 확인"
+                {/*TODO 댓글 컴포넌트 만들기*/}
+                {/*<Collapse title="댓글 확인"
                           className="with-shadow modal_comment_register assets_write__modal__tableLine">
                     <span>▶ 작성자 A [2020/04/03]</span>
                     <div className="modal_comment_del">삭제</div>
@@ -286,7 +289,7 @@ class AssetsView extends PureComponent {
                     <pre>
 root 패스워드 초기화 요청 처리
                         </pre>
-                </Collapse>
+                </Collapse>*/}
 
                 <ButtonToolbar className="assets_write__modal__footer">
                     <Button className="assets_write__modal_ok" outline={colored} color="primary"

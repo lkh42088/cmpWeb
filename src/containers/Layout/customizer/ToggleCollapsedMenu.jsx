@@ -19,7 +19,7 @@ class ToggleCollapsedMenu extends PureComponent {
                     type="checkbox"
                     name="collapse_toggle"
                     id="collapse_toggle"
-                    checked={sidebar.collapse}
+                    /*checked={sidebar.collapse}*/
                     onChange={changeSidebarVisibility}
                 />
                 <span className="toggle-btn__input-label"/>

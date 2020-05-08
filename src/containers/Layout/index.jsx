@@ -1,10 +1,13 @@
 /* eslint-disable no-return-assign */
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
+import {connect, useSelector, useDispatch} from "react-redux";
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import NotificationSystem from 'rc-notification';
+
+import {fetchPosts} from '../../redux/actions/assetsAction';
+
 import Topbar from './topbar/Topbar';
 import TopbarWithNavigation from './topbar_with_navigation/TopbarWithNavigation';
 import Sidebar from './sidebar/Sidebar';
@@ -51,8 +54,26 @@ class Layout extends Component {
     menuTitle: MenuTitleProps.isRequired,
   };
 
+  componentWillMount() {
+    const { dispatch } = this.props;
+    // 처음 시작
+    dispatch(changeMenuTitle('자산관리', '서버'));
+
+/*    localStorage.clear();
+    const localMenuTitle = {
+      title: '',
+      subTitle: '',
+    };
+
+    localMenuTitle.title = '자산관리';
+    localMenuTitle.subTitle = '서버';
+    localStorage.localMenuTitle = JSON.stringify(localMenuTitle);*/
+    /*console.log("★★★★★ componentWillMount");*/
+  }
+
   componentDidMount() {
     const { rtl } = this.props;
+    const { dispatch } = this.props;
     NotificationSystem.newInstance({ style: { top: 65 } }, n => notification = n);
     setTimeout(() => showNotification(rtl.direction), 700);
   }
@@ -71,10 +92,10 @@ class Layout extends Component {
     dispatch(changeMobileSidebarVisibility());
   };
 
-  changeMenuTitle = (title, subTitle) => {
+  changeMenuTitle = (title, subTitle, val) => {
     const { dispatch } = this.props;
     dispatch(changeMenuTitle(title, subTitle));
-
+/*
     const localMenuTitle = {
       title: '',
       subTitle: '',
@@ -82,7 +103,11 @@ class Layout extends Component {
 
     localMenuTitle.title = title;
     localMenuTitle.subTitle = subTitle;
-    localStorage.localMenuTitle = JSON.stringify(localMenuTitle);
+    localStorage.localMenuTitle = JSON.stringify(localMenuTitle);*/
+
+    if (title === '자산관리') {
+      dispatch(fetchPosts(val));
+    }
   };
 
   changeToDark = () => {
@@ -156,7 +181,6 @@ class Layout extends Component {
             <Topbar
               changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
               changeSidebarVisibility={this.changeSidebarVisibility}
-              changeMenuTitle={this.changeMenuTitle}
               user={user}
               menuTitle={menuTitle}
             />

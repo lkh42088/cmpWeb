@@ -1,11 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import {Col, Container, Row} from 'reactstrap';
 import {fetchPosts} from '../../../redux/actions/assetsAction';
 
 import AssetsList from './components/AssetsList';
 import AssetsSearch from './components/AssetsSearch';
-/*import ComAssets from './components/ComAssets';*/
 
 const paddingCol = {
     paddingRight: '0px',
@@ -16,7 +15,7 @@ const MaterialTable = () => {
     const assetState = useSelector(state => state.assets);
     const dispatch = useDispatch();
 
-    const getDevices = () => dispatch(fetchPosts());
+    const getDevices = () => dispatch(fetchPosts('server'));
 
     useEffect(() => {
         getDevices();
@@ -28,8 +27,7 @@ const MaterialTable = () => {
             <Row>
                 <Col md={12} style={paddingCol}>
                     <AssetsSearch/>
-                    <AssetsList assetState={assetState}/>
-                    {/*<ComAssets/>*/}
+                    <AssetsList assetState={assetState} dispatch={dispatch}/>
                 </Col>
             </Row>
         </Container>

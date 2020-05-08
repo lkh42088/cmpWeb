@@ -22,7 +22,7 @@ class Topbar extends PureComponent {
             changeMobileSidebarVisibility, changeSidebarVisibility, user, menuTitle,
         } = this.props;
 
-        const localMenuTitle = JSON.parse(localStorage.getItem("localMenuTitle"));
+        //const localMenuTitle = JSON.parse(localStorage.getItem("localMenuTitle"));
 
         return (
             <div className="topbar">
@@ -36,10 +36,16 @@ class Topbar extends PureComponent {
                         <div style={{paddingLeft: '10px'}}>
                             <span className="text-danger">Nubes-Bridge</span>
                             <h3 className="account__title">
-                              <span
+                                {/*<span
                                   className="account__logo"> {localMenuTitle.title ? localMenuTitle.title : 'title'}
                                   <span
                                       className="account__logo-accent"> {localMenuTitle.subTitle ? localMenuTitle.subTitle : 'subTitle'}</span>
+                              </span>*/}
+                                <span className="account__logo">
+                                    {menuTitle.title}
+                                    <span className="account__logo-accent">
+                                    {menuTitle.subTitle}
+                                    </span>
                               </span>
                             </h3>
                         </div>

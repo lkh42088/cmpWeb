@@ -4,8 +4,6 @@ import {connect} from 'react-redux';
 import {Button, ButtonToolbar, Modal} from 'reactstrap';
 import classNames from 'classnames';
 import {Field} from "redux-form";
-import CalendarBlankIcon from "mdi-react/CalendarBlankIcon";
-import AccountSearchIcon from "mdi-react/AccountSearchIcon";
 
 import {RTLProps} from '../../../../shared/prop-types/ReducerProps';
 
@@ -22,11 +20,12 @@ class AssetsModal extends PureComponent {
         message: PropTypes.string,
         modalType: PropTypes.string,
         toggleTitle: PropTypes.string,
-        color: PropTypes.string.isRequired,
         colored: PropTypes.bool,
         header: PropTypes.bool,
         btn: PropTypes.string.isRequired,
         rtl: RTLProps.isRequired,
+        assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
+        dispatch: PropTypes.func.isRequired,
     };
 
     static defaultProps = {
@@ -50,9 +49,9 @@ class AssetsModal extends PureComponent {
         this.setState(prevState => ({modal: !prevState.modal}));
     };
 
-   /* closeToggle = () => {
-      this.setState(prevState => ({modal: !prevState.modal}));
-    };*/
+    /* closeToggle = () => {
+       this.setState(prevState => ({modal: !prevState.modal}));
+     };*/
 
     showPassword = (e) => {
         e.preventDefault();
@@ -61,35 +60,13 @@ class AssetsModal extends PureComponent {
 
     render() {
         const {
-            color, btn, title, message, colored, header, rtl, modalType, toggleTitle,
+            btn, title, message, colored, header, rtl, modalType, toggleTitle,
         } = this.props;
+
         const {modal} = this.state;
-        let Icon;
         let modalContent;
         const {showPassword} = this.state;
-
-        const tempStyle = {
-            textDecoration: '#ffdd67 underline',
-            fontWeight: 'bold',
-            /*textUnderlinePosition: 'under',*/
-        };
-
-        switch (color) {
-            case 'primary':
-                Icon = <span className="lnr lnr-pushpin assets_write__modal__title-icon"/>;
-                break;
-            case 'success':
-                Icon = <span className="lnr lnr-thumbs-up assets_write__modal__title-icon"/>;
-                break;
-            case 'warning':
-                Icon = <span className="lnr lnr-flag assets_write__modal__title-icon"/>;
-                break;
-            case 'danger':
-                Icon = <span className="lnr lnr-cross-circle assets_write__modal__title-icon"/>;
-                break;
-            default:
-                break;
-        }
+        const {assetState, dispatch} = this.props;
 
         const modalClass = classNames({
             'assets_write__modal-dialog': true,
@@ -99,10 +76,16 @@ class AssetsModal extends PureComponent {
 
         switch (modalType) {
             case 'write':
-                modalContent = <AssetsWrite closeToggle={this.toggle} title={title} message={message}/>;
+                modalContent = (
+                    <AssetsWrite closeToggle={this.toggle} title={title} message={message}
+                                 assetState={assetState} dispatch={dispatch}/>
+                );
                 break;
             case 'view':
-                modalContent = <AssetsView closeToggle={this.toggle} title={title} message={message}/>;
+                modalContent = (
+                    <AssetsView closeToggle={this.toggle} title={title} message={message}
+                                assetState={assetState} dispatch={dispatch}/>
+                );
                 break;
             default:
                 modalContent = 'Error!';
@@ -118,7 +101,7 @@ class AssetsModal extends PureComponent {
                     isOpen={modal}
                     /*toggle={this.toggle}*/
                     modalClassName={`${rtl.direction}-support`}
-                    className={`assets_write__modal-dialog assets_write__modal-dialog--${color} ${modalClass}`}
+                    className={`assets_write__modal-dialog assets_write__modal-dialog ${modalClass}`}
                 >
                     {modalContent}
                 </Modal>

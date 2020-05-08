@@ -24,19 +24,19 @@ class SidebarContent extends Component {
                 <ul className="sidebar__block">
                     <SidebarCategory title="자산관리" icon="diamond">
                         <SidebarLink title="서버" route="/assets/list"
-                                     onClick={() => changeMenuTitle('자산관리', '서버')}/>
+                                     onClick={() => changeMenuTitle('자산관리', '서버', 'server')}/>
                         <SidebarLink title="네트워크" route="/assets/list"
-                                     onClick={() => changeMenuTitle('자산관리', '네트워크')}/>
+                                     onClick={() => changeMenuTitle('자산관리', '네트워크', 'network')}/>
                         <SidebarLink title="파트/기타" route="/assets/list"
-                                     onClick={() => changeMenuTitle('자산관리', '파트/기타')}/>
+                                     onClick={() => changeMenuTitle('자산관리', '파트/기타', 'part')}/>
                     </SidebarCategory>
                     <SidebarCategory title="관리자" icon="diamond">
                         <SidebarLink title="계정관리[개발중]" route="/404"
-                                     onClick={() => changeMenuTitle('개발중', '')}/>
+                                     onClick={() => changeMenuTitle('개발중', '', '')}/>
                         <SidebarLink title="고객사관리" route="/member/customer/list"
-                                     onClick={() => changeMenuTitle('관리자', '고객사관리')}/>
+                                     onClick={() => changeMenuTitle('관리자', '고객사관리', '')}/>
                         <SidebarLink title="모니터링 관리" route="/management/monitoring/main"
-                                     onClick={() => changeMenuTitle('관리자', '모니터링관리')}/>
+                                     onClick={() => changeMenuTitle('관리자', '모니터링관리', '')}/>
                     </SidebarCategory>
                 </ul>
             </div>

@@ -2,15 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dd1f5b2a-4de3-4b30-80a4-997b72c35bcd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/containers/App/BackUP.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/App/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/App/App.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsHead.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsHead.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/ComAssets.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/ComAssets.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsView.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsView.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/ComAssets.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/__ComAssets.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/__Assets.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/__Assets.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Assets/Server/components/MatTableHead.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/Server/components/MatTableHead.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/DefaultPage/TempPage/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/DefaultPage/TempPage/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Layout/customizer/ToggleCollapsedMenu.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/customizer/ToggleCollapsedMenu.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Layout/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Layout/sidebar/Sidebar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/sidebar/Sidebar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Layout/sidebar/SidebarContent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/sidebar/SidebarContent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Layout/topbar/Topbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/topbar/Topbar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/redux/actions/assetsAction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/actions/assetsAction.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/redux/reducers/assetsReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/reducers/assetsReducer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/reducers/titleReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/reducers/titleReducer.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +91,7 @@
       <workItem from="1587946932260" duration="25916000" />
       <workItem from="1588070798761" duration="21134000" />
       <workItem from="1588148848500" duration="765000" />
-      <workItem from="1588723503289" duration="20253000" />
+      <workItem from="1588723503289" duration="63686000" />
     </task>
     <servers />
   </component>
@@ -88,10 +99,10 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2472" y="188" key="#ESLint" timestamp="1588744375031">
+    <state x="2472" y="188" key="#ESLint" timestamp="1588907469405">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state x="2472" y="188" key="#ESLint/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588744375031" />
+    <state x="2472" y="188" key="#ESLint/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588907469405" />
     <state x="2413" y="287" key="FileChooserDialogImpl" timestamp="1588727319970">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
@@ -120,9 +131,13 @@
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
     <state x="2541" y="153" key="SettingsEditor/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588741147374" />
-    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup" timestamp="1588748406151">
+    <state x="2536" y="245" key="run.anything.popup" timestamp="1588925647248">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588748406151" />
+    <state x="2536" y="245" key="run.anything.popup/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588925647248" />
+    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup" timestamp="1588821089799">
+      <screen x="1920" y="9" width="1920" height="1040" />
+    </state>
+    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588821089799" />
   </component>
 </project>

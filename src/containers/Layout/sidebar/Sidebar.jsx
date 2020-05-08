@@ -31,6 +31,7 @@ const Sidebar = ({
             onClick={changeMobileSidebarVisibility}
             changeToDark={changeToDark}
             changeToLight={changeToLight}
+            changeMenuTitle={changeMenuTitle}
           />
         </div>
       </Scrollbar>

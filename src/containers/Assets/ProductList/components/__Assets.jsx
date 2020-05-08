@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Link} from 'react-router-dom';
+
 import {
     Card,
     CardBody,
@@ -13,7 +13,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 
-import PropTypes, {string} from 'prop-types';
+import PropTypes from 'prop-types';
 
 import AssetsHead from './AssetsHead';
 import AssetsModal from "./AssetsModal";
