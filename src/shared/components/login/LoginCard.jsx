@@ -1,22 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {Button} from 'reactstrap';
-import FirebaseIcon from 'mdi-react/FirebaseIcon';
-import withAuthFirebase from '../auth/withAuthFirebase';
-import {useAuth0} from '../auth/withAuth0';
-import Loading from '../Loading';
+// import PropTypes from 'prop-types';
+// import {Button} from 'reactstrap';
+// import FirebaseIcon from 'mdi-react/FirebaseIcon';
+// import withAuthFirebase from '../auth/withAuthFirebase';
+// import {useAuth0} from '../auth/withAuth0';
+// import Loading from '../Loading';
 import LogInForm from './LogInForm';
-import GoogleAuthBtn from '../../../containers/Account/AuthBtn/googleAuthBtn';
-import FacebookAuthBtn from '../../../containers/Account/AuthBtn/fbAuthBtn';
+// import GoogleAuthBtn from '../../../containers/Account/AuthBtn/googleAuthBtn';
+// import FacebookAuthBtn from '../../../containers/Account/AuthBtn/fbAuthBtn';
 
-const auth0Icon = `${process.env.PUBLIC_URL}/img/auth0.svg`;
-const LoginCard = ({changeIsOpenModalFireBase}) => {
-    const {
-        loginWithRedirect, loading,
-    } = useAuth0();
-    if (loading) {
-        return (<Loading loading={loading}/>);
-    }
+// const auth0Icon = `${process.env.PUBLIC_URL}/img/auth0.svg`;
+// const LoginCard = ({changeIsOpenModalFireBase}) => {
+const LoginCard = () => {
+    // const {
+    //     // loginWithRedirect, loading,
+    //     loading,
+    // } = useAuth0();
+    // if (loading) {
+    //     return (<Loading loading={loading}/>);
+    // }
+    console.log('test:logincard');
     return (
         <div className="account__wrapper">
             <div className="account__card">
@@ -36,26 +39,27 @@ const LoginCard = ({changeIsOpenModalFireBase}) => {
                 <div className="account__or">
                     <p>Or Easily Using</p>
                 </div>
-               {/* <div className="account__social">
-                    <FacebookAuthBtn/>
-                    <GoogleAuthBtn/>
-                    <Button
-                        className="account__social-btn account__social-btn--firebase"
-                        onClick={changeIsOpenModalFireBase}
-                    ><FirebaseIcon/>
-                    </Button>
-                    <Button className="account__social-btn account__social-btn--auth0"
-                            onClick={() => loginWithRedirect({})}>
-                        <img className="customizer__btn-icon" src={auth0Icon} alt="icon"/>
-                    </Button>
-                </div>*/}
+               {/*<div className="account__social">*/}
+               {/*     <FacebookAuthBtn/>*/}
+               {/*     <GoogleAuthBtn/>*/}
+               {/*     <Button*/}
+               {/*         className="account__social-btn account__social-btn--firebase"*/}
+               {/*         onClick={changeIsOpenModalFireBase}*/}
+               {/*     ><FirebaseIcon/>*/}
+               {/*     </Button>*/}
+               {/*     <Button className="account__social-btn account__social-btn--auth0"*/}
+               {/*             onClick={() => loginWithRedirect({})}>*/}
+               {/*         <img className="customizer__btn-icon" src={auth0Icon} alt="icon"/>*/}
+               {/*     </Button>*/}
+               {/* </div>*/}
             </div>
         </div>
     );
 };
 
-LoginCard.propTypes = {
-    changeIsOpenModalFireBase: PropTypes.func.isRequired,
-};
+// LoginCard.propTypes = {
+//     // changeIsOpenModalFireBase: PropTypes.func.isRequired,
+// };
 
-export default withAuthFirebase(LoginCard);
+// export default withAuthFirebase(LoginCard);
+export default LoginCard;
