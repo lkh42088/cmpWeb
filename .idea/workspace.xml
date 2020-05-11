@@ -1,27 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="dd1f5b2a-4de3-4b30-80a4-997b72c35bcd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/auth0.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/facebook.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/firebase.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/google.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Account/AuthBtn/fbAuthBtn.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Account/AuthBtn/googleAuthBtn.jsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/App/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/App/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsHead.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsHead.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsView.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsView.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/ComAssets.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/__ComAssets.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/__Assets.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/__Assets.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Assets/Server/components/MatTableHead.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/Server/components/MatTableHead.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/DefaultPage/TempPage/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/DefaultPage/TempPage/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Layout/customizer/ToggleCollapsedMenu.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/customizer/ToggleCollapsedMenu.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Layout/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Layout/sidebar/Sidebar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/sidebar/Sidebar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Layout/sidebar/SidebarContent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/sidebar/SidebarContent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Layout/topbar/Topbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/topbar/Topbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/actions/assetsAction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/actions/assetsAction.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/reducers/assetsReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/reducers/assetsReducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/reducers/titleReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/reducers/titleReducer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/App/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/App/store.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Layout/topbar/TopbarProfile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/topbar/TopbarProfile.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/actions/authActions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/reducers/authReducer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/reducers/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/reducers/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/components/ModalLoginForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/components/ModalLoginForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/components/auth/withAuth0.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/components/auth/withAuthFirebase.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/components/login/LogInForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/components/login/LoginForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/components/login/LoginCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/components/login/LoginCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,12 +58,15 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1aviPaqDIfgXLCQpTv6tnB5jSZM" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -53,7 +74,7 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.vendoring.notification.had.been.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Forum-App-React-Frontend" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../front_org" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -65,14 +86,17 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JavaScript" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2020.1.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\workspace\front" />
-      <recent name="C:\workspace\nubes_cmp\src\shared" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\workspace\front\src\modules\Assets" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\project\front\src\containers\Account\NLogin" />
+      <recent name="C:\project\front\src\shared\components\login" />
+      <recent name="C:\workspace\front" />
+      <recent name="C:\workspace\nubes_cmp\src\shared" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -92,36 +116,58 @@
       <workItem from="1588070798761" duration="21134000" />
       <workItem from="1588148848500" duration="765000" />
       <workItem from="1588723503289" duration="63686000" />
+      <workItem from="1589172872616" duration="14284000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="WindowStateProjectService">
-    <state x="2472" y="188" key="#ESLint" timestamp="1588907469405">
-      <screen x="1920" y="9" width="1920" height="1040" />
+    <state x="-1368" y="-128" key="#ESLint" timestamp="1589185950272">
+      <screen x="-1920" y="-307" width="1920" height="1040" />
     </state>
+    <state x="-1368" y="-128" key="#ESLint/0.0.1366.728/-1920.-307.1920.1040@-1920.-307.1920.1040" timestamp="1589185950272" />
     <state x="2472" y="188" key="#ESLint/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588907469405" />
-    <state x="2413" y="287" key="FileChooserDialogImpl" timestamp="1588727319970">
-      <screen x="1920" y="9" width="1920" height="1040" />
+    <state x="-1230" y="-41" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1589177188656">
+      <screen x="-1920" y="-307" width="1920" height="1040" />
     </state>
+    <state x="-1230" y="-41" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728/-1920.-307.1920.1040@-1920.-307.1920.1040" timestamp="1589177188656" />
+    <state x="-1427" y="-29" key="FileChooserDialogImpl" timestamp="1589180178064">
+      <screen x="-1920" y="-307" width="1920" height="1040" />
+    </state>
+    <state x="-1427" y="-29" key="FileChooserDialogImpl/0.0.1366.728/-1920.-307.1920.1040@-1920.-307.1920.1040" timestamp="1589180178064" />
     <state x="2413" y="287" key="FileChooserDialogImpl/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588727319970" />
-    <state width="1877" height="347" key="GridCell.Tab.0.bottom" timestamp="1588148008596">
-      <screen x="1920" y="9" width="1920" height="1040" />
+    <state width="1899" height="279" key="GridCell.Tab.0.bottom" timestamp="1589173033166">
+      <screen x="-1920" y="-307" width="1920" height="1040" />
     </state>
+    <state width="1899" height="279" key="GridCell.Tab.0.bottom/0.0.1366.728/-1920.-307.1920.1040@-1920.-307.1920.1040" timestamp="1589173033166" />
     <state width="1877" height="347" key="GridCell.Tab.0.bottom/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588148008596" />
-    <state width="1877" height="347" key="GridCell.Tab.0.center" timestamp="1588148008596">
-      <screen x="1920" y="9" width="1920" height="1040" />
+    <state width="1899" height="279" key="GridCell.Tab.0.center" timestamp="1589173033166">
+      <screen x="-1920" y="-307" width="1920" height="1040" />
     </state>
+    <state width="1899" height="279" key="GridCell.Tab.0.center/0.0.1366.728/-1920.-307.1920.1040@-1920.-307.1920.1040" timestamp="1589173033166" />
     <state width="1877" height="347" key="GridCell.Tab.0.center/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588148008596" />
-    <state width="1877" height="347" key="GridCell.Tab.0.left" timestamp="1588148008596">
-      <screen x="1920" y="9" width="1920" height="1040" />
+    <state width="1899" height="279" key="GridCell.Tab.0.left" timestamp="1589173033166">
+      <screen x="-1920" y="-307" width="1920" height="1040" />
     </state>
+    <state width="1899" height="279" key="GridCell.Tab.0.left/0.0.1366.728/-1920.-307.1920.1040@-1920.-307.1920.1040" timestamp="1589173033166" />
     <state width="1877" height="347" key="GridCell.Tab.0.left/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588148008596" />
-    <state width="1877" height="347" key="GridCell.Tab.0.right" timestamp="1588148008596">
-      <screen x="1920" y="9" width="1920" height="1040" />
+    <state width="1899" height="279" key="GridCell.Tab.0.right" timestamp="1589173033166">
+      <screen x="-1920" y="-307" width="1920" height="1040" />
     </state>
+    <state width="1899" height="279" key="GridCell.Tab.0.right/0.0.1366.728/-1920.-307.1920.1040@-1920.-307.1920.1040" timestamp="1589173033166" />
     <state width="1877" height="347" key="GridCell.Tab.0.right/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588148008596" />
     <state x="2460" y="272" key="IDE.errors.dialog" timestamp="1588142688084">
       <screen x="1920" y="9" width="1920" height="1040" />
