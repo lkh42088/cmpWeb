@@ -3,12 +3,14 @@ import { Route, Switch } from 'react-router-dom';
 import MainWrapper from '../MainWrapper';
 import WrappedRoutes from './WrappedRoutes';
 import TempPage from '../../DefaultPage/TempPage/index';
+import LogIn from "../../Account/LogIn";
 
 const Router = () => (
   <MainWrapper>
     <main>
       <Switch>
         <Route exact path="/" component={TempPage} />
+        <Route path="/login" component={LogIn} />
         <Route path="/" component={WrappedRoutes} />
       </Switch>
     </main>

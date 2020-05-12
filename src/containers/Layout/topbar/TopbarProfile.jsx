@@ -3,7 +3,6 @@ import DownIcon from 'mdi-react/ChevronDownIcon';
 import { Collapse } from 'reactstrap';
 import TopbarMenuLink from './TopbarMenuLink';
 import { UserProps, AuthOProps } from '../../../shared/prop-types/ReducerProps';
-import { hookAuth0 } from '../../../shared/components/auth/withAuth0';
 
 const Ava = `${process.env.PUBLIC_URL}/img/ava.png`;
 
@@ -107,4 +106,4 @@ class TopbarProfile extends PureComponent {
   }
 }
 
-export default hookAuth0(TopbarProfile);
+export default TopbarProfile;

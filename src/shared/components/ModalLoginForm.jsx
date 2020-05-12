@@ -5,7 +5,7 @@ import {
 } from 'reactstrap';
 import GooglePlusIcon from 'mdi-react/GooglePlusIcon';
 import FacebookIcon from 'mdi-react/FacebookIcon';
-import LogInForm from './login/LogInForm';
+import LogInForm from './login/LoginForm';
 
 const ModalLoginForm = ({
   title, isOpen, onSubmit, error, closeModal, onGoogleClick, onFacebookClick,
