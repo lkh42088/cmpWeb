@@ -15,6 +15,7 @@ import renderIntervalDatePickerField from "../../../../shared/components/form/In
 import renderDatePickerField from "../../../../shared/components/form/DatePicker";
 import Collapse from "../../../../shared/components/Collapse";
 
+//assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
 class AssetsView extends PureComponent {
     static propTypes = {
         title: PropTypes.string,
@@ -22,7 +23,8 @@ class AssetsView extends PureComponent {
         closeToggle: PropTypes.func,
         colored: PropTypes.bool,
         header: PropTypes.bool,
-        assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
+        // eslint-disable-next-line react/forbid-prop-types
+        assetState: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
     };
 
@@ -35,6 +37,7 @@ class AssetsView extends PureComponent {
     };
 
     constructor() {
+        console.log("constructor");
         super();
         this.state = {
             modal: false,
@@ -61,13 +64,16 @@ class AssetsView extends PureComponent {
     };
 
     render() {
+        console.log("render");
         const {assetState, dispatch} = this.props;
         const {
             title, message, colored, header,
         } = this.props;
         const {modal} = this.state;
         let Icon;
+        let deviceValue = new Map([]);
         const {showPassword} = this.state;
+        console.log("view render 후에 assetState : ", assetState);
 
         const deviceStyle = {
             textDecoration: '#ffdd67 underline',
@@ -80,8 +86,21 @@ class AssetsView extends PureComponent {
             'assets_write__modal-dialog--header': header,
         });
 
-        console.log("★★★ assetState.device : ", assetState.device);
-        console.log("★★★ assetState.device.DeviceCode : ", assetState.device.DeviceCode);
+        if (assetState.device.length > 0) {
+            // eslint-disable-next-line prefer-destructuring
+            deviceValue = assetState.device[0];
+        } else {
+            deviceValue = assetState.device;
+        }
+
+        const {
+            Idx, OutFlag, Num, CommentCnt, CommentLastDate, Option, Hit,
+            RegisterId, Password, RegisterName, RegisterEmail, RegisterDate,
+            DeviceCode, Model, Contents, Customer, Manufacture, DeviceType,
+            WarehousingDate, RentDate, Ownership, OwnerCompany, HwSn, IDC,
+            Rack, Cost, Purpos, Ip, Size, Spla, Cpu, Memory, Hdd,
+            FirmwareVersion, Warranty, MonitoringFlag, MonitoringMethod,
+        } = deviceValue;
 
 
         /*switch (color) {
@@ -117,7 +136,7 @@ class AssetsView extends PureComponent {
                             <span className="modal_form__form-group-label text_cor_green">장비코드</span>
                             <div className="modal_form__form-group-field" style={{display: "block"}}>
                                 <div className="float-left">
-                                    <b><h6 style={deviceStyle}>{assetState.device.Idx}</h6></b>
+                                    <b><h6 style={deviceStyle}>{DeviceCode}</h6></b>
                                 </div>
                                 <div className="assets_write__form_comment_confirm float-right" type="button"
                                      onClick={this.commentToggle} onKeyDown={this.commentToggle}
@@ -126,11 +145,13 @@ class AssetsView extends PureComponent {
                                 <Modal
                                     isOpen={modal}
                                     /*toggle={this.commentToggle}*/
-                                    className={`assets_write__modal-dialog assets_write__modal-dialog--success ${modalClass}`}
+                                    className={`assets_write__modal-dialog 
+                                    assets_write__modal-dialog--success ${modalClass}`}
                                 >
                                     <div className="assets_write__modal__body assets_write__modal__tableLine">
                                         <div className="modal_form__form-group">
-                                            <span className="modal_form__form-group-label text_cor_green">작성자 [2020/12/15]</span>
+                                            <span className="modal_form__form-group-label text_cor_green">
+                                                작성자 [2020/12/15]</span>
                                             <div className="modal_form__form-group-field">
                                                 <textarea name="" className="assets_comment"
                                                           placeholder="댓글 입력 창"/>
@@ -150,87 +171,85 @@ class AssetsView extends PureComponent {
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">IDC / 랙번호</span>
                             <div className="modal_form__form-group-field">
-                                강남KT-IDC
+                                {IDC}
                                 &nbsp;&nbsp;
-                                None
+                                {Rack}
                             </div>
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">제조사 / 모델명</span>
                             <div className="modal_form__form-group-field">
-                                IBM(Lenovo)
+                                {Manufacture}
                                 &nbsp;&nbsp;
-                                x366
+                                {Model}
                             </div>
                         </div>
                         {/*---------------------------------------------------------------------------------*/}
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">IP</span>
                             <div className="modal_form__form-group-field">
-                                0.0.0.0
+                                {Ip}
                             </div>
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">장비구분</span>
                             <div className="modal_form__form-group-field">
-                                서버
+                                {DeviceType}
                             </div>
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label text_cor_orange">고객사명</span>
                             <div className="modal_form__form-group-field">
-                                노퀘어|지케이클로벌
+                                {Customer}
                             </div>
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">소유권/소유권구분</span>
                             <div className="modal_form__form-group-field">
-                                고객장비
-                                &nbsp;&nbsp;
-                                고객소유장비
+                                {Ownership}
                             </div>
                             <span className="modal_form__form-group-description">
                                   Explanation.
-                                </span>
+                            </span>
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">소유업체명</span>
                             <div className="modal_form__form-group-field">
-                                (주)컨텐츠브릿지
+                                {OwnerCompany}
                             </div>
                         </div>
                         <div className="modal_form__form-group">
                                 <span
                                     className="modal_form__form-group-label modal_form_label_blue">HW S/N</span>
                             <div className="modal_form__form-group-field">
-                                B9Q84W1
+                                {HwSn}
                             </div>
                         </div>
                         <div className="modal_form__form-group">
                                 <span
                                     className="modal_form__form-group-label modal_form_label_blue">CPU</span>
                             <div className="modal_form__form-group-field">
-                                SAS 300GB * 8EA
+                                {Cpu}
                             </div>
                         </div>
                         <div className="modal_form__form-group">
                                 <span
                                     className="modal_form__form-group-label modal_form_label_blue">MEMORY</span>
                             <div className="modal_form__form-group-field">
-                                3GB
+                                {Memory}
                             </div>
                         </div>
                         <div className="modal_form__form-group">
                                 <span
                                     className="modal_form__form-group-label modal_form_label_blue">HDD</span>
                             <div className="modal_form__form-group-field">
-                                SAS 300GB * 8EA
+                                {Hdd}
                             </div>
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">임대기간</span>
                             <div className="modal_form__form-group-field">
-                                20151209 ~ 20171208
+                                {RentDate}
                             </div>
                         </div>
                         <div className="modal_form__form-group">
@@ -242,28 +261,26 @@ class AssetsView extends PureComponent {
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">원가</span>
                             <div className="modal_form__form-group-field">
-                                520000
+                                {Cost}
                             </div>
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">용도</span>
                             <div className="modal_form__form-group-field">
-                                CBS02642 보드장애 대체 Simplivity vCenter
+                                {Purpos}
                             </div>
                         </div>
                         {/*---------------------------------------------------------------------------------*/}
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">SPLA</span>
                             <div className="modal_form__form-group-field">
-                                Windows 2008 R2 STD
-                                &nbsp;&nbsp;
-                                Windows 2012 R2 STD
+                                {Spla}
                             </div>
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">기타사항</span>
                             <div className="modal_form__form-group-field">
-                                ConCDN GLB2
+                                {Contents}
                             </div>
                         </div>
                     </form>

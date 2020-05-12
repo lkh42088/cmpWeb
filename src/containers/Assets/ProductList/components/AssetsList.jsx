@@ -1,9 +1,10 @@
 import React, {PureComponent, Fragment} from 'react';
 import {Link} from 'react-router-dom';
+import {connect} from "react-redux";
 import {
     Card,
     CardBody,
-    Col, Row,
+    Col, Modal, Row,
 } from 'reactstrap';
 
 import Table from '@material-ui/core/Table';
@@ -14,14 +15,16 @@ import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 
 import PropTypes, {string} from 'prop-types';
+import classNames from "classnames";
 
 import {changeMenuTitle} from '../../../../redux/actions/titleActions';
 import {setDeviceIdx, getDeviceByIdx} from '../../../../redux/actions/assetsAction';
 
 import AssetsHead from './AssetsHead';
-import AssetsModal from "./AssetsModal";
 import VerticalFormHalf from "../../Server/components/VerticalFormHalf";
 import AssetsWrite from "../../Server/components/AssetsWrite";
+import AssetsView from "./AssetsView";
+import {RTLProps} from "../../../../shared/prop-types/ReducerProps";
 
 function getSorting(order, orderBy) {
     if (order === 'desc') {
@@ -51,17 +54,20 @@ export default class AssetsList extends PureComponent {
         order: 'asc',
         orderBy: 'DeviceCode',
         selected: new Map([]),
+        modalFlag: new Map([]),
         page: 0,
-        rowsPerPage: 5,
+        rowsPerPage: 10,
+        viewModalContent: '',
     };
 
     //handleSubmit: PropTypes.func.isRequired,
     //assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
     static propTypes = {
-        assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
+        // eslint-disable-next-line react/forbid-prop-types
+        assetState: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
     };
-
+    
     handleRequestSort = (event, property) => {
         const orderBy = property;
         let order = 'desc';
@@ -108,26 +114,64 @@ export default class AssetsList extends PureComponent {
 
     isSelected = (id) => {
         const {selected} = this.state;
+        const {modalFlag} = this.state;
+
+
+        modalFlag.set(id, false);
+        //console.log("modalFlag : ", modalFlag);
+
         return !!selected.get(id);
     };
 
-    setDeviceIdx = (event, idx) => {
-        const {dispatch} = this.props;
-        const {assetState} = this.props;
-        dispatch(setDeviceIdx(idx));
+    toggle = (e) => {
+        this.setState(prevState => ({modal: !prevState.modal}));
+    };
+
+    setDeviceIdx = (event, idx, deviceCode) => {
+        const {dispatch, assetState} = this.props;
+
         dispatch(getDeviceByIdx(idx, assetState.deviceType));
+
+        this.setComponents();
+    };
+
+    setComponents = () => {
+        const {dispatch, assetState} = this.props;
+
+        const tempViewModalContent = (
+            <AssetsView closeToggle={this.toggle}
+                        title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다."
+                        assetState={assetState} dispatch={dispatch}/>
+        );
+
+        this.setState({
+            viewModalContent: tempViewModalContent,
+        });
+    };
+
+    componentDidUpdate = (prevProps, prevState) => {
+        console.log('Component DID UPDATE!');
+        // eslint-disable-next-line react/destructuring-assignment
+        if (this.props.assetState !== prevProps.assetState) {
+            this.setComponents();
+        }
     };
 
     render() {
         const {
-            order, orderBy, selected, rowsPerPage, page,
+            order, orderBy, selected, rowsPerPage, page, viewModalContent, modal,
         } = this.state;
-        /*const {handleSubmit} = this.props;*/
         const {assetState, dispatch} = this.props;
-        /*const emptyRows = rowsPerPage - Math.min(rowsPerPage, assetState.devices.length - (page * rowsPerPage));*/
 
+        console.log("list render 후에 assetState : ", assetState);
+        
         const tableCellClassName = 'material-table__cell material-table__cell-right';
-        // const {dispatch} = this.props;
+
+        const modalClass = classNames({
+            'assets_write__modal-dialog': true,
+            'assets_write__modal-dialog--colored': false,
+            'assets_write__modal-dialog--header': false,
+        });
 
         const deviceServer = (
             <Fragment>
@@ -160,17 +204,13 @@ export default class AssetsList extends PureComponent {
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                        onClick={event => this.setDeviceIdx(event, d.Idx)}
+                                        onClick={event => this.setDeviceIdx(event, d.Idx, d.DeviceCode)}
                                     >{/*장비코드*/}
                                         <b className="text_cor_green mouse_over_list">
-                                            <AssetsModal
-                                                title="장비 확인"
-                                                message="자산관리 > 장비 확인 페이지 입니다."
-                                                modalType="view"
-                                                toggleTitle={d.DeviceCode}
-                                                assetState={assetState}
-                                                dispatch={dispatch}
-                                            />
+                                            <div className="assets_add_modal_div" onClick={this.toggle}
+                                                 onKeyDown={this.toggle}
+                                                 role="button" tabIndex="0"><span
+                                                className="circle__ste"/>{d.DeviceCode}</div>
                                         </b>
                                     </TableCell>
                                     <TableCell
@@ -282,6 +322,14 @@ export default class AssetsList extends PureComponent {
                                 {deviceServer}
                             </Table>
                         </div>
+                        <Modal
+                            isOpen={modal}
+                            modalClassName="ltr-support"
+                            className={`assets_write__modal-dialog 
+                            assets_write__modal-dialog ${modalClass}`}
+                        >
+                            {viewModalContent}
+                        </Modal>
                         <TablePagination
                             component="div"
                             className="material-table__pagination"
@@ -292,7 +340,7 @@ export default class AssetsList extends PureComponent {
                             nextIconButtonProps={{'aria-label': 'Next Page'}}
                             onChangePage={this.handleChangePage}
                             onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                            rowsPerPageOptions={[5, 15]}
+                            rowsPerPageOptions={[10, 15]}
                             dir="ltr"
                             SelectProps={{
                                 inputProps: {'aria-label': 'rows per page'},

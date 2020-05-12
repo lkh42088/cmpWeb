@@ -20,9 +20,11 @@ const rows = [
     {id: 'IDC', disablePadding: false, label: 'IDC/위치'},
     {id: 'Purpos', disablePadding: false, label: '용도'},
 ];
+/*
 
 function updateHeadRows(type) {
-    console.log("type : ", type);
+    //TODO 다시 정리 필요~ 마지막 처리
+    //console.log("type : ", type);
 
     if (type === 'server') {
         rows.concat(
@@ -44,6 +46,7 @@ function updateHeadRows(type) {
         );
     }
 }
+*/
 
 class AssetsHead extends PureComponent {
     state = {
@@ -70,22 +73,22 @@ class AssetsHead extends PureComponent {
         orderBy: PropTypes.string.isRequired,
         rowCount: PropTypes.number.isRequired,
         rtl: RTLProps.isRequired,
-        // eslint-disable-next-line react/no-unused-prop-types
-        assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
+        // eslint-disable-next-line react/forbid-prop-types
+        assetState: PropTypes.object.isRequired,
     };
 
 
     componentWillMount() {
         const {assetState} = this.props;
-        updateHeadRows(assetState.deviceType);
+        //updateHeadRows(assetState.deviceType);
     }
 
     componentWillReceiveProps(propData) {
-        /*컴포넌트가 prop 을 새로 받았을 때 실행됩니다.
-        prop 에 따라 state 를 업데이트 해야 할 때 사용하면 유용합니다.
-        이 안에서 this.setState() 를 해도 추가적으로 렌더링하지 않습니다.*/
+        /*컴포넌트가 prop 을 새로 받았을 때 실행
+        prop 에 따라 state 를 업데이트 해야 할 때 사용
+        이 안에서 this.setState() 를 해도 추가적으로 렌더링하지 않음.*/
         //updateHeadRows(assetState.deviceType);
-        console.log("AssetsHead componentWillReceiveProps");
+        //console.log("AssetsHead componentWillReceiveProps");
 
 
         this.setState({

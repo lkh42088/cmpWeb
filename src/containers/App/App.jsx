@@ -39,8 +39,10 @@ const ThemeComponent = ({children, themeName}) => {
     );
 };
 
+//children: PropTypes.arrayOf(PropTypes.element).isRequired,
 ThemeComponent.propTypes = {
-    children: PropTypes.arrayOf(PropTypes.element).isRequired,
+    // eslint-disable-next-line react/forbid-prop-types
+    children: PropTypes.object.isRequired,
     themeName: PropTypes.string.isRequired,
 };
 

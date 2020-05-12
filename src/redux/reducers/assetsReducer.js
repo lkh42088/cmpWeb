@@ -1,87 +1,15 @@
 // 초기 상태 정의
 import {List, Map} from "immutable";
-import {GET_DEVICE_BY_IDX, GET_DEVICES, SET_DEVICE_IDX} from "../actions/assetsAction";
+import {
+    GET_DEVICE_BY_IDX,
+    GET_DEVICES,
+    SET_DEVICE_IDX,
+} from "../actions/assetsAction";
 
 export const initialState = {
     deviceType: 'server',
-    deviceByIdx: '',
-    /*device: Map({
-        Idx: '0',
-        OutFlag: '',
-        Num: '',
-        CommentCnt: '',
-        CommentLastDate: '',
-        Option: '',
-        Hit: '',
-        RegisterId: '',
-        Password: '',
-        RegisterName: '',
-        RegisterEmail: '',
-        RegisterDate: '',
-        DeviceCode: '',
-        Model: '',
-        Contents: '',
-        Customer: '',
-        Manufacture: '',
-        DeviceType: '',
-        WarehousingDate: '',
-        RentDate: '',
-        Ownership: '',
-        OwnerCompany: '',
-        HwSn: '',
-        IDC: '',
-        Rack: '',
-        Cost: '',
-        Purpos: '',
-        Ip: '',
-        Size: '',
-        Spla: '',
-        Cpu: '',
-        Memory: '',
-        Hdd: '',
-        FirmwareVersion: '',
-        Warranty: '',
-        MonitoringFlag: '',
-        MonitoringMethod: '',
-    }),*/
+    deviceByIdx: '1',
     device: {
-        Idx: '0',
-        OutFlag: '',
-        Num: '',
-        CommentCnt: '',
-        CommentLastDate: '',
-        Option: '',
-        Hit: '',
-        RegisterId: '',
-        Password: '',
-        RegisterName: '',
-        RegisterEmail: '',
-        RegisterDate: '',
-        DeviceCode: '',
-        Model: '',
-        Contents: '',
-        Customer: '',
-        Manufacture: '',
-        DeviceType: '',
-        WarehousingDate: '',
-        RentDate: '',
-        Ownership: '',
-        OwnerCompany: '',
-        HwSn: '',
-        IDC: '',
-        Rack: '',
-        Cost: '',
-        Purpos: '',
-        Ip: '',
-        Size: '',
-        Spla: '',
-        Cpu: '',
-        Memory: '',
-        Hdd: '',
-        FirmwareVersion: '',
-        Warranty: '',
-        MonitoringFlag: '',
-        MonitoringMethod: '',
     },
     devices: List([
         Map({ // 굳이 작성하지 않아도 상관없음 편리하게 불변함 유지
@@ -134,7 +62,7 @@ function getId(state) {
 // action.type 에 따라 다른 작업을 하고, 새 상태를 만들어서 반환
 // state 값을 직접 수정하면 안되고, 기존 상태 값에 원하는 값을 덮어쓴 새로운 객체를 만들어서 반환
 const assetsReducer = (state = initialState, action) => {
-    const {payload, type, devicetype} = action;
+    const {payload, type, deviceType} = action;
     switch (type) {
         case 'ADD_ASSETS':
             return Object.assign({}, state, {
@@ -157,17 +85,17 @@ const assetsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 devices: payload,
-                deviceType: devicetype,
-            };
-        case SET_DEVICE_IDX:
-            return {
-                ...state,
-                deviceByIdx: payload,
+                deviceType,
             };
         case GET_DEVICE_BY_IDX:
             return {
                 ...state,
                 device: payload,
+            };
+        case SET_DEVICE_IDX:
+            return {
+                ...state,
+                deviceByIdx: payload,
             };
         default:
             return state;

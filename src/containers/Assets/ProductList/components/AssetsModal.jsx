@@ -22,10 +22,10 @@ class AssetsModal extends PureComponent {
         toggleTitle: PropTypes.string,
         colored: PropTypes.bool,
         header: PropTypes.bool,
-        btn: PropTypes.string.isRequired,
         rtl: RTLProps.isRequired,
-        assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
-        dispatch: PropTypes.func.isRequired,
+        // eslint-disable-next-line react/forbid-prop-types
+        //assetState: PropTypes.object.isRequired,
+        //dispatch: PropTypes.func.isRequired,
     };
 
     static defaultProps = {
@@ -38,6 +38,7 @@ class AssetsModal extends PureComponent {
     };
 
     constructor() {
+        console.log("assetModal constructor");
         super();
         this.state = {
             modal: false,
@@ -60,13 +61,13 @@ class AssetsModal extends PureComponent {
 
     render() {
         const {
-            btn, title, message, colored, header, rtl, modalType, toggleTitle,
+            title, message, colored, header, rtl, modalType, toggleTitle,
         } = this.props;
 
         const {modal} = this.state;
         let modalContent;
         const {showPassword} = this.state;
-        const {assetState, dispatch} = this.props;
+        //const {assetState, dispatch} = this.props;
 
         const modalClass = classNames({
             'assets_write__modal-dialog': true,
@@ -74,7 +75,7 @@ class AssetsModal extends PureComponent {
             'assets_write__modal-dialog--header': header,
         });
 
-        switch (modalType) {
+/*        switch (modalType) {
             case 'write':
                 modalContent = (
                     <AssetsWrite closeToggle={this.toggle} title={title} message={message}
@@ -90,13 +91,13 @@ class AssetsModal extends PureComponent {
             default:
                 modalContent = 'Error!';
                 break;
-        }
+        }*/
 
         return (
             <div>
-                <div className="assets_add_modal_div" onClick={this.toggle} onKeyDown={this.toggle}
+{/*                <div className="assets_add_modal_div" onClick={this.toggle} onKeyDown={this.toggle}
                      role="button" tabIndex="0"><span
-                    className="circle__ste"/>{toggleTitle}</div>
+                    className="circle__ste"/>---</div>*/}
                 <Modal
                     isOpen={modal}
                     /*toggle={this.toggle}*/

@@ -8,20 +8,9 @@
       <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsList.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsModal.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsView.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsView.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/ComAssets.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/__ComAssets.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/__Assets.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/__Assets.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Assets/Server/components/MatTableHead.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/Server/components/MatTableHead.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/DefaultPage/TempPage/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/DefaultPage/TempPage/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Layout/customizer/ToggleCollapsedMenu.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/customizer/ToggleCollapsedMenu.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Layout/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Layout/sidebar/Sidebar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/sidebar/Sidebar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Layout/sidebar/SidebarContent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/sidebar/SidebarContent.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Layout/topbar/Topbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Layout/topbar/Topbar.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/redux/actions/assetsAction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/actions/assetsAction.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/redux/reducers/assetsReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/reducers/assetsReducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/reducers/titleReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/reducers/titleReducer.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,7 +80,8 @@
       <workItem from="1587946932260" duration="25916000" />
       <workItem from="1588070798761" duration="21134000" />
       <workItem from="1588148848500" duration="765000" />
-      <workItem from="1588723503289" duration="63686000" />
+      <workItem from="1588723503289" duration="63842000" />
+      <workItem from="1589155407393" duration="49624000" />
     </task>
     <servers />
   </component>
@@ -99,14 +89,14 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2472" y="188" key="#ESLint" timestamp="1588907469405">
+    <state x="2472" y="188" key="#ESLint" timestamp="1589199490483">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state x="2472" y="188" key="#ESLint/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588907469405" />
-    <state x="2413" y="287" key="FileChooserDialogImpl" timestamp="1588727319970">
+    <state x="2472" y="188" key="#ESLint/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1589199490483" />
+    <state x="2413" y="287" key="FileChooserDialogImpl" timestamp="1589246040952">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state x="2413" y="287" key="FileChooserDialogImpl/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588727319970" />
+    <state x="2413" y="287" key="FileChooserDialogImpl/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1589246040952" />
     <state width="1877" height="347" key="GridCell.Tab.0.bottom" timestamp="1588148008596">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
@@ -135,9 +125,9 @@
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
     <state x="2536" y="245" key="run.anything.popup/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588925647248" />
-    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup" timestamp="1588821089799">
+    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup" timestamp="1589176419633">
       <screen x="1920" y="9" width="1920" height="1040" />
     </state>
-    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1588821089799" />
+    <state x="2536" y="182" width="670" height="676" key="search.everywhere.popup/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1589176419633" />
   </component>
 </project>
