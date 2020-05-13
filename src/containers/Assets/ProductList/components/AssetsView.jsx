@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react';
+import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Button, ButtonToolbar, Modal} from 'reactstrap';
@@ -18,14 +18,14 @@ import Collapse from "../../../../shared/components/Collapse";
 //assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
 class AssetsView extends PureComponent {
     static propTypes = {
+        // eslint-disable-next-line react/forbid-prop-types
+        assetState: PropTypes.object.isRequired,
+        dispatch: PropTypes.func.isRequired,
         title: PropTypes.string,
         message: PropTypes.string,
         closeToggle: PropTypes.func,
         colored: PropTypes.bool,
         header: PropTypes.bool,
-        // eslint-disable-next-line react/forbid-prop-types
-        assetState: PropTypes.object.isRequired,
-        dispatch: PropTypes.func.isRequired,
     };
 
     static defaultProps = {
@@ -71,9 +71,10 @@ class AssetsView extends PureComponent {
         } = this.props;
         const {modal} = this.state;
         let Icon;
+        let viewModalContent;
         let deviceValue = new Map([]);
         const {showPassword} = this.state;
-        console.log("view render 후에 assetState : ", assetState);
+        //console.log("view render 후에 assetState : ", assetState);
 
         const deviceStyle = {
             textDecoration: '#ffdd67 underline',
@@ -85,6 +86,12 @@ class AssetsView extends PureComponent {
             'assets_write__modal-dialog--colored': colored,
             'assets_write__modal-dialog--header': header,
         });
+
+        const classNameMap = {
+            formDivClass: "modal_form__form-group",
+            formSpanClass: "modal_form__form-group-label",
+            formDivSubClass: "modal_form__form-group-field",
+        };
 
         if (assetState.device.length > 0) {
             // eslint-disable-next-line prefer-destructuring
@@ -102,23 +109,100 @@ class AssetsView extends PureComponent {
             FirmwareVersion, Warranty, MonitoringFlag, MonitoringMethod,
         } = deviceValue;
 
-
-        /*switch (color) {
-            case 'primary':
-                Icon = <span className="lnr lnr-pushpin assets_write__modal__title-icon"/>;
+        switch (assetState.deviceType) {
+            case 'server':
+                viewModalContent = (
+                    <Fragment>
+                        <div className={classNameMap.formDivClass}>
+                                <span
+                                    className="modal_form__form-group-label
+                                    modal_form_label_blue">CPU</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {Cpu}
+                            </div>
+                        </div>
+                        <div className={classNameMap.formDivClass}>
+                                <span
+                                    className="modal_form__form-group-label
+                                    modal_form_label_blue">MEMORY</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {Memory}
+                            </div>
+                        </div>
+                        <div className={classNameMap.formDivClass}>
+                                <span
+                                    className="modal_form__form-group-label
+                                    modal_form_label_blue">HDD</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {Hdd}
+                            </div>
+                        </div>
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>IP</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {Ip}
+                            </div>
+                        </div>
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>Size</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {Size}
+                            </div>
+                        </div>
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>SPLA</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {Spla}
+                            </div>
+                        </div>
+                    </Fragment>
+                );
                 break;
-            case 'success':
-                Icon = <span className="lnr lnr-thumbs-up assets_write__modal__title-icon"/>;
+            case 'network':
+                viewModalContent = (
+                    <Fragment>
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>IP</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {Ip}
+                            </div>
+                        </div>
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>FirmwareVersion</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {FirmwareVersion}
+                            </div>
+                        </div>
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>WarehousingDate</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {WarehousingDate}
+                            </div>
+                        </div>
+                    </Fragment>
+                );
                 break;
-            case 'warning':
-                Icon = <span className="lnr lnr-flag assets_write__modal__title-icon"/>;
-                break;
-            case 'danger':
-                Icon = <span className="lnr lnr-cross-circle assets_write__modal__title-icon"/>;
+            case 'part':
+                viewModalContent = (
+                    <Fragment>
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>Warranty</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {Warranty}
+                            </div>
+                        </div>
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>WarehousingDate</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {WarehousingDate}
+                            </div>
+                        </div>
+                    </Fragment>
+                );
                 break;
             default:
                 break;
-        }*/
+        }
 
         return (
             <div>
@@ -168,118 +252,93 @@ class AssetsView extends PureComponent {
                                 </Modal>
                             </div>
                         </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">IDC / 랙번호</span>
-                            <div className="modal_form__form-group-field">
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>IDC / 랙번호</span>
+                            <div className={classNameMap.formDivSubClass}>
                                 {IDC}
                                 &nbsp;&nbsp;
                                 {Rack}
                             </div>
                         </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">제조사 / 모델명</span>
-                            <div className="modal_form__form-group-field">
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>제조사 / 모델명</span>
+                            <div className={classNameMap.formDivSubClass}>
                                 {Manufacture}
                                 &nbsp;&nbsp;
                                 {Model}
                             </div>
                         </div>
-                        {/*---------------------------------------------------------------------------------*/}
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">IP</span>
-                            <div className="modal_form__form-group-field">
-                                {Ip}
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">장비구분</span>
-                            <div className="modal_form__form-group-field">
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>장비구분</span>
+                            <div className={classNameMap.formDivSubClass}>
                                 {DeviceType}
                             </div>
                         </div>
-                        <div className="modal_form__form-group">
+                        <div className={classNameMap.formDivClass}>
                             <span className="modal_form__form-group-label text_cor_orange">고객사명</span>
-                            <div className="modal_form__form-group-field">
+                            <div className={classNameMap.formDivSubClass}>
                                 {Customer}
                             </div>
                         </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">소유권/소유권구분</span>
-                            <div className="modal_form__form-group-field">
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>소유권/소유권구분</span>
+                            <div className={classNameMap.formDivSubClass}>
                                 {Ownership}
                             </div>
                             <span className="modal_form__form-group-description">
                                   Explanation.
                             </span>
                         </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">소유업체명</span>
-                            <div className="modal_form__form-group-field">
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>소유업체명</span>
+                            <div className={classNameMap.formDivSubClass}>
                                 {OwnerCompany}
                             </div>
                         </div>
-                        <div className="modal_form__form-group">
+                        <div className={classNameMap.formDivClass}>
                                 <span
-                                    className="modal_form__form-group-label modal_form_label_blue">HW S/N</span>
-                            <div className="modal_form__form-group-field">
+                                    className="modal_form__form-group-label
+                                    modal_form_label_blue">HW S/N</span>
+                            <div className={classNameMap.formDivSubClass}>
                                 {HwSn}
                             </div>
                         </div>
-                        <div className="modal_form__form-group">
-                                <span
-                                    className="modal_form__form-group-label modal_form_label_blue">CPU</span>
-                            <div className="modal_form__form-group-field">
-                                {Cpu}
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                                <span
-                                    className="modal_form__form-group-label modal_form_label_blue">MEMORY</span>
-                            <div className="modal_form__form-group-field">
-                                {Memory}
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                                <span
-                                    className="modal_form__form-group-label modal_form_label_blue">HDD</span>
-                            <div className="modal_form__form-group-field">
-                                {Hdd}
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">임대기간</span>
-                            <div className="modal_form__form-group-field">
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>임대기간</span>
+                            <div className={classNameMap.formDivSubClass}>
                                 {RentDate}
                             </div>
                         </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">입고일</span>
-                            <div className="modal_form__form-group-field">
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>입고일</span>
+                            <div className={classNameMap.formDivSubClass}>
                                 20141112
                             </div>
                         </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">원가</span>
-                            <div className="modal_form__form-group-field">
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>원가</span>
+                            <div className={classNameMap.formDivSubClass}>
                                 {Cost}
                             </div>
                         </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">용도</span>
-                            <div className="modal_form__form-group-field">
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>용도</span>
+                            <div className={classNameMap.formDivSubClass}>
                                 {Purpos}
                             </div>
                         </div>
-                        {/*---------------------------------------------------------------------------------*/}
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">SPLA</span>
-                            <div className="modal_form__form-group-field">
-                                {Spla}
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>HwSn</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {HwSn}
                             </div>
                         </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">기타사항</span>
-                            <div className="modal_form__form-group-field">
+                        {/*---------------------------------------------------------------------------------*/}
+                        {viewModalContent}
+                        {/*---------------------------------------------------------------------------------*/}
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>기타사항</span>
+                            <div className={classNameMap.formDivSubClass}>
                                 {Contents}
                             </div>
                         </div>

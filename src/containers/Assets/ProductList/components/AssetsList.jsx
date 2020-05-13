@@ -163,7 +163,7 @@ export default class AssetsList extends PureComponent {
         } = this.state;
         const {assetState, dispatch} = this.props;
 
-        console.log("list render 후에 assetState : ", assetState);
+        //console.log("list render 후에 assetState : ", assetState);
         
         const tableCellClassName = 'material-table__cell material-table__cell-right';
 
