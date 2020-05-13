@@ -15,8 +15,10 @@ import 'bootstrap/dist/css/bootstrap.css';
 import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
 import '../../scss/app.scss';
 import PropTypes from 'prop-types';
+import {applyMiddleware, createStore} from "redux";
+import ReduxThunk from "redux-thunk";
 import Router from './Router';
-import store from './store';
+import store, {sagaMiddleware, rootSaga, loadUser} from './store';
 import ScrollToTop from './ScrollToTop';
 import {config as i18nextConfig} from '../../translations';
 import Loading from '../../shared/components/Loading';
@@ -74,6 +76,8 @@ class App extends Component {
 
     render() {
         const {loaded, loading} = this.state;
+        sagaMiddleware.run(rootSaga);
+        loadUser();
         return (
             <Provider store={store}>
                 <BrowserRouter>

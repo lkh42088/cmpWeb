@@ -21,7 +21,6 @@
   <component name="ChangeListManager">
     <list default="true" id="dd1f5b2a-4de3-4b30-80a4-997b72c35bcd" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/src/lib/api/auth.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/lib/api/client.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/lib/createRequestSaga.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/redux/actions/authActions.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/redux/actions/loadingActions.js" afterDir="false" />
@@ -31,7 +30,10 @@
       <change afterPath="$PROJECT_DIR$/src/redux/reducers/userReducer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/App/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/App/App.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/containers/App/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/App/store.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/api/client.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/client.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/redux/reducers/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/reducers/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/shared/components/login/LoginForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/components/login/LoginForm.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
@@ -112,7 +114,7 @@
       <workItem from="1588148848500" duration="765000" />
       <workItem from="1588723503289" duration="63686000" />
       <workItem from="1589172872616" duration="15072000" />
-      <workItem from="1589332449044" duration="19857000" />
+      <workItem from="1589332449044" duration="24537000" />
     </task>
     <servers />
   </component>
