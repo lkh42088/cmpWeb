@@ -12,6 +12,9 @@ import {
     todoReducer,
     assetsReducer,
     titleReducer,
+    authReducer,
+    userReducer,
+    loadingReducer,
 } from '../../redux/reducers/index';
 /*import { composeWithDevTools } from 'redux-devtools-extension';*/
 
@@ -27,6 +30,9 @@ const reducer = combineReducers({
     todos: todoReducer,
     assets: assetsReducer,
     menuTitle: titleReducer,
+    auth: authReducer,
+    user: userReducer,
+    loading: loadingReducer,
 });
 
 //  리듀서를 파라미터로 받으며, 스토어를 만듬 => createStore()
