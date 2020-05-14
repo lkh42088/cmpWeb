@@ -4,7 +4,7 @@ import {Field, Form, reduxForm} from 'redux-form';
 import EyeIcon from 'mdi-react/EyeIcon';
 import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
 import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
-import {Link, withRouter} from 'react-router-dom';
+import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { changeField, initializeForm, login } from "../../../redux/actions/authActions";
 import { check } from "../../../redux/actions/userActions";
