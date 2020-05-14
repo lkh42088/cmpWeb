@@ -15,7 +15,7 @@ const MaterialTable = () => {
     const assetState = useSelector(state => state.assets);
     const dispatch = useDispatch();
 
-    console.log("최상위 index assetState : ", assetState);
+    //console.log("최상위 index assetState : ", assetState);
 
     const getDevices = () => dispatch(fetchPosts('server'));
 

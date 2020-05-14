@@ -18,12 +18,15 @@ import PropTypes, {string} from 'prop-types';
 import classNames from "classnames";
 
 import {changeMenuTitle} from '../../../../redux/actions/titleActions';
-import {setDeviceIdx, getDeviceByIdx} from '../../../../redux/actions/assetsAction';
+import {
+    setDeviceIdx, getDeviceByIdx, submitDeviceComment, fetchPosts, fetchPostsCheckCount,
+} from '../../../../redux/actions/assetsAction';
 
 import AssetsHead from './AssetsHead';
 import VerticalFormHalf from "../../Server/components/VerticalFormHalf";
 import AssetsWrite from "../../Server/components/AssetsWrite";
 import AssetsView from "./AssetsView";
+import AssetsEdit from "./AssetsEdit";
 import {RTLProps} from "../../../../shared/prop-types/ReducerProps";
 
 function getSorting(order, orderBy) {
@@ -54,10 +57,12 @@ export default class AssetsList extends PureComponent {
         order: 'asc',
         orderBy: 'DeviceCode',
         selected: new Map([]),
-        modalFlag: new Map([]),
         page: 0,
         rowsPerPage: 10,
         viewModalContent: '',
+        checkCount: 0,
+        // eslint-disable-next-line react/destructuring-assignment
+        showPage: 1,
     };
 
     //handleSubmit: PropTypes.func.isRequired,
@@ -67,21 +72,42 @@ export default class AssetsList extends PureComponent {
         assetState: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
     };
-    
+
+    handleCreate = (data) => {
+        // form submit dispatch 관리
+        const {assetState, dispatch} = this.props;
+
+        if (data.submit.type === 'comment') {
+            dispatch(submitDeviceComment(data.comment, assetState, data.submit.division, 'loginId'));
+        } else if (data.submit.type === 'device') {
+            if (data.submit.division === 'create') {
+                console.log("device create");
+            }
+        }
+    };
+
     handleRequestSort = (event, property) => {
         const orderBy = property;
+        const {assetState, dispatch} = this.props;
         let order = 'desc';
         const {orderBy: stateOrderBy, order: stateOrder} = this.state;
+        const {
+            rowsPerPage, checkCount, page,
+        } = this.state;
 
         if (stateOrderBy === property && stateOrder === 'desc') {
             order = 'asc';
         }
 
-        this.setState({order, orderBy});
+        this.setState({
+            order,
+            orderBy,
+        });
+
+        dispatch(fetchPosts(assetState.deviceType, Number(page), rowsPerPage, orderBy, order));
     };
 
     handleSelectAllClick = (event, checked) => {
-        console.log("CLICK : handleSelectAllClick");
         if (checked) {
             const {assetState} = this.props;
             const newSelected = new Map();
@@ -104,21 +130,53 @@ export default class AssetsList extends PureComponent {
         this.setState({selected: newSelected});
     };
 
+    handleChangePageBack = () => {
+        console.log(" ◖⚆ᴥ⚆◗  handleChangePageBack~~");
+    };
+
     handleChangePage = (event, page) => {
-        this.setState({page});
+        const {assetState, dispatch} = this.props;
+        const {
+            orderBy, rowsPerPage, order, checkCount, showPage,
+        } = this.state;
+        const plusPage = page + 1;
+        console.log("showPage : ", showPage);
+        const checkPageNumCount = (showPage + 1) * rowsPerPage;
+
+        console.log("checkPageNumCount : ", checkPageNumCount);
+
+        this.setState({
+            page: Number(page),
+            // eslint-disable-next-line react/destructuring-assignment,react/no-access-state-in-setstate
+            showPage: this.state.showPage + 1,
+            checkCount: Number(checkPageNumCount),
+        });
+
+        if (checkPageNumCount > 10) {
+            console.log("handleChangePage -> page : ", page);
+            console.log("handleChangePage -> assetState.frontPage.oriPage : ", assetState.frontPage.oriPage);
+
+
+            this.setState({
+                page: 0,
+                checkCount: Number(checkPageNumCount),
+            });
+
+            dispatch(fetchPostsCheckCount(
+                assetState.deviceType, Number(page), Number(checkPageNumCount), orderBy, order, rowsPerPage, showPage,
+            ));
+        }
     };
 
     handleChangeRowsPerPage = (event) => {
-        this.setState({rowsPerPage: event.target.value});
+        this.setState({
+            page: 0,
+            rowsPerPage: Number(event.target.value),
+        });
     };
 
     isSelected = (id) => {
         const {selected} = this.state;
-        const {modalFlag} = this.state;
-
-
-        modalFlag.set(id, false);
-        //console.log("modalFlag : ", modalFlag);
 
         return !!selected.get(id);
     };
@@ -127,10 +185,10 @@ export default class AssetsList extends PureComponent {
         this.setState(prevState => ({modal: !prevState.modal}));
     };
 
-    setDeviceIdx = (event, idx, deviceCode) => {
+    setDeviceIdx = (event, deviceCode) => {
         const {dispatch, assetState} = this.props;
 
-        dispatch(getDeviceByIdx(idx, assetState.deviceType));
+        dispatch(getDeviceByIdx(deviceCode, assetState.deviceType));
 
         this.setComponents();
     };
@@ -138,19 +196,43 @@ export default class AssetsList extends PureComponent {
     setComponents = () => {
         const {dispatch, assetState} = this.props;
 
-        const tempViewModalContent = (
+        let tempViewModalContent;
+
+        tempViewModalContent = 'test';
+
+        tempViewModalContent = (
             <AssetsView closeToggle={this.toggle}
                         title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다."
-                        assetState={assetState} dispatch={dispatch}/>
+                        assetState={assetState} dispatch={dispatch} onCreate={this.handleCreate}
+            />
         );
+
+/*        tempViewModalContent = (
+            <AssetsEdit closeToggle={this.toggle}
+                        title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다."
+                        assetState={assetState} dispatch={dispatch} onCreate={this.handleCreate}
+            />
+        );*/
 
         this.setState({
             viewModalContent: tempViewModalContent,
         });
     };
 
+    /*componentWillUpdate = () => {
+      console.log("Component Will UPDATE!");
+    };*/
+
     componentDidUpdate = (prevProps, prevState) => {
-        console.log('Component DID UPDATE!');
+        console.log('Render 후 Component DID UPDATE!');
+        // eslint-disable-next-line react/destructuring-assignment
+        console.log("componentDidUpdate -> page : ", this.state.page);
+        const {assetState, dispatch} = this.props;
+        // eslint-disable-next-line react/no-did-update-set-state
+/*        this.setState({
+            // eslint-disable-next-line react/destructuring-assignment,react/no-access-state-in-setstate
+            showPage: Number(this.state.page) + 1,
+        });*/
         // eslint-disable-next-line react/destructuring-assignment
         if (this.props.assetState !== prevProps.assetState) {
             this.setComponents();
@@ -159,12 +241,13 @@ export default class AssetsList extends PureComponent {
 
     render() {
         const {
-            order, orderBy, selected, rowsPerPage, page, viewModalContent, modal,
+            order, orderBy, selected, rowsPerPage, page, viewModalContent, modal, showPage,
         } = this.state;
         const {assetState, dispatch} = this.props;
 
-        //console.log("list render 후에 assetState : ", assetState);
-        
+        console.log("render 후에 assetState : ", assetState);
+        console.log("render 후에 page : ", page);
+
         const tableCellClassName = 'material-table__cell material-table__cell-right';
 
         const modalClass = classNames({
@@ -180,7 +263,7 @@ export default class AssetsList extends PureComponent {
                         .sort(getSorting(order, orderBy))
                         .slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)
                         .map((d) => {
-                            const isSelected = this.isSelected(d.Idx);
+                            const isSelected = this.isSelected(d.DeviceCode);
 
                             return (
                                 <TableRow
@@ -188,12 +271,12 @@ export default class AssetsList extends PureComponent {
                                     role="checkbox"
                                     aria-checked={isSelected}
                                     tabIndex={-1}
-                                    key={d.Idx}
+                                    key={d.DeviceCode}
                                     selected={isSelected}
                                 >
                                     <TableCell className="material-table__cell"
                                                padding="checkbox"
-                                               onClick={event => this.handleClick(event, d.Idx)}>
+                                               onClick={event => this.handleClick(event, d.DeviceCode)}>
                                         <Checkbox checked={isSelected}
                                                   className="material-table__checkbox"/>
                                     </TableCell>
@@ -204,7 +287,7 @@ export default class AssetsList extends PureComponent {
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                        onClick={event => this.setDeviceIdx(event, d.Idx, d.DeviceCode)}
+                                        onClick={event => this.setDeviceIdx(event, d.DeviceCode)}
                                     >{/*장비코드*/}
                                         <b className="text_cor_green mouse_over_list">
                                             <div className="assets_add_modal_div" onClick={this.toggle}
@@ -309,14 +392,14 @@ export default class AssetsList extends PureComponent {
                 <Card>
                     <CardBody>
                         <div className="material-table__wrap">
-                            <Table className="material-table">
+                            <Table className="material-table" size="small">
                                 <AssetsHead
                                     numSelected={[...selected].filter(el => el[1]).length}
                                     order={order}
                                     orderBy={orderBy}
                                     onSelectAllClick={this.handleSelectAllClick}
                                     onRequestSort={this.handleRequestSort}
-                                    rowCount={assetState.devices.length}
+                                    rowCount={Number(assetState.devices.length)}
                                     assetState={assetState}
                                 />
                                 {deviceServer}
@@ -333,15 +416,25 @@ export default class AssetsList extends PureComponent {
                         <TablePagination
                             component="div"
                             className="material-table__pagination"
-                            count={assetState.devices.length}
+                            count={Number(assetState.page.Count)}
                             rowsPerPage={rowsPerPage}
-                            page={page}
-                            backIconButtonProps={{'aria-label': 'Previous Page'}}
+                            page={page - assetState.frontPage.oriPage}
+                            backIconButtonProps={{
+                                'aria-label': 'Previous Page',
+                                disabled: false,
+                                onClick: this.handleChangePageBack,
+                            }}
                             nextIconButtonProps={{'aria-label': 'Next Page'}}
                             onChangePage={this.handleChangePage}
                             onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                            rowsPerPageOptions={[10, 15]}
+                            rowsPerPageOptions={[10, 50, 500, 1000]}
                             dir="ltr"
+                            labelDisplayedRows={
+                                ({checkCount, to, count}) => (
+                                    <span style={{fontSize: 14}}><span>page: {showPage}</span>&nbsp;&nbsp;&nbsp; total : {count}
+                                    </span>
+                                )
+                            }
                             SelectProps={{
                                 inputProps: {'aria-label': 'rows per page'},
                                 native: true,

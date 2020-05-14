@@ -37,13 +37,40 @@ class AssetsView extends PureComponent {
     };
 
     constructor() {
-        console.log("constructor");
         super();
         this.state = {
             modal: false,
             showPassword: false,
+            submit: {
+              type: 'comment',
+              division: 'create',
+            },
+            comment: '',
         };
+        //this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+    handleSubmit = (e) => {
+        // 페이지 리로딩 방지
+        e.preventDefault();
+
+        // eslint-disable-next-line react/destructuring-assignment
+        // 상태값을 onCreate 를 통하여 부모에게 전달
+        // eslint-disable-next-line react/prop-types,react/destructuring-assignment
+        this.props.onCreate(this.state);
+
+        // 상태 초기화
+        this.setState({
+            comment: '',
+            modal: false,
+        });
+    };
+
+    handleChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value,
+        });
+    };
 
     commentToggle = () => {
         this.setState(prevState => ({modal: !prevState.modal}));
@@ -64,12 +91,11 @@ class AssetsView extends PureComponent {
     };
 
     render() {
-        console.log("render");
         const {assetState, dispatch} = this.props;
         const {
             title, message, colored, header,
         } = this.props;
-        const {modal} = this.state;
+        const {modal, comment, submitType} = this.state;
         let Icon;
         let viewModalContent;
         let deviceValue = new Map([]);
@@ -92,6 +118,8 @@ class AssetsView extends PureComponent {
             formSpanClass: "modal_form__form-group-label",
             formDivSubClass: "modal_form__form-group-field",
         };
+
+        console.log("assetState : ", assetState);
 
         if (assetState.device.length > 0) {
             // eslint-disable-next-line prefer-destructuring
@@ -228,27 +256,31 @@ class AssetsView extends PureComponent {
                                 </div>
                                 <Modal
                                     isOpen={modal}
-                                    /*toggle={this.commentToggle}*/
                                     className={`assets_write__modal-dialog 
                                     assets_write__modal-dialog--success ${modalClass}`}
                                 >
+                                    <form onSubmit={this.handleSubmit}>
                                     <div className="assets_write__modal__body assets_write__modal__tableLine">
                                         <div className="modal_form__form-group">
                                             <span className="modal_form__form-group-label text_cor_green">
                                                 작성자 [2020/12/15]</span>
                                             <div className="modal_form__form-group-field">
-                                                <textarea name="" className="assets_comment"
-                                                          placeholder="댓글 입력 창"/>
+                                                {/* eslint-disable-next-line react/destructuring-assignment */}
+                                                <textarea name="comment" value={comment} className="assets_comment"
+                                                          placeholder="댓글 입력 창" onChange={this.handleChange}/>
                                             </div>
                                         </div>
                                     </div>
                                     <ButtonToolbar className="assets_write__modal__footer_comment">
-                                        <Button className="assets_write__modal_ok" outline={colored}
-                                                color="success"
-                                                onClick={this.commentToggle}>Submit</Button>&nbsp;&nbsp;
+                                        <Button className="assets_write__modal_ok"
+                                                outline={colored} type="submit" color="success">등록</Button>
+                                        {/*<Button className="assets_write__modal_ok" outline={colored}
+                                                    color="success"
+                                                    onClick={this.commentToggle}>Submit</Button>*/}&nbsp;&nbsp;
                                         <Button className="assets_write__modal_cancel"
                                                 onClick={this.commentToggle}>Cancel</Button>
                                     </ButtonToolbar>
+                                    </form>
                                 </Modal>
                             </div>
                         </div>
@@ -296,14 +328,6 @@ class AssetsView extends PureComponent {
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
-                                <span
-                                    className="modal_form__form-group-label
-                                    modal_form_label_blue">HW S/N</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {HwSn}
-                            </div>
-                        </div>
-                        <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>임대기간</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {RentDate}
@@ -328,7 +352,9 @@ class AssetsView extends PureComponent {
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>HwSn</span>
+                                <span
+                                    className="modal_form__form-group-label
+                                    modal_form_label_blue">HW S/N</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {HwSn}
                             </div>
@@ -338,9 +364,8 @@ class AssetsView extends PureComponent {
                         {/*---------------------------------------------------------------------------------*/}
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>기타사항</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {Contents}
-                            </div>
+                            <div className={classNameMap.formDivSubClass}
+                                 dangerouslySetInnerHTML={{__html: Contents}}/>
                         </div>
                     </form>
                 </div>
@@ -384,6 +409,8 @@ root 패스워드 초기화 요청 처리
 export default function toggleClick() {
     this.toggle();
 }*/
-export default reduxForm({
+/*export default reduxForm({
     form: 'vertical_form', // a unique identifier for this form
-})(withTranslation('common')(AssetsView));
+})(withTranslation('common')(AssetsView));*/
+
+export default AssetsView;

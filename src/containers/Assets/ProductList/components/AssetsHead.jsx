@@ -90,7 +90,6 @@ class AssetsHead extends PureComponent {
         //updateHeadRows(assetState.deviceType);
         //console.log("AssetsHead componentWillReceiveProps");
 
-
         this.setState({
             rows: rows.filter(id => id !== 'HwSn'),
         });
