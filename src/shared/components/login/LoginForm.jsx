@@ -4,7 +4,7 @@ import {Field, Form, reduxForm} from 'redux-form';
 import EyeIcon from 'mdi-react/EyeIcon';
 import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
 import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
-import {Link} from 'react-router-dom';
+import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { changeField, initializeForm, login } from "../../../redux/actions/authActions";
 import { check } from "../../../redux/actions/userActions";
@@ -135,14 +135,14 @@ const LoginForm = ({ history }) => {
                 </div>
             </div>
 
-            <div className="account__btns">
-                <ButtonToolbar className="account__btn ">
-                    <Button className="account__btn btn btn-primary">sign in</Button>
+            <div className="form__form-group">
+                <ButtonToolbar>
+                    <Button className="account__btn btn btn-primary" color="white">로그인</Button>
                 </ButtonToolbar>
             </div>
         </Form>
     );
 };
 
-const LoginFormWrap = reduxForm()(LoginForm);
+const LoginFormWrap = withRouter(reduxForm()(LoginForm));
 export default LoginFormWrap;
