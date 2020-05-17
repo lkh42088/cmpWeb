@@ -20,14 +20,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dd1f5b2a-4de3-4b30-80a4-997b72c35bcd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.eslintrc" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsHead.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsHead.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsList.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsView.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/components/AssetsView.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/containers/Assets/ProductList/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Assets/ProductList/index.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/actions/assetsAction.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/actions/assetsAction.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/redux/reducers/assetsReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/reducers/assetsReducer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/Account/Register/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/Account/Register/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/containers/App/Router/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/containers/App/Router/index.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/api/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib/api/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/actions/authActions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/actions/authActions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/redux/reducers/authReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/redux/reducers/authReducer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/shared/components/login/RegisterForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/shared/components/login/RegisterForm.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +43,12 @@
   <component name="GOROOT" path="C:\Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
   </component>
   <component name="ProjectId" id="1aviPaqDIfgXLCQpTv6tnB5jSZM" />
   <component name="ProjectLevelVcsManager">
@@ -62,7 +67,7 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.vendoring.notification.had.been.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../template" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../front-login" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -106,6 +111,7 @@
       <workItem from="1588723503289" duration="63686000" />
       <workItem from="1589172872616" duration="15072000" />
       <workItem from="1589332449044" duration="24537000" />
+      <workItem from="1589694553245" duration="13505000" />
     </task>
     <servers />
   </component>
@@ -117,13 +123,12 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="2472" y="188" key="#ESLint" timestamp="1589425225269">
@@ -135,30 +140,35 @@
       <screen x="-1920" y="-307" width="1920" height="1040" />
     </state>
     <state x="-1230" y="-41" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.728/-1920.-307.1920.1040@-1920.-307.1920.1040" timestamp="1589339812444" />
-    <state x="2413" y="287" key="FileChooserDialogImpl" timestamp="1589435520708">
-      <screen x="1920" y="9" width="1920" height="1040" />
+    <state x="493" y="278" key="FileChooserDialogImpl" timestamp="1589702875158">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="-1427" y="-29" key="FileChooserDialogImpl/0.0.1366.728/-1920.-307.1920.1040@-1920.-307.1920.1040" timestamp="1589332603798" />
+    <state x="493" y="278" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1589702875158" />
     <state x="2413" y="287" key="FileChooserDialogImpl/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1589435520708" />
-    <state width="1563" height="279" key="GridCell.Tab.0.bottom" timestamp="1589418484231">
-      <screen x="1920" y="9" width="1920" height="1040" />
+    <state width="1899" height="282" key="GridCell.Tab.0.bottom" timestamp="1589696874952">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1899" height="279" key="GridCell.Tab.0.bottom/0.0.1366.728/-1920.-307.1920.1040@-1920.-307.1920.1040" timestamp="1589192437765" />
+    <state width="1899" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1589696874952" />
     <state width="1563" height="279" key="GridCell.Tab.0.bottom/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1589418484231" />
-    <state width="1563" height="279" key="GridCell.Tab.0.center" timestamp="1589418484231">
-      <screen x="1920" y="9" width="1920" height="1040" />
+    <state width="1899" height="282" key="GridCell.Tab.0.center" timestamp="1589696874952">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1899" height="279" key="GridCell.Tab.0.center/0.0.1366.728/-1920.-307.1920.1040@-1920.-307.1920.1040" timestamp="1589192437765" />
+    <state width="1899" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1589696874952" />
     <state width="1563" height="279" key="GridCell.Tab.0.center/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1589418484231" />
-    <state width="1563" height="279" key="GridCell.Tab.0.left" timestamp="1589418484230">
-      <screen x="1920" y="9" width="1920" height="1040" />
+    <state width="1899" height="282" key="GridCell.Tab.0.left" timestamp="1589696874952">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1899" height="279" key="GridCell.Tab.0.left/0.0.1366.728/-1920.-307.1920.1040@-1920.-307.1920.1040" timestamp="1589192437765" />
+    <state width="1899" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1589696874952" />
     <state width="1563" height="279" key="GridCell.Tab.0.left/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1589418484230" />
-    <state width="1563" height="279" key="GridCell.Tab.0.right" timestamp="1589418484231">
-      <screen x="1920" y="9" width="1920" height="1040" />
+    <state width="1899" height="282" key="GridCell.Tab.0.right" timestamp="1589696874952">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1899" height="279" key="GridCell.Tab.0.right/0.0.1366.728/-1920.-307.1920.1040@-1920.-307.1920.1040" timestamp="1589192437765" />
+    <state width="1899" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1589696874952" />
     <state width="1563" height="279" key="GridCell.Tab.0.right/74.0.1462.864/1920.9.1920.1040@1920.9.1920.1040" timestamp="1589418484231" />
     <state x="2460" y="272" key="IDE.errors.dialog" timestamp="1588142688084">
       <screen x="1920" y="9" width="1920" height="1040" />

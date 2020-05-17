@@ -12,6 +12,8 @@ import {
 // 초기 값
 const initialState = {
     register: {
+        name: '',
+        email: '',
         username: '',
         password: '',
         passwordConfirm: '',
