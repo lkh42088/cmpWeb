@@ -6,7 +6,6 @@ export const GET_DEVICES_CHECKCOUNT = 'GET_DEVICES_CHECKCOUNT';
 export const GET_DEVICE_BY_DEVICECODE = 'GET_DEVICE_BY_DEVICECODE';
 export const GET_COMMENTS_BY_DEVICECODE = 'GET_COMMENTS_BY_DEVICECODE';
 
-
 export const SET_DEVICE_DEVICECODE = 'SET_DEVICE_DEVICECODE';
 export const SET_COMMENT = 'SET_COMMENT';
 
@@ -42,20 +41,9 @@ export const fetchPosts = (type, page, checkPageNumCount, orderBy, order) => asy
             order = 0;
         }
 
-        //rowsPerPage = 1000;
-
-        /*[GIN] 2020/05/14 - 16:37:25 | 200 |     88.0175ms |       127.0.0.1 | GET      "/v1/page/server/0/1000/1000/DeviceCode/1"
-            [GIN] 2020/05/14 - 16:38:04 | 200 |     95.0078ms |       127.0.0.1 | GET      "/v1/page/server/0/1000/2000/DeviceCode/asc"*/
-        //router.GET("/v1/page/:type/:outFlag/:size/:page/:order/:dir", h.GetDevicesForPage)
-        const pageDevices = await axios.get(`${API_ROUTE}/page/${type}/0/10/${checkPageNumCount}/${orderBy}/${order}`);
-
-
-        /*        console.log("type----> : ", type);
-                console.log("page----> : ", page);
-                console.log("checkPageNumCount----> : ", checkPageNumCount);
-                console.log("order[orderBy]----> : ", orderBy);
-                console.log("dir[order]----> : ", order);
-                console.log("pageDevices----> : ", pageDevices.data);*/
+        console.log("API_ROUTE/page/", type, "/0/100/", checkPageNumCount, "/", orderBy, "/", order);
+        const pageDevices = await axios.get(`${API_ROUTE}/page/${type}/0/100/${checkPageNumCount}/${orderBy}/${order}`);
+        console.log("★ fetchPosts pageDevices : ", pageDevices.data);
 
         dispatch({
             type: GET_DEVICES,
@@ -86,9 +74,12 @@ export const fetchPostsCheckCount = (type, page, checkPageNumCount, orderBy, ord
             order = 0;
         }
 
-        console.log("fetchPostsCheckCount checkPageNumCount : ", checkPageNumCount);
+        console.log("API_ROUTE/page/", type, "/0/100/", checkPageNumCount, "/", orderBy, "/", order);
+        const pageDevices = await axios.get(`${API_ROUTE}/page/${type}/0/100/${checkPageNumCount}/${orderBy}/${order}`);
+        console.log("★ fetchPostsCheckCount pageDevices : ", pageDevices.data);
 
-        const pageDevices = await axios.get(`${API_ROUTE}/page/${type}/0/${rowsPerPage}/${checkPageNumCount}/${orderBy}/${order}`);
+        console.log(" fetchPostsCheckCount showPage : ", showPage);
+
         dispatch({
             type: GET_DEVICES_CHECKCOUNT,
             payload: pageDevices.data,
@@ -124,27 +115,29 @@ export const setDeviceIdx = val => async (dispatch) => {
 // 특정 장비 가져오기
 export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
     try {
+        console.log(" ◥◣‸◢◤ getDeviceByIdx 시작!");
         //router.GET("/v1/device/:type/:deviceCode", h.GetDevicesByIdx)
         const res = await axios.get(`${API_ROUTE}/device/${deviceType}/${deviceCode}`);
-        console.log("deviceCode----> : ", deviceCode);
-        console.log("deviceType----> : ", deviceType);
+        const comments = await axios.get(`${API_ROUTE}/comments/${deviceCode}`);
 
-        dispatch({
+/*        dispatch({
             type: SET_DEVICE_DEVICECODE,
             payload: deviceCode,
-        });
+        });*/
         dispatch({
             type: GET_DEVICE_BY_DEVICECODE,
             payload: res.data,
+            comment: comments.data,
         });
     } catch (error) {
-        dispatch({
+/*        dispatch({
             type: SET_DEVICE_DEVICECODE,
             payload: undefined,
-        });
+        });*/
         dispatch({
             type: GET_DEVICE_BY_DEVICECODE,
             payload: undefined,
+            comment: undefined,
         });
         console.log("error : ", error);
     }
@@ -153,12 +146,11 @@ export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
 // 장비 댓글 list 가져오기
 export const getDeviceCommentByDeviceCode = assetState => async (dispatch) => {
     try {
-        console.log("getDeviceCommentByDeviceCode try");
+        console.log(" ( ✘_✘ )↯ getDeviceCommentByDeviceCode 시작!");
         //API_ROUTE/device/comments/${deviceCode}/${type}
-        const res = await axios.get(`${API_ROUTE}/comments/${assetState.deviceType}/${assetState.deviceByDeviceCode}`);
+        const comments = await axios.get(`${API_ROUTE}/comments/${assetState.deviceByDeviceCode}`);
         dispatch({
             type: GET_COMMENTS_BY_DEVICECODE,
-            payload: res.data,
         });
     } catch (error) {
         dispatch({
@@ -172,7 +164,7 @@ export const getDeviceCommentByDeviceCode = assetState => async (dispatch) => {
 // 장비 댓글 cud
 export const submitDeviceComment = (comment, assetState, division, loginId, commentIdx) => async (dispatch) => {
     try {
-        console.log("submitDeviceComment ------------------------>");
+        console.log(" ( ✘_✘ )↯ submitDeviceComment 시작!");
         console.log("-> comment : ", comment, ", division : ", division);
         console.log("-> assetState : ", assetState);
         console.log("-> loginId : ", loginId);
@@ -223,7 +215,7 @@ export const submitDeviceComment = (comment, assetState, division, loginId, comm
 // 장비 반입/반출 update
 export const submitDeviceOutFlag = (assetState, outFlag) => async (dispatch) => {
     try {
-        console.log("submitDeviceOutFlag try");
+        console.log(" ◥◣‸◢◤ submitDeviceOutFlag 시작!");
         //todo 잠깐!! deviceCode 값 여러개일 수 있음 확인
         //API_ROUTE/device/outFlag/${type}/${deviceCode}/${outFlag}
         const res = await axios.get(`${API_ROUTE}/device/outFlag/${assetState.deviceType}/${assetState.deviceByDeviceCode}/${outFlag}`);

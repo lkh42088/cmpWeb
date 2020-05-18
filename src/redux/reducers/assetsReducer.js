@@ -91,7 +91,7 @@ function getId(state) {
 // state 값을 직접 수정하면 안되고, 기존 상태 값에 원하는 값을 덮어쓴 새로운 객체를 만들어서 반환
 const assetsReducer = (state = initialState, action) => {
     const {
-        payload, type, deviceType, page,
+        payload, type, deviceType, page, comment,
     } = action;
     //const devices = state.get('devices');
     switch (type) {
@@ -126,6 +126,7 @@ const assetsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 device: payload,
+                comments: comment,
             };
         case SET_DEVICE_DEVICECODE:
             return {
@@ -138,17 +139,6 @@ const assetsReducer = (state = initialState, action) => {
                 comments: payload,
             };
         case GET_DEVICES_CHECKCOUNT:
-/*            console.log("♡♡♡♡ state.devices", state.devices);
-            console.log("♡♡♡♡ payload.Devices", payload.Devices);*/
-            // var newList = list.push(Map({value: 3}))
-            // eslint-disable-next-line no-case-declarations
-            //const newList = state.devices.push();
-            //state.devices.push(payload.Devices); -> 1001
-            //state.devices.push([payload.Devices]); -> 1001
-            //state.devices.push(Map[payload.Devices]); -> 1001
-            //state.devices.push(Map[Map({devices: payload.Devices})]); -> 1001
-
-            //state.devices.update(payload.Devices);
             return {
                 ...state,
                 devices: payload.Devices,

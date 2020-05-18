@@ -15,6 +15,8 @@ import renderIntervalDatePickerField from "../../../../shared/components/form/In
 import renderDatePickerField from "../../../../shared/components/form/DatePicker";
 import Collapse from "../../../../shared/components/Collapse";
 
+import AssetsComment from "./AssetsComment";
+
 //assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
 class AssetsView extends PureComponent {
     static propTypes = {
@@ -81,13 +83,13 @@ class AssetsView extends PureComponent {
         closeToggle(); //
     };
 
-    showComment = () => {
-        console.log("옴마나@");
-    };
-
     showPassword = (e) => {
         e.preventDefault();
         this.setState(prevState => ({showPassword: !prevState.showPassword}));
+    };
+
+    componentDidUpdate = (prevProps, prevState) => {
+      console.log("view did update");
     };
 
     render() {
@@ -369,36 +371,15 @@ class AssetsView extends PureComponent {
                         </div>
                     </form>
                 </div>
-                <br/>
-                {/*TODO 댓글 컴포넌트 만들기*/}
-                {/*<Collapse title="댓글 확인"
-                          className="with-shadow modal_comment_register assets_write__modal__tableLine">
-                    <span>▶ 작성자 A [2020/04/03]</span>
-                    <div className="modal_comment_del">삭제</div>
-                    <div className="modal_comment_edit">수정</div>
-                    <pre>
-담당자(류영동) /data2 파티션 분할 구성 요청
-<br/>/dev/sdb1 - /data2 (20T)
-<br/>/dev/sdb2 - /data3 : 나머지(23.T ≒ 24T)
-<br/>
-<br/>*용량 표시 단위로 인한 차이
-<br/>&nbsp;1&nbsp; &nbsp; &nbsp; &nbsp;  2048&nbsp; 42949672959&nbsp; &nbsp;  20T&nbsp; Microsoft basic data2
-<br/>&nbsp;2&nbsp; 42949672960&nbsp; 93746886655&nbsp;  23.7T&nbsp; Microsoft basic data3
-<br/>Disk /dev/sdb: 47998.4 GB, 47998407016448 bytes, 93746888704
-                        </pre>
-                    <span>▶ 작성자 B [2020/04/02]</span>
-                    <pre>
-root 패스워드 초기화 요청 처리
-                        </pre>
-                </Collapse>*/}
-
+                {/*-----------------------------------------------------------------------------------------*/}
+                <AssetsComment assetState={assetState} dispatch={dispatch}/>
+                {/*-----------------------------------------------------------------------------------------*/}
                 <ButtonToolbar className="assets_write__modal__footer">
                     <Button className="assets_write__modal_ok" outline={colored} color="primary"
                             onClick={this.onClose}>Edit</Button>
                     <Button className="assets_write__modal_cancel"
                             onClick={this.onClose}>Cancel</Button>
                 </ButtonToolbar>
-
             </div>
         );
     }
