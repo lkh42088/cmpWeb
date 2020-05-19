@@ -23,6 +23,7 @@ class AssetsView extends PureComponent {
         // eslint-disable-next-line react/forbid-prop-types
         assetState: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
+        setTotalManager: PropTypes.func.isRequired,
         title: PropTypes.string,
         message: PropTypes.string,
         closeToggle: PropTypes.func,
@@ -49,7 +50,6 @@ class AssetsView extends PureComponent {
             },
             comment: '',
         };
-        //this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit = (e) => {
@@ -93,7 +93,7 @@ class AssetsView extends PureComponent {
     };
 
     render() {
-        const {assetState, dispatch} = this.props;
+        const {assetState, dispatch, setTotalManager} = this.props;
         const {
             title, message, colored, header,
         } = this.props;
@@ -120,8 +120,6 @@ class AssetsView extends PureComponent {
             formSpanClass: "modal_form__form-group-label",
             formDivSubClass: "modal_form__form-group-field",
         };
-
-        console.log("assetState : ", assetState);
 
         if (assetState.device.length > 0) {
             // eslint-disable-next-line prefer-destructuring
@@ -372,7 +370,7 @@ class AssetsView extends PureComponent {
                     </form>
                 </div>
                 {/*-----------------------------------------------------------------------------------------*/}
-                <AssetsComment assetState={assetState} dispatch={dispatch}/>
+                <AssetsComment assetState={assetState} dispatch={dispatch} setTotalManager={setTotalManager}/>
                 {/*-----------------------------------------------------------------------------------------*/}
                 <ButtonToolbar className="assets_write__modal__footer">
                     <Button className="assets_write__modal_ok" outline={colored} color="primary"

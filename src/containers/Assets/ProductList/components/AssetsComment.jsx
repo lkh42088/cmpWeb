@@ -12,20 +12,22 @@ class AssetsComment extends PureComponent {
         // eslint-disable-next-line react/forbid-prop-types
         assetState: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
+        // eslint-disable-next-line react/require-default-props
+        setTotalManager: PropTypes.func.isRequired,
     };
 
     constructor() {
         super();
         this.state = {
             modal: false,
-            showPassword: false,
-            submit: {
-                type: 'comment',
-                division: 'create',
-            },
+            type: 'comment',
+            division: 'create',
             comment: '',
+            commentIdx: '',
+            registerId: '',
+            registerName: '',
+            registerDate: '',
         };
-        //this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSubmit = (e) => {
@@ -35,11 +37,15 @@ class AssetsComment extends PureComponent {
         // eslint-disable-next-line react/destructuring-assignment
         // 상태값을 onCreate 를 통하여 부모에게 전달
         // eslint-disable-next-line react/prop-types,react/destructuring-assignment
-        this.props.onCreate(this.state);
+        this.props.setTotalManager(this.state);
 
         // 상태 초기화
         this.setState({
             comment: '',
+            commentIdx: '',
+            registerId: '',
+            registerName: '',
+            registerDate: '',
             modal: false,
         });
     };
@@ -50,44 +56,37 @@ class AssetsComment extends PureComponent {
         });
     };
 
-    commentToggle = () => {
+    commentToggle = (val) => {
         this.setState(prevState => ({modal: !prevState.modal}));
+        if (val !== 'close') {
+            this.setCommentVal(val);
+        }
     };
 
-    onClose = () => {
-        const {closeToggle} = this.props;
-        closeToggle(); //
-    };
-
-    showComment = () => {
-        console.log("옴마나@");
-    };
-
-    showPassword = (e) => {
-        e.preventDefault();
-        this.setState(prevState => ({showPassword: !prevState.showPassword}));
+    setCommentVal = (val) => {
+        this.setState({
+            division: 'update',
+            comment: val.Contents,
+            commentIdx: val.Idx,
+            registerId: val.RegisterId,
+            registerName: val.RegisterName,
+            registerDate: val.RegisterDate,
+        });
     };
 
     render() {
         const {assetState, dispatch} = this.props;
-        const {modal, comment, submitType} = this.state;
-        let Icon;
-        //let commentValue = new Map([]);
-
-        console.log("comments : ", assetState.comments);
-
-        /*        if (assetState.comments.length > 0) {
-                    // eslint-disable-next-line prefer-destructuring
-                    commentValue = assetState.device[0];
-                } else {
-                    commentValue = assetState.device;
-                }*/
-
-        /*        const {
-                    Idx, parentTable, fkIdx, dvcDepth, dvcContents, registerId, registerName, registerDate,
-                } = commentValue;*/
+        const {
+            modal, comment, submitType, registerId, registerName, registerDate,
+        } = this.state;
 
         let deviceComments;
+
+        const modalClass = classNames({
+            'assets_write__modal-dialog': true,
+            'assets_write__modal-dialog--colored': true,
+            'assets_write__modal-dialog--header': true,
+        });
 
         if (assetState.comments.length > 0) {
             deviceComments = (
@@ -95,11 +94,14 @@ class AssetsComment extends PureComponent {
                     {assetState.comments
                         .sort()
                         .map(d => (
-                            <div
-                                key={d.Idx}>
+                            <div key={d.Idx}>
                                 <span>▶ {d.RegisterName} ({d.RegisterId}) -  [{d.RegisterDate}]</span>
                                 <div className="modal_comment_del">삭제</div>
-                                <div className="modal_comment_edit">수정</div>
+                                <div className="modal_comment_edit" type="button" role="button" tabIndex="0"
+                                     onClick={() => this.commentToggle(d)}
+                                     onKeyDown={() => this.commentToggle(d)}
+                                >수정
+                                </div>
                                 <pre>
                                     {d.Contents}
                                 </pre>
@@ -119,7 +121,34 @@ class AssetsComment extends PureComponent {
             <div>
                 <Collapse title="댓글 확인"
                           className="with-shadow modal_comment_register assets_write__modal__tableLine">
-                    {deviceComments}
+                    <Fragment>
+                        {deviceComments}
+                        <Modal
+                            isOpen={modal}
+                            className={`assets_write__modal-dialog 
+                                    assets_write__modal-dialog--success ${modalClass}`}
+                        >
+                            <form onSubmit={this.handleSubmit}>
+                                <div className="assets_write__modal__body assets_write__modal__tableLine">
+                                    <div className="modal_form__form-group">
+                                            <span className="modal_form__form-group-label text_cor_green">
+                                                {registerName} ({registerId}) -  [{registerDate}]</span>
+                                        <div className="modal_form__form-group-field">
+                                                    <textarea name="comment" value={comment} className="assets_comment"
+                                                              placeholder="댓글 입력 창" onChange={this.handleChange}/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ButtonToolbar className="assets_write__modal__footer_comment">
+                                    <Button className="assets_write__modal_ok"
+                                            type="submit" color="success">수정</Button>&nbsp;
+                                    <Button className="assets_write__modal_cancel"
+                                            onClick={() => this.commentToggle('close')}
+                                    >Cancel</Button>
+                                </ButtonToolbar>
+                            </form>
+                        </Modal>
+                    </Fragment>
                 </Collapse>
             </div>
         );

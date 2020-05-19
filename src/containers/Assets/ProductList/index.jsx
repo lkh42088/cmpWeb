@@ -17,7 +17,15 @@ const MaterialTable = () => {
 
     //console.log("최상위 index assetState : ", assetState);
 
-    const getDevices = () => dispatch(fetchPosts('server'));
+    const dispatchVal = ({
+        deviceType: 'server',
+        orderBy: 'DeviceCode',
+        order: 1,
+        rowsPerPage: 10,
+        overNum: 100,
+    });
+
+    const getDevices = () => dispatch(fetchPosts(dispatchVal));
 
     useEffect(() => {
         getDevices();

@@ -13,42 +13,38 @@ export const SET_COMMENT = 'SET_COMMENT';
 // order direction
 // 0 : ASC
 // 1 : DESC
-export const fetchPosts = (type, page, checkPageNumCount, orderBy, order) => async (dispatch) => {
+function checkUndefined(val, reVal) {
+    if (typeof val === 'undefined') {
+        // eslint-disable-next-line no-param-reassign
+        val = reVal;
+    }
+    return val;
+}
+
+function checkOrder(val) {
+    if (typeof val === 'undefined' || val === 'asc') {
+        val = 1;
+    } else if (val === 'desc') {
+        val = 0;
+    }
+    return val;
+}
+
+/*export const fetchPosts = (type, page, checkPageNumCount, orderBy, order, overNum) => async (dispatch) => {*/
+export const fetchPosts = dispatchVal => async (dispatch) => {
     try {
-        //router.GET("/v1/devices/:type/:outFlag/list", h.GetDevicesByList)
-        //const res = await axios.get(`${API_ROUTE}/devices/${type}/0/list`);
-
         console.log(" ◥◣‸◢◤  fetchPosts 시작!");
+        const rowsPerPage = checkUndefined(dispatchVal.rowsPerPage, 10);
+        const orderBy = checkUndefined(dispatchVal.orderBy, "DeviceCode");
+        const order = checkOrder(dispatchVal.order);
 
-        if (typeof page === 'undefined') {
-            // eslint-disable-next-line no-param-reassign
-            page = 0;
-        }
-        if (typeof checkPageNumCount === 'undefined') {
-            // eslint-disable-next-line no-param-reassign
-            checkPageNumCount = 10;
-        }
-        if (typeof orderBy === 'undefined') {
-            // eslint-disable-next-line no-param-reassign
-            orderBy = 'DeviceCode';
-        }
-
-        if (typeof order === 'undefined' || order === 'asc') {
-            // eslint-disable-next-line no-param-reassign
-            order = 1;
-        } else if (order === 'desc') {
-            // eslint-disable-next-line no-param-reassign
-            order = 0;
-        }
-
-        console.log("API_ROUTE/page/", type, "/0/100/", checkPageNumCount, "/", orderBy, "/", order);
-        const pageDevices = await axios.get(`${API_ROUTE}/page/${type}/0/100/${checkPageNumCount}/${orderBy}/${order}`);
-        console.log("★ fetchPosts pageDevices : ", pageDevices.data);
+        console.log("API_ROUTE/page/", dispatchVal.deviceType, "/0/100/", rowsPerPage, "/", orderBy, "/", order);
+        const res = await axios.get(`${API_ROUTE}/page/${dispatchVal.deviceType}/0/100/${rowsPerPage}/${orderBy}/${order}`);
 
         dispatch({
             type: GET_DEVICES,
-            payload: pageDevices.data,
-            deviceType: type,
+            payload: res.data,
+            deviceType: dispatchVal.deviceType,
             page: 0,
         });
     } catch (error) {
@@ -61,30 +57,24 @@ export const fetchPosts = (type, page, checkPageNumCount, orderBy, order) => asy
         console.log("error : ", error);
     }
 };
+/*
+export const fetchPostsCheckCount = (type, page, checkPageNumCount, orderBy, order, rowsPerPage, showPage, overNum) => async (dispatch) => {*/
 
-export const fetchPostsCheckCount = (type, page, checkPageNumCount, orderBy, order, rowsPerPage, showPage) => async (dispatch) => {
+export const fetchPostsCheckCount = dispatchVal => async (dispatch) => {
     try {
         console.log(" ◥◣‸◢◤ fetchPostsCheckCount 시작!");
 
-        if (typeof order === 'undefined' || order === 'asc') {
-            // eslint-disable-next-line no-param-reassign
-            order = 1;
-        } else if (order === 'desc') {
-            // eslint-disable-next-line no-param-reassign
-            order = 0;
-        }
+        const order = checkOrder(dispatchVal.order);
 
-        console.log("API_ROUTE/page/", type, "/0/100/", checkPageNumCount, "/", orderBy, "/", order);
-        const pageDevices = await axios.get(`${API_ROUTE}/page/${type}/0/100/${checkPageNumCount}/${orderBy}/${order}`);
-        console.log("★ fetchPostsCheckCount pageDevices : ", pageDevices.data);
+        console.log("API_ROUTE/page/", dispatchVal.deviceType, "/0/100/", dispatchVal.checkPageNumCount, "/", dispatchVal.orderBy, "/", order);
 
-        console.log(" fetchPostsCheckCount showPage : ", showPage);
+        const res = await axios.get(`${API_ROUTE}/page/${dispatchVal.deviceType}/0/100/${dispatchVal.checkPageNumCount}/${dispatchVal.orderBy}/${order}`);
 
         dispatch({
             type: GET_DEVICES_CHECKCOUNT,
-            payload: pageDevices.data,
-            deviceType: type,
-            page: showPage + 1,
+            payload: res.data,
+            deviceType: dispatchVal.deviceType,
+            page: dispatchVal.showPage + 1,
         });
     } catch (error) {
         dispatch({
@@ -120,20 +110,20 @@ export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
         const res = await axios.get(`${API_ROUTE}/device/${deviceType}/${deviceCode}`);
         const comments = await axios.get(`${API_ROUTE}/comments/${deviceCode}`);
 
-/*        dispatch({
-            type: SET_DEVICE_DEVICECODE,
-            payload: deviceCode,
-        });*/
+        /*        dispatch({
+                    type: SET_DEVICE_DEVICECODE,
+                    payload: deviceCode,
+                });*/
         dispatch({
             type: GET_DEVICE_BY_DEVICECODE,
             payload: res.data,
             comment: comments.data,
         });
     } catch (error) {
-/*        dispatch({
-            type: SET_DEVICE_DEVICECODE,
-            payload: undefined,
-        });*/
+        /*        dispatch({
+                    type: SET_DEVICE_DEVICECODE,
+                    payload: undefined,
+                });*/
         dispatch({
             type: GET_DEVICE_BY_DEVICECODE,
             payload: undefined,
@@ -162,47 +152,34 @@ export const getDeviceCommentByDeviceCode = assetState => async (dispatch) => {
 };
 
 // 장비 댓글 cud
-export const submitDeviceComment = (comment, assetState, division, loginId, commentIdx) => async (dispatch) => {
+export const submitDeviceComment = (division, assetState, jsonSubmitData) => async (dispatch) => {
     try {
         console.log(" ( ✘_✘ )↯ submitDeviceComment 시작!");
-        console.log("-> comment : ", comment, ", division : ", division);
-        console.log("-> assetState : ", assetState);
-        console.log("-> loginId : ", loginId);
-        console.log("-> commentIdx : ", commentIdx);
+        console.log("jsonSubmitData : ", jsonSubmitData);
 
-        if (typeof commentIdx === 'undefined') {
-            // eslint-disable-next-line no-param-reassign
-            commentIdx = '';
-        }
+        /*        const res = await axios.get(
+                    `${API_ROUTE}/device/comment/${division}/${jsonSubmitData}`,
+                );*/
 
-        //API_ROUTE/device/comment/create/${deviceCode}/${type}/${comment}/${userId}
-        //GET_COMMENTS_BY_DEVICECODE
-        let res;
+        axios.put(`${API_ROUTE}/comment/test`, {
+            username: 'aaaaa',
+            contents: 'react is good~!',
+        })
+            .then((response) => {
+                console.log("response : ", response);
+                dispatch({
+                    type: GET_COMMENTS_BY_DEVICECODE,
+                    payload: response.data,
+                });
+            })
+            .catch((error) => {
+                console.log('error : ', error.response);
+            });
 
-        if (division === 'create') {
-            console.log("comment create");
-            // eslint-disable-next-line max-len
-            res = await axios.get(
-                `${API_ROUTE}/device/comment/create/
-                ${assetState.deviceType}/${assetState.deviceByDeviceCode}/${comment}/${loginId}`,
-            );
-        } else if (division === 'update') {
-            console.log("comment update");
-            res = await axios.get(
-                `${API_ROUTE}/device/comment/update/
-                ${assetState.deviceType}/${assetState.deviceByDeviceCode}/${comment}/${loginId}/${commentIdx}`,
-            );
-        } else if (division === 'delete') {
-            console.log("comment delete");
-            res = await axios.get(
-                `${API_ROUTE}/device/comment/delete/
-                ${assetState.deviceType}/${assetState.deviceByDeviceCode}/${comment}/${loginId}/${commentIdx}`,
-            );
-        }
-        dispatch({
-            type: GET_COMMENTS_BY_DEVICECODE,
-            payload: res.data,
-        });
+        /*        dispatch({
+                    type: GET_COMMENTS_BY_DEVICECODE,
+                    payload: res.data,
+                });*/
     } catch (error) {
         dispatch({
             type: GET_COMMENTS_BY_DEVICECODE,

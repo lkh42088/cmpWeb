@@ -14,57 +14,10 @@ export const initialState = {
     deviceByDeviceCode: '1',
     device: {},
     devices: List([
-        Map({ // 굳이 작성하지 않아도 상관없음 편리하게 불변함 유지
-            Idx: '0',
-            DeviceCode: '',
-            OutFlag: '',
-            Num: '',
-            CommentCnt: '',
-            CommentLastDate: '',
-            Option: '',
-            Hit: '',
-            RegisterId: '',
-            Password: '',
-            RegisterName: '',
-            RegisterEmail: '',
-            RegisterDate: '',
-            Model: '',
-            Contents: '',
-            Customer: '',
-            Manufacture: '',
-            DeviceType: '',
-            WarehousingDate: '',
-            RentDate: '',
-            Ownership: '',
-            OwnerCompany: '',
-            HwSn: '',
-            IDC: '',
-            Rack: '',
-            Cost: '',
-            Purpos: '',
-            Ip: '',
-            Size: '',
-            Spla: '',
-            Cpu: '',
-            Memory: '',
-            Hdd: '',
-            FirmwareVersion: '',
-            Warranty: '',
-            MonitoringFlag: '',
-            MonitoringMethod: '',
-        }),
+        Map({}),
     ]),
     comments: List([
-        Map({
-            Idx: '',
-            parentTable: '',
-            fkIdx: '',
-            dvcDepth: '',
-            dvcContents: '',
-            registerId: '',
-            registerName: '',
-            registerDate: '',
-        }),
+        Map({}),
     ]),
     page: {
         Count: '',
@@ -94,24 +47,8 @@ const assetsReducer = (state = initialState, action) => {
         payload, type, deviceType, page, comment,
     } = action;
     //const devices = state.get('devices');
+    // ... 은 자바스크립트의 전개연산자, 기존의 객체안에 있는 내용을 해당 위치에다가 풀어준다는 의미
     switch (type) {
-        case 'ADD_ASSETS':
-            return Object.assign({}, state, {
-                assets: [{
-                    equCode: action.equCode,
-                    division: action.division,
-                    manufacturer: action.manufacturer,
-                    model: action.model,
-                    ip: action.ip,
-                    ownership: action.ownership,
-                    ownershipDivision: action.ownershipDivision,
-                    customer: action.customer,
-                    idc: action.idc,
-                    size: action.size,
-                    usage: action.usage,
-                    id: getId(state),
-                }, ...state.assets],
-            }); // ... 은 자바스크립트의 전개연산자, 기존의 객체안에 있는 내용을 해당 위치에다가 풀어준다는 의미
         case GET_DEVICES:
             return {
                 ...state,
@@ -145,11 +82,6 @@ const assetsReducer = (state = initialState, action) => {
                 page: payload.Page,
                 deviceType,
             };
-        /*
-                    return state.set('counters', counters.push(Map({
-                        color: action.color,
-                        number: 0
-                    })))*/
         default:
             return state;
     }

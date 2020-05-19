@@ -25,12 +25,13 @@
         "some": [ "id" ]
       }
     }],
-    "max-len": ["error", {"code": 150, "ignoreRegExpLiterals": true, "tabWidth": 2}],
+    "max-len": ["error", {"code": 250, "ignoreRegExpLiterals": true, "tabWidth": 2}],
 
     "quotes": "off",
     "no-console": "off",
     "no-unused-vars": "off",
     "no-trailing-spaces": "off",
+    "no-param-reassign": "off",
 
     "linebreak-style": "off",
     "spaced-comment": "off",
