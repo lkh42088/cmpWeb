@@ -2,14 +2,15 @@ import React, { PureComponent } from 'react';
 import DownIcon from 'mdi-react/ChevronDownIcon';
 import { Collapse } from 'reactstrap';
 import TopbarMenuLink from './TopbarMenuLink';
-import { UserProps, AuthOProps } from '../../../shared/prop-types/ReducerProps';
+// import { UserProps, AuthOProps } from '../../../shared/prop-types/ReducerProps';
+import { UserProps } from '../../../shared/prop-types/ReducerProps';
 
 const Ava = `${process.env.PUBLIC_URL}/img/ava.png`;
 
 class TopbarProfile extends PureComponent {
   static propTypes = {
     user: UserProps.isRequired,
-    auth0: AuthOProps.isRequired,
+    // auth0: AuthOProps.isRequired,
   };
 
   constructor() {
@@ -24,11 +25,12 @@ class TopbarProfile extends PureComponent {
   };
 
   logout = () => {
-    localStorage.removeItem('easydev');
+    localStorage.removeItem('user');
   };
 
   render() {
-    const { user, auth0 } = this.props;
+    // const { user, auth0 } = this.props;
+    const { user } = this.props;
     const { collapse } = this.state;
 
     return (
@@ -36,11 +38,11 @@ class TopbarProfile extends PureComponent {
         <button className="topbar__avatar" type="button" onClick={this.toggle}>
           <img
             className="topbar__avatar-img"
-            src={(auth0.user && auth0.user.picture) || user.avatar || Ava}
+            // src={(auth0.user && auth0.user.picture) || user.avatar || Ava}
             alt="avatar"
           />
           <p className="topbar__avatar-name">
-            { auth0.loading ? 'Loading...' : (auth0.user && auth0.user.name) || user.fullName}
+            {/*{ auth0.loading ? 'Loading...' : (auth0.user && auth0.user.name) || user.fullName}*/}
           </p>
           <DownIcon className="topbar__icon" />
         </button>
@@ -84,15 +86,15 @@ class TopbarProfile extends PureComponent {
               path="/lock_screen"
               onClick={this.toggle}
             />
-            {auth0.isAuthenticated && (
-              <TopbarMenuLink
-                title="Log Out Auth0"
-                icon="exit"
-                path="/log_in"
-                onClick={auth0.logout}
-              />
-            )
-            }
+            {/*{auth0.isAuthenticated && (*/}
+            {/*  <TopbarMenuLink*/}
+            {/*    title="Log Out Auth0"*/}
+            {/*    icon="exit"*/}
+            {/*    path="/log_in"*/}
+            {/*    onClick={auth0.logout}*/}
+            {/*  />*/}
+            {/*)*/}
+            {/*}*/}
             <TopbarMenuLink
               title="Log Out"
               icon="exit"
