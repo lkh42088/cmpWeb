@@ -51,6 +51,10 @@ const LoginForm = ({ history }) => {
     };
 
     useEffect(() => {
+        dispatch(initializeForm("login"));
+    }, [dispatch]);
+
+    useEffect(() => {
         if (authError) {
             console.log('오류 발생');
             console.log(authError);

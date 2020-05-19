@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router';
 import RegisterFormWrap from "../../../shared/components/login/RegisterForm";
 
 const Register = () => {
-    console.log('Register..');
+    console.log('Register index');
     return (
         <div className="account account--not-photo">
             <div className="account__wrapper">
@@ -27,4 +26,4 @@ const Register = () => {
     );
 };
 
-export default withRouter(Register);
+export default Register;

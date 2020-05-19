@@ -12,6 +12,7 @@ export default function createRequestSaga(type, request) {
     const FAILURE = `${type}_FAILURE`;
 
     console.log(type);
+    // eslint-disable-next-line func-names
     return function* (action) {
         yield put(startLoading(type));
         try {

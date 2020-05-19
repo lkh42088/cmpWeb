@@ -9,19 +9,16 @@ import { useSelector, useDispatch } from "react-redux";
 import {withRouter} from "react-router-dom";
 import {initializeForm, register, changeField } from "../../../redux/actions/authActions";
 
-const RegisterForm = () => {
+const RegisterForm = ({history}) => {
     const errorMessage = '';
     const [showPassword, setShowPassword] = useState(false);
 
     const dispatch = useDispatch();
     const {
-        form, auth, authError, user,
+        form,
         // eslint-disable-next-line no-shadow
     } = useSelector(({ auth, user }) => ({
         form: auth.register,
-        auth: auth.auth,
-        authError: auth.authError,
-        user: user.user,
     }));
 
     const onChange = (e) => {
@@ -42,6 +39,11 @@ const RegisterForm = () => {
         const {
             name, email, username, password,
         } = form;
+        console.log("handleSubmit");
+        console.log("name", name);
+        console.log("email", email);
+        console.log("username", username);
+        console.log("password", password);
         dispatch(register({
             name, email, username, password,
         }));
@@ -52,9 +54,13 @@ const RegisterForm = () => {
         setShowPassword(!showPassword);
     };
 
+    useEffect(() => {
+        console.log('register init');
+        dispatch(initializeForm("register"));
+    }, [dispatch]);
+
     return (
-        // <form className="form" onSubmit={handleSubmit}>
-            <form className="form" onSubmit={handleSubmit}>
+        <form className="form" onSubmit={handleSubmit}>
             <Alert
                 color="danger"
                 isOpen={!!errorMessage}
@@ -142,5 +148,7 @@ const RegisterForm = () => {
     );
 };
 
-const RegisterFormWrap = withRouter(reduxForm()(RegisterForm));
+const RegisterFormWrap = withRouter(reduxForm({
+        form: 'register_form',
+})(RegisterForm));
 export default RegisterFormWrap;
