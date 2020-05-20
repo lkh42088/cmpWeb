@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import DownIcon from 'mdi-react/ChevronDownIcon';
 import { Collapse } from 'reactstrap';
+import PropTypes from "prop-types";
 import TopbarMenuLink from './TopbarMenuLink';
-// import { UserProps, AuthOProps } from '../../../shared/prop-types/ReducerProps';
 import { UserProps } from '../../../shared/prop-types/ReducerProps';
 
 const Ava = `${process.env.PUBLIC_URL}/img/ava.png`;
@@ -10,7 +10,7 @@ const Ava = `${process.env.PUBLIC_URL}/img/ava.png`;
 class TopbarProfile extends PureComponent {
   static propTypes = {
     user: UserProps.isRequired,
-    // auth0: AuthOProps.isRequired,
+    logout: PropTypes.func.isRequired,
   };
 
   constructor() {
@@ -24,13 +24,9 @@ class TopbarProfile extends PureComponent {
     this.setState(prevState => ({ collapse: !prevState.collapse }));
   };
 
-  logout = () => {
-    localStorage.removeItem('user');
-  };
-
   render() {
     // const { user, auth0 } = this.props;
-    const { user } = this.props;
+    const { user, logout } = this.props;
     const { collapse } = this.state;
 
     return (
@@ -99,7 +95,7 @@ class TopbarProfile extends PureComponent {
               title="Log Out"
               icon="exit"
               path="/log_in"
-              onClick={this.logout}
+              onClick={logout}
             />
           </div>
         </Collapse>
