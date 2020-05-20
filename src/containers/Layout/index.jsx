@@ -27,6 +27,7 @@ import { changeBorderRadius, toggleBoxShadow, toggleTopNavigation } from '../../
 import {
   CustomizerProps, SidebarProps, ThemeProps, RTLProps, UserProps, MenuTitleProps,
 } from '../../shared/prop-types/ReducerProps';
+import {logout} from "../../redux/actions/userActions";
 
 let notification = null;
 
@@ -145,6 +146,13 @@ class Layout extends Component {
     dispatch(toggleBoxShadow());
   };
 
+  logout = () => {
+    const { dispatch } = this.props;
+    dispatch(logout());
+    localStorage.removeItem('user');
+    console.log("logout topbar");
+  }
+
   render() {
     const {
       customizer, sidebar, theme, rtl, user, menuTitle,
@@ -183,6 +191,7 @@ class Layout extends Component {
               changeSidebarVisibility={this.changeSidebarVisibility}
               user={user}
               menuTitle={menuTitle}
+              logout={this.logout}
             />
           )
         }

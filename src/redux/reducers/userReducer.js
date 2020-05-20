@@ -2,7 +2,7 @@ import {handleActions} from "redux-actions";
 import {
     TEMP_SET_USER,
     CHECK_SUCCESS,
-    CHECK_FAILURE,
+    CHECK_FAILURE, LOGOUT,
 } from "../actions/userActions";
 
 const initialState = {
@@ -25,6 +25,10 @@ export default handleActions(
             ...state,
             user: null,
             checkError: error,
+        }),
+        [LOGOUT]: state => ({
+            ...state,
+            user: null,
         }),
     },
     initialState,
