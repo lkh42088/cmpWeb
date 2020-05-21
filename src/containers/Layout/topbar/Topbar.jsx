@@ -15,11 +15,12 @@ class Topbar extends PureComponent {
         changeSidebarVisibility: PropTypes.func.isRequired,
         user: UserProps.isRequired,
         menuTitle: MenuTitleProps.isRequired,
+        logout: PropTypes.func.isRequired,
     };
 
     render() {
         const {
-            changeMobileSidebarVisibility, changeSidebarVisibility, user, menuTitle,
+            changeMobileSidebarVisibility, changeSidebarVisibility, user, menuTitle, logout,
         } = this.props;
 
         //const localMenuTitle = JSON.parse(localStorage.getItem("localMenuTitle"));
@@ -54,7 +55,7 @@ class Topbar extends PureComponent {
                         <TopbarSearch/>
                         {/*<TopbarNotification/>*/}
                         {/*<TopbarMail new/>*/}
-                        <TopbarProfile user={user}/>
+                        <TopbarProfile user={user} logout={logout}/>
                         {/*<TopbarLanguage/>*/}
                     </div>
                 </div>
