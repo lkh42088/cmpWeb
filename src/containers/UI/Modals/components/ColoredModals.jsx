@@ -42,7 +42,8 @@ const ColoredModals = ({ t }) => (
           <Modal
             color="danger"
             title="Stop!"
-            colored
+
+
             btn="Danger"
             message="Expect warmly its tended garden him esteem had remove off. Effects dearest staying
                    now sixteen nor improve."

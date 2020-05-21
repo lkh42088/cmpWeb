@@ -79,7 +79,7 @@ class ModalComponent extends PureComponent {
             <h4 className="text-modal  modal__title">{title}</h4>
           </div>
           <div className="modal__body">
-            {message} ★★★★★
+            {message}
           </div>
           <ButtonToolbar className="modal__footer">
             <Button className="modal_cancel" onClick={this.toggle}>Cancel</Button>{' '}

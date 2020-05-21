@@ -29,6 +29,7 @@ class AssetsView extends PureComponent {
         closeToggle: PropTypes.func,
         colored: PropTypes.bool,
         header: PropTypes.bool,
+        deviceCode: PropTypes.string.isRequired,
     };
 
     static defaultProps = {
@@ -49,21 +50,28 @@ class AssetsView extends PureComponent {
               division: 'create',
             },
             comment: '',
+            registerId: '',
+            postType: 'comment',
+            postDivision: 'create',
+            deviceCode: '',
         };
     }
 
     handleSubmit = (e) => {
         // 페이지 리로딩 방지
         e.preventDefault();
+        const {setTotalManager} = this.props;
 
         // eslint-disable-next-line react/destructuring-assignment
         // 상태값을 onCreate 를 통하여 부모에게 전달
         // eslint-disable-next-line react/prop-types,react/destructuring-assignment
-        this.props.onCreate(this.state);
+
+        setTotalManager(this.state);
 
         // 상태 초기화
         this.setState({
             comment: '',
+            registerId: '',
             modal: false,
         });
     };
@@ -88,8 +96,18 @@ class AssetsView extends PureComponent {
         this.setState(prevState => ({showPassword: !prevState.showPassword}));
     };
 
-    componentDidUpdate = (prevProps, prevState) => {
-      console.log("view did update");
+/*    componentDidUpdate = (prevProps, prevState) => {
+        console.log("♡ VIEW componentDidUpdate");
+    };*/
+
+    componentDidMount = () => {
+        // 외부 라이브러리 연동: D3, masonry, etc
+        // 컴포넌트에서 필요한 데이터 요청: Ajax, GraphQL, etc
+        // DOM 에 관련된 작업: 스크롤 설정, 크기 읽어오기 등
+        const {deviceCode} = this.props;
+        this.setState({
+            deviceCode,
+        });
     };
 
     render() {
@@ -274,9 +292,7 @@ class AssetsView extends PureComponent {
                                     <ButtonToolbar className="assets_write__modal__footer_comment">
                                         <Button className="assets_write__modal_ok"
                                                 outline={colored} type="submit" color="success">등록</Button>
-                                        {/*<Button className="assets_write__modal_ok" outline={colored}
-                                                    color="success"
-                                                    onClick={this.commentToggle}>Submit</Button>*/}&nbsp;&nbsp;
+                                        &nbsp;&nbsp;
                                         <Button className="assets_write__modal_cancel"
                                                 onClick={this.commentToggle}>Cancel</Button>
                                     </ButtonToolbar>

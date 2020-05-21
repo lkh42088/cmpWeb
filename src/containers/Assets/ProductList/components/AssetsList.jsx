@@ -2,6 +2,7 @@ import React, {PureComponent, Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from "react-redux";
 import {
+    ButtonToolbar,
     Card,
     CardBody,
     Col, Modal, Row,
@@ -19,7 +20,7 @@ import classNames from "classnames";
 
 import {changeMenuTitle} from '../../../../redux/actions/titleActions';
 import {
-    setDeviceIdx, getDeviceByIdx, submitDeviceComment, fetchPosts, fetchPostsCheckCount,
+    getDeviceByIdx, postDeviceComment, fetchPosts, fetchPostsCheckCount,
 } from '../../../../redux/actions/assetsAction';
 
 import AssetsHead from './AssetsHead';
@@ -81,20 +82,27 @@ export default class AssetsList extends PureComponent {
     setTotalManager = (data) => {
         const {assetState, dispatch} = this.props;
 
+        console.log("😕 data : ", data);
+        console.log("😕 data.deviceCode : ", data.deviceCode);
+
         const submitData = ({
             idx: data.commentIdx,
-            registerId: data.registerId,
+            /*registerId: data.registerId,*/ //TODO 로그인한 ID
+            registerId: 'test_id',
             comment: data.comment,
+            deviceCode: data.deviceCode,
         });
 
-        const jsonSubmitData = JSON.stringify(submitData);
+        //const jsonSubmitData = JSON.stringify(submitData);
 
-        switch (data.type) {
+        console.log("jsonSubmitData : ", submitData);
+
+        switch (data.postType) {
             case 'comment':
-                dispatch(submitDeviceComment(data.division, assetState, jsonSubmitData));
+                dispatch(postDeviceComment(data.postDivision, assetState, submitData));
                 break;
             case 'device':
-                if (data.division === 'create') {
+                if (data.postDivision === 'create') {
                     console.log("device create");
                 }
                 break;
@@ -133,6 +141,7 @@ export default class AssetsList extends PureComponent {
     };
 
     handleSelectAllClick = (event, checked) => {
+        console.log("💎 handleSelectAllClick  checked: ", checked);
         if (checked) {
             const {assetState} = this.props;
             const newSelected = new Map();
@@ -161,12 +170,25 @@ export default class AssetsList extends PureComponent {
             orderBy, rowsPerPage, order, checkCount, showPage, page, pageMaxCount, overPageCheck,
         } = this.state;
 
+/*        console.log("start------------------------------------>handleChangePageBack");
+
+        console.log("BACK overPageCheck : ", overPageCheck);
+        console.log("BACK pageMaxCount : ", pageMaxCount);*/
+
         if (showPage !== 1) {
             const checkPageNumCount = (showPage - 1) * rowsPerPage;
+/*            console.log("BACK checkPageNumCount : ", checkPageNumCount);
+            console.log("BACK showPage : ", showPage);
+            console.log("BACK page : ", page);
+            console.log("BACK checkPageNumCount % overNum : ", checkPageNumCount % overNum);
+            console.log("0 이면 Number(pageMaxCount) - page : ", Number(pageMaxCount) - page);
+            console.log("0 이 아니면 Number(page) - 1 : ", Number(page) - 1);
+            console.log("assetState.frontPage.oriPage : ", assetState.frontPage.oriPage);
+            console.log("end------------------------------------>handleChangePageBack");*/
 
             if (checkPageNumCount % overNum === 0) { // overNum의 배수일때
                 this.setState({
-                    page: Number(pageMaxCount),
+                    page,
                     // eslint-disable-next-line react/destructuring-assignment,react/no-access-state-in-setstate
                     showPage: this.state.showPage - 1,
                     checkCount: Number(checkPageNumCount),
@@ -185,9 +207,15 @@ export default class AssetsList extends PureComponent {
 
                 dispatch(fetchPostsCheckCount(dispatchVal));
             } else {
+                let pageMin = Number(page) - 1;
+
+                if (pageMin < 0) {
+                    pageMin = 0;
+                }
+
                 this.setState({
                     overPageCheck: false,
-                    page: Number(page) - 1,
+                    page: pageMin,
                     // eslint-disable-next-line react/destructuring-assignment,react/no-access-state-in-setstate
                     showPage: this.state.showPage - 1,
                     checkCount: Number(checkPageNumCount),
@@ -221,6 +249,11 @@ export default class AssetsList extends PureComponent {
             });
         }
 
+/*        console.log("start------------------------------------>handleChangePage");
+        console.log("NEXT overPageCheck : ", overPageCheck);
+        console.log("NEXT checkPageNumCount : ", checkPageNumCount);
+        console.log("end------------------------------------>handleChangePage");*/
+
         if (overPageCheck === true) {
             this.setState({
                 page: 0,
@@ -238,14 +271,37 @@ export default class AssetsList extends PureComponent {
             });
 
             dispatch(fetchPostsCheckCount(dispatchVal));
+        } else {
+            console.log("overPageCheck false");
         }
     };
 
     handleChangeRowsPerPage = (event) => {
+        const {assetState, dispatch} = this.props;
+        const {
+            orderBy, rowsPerPage, order,
+        } = this.state;
+        if (Number(event.target.value) >= overNum) {
+            this.setState({
+                overPageCheck: true,
+            });
+        }
+
         this.setState({
             page: 0,
+            showPage: 1,
             rowsPerPage: Number(event.target.value),
         });
+
+        const dispatchVal = ({
+            deviceType: assetState.deviceType,
+            orderBy,
+            order,
+            rowsPerPage,
+            overNum,
+        });
+
+        dispatch(fetchPosts(dispatchVal));
     };
 
     isSelected = (id) => {
@@ -263,19 +319,25 @@ export default class AssetsList extends PureComponent {
 
         dispatch(getDeviceByIdx(deviceCode, assetState.deviceType));
 
-        this.setComponents('read');
+        this.setComponents('read', deviceCode);
     };
 
-    setComponents = (division) => {
+    setComponents = (division, deviceCode) => {
         const {dispatch, assetState} = this.props;
 
         let tempViewModalContent;
+
+        let checkDeviceCode = deviceCode;
+
+        if (deviceCode === undefined) {
+            checkDeviceCode = 'temp';
+        }
 
         switch (division) {
             case 'read':
                 tempViewModalContent = (
                     <AssetsView closeToggle={this.toggle}
-                                title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다."
+                                title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다." deviceCode={checkDeviceCode}
                                 assetState={assetState} dispatch={dispatch} setTotalManager={this.setTotalManager}
                     />
                 );
@@ -283,7 +345,7 @@ export default class AssetsList extends PureComponent {
             case "update":
                 tempViewModalContent = (
                     <AssetsEdit closeToggle={this.toggle}
-                                title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다."
+                                title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다." deviceCode={checkDeviceCode}
                                 assetState={assetState} dispatch={dispatch} setTotalManager={this.setTotalManager}
                     />
                 );
@@ -301,7 +363,8 @@ export default class AssetsList extends PureComponent {
     componentDidUpdate = (prevProps, prevState) => {
         const {assetState, dispatch} = this.props;
         if (assetState !== prevProps.assetState) {
-            this.setComponents();
+            this.setComponents('read');
+            //console.log("♡ LIST componentDidUpdate");
         }
     };
 
@@ -484,7 +547,7 @@ export default class AssetsList extends PureComponent {
                             className="material-table__pagination"
                             count={Number(assetState.page.Count)}
                             rowsPerPage={rowsPerPage}
-                            page={page - assetState.frontPage.oriPage}
+                            page={page}
                             backIconButtonProps={{
                                 'aria-label': 'Previous Page',
                                 disabled: false,

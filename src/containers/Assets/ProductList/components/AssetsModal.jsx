@@ -38,7 +38,6 @@ class AssetsModal extends PureComponent {
     };
 
     constructor() {
-        console.log("assetModal constructor");
         super();
         this.state = {
             modal: false,
