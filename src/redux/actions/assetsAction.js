@@ -79,11 +79,13 @@ export const fetchPostsCheckCount = dispatchVal => async (dispatch) => {
         const order = checkOrder(dispatchVal.order);
         let minNum;
 
-/*        console.log("API_ROUTE/page/", dispatchVal.deviceType, "/0/", dispatchVal.overNum, "/", dispatchVal.checkPageNumCount, "/", dispatchVal.orderBy, "/", order);*/
+        console.log("👽 fetchPostsCheckCount start");
+        console.log("API_ROUTE/page/", dispatchVal.deviceType, "/0/", dispatchVal.overNum, "/", dispatchVal.checkPageNumCount, "/", dispatchVal.orderBy, "/", order);
 
         const res = await axios.get(`${API_ROUTE}/page/${dispatchVal.deviceType}/0/${dispatchVal.overNum}/${dispatchVal.checkPageNumCount}/${dispatchVal.orderBy}/${order}`);
 
-        //console.log("res Devices : ", res.data.Devices[0].Idx);
+        console.log("res Devices : ", res.data.Devices[0].DeviceCode);
+        console.log("res Devices : ", res.data.Devices[99].DeviceCode);
 
         if (dispatchVal.overNum === dispatchVal.checkPageNumCount) {
             minNum = -(dispatchVal.showPage);
@@ -108,21 +110,6 @@ export const fetchPostsCheckCount = dispatchVal => async (dispatch) => {
         console.log(" fetchPostsCheckCount error : ", error);
     }
 };
-
-/*export const setDeviceIdx = val => async (dispatch) => {
-    try {
-        dispatch({
-            type: SET_DEVICE_DEVICECODE,
-            payload: val,
-        });
-    } catch (error) {
-        dispatch({
-            type: SET_DEVICE_DEVICECODE,
-            payload: undefined,
-        });
-        console.log("error : ", error);
-    }
-};*/
 
 // 특정 장비 가져오기
 export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
