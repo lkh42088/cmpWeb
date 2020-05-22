@@ -6,7 +6,7 @@ import {
     SET_DEVICE_DEVICECODE,
     SET_COMMENT,
     GET_COMMENTS_BY_DEVICECODE,
-    GET_DEVICES_CHECKCOUNT,
+    GET_DEVICES_CHECKCOUNT, SET_STATUS,
 } from "../actions/assetsAction";
 
 export const initialState = {
@@ -32,6 +32,11 @@ export const initialState = {
     frontPage: {
         oriPage: 0,
         showPage: 1,
+    },
+    stateVal: {
+        type: '',
+        division: '',
+        state: '',
     },
 };
 
@@ -66,6 +71,7 @@ const assetsReducer = (state = initialState, action) => {
                 comments: comment,
             };
         case SET_DEVICE_DEVICECODE:
+            console.log("reducer : ", payload);
             return {
                 ...state,
                 deviceByDeviceCode: payload,
@@ -73,14 +79,22 @@ const assetsReducer = (state = initialState, action) => {
         case GET_COMMENTS_BY_DEVICECODE:
             return {
                 ...state,
-                comments: payload,
+                comments: comment,
             };
         case GET_DEVICES_CHECKCOUNT:
             return {
                 ...state,
                 devices: payload.Devices,
                 page: payload.Page,
+                front: {
+                    oriPage: page,
+                },
                 deviceType,
+            };
+        case SET_STATUS:
+            return {
+                ...state,
+                stateVal: payload,
             };
         default:
             return state;

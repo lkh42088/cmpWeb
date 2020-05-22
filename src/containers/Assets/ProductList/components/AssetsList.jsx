@@ -2,6 +2,7 @@ import React, {PureComponent, Fragment} from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from "react-redux";
 import {
+    ButtonToolbar,
     Card,
     CardBody,
     Col, Modal, Row,
@@ -19,7 +20,7 @@ import classNames from "classnames";
 
 import {changeMenuTitle} from '../../../../redux/actions/titleActions';
 import {
-    setDeviceIdx, getDeviceByIdx, submitDeviceComment, fetchPosts, fetchPostsCheckCount,
+    getDeviceByIdx, postDeviceComment, fetchPosts, fetchPostsCheckCount,
 } from '../../../../redux/actions/assetsAction';
 
 import AssetsHead from './AssetsHead';
@@ -67,6 +68,10 @@ export default class AssetsList extends PureComponent {
         showPage: 1,
         pageMaxCount: 0,
         overPageCheck: false,
+        // pagination 다시!
+        pageCount: 1,
+        pageSize: 10,
+        pageNoNum: 0,
     };
 
     //handleSubmit: PropTypes.func.isRequired,
@@ -81,20 +86,27 @@ export default class AssetsList extends PureComponent {
     setTotalManager = (data) => {
         const {assetState, dispatch} = this.props;
 
+        console.log("😕 data : ", data);
+        console.log("😕 data.deviceCode : ", data.deviceCode);
+
         const submitData = ({
             idx: data.commentIdx,
-            registerId: data.registerId,
+            /*registerId: data.registerId,*/ //TODO 로그인한 ID
+            registerId: 'test_id',
             comment: data.comment,
+            deviceCode: data.deviceCode,
         });
 
-        const jsonSubmitData = JSON.stringify(submitData);
+        //const jsonSubmitData = JSON.stringify(submitData);
 
-        switch (data.type) {
+        console.log("jsonSubmitData : ", submitData);
+
+        switch (data.postType) {
             case 'comment':
-                dispatch(submitDeviceComment(data.division, assetState, jsonSubmitData));
+                dispatch(postDeviceComment(data.postDivision, assetState, submitData));
                 break;
             case 'device':
-                if (data.division === 'create') {
+                if (data.postDivision === 'create') {
                     console.log("device create");
                 }
                 break;
@@ -133,6 +145,7 @@ export default class AssetsList extends PureComponent {
     };
 
     handleSelectAllClick = (event, checked) => {
+        console.log("💎 handleSelectAllClick  checked: ", checked);
         if (checked) {
             const {assetState} = this.props;
             const newSelected = new Map();
@@ -159,18 +172,29 @@ export default class AssetsList extends PureComponent {
         const {assetState, dispatch} = this.props;
         const {
             orderBy, rowsPerPage, order, checkCount, showPage, page, pageMaxCount, overPageCheck,
+            pageCount, pageSize, pageNoNum,
         } = this.state;
+        const changePageCount = pageCount - 1;
+        const changePageNoNum = pageNoNum - 1;
+        const checkPageNumCount = (showPage - 1) * rowsPerPage;
+
+/*        console.log("👔 start------------------------------------> 이전");
+        //this.setState({pageCount: pageCount - 1});
+        console.log("showPage : ", showPage);
+
+        console.log("changePageCount : ", changePageCount);
+        console.log("changePageNoNum : ", changePageNoNum);
+        console.log("pageCount : ", pageCount);
+        console.log("pageNoNum : ", pageNoNum);
+        console.log("pageSize : ", pageSize);*/
 
         if (showPage !== 1) {
-            const checkPageNumCount = (showPage - 1) * rowsPerPage;
-
-            if (checkPageNumCount % overNum === 0) { // overNum의 배수일때
+            if (pageNoNum === 0) { // 초기화 된 상태
                 this.setState({
-                    page: Number(pageMaxCount),
-                    // eslint-disable-next-line react/destructuring-assignment,react/no-access-state-in-setstate
-                    showPage: this.state.showPage - 1,
-                    checkCount: Number(checkPageNumCount),
-                    overPageCheck: true,
+                    pageCount: pageSize,
+                    pageNoNum: pageSize - 1,
+                    page: pageSize - 1,
+                    showPage: showPage - 1,
                 });
 
                 const dispatchVal = ({
@@ -186,24 +210,128 @@ export default class AssetsList extends PureComponent {
                 dispatch(fetchPostsCheckCount(dispatchVal));
             } else {
                 this.setState({
+                    pageCount: pageCount - 1,
+                    pageNoNum: pageNoNum - 1,
+                    page: pageNoNum - 1,
+                    showPage: showPage - 1,
+                });
+            }
+        }
+
+/*        console.log("overPageCheck : ", overPageCheck);
+        console.log("pageMaxCount : ", pageMaxCount);
+        console.log("showPage : ", showPage);
+        console.log("page : ", page);*/
+
+        /*if (showPage !== 1) {
+            const checkPageNumCount = (showPage - 1) * rowsPerPage;
+            const backPage = checkPageNumCount / overNum;
+
+/!*            console.log("backPage : ", backPage);
+            console.log("checkPageNumCount : ", checkPageNumCount);
+            console.log("checkPageNumCount % overNum : ", checkPageNumCount % overNum);
+            console.log("0 이면 Number(pageMaxCount) - page : ", Number(pageMaxCount) - page);
+            console.log("0 이 아니면 Number(page) - 1 : ", Number(page) - 1);
+            //console.log("assetState.frontPage.oriPage : ", assetState.frontPage.oriPage);*!/
+
+
+            if (checkPageNumCount % overNum === 0) { // overNum의 배수일때
+                const dispatchVal = ({
+                    deviceType: assetState.deviceType,
+                    checkPageNumCount: Number(checkPageNumCount),
+                    orderBy,
+                    order,
+                    rowsPerPage,
+                    showPage,
+                    overNum,
+                });
+
+                dispatch(fetchPostsCheckCount(dispatchVal));
+
+                this.setState({
+                    page: Number(pageMaxCount) - page,
+                    // eslint-disable-next-line react/destructuring-assignment,react/no-access-state-in-setstate
+                    showPage: this.state.showPage - 1,
+                    checkCount: Number(checkPageNumCount),
+                    overPageCheck: true,
+                });
+
+                if (overNum < checkPageNumCount) {
+                    this.setState({
+                        page: Number(backPage) - 1,
+                    });
+                }
+                console.log(overNum, "(overNum) < ", checkPageNumCount, "(checkPageNumCount) : ", overNum < checkPageNumCount);
+                console.log("0 이 아니면 Number(page) - 1 : ", Number(page) - 1);
+            } else {
+                let pageMin = Number(page) - 1;
+
+                if (pageMin < 0) {
+                    pageMin = 0;
+                }
+
+                this.setState({
                     overPageCheck: false,
-                    page: Number(page) - 1,
+                    page: pageMin,
                     // eslint-disable-next-line react/destructuring-assignment,react/no-access-state-in-setstate
                     showPage: this.state.showPage - 1,
                     checkCount: Number(checkPageNumCount),
                 });
             }
-        }
+        }*/
+       // console.log("👔 end------------------------------------> 이전");
     };
 
     handleChangePage = (event, page) => {
+       // console.log("👣 start------------------------------------> 다음");
         const {assetState, dispatch} = this.props;
         const {
             orderBy, rowsPerPage, order, checkCount, showPage, pageMaxCount, overPageCheck,
+            pageCount, pageSize, pageNoNum,
         } = this.state;
         const checkPageNumCount = (showPage + 1) * rowsPerPage;
 
         this.setState({
+            pageCount: pageCount + 1,
+            pageNoNum: pageNoNum + 1,
+            showPage: showPage + 1,
+            page: pageNoNum + 1,
+        });
+        const changePageCount = pageCount + 1;
+/*        console.log("showPage : ", showPage);
+
+        console.log("changePageCount : ", changePageCount);
+        console.log("pageCount : ", pageCount);
+        console.log("pageNoNum : ", pageNoNum);
+        console.log("pageSize : ", pageSize);
+
+        console.log("~~~", pageCount === pageSize, "~~~");
+        console.log("true : 초기화");
+        console.log("false : 유지");*/
+
+        if (pageCount === pageSize) {
+            this.setState({
+                pageCount: 1,
+                pageNoNum: 0,
+                page: 0,
+            });
+
+            const dispatchVal = ({
+                deviceType: assetState.deviceType,
+                checkPageNumCount: Number(checkPageNumCount),
+                orderBy,
+                order,
+                rowsPerPage,
+                showPage,
+                overNum,
+            });
+
+            dispatch(fetchPostsCheckCount(dispatchVal));
+        }
+
+        //console.log("pageCount count : ", this.setState({pageCount: pageCount + 1}));
+
+        /*this.setState({
             page: Number(page),
             // eslint-disable-next-line react/destructuring-assignment,react/no-access-state-in-setstate
             showPage: this.state.showPage + 1,
@@ -220,6 +348,11 @@ export default class AssetsList extends PureComponent {
                 overPageCheck: false,
             });
         }
+
+        /!*        console.log("start------------------------------------>handleChangePage");
+                console.log("NEXT overPageCheck : ", overPageCheck);
+                console.log("NEXT checkPageNumCount : ", checkPageNumCount);
+                console.log("end------------------------------------>handleChangePage");*!/
 
         if (overPageCheck === true) {
             this.setState({
@@ -238,14 +371,45 @@ export default class AssetsList extends PureComponent {
             });
 
             dispatch(fetchPostsCheckCount(dispatchVal));
-        }
+        } else {
+            console.log("overPageCheck false");
+        }*/
+       // console.log("👣 end------------------------------------> 다음");
     };
 
     handleChangeRowsPerPage = (event) => {
+        const {assetState, dispatch} = this.props;
+        const {
+            orderBy, rowsPerPage, order,
+        } = this.state;
+        if (Number(event.target.value) >= overNum) {
+            this.setState({
+                overPageCheck: true,
+            });
+        }
+
+/*        console.log("00 : ", Number(event.target.value));
+        console.log("11 : ", overNum);
+        console.log("22 : ", overNum / Number(event.target.value));*/
+
         this.setState({
             page: 0,
+            showPage: 1,
             rowsPerPage: Number(event.target.value),
+            pageCount: 1,
+            pageSize: overNum / Number(event.target.value),
+            pageNoNum: 0,
         });
+
+        const dispatchVal = ({
+            deviceType: assetState.deviceType,
+            orderBy,
+            order,
+            rowsPerPage,
+            overNum,
+        });
+
+        dispatch(fetchPosts(dispatchVal));
     };
 
     isSelected = (id) => {
@@ -263,19 +427,25 @@ export default class AssetsList extends PureComponent {
 
         dispatch(getDeviceByIdx(deviceCode, assetState.deviceType));
 
-        this.setComponents('read');
+        this.setComponents('read', deviceCode);
     };
 
-    setComponents = (division) => {
+    setComponents = (division, deviceCode) => {
         const {dispatch, assetState} = this.props;
 
         let tempViewModalContent;
+
+        let checkDeviceCode = deviceCode;
+
+        if (deviceCode === undefined) {
+            checkDeviceCode = 'temp';
+        }
 
         switch (division) {
             case 'read':
                 tempViewModalContent = (
                     <AssetsView closeToggle={this.toggle}
-                                title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다."
+                                title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다." deviceCode={checkDeviceCode}
                                 assetState={assetState} dispatch={dispatch} setTotalManager={this.setTotalManager}
                     />
                 );
@@ -283,7 +453,7 @@ export default class AssetsList extends PureComponent {
             case "update":
                 tempViewModalContent = (
                     <AssetsEdit closeToggle={this.toggle}
-                                title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다."
+                                title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다." deviceCode={checkDeviceCode}
                                 assetState={assetState} dispatch={dispatch} setTotalManager={this.setTotalManager}
                     />
                 );
@@ -301,13 +471,16 @@ export default class AssetsList extends PureComponent {
     componentDidUpdate = (prevProps, prevState) => {
         const {assetState, dispatch} = this.props;
         if (assetState !== prevProps.assetState) {
-            this.setComponents();
+            this.setComponents('read');
+            //console.log("♡ LIST componentDidUpdate");
         }
     };
 
     render() {
+        //console.log("😼 list render");
         const {
             order, orderBy, selected, rowsPerPage, page, viewModalContent, modal, showPage,
+            pageCount, pageSize, pageNoNum,
         } = this.state;
         const {assetState, dispatch} = this.props;
 
@@ -321,13 +494,15 @@ export default class AssetsList extends PureComponent {
 
         //TODO length 값 0 일때도 처리해야함
 
+        //console.log("😼render pageNoNum : ", pageNoNum);
+
         const deviceServer = (
             <Fragment>
                 <TableBody>
                     {assetState.devices
                         .sort(getSorting(order, orderBy))
                         .slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)
-                        .map((d) => {
+                        .map((d, index) => {
                             const isSelected = this.isSelected(d.DeviceCode);
 
                             return (
@@ -484,7 +659,7 @@ export default class AssetsList extends PureComponent {
                             className="material-table__pagination"
                             count={Number(assetState.page.Count)}
                             rowsPerPage={rowsPerPage}
-                            page={page - assetState.frontPage.oriPage}
+                            page={pageNoNum}
                             backIconButtonProps={{
                                 'aria-label': 'Previous Page',
                                 disabled: false,
