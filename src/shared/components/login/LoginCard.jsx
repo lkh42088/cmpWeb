@@ -1,8 +1,8 @@
 import React from 'react';
 import LoginFormWrap from "./LoginForm";
 
-const LoginCard = () => {
-    console.log('test:LoginCard');
+const LoginCard = ({secret}) => {
+    console.log('test:LoginCard - ', secret);
     return (
         <div className="account__wrapper">
             <div className="account__card">
@@ -14,7 +14,8 @@ const LoginCard = () => {
                     </h3>
                     <h4 className="account__subhead subhead">통합플랫폼</h4>
                 </div>
-                <LoginFormWrap onSubmin form="log_in_form" />
+                {/*<LoginFormWrap onSubmin form="log_in_form" />*/}
+                <LoginFormWrap secret={secret} form="log_in_form" />
             </div>
         </div>
     );

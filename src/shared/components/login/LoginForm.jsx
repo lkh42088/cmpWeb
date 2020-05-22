@@ -11,7 +11,7 @@ import { check } from "../../../redux/actions/userActions";
 import renderCheckBoxField from '../form/CheckBox';
 
 // eslint-disable-next-line react/prop-types
-const LoginForm = ({ history }) => {
+const LoginForm = ({ history, secret }) => {
     const rememberForm = 'log_in_form';
     const typeFieldUser = 'text';
     const [showPassword, setShowPassword] = useState(false);
@@ -51,10 +51,12 @@ const LoginForm = ({ history }) => {
     };
 
     useEffect(() => {
+        console.log('[LoginForm 1] secret:', secret);
         dispatch(initializeForm("login"));
     }, [dispatch]);
 
     useEffect(() => {
+        console.log('[LoginForm 2] secret:', secret);
         if (authError) {
             console.log('오류 발생');
             console.log(authError);
@@ -68,6 +70,7 @@ const LoginForm = ({ history }) => {
     }, [auth, authError, dispatch]);
 
     useEffect(() => {
+        console.log('[LoginForm 3] secret:', secret);
         if (user) {
             console.log('check API 성공');
             console.log(user);

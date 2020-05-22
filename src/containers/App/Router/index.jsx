@@ -9,12 +9,13 @@ import Register from "../../Account/Register";
 const Router = () => (
   <MainWrapper>
     <main>
-      <Switch>
-        <Route exact path="/" component={TempPage} />
-        <Route path="/log_in" component={LogIn} />
-        <Route path="/register" component={Register} />
-        <Route path="/" component={WrappedRoutes} />
-      </Switch>
+        <Switch>
+            <Route exact path="/" component={TempPage} />
+            <Route path="/log_in/:secret" component={LogIn} />
+            <Route path="/log_in" component={LogIn} />
+            <Route path="/register" component={Register} />
+            <Route path="/" component={WrappedRoutes} />
+        </Switch>
     </main>
   </MainWrapper>
 );
