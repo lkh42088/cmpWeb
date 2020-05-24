@@ -53,6 +53,7 @@ const LoginForm = ({ history, secret }) => {
     useEffect(() => {
         console.log('[LoginForm 1] secret:', secret);
         dispatch(initializeForm("login"));
+        console.log('[LoginForm 1] end');
     }, [dispatch]);
 
     useEffect(() => {
@@ -67,12 +68,18 @@ const LoginForm = ({ history, secret }) => {
             console.log('로그인 성공');
             dispatch(check());
         }
+        console.log('[LoginForm 2] end');
     }, [auth, authError, dispatch]);
 
     useEffect(() => {
         console.log('[LoginForm 3] secret:', secret);
         if (user) {
             console.log('check API 성공');
+            if (secret === undefined) {
+                console.log('secret is undefined');
+            } else {
+                console.log('secret is ', secret);
+            }
             console.log(user);
             // eslint-disable-next-line react/prop-types
             history.push('/');
@@ -82,6 +89,7 @@ const LoginForm = ({ history, secret }) => {
                 console.log('localStorage is not working');
             }
         }
+        console.log('[LoginForm 3] end');
     }, [history, user]);
 
     const changeShowPassword = (e) => {

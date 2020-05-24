@@ -11,19 +11,20 @@ export default function createRequestSaga(type, request) {
     const SUCCESS = `${type}_SUCCESS`;
     const FAILURE = `${type}_FAILURE`;
 
-    console.log(type);
+    console.log('createRequestSaga: ', type);
     // eslint-disable-next-line func-names
     return function* (action) {
+        console.log('function: ', type);
         yield put(startLoading(type));
         try {
             const response = yield call(request, action.payload);
-            console.log('success');
+            console.log('success: ', type);
             yield put({
                 type: SUCCESS,
                 payload: response.data,
             });
         } catch (e) {
-            console.log('fail');
+            console.log('fail: ', type);
             yield put({
                 type: FAILURE,
                 payload: e,
