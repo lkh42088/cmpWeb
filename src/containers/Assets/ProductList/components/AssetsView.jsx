@@ -268,7 +268,7 @@ class AssetsView extends PureComponent {
                                 <div className="float-left">
                                     <b><h6 style={deviceStyle}>{DeviceCode}</h6></b>
                                 </div>
-                                <div className="assets_write__form_comment_confirm float-right" type="button"
+                                <div className="assets_write__form_comment_confirm float-right"
                                      onClick={this.commentToggle} onKeyDown={this.commentToggle}
                                      role="button" tabIndex="0">+ 댓글 입력
                                 </div>

@@ -25,11 +25,12 @@ import {
 
 import AssetsHead from './AssetsHead';
 import VerticalFormHalf from "../../Server/components/VerticalFormHalf";
-import AssetsWrite from "../../Server/components/AssetsWrite";
+import AssetsWrite from "./AssetsWrite";
 import AssetsView from "./AssetsView";
 import AssetsEdit from "./AssetsEdit";
 import {RTLProps} from "../../../../shared/prop-types/ReducerProps";
 
+/*order by 사용 함수*/
 function getSorting(order, orderBy) {
     if (order === 'desc') {
         return (a, b) => {
@@ -53,7 +54,10 @@ function getSorting(order, orderBy) {
     };
 }
 
-const overNum = 100;
+/*api 요청 시 한번에 가지고 오는 device 개수
+* 변경 시 index.jsx도 변경해 줘야 함.
+* */
+const overNum = 1000;
 
 export default class AssetsList extends PureComponent {
     state = {
@@ -63,15 +67,12 @@ export default class AssetsList extends PureComponent {
         page: 0,
         rowsPerPage: 10,
         viewModalContent: '',
-        checkCount: 0,
-        // eslint-disable-next-line react/destructuring-assignment
         showPage: 1,
-        pageMaxCount: 0,
-        overPageCheck: false,
-        // pagination 다시!
         pageCount: 1,
         pageSize: 10,
         pageNoNum: 0,
+        isOpenView: false,
+        isOpenWrite: false,
     };
 
     //handleSubmit: PropTypes.func.isRequired,
@@ -86,9 +87,6 @@ export default class AssetsList extends PureComponent {
     setTotalManager = (data) => {
         const {assetState, dispatch} = this.props;
 
-        console.log("😕 data : ", data);
-        console.log("😕 data.deviceCode : ", data.deviceCode);
-
         const submitData = ({
             idx: data.commentIdx,
             /*registerId: data.registerId,*/ //TODO 로그인한 ID
@@ -99,7 +97,7 @@ export default class AssetsList extends PureComponent {
 
         //const jsonSubmitData = JSON.stringify(submitData);
 
-        console.log("jsonSubmitData : ", submitData);
+        console.log("submitData : ", submitData);
 
         switch (data.postType) {
             case 'comment':
@@ -121,7 +119,7 @@ export default class AssetsList extends PureComponent {
         let order = 'desc';
         const {orderBy: stateOrderBy, order: stateOrder} = this.state;
         const {
-            rowsPerPage, checkCount, page,
+            rowsPerPage, page,
         } = this.state;
 
         if (stateOrderBy === property && stateOrder === 'desc') {
@@ -171,22 +169,22 @@ export default class AssetsList extends PureComponent {
     handleChangePageBack = () => {
         const {assetState, dispatch} = this.props;
         const {
-            orderBy, rowsPerPage, order, checkCount, showPage, page, pageMaxCount, overPageCheck,
+            orderBy, rowsPerPage, order, showPage, page,
             pageCount, pageSize, pageNoNum,
         } = this.state;
         const changePageCount = pageCount - 1;
         const changePageNoNum = pageNoNum - 1;
         const checkPageNumCount = (showPage - 1) * rowsPerPage;
 
-/*        console.log("👔 start------------------------------------> 이전");
-        //this.setState({pageCount: pageCount - 1});
-        console.log("showPage : ", showPage);
+        /*        console.log("👔 start------------------------------------> 이전");
+                //this.setState({pageCount: pageCount - 1});
+                console.log("showPage : ", showPage);
 
-        console.log("changePageCount : ", changePageCount);
-        console.log("changePageNoNum : ", changePageNoNum);
-        console.log("pageCount : ", pageCount);
-        console.log("pageNoNum : ", pageNoNum);
-        console.log("pageSize : ", pageSize);*/
+                console.log("changePageCount : ", changePageCount);
+                console.log("changePageNoNum : ", changePageNoNum);
+                console.log("pageCount : ", pageCount);
+                console.log("pageNoNum : ", pageNoNum);
+                console.log("pageSize : ", pageSize);*/
 
         if (showPage !== 1) {
             if (pageNoNum === 0) { // 초기화 된 상태
@@ -218,10 +216,10 @@ export default class AssetsList extends PureComponent {
             }
         }
 
-/*        console.log("overPageCheck : ", overPageCheck);
-        console.log("pageMaxCount : ", pageMaxCount);
-        console.log("showPage : ", showPage);
-        console.log("page : ", page);*/
+        /*        console.log("overPageCheck : ", overPageCheck);
+                console.log("pageMaxCount : ", pageMaxCount);
+                console.log("showPage : ", showPage);
+                console.log("page : ", page);*/
 
         /*if (showPage !== 1) {
             const checkPageNumCount = (showPage - 1) * rowsPerPage;
@@ -279,14 +277,14 @@ export default class AssetsList extends PureComponent {
                 });
             }
         }*/
-       // console.log("👔 end------------------------------------> 이전");
+        // console.log("👔 end------------------------------------> 이전");
     };
 
     handleChangePage = (event, page) => {
-       // console.log("👣 start------------------------------------> 다음");
+        // console.log("👣 start------------------------------------> 다음");
         const {assetState, dispatch} = this.props;
         const {
-            orderBy, rowsPerPage, order, checkCount, showPage, pageMaxCount, overPageCheck,
+            orderBy, rowsPerPage, order, showPage,
             pageCount, pageSize, pageNoNum,
         } = this.state;
         const checkPageNumCount = (showPage + 1) * rowsPerPage;
@@ -298,16 +296,16 @@ export default class AssetsList extends PureComponent {
             page: pageNoNum + 1,
         });
         const changePageCount = pageCount + 1;
-/*        console.log("showPage : ", showPage);
+        /*        console.log("showPage : ", showPage);
 
-        console.log("changePageCount : ", changePageCount);
-        console.log("pageCount : ", pageCount);
-        console.log("pageNoNum : ", pageNoNum);
-        console.log("pageSize : ", pageSize);
+                console.log("changePageCount : ", changePageCount);
+                console.log("pageCount : ", pageCount);
+                console.log("pageNoNum : ", pageNoNum);
+                console.log("pageSize : ", pageSize);
 
-        console.log("~~~", pageCount === pageSize, "~~~");
-        console.log("true : 초기화");
-        console.log("false : 유지");*/
+                console.log("~~~", pageCount === pageSize, "~~~");
+                console.log("true : 초기화");
+                console.log("false : 유지");*/
 
         if (pageCount === pageSize) {
             this.setState({
@@ -374,7 +372,7 @@ export default class AssetsList extends PureComponent {
         } else {
             console.log("overPageCheck false");
         }*/
-       // console.log("👣 end------------------------------------> 다음");
+        // console.log("👣 end------------------------------------> 다음");
     };
 
     handleChangeRowsPerPage = (event) => {
@@ -382,15 +380,6 @@ export default class AssetsList extends PureComponent {
         const {
             orderBy, rowsPerPage, order,
         } = this.state;
-        if (Number(event.target.value) >= overNum) {
-            this.setState({
-                overPageCheck: true,
-            });
-        }
-
-/*        console.log("00 : ", Number(event.target.value));
-        console.log("11 : ", overNum);
-        console.log("22 : ", overNum / Number(event.target.value));*/
 
         this.setState({
             page: 0,
@@ -414,12 +403,11 @@ export default class AssetsList extends PureComponent {
 
     isSelected = (id) => {
         const {selected} = this.state;
-
         return !!selected.get(id);
     };
 
     toggle = (e) => {
-        this.setState(prevState => ({modal: !prevState.modal}));
+        this.setState(prevState => ({isOpenView: !prevState.isOpenView}));
     };
 
     setDeviceIdx = (event, deviceCode) => {
@@ -472,15 +460,14 @@ export default class AssetsList extends PureComponent {
         const {assetState, dispatch} = this.props;
         if (assetState !== prevProps.assetState) {
             this.setComponents('read');
-            //console.log("♡ LIST componentDidUpdate");
+            console.log("♡ LIST componentDidUpdate");
         }
     };
 
     render() {
-        //console.log("😼 list render");
         const {
             order, orderBy, selected, rowsPerPage, page, viewModalContent, modal, showPage,
-            pageCount, pageSize, pageNoNum,
+            pageCount, pageSize, pageNoNum, isOpenView, isOpenWrite,
         } = this.state;
         const {assetState, dispatch} = this.props;
 
@@ -494,7 +481,7 @@ export default class AssetsList extends PureComponent {
 
         //TODO length 값 0 일때도 처리해야함
 
-        //console.log("😼render pageNoNum : ", pageNoNum);
+        //console.log("😼render modal : ", modal);
 
         const deviceServer = (
             <Fragment>
@@ -645,15 +632,25 @@ export default class AssetsList extends PureComponent {
                                 {deviceServer}
                             </Table>
                         </div>
+                        {/*장비 상세*/}
                         <Modal
-                            isOpen={modal}
+                            isOpen={isOpenView}
                             modalClassName="ltr-support"
                             className={`assets_write__modal-dialog 
                             assets_write__modal-dialog ${modalClass}`}
                         >
                             {viewModalContent}
                         </Modal>
-                        {/*page={page - assetState.frontPage.oriPage}*/}
+                        {/*장비 등록*/}
+                        <Modal
+                            isOpen={isOpenWrite}
+                            modalClassName="ltr-support"
+                            className={`assets_write__modal-dialog 
+                            assets_write__modal-dialog ${modalClass}`}
+                        >
+                            <AssetsWrite closeToggle={this.toggle}
+                                        title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다." />
+                        </Modal>
                         <TablePagination
                             component="div"
                             className="material-table__pagination"
@@ -671,7 +668,7 @@ export default class AssetsList extends PureComponent {
                             rowsPerPageOptions={[10, 50, 100]}
                             dir="ltr"
                             labelDisplayedRows={
-                                ({checkCount, to, count}) => (
+                                ({to, count}) => (
                                     <span style={{fontSize: 14}}><span>page: {showPage}</span>&nbsp;&nbsp;&nbsp; total : {count}
                                     </span>
                                 )

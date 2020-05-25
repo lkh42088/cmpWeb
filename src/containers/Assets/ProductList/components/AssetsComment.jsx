@@ -40,6 +40,7 @@ class AssetsComment extends PureComponent {
             modalTitle: 'ERROR',
             modalMessage: 'ERROR',
             modalType: 'error',
+            modalOpenFlag: false,
         };
     }
 
@@ -70,8 +71,7 @@ class AssetsComment extends PureComponent {
     };
 
     commentDelete = () => {
-        console.log("👲👲👲 commentDelete");
-        const {setTotalManager} = this.props;
+        const {assetState, dispatch, setTotalManager} = this.props;
 
         setTotalManager(this.state);
 
@@ -83,6 +83,7 @@ class AssetsComment extends PureComponent {
             registerName: '',
             registerDate: '',
             modal: false,
+            modalOpenFlag: false,
         });
     };
 
@@ -103,22 +104,19 @@ class AssetsComment extends PureComponent {
             dispatch(setState(stateVal));
 
             this.setState({
+                modalOpenFlag: true,
                 modalType: 'delete',
                 modalColor: 'primary',
                 modalTitle: '삭제?',
                 modalMessage: '삭제하시겠습니까?',
             });
-        } else { //close
+        } else { //update - close
             this.setState(prevState => ({modal: !prevState.modal}));
         }
     };
 
     setCommentVal = (division, val) => {
         this.setState({
-            modalType: 'error',
-            modalColor: 'danger',
-            modalTitle: 'ERROR',
-            modalMessage: 'ERROR',
             postDivision: division,
             comment: val.Contents,
             commentIdx: val.Idx,
@@ -142,22 +140,11 @@ class AssetsComment extends PureComponent {
         }
     };
 
-/*    componentWillMount = () => {
-        console.log("00componentWillMount");
-    };
-
-    componentDidMount = () => {
-        // 외부 라이브러리 연동: D3, masonry, etc
-        // 컴포넌트에서 필요한 데이터 요청: Ajax, GraphQL, etc
-        // DOM 에 관련된 작업: 스크롤 설정, 크기 읽어오기 등
-        console.log("11componentDidMount");
-    };*/
-
     render() {
         const {assetState, dispatch} = this.props;
         const {
-            modal, comment, submitType, registerId, registerName, registerDate,
-            subModal, alertModalFlag, modalColor, modalTitle, modalMessage, modalType,
+            modal, comment, registerId, registerName, registerDate,
+            modalColor, modalTitle, modalMessage, modalType, modalOpenFlag,
         } = this.state;
 
         let deviceComments;
@@ -170,7 +157,7 @@ class AssetsComment extends PureComponent {
 
         let openFlag;
 
-        if (assetState.stateVal.state === 'error' || assetState.stateVal.state === 'delete') {
+        if (assetState.stateVal.state === 'error') {
             openFlag = true;
         } else {
             openFlag = false;
@@ -239,12 +226,23 @@ class AssetsComment extends PureComponent {
                             </form>
                         </Modal>
                         <ModalSub
-                            openFlag={openFlag}
+                            openFlag={modalOpenFlag}
                             modalType={modalType}
                             color={modalColor}
                             title={modalTitle}
                             colored
                             message={modalMessage}
+                            assetState={assetState}
+                            dispatch={dispatch}
+                            modalFunc={this.commentDelete}
+                        />
+                        <ModalSub
+                            openFlag={openFlag}
+                            modalType="error"
+                            color="danger"
+                            title="ERROR"
+                            colored
+                            message="ERROR"
                             assetState={assetState}
                             dispatch={dispatch}
                             modalFunc={this.commentDelete}

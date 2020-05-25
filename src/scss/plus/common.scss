@@ -3,10 +3,10 @@
   display: flex;
   flex-wrap: wrap;
   padding: 8px;
-  box-shadow: 0 0 1px #232329;
+  box-shadow: 0 0 1px $color-black-dep1;
   border-radius: 5px;
   /*background-color: #738598;*/
-  background-color: $color-blue;
+  background-color: $color-black-dep1;
   /*color: #232329;*/
 
   @include directify($directions) {
@@ -15,8 +15,8 @@
   }
 
   .search_btn {
-    background-color: #e7eaf6;
-    color: #222831;
+    background-color: $color-white;
+    color: $color-black-dep1;
     padding-top: 4px;
     cursor: pointer;
     border-radius: 0;
@@ -50,7 +50,7 @@
     }
 
     option {
-      color: black;
+      color: $color-black-dep1;
     }
   }
 
@@ -208,19 +208,24 @@
 .form__assets_sch {
   width: calc(100% - 10px);
   height: 100%;
+  color:$color-black;
 
   select {
-    color:#6c757d;
-    border: 1px solid #dee2e6;
+    color:$color-black;
+    border: 1px solid $color-black-dep3;
     background: transparent;
   }
 
   input {
     padding: 5px 10px;
-    color:#6c757d;
+    color:$color-black;
     height: 17px;
-    border: 1px solid #dee2e6;
+    border: 1px solid $color-black-dep3;
     background: transparent;
+  }
+
+  input::placeholder {
+    color: $color-black;
   }
 
   @include directify($directions) {

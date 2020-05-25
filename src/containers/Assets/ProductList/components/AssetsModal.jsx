@@ -70,27 +70,7 @@ class AssetsModal extends PureComponent {
 
         const modalClass = classNames({
             'assets_write__modal-dialog': true,
-            'assets_write__modal-dialog--colored': colored,
-            'assets_write__modal-dialog--header': header,
         });
-
-/*        switch (modalType) {
-            case 'write':
-                modalContent = (
-                    <AssetsWrite closeToggle={this.toggle} title={title} message={message}
-                                 assetState={assetState} dispatch={dispatch}/>
-                );
-                break;
-            case 'view':
-                modalContent = (
-                    <AssetsView closeToggle={this.toggle} title={title} message={message}
-                                assetState={assetState} dispatch={dispatch}/>
-                );
-                break;
-            default:
-                modalContent = 'Error!';
-                break;
-        }*/
 
         return (
             <div>

@@ -74,15 +74,16 @@ export default class AlertComponent extends PureComponent {
                     >
                         <CardBody className="search_panel__body">
                             <div className="search_panel_topbtn circle-legend">
-                                <div className="float-right">
+{/*                                <div className="float-right">
                                     <span className="circle__lit"/>재고장비&nbsp;&nbsp;
                                     <span className="circle__lit"/>SPLA&nbsp;&nbsp;
                                     <span className="circle__lit"/>가용장비&nbsp;&nbsp;
                                     <span className="circle__lit"/>반출장비&nbsp;&nbsp;
-                                </div>
+                                </div>*/}
                                 <div className="float-left">
                                     &nbsp;&nbsp;
-                                    <span className="circle__btc"/>장비반출&nbsp;&nbsp;
+                                    <span className="circle__lit"/>장비반출&nbsp;&nbsp;
+                                    <span className="circle__eos"/>장비등록&nbsp;&nbsp;
                                     {/*<div className="float-left" onClick={this.onConsole}
                                          onKeyDown={onToggleClick}
                                          role="button" tabIndex="0">*/}
@@ -101,7 +102,6 @@ export default class AlertComponent extends PureComponent {
                         <div className="search_panel__btns">
                             <button className="search_panel__btn" type="button"
                                     onClick={this.onCollapse}>
-                                {/*<MinusIcon/>*/}
                                 <b><span className="lnr lnr-cog text-white font-weight-light"
                                          style={{padding: "5px"}}/></b>
                             </button>

@@ -32,19 +32,12 @@ function checkOrder(val) {
     return val;
 }
 
-/*export const fetchPosts = (type, page, checkPageNumCount, orderBy, order, overNum) => async (dispatch) => {*/
 export const setState = dispatchVal => async (dispatch) => {
-/*    const stateVal = ({
-        type: dispatchVal.type,
-        division: dispatchVal.division,
-        state: dispatchVal.state,
-    });*/
     dispatch({
         type: SET_STATUS,
         payload: dispatchVal,
     });
 };
-
 
 export const fetchPosts = dispatchVal => async (dispatch) => {
     try {
@@ -52,7 +45,6 @@ export const fetchPosts = dispatchVal => async (dispatch) => {
         const orderBy = checkUndefined(dispatchVal.orderBy, "DeviceCode");
         const order = checkOrder(dispatchVal.order);
 
-        /*console.log("API_ROUTE/page/", dispatchVal.deviceType, "/0/", dispatchVal.overNum, "/", rowsPerPage, "/", orderBy, "/", order);*/
         const res = await axios.get(`${API_ROUTE}/page/${dispatchVal.deviceType}/0/${dispatchVal.overNum}/${rowsPerPage}/${orderBy}/${order}`);
 
         dispatch({
@@ -71,8 +63,6 @@ export const fetchPosts = dispatchVal => async (dispatch) => {
         console.log("error : ", error);
     }
 };
-/*
-export const fetchPostsCheckCount = (type, page, checkPageNumCount, orderBy, order, rowsPerPage, showPage, overNum) => async (dispatch) => {*/
 
 export const fetchPostsCheckCount = dispatchVal => async (dispatch) => {
     try {
@@ -92,7 +82,6 @@ export const fetchPostsCheckCount = dispatchVal => async (dispatch) => {
         } else {
             minNum = 0;
         }
-        /*        console.log("fetch page : dispatchVal.showPage(", dispatchVal.showPage, ") + minNum(", minNum, ") = ", dispatchVal.showPage + minNum);*/
 
         dispatch({
             type: GET_DEVICES_CHECKCOUNT,
@@ -114,7 +103,6 @@ export const fetchPostsCheckCount = dispatchVal => async (dispatch) => {
 // 특정 장비 가져오기
 export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
     try {
-        //router.GET("/v1/device/:type/:deviceCode", h.GetDevicesByIdx)
         dispatch({
             type: SET_DEVICE_DEVICECODE,
             payload: deviceCode,
@@ -256,24 +244,3 @@ export const postDeviceOutFlag = (assetState, outFlag) => async (dispatch) => {
         console.log("submitDeviceOutFlag error : ", error);
     }
 };
-/*
-const assetsActions = {
-    addASSETS(equCode, division, manufacturer, model, ip, ownership,
-              ownershipDivision, customer, idc, size, usage) {
-        return {
-            type: 'ADD_ASSETS',
-            equCode,
-            division,
-            manufacturer,
-            model,
-            ip,
-            ownership,
-            ownershipDivision,
-            customer,
-            idc,
-            size,
-            usage,
-        };
-    },
-};
-export default assetsActions;*/

@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Button, ButtonToolbar, Modal} from 'reactstrap';
 import classNames from 'classnames';
-import {Field} from "redux-form";
+import {Field, reduxForm} from "redux-form";
 import CalendarBlankIcon from "mdi-react/CalendarBlankIcon";
 import AccountSearchIcon from "mdi-react/AccountSearchIcon";
+import {withTranslation} from "react-i18next";
 
 import {RTLProps} from '../../../../shared/prop-types/ReducerProps';
 
@@ -467,8 +468,6 @@ class AssetsWrite extends PureComponent {
     }
 }
 
-export default AssetsWrite;
-/*
-export default function toggleClick() {
-    this.toggle();
-}*/
+export default reduxForm({
+    form: 'horizontal_form', // a unique identifier for this form
+})(withTranslation('common')(AssetsWrite));

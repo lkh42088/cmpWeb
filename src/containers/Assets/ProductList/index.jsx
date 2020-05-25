@@ -23,7 +23,7 @@ const MaterialTable = () => {
         orderBy: 'DeviceCode',
         order: 1,
         rowsPerPage: 10,
-        overNum: 100,
+        overNum: 1000,
     });
 
     const getDevices = () => dispatch(fetchPosts(dispatchVal));

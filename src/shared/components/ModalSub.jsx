@@ -46,6 +46,14 @@ class ModalComponent extends PureComponent {
         } = this.props;
 
         if (division === 'ok' && modalType === 'delete') {
+            const stateVal = ({
+                type: assetState.stateVal.type,
+                division: assetState.stateVal.division,
+                state: 'finish',
+            });
+
+            dispatch(setState(stateVal));
+
             modalFunc();
         } else { //error
             const stateVal = ({
