@@ -5,6 +5,7 @@ import WrappedRoutes from './WrappedRoutes';
 import TempPage from '../../DefaultPage/TempPage/index';
 import LogIn from "../../Account/LogIn";
 import Register from "../../Account/Register";
+import RegisterUser from "../../Account/RegisterUser";
 
 const Router = () => (
   <MainWrapper>
@@ -14,6 +15,7 @@ const Router = () => (
             <Route path="/log_in/:secret" component={LogIn} />
             <Route path="/log_in" component={LogIn} />
             <Route path="/register" component={Register} />
+            <Route path="/registeruser" component={RegisterUser} />
             <Route path="/" component={WrappedRoutes} />
         </Switch>
     </main>
