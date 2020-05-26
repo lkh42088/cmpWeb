@@ -3,6 +3,8 @@ import {List, Map} from "immutable";
 import {
     GET_DEVICE_BY_DEVICECODE,
     GET_DEVICES,
+    GET_CODES,
+    GET_SUBCODES,
     SET_DEVICE_DEVICECODE,
     SET_COMMENT,
     GET_COMMENTS_BY_DEVICECODE,
@@ -17,6 +19,19 @@ export const initialState = {
         Map({}),
     ]),
     comments: List([
+        Map({}),
+    ]),
+    codes: List([
+        Map({codeDeviceType: List([Map({})])}),
+        Map({codeManufacture: List([Map({})])}),
+        Map({codeOwnership: List([Map({})])}),
+        Map({codeOwnershipDiv: List([Map({})])}),
+        Map({codeIdc: List([Map({})])}),
+        Map({codeSize: List([Map({})])}),
+        Map({codeSpla: List([Map({})])}),
+        Map({codeCustomer: List([Map({})])}),
+    ]),
+    subCodes: List([
         Map({}),
     ]),
     page: {
@@ -54,6 +69,25 @@ const assetsReducer = (state = initialState, action) => {
     //const devices = state.get('devices');
     // ... 은 자바스크립트의 전개연산자, 기존의 객체안에 있는 내용을 해당 위치에다가 풀어준다는 의미
     switch (type) {
+        case GET_CODES:
+            return {
+                ...state,
+                codes: {
+                    codeDeviceType: payload.DeviceType,
+                    codeManufacture: payload.Manufacture,
+                    codeOwnership: payload.Ownership,
+                    codeOwnershipDiv: payload.OwnershipDiv,
+                    codeIdc: payload.Idc,
+                    codeSize: payload.Size,
+                    codeSpla: payload.Spla,
+                    codeCustomer: payload.Customer,
+                },
+            };
+        case GET_SUBCODES:
+            return {
+                ...state,
+                subCodes: payload,
+            };
         case GET_DEVICES:
             return {
                 ...state,

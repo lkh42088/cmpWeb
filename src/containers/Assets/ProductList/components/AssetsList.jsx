@@ -24,7 +24,6 @@ import {
 } from '../../../../redux/actions/assetsAction';
 
 import AssetsHead from './AssetsHead';
-import VerticalFormHalf from "../../Server/components/VerticalFormHalf";
 import AssetsWrite from "./AssetsWrite";
 import AssetsView from "./AssetsView";
 import AssetsEdit from "./AssetsEdit";
@@ -460,7 +459,7 @@ export default class AssetsList extends PureComponent {
         const {assetState, dispatch} = this.props;
         if (assetState !== prevProps.assetState) {
             this.setComponents('read');
-            console.log("♡ LIST componentDidUpdate");
+            //console.log("♡ LIST componentDidUpdate");
         }
     };
 
