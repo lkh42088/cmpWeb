@@ -15,6 +15,9 @@ export const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] = createRequestActionTypes(
     'auth/LOGIN',
 );
 
+export const LOGIN_SENT_EMAIL = 'auth/LOGIN_SENT_EMAIL';
+export const LOGIN_INPUT_EMAIL = 'auth/LOGIN_INPUT_EMAIL';
+
 // Action 생성 함수
 export const changeField = createAction(
     CHANGE_FIELD,

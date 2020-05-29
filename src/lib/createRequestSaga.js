@@ -18,13 +18,31 @@ export default function createRequestSaga(type, request) {
         yield put(startLoading(type));
         try {
             const response = yield call(request, action.payload);
-            console.log('success: ', type);
-            yield put({
-                type: SUCCESS,
-                payload: response.data,
-            });
+            console.log('Saga success: ', SUCCESS);
+            if (response.status === 251) {
+                console.log('payload(data): ', response.data);
+                const ACTION_TYPE = `${type}_SENT_EMAIL`;
+                yield put({
+                    type: ACTION_TYPE,
+                    payload: response.data,
+                });
+            } else if (response.status === 252) {
+                console.log('payload(data): ', response.data);
+                const ACTION_TYPE = `${type}_INPUT_EMAIL`;
+                console.log("type:", ACTION_TYPE);
+                yield put({
+                    type: ACTION_TYPE,
+                    payload: response.data,
+                });
+            } else {
+                yield put({
+                    type: SUCCESS,
+                    payload: response.data,
+                });
+            }
         } catch (e) {
-            console.log('fail: ', type);
+            console.log('Saga fail: ', FAILURE);
+            console.log('payload(e): ', e);
             yield put({
                 type: FAILURE,
                 payload: e,

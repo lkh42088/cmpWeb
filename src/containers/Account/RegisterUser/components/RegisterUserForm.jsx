@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import EmailAuthInsert from "./EmailAuthInsert";
 import EmailAuthInsertedList from "./EmailAuthInsertedList";
 import renderCheckBoxNbField from "./CheckBox";
+import renderRadioButtonNBField from "./RadioButton";
 
 const renderTextField = ({
   input, label, meta: { touched, error }, children, select,
@@ -119,14 +120,14 @@ const RegisterUser = ({ handleSubmit, reset, t }) => {
         method: 'post',
         url: 'http://localhost:8081/api/auth/register',
         data: {
-          username: userState.userId,
+          id: userState.userId,
           password: userState.userPassword,
           name: userState.userName,
           email: userState.userEmail,
         },
       });
     } catch (error) {
-        console.log('axios error: ', error);
+      console.log('axios error: ', error);
     }
   };
 
@@ -139,7 +140,7 @@ const RegisterUser = ({ handleSubmit, reset, t }) => {
               <h5 className="subhead">Material design fields</h5>
             </div>
             {/*<form className="material-form" onSubmit={handleSubmit}>*/}
-              <form className="material-form" onSubmit={onSubmit}>
+            <form className="material-form" onSubmit={onSubmit}>
               <div>
                 <span className="material-form__label">ID</span>
                 <Field
@@ -161,7 +162,7 @@ const RegisterUser = ({ handleSubmit, reset, t }) => {
                 />
               </div>
               <div>
-                <span className="waterial-form__label">이름</span>
+                <span className="material-form__label">이름</span>
                 <Field
                     name="userName"
                     component={renderTextField}
@@ -182,33 +183,66 @@ const RegisterUser = ({ handleSubmit, reset, t }) => {
                     onChange={onChange}
                 />
               </div>
+
+              <div>
+                <div className="form__form-group">
+                  <span className="material-form__label">Email 인증</span>
+                </div>
+                <div className="form__form-group-field">
+                  <Field
+                      name="radio"
+                      component={renderRadioButtonNBField}
+                      label="사용 안함"
+                      radioValue="1"
+                      defaultChecked
+                  />
+                </div>
+                <div className="form__form-group-field">
+                  <Field
+                      name="radio"
+                      component={renderRadioButtonNBField}
+                      label="본인 이메일 인증"
+                      radioValue="2"
+                  />
+                </div>
+                <div className="form__form-group-field">
+                  <Field
+                      name="radio"
+                      component={renderRadioButtonNBField}
+                      label="이메일 인증 그룹 생성"
+                      radioValue="3"
+                  />
+                </div>
+              </div>
+
               <div>
                 <Field
                     name="email_auth"
                     component={renderCheckBoxNbField}
                     label="계정 사용자의 Email 인증"
                     defaultChecked={emailAuthCheck}
-                    onChangeValue={onChangeEmailAuth}
+                    onChange={onChangeEmailAuth}
+                    Value={onChangeEmailAuth}
                     className="colored-click"
                 />
               </div>
-                <div>
-                  <Field
-                      name="add_email_auth"
-                      component={renderCheckBoxNbField}
-                      label="다른 사용자의 Email 인증"
-                      defaultChecked={emailAuthGroupCheck}
-                      onChange={onChangeGroupEmailAuth}
-                      className="colored-click"
-                  />
-                  {emailAuthGroupCheck === true
-                  && (
-                      <div>
-                        <EmailAuthInsert onInsert={onInsert}/>
-                        <EmailAuthInsertedList emailAuths={emailGroupAuth} onRemove={onRemove}/>
-                      </div>
-                  )}
-                </div>
+              <div>
+                <Field
+                    name="add_email_auth"
+                    component={renderCheckBoxNbField}
+                    label="다른 사용자의 Email 인증"
+                    defaultChecked={emailAuthGroupCheck}
+                    onChange={onChangeGroupEmailAuth}
+                    className="colored-click"
+                />
+                {emailAuthGroupCheck === true
+                && (
+                    <div>
+                      <EmailAuthInsert onInsert={onInsert}/>
+                      <EmailAuthInsertedList emailAuths={emailGroupAuth} onRemove={onRemove}/>
+                    </div>
+                )}
+              </div>
               <ButtonToolbar className="form__button-toolbar">
                 <Button color="primary" type="submit" onClick={onSubmit}>등록</Button>
                 <Button type="button" onClick={reset}>
