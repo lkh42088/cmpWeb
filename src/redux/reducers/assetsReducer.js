@@ -5,6 +5,7 @@ import {
     GET_DEVICES,
     GET_CODES,
     GET_SUBCODES,
+    GET_COMPANIES,
     SET_DEVICE_DEVICECODE,
     SET_COMMENT,
     GET_COMMENTS_BY_DEVICECODE,
@@ -30,19 +31,23 @@ export const initialState = {
         Map({codeSize: List([Map({})])}),
         Map({codeSpla: List([Map({})])}),
         Map({codeCustomer: List([Map({})])}),
+        Map({codeRackCode: List([Map({})])}),
     ]),
     subCodes: List([
         Map({}),
     ]),
+    company: List([
+        Map({}),
+    ]),
     page: {
-        Count: '',
-        CurPage: '',
-        DeviceType: '',
-        Direction: '',
-        OrderKey: '',
-        OutFlag: '',
-        Size: '',
-        TotalPage: '',
+        count: '',
+        curPage: '',
+        deviceType: '',
+        direction: '',
+        orderKey: '',
+        outFlag: '',
+        size: '',
+        totalPage: '',
     },
     frontPage: {
         oriPage: 0,
@@ -81,6 +86,7 @@ const assetsReducer = (state = initialState, action) => {
                     codeSize: payload.Size,
                     codeSpla: payload.Spla,
                     codeCustomer: payload.Customer,
+                    codeRackCode: payload.RackCode,
                 },
             };
         case GET_SUBCODES:
@@ -97,6 +103,11 @@ const assetsReducer = (state = initialState, action) => {
                     oriPage: page,
                 },
                 deviceType,
+            };
+        case GET_COMPANIES:
+            return {
+                ...state,
+                company: payload,
             };
         case GET_DEVICE_BY_DEVICECODE:
             return {

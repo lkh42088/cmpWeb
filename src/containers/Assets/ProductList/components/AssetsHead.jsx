@@ -9,16 +9,16 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import {RTLProps} from '../../../../shared/prop-types/ReducerProps';
 
 const rows = [
-    {id: 'Idx', disablePadding: false, label: 'No.'},
-    {id: 'DeviceCode', disablePadding: false, label: '장비코드'},
-    {id: 'DeviceType', disablePadding: false, label: '구분'},
-    {id: 'Manufacture', disablePadding: false, label: '제조사'},
-    {id: 'Model', disablePadding: false, label: '모델명'},
-    {id: 'Ownership', disablePadding: false, label: '소유권'},
-    {id: 'OwnerCompany', disablePadding: false, label: '소유권 구분'},
-    {id: 'Customer', disablePadding: false, label: '고객사'},
-    {id: 'IDC', disablePadding: false, label: 'IDC/위치'},
-    {id: 'Purpos', disablePadding: false, label: '용도'},
+    /*{id: 'Idx', disablePadding: false, label: 'No.'},*/
+    {id: 'deviceCode', disablePadding: false, label: '장비코드'},
+    {id: 'deviceType', disablePadding: false, label: '구분'},
+    {id: 'manufacture', disablePadding: false, label: '제조사'},
+    {id: 'model', disablePadding: false, label: '모델명'},
+    {id: 'ownership', disablePadding: false, label: '소유권'},
+    {id: 'ownerCompany', disablePadding: false, label: '소유권 구분'},
+    {id: 'customer', disablePadding: false, label: '고객사'},
+    {id: 'idc', disablePadding: false, label: 'IDC/위치'},
+    {id: 'purpos', disablePadding: false, label: '용도'},
 ];
 /*
 
@@ -52,16 +52,16 @@ class AssetsHead extends PureComponent {
     state = {
         // eslint-disable-next-line react/no-unused-state
         rows: [
-            {id: 'Idx', disablePadding: false, label: 'No.'},
-            {id: 'DeviceCode', disablePadding: false, label: '장비코드'},
-            {id: 'DeviceType', disablePadding: false, label: '구분'},
-            {id: 'Manufacture', disablePadding: false, label: '제조사'},
-            {id: 'Model', disablePadding: false, label: '모델명'},
-            {id: 'Ownership', disablePadding: false, label: '소유권'},
-            {id: 'OwnerCompany', disablePadding: false, label: '소유권 구분'},
-            {id: 'Customer', disablePadding: false, label: '고객사'},
-            {id: 'IDC', disablePadding: false, label: 'IDC/위치'},
-            {id: 'Purpos', disablePadding: false, label: '용도'},
+            /*{id: 'Idx', disablePadding: false, label: 'No.'},*/
+            {id: 'deviceCode', disablePadding: false, label: '장비코드'},
+            {id: 'deviceType', disablePadding: false, label: '구분'},
+            {id: 'manufacture', disablePadding: false, label: '제조사'},
+            {id: 'model', disablePadding: false, label: '모델명'},
+            {id: 'ownership', disablePadding: false, label: '소유권'},
+            {id: 'ownerCompany', disablePadding: false, label: '소유권 구분'},
+            {id: 'customer', disablePadding: false, label: '고객사'},
+            {id: 'idc', disablePadding: false, label: 'IDC/위치'},
+            {id: 'purpos', disablePadding: false, label: '용도'},
         ],
     };
 
@@ -112,25 +112,25 @@ class AssetsHead extends PureComponent {
         if (propData.assetState.deviceType === 'server') {
             this.setState({
                 rows: rows.concat(
-                    {id: 'Ip', disablePadding: false, label: 'IP'},
-                    {id: 'Size', disablePadding: false, label: '크기'},
+                    {id: 'ip', disablePadding: false, label: 'IP'},
+                    {id: 'size', disablePadding: false, label: '크기'},
                 ),
             });
         } else if (propData.assetState.deviceType === 'network') {
             this.setState({
                 rows: rows.concat(
-                    {id: 'Ip', disablePadding: false, label: 'IP'},
-                    {id: 'HwSn', disablePadding: false, label: 'HwSn'},
-                    {id: 'FirmwareVersion', disablePadding: false, label: 'FirmwareVersion'},
-                    {id: 'WarehousingDate', disablePadding: false, label: 'WarehousingDate'},
+                    {id: 'ip', disablePadding: false, label: 'IP'},
+                    {id: 'hwSn', disablePadding: false, label: 'HwSn'},
+                    {id: 'firmwareVersion', disablePadding: false, label: 'FirmwareVersion'},
+                    {id: 'warehousingDate', disablePadding: false, label: 'WarehousingDate'},
                 ),
             });
         } else if (propData.assetState.deviceType === 'part') {
             this.setState({
                 rows: rows.concat(
-                    {id: 'HwSn', disablePadding: false, label: 'HwSn'},
-                    {id: 'Warranty', disablePadding: false, label: 'Warranty'},
-                    {id: 'WarehousingDate', disablePadding: false, label: 'WarehousingDate'},
+                    {id: 'hwSn', disablePadding: false, label: 'HwSn'},
+                    {id: 'warranty', disablePadding: false, label: 'Warranty'},
+                    {id: 'warehousingDate', disablePadding: false, label: 'WarehousingDate'},
                 ),
             });
         }

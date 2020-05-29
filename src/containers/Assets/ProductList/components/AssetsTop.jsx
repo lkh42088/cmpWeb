@@ -9,6 +9,7 @@ import moment from 'moment';
 
 import AssetsModal from "./AssetsModal";
 import AssetsWrite from "./AssetsWrite";
+import {postDevice} from "../../../../redux/actions/assetsAction";
 
 function replacer(key, value) {
     console.log("key : ", key);
@@ -34,123 +35,119 @@ export default class AssetsTop extends PureComponent {
     };
 
     handleSubmit = (values) => {
-        // Do something with the form values
-        console.log("🤑🤑🤑🤑 ", values);
-        console.log("🤑🤑🤑🤑 typeof ", typeof values);
-        console.log("🤑🤑🤑🤑 Ip ", values.Ip);
-        //const hasSubCode = values.data.some(d => (Number(d.CodeID) === Number(e.target.value)));
+        const {assetState, dispatch} = this.props;
+
         let IpArray = '';
         let SplaArray = '';
+        let rentDataStart;
+        let rentDataEnd;
+        let rentData = '|';
+        let warehousingDate = '';
 
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
         for (const arrData in values) {
-            /*key3 :  Ip , value :  2
-            AssetsTop.jsx:45 key3 :  Ip0 , value :  3*/
-            console.log("arrData : ", arrData, ", value : ", values[arrData]);
+            //console.log("arrData : ", arrData, ", value : ", values[arrData]);
 
-            /*arrData :  Ip , value :  1
-            AssetsTop.jsx:48 arrData :  Ip0 , value :  2
-            AssetsTop.jsx:48 arrData :  Ip1 , value :  3
-            AssetsTop.jsx:48 arrData :  Spla , value :  78
-            AssetsTop.jsx:48 arrData :  Spla0 , value :  79*/
-
-            if (arrData.indexOf("Ip") !== -1) {
-                //IpArray = IpArray`|${values[arrData]}`;
+            if (arrData.indexOf("ip") !== -1) {
                 IpArray = `${IpArray}|${values[arrData]}`;
-            } else if (arrData.indexOf("Spla") !== -1) {
+            } else if (arrData.indexOf("spla") !== -1) {
                 SplaArray = `${SplaArray}|${values[arrData]}`;
+            } else if (arrData.indexOf("rentDate") !== -1) {
+                if (values[arrData].start !== null) {
+                    rentDataStart = moment(values[arrData].start).format("YYYYMMDD");
+                } else {
+                    rentDataStart = null;
+                }
+
+                if (rentDataStart !== null) {
+                    if (values[arrData].end !== null) {
+                        rentDataEnd = `|${moment(values[arrData].end).format("YYYYMMDD")}`;
+                    } else {
+                        rentDataEnd = "|";
+                    }
+                    rentData = `${rentDataStart}${rentDataEnd}`;
+                } else {
+                    rentData = "|";
+                }
+            } else if (arrData.indexOf("warehousingDate") !== -1) {
+                warehousingDate = moment(values[arrData]).format("YYYYMMDD");
             }
         }
 
-        console.log("🎩 IpArray : ", IpArray);
-        console.log("🎩 SplaArray : ", SplaArray);
-
-
-        const tempJson = JSON.stringify(JSON.stringify(values), replacer);
-
-        console.log("tempJson : ", tempJson);
-
-        // eslint-disable-next-line no-undef
-        console.log("--> ", moment(values.RentDate.start).format("YYYY-MM-DD"));
-
-
-        /*
-Contents: "기타사항↵확인↵바람"
-Cost: "5000"
-Cpu: "cpu"
-DeviceType: "8"
-Hdd: "hdd"
-HwSn: "hw"
-Idc: "15"
-Ip: "1.1.1.1"
-Ip0: "2.2.2.2"
-Ip1: "3.3.3.3"
-Ip2: "3.3.3.3"
-Memory: "memory"
-Model: "10"
-Purpos: "테스트용"
-Rack: "87"
-RentDate: {
-            start: Fri May 01 2020 00:00:00 GMT+0900 (대한민국 표준시),
-            end: Tue May 12 2020 00:00:00 GMT+0900 (대한민국 표준시)}
-Spla: "587"
-Spla0: "549"
-WarehousingDate: Fri May 01 2020 00:00:00 GMT+0900 (대한민국 표준시) {}
-__proto__: Object
-        */
-
+        // const tempJson = JSON.stringify(JSON.stringify(values), replacer);
 
         const submitData = ({
-            Contents: values.Contents,
-            Cost: values.Cost,
-            Cpu: values.Cpu,
-            DeviceType: values.DeviceType,
-            Hdd: values.Hdd,
-            HwSn: values.HwSn,
-            Memory: values.Memory,
-            Model: values.Model,
-            Purpos: values.Purpos,
-            Idc: values.Idc,
-            Rack: values.Rack,
-            Spla: SplaArray,
-            Ip: IpArray,
-/*            Idx: '',
-            OutFlag: 0,
-            CommentCnt: 0,
-            CommentLastDate: undefined,
-            RegisterId: 'test_id',
-            Password: values.Idx,
-            RegisterName: values.Idx,
-            RegisterEmail: values.Idx,
-            RegisterDate: values.Idx,
-            DeviceCode: values.Idx,
-            Model: values.Idx,
-            Contents: values.Contents,
-            Customer: values.Idx,
-            Manufacture: values.Idx,
-            DeviceType: values.Idx,
-            WarehousingDate: values.Idx,
-            RentDate: values.Idx,
-            Ownership: values.Idx,
-            OwnershipDiv: values.Idx,
-            OwnerCompany: values.Idx,
-            HwSn: values.Idx,
-            IDC: values.Idx,
-            Rack: values.Idx,
-            Cost: values.Cost,
-            Purpos: values.Idx,
-            Size: values.Idx,
-            Spla: SplaArray,
-            Ip: IpArray,
-            Cpu: values.Cpu,
-            Memory: values.Memory,
-            Hdd: values.Hdd,
-            MonitoringFlag: '',
-            MonitoringMethod: '',*/
-
+            outFlag: '',
+            commentCnt: '',
+            commentLastDate: '',
+            registerId: 'lkb',
+            registerDate: '',
+            model: values.model,
+            contents: values.contents,
+            customer: values.customer,
+            manufacture: values.manufacture,
+            deviceType: values.deviceType,
+            ownership: values.ownership,
+            ownershipDiv: values.ownershipDiv,
+            ownerCompany: values.ownerCompany,
+            hwSn: values.hwSn,
+            idc: values.idc,
+            rack: values.rack,
+            cost: values.cost,
+            purpos: values.purpos,
+            size: values.size,
+            cpu: values.cpu,
+            memory: values.memory,
+            hdd: values.hdd,
+            rackTag: values.rackTag,
+            rackLoc: values.rackLoc,
+            ip: IpArray,
+            spla: SplaArray,
+            rentDate: rentData,
+            warehousingDate,
+            monitoringFlag: '',
+            monitoringMethod: '',
+            rackCode: values.rackCode,
+            firmwareVersion: values.firmwareVersion,
+            warranty: values.warranty,
         });
 
-        console.log("🙊🙊 : ", submitData);
+        /*const submitData = ({
+            outFlag: true,
+            commentCnt: 0,
+            commentLastDate: "",
+            registerId: "lkb",
+            contents: "들어가자~↵와~",
+            cost: "3243",
+            cpu: "cpu",
+            customer: "",
+            deviceCode: "CBS09998",
+            deviceType: "7",
+            hdd: "hdd2",
+            hwSn: "hw",
+            idc: "15",
+            ip: "|22.2.2.2|1.1.1.1",
+            manufacture: undefined,
+            memory: "memory",
+            model: "39",
+            monitoringFlag: "",
+            monitoringMethod: "",
+            ownerCompany: "",
+            ownership: "1",
+            ownershipDiv: "4",
+            purpos: "5000",
+            rack: "87",
+            rackLoc: "12",
+            rackTag: "rack tag",
+            registerDate: "",
+            rentDate: "20200501|20200504",
+            size: "23",
+            spla: "|587|88",
+            warehousingDate: "20200507",
+        });*/
+
+        console.log("🙊🙊🙊🙊🙊🙊🙊 : ", submitData);
+        dispatch(postDevice('create', assetState, submitData));
     };
 
     render() {

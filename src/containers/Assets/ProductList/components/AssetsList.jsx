@@ -61,7 +61,7 @@ const overNum = 1000;
 export default class AssetsList extends PureComponent {
     state = {
         order: 'asc',
-        orderBy: 'DeviceCode',
+        orderBy: 'deviceCode',
         selected: new Map([]),
         page: 0,
         rowsPerPage: 10,
@@ -89,8 +89,8 @@ export default class AssetsList extends PureComponent {
         const submitData = ({
             idx: data.commentIdx,
             /*registerId: data.registerId,*/ //TODO 로그인한 ID
-            registerId: 'test_id',
-            comment: data.comment,
+            registerId: 'lkb',
+            contents: data.comment,
             deviceCode: data.deviceCode,
         });
 
@@ -295,17 +295,10 @@ export default class AssetsList extends PureComponent {
             page: pageNoNum + 1,
         });
         const changePageCount = pageCount + 1;
-        /*        console.log("showPage : ", showPage);
 
-                console.log("changePageCount : ", changePageCount);
-                console.log("pageCount : ", pageCount);
-                console.log("pageNoNum : ", pageNoNum);
-                console.log("pageSize : ", pageSize);
-
-                console.log("~~~", pageCount === pageSize, "~~~");
-                console.log("true : 초기화");
-                console.log("false : 유지");*/
-
+        /*console.log("pageCount : ", pageCount);
+        console.log("pageSize : ", pageSize);*/
+        // TODO overNum 처리 필요~
         if (pageCount === pageSize) {
             this.setState({
                 pageCount: 1,
@@ -489,11 +482,11 @@ export default class AssetsList extends PureComponent {
                         .sort(getSorting(order, orderBy))
                         .slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)
                         .map((d, index) => {
-                            const isSelected = this.isSelected(d.DeviceCode);
+                            const isSelected = this.isSelected(d.deviceCode);
 
                             return (
                                 <TableRow
-                                    key={d.DeviceCode}
+                                    key={d.deviceCode}
                                     className="material-table__row"
                                     role="checkbox"
                                     aria-checked={isSelected}
@@ -502,57 +495,57 @@ export default class AssetsList extends PureComponent {
                                 >
                                     <TableCell className="material-table__cell"
                                                padding="checkbox"
-                                               onClick={event => this.handleClick(event, d.DeviceCode)}>
+                                               onClick={event => this.handleClick(event, d.deviceCode)}>
                                         <Checkbox checked={isSelected}
                                                   className="material-table__checkbox"/>
                                     </TableCell>
-                                    <TableCell
+                                    {/*<TableCell
                                         className={tableCellClassName}
-                                    >{/*No*/}
+                                    >No
                                         {d.Idx}
-                                    </TableCell>
+                                    </TableCell>*/}
                                     <TableCell
                                         className={tableCellClassName}
-                                        onClick={event => this.setDeviceIdx(event, d.DeviceCode)}
+                                        onClick={event => this.setDeviceIdx(event, d.deviceCode)}
                                     >{/*장비코드*/}
                                         <b className="text_cor_green mouse_over_list">
                                             <div className="assets_add_modal_div" onClick={this.toggle}
                                                  onKeyDown={this.toggle}
                                                  role="button" tabIndex="0"><span
-                                                className="circle__ste"/>{d.DeviceCode}</div>
+                                                className="circle__ste"/>{d.deviceCode}</div>
                                         </b>
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                    >{/*구분*/}{d.DeviceType}
+                                    >{/*구분*/}{d.deviceType}
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                    >{/*제조사*/}{d.Manufacture}
+                                    >{/*제조사*/}{d.manufacture}
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                    >{/*모델명*/}{d.Model}
+                                    >{/*모델명*/}{d.model}
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                    >{/*소유권*/}{d.Ownership}
+                                    >{/*소유권*/}{d.ownership}
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                    >{/*소유권구분*/}{d.OwnerCompany}
+                                    >{/*소유권구분*/}{d.ownerCompany}
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                    >{/*고객사*/}<b className="text_cor_orange">{d.Customer}</b>
+                                    >{/*고객사*/}<b className="text_cor_orange">{d.customer}</b>
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                    >{/*IDC/위치*/}{d.IDC} {d.Rack}
+                                    >{/*IDC/위치*/}{d.idc} {d.rack}
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                    >{/*용도*/}{d.Purpos}
+                                    >{/*용도*/}{d.purpos}
                                     </TableCell>
 
                                     {assetState.deviceType === 'server'
@@ -560,11 +553,11 @@ export default class AssetsList extends PureComponent {
                                         <Fragment>
                                             <TableCell
                                                 className={tableCellClassName}
-                                            >{/*IP*/}{d.Ip}
+                                            >{/*IP*/}{d.ip}
                                             </TableCell>
                                             <TableCell
                                                 className={tableCellClassName}
-                                            >{/*크기*/}{d.Size}
+                                            >{/*크기*/}{d.size}
                                             </TableCell>
                                         </Fragment>
                                     )}
@@ -573,19 +566,19 @@ export default class AssetsList extends PureComponent {
                                         <Fragment>
                                             <TableCell
                                                 className={tableCellClassName}
-                                            >{/*IP*/}{d.Ip}
+                                            >{/*IP*/}{d.ip}
                                             </TableCell>
                                             <TableCell
                                                 className={tableCellClassName}
-                                            >{/*HW S/N*/}{d.HwSn}
+                                            >{/*HW S/N*/}{d.hwSn}
                                             </TableCell>
                                             <TableCell
                                                 className={tableCellClassName}
-                                            >{/*펌웨어*/}{d.FirmwareVersion}
+                                            >{/*펌웨어*/}{d.firmwareVersion}
                                             </TableCell>
                                             <TableCell
                                                 className={tableCellClassName}
-                                            >{/*입고일*/}{d.WarehousingDate}
+                                            >{/*입고일*/}{d.warehousingDate}
                                             </TableCell>
                                         </Fragment>
                                     )}
@@ -594,15 +587,15 @@ export default class AssetsList extends PureComponent {
                                         <Fragment>
                                             <TableCell
                                                 className={tableCellClassName}
-                                            >{/*HW S/N*/}{d.HwSn}
+                                            >{/*HW S/N*/}{d.hwSn}
                                             </TableCell>
                                             <TableCell
                                                 className={tableCellClassName}
-                                            >{/*워런티*/}{d.Warranty}
+                                            >{/*워런티*/}{d.warranty}
                                             </TableCell>
                                             <TableCell
                                                 className={tableCellClassName}
-                                            >{/*입고일*/}{d.WarehousingDate}
+                                            >{/*입고일*/}{d.warehousingDate}
                                             </TableCell>
                                         </Fragment>
                                     )}
@@ -653,7 +646,7 @@ export default class AssetsList extends PureComponent {
                         <TablePagination
                             component="div"
                             className="material-table__pagination"
-                            count={Number(assetState.page.Count)}
+                            count={Number(assetState.page.count)}
                             rowsPerPage={rowsPerPage}
                             page={pageNoNum}
                             backIconButtonProps={{

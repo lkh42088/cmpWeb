@@ -46,8 +46,8 @@ class AssetsView extends PureComponent {
             modal: false,
             showPassword: false,
             submit: {
-              type: 'comment',
-              division: 'create',
+                type: 'comment',
+                division: 'create',
             },
             comment: '',
             registerId: '',
@@ -96,9 +96,9 @@ class AssetsView extends PureComponent {
         this.setState(prevState => ({showPassword: !prevState.showPassword}));
     };
 
-/*    componentDidUpdate = (prevProps, prevState) => {
-        console.log("♡ VIEW componentDidUpdate");
-    };*/
+    /*    componentDidUpdate = (prevProps, prevState) => {
+            console.log("♡ VIEW componentDidUpdate");
+        };*/
 
     componentDidMount = () => {
         // 외부 라이브러리 연동: D3, masonry, etc
@@ -147,12 +147,11 @@ class AssetsView extends PureComponent {
         }
 
         const {
-            Idx, OutFlag, Num, CommentCnt, CommentLastDate, Option, Hit,
-            RegisterId, Password, RegisterName, RegisterEmail, RegisterDate,
-            DeviceCode, Model, Contents, Customer, Manufacture, DeviceType,
-            WarehousingDate, RentDate, Ownership, OwnerCompany, HwSn, IDC,
-            Rack, Cost, Purpos, Ip, Size, Spla, Cpu, Memory, Hdd,
-            FirmwareVersion, Warranty, MonitoringFlag, MonitoringMethod,
+            idx, outFlag, commentCnt, commentLastDate, registerId, registerDate,
+            deviceCode, model, contents, customer, manufacture, deviceType, warehousingDate,
+            rentDate, ownership, ownershipDiv, ownerCompany, hwSn, idc, rack, cost, purpos,
+            monitoringFlag, MonitoringMethod, ip, size, spla, cpu, memory, hdd, rackCode, rackTag,
+            rackLoc, firmwareVersion, warranty,
         } = deviceValue;
 
         switch (assetState.deviceType) {
@@ -164,7 +163,7 @@ class AssetsView extends PureComponent {
                                     className="modal_form__form-group-label
                                     modal_form_label_blue">CPU</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {Cpu}
+                                {cpu}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
@@ -172,7 +171,7 @@ class AssetsView extends PureComponent {
                                     className="modal_form__form-group-label
                                     modal_form_label_blue">MEMORY</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {Memory}
+                                {memory}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
@@ -180,25 +179,25 @@ class AssetsView extends PureComponent {
                                     className="modal_form__form-group-label
                                     modal_form_label_blue">HDD</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {Hdd}
+                                {hdd}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>IP</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {Ip}
+                                {ip}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>Size</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {Size}
+                                {size}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>SPLA</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {Spla}
+                                {spla}
                             </div>
                         </div>
                     </Fragment>
@@ -210,19 +209,19 @@ class AssetsView extends PureComponent {
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>IP</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {Ip}
+                                {ip}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>FirmwareVersion</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {FirmwareVersion}
+                                {firmwareVersion}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>WarehousingDate</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {WarehousingDate}
+                                {warehousingDate}
                             </div>
                         </div>
                     </Fragment>
@@ -234,13 +233,13 @@ class AssetsView extends PureComponent {
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>Warranty</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {Warranty}
+                                {warranty}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>WarehousingDate</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {WarehousingDate}
+                                {warehousingDate}
                             </div>
                         </div>
                     </Fragment>
@@ -266,7 +265,7 @@ class AssetsView extends PureComponent {
                             <span className="modal_form__form-group-label text_cor_green">장비코드</span>
                             <div className="modal_form__form-group-field" style={{display: "block"}}>
                                 <div className="float-left">
-                                    <b><h6 style={deviceStyle}>{DeviceCode}</h6></b>
+                                    <b><h6 style={deviceStyle}>{deviceCode}</h6></b>
                                 </div>
                                 <div className="assets_write__form_comment_confirm float-right"
                                      onClick={this.commentToggle} onKeyDown={this.commentToggle}
@@ -278,24 +277,25 @@ class AssetsView extends PureComponent {
                                     assets_write__modal-dialog--success ${modalClass}`}
                                 >
                                     <form onSubmit={this.handleSubmit}>
-                                    <div className="assets_write__modal__body assets_write__modal__tableLine">
-                                        <div className="modal_form__form-group">
+                                        <div className="assets_write__modal__body assets_write__modal__tableLine">
+                                            <div className="modal_form__form-group">
                                             <span className="modal_form__form-group-label text_cor_green">
-                                                작성자 [2020/12/15]</span>
-                                            <div className="modal_form__form-group-field">
-                                                {/* eslint-disable-next-line react/destructuring-assignment */}
-                                                <textarea name="comment" value={comment} className="assets_comment"
-                                                          placeholder="댓글 입력 창" onChange={this.handleChange}/>
+                                                {/*TODO 로그인 ID*/}
+                                                로그인한 ID [2020/12/15]</span>
+                                                <div className="modal_form__form-group-field">
+                                                    {/* eslint-disable-next-line react/destructuring-assignment */}
+                                                    <textarea name="comment" value={comment} className="assets_comment"
+                                                              placeholder="댓글 입력 창" onChange={this.handleChange}/>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <ButtonToolbar className="assets_write__modal__footer_comment">
-                                        <Button className="assets_write__modal_ok"
-                                                outline={colored} type="submit" color="success">등록</Button>
-                                        &nbsp;&nbsp;
-                                        <Button className="assets_write__modal_cancel"
-                                                onClick={this.commentToggle}>Cancel</Button>
-                                    </ButtonToolbar>
+                                        <ButtonToolbar className="assets_write__modal__footer_comment">
+                                            <Button className="assets_write__modal_ok"
+                                                    outline={colored} type="submit" color="success">등록</Button>
+                                            &nbsp;&nbsp;
+                                            <Button className="assets_write__modal_cancel"
+                                                    onClick={this.commentToggle}>Cancel</Button>
+                                        </ButtonToolbar>
                                     </form>
                                 </Modal>
                             </div>
@@ -303,35 +303,35 @@ class AssetsView extends PureComponent {
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>IDC / 랙번호</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {IDC}
+                                {idc}
                                 &nbsp;&nbsp;
-                                {Rack}
+                                {rack}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>제조사 / 모델명</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {Manufacture}
+                                {manufacture}
                                 &nbsp;&nbsp;
-                                {Model}
+                                {model}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>장비구분</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {DeviceType}
+                                {deviceType}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                             <span className="modal_form__form-group-label text_cor_orange">고객사명</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {Customer}
+                                {customer}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>소유권/소유권구분</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {Ownership}
+                                {ownership}
                             </div>
                             <span className="modal_form__form-group-description">
                                   Explanation.
@@ -340,31 +340,31 @@ class AssetsView extends PureComponent {
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>소유업체명</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {OwnerCompany}
+                                {ownerCompany}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>임대기간</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {RentDate}
+                                {rentDate}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>입고일</span>
                             <div className={classNameMap.formDivSubClass}>
-                                20141112
+                                {warehousingDate}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>원가</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {Cost}
+                                {cost}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>용도</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {Purpos}
+                                {purpos}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
@@ -372,7 +372,7 @@ class AssetsView extends PureComponent {
                                     className="modal_form__form-group-label
                                     modal_form_label_blue">HW S/N</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {HwSn}
+                                {hwSn}
                             </div>
                         </div>
                         {/*---------------------------------------------------------------------------------*/}
@@ -381,7 +381,7 @@ class AssetsView extends PureComponent {
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>기타사항</span>
                             <div className={classNameMap.formDivSubClass}
-                                 dangerouslySetInnerHTML={{__html: Contents}}/>
+                                 dangerouslySetInnerHTML={{__html: contents}}/>
                         </div>
                     </form>
                 </div>

@@ -87,8 +87,16 @@ class AssetsComment extends PureComponent {
         });
     };
 
+    modalClose = (division) => {
+        if (division !== 'error') {
+            this.setState(prevState => ({modalOpenFlag: !prevState.modalOpenFlag}));
+        }
+    };
+
     commentToggle = (division, val) => {
         const {assetState, dispatch} = this.props;
+
+        console.log("division : ", division);
 
         if (division === 'update') {
             this.setCommentVal(division, val);
@@ -118,11 +126,11 @@ class AssetsComment extends PureComponent {
     setCommentVal = (division, val) => {
         this.setState({
             postDivision: division,
-            comment: val.Contents,
-            commentIdx: val.Idx,
-            registerId: val.RegisterId, //TODO 로그인한 ID로 변경 필요~
-            registerName: val.RegisterName,
-            registerDate: val.RegisterDate,
+            comment: val.contents,
+            commentIdx: val.idx,
+            registerId: val.registerId, //TODO 로그인한 ID로 변경 필요~
+            registerName: val.registerName,
+            registerDate: val.registerDate,
         });
     };
 /*
@@ -169,8 +177,8 @@ class AssetsComment extends PureComponent {
                     {assetState.comments
                         .sort()
                         .map(d => (
-                            <div key={d.Idx}>
-                                <span>▶ {d.RegisterName} ({d.RegisterId}) -  [{d.RegisterDate}]</span>
+                            <div key={d.idx}>
+                                <span>▶ {d.registerName} ({d.registerId}) -  [{d.registerDate}]</span>
                                 <div className="modal_comment_del" type="button" role="button" tabIndex="0"
                                      onClick={() => this.commentToggle('delete', d)}
                                      onKeyDown={() => this.commentToggle('delete', d)}>삭제</div>
@@ -180,7 +188,7 @@ class AssetsComment extends PureComponent {
                                 >수정
                                 </div>
                                 <pre>
-                                    {d.Contents}
+                                    {d.contents}
                                 </pre>
                             </div>
                         ))}
@@ -235,6 +243,7 @@ class AssetsComment extends PureComponent {
                             assetState={assetState}
                             dispatch={dispatch}
                             modalFunc={this.commentDelete}
+                            modalClose={this.modalClose}
                         />
                         <ModalSub
                             openFlag={openFlag}
@@ -246,6 +255,7 @@ class AssetsComment extends PureComponent {
                             assetState={assetState}
                             dispatch={dispatch}
                             modalFunc={this.commentDelete}
+                            modalClose={this.modalClose}
                         />
                     </Fragment>
                 </Collapse>
