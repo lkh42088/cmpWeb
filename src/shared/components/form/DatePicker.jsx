@@ -11,7 +11,7 @@ class DatePickerField extends PureComponent {
   constructor() {
     super();
     this.state = {
-      startDate: null,
+      startDate: new Date(),
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -33,7 +33,7 @@ class DatePickerField extends PureComponent {
           className="form__form-group-datepicker"
           selected={startDate}
           onChange={this.handleChange}
-          dateFormat="yyyy/MM/dd"
+          dateFormat="yyyyMMdd"
           dropDownMode="select"
           popperPlacement="center"
           withPortal={isMobileOnly}

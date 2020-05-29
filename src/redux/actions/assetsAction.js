@@ -5,6 +5,9 @@ export const GET_DEVICES = 'GET_DEVICES';
 export const GET_DEVICES_CHECKCOUNT = 'GET_DEVICES_CHECKCOUNT';
 export const GET_DEVICE_BY_DEVICECODE = 'GET_DEVICE_BY_DEVICECODE';
 export const GET_COMMENTS_BY_DEVICECODE = 'GET_COMMENTS_BY_DEVICECODE';
+export const GET_CODES = 'GET_CODES';
+export const GET_SUBCODES = 'GET_SUBCODES';
+export const GET_COMPANIES = 'GET_COMPANIES';
 
 export const SET_DEVICE_DEVICECODE = 'SET_DEVICE_DEVICECODE';
 export const SET_COMMENT = 'SET_COMMENT';
@@ -32,6 +35,20 @@ function checkOrder(val) {
     return val;
 }
 
+function setCodeMap(val, codeType, subType) {
+    return val.map(d => d.type === codeType && d.subType === subType
+        && ({
+            codeId: d.codeId,
+            name: d.name,
+            order: d.order,
+            subType: d.subType,
+            type: d.type,
+        }))
+        .filter(d => d !== false);
+}
+
+//===================================================================================================
+
 export const setState = dispatchVal => async (dispatch) => {
     dispatch({
         type: SET_STATUS,
@@ -39,8 +56,66 @@ export const setState = dispatchVal => async (dispatch) => {
     });
 };
 
+export const getCodes = dispatchVal => async (dispatch) => {
+    try {
+        console.log("💎 getCodes start");
+        //console.log("dispatchVal : ", dispatchVal);
+        // API_ROUTE/code/$(code)/$(subcode)
+        const Codes = await axios.get(`${API_ROUTE}/codes`);
+        // CodeID: 1
+        // Name: "자사장비"
+        // Order: 1
+        // SubType: "ownership_cd_1"
+        // Type: "total"
+        const SubCodes = await axios.get(`${API_ROUTE}/subcodes`);
+        // CodeID: 58
+        // ID: 7
+        // Name: "MCS 7800"
+        // Order: 1
+
+        //const codeType = "device_/"{dispatchVal.deviceType.toString()};
+        const codeType = `device_${dispatchVal.deviceType}`;
+
+        const DeviceType = setCodeMap(Codes.data, codeType, 'device_type_cd');
+        const Manufacture = setCodeMap(Codes.data, codeType, 'manufacture_cd');
+        const Ownership = setCodeMap(Codes.data, 'total', 'ownership_cd');
+        const OwnershipDiv = setCodeMap(Codes.data, 'total', 'ownership_div_cd');
+        const Idc = setCodeMap(Codes.data, 'total', 'idc_cd');
+        const Size = setCodeMap(Codes.data, 'total', 'size_cd');
+        const Spla = setCodeMap(Codes.data, 'total', 'spla_cd');
+        const Customer = setCodeMap(Codes.data, 'total', 'customer_cd');
+        const RackCode = setCodeMap(Codes.data, 'total', 'rack_code_cd');
+
+        const submitData = ({
+            DeviceType,
+            Manufacture,
+            Ownership,
+            OwnershipDiv,
+            Idc,
+            Size,
+            Spla,
+            Customer,
+            RackCode,
+        });
+
+        dispatch({
+            type: GET_CODES,
+            payload: submitData,
+        });
+
+        dispatch({
+            type: GET_SUBCODES,
+            payload: SubCodes,
+        });
+    } catch (error) {
+        console.log("error : ", error);
+    }
+};
+
+// first dispatch
 export const fetchPosts = dispatchVal => async (dispatch) => {
     try {
+        console.log("💎 fetchPosts start");
         const rowsPerPage = checkUndefined(dispatchVal.rowsPerPage, 10);
         const orderBy = checkUndefined(dispatchVal.orderBy, "DeviceCode");
         const order = checkOrder(dispatchVal.order);
@@ -66,10 +141,10 @@ export const fetchPosts = dispatchVal => async (dispatch) => {
 
 export const fetchPostsCheckCount = dispatchVal => async (dispatch) => {
     try {
+        console.log("💎 fetchPostsCheckCount start");
         const order = checkOrder(dispatchVal.order);
         let minNum;
 
-        console.log("👽 fetchPostsCheckCount start");
         console.log("API_ROUTE/page/", dispatchVal.deviceType, "/0/", dispatchVal.overNum, "/", dispatchVal.checkPageNumCount, "/", dispatchVal.orderBy, "/", order);
 
         const res = await axios.get(`${API_ROUTE}/page/${dispatchVal.deviceType}/0/${dispatchVal.overNum}/${dispatchVal.checkPageNumCount}/${dispatchVal.orderBy}/${order}`);
@@ -103,6 +178,7 @@ export const fetchPostsCheckCount = dispatchVal => async (dispatch) => {
 // 특정 장비 가져오기
 export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
     try {
+        console.log("💎 getDeviceByIdx start");
         dispatch({
             type: SET_DEVICE_DEVICECODE,
             payload: deviceCode,
@@ -110,6 +186,9 @@ export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
 
         const res = await axios.get(`${API_ROUTE}/device/${deviceType}/${deviceCode}`);
         const comments = await axios.get(`${API_ROUTE}/comments/${deviceCode}`);
+
+        console.log("comments : ", comments.data);
+
         dispatch({
             type: GET_DEVICE_BY_DEVICECODE,
             payload: res.data,
@@ -129,9 +208,30 @@ export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
     }
 };
 
+// 고객사 name 명으로 검색하기
+export const getCompanyByName = dispatchVal => async (dispatch) => {
+    // API_ROUTE/companies/:name
+    // GET_COMPANIES
+    try {
+        console.log("💎 getCompanyByName start");
+
+        const res = await axios.get(`${API_ROUTE}/companies/${dispatchVal}`);
+
+        console.log("---> : ", res.data);
+
+        dispatch({
+            type: GET_COMPANIES,
+            payload: res.data,
+        });
+    } catch (error) {
+        console.log("getCompanyByName error : ", error);
+    }
+};
+
 // 장비 댓글 list 가져오기
 export const getDeviceCommentByDeviceCode = assetState => async (dispatch) => {
     try {
+        console.log("💎 getDeviceCommentByDeviceCode start");
         //API_ROUTE/device/comments/${deviceCode}/${type}
         const comments = await axios.get(`${API_ROUTE}/comments/${assetState.deviceByDeviceCode}`);
 
@@ -155,13 +255,74 @@ export const getDeviceCommentByDeviceCode = assetState => async (dispatch) => {
             type: GET_COMMENTS_BY_DEVICECODE,
             comment: undefined,
         });
-        console.log(" getDeviceCommentByDeviceCode error : ", error);
+        console.log("getDeviceCommentByDeviceCode error : ", error);
     }
 };
+
+// 장비 cud
+export const postDevice = (division, assetState, submitData) => async (dispatch) => {
+  try {
+      console.log("💎 postDevice start");
+      let method = '';
+      //"API_ROUTE/device/create/$(type)/"
+
+      let url = `${API_ROUTE}/device/${division}/${assetState.deviceType}`;
+      switch (division) {
+          case 'create':
+              method = 'post';
+              break;
+          case 'update':
+              method = 'put';
+              break;
+          case 'delete':
+              method = 'delete';
+              url = `${API_ROUTE}/device/${division}/${assetState.deviceType}/${submitData.idx}`;
+              break;
+          default:
+              break;
+      }
+
+      const postJsonData = JSON.stringify(submitData);
+
+      axios({
+          method,
+          url,
+          data: postJsonData,
+      })
+          .then((response) => {
+              const stateVal = ({
+                  type: 'device',
+                  division,
+                  state: 'success',
+              });
+              dispatch({
+                  type: SET_STATUS,
+                  payload: stateVal,
+              });
+          })
+          .catch((error) => {
+              console.log('error : ', error.response);
+              const stateVal = ({
+                  type: 'device',
+                  division,
+                  state: 'error',
+              });
+
+              dispatch({
+                  type: SET_STATUS,
+                  payload: stateVal,
+              });
+          });
+  } catch (error) {
+      console.log("postDevice error : ", error);
+  }
+};
+
 
 // 장비 댓글 cud
 export const postDeviceComment = (division, assetState, submitData) => async (dispatch) => {
     try {
+        console.log("💎 postDeviceComment start");
         let method = '';
         let url = `${API_ROUTE}/comment/${division}`;
         switch (division) {
@@ -178,6 +339,8 @@ export const postDeviceComment = (division, assetState, submitData) => async (di
             default:
                 break;
         }
+
+        console.log("submitData : ", submitData);
 
         const postJsonData = JSON.stringify(submitData);
         axios({

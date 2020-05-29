@@ -18,7 +18,7 @@ const board = {
     border: '1px solid red',
 };
 
-const VerticalFormHalf = ({handleSubmit, reset, t}) => (
+const _VerticalFormHalf = ({handleSubmit, reset, t}) => (
     <Col md={12} lg={12}>
         <Card className="color-picker">
             <CardBody className="card-body__assets_sch">
@@ -28,7 +28,7 @@ const VerticalFormHalf = ({handleSubmit, reset, t}) => (
     </Col>
 );
 
-VerticalFormHalf.propTypes = {
+_VerticalFormHalf.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     reset: PropTypes.func.isRequired,
     t: PropTypes.func.isRequired,
@@ -36,4 +36,4 @@ VerticalFormHalf.propTypes = {
 
 export default reduxForm({
     form: 'vertical_form_layout_half', // a unique identifier for this form
-})(withTranslation('common')(VerticalFormHalf));
+})(withTranslation('common')(_VerticalFormHalf));

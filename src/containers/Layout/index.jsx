@@ -107,7 +107,15 @@ class Layout extends Component {
     localStorage.localMenuTitle = JSON.stringify(localMenuTitle);*/
 
     if (title === '자산관리') {
-      dispatch(fetchPosts(val));
+      const dispatchVal = ({
+        deviceType: val,
+        orderBy: 'DeviceCode',
+        order: 1,
+        rowsPerPage: 10,
+        overNum: 1000,
+      });
+
+      dispatch(fetchPosts(dispatchVal));
     }
   };
 

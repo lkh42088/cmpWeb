@@ -1,16 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import {Col, Container, Row} from 'reactstrap';
-import {fetchPosts} from '../../../redux/actions/assetsAction';
+import {fetchPosts, getCodes} from '../../../redux/actions/assetsAction';
 
 import AssetsList from './components/AssetsList';
 import AssetsSearch from './components/AssetsSearch';
+import AssetsTop from './components/AssetsTop';
 
 const paddingCol = {
     paddingRight: '0px',
     paddingLeft: '0px',
 };
 
+//TODO DIR ProductList 폴터 제거
 const MaterialTable = () => {
     const assetState = useSelector(state => state.assets);
     const dispatch = useDispatch();
@@ -27,9 +29,12 @@ const MaterialTable = () => {
     });
 
     const getDevices = () => dispatch(fetchPosts(dispatchVal));
+    // TODO Reselect 사용으로 변경하기
+    const getTotalCodes = () => dispatch(getCodes(dispatchVal));
 
     useEffect(() => {
         getDevices();
+        getTotalCodes();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -37,6 +42,7 @@ const MaterialTable = () => {
         <Container>
             <Row>
                 <Col md={12} style={paddingCol}>
+                    <AssetsTop assetState={assetState} dispatch={dispatch}/>
                     <AssetsSearch/>
                     <AssetsList assetState={assetState} dispatch={dispatch}/>
                 </Col>

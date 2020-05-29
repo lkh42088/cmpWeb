@@ -24,6 +24,7 @@ class ModalComponent extends PureComponent {
         openFlag: PropTypes.bool,
         modalType: PropTypes.string.isRequired,
         modalFunc: PropTypes.func.isRequired,
+        modalClose: PropTypes.func.isRequired,
     };
 
     static defaultProps = {
@@ -42,7 +43,7 @@ class ModalComponent extends PureComponent {
 
     toggle(division) {
         const {
-            assetState, dispatch, modalType, modalFunc,
+            assetState, dispatch, modalType, modalFunc, modalClose,
         } = this.props;
 
         if (division === 'ok' && modalType === 'delete') {
@@ -63,6 +64,7 @@ class ModalComponent extends PureComponent {
             });
 
             dispatch(setState(stateVal));
+            modalClose(modalType);
         }
     }
 
