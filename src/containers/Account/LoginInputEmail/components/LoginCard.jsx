@@ -14,7 +14,6 @@ const LoginCard = ({secret}) => {
                     </h3>
                     <h4 className="account__subhead subhead">통합플랫폼</h4>
                 </div>
-                {/*<LoginFormWrap onSubmin form="log_in_form" />*/}
                 <LoginInputEmailFormWrap secret={secret} form="log_in_form" />
             </div>
         </div>

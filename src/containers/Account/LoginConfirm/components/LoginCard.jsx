@@ -1,5 +1,5 @@
 import React from 'react';
-import LoginConfirmEmailFormWrap from "./LoginInputEmail";
+import LoginConfirmEmailFormWrap from "./LoginConfirmEmailForm";
 
 const LoginCard = ({secret}) => {
     console.log('test:LoginCard - ', secret);

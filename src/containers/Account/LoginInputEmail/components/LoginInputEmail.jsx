@@ -5,21 +5,20 @@ import {Field, Form, reduxForm} from 'redux-form';
 import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import MailRuIcon from "mdi-react/MailRuIcon";
-import { changeField, initializeForm, login } from "../../../../redux/actions/authActions";
+import {changeField, login, loginEmail} from "../../../../redux/actions/authActions";
 
 // eslint-disable-next-line react/prop-types
 const LoginInputEmailForm = ({ history, secret }) => {
-    const [showPassword, setShowPassword] = useState(false);
-
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
     const {
-        form, authError, user,
+        form, authError, user, authSentEmail,
         // eslint-disable-next-line no-shadow
     } = useSelector(({ auth, user }) => ({
         form: auth.login,
         authError: auth.authError,
         user: user.user,
+        authSentEmail: auth.authSentEmail,
     }));
 
     const onChange = (e) => {
@@ -37,37 +36,24 @@ const LoginInputEmailForm = ({ history, secret }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('onSubmit');
+        console.log('LoginInputEmail: onSubmit');
         console.log('id:', form.username);
         console.log('password:', form.password);
         console.log('email:', form.email);
-        // const { username, password, email } = form;
-        // dispatch(login({ username, password }));
-
-        try {
-            const response = await axios({
-                method: 'post',
-                url: 'http://localhost:8081/api/auth/grouplogin',
-                data: {
-                    id: form.username,
-                    password: form.password,
-                    email: form.email,
-                },
-            });
-            console.log("response:", response);
-            if (response.status === 251) {
-                history.push('/log_in/confirm');
-            }
-        } catch (err) {
-            console.log('axios error:', err);
-        }
+        const { username, password, email } = form;
+        dispatch(loginEmail({ username, password, email }));
     };
 
-    // useEffect(() => {
-    //     console.log('[LoginForm 1] secret:', secret);
-    //     dispatch(initializeForm("login"));
-    //     console.log('[LoginForm 1] end');
-    // }, [dispatch]);
+    useEffect(() => {
+        console.log('[LoginForm 1]');
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (authSentEmail) {
+            console.log("isSentEmail: TRUE --> history push /log_in/confirm");
+            history.push('/log_in/confirm');
+        }
+    }, [history, authSentEmail]);
 
     useEffect(() => {
         console.log('[LoginForm 2] secret:', secret);

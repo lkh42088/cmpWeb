@@ -7,8 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {tempSetUser} from "../../../../redux/actions/userActions";
 
 // eslint-disable-next-line react/prop-types
-const LoginConfirmEmailForm = ({ history, secret }) => {
-    const [error, setError] = useState(null);
+const LoginConfirmEmailForm = ({ history }) => {
+    const [isConfirm, setIsConfirm] = useState(false);
     const dispatch = useDispatch();
     const {
         form, authError, user,
@@ -21,10 +21,12 @@ const LoginConfirmEmailForm = ({ history, secret }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('onSubmit');
+        console.log('LoginConfirmEmail: onSubmit');
         // const { username, password, email } = form;
         // dispatch(login({ username, password }));
-
+        console.log('id:', form.username);
+        console.log('password:', form.password);
+        console.log('email:', form.email);
         try {
             const response = await axios({
                 method: 'post',
@@ -37,42 +39,24 @@ const LoginConfirmEmailForm = ({ history, secret }) => {
             });
             console.log("response:", response);
             dispatch(tempSetUser(response.data.user));
+            setIsConfirm(true);
         } catch (err) {
             console.log('axios error:', err);
         }
     };
 
     useEffect(() => {
-        console.log('[LoginForm 2] secret:', secret);
-        if (authError) {
-            console.log('오류 발생');
-            console.log(authError);
-            setError('Error!!');
-            return;
-        }
-        console.log('[LoginForm 2] end');
-    }, [authError, dispatch]);
+        console.log('>>>LoginConfirm: init');
+        console.log('id:', form.username);
+        console.log('password:', form.password);
+        console.log('email:', form.email);
+    }, [dispatch]);
 
     useEffect(() => {
-        console.log('[LoginForm 3] secret:', secret);
-        if (user) {
-            console.log('check API 성공');
-            if (secret === undefined) {
-                console.log('secret is undefined');
-            } else {
-                console.log('secret is ', secret);
-            }
-            console.log(user);
-            // eslint-disable-next-line react/prop-types
-            history.push('/');
-            try {
-                localStorage.setItem('user', JSON.stringify(user));
-            } catch (e) {
-                console.log('localStorage is not working');
-            }
+        if (isConfirm) {
+            console.log("Confirm: TRUE");
         }
-        console.log('[LoginForm 3] end');
-    }, [history, user]);
+    }, [isConfirm]);
 
     return (
         <Form className="form login-form" onSubmit={handleSubmit}>

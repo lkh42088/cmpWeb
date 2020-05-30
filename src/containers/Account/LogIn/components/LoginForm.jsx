@@ -53,11 +53,12 @@ const LoginForm = ({ history }) => {
     };
 
     useEffect(() => {
+        console.log('[LoginForm 1] ');
         dispatch(initializeForm("login"));
-        console.log('[LoginForm 1] end');
     }, [dispatch]);
 
     useEffect(() => {
+        console.log('[LoginForm 2]');
         if (authError) {
             console.log('오류 발생');
             console.log(authError);
@@ -68,10 +69,10 @@ const LoginForm = ({ history }) => {
             console.log('로그인 성공');
             dispatch(check());
         }
-        console.log('[LoginForm 2] end');
     }, [auth, authError, dispatch]);
 
     useEffect(() => {
+        console.log('[LoginForm 3] ');
         if (user) {
             console.log('check API 성공');
             // eslint-disable-next-line react/prop-types
@@ -82,19 +83,18 @@ const LoginForm = ({ history }) => {
                 console.log('localStorage is not working');
             }
         }
-        console.log('[LoginForm 3] end');
     }, [history, user]);
 
     useEffect(() => {
-        console.log("authUser: ", authSentEmail);
-        if (authSentEmail) {
+        console.log("authSentEmail: ", authSentEmail);
+        if (authSentEmail === true) {
             history.push('/log_in/confirm');
         }
     }, [authSentEmail]);
 
     useEffect(() => {
         console.log("authInputEmail: ", authInputEmail);
-        if (authInputEmail) {
+        if (authInputEmail === true) {
             history.push('/log_in/input_email');
         }
     }, [authInputEmail]);
