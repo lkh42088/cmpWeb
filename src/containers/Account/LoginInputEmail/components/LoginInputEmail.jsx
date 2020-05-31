@@ -46,6 +46,9 @@ const LoginInputEmailForm = ({ history, secret }) => {
 
     useEffect(() => {
         console.log('[LoginForm 1]');
+        if (form.username === "" || form.password === "") {
+            history.push('/log_in');
+        }
     }, [dispatch]);
 
     useEffect(() => {

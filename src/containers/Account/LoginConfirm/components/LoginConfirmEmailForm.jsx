@@ -4,17 +4,18 @@ import { Button, ButtonToolbar } from 'reactstrap';
 import {Field, Form, reduxForm} from 'redux-form';
 import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import {tempSetUser} from "../../../../redux/actions/userActions";
+import {check, tempSetUser} from "../../../../redux/actions/userActions";
+import {loginConfirm} from "../../../../redux/actions/authActions";
 
 // eslint-disable-next-line react/prop-types
 const LoginConfirmEmailForm = ({ history }) => {
-    const [isConfirm, setIsConfirm] = useState(false);
     const dispatch = useDispatch();
     const {
-        form, authError, user,
+        form, auth, authError, user,
         // eslint-disable-next-line no-shadow
     } = useSelector(({ auth, user }) => ({
         form: auth.login,
+        auth: auth.auth,
         authError: auth.authError,
         user: user.user,
     }));
@@ -22,27 +23,11 @@ const LoginConfirmEmailForm = ({ history }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log('LoginConfirmEmail: onSubmit');
-        // const { username, password, email } = form;
-        // dispatch(login({ username, password }));
-        console.log('id:', form.username);
-        console.log('password:', form.password);
-        console.log('email:', form.email);
-        try {
-            const response = await axios({
-                method: 'post',
-                url: 'http://localhost:8081/api/auth/confirm',
-                data: {
-                    id: form.username,
-                    password: form.password,
-                    email: form.email,
-                },
-            });
-            console.log("response:", response);
-            dispatch(tempSetUser(response.data.user));
-            setIsConfirm(true);
-        } catch (err) {
-            console.log('axios error:', err);
-        }
+        const { username, password, email } = form;
+        console.log('username:', {username});
+        console.log('pw:', {username});
+        console.log('email:', {username});
+        dispatch(loginConfirm({username, password, email}));
     };
 
     useEffect(() => {
@@ -50,13 +35,33 @@ const LoginConfirmEmailForm = ({ history }) => {
         console.log('id:', form.username);
         console.log('password:', form.password);
         console.log('email:', form.email);
+        if (form.username === "" || form.password === "") {
+            history.push('/log_in');
+        } else if (form.email === "") {
+            history.push('/log_in/input_email');
+        }
     }, [dispatch]);
 
     useEffect(() => {
-        if (isConfirm) {
-            console.log("Confirm: TRUE");
+        console.log("auth..");
+        if (auth) {
+            console.log("auth:", user, " --> user");
+            dispatch(check());
         }
-    }, [isConfirm]);
+    }, [auth]);
+
+    useEffect(() => {
+        console.log("user..");
+        if (user) {
+            console.log("user:", user, " --> history");
+            history.push('/');
+            try {
+                localStorage.setItem('user', JSON.stringify(user));
+            } catch (e) {
+                console.log('localStorage is not working');
+            }
+        }
+    }, [user]);
 
     return (
         <Form className="form login-form" onSubmit={handleSubmit}>
