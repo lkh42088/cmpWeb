@@ -4,17 +4,25 @@ import { MdAdd } from 'react-icons/md';
 const EmailAuthInsert = ({onInsert}) => {
     const [value, setValue] = useState('');
 
-    const onChange = useCallback((e) => {
+    const onChange = (e) => {
         setValue(e.target.value);
-    }, []);
-
-    const onClick = useCallback((e) => {
+    };
+    // const onChange = useCallback((e) => {
+    //     setValue(e.target.value);
+    // }, []);
+    const onClick = (e) => {
+        e.preventDefault();
         console.log('EmailAuthInsert: ', value);
         onInsert(value);
         setValue('');
-
-        e.preventDefault();
-    }, [onInsert, value]);
+    };
+    // const onClick = useCallback((e) => {
+    //     console.log('EmailAuthInsert: ', value);
+    //     onInsert(value);
+    //     setValue('');
+    //
+    //     e.preventDefault();
+    // }, [onInsert, value]);
 
     return (
         <div>

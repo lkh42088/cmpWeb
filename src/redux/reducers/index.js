@@ -10,6 +10,7 @@ import titleReducer from './titleReducer';
 import authReducer from "./authReducer";
 import userReducer from "./userReducer";
 import loadingReducer from "./loadingReducer";
+import regUserReducer from "./regUserReducer";
 
 export {
     themeReducer,
@@ -24,4 +25,5 @@ export {
     authReducer,
     userReducer,
     loadingReducer,
+    regUserReducer,
 };
