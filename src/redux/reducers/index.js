@@ -8,7 +8,7 @@ import todoReducer from './todoReducer';
 import assetsReducer from './assetsReducer';
 import titleReducer from './titleReducer';
 import authReducer from "./authReducer";
-import userReducer from "./userReducer";
+import accountReducer from "./accountReducer";
 import loadingReducer from "./loadingReducer";
 import regUserReducer from "./regUserReducer";
 
@@ -23,7 +23,7 @@ export {
     assetsReducer,
     titleReducer,
     authReducer,
-    userReducer,
+    accountReducer,
     loadingReducer,
     regUserReducer,
 };

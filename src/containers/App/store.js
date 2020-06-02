@@ -16,12 +16,12 @@ import {
     assetsReducer,
     titleReducer,
     authReducer,
-    userReducer,
+    accountReducer,
     loadingReducer,
     regUserReducer,
 } from '../../redux/reducers/index';
 import {authSaga} from "../../redux/actions/authActions";
-import {tempSetUser, check, userSaga} from "../../redux/actions/userActions";
+import {tempSetUser, check, userSaga} from "../../redux/actions/accountActions";
 import {regUserSaga} from "../../redux/actions/regUserActions";
 /*import { composeWithDevTools } from 'redux-devtools-extension';*/
 
@@ -39,7 +39,7 @@ const rootReducer = combineReducers({
     menuTitle: titleReducer,
     auth: authReducer,
     loading: loadingReducer,
-    user: userReducer,
+    account: accountReducer,
     regUser: regUserReducer,
 });
 
