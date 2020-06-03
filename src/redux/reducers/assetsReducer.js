@@ -10,12 +10,16 @@ import {
     SET_COMMENT,
     GET_COMMENTS_BY_DEVICECODE,
     GET_DEVICES_CHECKCOUNT, SET_STATUS,
+    GET_DEVICE_ORI_BY_DEVICECODE, SET_MODAL_DIVISION,
 } from "../actions/assetsAction";
 
 export const initialState = {
     deviceType: 'server',
     deviceByDeviceCode: '1',
+    viewModalDivison: 'read',
     device: {},
+    deviceIp: {},
+    deviceOri: {},
     devices: List([
         Map({}),
     ]),
@@ -115,6 +119,12 @@ const assetsReducer = (state = initialState, action) => {
                 device: payload,
                 comments: comment,
             };
+        case GET_DEVICE_ORI_BY_DEVICECODE:
+            return {
+                ...state,
+                deviceOri: payload,
+                deviceIp: page,
+            };
         case SET_DEVICE_DEVICECODE:
             console.log("reducer : ", payload);
             return {
@@ -140,6 +150,11 @@ const assetsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 stateVal: payload,
+            };
+        case SET_MODAL_DIVISION:
+            return {
+                ...state,
+                viewModalDivison: payload,
             };
         default:
             return state;

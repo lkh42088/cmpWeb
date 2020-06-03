@@ -398,7 +398,7 @@ class AssetsWrite extends PureComponent {
 
         let viewContent;
 
-        console.log("render searchCustomerId : ", searchCustomerId);
+        //console.log("render searchCustomerId : ", searchCustomerId);
 
         switch (assetState.deviceType) {
             case 'server':
@@ -455,8 +455,8 @@ class AssetsWrite extends PureComponent {
                                 />
                                 <svg className="mdi-icon " width="24" height="24" fill="currentColor"
                                      viewBox="0 0 24 24"
-                                     onClick={event => this.setHtmlPlus('Ip')}
-                                     onKeyDown={event => this.setHtmlPlus('Ip')}
+                                     onClick={event => this.setHtmlPlus('ip')}
+                                     onKeyDown={event => this.setHtmlPlus('ip')}
                                      role="button" tabIndex="0">
                                     <PlusIcon/>
                                 </svg>
@@ -876,7 +876,7 @@ class AssetsWrite extends PureComponent {
                             <span className="modal_form__form-group-label">용도</span>
                             <div className="modal_form__form-group-field">
                                 <Field
-                                    name="purpos"
+                                    name="purpose"
                                     component="input"
                                     className="input_col_10"
                                     type="text"
@@ -931,9 +931,9 @@ class AssetsWrite extends PureComponent {
                             </div>
                         </div>
                         <ButtonToolbar className="assets_write__modal__footer_comment">
-                            <Button className="assets_write__modal_ok"
+                            {/*<Button className="assets_write__modal_ok"
                                     color="success"
-                                    onClick={this.searchToggle}>Submit</Button>&nbsp;&nbsp;
+                                    onClick={this.searchToggle}>Submit</Button>&nbsp;&nbsp;*/}
                             <Button className="assets_write__modal_cancel"
                                     onClick={this.searchToggle}>Cancel</Button>
                         </ButtonToolbar>

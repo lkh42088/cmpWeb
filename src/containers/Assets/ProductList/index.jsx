@@ -20,6 +20,7 @@ const MaterialTable = () => {
     //console.log("최상위 index assetState : ", assetState);
 
     //overNum 값 10으로 test 한다면 list component의 overPageCheckr값 다시 설정해야함
+    // todo 다시 확인...
     const dispatchVal = ({
         deviceType: 'server',
         orderBy: 'DeviceCode',

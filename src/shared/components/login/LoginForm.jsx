@@ -97,6 +97,8 @@ const LoginForm = ({ history, secret }) => {
         setShowPassword(!showPassword);
     };
 
+    console.log("form : ", form);
+
     return (
         <Form className="form login-form" onSubmit={handleSubmit}>
             <div className="form__form-group">
