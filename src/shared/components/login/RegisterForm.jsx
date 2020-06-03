@@ -17,7 +17,7 @@ const RegisterForm = ({history}) => {
     const {
         form,
         // eslint-disable-next-line no-shadow
-    } = useSelector(({ auth, user }) => ({
+    } = useSelector(({ auth, account }) => ({
         form: auth.register,
     }));
 

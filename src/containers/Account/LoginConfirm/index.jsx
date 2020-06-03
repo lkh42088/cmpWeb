@@ -1,15 +1,14 @@
 import React from 'react';
 import LoginCard from './components/LoginCard';
 
-const LogIn = ({ match }) => {
-    const { id } = match.params;
+const LogInConfirmEmail = ({ match }) => {
     const { secret } = match.params;
     // console.log("LogIN - secret:", secret === undefined);
     return (
         <div className="account account--not-photo">
-            <LoginCard id={id} secret={secret} />
+            <LoginCard secret={secret}/>
         </div>
     );
 };
 
-export default LogIn;
+export default LogInConfirmEmail;

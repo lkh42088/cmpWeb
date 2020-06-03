@@ -3,7 +3,7 @@ import {
     TEMP_SET_USER,
     CHECK_SUCCESS,
     CHECK_FAILURE, LOGOUT,
-} from "../actions/userActions";
+} from "../actions/accountActions";
 
 const initialState = {
     user: null,

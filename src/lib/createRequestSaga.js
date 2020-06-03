@@ -14,17 +14,17 @@ export default function createRequestSaga(type, request) {
     console.log('createRequestSaga: ', type);
     // eslint-disable-next-line func-names
     return function* (action) {
-        console.log('function: ', type);
+        console.log('Saga action: ', type);
         yield put(startLoading(type));
         try {
             const response = yield call(request, action.payload);
-            console.log('success: ', type);
+            console.log('type:', SUCCESS);
             yield put({
                 type: SUCCESS,
                 payload: response.data,
             });
         } catch (e) {
-            console.log('fail: ', type);
+            console.log('Saga fail: ', FAILURE, 'payload(e):', e);
             yield put({
                 type: FAILURE,
                 payload: e,

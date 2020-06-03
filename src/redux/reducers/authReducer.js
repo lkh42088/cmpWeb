@@ -6,7 +6,9 @@ import {
     REGISTER_SUCCESS,
     REGISTER_FAILURE,
     LOGIN_SUCCESS,
-    LOGIN_FAILURE,
+    LOGIN_FAILURE, LOGIN_INPUT_EMAIL,
+    LOGIN_SENT_EMAIL, LOGIN_EMAIL_SENT_EMAIL, LOGIN_EMAIL_INPUT_EMAIL,
+    LOGIN_CONFIRM_SUCCESS, LOGIN_CONFIRM_FAILURE,
 } from '../actions/authActions';
 
 // 초기 값
@@ -21,9 +23,12 @@ const initialState = {
     login: {
         username: '',
         password: '',
+        email: '',
     },
     auth: null,
     authError: null,
+    authSentEmail: false,
+    authInputEmail: false,
 };
 
 const authReducer = handleActions(
@@ -51,6 +56,31 @@ const authReducer = handleActions(
             auth,
         }),
         [LOGIN_FAILURE]: (state, { payload: error }) => ({
+            ...state,
+            authError: error,
+        }),
+        [LOGIN_SENT_EMAIL]: (state, { payload: error }) => ({
+            ...state,
+            authSentEmail: true,
+        }),
+        [LOGIN_INPUT_EMAIL]: (state, { payload: error }) => ({
+            ...state,
+            authInputEmail: true,
+        }),
+        [LOGIN_EMAIL_SENT_EMAIL]: (state, { payload: error }) => ({
+            ...state,
+            authSentEmail: true,
+        }),
+        [LOGIN_EMAIL_INPUT_EMAIL]: (state, { payload: error }) => ({
+            ...state,
+            authInputEmail: true,
+        }),
+        [LOGIN_CONFIRM_SUCCESS]: (state, { payload: auth }) => ({
+            ...state,
+            authError: null,
+            auth,
+        }),
+        [LOGIN_CONFIRM_FAILURE]: (state, { payload: error }) => ({
             ...state,
             authError: error,
         }),

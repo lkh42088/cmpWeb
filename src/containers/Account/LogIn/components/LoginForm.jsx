@@ -6,12 +6,12 @@ import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
 import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
 import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { changeField, initializeForm, login } from "../../../redux/actions/authActions";
-import { check } from "../../../redux/actions/accountActions";
-import renderCheckBoxField from '../form/CheckBox';
+import { changeField, initializeForm, login } from "../../../../redux/actions/authActions";
+import { check } from "../../../../redux/actions/accountActions";
+import renderCheckBoxField from '../../../../shared/components/form/CheckBox';
 
 // eslint-disable-next-line react/prop-types
-const LoginForm = ({ history, secret }) => {
+const LoginForm = ({ history }) => {
     const rememberForm = 'log_in_form';
     const typeFieldUser = 'text';
     const [showPassword, setShowPassword] = useState(false);
@@ -19,11 +19,13 @@ const LoginForm = ({ history, secret }) => {
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
     const {
-        form, auth, authError, user,
+        form, auth, authInputEmail, authSentEmail, authError, user,
         // eslint-disable-next-line no-shadow
     } = useSelector(({ auth, account }) => ({
         form: auth.login,
         auth: auth.auth,
+        authInputEmail: auth.authInputEmail,
+        authSentEmail: auth.authSentEmail,
         authError: auth.authError,
         user: account.user,
     }));
@@ -51,13 +53,12 @@ const LoginForm = ({ history, secret }) => {
     };
 
     useEffect(() => {
-        console.log('[LoginForm 1] secret:', secret);
+        console.log('[LoginForm 1] ');
         dispatch(initializeForm("login"));
-        console.log('[LoginForm 1] end');
     }, [dispatch]);
 
     useEffect(() => {
-        console.log('[LoginForm 2] secret:', secret);
+        console.log('[LoginForm 2]');
         if (authError) {
             console.log('오류 발생');
             console.log(authError);
@@ -68,19 +69,12 @@ const LoginForm = ({ history, secret }) => {
             console.log('로그인 성공');
             dispatch(check());
         }
-        console.log('[LoginForm 2] end');
     }, [auth, authError, dispatch]);
 
     useEffect(() => {
-        console.log('[LoginForm 3] secret:', secret);
+        console.log('[LoginForm 3] ');
         if (user) {
             console.log('check API 성공');
-            if (secret === undefined) {
-                console.log('secret is undefined');
-            } else {
-                console.log('secret is ', secret);
-            }
-            console.log(user);
             // eslint-disable-next-line react/prop-types
             history.push('/');
             try {
@@ -89,8 +83,21 @@ const LoginForm = ({ history, secret }) => {
                 console.log('localStorage is not working');
             }
         }
-        console.log('[LoginForm 3] end');
     }, [history, user]);
+
+    useEffect(() => {
+        console.log("authSentEmail: ", authSentEmail);
+        if (authSentEmail === true) {
+            history.push('/log_in/confirm');
+        }
+    }, [authSentEmail]);
+
+    useEffect(() => {
+        console.log("authInputEmail: ", authInputEmail);
+        if (authInputEmail === true) {
+            history.push('/log_in/input_email');
+        }
+    }, [authInputEmail]);
 
     const changeShowPassword = (e) => {
         e.preventDefault();
