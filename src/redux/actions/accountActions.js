@@ -1,11 +1,11 @@
-import { createAction, handleActions } from 'redux-actions';
+import { createAction } from 'redux-actions';
 import { takeLatest, call } from 'redux-saga/effects';
 import * as authAPI from '../../lib/api/auth';
-import createRequestSaga, { createRequestActionTypes } from '../../lib/createRequestSaga';
+import createLoginRequestSaga, {createLoginActionTypes} from "../../lib/createLoginSaga";
 
 export const TEMP_SET_USER = 'user/TEMP_SET_USER';
 
-export const [CHECK, CHECK_SUCCESS, CHECK_FAILURE] = createRequestActionTypes(
+export const [CHECK, CHECK_SUCCESS, CHECK_FAILURE] = createLoginActionTypes(
     'user/CHECK',
 );
 
@@ -15,7 +15,7 @@ export const tempSetUser = createAction(TEMP_SET_USER, user => user);
 export const check = createAction(CHECK);
 export const logout = createAction(LOGOUT);
 
-const checkSaga = createRequestSaga(CHECK, authAPI.check);
+const checkSaga = createLoginRequestSaga(CHECK, authAPI.check);
 
 function* logoutSaga() {
     try {

@@ -2,6 +2,7 @@ import {combineReducers, createStore, applyMiddleware } from 'redux';
 import {reducer as reduxFormReducer} from 'redux-form';
 import { all } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
+import {createLogger} from 'redux-logger';
 import ReduxThunk from "redux-thunk";
 
 import {
@@ -15,15 +16,17 @@ import {
     assetsReducer,
     titleReducer,
     authReducer,
-    userReducer,
+    accountReducer,
     loadingReducer,
+    regUserReducer,
 } from '../../redux/reducers/index';
 import {authSaga} from "../../redux/actions/authActions";
-import {tempSetUser, check, userSaga} from "../../redux/actions/userActions";
+import {tempSetUser, check, userSaga} from "../../redux/actions/accountActions";
+import {regUserSaga} from "../../redux/actions/regUserActions";
 /*import { composeWithDevTools } from 'redux-devtools-extension';*/
 
 // 여러 리듀서를 쉽게 처리하기 위해 만든 메서드 => combineReducers
-const reducer = combineReducers({
+const rootReducer = combineReducers({
     form: reduxFormReducer, // mounted under "form",
     theme: themeReducer,
     rtl: rtlReducer,
@@ -35,18 +38,21 @@ const reducer = combineReducers({
     assets: assetsReducer,
     menuTitle: titleReducer,
     auth: authReducer,
-    user: userReducer,
     loading: loadingReducer,
+    account: accountReducer,
+    regUser: regUserReducer,
 });
 
 export function* rootSaga() {
-    yield all([authSaga(), userSaga()]);
+    yield all([authSaga(), userSaga(), regUserSaga()]);
 }
 
+const logger = createLogger();
 export const sagaMiddleware = createSagaMiddleware();
-
-//  리듀서를 파라미터로 받으며, 스토어를 만듬 => createStore()
-const store = createStore(reducer, applyMiddleware(ReduxThunk, sagaMiddleware));
+const store = createStore(
+    rootReducer,
+    applyMiddleware(logger, ReduxThunk, sagaMiddleware),
+);
 
 export function loadUser() {
     try {
@@ -59,5 +65,8 @@ export function loadUser() {
         console.log('localStorage is not working');
     }
 }
+
+sagaMiddleware.run(rootSaga);
+loadUser();
 
 export default store;

@@ -1,24 +1,17 @@
 import React, {Component, Fragment} from 'react';
 import {connect, Provider} from 'react-redux';
-// Provider 컴포넌트를 사용하여 프로젝트에 리덕스 적용
-// store를 props로 전달해 줘야 함
 import {BrowserRouter} from 'react-router-dom';
 import {I18nextProvider} from 'react-i18next';
 import i18next from 'i18next';
-/*import * as firebase from 'firebase/app';*/
-/*import 'firebase/auth';*/
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {hot} from 'react-hot-loader';
-import axios from 'axios';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
 import '../../scss/app.scss';
 import PropTypes from 'prop-types';
-import {applyMiddleware, createStore} from "redux";
-import ReduxThunk from "redux-thunk";
 import Router from './Router';
-import store, {sagaMiddleware, rootSaga, loadUser} from './store';
+import store from './store';
 import ScrollToTop from './ScrollToTop';
 import {config as i18nextConfig} from '../../translations';
 import Loading from '../../shared/components/Loading';
@@ -61,23 +54,10 @@ class App extends Component {
             this.setState({loading: false});
             setTimeout(() => this.setState({loaded: true}), 200);
         });
-        /*firebase.initializeApp(firebaseConfig);*/
     }
-
-    /*onRedirectCallbackAuth0 = (appState) => {
-      window.history.replaceState(
-        {},
-        document.title,
-        appState && appState.targetUrl
-          ? appState.targetUrl
-          : window.location.pathname,
-      );
-    };*/
 
     render() {
         const {loaded, loading} = this.state;
-        sagaMiddleware.run(rootSaga);
-        loadUser();
         return (
             <Provider store={store}>
                 <BrowserRouter>

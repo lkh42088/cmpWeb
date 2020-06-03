@@ -7,7 +7,7 @@ import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
 import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { changeField, initializeForm, login } from "../../../../redux/actions/authActions";
-import { check } from "../../../../redux/actions/userActions";
+import { check } from "../../../../redux/actions/accountActions";
 import renderCheckBoxField from '../../../../shared/components/form/CheckBox';
 
 // eslint-disable-next-line react/prop-types
@@ -21,13 +21,13 @@ const LoginForm = ({ history }) => {
     const {
         form, auth, authInputEmail, authSentEmail, authError, user,
         // eslint-disable-next-line no-shadow
-    } = useSelector(({ auth, user }) => ({
+    } = useSelector(({ auth, account }) => ({
         form: auth.login,
         auth: auth.auth,
         authInputEmail: auth.authInputEmail,
         authSentEmail: auth.authSentEmail,
         authError: auth.authError,
-        user: user.user,
+        user: account.user,
     }));
 
     const onChange = (e) => {

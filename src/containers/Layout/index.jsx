@@ -27,7 +27,7 @@ import { changeBorderRadius, toggleBoxShadow, toggleTopNavigation } from '../../
 import {
   CustomizerProps, SidebarProps, ThemeProps, RTLProps, UserProps, MenuTitleProps,
 } from '../../shared/prop-types/ReducerProps';
-import {logout} from "../../redux/actions/userActions";
+import {logout} from "../../redux/actions/accountActions";
 
 let notification = null;
 
