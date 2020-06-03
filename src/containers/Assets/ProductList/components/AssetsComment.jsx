@@ -96,7 +96,7 @@ class AssetsComment extends PureComponent {
     commentToggle = (division, val) => {
         const {assetState, dispatch} = this.props;
 
-        console.log("division : ", division);
+        //console.log("division : ", division);
 
         if (division === 'update') {
             this.setCommentVal(division, val);
