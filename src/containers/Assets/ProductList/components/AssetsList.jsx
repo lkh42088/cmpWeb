@@ -224,8 +224,8 @@ export default class AssetsList extends PureComponent {
 
         console.log("👔 start------------------------------------> 이전");
         console.log("showPage : ", showPage);
-        console.log("changePageCount : ", changePageCount);
-        console.log("changePageNoNum : ", changePageNoNum);
+        // console.log("changePageCount : ", changePageCount);
+        // console.log("changePageNoNum : ", changePageNoNum);
         console.log("pageCount : ", pageCount);
         console.log("pageNoNum : ", pageNoNum);
         console.log("pageSize : ", pageSize);
@@ -258,8 +258,8 @@ export default class AssetsList extends PureComponent {
         }
         console.log("👔 End------------------------------------> 이전");
         console.log("showPage : ", showPage);
-        console.log("changePageCount : ", changePageCount);
-        console.log("changePageNoNum : ", changePageNoNum);
+        // console.log("changePageCount : ", changePageCount);
+        // console.log("changePageNoNum : ", changePageNoNum);
         console.log("pageCount : ", pageCount);
         console.log("pageNoNum : ", pageNoNum);
         console.log("pageSize : ", pageSize);
