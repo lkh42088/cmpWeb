@@ -17,7 +17,7 @@ const LoginInputEmailForm = ({ history, secret }) => {
     } = useSelector(({ auth, account }) => ({
         form: auth.login,
         authError: auth.authError,
-        user: user.user,
+        user: account.user,
         authSentEmail: auth.authSentEmail,
     }));
 

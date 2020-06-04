@@ -165,25 +165,13 @@ export default class AssetsList extends PureComponent {
         this.setState({selected: newSelected});
     };
 
-    handleChangePageBack = () => {
+    handleChangePageBackOld = () => {
         const {assetState, dispatch} = this.props;
         const {
             orderBy, rowsPerPage, order, showPage, page,
             pageCount, pageSize, pageNoNum,
         } = this.state;
-        const changePageCount = pageCount - 1;
-        const changePageNoNum = pageNoNum - 1;
         const checkPageNumCount = (showPage - 1) * rowsPerPage;
-
-        /*        console.log("👔 start------------------------------------> 이전");
-                //this.setState({pageCount: pageCount - 1});
-                console.log("showPage : ", showPage);
-
-                console.log("changePageCount : ", changePageCount);
-                console.log("changePageNoNum : ", changePageNoNum);
-                console.log("pageCount : ", pageCount);
-                console.log("pageNoNum : ", pageNoNum);
-                console.log("pageSize : ", pageSize);*/
 
         if (showPage !== 1) {
             if (pageNoNum === 0) { // 초기화 된 상태
@@ -214,6 +202,60 @@ export default class AssetsList extends PureComponent {
                 });
             }
         }
+    };
+
+    handleChangePageBack = () => {
+        const {assetState, dispatch} = this.props;
+        const {
+            orderBy, rowsPerPage, order, showPage, page,
+            pageCount, pageSize, pageNoNum,
+        } = this.state;
+        const changePageCount = pageCount - 1;
+        const changePageNoNum = pageNoNum - 1;
+        const checkPageNumCount = (showPage - 1) * rowsPerPage;
+
+        console.log("👔 start------------------------------------> 이전");
+        console.log("showPage : ", showPage);
+        console.log("changePageCount : ", changePageCount);
+        console.log("changePageNoNum : ", changePageNoNum);
+        console.log("pageCount : ", pageCount);
+        console.log("pageNoNum : ", pageNoNum);
+        console.log("pageSize : ", pageSize);
+        if (showPage !== 1) {
+            if (pageNoNum === 0) { // 초기화 된 상태
+                this.setState({
+                    pageCount: pageSize,
+                    pageNoNum: pageSize - 1,
+                    page: pageSize - 1,
+                    showPage: showPage - 1,
+                });
+                const dispatchVal = ({
+                    deviceType: assetState.deviceType,
+                    checkPageNumCount: Number(checkPageNumCount),
+                    orderBy,
+                    order,
+                    rowsPerPage,
+                    showPage,
+                    overNum,
+                });
+                dispatch(fetchPostsCheckCount(dispatchVal));
+            } else {
+                this.setState({
+                    pageCount: pageCount - 1,
+                    pageNoNum: pageNoNum - 1,
+                    page: pageNoNum - 1,
+                    showPage: showPage - 1,
+                });
+            }
+        }
+        console.log("👔 End------------------------------------> 이전");
+        console.log("showPage : ", showPage);
+        console.log("changePageCount : ", changePageCount);
+        console.log("changePageNoNum : ", changePageNoNum);
+        console.log("pageCount : ", pageCount);
+        console.log("pageNoNum : ", pageNoNum);
+        console.log("pageSize : ", pageSize);
+
 
         /*        console.log("overPageCheck : ", overPageCheck);
                 console.log("pageMaxCount : ", pageMaxCount);
