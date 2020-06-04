@@ -11,19 +11,20 @@ import Checkbox from "@material-ui/core/Checkbox";
 import {getUserList} from "../../../../redux/actions/usersActions";
 import UserHead from "./UserHead";
 import {
-    pagingChangeCurrentPage,
+    pagingChangeCurrentPageNext, pagingChangeCurrentPagePrev,
     pagingChangeRowsPerPage,
-    pagingChangeTotalCount, pagingChangeTotalPage,
+    pagingChangeTotalCount,
 } from "../../../../redux/actions/pagingActions";
 
 const UserList = () => {
     const dispatch = useDispatch();
     const {
-        users, page, paging, rowsPerPage, currentPage, totalPage, totalCount, displayRowsList,
+        users, getPage, pageBeginRow, rowsPerPage, currentPage, totalPage, totalCount, displayRowsList,
     } = useSelector(({userList, pagination}) => ({
         users: userList.users,
-        page: userList.page,
-        paging: pagination,
+        getPage: userList.page,
+        // Pagination
+        pageBeginRow: pagination.pageBeginRow,
         rowsPerPage: pagination.rowsPerPage,
         currentPage: pagination.currentPage,
         totalPage: pagination.totalPage,
@@ -43,37 +44,31 @@ const UserList = () => {
         console.log("[update]", count);
         console.log("--> totalCount:", totalCount);
         console.log("--> rowsPerPage:", rowsPerPage);
-        console.log("--> totalPage:", totalPage);
-        if (count === 0) {
-            dispatch(pagingChangeTotalPage({totalPage: 1}));
-        } else if (count !== totalCount) {
+        if (count !== totalCount) {
+            console.log("Change TotalCount");
             dispatch(pagingChangeTotalCount({totalCount: count}));
-            const total = (count / rowsPerPage);
-            console.log("--> count:", count);
-            console.log("--> total:", total);
-            if (total !== totalPage) {
-                dispatch(pagingChangeTotalPage({totalPage: Math.ceil(total)}));
-            }
         }
     };
 
     const handleChangePagePrev = () => {
         if (currentPage > 1) {
-            // dispatch(pagingChangeCurrentPage(currentPage - 1));
+            const pageNum = currentPage - 1;
+            dispatch(pagingChangeCurrentPagePrev());
         }
     };
 
     const handleChangePageNext = () => {
         if (currentPage < totalCount) {
-            // dispatch(pagingChangeCurrentPage(currentPage + 1));
+            const pageNum = currentPage + 1;
+            dispatch(pagingChangeCurrentPageNext());
         }
     };
 
     const handleChangeRowsPerPage = (e) => {
         const changeRows = Number(e.target.value);
-        console.log("[changeRowsPerPage]");
+        console.log("[handleChangeRowsPerPage]");
         console.log("--> ", changeRows);
-        dispatch(pagingChangeRowsPerPage({changeRows}));
+        dispatch(pagingChangeRowsPerPage({rowsPerPage: changeRows}));
     };
 
     const getPageData = () => {
@@ -86,45 +81,50 @@ const UserList = () => {
     };
 
     useEffect(() => {
-        getPageData();
     }, []);
-
-    useEffect(() => {
-        console.log("[useEffect] paging: ", paging);
-    }, [paging]);
 
     useEffect(() => {
         console.log("[useEffect] rowsPerPage - ", rowsPerPage);
     }, [rowsPerPage]);
 
     useEffect(() => {
-        if (page) {
-            const {count} = page;
-            console.log("[page]", page);
+        if (getPage) {
+            const {count} = getPage;
+            console.log("[getPage]", getPage);
             console.log("--> count", count);
             updatePagingTotalCount({count});
         }
-    }, [page]);
+    }, [getPage]);
 
     useEffect(() => {
         dumpPagingVar({location: "[USERS]"});
-        console.log("page:", page);
+        console.log("getPage:", getPage);
         if (users) {
             console.log("[users]");
             console.log(users);
         }
     }, [users]);
 
-
     useEffect(() => {
         dumpPagingVar({location: "[INIT]"});
     }, [totalCount]);
 
+    useEffect(() => {
+        console.log("[useEffect] rowsPerPage");
+        getPageData();
+    }, [rowsPerPage]);
+
+    useEffect(() => {
+        console.log("[useEffect] pageBeginRow");
+        getPageData();
+    }, [pageBeginRow]);
+
     const usersTable = (
         <TableBody>
             { users
+                // .slice(pagingRedux.pageBeginRow, pagingRedux.pageEndRow)
                 .map((user) => {
-                    console.log("map..");
+                    console.log("rendering map...");
                     return (
                         <TableRow
                             className="material-table__row"
