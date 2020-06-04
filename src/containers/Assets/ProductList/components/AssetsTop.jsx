@@ -94,7 +94,7 @@ export default class AssetsTop extends PureComponent {
             idc: values.idc,
             rack: values.rack,
             cost: values.cost,
-            purpos: values.purpos,
+            purpose: values.purpose,
             size: values.size,
             cpu: values.cpu,
             memory: values.memory,

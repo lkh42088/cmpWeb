@@ -27,8 +27,10 @@ class AssetsView extends PureComponent {
         title: PropTypes.string,
         message: PropTypes.string,
         closeToggle: PropTypes.func,
+        updateToggle: PropTypes.func,
         colored: PropTypes.bool,
         header: PropTypes.bool,
+        // todo deviceCode 사용 처 확인 필요
         deviceCode: PropTypes.string.isRequired,
     };
 
@@ -38,6 +40,7 @@ class AssetsView extends PureComponent {
         colored: false,
         header: false,
         closeToggle: '',
+        updateToggle: '',
     };
 
     constructor() {
@@ -89,6 +92,12 @@ class AssetsView extends PureComponent {
     onClose = () => {
         const {closeToggle} = this.props;
         closeToggle(); //
+    };
+
+
+    onUpdate = () => {
+        const {updateToggle} = this.props;
+        updateToggle();
     };
 
     showPassword = (e) => {
@@ -149,9 +158,9 @@ class AssetsView extends PureComponent {
         const {
             idx, outFlag, commentCnt, commentLastDate, registerId, registerDate,
             deviceCode, model, contents, customer, manufacture, deviceType, warehousingDate,
-            rentDate, ownership, ownershipDiv, ownerCompany, hwSn, idc, rack, cost, purpos,
+            rentDate, ownership, ownershipDiv, ownerCompany, hwSn, idc, rack, cost, purpose,
             monitoringFlag, MonitoringMethod, ip, size, spla, cpu, memory, hdd, rackCode, rackTag,
-            rackLoc, firmwareVersion, warranty,
+            rackLoc, firmwareVersion, warranty, customerName, ownerCompanyName,
         } = deviceValue;
 
         switch (assetState.deviceType) {
@@ -277,21 +286,25 @@ class AssetsView extends PureComponent {
                                     assets_write__modal-dialog--success ${modalClass}`}
                                 >
                                     <form onSubmit={this.handleSubmit}>
-                                        <div className="assets_write__modal__body assets_write__modal__tableLine">
+                                        <div
+                                            className="assets_write__modal__body assets_write__modal__tableLine">
                                             <div className="modal_form__form-group">
                                             <span className="modal_form__form-group-label text_cor_green">
                                                 {/*TODO 로그인 ID*/}
                                                 로그인한 ID [2020/12/15]</span>
                                                 <div className="modal_form__form-group-field">
                                                     {/* eslint-disable-next-line react/destructuring-assignment */}
-                                                    <textarea name="comment" value={comment} className="assets_comment"
-                                                              placeholder="댓글 입력 창" onChange={this.handleChange}/>
+                                                    <textarea name="comment" value={comment}
+                                                              className="assets_comment"
+                                                              placeholder="댓글 입력 창"
+                                                              onChange={this.handleChange}/>
                                                 </div>
                                             </div>
                                         </div>
                                         <ButtonToolbar className="assets_write__modal__footer_comment">
                                             <Button className="assets_write__modal_ok"
-                                                    outline={colored} type="submit" color="success">등록</Button>
+                                                    outline={colored} type="submit"
+                                                    color="success">등록</Button>
                                             &nbsp;&nbsp;
                                             <Button className="assets_write__modal_cancel"
                                                     onClick={this.commentToggle}>Cancel</Button>
@@ -325,7 +338,7 @@ class AssetsView extends PureComponent {
                         <div className={classNameMap.formDivClass}>
                             <span className="modal_form__form-group-label text_cor_orange">고객사명</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {customer}
+                                {customerName}/{customer}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
@@ -340,7 +353,7 @@ class AssetsView extends PureComponent {
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>소유업체명</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {ownerCompany}
+                                {ownerCompanyName}/{ownerCompany}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
@@ -364,7 +377,7 @@ class AssetsView extends PureComponent {
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>용도</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {purpos}
+                                {purpose}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
@@ -390,7 +403,7 @@ class AssetsView extends PureComponent {
                 {/*-----------------------------------------------------------------------------------------*/}
                 <ButtonToolbar className="assets_write__modal__footer">
                     <Button className="assets_write__modal_ok" outline={colored} color="primary"
-                            onClick={this.onClose}>Edit</Button>
+                            onClick={this.onUpdate}>Edit</Button>
                     <Button className="assets_write__modal_cancel"
                             onClick={this.onClose}>Cancel</Button>
                 </ButtonToolbar>

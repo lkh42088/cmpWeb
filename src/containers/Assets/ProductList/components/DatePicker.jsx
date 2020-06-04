@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import DatePicker from 'react-datepicker';
 import { isMobileOnly } from 'react-device-detect';
 import PropTypes from 'prop-types';
+import moment from "moment";
 
 class DatePickerField extends PureComponent {
   static propTypes = {
@@ -14,6 +15,19 @@ class DatePickerField extends PureComponent {
       startDate: new Date(),
     };
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    //console.log("😱 😱 DatePicker -> nextProps.value : ", nextProps.value);
+
+    if (nextProps.value !== prevState.value) {
+      if (nextProps.value !== undefined && nextProps.value !== "") {
+        const date = new Date(moment(nextProps.value).format("YYYY/MM/DD"));
+        //console.log("😡 startArr : ", date);
+        return { startDate: date };
+      }
+    }
+    return null; // null 을 리턴하면 따로 업데이트 할 것은 없다라는 의미
   }
 
   handleChange(date) {

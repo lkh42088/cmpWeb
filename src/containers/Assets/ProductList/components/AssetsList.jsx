@@ -16,11 +16,17 @@ import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 
 import PropTypes, {string} from 'prop-types';
+import moment from "moment";
 import classNames from "classnames";
 
 import {changeMenuTitle} from '../../../../redux/actions/titleActions';
 import {
-    getDeviceByIdx, postDeviceComment, fetchPosts, fetchPostsCheckCount,
+    getDeviceByIdx,
+    postDeviceComment,
+    fetchPosts,
+    fetchPostsCheckCount,
+    getDeviceOriByIdx,
+    setViewModalDivision,
 } from '../../../../redux/actions/assetsAction';
 
 import AssetsHead from './AssetsHead';
@@ -110,6 +116,10 @@ export default class AssetsList extends PureComponent {
             default:
                 break;
         }
+    };
+
+    handleSubmit = (values) => {
+      console.log("🙀 handleSubmit : ", values);
     };
 
     handleRequestSort = (event, property) => {
@@ -210,8 +220,6 @@ export default class AssetsList extends PureComponent {
             orderBy, rowsPerPage, order, showPage, page,
             pageCount, pageSize, pageNoNum,
         } = this.state;
-        const changePageCount = pageCount - 1;
-        const changePageNoNum = pageNoNum - 1;
         const checkPageNumCount = (showPage - 1) * rowsPerPage;
 
         console.log("👔 start------------------------------------> 이전");
@@ -322,7 +330,6 @@ export default class AssetsList extends PureComponent {
     };
 
     handleChangePage = (event, page) => {
-        // console.log("👣 start------------------------------------> 다음");
         const {assetState, dispatch} = this.props;
         const {
             orderBy, rowsPerPage, order, showPage,
@@ -360,53 +367,6 @@ export default class AssetsList extends PureComponent {
 
             dispatch(fetchPostsCheckCount(dispatchVal));
         }
-
-        //console.log("pageCount count : ", this.setState({pageCount: pageCount + 1}));
-
-        /*this.setState({
-            page: Number(page),
-            // eslint-disable-next-line react/destructuring-assignment,react/no-access-state-in-setstate
-            showPage: this.state.showPage + 1,
-            checkCount: Number(checkPageNumCount),
-        });
-
-        if (checkPageNumCount % overNum === 0) { // overNum의 배수일때
-            this.setState({
-                pageMaxCount: Number(showPage),
-                overPageCheck: true,
-            });
-        } else {
-            this.setState({
-                overPageCheck: false,
-            });
-        }
-
-        /!*        console.log("start------------------------------------>handleChangePage");
-                console.log("NEXT overPageCheck : ", overPageCheck);
-                console.log("NEXT checkPageNumCount : ", checkPageNumCount);
-                console.log("end------------------------------------>handleChangePage");*!/
-
-        if (overPageCheck === true) {
-            this.setState({
-                page: 0,
-                checkCount: Number(checkPageNumCount),
-            });
-
-            const dispatchVal = ({
-                deviceType: assetState.deviceType,
-                checkPageNumCount: Number(checkPageNumCount),
-                orderBy,
-                order,
-                rowsPerPage,
-                showPage,
-                overNum,
-            });
-
-            dispatch(fetchPostsCheckCount(dispatchVal));
-        } else {
-            console.log("overPageCheck false");
-        }*/
-        // console.log("👣 end------------------------------------> 다음");
     };
 
     handleChangeRowsPerPage = (event) => {
@@ -444,18 +404,30 @@ export default class AssetsList extends PureComponent {
         this.setState(prevState => ({isOpenView: !prevState.isOpenView}));
     };
 
+    updateToggle = (deviceCode) => {
+        const {dispatch, assetState} = this.props;
+        this.setState({
+            viewModalContentDivision: 'update',
+        });
+        this.setComponents('update');
+        dispatch(setViewModalDivision('update'));
+    };
+
     setDeviceIdx = (event, deviceCode) => {
         const {dispatch, assetState} = this.props;
 
         dispatch(getDeviceByIdx(deviceCode, assetState.deviceType));
+        dispatch(getDeviceOriByIdx(deviceCode, assetState.deviceType));
 
         this.setComponents('read', deviceCode);
     };
 
     setComponents = (division, deviceCode) => {
+        //console.log("👑 setComponents : ", division);
         const {dispatch, assetState} = this.props;
 
         let tempViewModalContent;
+        let checkDivision;
 
         let checkDeviceCode = deviceCode;
 
@@ -463,20 +435,25 @@ export default class AssetsList extends PureComponent {
             checkDeviceCode = 'temp';
         }
 
+        // todo checkDeviceCode 사용 여부 확인 필요
         switch (division) {
             case 'read':
                 tempViewModalContent = (
                     <AssetsView closeToggle={this.toggle}
+                                updateToggle={this.updateToggle}
                                 title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다." deviceCode={checkDeviceCode}
-                                assetState={assetState} dispatch={dispatch} setTotalManager={this.setTotalManager}
+                                assetState={assetState} dispatch={dispatch}
+                                setTotalManager={this.setTotalManager}
                     />
                 );
                 break;
             case "update":
                 tempViewModalContent = (
                     <AssetsEdit closeToggle={this.toggle}
-                                title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다." deviceCode={checkDeviceCode}
-                                assetState={assetState} dispatch={dispatch} setTotalManager={this.setTotalManager}
+                                title="장비 확인" message="자산관리 > 장비 수정 페이지 입니다."
+                                assetState={assetState} dispatch={dispatch}
+                                setTotalManager={this.setTotalManager}
+                                onSubmit={this.handleSubmit}
                     />
                 );
                 break;
@@ -493,15 +470,14 @@ export default class AssetsList extends PureComponent {
     componentDidUpdate = (prevProps, prevState) => {
         const {assetState, dispatch} = this.props;
         if (assetState !== prevProps.assetState) {
-            this.setComponents('read');
-            //console.log("♡ LIST componentDidUpdate");
+            this.setComponents(assetState.viewModalDivison);
         }
     };
 
     render() {
         const {
             order, orderBy, selected, rowsPerPage, page, viewModalContent, modal, showPage,
-            pageCount, pageSize, pageNoNum, isOpenView, isOpenWrite,
+            pageCount, pageSize, pageNoNum, isOpenView, isOpenWrite, viewModalContentDivision,
         } = this.state;
         const {assetState, dispatch} = this.props;
 
@@ -514,8 +490,6 @@ export default class AssetsList extends PureComponent {
         });
 
         //TODO length 값 0 일때도 처리해야함
-
-        //console.log("😼render modal : ", modal);
 
         const deviceServer = (
             <Fragment>
@@ -579,7 +553,9 @@ export default class AssetsList extends PureComponent {
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                    >{/*고객사*/}<b className="text_cor_orange">{d.customer}</b>
+                                    >{/*고객사*/}<b className="text_cor_orange">{d.customerName}</b>
+                                        /
+                                        <b className="text_cor_red">{d.customer}</b>
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
@@ -587,7 +563,7 @@ export default class AssetsList extends PureComponent {
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                    >{/*용도*/}{d.purpos}
+                                    >{/*용도*/}{d.purpose}
                                     </TableCell>
 
                                     {assetState.deviceType === 'server'
@@ -683,7 +659,7 @@ export default class AssetsList extends PureComponent {
                             assets_write__modal-dialog ${modalClass}`}
                         >
                             <AssetsWrite closeToggle={this.toggle}
-                                        title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다." />
+                                         title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다."/>
                         </Modal>
                         <TablePagination
                             component="div"
@@ -703,7 +679,8 @@ export default class AssetsList extends PureComponent {
                             dir="ltr"
                             labelDisplayedRows={
                                 ({to, count}) => (
-                                    <span style={{fontSize: 14}}><span>page: {showPage}</span>&nbsp;&nbsp;&nbsp; total : {count}
+                                    <span
+                                        style={{fontSize: 14}}><span>page: {showPage}</span>&nbsp;&nbsp;&nbsp; total : {count}
                                     </span>
                                 )
                             }

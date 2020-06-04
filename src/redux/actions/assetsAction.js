@@ -1,9 +1,13 @@
 import axios from 'axios';
+import React from "react";
+import {Map} from "immutable";
+
 import API_ROUTE from "../../shared/apiRoute";
 
 export const GET_DEVICES = 'GET_DEVICES';
 export const GET_DEVICES_CHECKCOUNT = 'GET_DEVICES_CHECKCOUNT';
 export const GET_DEVICE_BY_DEVICECODE = 'GET_DEVICE_BY_DEVICECODE';
+export const GET_DEVICE_ORI_BY_DEVICECODE = 'GET_DEVICE_ORI_BY_DEVICECODE';
 export const GET_COMMENTS_BY_DEVICECODE = 'GET_COMMENTS_BY_DEVICECODE';
 export const GET_CODES = 'GET_CODES';
 export const GET_SUBCODES = 'GET_SUBCODES';
@@ -13,6 +17,7 @@ export const SET_DEVICE_DEVICECODE = 'SET_DEVICE_DEVICECODE';
 export const SET_COMMENT = 'SET_COMMENT';
 
 export const SET_STATUS = 'SET_STATUS';
+export const SET_MODAL_DIVISION = 'SET_MODAL_DIVISION';
 
 // const API_ROUTE = 'http://127.0.0.1:8081/v1';
 // order direction
@@ -47,11 +52,30 @@ function setCodeMap(val, codeType, subType) {
         .filter(d => d !== false);
 }
 
+function setJsonArray(name, value) {
+    /*    deviceDataArray: {
+            [name]: value,
+        }*/
+}
+
+function removeHTML(text) {
+    const tmpStr = /[<][^>]*[>]/gi;
+    //text = text.replace("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+    return text.replace(tmpStr, "");
+}
+
 //===================================================================================================
 
 export const setState = dispatchVal => async (dispatch) => {
     dispatch({
         type: SET_STATUS,
+        payload: dispatchVal,
+    });
+};
+
+export const setViewModalDivision = dispatchVal => async (dispatch) => {
+    dispatch({
+        type: SET_MODAL_DIVISION,
         payload: dispatchVal,
     });
 };
@@ -121,6 +145,7 @@ export const fetchPosts = dispatchVal => async (dispatch) => {
         const order = checkOrder(dispatchVal.order);
 
         const res = await axios.get(`${API_ROUTE}/page/${dispatchVal.deviceType}/0/${dispatchVal.overNum}/${rowsPerPage}/${orderBy}/${order}`);
+        //console.log("fetchPosts res data : ", res.data);
 
         dispatch({
             type: GET_DEVICES,
@@ -145,12 +170,12 @@ export const fetchPostsCheckCount = dispatchVal => async (dispatch) => {
         const order = checkOrder(dispatchVal.order);
         let minNum;
 
-        console.log("API_ROUTE/page/", dispatchVal.deviceType, "/0/", dispatchVal.overNum, "/", dispatchVal.checkPageNumCount, "/", dispatchVal.orderBy, "/", order);
+        /*console.log("API_ROUTE/page/", dispatchVal.deviceType, "/0/", dispatchVal.overNum, "/", dispatchVal.checkPageNumCount, "/", dispatchVal.orderBy, "/", order);*/
 
         const res = await axios.get(`${API_ROUTE}/page/${dispatchVal.deviceType}/0/${dispatchVal.overNum}/${dispatchVal.checkPageNumCount}/${dispatchVal.orderBy}/${order}`);
 
-        console.log("res Devices : ", res.data.Devices[0].DeviceCode);
-        console.log("res Devices : ", res.data.Devices[99].DeviceCode);
+        /*        console.log("res Devices : ", res.data.Devices[0].DeviceCode);
+                console.log("res Devices : ", res.data.Devices[99].DeviceCode);*/
 
         if (dispatchVal.overNum === dispatchVal.checkPageNumCount) {
             minNum = -(dispatchVal.showPage);
@@ -187,7 +212,7 @@ export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
         const res = await axios.get(`${API_ROUTE}/device/${deviceType}/${deviceCode}`);
         const comments = await axios.get(`${API_ROUTE}/comments/${deviceCode}`);
 
-        console.log("comments : ", comments.data);
+        //console.log("comments : ", comments.data);
 
         dispatch({
             type: GET_DEVICE_BY_DEVICECODE,
@@ -208,6 +233,70 @@ export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
     }
 };
 
+// 특정 장비 ori 가져오기 (수정 시 사용)
+export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) => {
+    try {
+        // API_ROUTE/raw/device/$(type)/$(deviceCode)
+        console.log("💎 getDeviceOriByIdx start");
+        const res = await axios.get(`${API_ROUTE}/raw/device/${deviceType}/${deviceCode}`);
+        // console.log("getDeviceOriByIdx res.data : ", res.data);
+        let deviceDataArray = new Map();
+        const jsonData = res.data[0];
+        let IpArray = '';
+        let SplaArray = '';
+        let IpTemp;
+        let ipCheckCount = 1000;
+        let splaCheckCount = 1000;
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in jsonData) {
+            //console.log("arrData : ", arrData, ", value : ", jsonData[arrData]);
+
+            if (arrData.indexOf("ip", 0) === 0) {
+                IpArray = jsonData[arrData].split("|");
+                IpTemp = jsonData[arrData];
+                IpTemp = IpTemp.replace(".", "");
+
+                // eslint-disable-next-line no-loop-func,no-return-assign
+                IpArray.map(d => (
+                    d !== undefined && d !== "" && (
+                        ipCheckCount === 1000 ? (
+                            ipCheckCount += 1,
+                                deviceDataArray = deviceDataArray.set(`ip_0`, d)
+                        ) : (
+                            deviceDataArray = deviceDataArray.set(`ip_${ipCheckCount}`, d)
+                        )
+                    )));
+            } else if (arrData.indexOf("spla", 0) === 0) {
+                SplaArray = jsonData[arrData].split("|");
+
+                // eslint-disable-next-line no-loop-func,no-return-assign
+                SplaArray.map(d => (
+                    d !== undefined && d !== "" && (
+                        splaCheckCount === 1000 ? (
+                            splaCheckCount += 1,
+                                deviceDataArray = deviceDataArray.set(`spla0`, d)
+                        ) : (
+                            deviceDataArray = deviceDataArray.set(`spla${splaCheckCount}`, d)
+                        )
+                    )));
+            } else if (arrData.indexOf("contents", 0) === 0) {
+                deviceDataArray = deviceDataArray.set(arrData, removeHTML(jsonData[arrData]));
+            }
+            deviceDataArray = deviceDataArray.set(arrData, jsonData[arrData]);
+        }
+
+        deviceDataArray = JSON.parse(JSON.stringify(deviceDataArray));
+
+        dispatch({
+            type: GET_DEVICE_ORI_BY_DEVICECODE,
+            payload: deviceDataArray,
+        });
+    } catch (error) {
+        console.log("error : ", error);
+    }
+};
+
 // 고객사 name 명으로 검색하기
 export const getCompanyByName = dispatchVal => async (dispatch) => {
     // API_ROUTE/companies/:name
@@ -217,7 +306,7 @@ export const getCompanyByName = dispatchVal => async (dispatch) => {
 
         const res = await axios.get(`${API_ROUTE}/companies/${dispatchVal}`);
 
-        console.log("---> : ", res.data);
+        //console.log("---> : ", res.data);
 
         dispatch({
             type: GET_COMPANIES,
@@ -261,61 +350,61 @@ export const getDeviceCommentByDeviceCode = assetState => async (dispatch) => {
 
 // 장비 cud
 export const postDevice = (division, assetState, submitData) => async (dispatch) => {
-  try {
-      console.log("💎 postDevice start");
-      let method = '';
-      //"API_ROUTE/device/create/$(type)/"
+    try {
+        console.log("💎 postDevice start");
+        let method = '';
+        //"API_ROUTE/device/create/$(type)/"
 
-      let url = `${API_ROUTE}/device/${division}/${assetState.deviceType}`;
-      switch (division) {
-          case 'create':
-              method = 'post';
-              break;
-          case 'update':
-              method = 'put';
-              break;
-          case 'delete':
-              method = 'delete';
-              url = `${API_ROUTE}/device/${division}/${assetState.deviceType}/${submitData.idx}`;
-              break;
-          default:
-              break;
-      }
+        let url = `${API_ROUTE}/device/${division}/${assetState.deviceType}`;
+        switch (division) {
+            case 'create':
+                method = 'post';
+                break;
+            case 'update':
+                method = 'put';
+                break;
+            case 'delete':
+                method = 'delete';
+                url = `${API_ROUTE}/device/${division}/${assetState.deviceType}/${submitData.idx}`;
+                break;
+            default:
+                break;
+        }
 
-      const postJsonData = JSON.stringify(submitData);
+        const postJsonData = JSON.stringify(submitData);
 
-      axios({
-          method,
-          url,
-          data: postJsonData,
-      })
-          .then((response) => {
-              const stateVal = ({
-                  type: 'device',
-                  division,
-                  state: 'success',
-              });
-              dispatch({
-                  type: SET_STATUS,
-                  payload: stateVal,
-              });
-          })
-          .catch((error) => {
-              console.log('error : ', error.response);
-              const stateVal = ({
-                  type: 'device',
-                  division,
-                  state: 'error',
-              });
+        axios({
+            method,
+            url,
+            data: postJsonData,
+        })
+            .then((response) => {
+                const stateVal = ({
+                    type: 'device',
+                    division,
+                    state: 'success',
+                });
+                dispatch({
+                    type: SET_STATUS,
+                    payload: stateVal,
+                });
+            })
+            .catch((error) => {
+                console.log('error : ', error.response);
+                const stateVal = ({
+                    type: 'device',
+                    division,
+                    state: 'error',
+                });
 
-              dispatch({
-                  type: SET_STATUS,
-                  payload: stateVal,
-              });
-          });
-  } catch (error) {
-      console.log("postDevice error : ", error);
-  }
+                dispatch({
+                    type: SET_STATUS,
+                    payload: stateVal,
+                });
+            });
+    } catch (error) {
+        console.log("postDevice error : ", error);
+    }
 };
 
 
