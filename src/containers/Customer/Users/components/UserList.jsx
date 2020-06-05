@@ -119,6 +119,36 @@ const UserList = () => {
         getPageData();
     }, [pageBeginRow]);
 
+    const pageBar = (
+        <TablePagination
+            component="div"
+            className="material-table__pagination"
+            count={totalCount}
+            rowsPerPage={rowsPerPage}
+            page={currentPage}
+            backIconButtonProps={{
+                'aria-label': 'Previous Page',
+                disabled: false,
+                onClick: handleChangePagePrev,
+            }}
+            nextIconButtonProps={{'aria-label': 'Next Page'}}
+            onChangePage={handleChangePageNext}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+            rowsPerPageOptions={displayRowsList}
+            dir="ltr"
+            labelDisplayedRows={
+                ({to, count}) => (
+                    <span style={{fontSize: 14}}><span>page: {currentPage}</span>&nbsp;&nbsp;&nbsp; total : {totalCount}
+                                    </span>
+                )
+            }
+            SelectProps={{
+                inputProps: {'aria-label': 'rows per page'},
+                native: true,
+            }}
+        />
+    );
+
     const usersTable = (
         <TableBody>
             { users
@@ -128,15 +158,9 @@ const UserList = () => {
                     return (
                         <TableRow
                             className="material-table__row"
-                            role="checkbox"
                             tabIndex={-1}
                             key={user.idx}
                         >
-                            <TableCell className="material-table__cell"
-                                       padding="checkbox">
-                                <Checkbox checked={false}
-                                          className="material_table__checkbox"/>
-                            </TableCell>
                             <TableCell className="material-table__cell material-table__cell-right">
                                 {user.userId}
                             </TableCell>
@@ -170,35 +194,9 @@ const UserList = () => {
                         <Table className="material-table">
                             <UserHead/>
                             {usersTable}
-                            <TablePagination
-                                component="div"
-                                className="material-table__pagination"
-                                count={totalCount}
-                                rowsPerPage={rowsPerPage}
-                                page={currentPage}
-                                backIconButtonProps={{
-                                    'aria-label': 'Previous Page',
-                                    disabled: false,
-                                    onClick: handleChangePagePrev,
-                                }}
-                                nextIconButtonProps={{'aria-label': 'Next Page'}}
-                                onChangePage={handleChangePageNext}
-                                onChangeRowsPerPage={handleChangeRowsPerPage}
-                                rowsPerPageOptions={displayRowsList}
-                                // rowsPerPageOptions={[10, 50, 100]}
-                                labelDisplayedRows={
-                                    ({to, count}) => (
-                                        <span style={{fontSize: 14}}><span>page: {currentPage}</span>&nbsp;&nbsp;&nbsp; total : {totalCount}
-                                    </span>
-                                    )
-                                }
-                                SelectProps={{
-                                    inputProps: {'aria-label': 'rows per page'},
-                                    native: true,
-                                }}
-                            />
                         </Table>
-                    </div>
+                        {pageBar}
+                   </div>
                 </CardBody>
             </Card>
         </Col>

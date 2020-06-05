@@ -553,9 +553,10 @@ export default class AssetsList extends PureComponent {
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                    >{/*고객사*/}<b className="text_cor_orange">{d.customerName}</b>
-                                        /
-                                        <b className="text_cor_red">{d.customer}</b>
+                                    >{/*고객사*/}
+                                        {d.customerName}
+                                        {/*<b className="text_cor_orange">{d.customerName}</b>*/}
+                                        {/*<b className="text_cor_red">{d.customer}</b>*/}
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}

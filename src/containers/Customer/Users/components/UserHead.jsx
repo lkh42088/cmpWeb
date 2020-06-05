@@ -18,14 +18,9 @@ const UserHead = ({
         {id: 'regdate', disablePadding: false, label: '등록일자'},
     ];
 
-    console.log("[[UserHead]]");
     return (
         <TableHead>
             <TableRow>
-                <TableCell padding="checkbox">
-                    <Checkbox checked={false}
-                              className="material_table__checkbox"/>
-                </TableCell>
                 {rows.map(row => (
                     <TableCell className="material-table__cell
                         material-table__cell--sort material-table__cell-right"
