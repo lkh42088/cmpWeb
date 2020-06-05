@@ -19,8 +19,9 @@ import {
 const UserList = () => {
     const dispatch = useDispatch();
     const {
-        users, getPage, pageBeginRow, rowsPerPage, currentPage, totalPage, totalCount, displayRowsList,
-    } = useSelector(({userList, pagination}) => ({
+        rtl, users, getPage, pageBeginRow, rowsPerPage, currentPage, totalPage, totalCount, displayRowsList,
+        // eslint-disable-next-line no-shadow
+    } = useSelector(({rtl, userList, pagination}) => ({
         users: userList.users,
         getPage: userList.page,
         // Pagination
@@ -138,8 +139,10 @@ const UserList = () => {
             dir="ltr"
             labelDisplayedRows={
                 ({to, count}) => (
-                    <span style={{fontSize: 14}}><span>page: {currentPage}</span>&nbsp;&nbsp;&nbsp; total : {totalCount}
-                                    </span>
+                    <span style={{fontSize: 14}}>
+                        <span>{pageBeginRow + 1}-{pageBeginRow + rowsPerPage}</span>
+                        &nbsp; of {totalCount}
+                    </span>
                 )
             }
             SelectProps={{
@@ -151,15 +154,19 @@ const UserList = () => {
 
     const usersTable = (
         <TableBody>
-            { users
+            {
+                users
                 // .slice(pagingRedux.pageBeginRow, pagingRedux.pageEndRow)
                 .map((user) => {
                     console.log("rendering map...");
                     return (
                         <TableRow
-                            className="nb-material-table__row"
-                            tabIndex={-1}
                             key={user.idx}
+                            className="nb-material-table__row"
+                            role="checkbox"
+                            aria-checked={isSelected}
+                            tabIndex={-1}
+                            selected={isSelected}
                         >
                             <TableCell className="nb-material-table__cell nb-material-table__cell-right">
                                 {user.userId}

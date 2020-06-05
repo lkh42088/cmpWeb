@@ -21,10 +21,19 @@ const UserHead = ({
     return (
         <TableHead>
             <TableRow>
+                <TableCell padding="checkbox">
+                    <Checkbox
+                        className={`nb-material-table__checkbox ${numSelected === rowCount && 'nb-material-table__checkbox--checked'}`}
+                        interminate={numSelected > 0 && numSelected < rowCount}
+                        checked={numSelected === rowCount}
+                        onChange={onSelectAllClick}
+                    />
+                </TableCell>
                 {rows.map(row => (
                     <TableCell className="nb-material-table__cell
                         nb-material-table__cell--sort nb-material-table__cell-right"
                                key={row.id}
+                               align="left"
                                padding={row.disablePadding ? 'none' : 'default'}
                                sortDirection={orderBy === row.id ? order : false}
                     >

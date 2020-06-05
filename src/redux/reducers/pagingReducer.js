@@ -14,6 +14,7 @@ const initialState = {
     pageBeginRow: 0,
     pageEndRow: 10,
     displayRowsList: [10, 20, 30, 50, 100],
+    selected: new Map([]),
 };
 
 const pagingReducer = handleActions(
