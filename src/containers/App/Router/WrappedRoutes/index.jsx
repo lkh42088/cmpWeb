@@ -12,8 +12,8 @@ export default () => (
         <Layout/>
         <div className="container__wrap">
             <Route path="/assets" component={Assets}/>
-            <Route path="/Member" component={Member}/>
-            <Route path="/Management" component={Management}/>
+            <Route path="/member" component={Member}/>
+            <Route path="/management" component={Management}/>
             <Route path="/default_pages" component={DefaultPages}/>
 
             <Route path="/404" component={DefaultPages}/>
