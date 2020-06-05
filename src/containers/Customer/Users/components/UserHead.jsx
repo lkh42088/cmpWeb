@@ -22,8 +22,8 @@ const UserHead = ({
         <TableHead>
             <TableRow>
                 {rows.map(row => (
-                    <TableCell className="material-table__cell
-                        material-table__cell--sort material-table__cell-right"
+                    <TableCell className="nb-material-table__cell
+                        nb-material-table__cell--sort nb-material-table__cell-right"
                                key={row.id}
                                padding={row.disablePadding ? 'none' : 'default'}
                                sortDirection={orderBy === row.id ? order : false}
@@ -31,7 +31,7 @@ const UserHead = ({
                         <TableSortLabel
                             active={orderBy === row.id}
                             direction={order}
-                            className="material-table__sort-label"
+                            className="nb-material-table__sort-label"
                             dir="ltr"
                         >
                             {row.label}

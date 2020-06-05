@@ -122,7 +122,7 @@ const UserList = () => {
     const pageBar = (
         <TablePagination
             component="div"
-            className="material-table__pagination"
+            className="nb-material-table__pagination"
             count={totalCount}
             rowsPerPage={rowsPerPage}
             page={currentPage}
@@ -157,26 +157,26 @@ const UserList = () => {
                     console.log("rendering map...");
                     return (
                         <TableRow
-                            className="material-table__row"
+                            className="nb-material-table__row"
                             tabIndex={-1}
                             key={user.idx}
                         >
-                            <TableCell className="material-table__cell material-table__cell-right">
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right">
                                 {user.userId}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right">
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right">
                                 {user.name}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right">
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right">
                                 {user.email}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right">
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right">
                                 {user.hp}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right">
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right">
                                 {user.authLevel}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right">
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right">
                                 {user.registerDate}
                             </TableCell>
                         </TableRow>
@@ -190,8 +190,11 @@ const UserList = () => {
         <Col md={12} lg={12}>
             <Card>
                 <CardBody>
-                    <div className="material-table__wrap">
-                        <Table className="material-table">
+                    <div className="card__title">
+                        <h5 className="bold-text">고객리스트</h5>
+                    </div>
+                    <div className="nb-material-table__wrap">
+                        <Table className="nb-material-table">
                             <UserHead/>
                             {usersTable}
                         </Table>
