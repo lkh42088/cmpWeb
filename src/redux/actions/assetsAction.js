@@ -18,6 +18,8 @@ export const SET_COMMENT = 'SET_COMMENT';
 
 export const SET_STATUS = 'SET_STATUS';
 export const SET_MODAL_DIVISION = 'SET_MODAL_DIVISION';
+export const SET_ADD_ELE_IP_DATA = 'SET_ADD_ELE_IP_DATA';
+export const SET_ADD_ELE_SPLA_DATA = 'SET_ADD_ELE_SPLA_DATA';
 
 // const API_ROUTE = 'http://127.0.0.1:8081/v1';
 // order direction
@@ -239,23 +241,59 @@ export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) =>
         // API_ROUTE/raw/device/$(type)/$(deviceCode)
         console.log("💎 getDeviceOriByIdx start");
         const res = await axios.get(`${API_ROUTE}/raw/device/${deviceType}/${deviceCode}`);
-        // console.log("getDeviceOriByIdx res.data : ", res.data);
-        let deviceDataArray = new Map();
+
+        let deviceIpArray = new Map();
+        let deviceSplaArray = new Map();
         const jsonData = res.data[0];
         let IpArray = '';
         let SplaArray = '';
-        let IpTemp;
         let ipCheckCount = 1000;
         let splaCheckCount = 1000;
 
+        IpArray = jsonData.ip.split("|");
+
+        // eslint-disable-next-line no-loop-func,no-return-assign
+        IpArray.map(d => (
+            d !== undefined && d !== "" && (
+                ipCheckCount === 1000 ? (
+                    ipCheckCount += 1,
+                        deviceIpArray = deviceIpArray.set(`ip_0`, d)
+                ) : (
+                    deviceIpArray = deviceIpArray.set(`ip_${ipCheckCount}`, d)
+                )
+            )));
+
+        dispatch({
+            type: SET_ADD_ELE_IP_DATA,
+            payload: JSON.parse(JSON.stringify(deviceIpArray)),
+        });
+
+        SplaArray = jsonData.spla.split("|");
+
+        // eslint-disable-next-line no-loop-func,no-return-assign
+        SplaArray.map(d => (
+            d !== undefined && d !== "" && (
+                splaCheckCount === 1000 ? (
+                    splaCheckCount += 1,
+                        deviceSplaArray = deviceSplaArray.set(`spla0`, d)
+                ) : (
+                    deviceSplaArray = deviceSplaArray.set(`spla${splaCheckCount}`, d)
+                )
+            )));
+
+        dispatch({
+            type: SET_ADD_ELE_SPLA_DATA,
+            payload: JSON.parse(JSON.stringify(deviceSplaArray)),
+        });
+
+
+        // todo 이제는 굳이 시간 들여서 가져올 필요는 없음... 리팩토링 필요
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
-        for (const arrData in jsonData) {
+       /* for (const arrData in jsonData) {
             //console.log("arrData : ", arrData, ", value : ", jsonData[arrData]);
 
             if (arrData.indexOf("ip", 0) === 0) {
                 IpArray = jsonData[arrData].split("|");
-                IpTemp = jsonData[arrData];
-                IpTemp = IpTemp.replace(".", "");
 
                 // eslint-disable-next-line no-loop-func,no-return-assign
                 IpArray.map(d => (
@@ -284,13 +322,11 @@ export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) =>
                 deviceDataArray = deviceDataArray.set(arrData, removeHTML(jsonData[arrData]));
             }
             deviceDataArray = deviceDataArray.set(arrData, jsonData[arrData]);
-        }
-
-        deviceDataArray = JSON.parse(JSON.stringify(deviceDataArray));
+        }*/
 
         dispatch({
             type: GET_DEVICE_ORI_BY_DEVICECODE,
-            payload: deviceDataArray,
+            payload: jsonData,
         });
     } catch (error) {
         console.log("error : ", error);
@@ -362,6 +398,7 @@ export const postDevice = (division, assetState, submitData) => async (dispatch)
                 break;
             case 'update':
                 method = 'put';
+                url = `${API_ROUTE}/device/${division}/${assetState.deviceType}/${submitData.idx}`;
                 break;
             case 'delete':
                 method = 'delete';
@@ -429,7 +466,7 @@ export const postDeviceComment = (division, assetState, submitData) => async (di
                 break;
         }
 
-        console.log("submitData : ", submitData);
+        console.log("장비 댓글 cud submitData : ", submitData);
 
         const postJsonData = JSON.stringify(submitData);
         axios({
@@ -494,5 +531,27 @@ export const postDeviceOutFlag = (assetState, outFlag) => async (dispatch) => {
             deviceType: 'server',
         });
         console.log("submitDeviceOutFlag error : ", error);
+    }
+};
+
+// 수정 시 ip, spal 저장
+export const setAddEleData = (type, value) => async (dispatch) => {
+    try {
+        console.log("💎 setAddEleData start"); //SET_ADD_ELE_IP_DATA
+
+        let dispatchType = '';
+
+        if (type === 'ip') {
+            dispatchType = SET_ADD_ELE_IP_DATA;
+        } else if (type === 'spla') {
+            dispatchType = SET_ADD_ELE_SPLA_DATA;
+        }
+
+        dispatch({
+            type: dispatchType,
+            payload: value,
+        });
+    } catch (error) {
+        console.log("setAddEleData error : ", error);
     }
 };

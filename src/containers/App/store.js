@@ -2,6 +2,7 @@ import {combineReducers, createStore, applyMiddleware } from 'redux';
 import {reducer as reduxFormReducer} from 'redux-form';
 import { all } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
+// eslint-disable-next-line import/no-unresolved
 import {createLogger} from 'redux-logger';
 import ReduxThunk from "redux-thunk";
 
@@ -60,8 +61,7 @@ const logger = createLogger();
 export const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
     rootReducer,
-    // applyMiddleware(logger, ReduxThunk, sagaMiddleware),
-    applyMiddleware(ReduxThunk, sagaMiddleware),
+    applyMiddleware(logger, ReduxThunk, sagaMiddleware),
 );
 
 export function loadUser() {

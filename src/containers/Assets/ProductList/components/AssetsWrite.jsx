@@ -203,10 +203,6 @@ class AssetsWrite extends PureComponent {
         this.setState(prevState => ({modal: !prevState.modal}));
     };
 
-    temp = () => {
-      console.log("👅👅👅👅 handle change");
-    };
-
     handleChange = (e) => {
         const {
             assetState, dispatch, handleSubmit,
