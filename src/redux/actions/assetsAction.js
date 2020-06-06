@@ -398,7 +398,7 @@ export const postDevice = (division, assetState, submitData) => async (dispatch)
                 break;
             case 'update':
                 method = 'put';
-                url = `${API_ROUTE}/device/${division}/${assetState.deviceType}/${submitData.idx}`;
+                url = `${API_ROUTE}/device/${division}/${assetState.deviceType}/${submitData.deviceCode}`;
                 break;
             case 'delete':
                 method = 'delete';
@@ -546,6 +546,8 @@ export const setAddEleData = (type, value) => async (dispatch) => {
         } else if (type === 'spla') {
             dispatchType = SET_ADD_ELE_SPLA_DATA;
         }
+
+        //console.log("setAddEleData value : ", value);
 
         dispatch({
             type: dispatchType,

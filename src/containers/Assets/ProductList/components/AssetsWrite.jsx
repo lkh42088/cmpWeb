@@ -5,6 +5,7 @@ import {Button, ButtonToolbar, Modal} from 'reactstrap';
 import classNames from 'classnames';
 import {Field, reduxForm} from "redux-form";
 import {findDOMNode} from "react-dom";
+import {Map} from "immutable";
 import CalendarBlankIcon from "mdi-react/CalendarBlankIcon";
 import AccountSearchIcon from "mdi-react/AccountSearchIcon";
 import PlusIcon from "mdi-react/PlusIcon";
@@ -15,7 +16,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import {withTranslation} from "react-i18next";
 import TablePagination from "@material-ui/core/TablePagination";
-import {getCompanyByName} from "../../../../redux/actions/assetsAction";
+import {getCompanyByName, setAddEleData} from "../../../../redux/actions/assetsAction";
 
 import {RTLProps} from '../../../../shared/prop-types/ReducerProps';
 
@@ -36,7 +37,7 @@ const warringStyle = {
 function validate(values) {
     const errors = {};
 
-    console.log("values : ", values);
+    /*console.log("values : ", values);
     console.log("values.customer : ", values.customer);
 
     if (!values.customer) {
@@ -59,7 +60,7 @@ function validate(values) {
         errors.ownerCompany = "소유업체명을 선택해주세요.";
     }
 
-    console.log("errors : ", errors);
+    console.log("errors : ", errors);*/
 
     return errors;
 }
@@ -137,6 +138,8 @@ class AssetsWrite extends PureComponent {
             searchCompanyName: '',
             searchCustomerId: '',
             searchOwnerCompanyId: '',
+            ipArrayMap: {},
+            splaArrayMap: {},
         };
     }
 
@@ -224,6 +227,7 @@ class AssetsWrite extends PureComponent {
                         <Field
                             name="rack"
                             component="select">
+                            <option value="0">선택하세요.</option>
                             <option value="none">렉없음</option>
                             {assetState.subCodes.data
                                 .map(d => (Number(d.codeId) === Number(e.target.value)
@@ -250,6 +254,7 @@ class AssetsWrite extends PureComponent {
                         <Field
                             name="model"
                             component="select">
+                            <option value="0">선택하세요.</option>
                             {assetState.subCodes.data
                                 .map(d => (Number(d.codeId) === Number(e.target.value)
                                     && <option key={d.id} value={d.id}>{d.name}</option>))
@@ -268,6 +273,67 @@ class AssetsWrite extends PureComponent {
         }
     };
 
+    handleChangeIp = (e) => {
+        const {assetState, dispatch} = this.props;
+        const {
+            ipArrayMap,
+        } = this.state;
+
+        const reName = e.target.name;
+        let setIpArrayTemp = new Map();
+
+        // todo... 나중에 map 으로 변경하는게 for 안돌리고 처리 괜찮을듯 (map 2개)
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in ipArrayMap) {
+            //console.log("arrData : ", arrData, ", value : ", ipArrayMap[arrData]);
+            setIpArrayTemp = setIpArrayTemp.set(arrData, ipArrayMap[arrData]);
+            if (reName.toString() === arrData.toString()) {
+                setIpArrayTemp = setIpArrayTemp.set(arrData, e.target.value);
+            }
+        }
+
+        setIpArrayTemp = JSON.parse(JSON.stringify(setIpArrayTemp));
+
+        console.log("setIpArrayTemp : ", setIpArrayTemp);
+
+        this.setState({
+            ipArrayMap: setIpArrayTemp,
+        });
+
+        dispatch(setAddEleData('ip', setIpArrayTemp));
+    };
+
+    handleChangeSpla = (e) => {
+        const {dispatch} = this.props;
+        const {splaArrayMap} = this.state;
+        const reName = e.target.name;
+
+        let setSplaArrayTemp = new Map();
+        console.log("splaArrayMap : ", splaArrayMap);
+
+        // todo... 나중에 map 으로 변경하는게 for 안돌리고 처리 괜찮을듯 (map 2개)
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in splaArrayMap) {
+            //console.log("arrData : ", arrData, ", value : ", ipArrayMap[arrData]);
+            setSplaArrayTemp = setSplaArrayTemp.set(arrData, splaArrayMap[arrData]);
+            if (reName.toString() === arrData.toString()) {
+                setSplaArrayTemp = setSplaArrayTemp.set(arrData, e.target.value);
+            }
+        }
+
+        setSplaArrayTemp = JSON.parse(JSON.stringify(setSplaArrayTemp));
+        //console.log("setSplaArrayTemp: ", setSplaArrayTemp);
+
+        console.log("setSplaArrayTemp : ", setSplaArrayTemp);
+
+        this.setState({
+            splaArrayMap: setSplaArrayTemp,
+        });
+
+        dispatch(setAddEleData('spla', setSplaArrayTemp));
+    };
+
+
     onClose = () => {
         const {closeToggle} = this.props;
         closeToggle(); //
@@ -282,22 +348,35 @@ class AssetsWrite extends PureComponent {
         console.log("Plus val : ", val);
         const {assetState, dispatch} = this.props;
         const {
+            ipArrayMap, splaArrayMap,
             AddIpComponent, AddIpComponentMax, AddSplaComponent, AddSplaComponentMax,
         } = this.state;
         let tempContent;
         if (val === 'ip') {
+            let setIpArrayTemp = new Map();
             const reName = `ip${AddIpComponentMax}`;
 
             if (AddIpComponent.length < 10) {
+                // eslint-disable-next-line guard-for-in,no-restricted-syntax
+                for (const arrData in ipArrayMap) {
+                    setIpArrayTemp = setIpArrayTemp.set(arrData, ipArrayMap[arrData]);
+                }
+                setIpArrayTemp = setIpArrayTemp.set(reName, "");
                 tempContent = (
                     <div className="modal_form__form-group-field" key={reName}>
-                        <Field
+                        {/*<Field
                             name={reName}
-                            onChange={this.handleChange}
+                            onChange={this.handleChangeIp}
                             component="input"
                             type="text"
                             className="input_col_5"
                             placeholder="ip"
+                        />*/}
+                        <input
+                            name={`${reName}`}
+                            type="text"
+                            onChange={this.handleChangeIp}
+                            className="input_col_5"
                         />
                         <svg className="mdi-icon " width="24" height="24" fill="currentColor"
                              viewBox="0 0 24 24"
@@ -308,19 +387,28 @@ class AssetsWrite extends PureComponent {
                         </svg>
                     </div>
                 );
-                //console.log("😃 length : ", AddIpComponent.length);
+
+                setIpArrayTemp = JSON.parse(JSON.stringify(setIpArrayTemp));
+
                 this.setState({
                     AddIpComponentMax: AddIpComponentMax + 1,
                     AddIpComponent: AddIpComponent.concat(tempContent),
+                    ipArrayMap: setIpArrayTemp,
                 });
+                dispatch(setAddEleData('ip', setIpArrayTemp));
             }
         } else if (val === 'spla') {
+            let setSplaArrayTemp = new Map();
             const reName = `spla${AddSplaComponentMax}`;
 
             if (AddSplaComponent.length < 10) {
+                // eslint-disable-next-line guard-for-in,no-restricted-syntax
+                for (const arrData in splaArrayMap) {
+                    setSplaArrayTemp = setSplaArrayTemp.set(arrData, splaArrayMap[arrData]);
+                }
                 tempContent = (
                     <div className="modal_form__form-group-field" key={reName}>
-                        <Field
+                        {/*<Field
                             name={reName}
                             component="select"
                         >
@@ -329,7 +417,19 @@ class AssetsWrite extends PureComponent {
                                 .map((d, index) => (
                                     <option key={d.codeId.toString()} value={d.codeId}>{d.name}</option>
                                 ))}
-                        </Field>
+                        </Field>*/}
+                        <select
+                            name={`${reName}`}
+                            onChange={this.handleChangeSpla}
+                        >
+                            <option value="0">선택하세요.</option>
+                            {assetState.codes.codeSpla
+                                .map(c => (
+                                    <option key={c.codeId.toString()}
+                                            value={c.codeId}
+                                    >{c.name}</option>
+                                ))}
+                        </select>
                         <svg className="mdi-icon " width="24" height="24" fill="currentColor"
                              viewBox="0 0 24 24"
                              onClick={event => this.setHtmlMinus(reName, val)}
@@ -339,33 +439,63 @@ class AssetsWrite extends PureComponent {
                         </svg>
                     </div>
                 );
+
+                setSplaArrayTemp = setSplaArrayTemp.set(reName, "");
+                setSplaArrayTemp = JSON.parse(JSON.stringify(setSplaArrayTemp));
+
                 this.setState({
                     AddSplaComponentMax: AddSplaComponentMax + 1,
                     AddSplaComponent: AddSplaComponent.concat(tempContent),
+                    splaArrayMap: setSplaArrayTemp,
                 });
+                dispatch(setAddEleData('spla', setSplaArrayTemp));
             }
         }
     };
 
     setHtmlMinus = (reName, val) => {
         const {
-            AddIpComponent, AddSplaComponent,
+            AddIpComponent, AddSplaComponent, ipArrayMap, splaArrayMap,
         } = this.state;
+        const {dispatch} = this.props;
+        let setIpArrayTemp = new Map();
+        let setSplaArrayTemp = new Map();
 
         if (val === 'ip') {
             const AddIpComponentTemp = AddIpComponent.slice(AddIpComponent.length)
                 .concat(AddIpComponent.filter(d => d.key !== reName));
 
+            // eslint-disable-next-line guard-for-in,no-restricted-syntax
+            for (const arrData in ipArrayMap) {
+                if (reName.toString() !== arrData.toString()) {
+                    setIpArrayTemp = setIpArrayTemp.set(arrData, ipArrayMap[arrData]);
+                }
+            }
+
+            setIpArrayTemp = JSON.parse(JSON.stringify(setIpArrayTemp));
+
             this.setState({
                 AddIpComponent: AddIpComponentTemp,
+                ipArrayMap: setIpArrayTemp,
             });
+            dispatch(setAddEleData('ip', setIpArrayTemp));
         } else if (val === 'spla') {
             const AddSplaComponentTemp = AddSplaComponent.slice(AddSplaComponent.length)
                 .concat(AddSplaComponent.filter(d => d.key !== reName));
 
+            // eslint-disable-next-line guard-for-in,no-restricted-syntax
+            for (const arrData in splaArrayMap) {
+                if (reName.toString() !== arrData.toString()) {
+                    setSplaArrayTemp = setSplaArrayTemp.set(arrData, splaArrayMap[arrData]);
+                }
+            }
+
+            setSplaArrayTemp = JSON.parse(JSON.stringify(setSplaArrayTemp));
             this.setState({
                 AddSplaComponent: AddSplaComponentTemp,
+                splaArrayMap: setSplaArrayTemp,
             });
+            dispatch(setAddEleData('spla', setSplaArrayTemp));
         }
     };
 
@@ -442,13 +572,13 @@ class AssetsWrite extends PureComponent {
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">IP</span>
                             <div className="modal_form__form-group-field">
-                                <Field
+                                {/*<Field
                                     name="ip"
                                     component="input"
                                     type="text"
                                     className="input_col_5"
                                     placeholder="ip"
-                                />
+                                />*/}
                                 <svg className="mdi-icon " width="24" height="24" fill="currentColor"
                                      viewBox="0 0 24 24"
                                      onClick={event => this.setHtmlPlus('ip')}
@@ -480,7 +610,7 @@ class AssetsWrite extends PureComponent {
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">SPLA</span>
                             <div className="modal_form__form-group-field">
-                                <Field
+                                {/*<Field
                                     name="spla"
                                     component="select"
                                 >
@@ -490,7 +620,7 @@ class AssetsWrite extends PureComponent {
                                             <option key={d.codeId.toString()}
                                                     value={d.codeId}>{d.name}</option>
                                         ))}
-                                </Field>
+                                </Field>*/}
                                 <svg className="mdi-icon " width="24" height="24" fill="currentColor"
                                      viewBox="0 0 24 24"
                                      onClick={event => this.setHtmlPlus('spla')}
@@ -536,13 +666,13 @@ class AssetsWrite extends PureComponent {
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">IP</span>
                             <div className="modal_form__form-group-field">
-                                <Field
+                                {/*<Field
                                     name="ip"
                                     component="input"
                                     type="text"
                                     className="input_col_5"
                                     placeholder="ip"
-                                />
+                                />*/}
                                 <svg className="mdi-icon " width="24" height="24" fill="currentColor"
                                      viewBox="0 0 24 24"
                                      onClick={event => this.setHtmlPlus('ip')}
@@ -706,15 +836,17 @@ class AssetsWrite extends PureComponent {
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">제조사 / 모델명</span>
                             <div className="modal_form__form-group-field">
-                                <select name="manufacture"
-                                        onChange={this.handleChange}>
+                                <Field
+                                    name="manufacture"
+                                    component="select"
+                                    onChange={this.handleChange}>
                                     <option value="0">선택하세요.</option>
                                     {assetState.codes.codeManufacture
                                         .map((d, index) => (
                                             <option key={d.codeId.toString()}
                                                     value={d.codeId}>{d.name}</option>
                                         ))}
-                                </select>
+                                </Field>
                                 &nbsp;&nbsp;
                                 {ModelComponent}
                             </div>

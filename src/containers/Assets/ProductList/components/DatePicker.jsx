@@ -12,7 +12,7 @@ class DatePickerField extends PureComponent {
   constructor() {
     super();
     this.state = {
-      startDate: new Date(),
+      startDate: null,
     };
     this.handleChange = this.handleChange.bind(this);
   }
