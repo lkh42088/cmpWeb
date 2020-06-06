@@ -287,7 +287,7 @@ export default class AssetsList extends PureComponent {
         this.setState({selected: newSelected});
     };
 
-    handleChangePageBack = () => {
+    handleChangePageBackOld = () => {
         const {assetState, dispatch} = this.props;
         const {
             orderBy, rowsPerPage, order, showPage, page,
@@ -324,6 +324,121 @@ export default class AssetsList extends PureComponent {
                 });
             }
         }
+    };
+
+    handleChangePageBack = () => {
+        const {assetState, dispatch} = this.props;
+        const {
+            orderBy, rowsPerPage, order, showPage, page,
+            pageCount, pageSize, pageNoNum,
+        } = this.state;
+        const checkPageNumCount = (showPage - 1) * rowsPerPage;
+
+        console.log("👔 start------------------------------------> 이전");
+        console.log("showPage : ", showPage);
+        // console.log("changePageCount : ", changePageCount);
+        // console.log("changePageNoNum : ", changePageNoNum);
+        console.log("pageCount : ", pageCount);
+        console.log("pageNoNum : ", pageNoNum);
+        console.log("pageSize : ", pageSize);
+        if (showPage !== 1) {
+            if (pageNoNum === 0) { // 초기화 된 상태
+                this.setState({
+                    pageCount: pageSize,
+                    pageNoNum: pageSize - 1,
+                    page: pageSize - 1,
+                    showPage: showPage - 1,
+                });
+                const dispatchVal = ({
+                    deviceType: assetState.deviceType,
+                    checkPageNumCount: Number(checkPageNumCount),
+                    orderBy,
+                    order,
+                    rowsPerPage,
+                    showPage,
+                    overNum,
+                });
+                dispatch(fetchPostsCheckCount(dispatchVal));
+            } else {
+                this.setState({
+                    pageCount: pageCount - 1,
+                    pageNoNum: pageNoNum - 1,
+                    page: pageNoNum - 1,
+                    showPage: showPage - 1,
+                });
+            }
+        }
+        console.log("👔 End------------------------------------> 이전");
+        console.log("showPage : ", showPage);
+        // console.log("changePageCount : ", changePageCount);
+        // console.log("changePageNoNum : ", changePageNoNum);
+        console.log("pageCount : ", pageCount);
+        console.log("pageNoNum : ", pageNoNum);
+        console.log("pageSize : ", pageSize);
+
+
+        /*        console.log("overPageCheck : ", overPageCheck);
+                console.log("pageMaxCount : ", pageMaxCount);
+                console.log("showPage : ", showPage);
+                console.log("page : ", page);*/
+
+        /*if (showPage !== 1) {
+            const checkPageNumCount = (showPage - 1) * rowsPerPage;
+            const backPage = checkPageNumCount / overNum;
+
+/!*            console.log("backPage : ", backPage);
+            console.log("checkPageNumCount : ", checkPageNumCount);
+            console.log("checkPageNumCount % overNum : ", checkPageNumCount % overNum);
+            console.log("0 이면 Number(pageMaxCount) - page : ", Number(pageMaxCount) - page);
+            console.log("0 이 아니면 Number(page) - 1 : ", Number(page) - 1);
+            //console.log("assetState.frontPage.oriPage : ", assetState.frontPage.oriPage);*!/
+
+
+            if (checkPageNumCount % overNum === 0) { // overNum의 배수일때
+                const dispatchVal = ({
+                    deviceType: assetState.deviceType,
+                    checkPageNumCount: Number(checkPageNumCount),
+                    orderBy,
+                    order,
+                    rowsPerPage,
+                    showPage,
+                    overNum,
+                });
+
+                dispatch(fetchPostsCheckCount(dispatchVal));
+
+                this.setState({
+                    page: Number(pageMaxCount) - page,
+                    // eslint-disable-next-line react/destructuring-assignment,react/no-access-state-in-setstate
+                    showPage: this.state.showPage - 1,
+                    checkCount: Number(checkPageNumCount),
+                    overPageCheck: true,
+                });
+
+                if (overNum < checkPageNumCount) {
+                    this.setState({
+                        page: Number(backPage) - 1,
+                    });
+                }
+                console.log(overNum, "(overNum) < ", checkPageNumCount, "(checkPageNumCount) : ", overNum < checkPageNumCount);
+                console.log("0 이 아니면 Number(page) - 1 : ", Number(page) - 1);
+            } else {
+                let pageMin = Number(page) - 1;
+
+                if (pageMin < 0) {
+                    pageMin = 0;
+                }
+
+                this.setState({
+                    overPageCheck: false,
+                    page: pageMin,
+                    // eslint-disable-next-line react/destructuring-assignment,react/no-access-state-in-setstate
+                    showPage: this.state.showPage - 1,
+                    checkCount: Number(checkPageNumCount),
+                });
+            }
+        }*/
+        // console.log("👔 end------------------------------------> 이전");
     };
 
     handleChangePage = (event, page) => {
@@ -550,9 +665,10 @@ export default class AssetsList extends PureComponent {
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                    >{/*고객사*/}<b className="text_cor_orange">{d.customerName}</b>
-                                        /
-                                        <b className="text_cor_red">{d.customer}</b>
+                                    >{/*고객사*/}
+                                        {d.customerName}
+                                        {/*<b className="text_cor_orange">{d.customerName}</b>*/}
+                                        {/*<b className="text_cor_red">{d.customer}</b>*/}
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}

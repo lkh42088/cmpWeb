@@ -1,8 +1,7 @@
 import {createAction} from "redux-actions";
 import {takeLatest} from 'redux-saga/effects';
 import createRequestSaga, {createRequestActionTypes} from "../../lib/createRequestSaga";
-import * as regUser from "../../lib/api/regUser";
-
+import * as users from "../../lib/api/users";
 
 /******************************************************************************
  * 1. Action Type
@@ -42,7 +41,7 @@ export const registerUser = createAction(REGUSER, ({
 /******************************************************************************
  * 3. Saga
  *****************************************************************************/
-const registerUserSaga = createRequestSaga(REGUSER, regUser.registerUser);
+const registerUserSaga = createRequestSaga(REGUSER, users.registerUser);
 
 /******************************************************************************
  * 4. Saga Generation Function

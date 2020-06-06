@@ -31,15 +31,18 @@ const LoginConfirmEmailForm = ({ history }) => {
     };
 
     useEffect(() => {
-        console.log('>>>LoginConfirm: init');
+        console.log('>>>LoginConfirmEmailForm: init');
         console.log('id:', form.username);
         console.log('password:', form.password);
         console.log('email:', form.email);
         if (form.username === "" || form.password === "") {
+            console.log('^^^^^^^---> /log_in');
             history.push('/log_in');
-        } else if (form.email === "") {
-            history.push('/log_in/input_email');
         }
+        // else if (form.email === "") {
+        //     console.log('^^^^^^^---> /log_in/input_email');
+        //     history.push('/log_in/input_email');
+        // }
     }, [dispatch]);
 
     useEffect(() => {

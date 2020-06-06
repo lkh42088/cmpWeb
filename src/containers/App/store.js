@@ -20,11 +20,13 @@ import {
     accountReducer,
     loadingReducer,
     regUserReducer,
+    usersReducer,
+    pagingReducer,
 } from '../../redux/reducers/index';
 import {authSaga} from "../../redux/actions/authActions";
 import {tempSetUser, check, userSaga} from "../../redux/actions/accountActions";
 import {regUserSaga} from "../../redux/actions/regUserActions";
-/*import { composeWithDevTools } from 'redux-devtools-extension';*/
+import {userListSaga} from "../../redux/actions/usersActions";
 
 // 여러 리듀서를 쉽게 처리하기 위해 만든 메서드 => combineReducers
 const rootReducer = combineReducers({
@@ -42,17 +44,24 @@ const rootReducer = combineReducers({
     loading: loadingReducer,
     account: accountReducer,
     regUser: regUserReducer,
+    userList: usersReducer,
+    pagination: pagingReducer,
 });
 
 export function* rootSaga() {
-    yield all([authSaga(), userSaga(), regUserSaga()]);
+    yield all([
+        authSaga(),
+        userSaga(),
+        regUserSaga(),
+        userListSaga(),
+    ]);
 }
 
 const logger = createLogger();
 export const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
     rootReducer,
-    applyMiddleware(ReduxThunk, sagaMiddleware),
+    applyMiddleware(logger, ReduxThunk, sagaMiddleware),
 );
 
 export function loadUser() {
