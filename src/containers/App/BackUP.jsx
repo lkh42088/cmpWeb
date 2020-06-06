@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Button, ButtonToolbar, Modal} from 'reactstrap';
 import classNames from 'classnames';
-import {Field, reduxForm} from "redux-form";
+import {Field, reduxForm, FieldArray} from "redux-form";
 import {findDOMNode} from "react-dom";
 import {List, Map} from "immutable";
 import CalendarBlankIcon from "mdi-react/CalendarBlankIcon";
@@ -28,15 +28,18 @@ const warringStyle = {
     fontWeight: "bold",
 };
 
+function checkIP(strIP) {
+    const expUrl = /^(1|2)?\d?\d([.](1|2)?\d?\d){3}$/;
+    return expUrl.test(strIP);
+}
+
 function validate(values) {
     const errors = {};
-    /*
-        console.log("values : ", values);
-        console.log("values.customer : ", values.customer);*/
-
-    if (!values.customer) {
-        errors.customer = "고객사를 선택해주세요.";
-    }
+    /*    let IpArray = '';
+        let IpTemp;
+        let elIp;
+        const elIpName = document.getElementsByName("errorTextIp");*/
+    //console.log("values : ", values);
 
     if (values.deviceType === '0' || values.deviceType === undefined) {
         errors.deviceType = "장비구분을 선택해주세요.";
@@ -50,11 +53,23 @@ function validate(values) {
         errors.ownershipDiv = "소유권구분을 선택해주세요.";
     }
 
-    if (!values.ownerCompany) {
-        errors.ownerCompany = "소유업체명을 선택해주세요.";
-    }
+    // eslint-disable-next-line no-plusplus
+    /* for (let i = 0; i < elIpName.length; i++) {
+         elIpName[i].style.display = "none";
+     }
 
-    //console.log("errors : ", errors);
+     // eslint-disable-next-line guard-for-in,no-restricted-syntax
+     for (const arrData in values) {
+         if (arrData.indexOf("ip_") === 0) {
+             IpArray = values[arrData];
+
+             elIp = document.getElementById(`errorTextIp_${arrData}`);
+
+             if (checkIP(IpArray) === false) {
+                 elIp.style.display = "";
+             }
+         }
+     }*/
 
     return errors;
 }
@@ -72,7 +87,8 @@ const renderCustomerField = field => (
             ><AccountSearchIcon/></span>
             &nbsp;&nbsp;
             <b className="text_cor_orange"
-               style={{lineHeight: "20px"}}>{field.label.name} / {field.label.id}</b>
+               style={{lineHeight: "20px"}}>{field
+                .label.name} / {field.label.id}</b>
         </div>
         {field.meta.touched && field.meta.error
         && <span className="modal_form__form-group-description">※ {field.meta.error}</span>}
@@ -119,6 +135,7 @@ class AssetsEdit extends PureComponent {
 
     constructor() {
         super();
+        //console.log("👉 constructor start");
         this.state = {
             modal: false,
             showPassword: false,
@@ -130,52 +147,15 @@ class AssetsEdit extends PureComponent {
             AddSplaComponentMax: 0,
             RegisterId: '',
             IpArray: [],
+            SplaArray: [],
             warehousingDateError: 'test',
             searchToggleDivision: '',
             searchCompanyName: '',
             searchCustomerId: '',
             searchOwnerCompanyId: '',
-            tempDeviceValue: '',
             deviceDataArray: {},
+            initializeData: ({}),
         };
-    }
-
-    componentWillMount() {
-        console.log("실행하니?");
-        /*        const {
-                    initialize, assetState,
-                } = this.props;
-                const {
-                    IpArray, tempDeviceValue, deviceDataArray,
-                } = this.state;
-
-                const tempDeviceOri = assetState.deviceOri[0];
-                console.log("assetState.deviceOri[0] : ", assetState.deviceOri[0]);
-                console.log("typeof 00 : ", typeof tempDeviceOri);
-                console.log("typeof 01 : ", typeof assetState.devices);
-
-                assetState.deviceOri.map(n => console.log("--- : ", n, n.key));
-
-                const oPerson = JSON.stringify(assetState.deviceOri);
-                const oPerson2 = JSON.stringify(assetState.deviceOri[0]);
-                console.log("oPerson : ", oPerson);
-                console.log("oPerson2 : ", oPerson2);
-
-                const oPerson3 = JSON.parse(oPerson2);
-
-                // eslint-disable-next-line guard-for-in,no-restricted-syntax
-                for (const arrData in oPerson3) {
-                    //console.log("arrData : ", arrData, ", value : ", oPerson3[arrData]);
-                    this.setStateFun(arrData, oPerson3[arrData]);
-                }*/
-
-        //this.setStateFun('cpu', '제발...');
-
-        //console.log("assetState.deviceOri[0] : ", assetState.deviceOri[0]);
-
-        /*   this.setState({
-               tempDeviceValue: "test",
-           });*/
     }
 
     componentDidMount() {
@@ -183,123 +163,41 @@ class AssetsEdit extends PureComponent {
             initialize, assetState,
         } = this.props;
         const {
-            IpArray, tempDeviceValue, deviceDataArray,
+            IpArray, SplaArray, initializeData,
         } = this.state;
 
-        //console.log("👉 assetState.deviceOri[0] : ", assetState.deviceOri[0]);
-        console.log("👉 assetState.deviceOri : ", assetState.deviceOri);
+        //console.log("👉 componentDidMount start");
+
+        const setIpArray = [];
+        const setSplaArray = [];
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in assetState.deviceOri) {
+            if (arrData.indexOf("ip", 0) === 0) {
+                setIpArray.push(arrData);
+            } else if (arrData.indexOf("spla", 0) === 0) {
+                setSplaArray.push(arrData);
+            }
+        }
+
+        setIpArray.slice(1, setIpArray.length);
+        setIpArray.splice(0, 1);
+
+        this.setState({
+            IpArray: IpArray.concat(setIpArray),
+            SplaArray: SplaArray.concat(setSplaArray),
+            initializeData: assetState.deviceOri,
+        });
+
+        this.setState({
+            initializeData: ({
+                ...assetState.deviceOri,
+                inIpArray: setIpArray,
+            }),
+        });
 
         initialize(assetState.deviceOri);
-
-        /*let deviceData = [];
-        deviceData = deviceData.concat(assetState.deviceOri[0]);
-
-        console.log("deviceData : ", deviceData);
-
-        const temp = ({
-            idx: 3203,
-            outFlag: false,
-            registerId: "walnuts0301",
-            commentCnt: 3,
-            commentLastDate: "2020-02-25T03:47:02+09:00",
-            contents: "Dual Power (PWS-407P-1R * 2EA)",
-            cost: "",
-            cpu: "Intel Xeon E3-1240v6@3.70GHz",
-            customer: "engq",
-            customerName: "",
-            deviceCode: "CBS04900",
-            deviceType: "7",
-            hdd: "SATA1T * 2EA",
-            hwSn: "38618-001 (M/B: X11SSL-CF)",
-            idc: "16",
-            ip: "121.156.66.82|",
-            manufacture: "53",
-            memory: "8G (8G 1Rx8 PC4-2400T-E * 1EA)",
-            model: "79",
-            monitoringFlag: false,
-            monitoringMethod: 0,
-            ownerCompany: "conbridge",
-            ownerCompanyName: "",
-            ownership: "1",
-            ownershipDiv: "4",
-            purpose: "",
-            rack: "447",
-            rackLoc: 0,
-            rackTag: "",
-            registerDate: "2020-02-22T02:39:44+09:00",
-            rentDate: "20200301|20220228",
-            size: "19",
-            spla: "|",
-            warehousingDate: "20200221",
-            //assetState.deviceOri[0].map(d => "dd", "test")
-        });
-*/
-
-
-        /*        setTimeout(() => {
-                    console.log('Hello, World!');
-                    initialize(deviceDataArray);
-                }, 10000);*/
-
-        const tempIp = assetState.deviceOri.ip;
-        const tempIpArray = tempIp.split("|");
-        const setIpArray = new Map([]);
-        const setIpArray2 = [];
-
-        tempIpArray.map(d => (
-            d !== undefined && d !== "" && setIpArray.set(`ip${d}`, d)
-        ));
-
-        tempIpArray.map(d => (
-            d !== undefined && d !== "" && setIpArray2.push(d)
-        ));
-
-        // 여기서 ip, spla 세팅
-
-        /*        this.setState = ({
-                    // eslint-disable-next-line react/destructuring-assignment
-                    IpArray: IpArray.push(setIpArray2),
-                });*/
-        this.setState({
-            IpArray: IpArray.concat(setIpArray2),
-        });
-        /*        this.setState.bind = ({
-                    // eslint-disable-next-line react/destructuring-assignment
-                    IpArray: IpArray.concat(setIpArray2),
-                });*/
-
-        //console.log("will mount : ", IpArray, " ??? : ", IpArray.concat(setIpArray2));
-
-        /*        this.setState({
-                    // eslint-disable-next-line react/destructuring-assignment,react/no-access-state-in-setstate
-                    IpArray: this.state.IpArray.push(setIpArray2),
-                });*/
-
-        /*
-                tempArray.concat(assetState.deviceOri[0]);
-                tempArray.concat(assetState.deviceIp);
-
-                console.log("😃 tempArray : ", tempArray);*/
-
-        /*        console.log("this.props.assetState.deviceOri : ", assetState.deviceOri[0]);
-                console.log("👄 initialize : ", initialize);*/
-        //this.props.initialize({ name: 'your name' });
     }
-
-    componentDidUpdate = (prevProps, prevState) => {
-        const {
-            IpArray, tempDeviceValue, deviceDataArray,
-        } = this.state;
-        console.log("👉👉👉 deviceDataArray : ", deviceDataArray);
-    };
-
-    setStateFun = (name, value) => {
-        this.setState({
-            deviceDataArray: {
-                [name]: value,
-            },
-        });
-    };
 
     searchToggle = (division) => {
         this.setState({
@@ -350,14 +248,33 @@ class AssetsEdit extends PureComponent {
         this.setState(prevState => ({modal: !prevState.modal}));
     };
 
+    handleChangeAdd = (e) => {
+        const {
+            initializeData,
+        } = this.state;
+
+        this.setState({
+            initializeData: ({
+                ...initializeData,
+                [e.target.name]: e.target.value,
+            }),
+        });
+    };
+
     handleChange = (e) => {
         const {
             assetState, dispatch, handleSubmit,
         } = this.props;
+        const {
+            initializeData,
+        } = this.state;
         let tempContent;
 
         this.setState({
-            [e.target.name]: e.target.value,
+            initializeData: ({
+                ...initializeData,
+                [e.target.name]: e.target.value,
+            }),
         });
 
         // TODO 축약 가능~ 리팩토링 필수!
@@ -430,110 +347,142 @@ class AssetsEdit extends PureComponent {
 
     setHtmlPlus = (val) => {
         const {assetState, dispatch} = this.props;
+        const {initialize} = this.props;
         const {
+            initializeData,
             AddIpComponent, AddIpComponentMax, AddSplaComponent, AddSplaComponentMax,
-            IpArray,
+            IpArray, SplaArray,
         } = this.state;
         let tempContent;
 
         if (val === 'ip') {
-            const reName = `ip${AddIpComponentMax + 1}`;
+            const reName = `ip_${AddIpComponentMax + 1}`;
 
-            if (IpArray.length < 10) {
+            console.log("PLUS -----------------------------------");
+            console.log("PLUS reName ->  : ", reName);
+            console.log("PLUS IpArray ->  : ", IpArray);
+            console.log("PLUS FIN ->  : ", IpArray.concat([reName]));
+
+            if (IpArray.length < 11) {
                 this.setState({
                     IpArray: IpArray.concat([reName]),
                     AddIpComponentMax: AddIpComponentMax + 1,
+                    initializeData: ({
+                        ...initializeData,
+                        [reName]: '',
+                        inIpArray: IpArray.concat(reName),
+                    }),
                 });
 
-                console.log("IpArray : ", IpArray);
+                /*                this.setState({
+                                    IpArray: IpArray.concat([reName]),
+                                    AddIpComponentMax: AddIpComponentMax + 1,
+                                    initializeData: ({
+                                        ...initializeData,
+                                        inIpArray: IpArray.concat(reName),
+                                    }),
+                                });*/
             }
         } else if (val === 'spla') {
-            const reName = `spla${AddSplaComponentMax}`;
+            const reName = `spla${AddSplaComponentMax + 1}`;
 
-            if (AddSplaComponent.length < 10) {
-                tempContent = (
-                    <div className="modal_form__form-group-field" key={reName}>
-                        <Field
-                            name={reName}
-                            component="select"
-                        >
-                            <option value="0">선택하세요.</option>
-                            {assetState.codes.codeSpla
-                                .map((d, index) => (
-                                    <option key={d.codeId.toString()} value={d.codeId}>{d.name}</option>
-                                ))}
-                        </Field>
-                        <svg className="mdi-icon " width="24" height="24" fill="currentColor"
-                             viewBox="0 0 24 24"
-                             onClick={event => this.setHtmlMinus(reName, val)}
-                             onKeyDown={event => this.setHtmlMinus(reName, val)}
-                             role="button" tabIndex="0">
-                            <MinusIcon/>
-                        </svg>
-                    </div>
-                );
+            if (SplaArray.length < 11) {
                 this.setState({
+                    SplaArray: SplaArray.concat([reName]),
                     AddSplaComponentMax: AddSplaComponentMax + 1,
-                    AddSplaComponent: AddSplaComponent.concat(tempContent),
                 });
+
+                console.log("SplaArray : ", SplaArray);
             }
         }
     };
 
-    setHtmlMinus = (reName, val) => {
+    setHtmlMinus = (reName, val, e) => {
         const {
-            IpArray, AddSplaComponent,
+            IpArray, SplaArray, initializeData,
         } = this.state;
+        const {initialize} = this.props;
 
         if (val === 'ip') {
             const AddIpComponentTemp = IpArray.slice(IpArray.length)
                 .concat(IpArray.filter(d => d.toString() !== reName.toString()));
 
-            this.setState({
-                IpArray: AddIpComponentTemp,
-            });
-        } else if (val === 'spla') {
-            const AddSplaComponentTemp = AddSplaComponent.slice(AddSplaComponent.length)
-                .concat(AddSplaComponent.filter(d => d.key !== reName));
+            /*const header = document.getElementById(reName.toString());
+            header.remove();*/
+
+            console.log("reName : ", reName);
 
             this.setState({
-                AddSplaComponent: AddSplaComponentTemp,
+                IpArray: AddIpComponentTemp,
+                initializeData: ({
+                    ...initializeData,
+                    inIpArray: AddIpComponentTemp,
+                    [reName.toString()]: '',
+                }),
+            });
+
+            //initialize(initializeData);
+        } else if (val === 'spla') {
+            const AddSplaComponentTemp = SplaArray.slice(SplaArray.length)
+                .concat(SplaArray.filter(d => d.toString() !== reName.toString()));
+
+            this.setState({
+                SplaArray: AddSplaComponentTemp,
             });
         }
     };
 
+    handleSubmit = (e) => {
+        e.preventDefault();
+
+        const {
+            onSubmit, initialize,
+        } = this.props;
+        const {
+            initializeData,
+        } = this.state;
+
+        console.log("handleSubmit -> ", initializeData);
+        initialize(initializeData);
+        // TODO... 와 무슨 의미야...이게...후...ONCHANGE
+        onSubmit(initializeData);
+    };
+
+    componentDidUpdate = (prevProps, prevState) => {
+        console.log("prevState : ", prevState.initializeData);
+        console.log("prevProps : ", prevProps.assetState.deviceOri);
+
+        const {initializeData} = this.state;
+        const {initialize} = this.props;
+
+        if (prevState.initializeData !== prevProps.assetState.deviceOri) {
+            initialize(initializeData);
+        }
+        //initialize(initializeData);
+    };
+
     render() {
+        console.log("👉👉👉👉👉👉👉👉 render start");
         const {
             title, message,
             assetState, dispatch, handleSubmit,
         } = this.props;
         const {
-            deviceDataArray,
+            deviceDataArray, initializeData,
             modal, RackComponent, ModelComponent, AddIpComponent, AddSplaComponent,
-            RegisterId, IpArray, warehousingDateError,
+            RegisterId, IpArray, SplaArray, warehousingDateError,
             searchCompanyName, searchCustomerId, searchOwnerCompanyId, searchToggleDivision,
             manufacture, idc,
         } = this.state;
         const {showPassword} = this.state;
         let deviceRawValue = new Map([]);
-        //let deviceValue;
-
-        //console.log("💃💃💃💃 IpArray : ", IpArray);
-        //console.log("💃💃💃💃 deviceDataArray : ", deviceDataArray);
-        /*
-                console.log("💃💃💃💃 tempDeviceValue : ", tempDeviceValue);
-
-
-                // eslint-disable-next-line guard-for-in,no-restricted-syntax
-                for (const arrData in tempDeviceValue) {
-                    console.log("arrData : ", arrData, ", value : ", tempDeviceValue[arrData]);
-                }
-        */
 
         const deviceStyle = {
             textDecoration: '#ffdd67 underline',
             fontWeight: 'bold',
         };
+
+        console.log("★★★★ initializeData : ", initializeData);
 
         const modalClass = classNames({
             'assets_write__modal-dialog': true,
@@ -543,57 +492,143 @@ class AssetsEdit extends PureComponent {
 
         let viewContent;
 
-        /*        console.log("length : ", assetState.deviceOri.length);
-
-                if (assetState.deviceOri.length > 0) {
-                    // eslint-disable-next-line prefer-destructuring
-                    deviceRawValue = assetState.deviceOri[0];
-                    // eslint-disable-next-line prefer-destructuring
-                    deviceValue = assetState.device[0];
-                } else {
-                    deviceRawValue = assetState.deviceOri;
-                    deviceValue = assetState.device;
-                }*/
-
         const deviceValue = assetState.device[0];
         deviceRawValue = assetState.deviceOri;
+        let IpList = '';
+        const SplaList = '';
+        const setIpArray = [];
 
-        /*        console.log("deviceValue : ", deviceValue);
-                console.log("deviceRawValue : ", deviceRawValue);*/
+        /*console.log("★★★★ size initializeData : ", initializeData.size);
+
+        if (initializeData.size !== undefined) {
+            // eslint-disable-next-line guard-for-in,no-restricted-syntax
+            for (const arrData in initializeData.inIpArray) {
+                console.log("arrData : ", arrData, ", value : ", initializeData[arrData]);
+                if (arrData.indexOf("ip", 0) === 0) {
+                    setIpArray.push(
+                        <Fragment key={arrData}>
+                            {
+                                arrData !== undefined && arrData !== "" && arrData !== "ip" && checkIP(initializeData[arrData])
+                                && (
+                                    <div className="modal_form__form-group-field">
+                                        <Field name={`${arrData}`}
+                                               component="input"
+                                               type="text"
+                                               className="input_col_5"
+                                        />
+                                        <svg className="mdi-icon " width="24" height="24"
+                                             fill="currentColor"
+                                             viewBox="0 0 24 24"
+                                             onClick={event => this.setHtmlMinus(`${arrData}`, 'ip', this)}
+                                             onKeyDown={event => this.setHtmlMinus(`${arrData}`, 'ip', this)}
+                                             role="button" tabIndex="0">
+                                            <MinusIcon/>
+                                        </svg>
+                                        <span id={`errorTextIp_${arrData}`} name="errorTextIp" style={{display: "none"}}>
+                                    ※ IP를 정확히 입력해 주세요.</span>
+                                    </div>
+                                )
+                            }
+                        </Fragment>,
+                    );
+                }
+            }
+        }*/
 
 
-        const ipArry = deviceRawValue.ip.split("|");
-        //console.log("ipArry : ", ipArry);
+        if (initializeData.size !== undefined) {
+            IpList = initializeData.inIpArray.map(
+                (d, index) => (
+                    <Fragment key={d}>
+                        {
+                            d !== undefined && d !== "" && d !== "ip"
+                            && (
+                                <div className="modal_form__form-group-field">
+                                    <Field name={`${d}`}
+                                           component="input"
+                                           type="text"
+                                           className="input_col_5"
+                                           onChange={this.handleChangeAdd}
+                                    />
+                                    <svg className="mdi-icon " width="24" height="24"
+                                         fill="currentColor"
+                                         viewBox="0 0 24 24"
+                                         onClick={event => this.setHtmlMinus(`${d}`, 'ip')}
+                                         onKeyDown={event => this.setHtmlMinus(`${d}`, 'ip')}
+                                         role="button" tabIndex="0">
+                                        <MinusIcon/>
+                                    </svg>
+                                    <span id={`errorTextIp_${d}`} name="errorTextIp" style={{display: "none"}}>
+                                    ※ IP를 정확히 입력해 주세요.</span>
+                                </div>
+                            )
+                        }
+                    </Fragment>
+                ),
+            );
+        }
 
-        //console.log("💨 edit render deviceIp : ", assetState.deviceIp);
+        /* const IpList = IpArray.map(
+             (d, index) => (
+                 <Fragment key={d}>
+                     {
+                         d !== undefined && d !== "" && d !== "ip"
+                         && (
+                             <div className="modal_form__form-group-field">
+                                 <Field name={`${d}`}
+                                        component="input"
+                                        type="text"
+                                        className="input_col_5"
+                                 />
+                                 <svg className="mdi-icon " width="24" height="24"
+                                      fill="currentColor"
+                                      viewBox="0 0 24 24"
+                                      onClick={event => this.setHtmlMinus(`${d}`, 'ip')}
+                                      onKeyDown={event => this.setHtmlMinus(`${d}`, 'ip')}
+                                      role="button" tabIndex="0">
+                                     <MinusIcon/>
+                                 </svg>
+                                 <span id={`errorTextIp_${d}`} name="errorTextIp" style={{display: "none"}}>
+                                     ※ IP를 정확히 입력해 주세요.</span>
+                             </div>
+                         )
+                     }
+                 </Fragment>
+             ),
+         );
 
-        const IpList = IpArray.map(
-            (d, index) => (
-                <Fragment key={d}>
-                    {
-                        d !== undefined && d !== ""
-                        && (
-                            <div className="modal_form__form-group-field">
-                                <Field name={`ip${d}`}
-                                       component="input"
-                                       type="text"
-                                       className="input_col_5"
-                                       value="ddd"
-                                />
-                                <svg className="mdi-icon " width="24" height="24"
-                                     fill="currentColor"
-                                     viewBox="0 0 24 24"
-                                     onClick={event => this.setHtmlMinus(`${d}`, 'ip')}
-                                     onKeyDown={event => this.setHtmlMinus(`${d}`, 'ip')}
-                                     role="button" tabIndex="0">
-                                    <MinusIcon/>
-                                </svg>
-                            </div>
-                        )
-                    }
-                </Fragment>
-            ),
-        );
+         const SplaList = SplaArray.map(
+             (d, index) => (
+                 <Fragment key={d}>
+                     {
+                         d !== undefined && d !== "" && d !== "spla"
+                         && (
+                             <div className="modal_form__form-group-field">
+                                 <Field
+                                     name={`${d}`}
+                                     component="select"
+                                 >
+                                     <option value="0">선택하세요.</option>
+                                     {assetState.codes.codeSpla
+                                         .map(c => (
+                                             <option key={c.codeId.toString()}
+                                                     value={c.codeId}>{c.name}</option>
+                                         ))}
+                                 </Field>
+                                 <svg className="mdi-icon " width="24" height="24"
+                                      fill="currentColor"
+                                      viewBox="0 0 24 24"
+                                      onClick={event => this.setHtmlMinus(`${d}`, 'spla')}
+                                      onKeyDown={event => this.setHtmlMinus(`${d}`, 'spla')}
+                                      role="button" tabIndex="0">
+                                     <MinusIcon/>
+                                 </svg>
+                             </div>
+                         )
+                     }
+                 </Fragment>
+             ),
+         );*/
 
         switch (assetState.deviceType) {
             case 'server':
@@ -636,23 +671,11 @@ class AssetsEdit extends PureComponent {
                                     className="input_col_10"
                                     placeholder="HDD"
                                 />
-                                <Field name="ip2"
-                                       component="input"
-                                       type="text"
-                                       className="input_col_5"
-                                />
                             </div>
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">IP</span>
                             <div className="modal_form__form-group-field">
-                                <Field
-                                    name="ip0"
-                                    component="input"
-                                    type="text"
-                                    className="input_col_5"
-                                    placeholder="ip"
-                                />
                                 <svg className="mdi-icon" width="24" height="24" fill="currentColor"
                                      viewBox="0 0 24 24"
                                      onClick={event => this.setHtmlPlus('ip')}
@@ -663,49 +686,7 @@ class AssetsEdit extends PureComponent {
                                 {/*TODO 디자인 통합 필요*/}
                                 <span>※ 최대 등록 개수는 10개 입니다.</span>
                             </div>
-                            {/*<div className="modal_form__form-group-field">
-                                <Field
-                                    name="ip"
-                                    component="input"
-                                    type="text"
-                                    className="input_col_5"
-                                    placeholder="ip"
-                                />
-                                <svg className="mdi-icon " width="24" height="24" fill="currentColor"
-                                     viewBox="0 0 24 24"
-                                     onClick={event => this.setHtmlPlus('ip')}
-                                     onKeyDown={event => this.setHtmlPlus('ip')}
-                                     role="button" tabIndex="0">
-                                    <PlusIcon/>
-                                </svg>
-                                TODO 디자인 통합 필요
-                                <span>※ 최대 등록 개수는 10개 입니다.</span>
-                            </div>*/}
                             {IpList}
-                            {/*▶ {ipArry
-                            .map(d => (
-                                <Fragment key={d}>
-                                    <span className="modal_form__form-group-label"/>
-                                    {
-                                        d !== undefined && d !== ""
-                                        && (
-                                            <div className="modal_form__form-group-field">
-                                                <Field name={`ip${d}`}
-                                                       component="input"
-                                                       type="text"
-                                                       className="input_col_5"
-                                                       placeholder={d}/>
-                                                <svg className="mdi-icon " width="24" height="24"
-                                                     fill="currentColor"
-                                                     viewBox="0 0 24 24">
-                                                    <MinusIcon/>
-                                                </svg>
-                                            </div>
-                                        )
-                                    }
-                                </Fragment>
-                            ))
-                        }*/}
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">Size</span>
@@ -725,7 +706,7 @@ class AssetsEdit extends PureComponent {
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">SPLA</span>
-                            <div className="modal_form__form-group-field">
+                            {/*<div className="modal_form__form-group-field">
                                 <Field
                                     name="spla"
                                     component="select"
@@ -744,10 +725,21 @@ class AssetsEdit extends PureComponent {
                                      role="button" tabIndex="0">
                                     <PlusIcon/>
                                 </svg>
+                                TODO 디자인 통합 필요
+                                <span>※ 최대 등록 개수는 10개 입니다.</span>
+                            </div>*/}
+                            <div className="modal_form__form-group-field">
+                                <svg className="mdi-icon" width="24" height="24" fill="currentColor"
+                                     viewBox="0 0 24 24"
+                                     onClick={event => this.setHtmlPlus('spla')}
+                                     onKeyDown={event => this.setHtmlPlus('spla')}
+                                     role="button" tabIndex="0">
+                                    <PlusIcon/>
+                                </svg>
                                 {/*TODO 디자인 통합 필요*/}
                                 <span>※ 최대 등록 개수는 10개 입니다.</span>
                             </div>
-                            {AddSplaComponent}
+                            {SplaList}
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">Rack Tag</span>
@@ -782,14 +774,7 @@ class AssetsEdit extends PureComponent {
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">IP</span>
                             <div className="modal_form__form-group-field">
-                                <Field
-                                    name="ip"
-                                    component="input"
-                                    type="text"
-                                    className="input_col_5"
-                                    placeholder="ip"
-                                />
-                                <svg className="mdi-icon " width="24" height="24" fill="currentColor"
+                                <svg className="mdi-icon" width="24" height="24" fill="currentColor"
                                      viewBox="0 0 24 24"
                                      onClick={event => this.setHtmlPlus('ip')}
                                      onKeyDown={event => this.setHtmlPlus('ip')}
@@ -799,7 +784,7 @@ class AssetsEdit extends PureComponent {
                                 {/*TODO 디자인 통합 필요*/}
                                 <span>※ 최대 등록 개수는 10개 입니다.</span>
                             </div>
-                            {AddIpComponent}
+                            {IpList}
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">FIRMWARE VERSION</span>
@@ -925,6 +910,7 @@ class AssetsEdit extends PureComponent {
                 <div className="assets_write__modal__body assets_write__modal__tableLine">
                     <form className="modal_form modal_form--horizontal"
                           onSubmit={handleSubmit}>
+                        {/*                        onSubmit={this.handleSubmit}>*/}
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label text_cor_green">장비코드</span>
                             <div className="modal_form__form-group-field">
@@ -1136,6 +1122,7 @@ class AssetsEdit extends PureComponent {
                                     className="input_col_10"
                                     type="text"
                                     placeholder="용도"
+                                    onChange={this.handleChange}
                                 />
                             </div>
                         </div>
@@ -1156,7 +1143,7 @@ class AssetsEdit extends PureComponent {
                                 <Button className="assets_write__modal_ok" color="primary"
                                         onClick={this.onClose}>Submit</Button>
                                 <Button className="assets_write__modal_cancel"
-                                        onClick={this.onClose}>Cancel</Button>{' '}
+                                        onClick={this.onClose}>Cancel</Button>
                                 <Button type="submit">Submit[test]</Button>
                             </ButtonToolbar>
                         </div>
@@ -1203,16 +1190,3 @@ export default reduxForm({
     form: 'AssetsEditForm', // a unique identifier for this form
     validate,
 })(withTranslation('common')(AssetsEdit));
-
-/*
-const mapStateToProps = (state, props) => ({
-    initialValue: props.assetState.deviceOri, // retrieve name from redux store
-});
-
-export default connect(
-    mapStateToProps,
-)(reduxForm({
-    form: 'AssetsEditForm', // a unique identifier for this form
-    enableReinitialize: true,
-})(withTranslation('common')(AssetsEdit)));
-*/

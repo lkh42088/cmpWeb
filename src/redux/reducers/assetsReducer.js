@@ -11,6 +11,7 @@ import {
     GET_COMMENTS_BY_DEVICECODE,
     GET_DEVICES_CHECKCOUNT, SET_STATUS,
     GET_DEVICE_ORI_BY_DEVICECODE, SET_MODAL_DIVISION,
+    SET_ADD_ELE_IP_DATA, SET_ADD_ELE_SPLA_DATA,
 } from "../actions/assetsAction";
 
 export const initialState = {
@@ -18,8 +19,9 @@ export const initialState = {
     deviceByDeviceCode: '1',
     viewModalDivison: 'read',
     device: {},
-    deviceIp: {},
     deviceOri: {},
+    deviceIp: {},
+    deviceSpla: {},
     devices: List([
         Map({}),
     ]),
@@ -123,10 +125,8 @@ const assetsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 deviceOri: payload,
-                deviceIp: page,
             };
         case SET_DEVICE_DEVICECODE:
-            console.log("reducer : ", payload);
             return {
                 ...state,
                 deviceByDeviceCode: payload,
@@ -155,6 +155,16 @@ const assetsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 viewModalDivison: payload,
+            };
+        case SET_ADD_ELE_IP_DATA:
+            return {
+                ...state,
+                deviceIp: payload,
+            };
+        case SET_ADD_ELE_SPLA_DATA:
+            return {
+                ...state,
+                deviceSpla: payload,
             };
         default:
             return state;

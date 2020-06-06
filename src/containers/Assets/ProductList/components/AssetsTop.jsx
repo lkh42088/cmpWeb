@@ -46,8 +46,6 @@ export default class AssetsTop extends PureComponent {
 
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
         for (const arrData in values) {
-            //console.log("arrData : ", arrData, ", value : ", values[arrData]);
-
             if (arrData.indexOf("ip") !== -1) {
                 IpArray = `${IpArray}|${values[arrData]}`;
             } else if (arrData.indexOf("spla") !== -1) {
@@ -73,8 +71,6 @@ export default class AssetsTop extends PureComponent {
                 warehousingDate = moment(values[arrData]).format("YYYYMMDD");
             }
         }
-
-        // const tempJson = JSON.stringify(JSON.stringify(values), replacer);
 
         const submitData = ({
             outFlag: '',
@@ -112,41 +108,7 @@ export default class AssetsTop extends PureComponent {
             warranty: values.warranty,
         });
 
-        /*const submitData = ({
-            outFlag: true,
-            commentCnt: 0,
-            commentLastDate: "",
-            registerId: "lkb",
-            contents: "들어가자~↵와~",
-            cost: "3243",
-            cpu: "cpu",
-            customer: "",
-            deviceCode: "CBS09998",
-            deviceType: "7",
-            hdd: "hdd2",
-            hwSn: "hw",
-            idc: "15",
-            ip: "|22.2.2.2|1.1.1.1",
-            manufacture: undefined,
-            memory: "memory",
-            model: "39",
-            monitoringFlag: "",
-            monitoringMethod: "",
-            ownerCompany: "",
-            ownership: "1",
-            ownershipDiv: "4",
-            purpos: "5000",
-            rack: "87",
-            rackLoc: "12",
-            rackTag: "rack tag",
-            registerDate: "",
-            rentDate: "20200501|20200504",
-            size: "23",
-            spla: "|587|88",
-            warehousingDate: "20200507",
-        });*/
-
-        console.log("🙊🙊🙊🙊🙊🙊🙊 : ", submitData);
+        console.log("TOP 🙊🙊🙊🙊🙊🙊🙊 : ", submitData);
         dispatch(postDevice('create', assetState, submitData));
     };
 

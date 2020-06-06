@@ -103,7 +103,8 @@ class ModalComponent extends PureComponent {
                     className={`modal-dialog--${color} ${modalClass}`}
                 >
                     <div className="modal__header">
-                        <button className="lnr lnr-cross modal__close-btn" type="button" onClick={this.toggle}/>
+                        <button className="lnr lnr-cross modal__close-btn" type="button"
+                                onClick={this.toggle}/>
                         {header ? '' : Icon}
                         <h4 className="text-modal  modal__title">{title}</h4>
                     </div>
@@ -127,7 +128,7 @@ class ModalComponent extends PureComponent {
                                 </ButtonToolbar>
                             )
                     }
-            </Modal>
+                </Modal>
             </div>
         );
     }

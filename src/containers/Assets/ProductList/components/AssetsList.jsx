@@ -26,7 +26,7 @@ import {
     fetchPosts,
     fetchPostsCheckCount,
     getDeviceOriByIdx,
-    setViewModalDivision,
+    setViewModalDivision, postDevice,
 } from '../../../../redux/actions/assetsAction';
 
 import AssetsHead from './AssetsHead';
@@ -119,7 +119,119 @@ export default class AssetsList extends PureComponent {
     };
 
     handleSubmit = (values) => {
-      console.log("🙀 handleSubmit : ", values);
+        console.log("😡😡😡😡😡😡😡 handleSubmit : ", values);
+        const {assetState, dispatch} = this.props;
+
+        console.log("😡😡😡 deviceIp : ", assetState.deviceIp);
+        console.log("😡😡😡 deviceSpla : ", assetState.deviceSpla);
+
+        let division = '|';
+        let divisionCount = 0;
+        let IpArray = '';
+        let SplaArray = '';
+        let rentDataStart;
+        let rentDataEnd;
+        let rentData = '|';
+        let warehousingDate = '';
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in assetState.deviceIp) {
+            if (divisionCount <= 0) {
+                division = '';
+            } else {
+                division = '|';
+            }
+
+            divisionCount += 1;
+            IpArray = `${IpArray}${division}${assetState.deviceIp[arrData]}`;
+        }
+
+        divisionCount = 0;
+
+        console.log('IpArray : ', IpArray);
+        console.log('IpArray.length : ', IpArray.length);
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in assetState.deviceSpla) {
+            if (divisionCount <= 0) {
+                division = '';
+            } else {
+                division = '|';
+            }
+
+            divisionCount += 1;
+            SplaArray = `${SplaArray}${division}${assetState.deviceSpla[arrData]}`;
+        }
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in values) {
+            //console.log("arrData : ", arrData, ", value : ", values[arrData]);
+            if (arrData.indexOf("rentDate") !== -1) {
+                if (values[arrData].start !== null) {
+                    rentDataStart = moment(values[arrData].start).format("YYYYMMDD");
+                } else {
+                    rentDataStart = null;
+                }
+
+                if (rentDataStart !== null) {
+                    if (values[arrData].end !== null) {
+                        rentDataEnd = `|${moment(values[arrData].end).format("YYYYMMDD")}`;
+                    } else {
+                        rentDataEnd = "|";
+                    }
+                    rentData = `${rentDataStart}${rentDataEnd}`;
+                } else {
+                    rentData = "|";
+                }
+            } else if (arrData.indexOf("warehousingDate") !== -1) {
+                warehousingDate = moment(values[arrData]).format("YYYYMMDD");
+            }
+        }
+
+        warehousingDate = warehousingDate.toString();
+        console.log("♡♡♡♡♡♡warehousingDate : ", warehousingDate);
+        console.log("♡♡♡♡♡♡IpArray : ", IpArray);
+        console.log("♡♡♡♡♡♡SplaArray : ", SplaArray);
+
+        const submitData = ({
+            idx: values.idx,
+            outFlag: '',
+            commentCnt: '',
+            commentLastDate: '',
+            registerId: 'lkb',
+            registerDate: '',
+            model: values.model,
+            contents: values.contents,
+            customer: values.customer,
+            manufacture: values.manufacture,
+            deviceType: values.deviceType,
+            ownership: values.ownership,
+            ownershipDiv: values.ownershipDiv,
+            ownerCompany: values.ownerCompany,
+            hwSn: values.hwSn,
+            idc: values.idc,
+            rack: values.rack,
+            cost: values.cost,
+            purpose: values.purpose,
+            size: values.size,
+            cpu: values.cpu,
+            memory: values.memory,
+            hdd: values.hdd,
+            rackTag: values.rackTag,
+            rackLoc: values.rackLoc.toString(),
+            ip: IpArray,
+            spla: SplaArray,
+            rentDate: rentData,
+            warehousingDate,
+            monitoringFlag: '',
+            monitoringMethod: '',
+            rackCode: values.rackCode,
+            firmwareVersion: values.firmwareVersion,
+            warranty: values.warranty,
+        });
+
+        console.log("UPDATE 🙊🙊🙊🙊🙊🙊🙊 : ", submitData);
+        dispatch(postDevice('update', assetState, submitData));
     };
 
     handleRequestSort = (event, property) => {
