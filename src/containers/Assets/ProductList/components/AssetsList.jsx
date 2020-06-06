@@ -119,11 +119,7 @@ export default class AssetsList extends PureComponent {
     };
 
     handleSubmit = (values) => {
-        console.log("😡😡😡😡😡😡😡 handleSubmit : ", values);
         const {assetState, dispatch} = this.props;
-
-        console.log("😡😡😡 deviceIp : ", assetState.deviceIp);
-        console.log("😡😡😡 deviceSpla : ", assetState.deviceSpla);
 
         let division = '|';
         let divisionCount = 0;
@@ -136,50 +132,49 @@ export default class AssetsList extends PureComponent {
 
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
         for (const arrData in assetState.deviceIp) {
-            if (divisionCount <= 0) {
-                division = '';
-            } else {
-                division = '|';
-            }
+            if (assetState.deviceIp[arrData] !== '') {
+                if (divisionCount <= 0) {
+                    division = '';
+                } else {
+                    division = '|';
+                }
 
-            divisionCount += 1;
-            IpArray = `${IpArray}${division}${assetState.deviceIp[arrData]}`;
+                divisionCount += 1;
+                IpArray = `${IpArray}${division}${assetState.deviceIp[arrData]}`;
+            }
         }
 
         divisionCount = 0;
-
-        console.log('IpArray : ', IpArray);
-        console.log('IpArray.length : ', IpArray.length);
+        IpArray = `${IpArray}|`;
 
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
         for (const arrData in assetState.deviceSpla) {
-            if (divisionCount <= 0) {
-                division = '';
-            } else {
-                division = '|';
-            }
+            if (assetState.deviceSpla[arrData] !== '') {
+                if (divisionCount <= 0) {
+                    division = '';
+                } else {
+                    division = '|';
+                }
 
-            divisionCount += 1;
-            SplaArray = `${SplaArray}${division}${assetState.deviceSpla[arrData]}`;
+                divisionCount += 1;
+                SplaArray = `${SplaArray}${division}${assetState.deviceSpla[arrData]}`;
+            }
         }
+
+        SplaArray = `${SplaArray}|`;
 
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
         for (const arrData in values) {
             //console.log("arrData : ", arrData, ", value : ", values[arrData]);
             if (arrData.indexOf("rentDate") !== -1) {
-                if (values[arrData].start !== null) {
+                //console.log("arrData : ", arrData, ", value : ", values[arrData]);
+                //console.log("start : ", values[arrData].start, ", end : ", values[arrData].end);
+                if (values[arrData].start !== undefined) {
                     rentDataStart = moment(values[arrData].start).format("YYYYMMDD");
-                } else {
-                    rentDataStart = null;
-                }
-
-                if (rentDataStart !== null) {
-                    if (values[arrData].end !== null) {
-                        rentDataEnd = `|${moment(values[arrData].end).format("YYYYMMDD")}`;
-                    } else {
-                        rentDataEnd = "|";
-                    }
+                    rentDataEnd = `|${moment(values[arrData].end).format("YYYYMMDD")}`;
                     rentData = `${rentDataStart}${rentDataEnd}`;
+                } else if (values[arrData] !== '' && values[arrData] !== undefined) {
+                    rentData = values[arrData];
                 } else {
                     rentData = "|";
                 }
@@ -189,11 +184,9 @@ export default class AssetsList extends PureComponent {
         }
 
         warehousingDate = warehousingDate.toString();
-        console.log("♡♡♡♡♡♡warehousingDate : ", warehousingDate);
-        console.log("♡♡♡♡♡♡IpArray : ", IpArray);
-        console.log("♡♡♡♡♡♡SplaArray : ", SplaArray);
 
         const submitData = ({
+            deviceCode: values.deviceCode,
             idx: values.idx,
             outFlag: '',
             commentCnt: '',
@@ -230,7 +223,8 @@ export default class AssetsList extends PureComponent {
             warranty: values.warranty,
         });
 
-        console.log("UPDATE 🙊🙊🙊🙊🙊🙊🙊 : ", submitData);
+        console.log("UPDATE 🙊🙊🙊 가공 전 : ", values);
+        console.log("UPDATE 🙊🙊🙊 가공 후 : ", submitData);
         dispatch(postDevice('update', assetState, submitData));
     };
 

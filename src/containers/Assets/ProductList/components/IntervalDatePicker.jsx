@@ -40,14 +40,7 @@ class IntervalDatePickerField extends PureComponent {
         // 특정 props 가 바뀔 때 설정하고 설정하고 싶은 state 값을 리턴하는 형태로
         // 사용됩니다.
         //console.log("😱 😱 IntervalDatePickerField -> nextProps.value : ", nextProps.value.value);
-        console.log("nextProps : ", nextProps);
-        console.log("prevState : ", prevState);
-        console.log("prevState.earlyFlag : ", prevState.earlyFlag);
         if (nextProps.value !== prevState.value && prevState.earlyFlag === true) {
-            console.log("조건 01 : ", nextProps.value !== undefined);
-            console.log("조건 02 : ", nextProps.value !== "|");
-            console.log("조건 03 : ", nextProps.value !== "");
-            console.log("조건 04 : ", typeof nextProps.value);
             if (nextProps.value !== undefined && nextProps.value !== "|"
                 && nextProps.value !== "" && typeof nextProps.value === "string") {
                 //console.log("응?? : ", nextProps.value);
@@ -88,8 +81,6 @@ class IntervalDatePickerField extends PureComponent {
     render() {
         const {startDate, endDate} = this.state;
         const {value} = this.props;
-
-        console.log("render -> value : ", value);
 
         return (
             <div className="date-picker date-picker--interval">

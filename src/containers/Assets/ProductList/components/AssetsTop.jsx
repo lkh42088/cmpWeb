@@ -37,6 +37,8 @@ export default class AssetsTop extends PureComponent {
     handleSubmit = (values) => {
         const {assetState, dispatch} = this.props;
 
+        let division = '|';
+        let divisionCount = 0;
         let IpArray = '';
         let SplaArray = '';
         let rentDataStart;
@@ -45,13 +47,42 @@ export default class AssetsTop extends PureComponent {
         let warehousingDate = '';
 
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in assetState.deviceIp) {
+            if (assetState.deviceIp[arrData] !== '') {
+                if (divisionCount <= 0) {
+                    division = '';
+                } else {
+                    division = '|';
+                }
+
+                divisionCount += 1;
+                IpArray = `${IpArray}${division}${assetState.deviceIp[arrData]}`;
+            }
+        }
+
+        divisionCount = 0;
+        IpArray = `${IpArray}|`;
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in assetState.deviceSpla) {
+            if (assetState.deviceSpla[arrData] !== '') {
+                if (divisionCount <= 0) {
+                    division = '';
+                } else {
+                    division = '|';
+                }
+
+                divisionCount += 1;
+                SplaArray = `${SplaArray}${division}${assetState.deviceSpla[arrData]}`;
+            }
+        }
+
+        SplaArray = `${SplaArray}|`;
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
         for (const arrData in values) {
-            if (arrData.indexOf("ip") !== -1) {
-                IpArray = `${IpArray}|${values[arrData]}`;
-            } else if (arrData.indexOf("spla") !== -1) {
-                SplaArray = `${SplaArray}|${values[arrData]}`;
-            } else if (arrData.indexOf("rentDate") !== -1) {
-                if (values[arrData].start !== null) {
+            if (arrData.indexOf("rentDate") !== -1) {
+                if (values[arrData].start !== null && values[arrData].start !== undefined) {
                     rentDataStart = moment(values[arrData].start).format("YYYYMMDD");
                 } else {
                     rentDataStart = null;
@@ -72,6 +103,14 @@ export default class AssetsTop extends PureComponent {
             }
         }
 
+        console.log("========================================");
+        console.log("IpArray : ", IpArray);
+        console.log("SplaArray : ", SplaArray);
+        console.log("manufacture : ", values.manufacture);
+        console.log("model : ", values.model);
+        console.log("IpArray : ", IpArray);
+        console.log("========================================");
+
         const submitData = ({
             outFlag: '',
             commentCnt: '',
@@ -79,9 +118,9 @@ export default class AssetsTop extends PureComponent {
             registerId: 'lkb',
             registerDate: '',
             model: values.model,
+            manufacture: values.manufacture,
             contents: values.contents,
             customer: values.customer,
-            manufacture: values.manufacture,
             deviceType: values.deviceType,
             ownership: values.ownership,
             ownershipDiv: values.ownershipDiv,
@@ -108,7 +147,8 @@ export default class AssetsTop extends PureComponent {
             warranty: values.warranty,
         });
 
-        console.log("TOP 🙊🙊🙊🙊🙊🙊🙊 : ", submitData);
+        console.log("TOP 🙊🙊🙊 가공 전 : ", values);
+        console.log("TOP 🙊🙊🙊 가공 후: ", submitData);
         dispatch(postDevice('create', assetState, submitData));
     };
 
