@@ -11,13 +11,12 @@ import Checkbox from "@material-ui/core/Checkbox";
 import {getUserList} from "../../../../redux/actions/usersActions";
 import UserHead from "./UserHead";
 import {
-    pagingChangeAllSelected,
     pagingChangeCurrentPageNext, pagingChangeCurrentPagePrev,
     pagingChangeRowsPerPage, pagingChangeSelected,
     pagingChangeTotalCount,
 } from "../../../../redux/actions/pagingActions";
 
-const UserList = (callback, deps) => {
+const UserList = () => {
     const dispatch = useDispatch();
     const {
         rtl, users, getPage, selected, pageBeginRow, rowsPerPage,
@@ -86,9 +85,16 @@ const UserList = (callback, deps) => {
         dispatch(pagingChangeSelected({selected: newSelected}));
     };
 
-    const handleSelectAllClick = useCallback((event, checked) => {
-        dispatch(pagingChangeAllSelected({checked}));
-    });
+    const handleSelectAllClick = (event, checked) => {
+        const newSelected = new Map();
+        console.log("users: ", users);
+        if (checked) {
+            users.map(n => newSelected.set(n.idx, true));
+        } else {
+            users.map(n => newSelected.set(n.idx, false));
+        }
+        dispatch(pagingChangeSelected({selected: newSelected}));
+    };
 
     const getPageData = () => {
         let offset = 0;
@@ -230,6 +236,7 @@ const UserList = (callback, deps) => {
                             <UserHead
                                 numSelected={[...selected].filter(el => el[1]).length}
                                 onSelectAllClick={handleSelectAllClick}
+                                rowCount={users.length}
                             />
                             {usersTable}
                         </Table>

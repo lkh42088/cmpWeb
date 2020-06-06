@@ -10,7 +10,6 @@ export const PAGING_CHANGE_CURRENT_PAGE_NEXT = 'paging/PAGING_CHANGE_CURRENT_PAG
 export const PAGING_CHANGE_ROWS_PER_PAGE = 'paging/PAGING_CHANGE_ROWS_PER_PAGE';
 export const PAGING_CHANGE_TOTAL_COUNT = 'paging/PAGING_CHANGE_TOTAL_COUNT';
 export const PAGING_CHANGE_SELECTED = 'paging/PAGING_CHANGE_SELECTED';
-export const PAGING_CHANGE_ALL_SELECTED = 'paging/PAGING_CHANGE_ALL_SELECTED';
 
 /******************************************************************************
  * 2. Action Function
@@ -29,5 +28,3 @@ export const pagingChangeTotalCount = createAction(PAGING_CHANGE_TOTAL_COUNT,
     totalCount => totalCount);
 export const pagingChangeSelected = createAction(PAGING_CHANGE_SELECTED,
      selected => selected);
-export const pagingChangeAllSelected = createAction(PAGING_CHANGE_ALL_SELECTED,
-    checked => checked);
