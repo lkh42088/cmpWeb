@@ -1,7 +1,8 @@
 import {handleActions} from "redux-actions";
 import {
+    PAGING_CHANGE_ALL_SELECTED,
     PAGING_CHANGE_CURRENT_PAGE_NEXT, PAGING_CHANGE_CURRENT_PAGE_PREV,
-    PAGING_CHANGE_ROWS_PER_PAGE,
+    PAGING_CHANGE_ROWS_PER_PAGE, PAGING_CHANGE_SELECTED,
     PAGING_CHANGE_TOTAL_COUNT,
     PAGING_SETUP,
 } from "../actions/pagingActions";
@@ -77,6 +78,18 @@ const pagingReducer = handleActions(
             pageBeginRow: 0,
             pageEndRow: state.rowsPerPage,
         }),
+        [PAGING_CHANGE_SELECTED]: (state, action) => ({
+            ...state,
+            selected: action.payload.selected,
+        }),
+        [PAGING_CHANGE_ALL_SELECTED]: (state, action) => {
+            const {selected} = state;
+            const newSelected = new Map();
+            if (action.payload.checked) {
+                selected.map(n => newSelected.set(n.id, true));
+            }
+            return state.set('selected', newSelected);
+        },
     },
     initialState,
 );

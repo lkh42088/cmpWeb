@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import { Card, CardBody, Col } from 'reactstrap';
 
 import Table from '@material-ui/core/Table';
@@ -11,20 +11,23 @@ import Checkbox from "@material-ui/core/Checkbox";
 import {getUserList} from "../../../../redux/actions/usersActions";
 import UserHead from "./UserHead";
 import {
+    pagingChangeAllSelected,
     pagingChangeCurrentPageNext, pagingChangeCurrentPagePrev,
-    pagingChangeRowsPerPage,
+    pagingChangeRowsPerPage, pagingChangeSelected,
     pagingChangeTotalCount,
 } from "../../../../redux/actions/pagingActions";
 
-const UserList = () => {
+const UserList = (callback, deps) => {
     const dispatch = useDispatch();
     const {
-        rtl, users, getPage, pageBeginRow, rowsPerPage, currentPage, totalPage, totalCount, displayRowsList,
+        rtl, users, getPage, selected, pageBeginRow, rowsPerPage,
+        currentPage, totalPage, totalCount, displayRowsList,
         // eslint-disable-next-line no-shadow
     } = useSelector(({rtl, userList, pagination}) => ({
         users: userList.users,
         getPage: userList.page,
         // Pagination
+        selected: pagination.selected,
         pageBeginRow: pagination.pageBeginRow,
         rowsPerPage: pagination.rowsPerPage,
         currentPage: pagination.currentPage,
@@ -72,6 +75,21 @@ const UserList = () => {
         dispatch(pagingChangeRowsPerPage({rowsPerPage: changeRows}));
     };
 
+    const handleClick = (event, id) => {
+        const newSelected = new Map(selected);
+        const value = newSelected.get(id);
+        let isActive = true;
+        if (value) {
+            isActive = false;
+        }
+        newSelected.set(id, isActive);
+        dispatch(pagingChangeSelected({selected: newSelected}));
+    };
+
+    const handleSelectAllClick = useCallback((event, checked) => {
+        dispatch(pagingChangeAllSelected({checked}));
+    });
+
     const getPageData = () => {
         let offset = 0;
         if (currentPage > 1) {
@@ -80,6 +98,8 @@ const UserList = () => {
         console.log("[dispatch-->getUserList] rows:", rowsPerPage, ", offset:", offset);
         dispatch(getUserList({rows: rowsPerPage, offset}));
     };
+
+    const getSelected = id => !!selected.get(id);
 
     useEffect(() => {
     }, []);
@@ -159,15 +179,20 @@ const UserList = () => {
                 // .slice(pagingRedux.pageBeginRow, pagingRedux.pageEndRow)
                 .map((user) => {
                     console.log("rendering map...");
+                    const isSelected = getSelected(user.idx);
                     return (
                         <TableRow
-                            key={user.idx}
                             className="nb-material-table__row"
                             role="checkbox"
+                            onClick={event => handleClick(event, user.idx)}
                             aria-checked={isSelected}
                             tabIndex={-1}
+                            key={user.idx}
                             selected={isSelected}
                         >
+                            <TableCell className="material-table__cell" padding="checkbox">
+                                <Checkbox checked={isSelected} className="material-table__checkbox" />
+                            </TableCell>
                             <TableCell className="nb-material-table__cell nb-material-table__cell-right">
                                 {user.userId}
                             </TableCell>
@@ -202,7 +227,10 @@ const UserList = () => {
                     </div>
                     <div className="nb-material-table__wrap">
                         <Table className="nb-material-table">
-                            <UserHead/>
+                            <UserHead
+                                numSelected={[...selected].filter(el => el[1]).length}
+                                onSelectAllClick={handleSelectAllClick}
+                            />
                             {usersTable}
                         </Table>
                         {pageBar}
