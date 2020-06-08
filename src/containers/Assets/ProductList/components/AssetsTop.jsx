@@ -10,7 +10,12 @@ import Select from 'react-select';
 
 import AssetsModal from "./AssetsModal";
 import AssetsWrite from "./AssetsWrite";
-import {postDevice, postDeviceOutFlag} from "../../../../redux/actions/assetsAction";
+import {
+    fetchPosts,
+    postDevice,
+    postDeviceOutFlag,
+    setDeviceOutFlag,
+} from "../../../../redux/actions/assetsAction";
 
 function replacer(key, value) {
     console.log("key : ", key);
@@ -147,14 +152,6 @@ export default class AssetsTop extends PureComponent {
             }
         }
 
-        console.log("========================================");
-        console.log("IpArray : ", IpArray);
-        console.log("SplaArray : ", SplaArray);
-        console.log("manufacture : ", values.manufacture);
-        console.log("model : ", values.model);
-        console.log("IpArray : ", IpArray);
-        console.log("========================================");
-
         const submitData = ({
             outFlag: '',
             commentCnt: '',
@@ -196,6 +193,24 @@ export default class AssetsTop extends PureComponent {
         dispatch(postDevice('create', assetState, submitData));
     };
 
+    setToggleOutFlag = (outFlag) => {
+        console.log("outFlag : ", outFlag);
+        const {assetState, dispatch} = this.props;
+
+        dispatch(setDeviceOutFlag(outFlag));
+        const dispatchVal = ({
+            deviceType: 'server',
+            orderBy: 'DeviceCode',
+            order: 1,
+            rowsPerPage: 10,
+            overNum: 1000,
+            outFlag,
+        });
+
+        dispatch(setDeviceOutFlag(outFlag));
+        dispatch(fetchPosts(dispatchVal));
+    };
+
     render() {
         const {assetState, dispatch} = this.props;
 
@@ -217,14 +232,15 @@ export default class AssetsTop extends PureComponent {
                             <div className="float-left circle-legend">
                                 &nbsp;&nbsp;
                                 {/*<span className="circle__lit"/>장비반출&nbsp;&nbsp;*/}
-                                <div className="float-left" role="button" tabIndex="0" onClick={this.toggle}
-                                     onKeyDown={this.toggle}>
+                                <div className="float-left" role="button" tabIndex="0"
+                                     onClick={event => this.setToggleOutFlag('0')}
+                                     onKeyDown={event => this.setToggleOutFlag('0')}>
                                     <span className="circle__ste"
                                           role="button" tabIndex="0"/>반입장비&nbsp;&nbsp;
                                 </div>
                                 <div className="float-left" role="button" tabIndex="0"
-                                     onClick={event => this.toggleOutFlag("1")}
-                                     onKeyDown={event => this.toggleOutFlag("1")}>
+                                     onClick={event => this.setToggleOutFlag("1")}
+                                     onKeyDown={event => this.setToggleOutFlag("1")}>
                                     <span className="circle__eth"
                                           role="button" tabIndex="0"/>반출장비&nbsp;&nbsp;
                                 </div>

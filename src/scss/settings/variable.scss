@@ -7,7 +7,7 @@ $themes: (
     colorHeaderDataPicker:#6db0ff,
     colorText: #646777, // #383A3F, @eunbin
     colorTextAdditional: #646777,
-    logoImg: url(../shared/img/logo/nubes-log-ori.png),
+    logoImg: url(../shared/img/logo/cb_logo.png),
     colorHover: #fafbfe,
     colorFolderHover: #f0eeee,
     colorBorder: #eff1f5,
@@ -90,6 +90,8 @@ $color-light-gray: #d8dfe9;
 $color-green: #b8e986;
 $color-green-hover: darken($color-green, 10%);
 
+$color-cb-logo: #00005c;
+
 $color-black: #000000;
 $color-black-dep1: #292929;
 $color-black-dep2: #4e4e4e;
@@ -100,8 +102,6 @@ $color-black-dep5: #d0d0d0;
 $color-white: #ffffff;
 
 $color-bg: #e7eaf6;
-
-
 
 $directions: (
   ltr: (
