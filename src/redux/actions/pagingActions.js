@@ -20,6 +20,8 @@ export const PAGING_CHANGE_ROWS_PER_PAGE = 'paging/PAGING_CHANGE_ROWS_PER_PAGE';
 export const PAGING_CHANGE_TOTAL_COUNT = 'paging/PAGING_CHANGE_TOTAL_COUNT';
 export const PAGING_CHANGE_SELECTED = 'paging/PAGING_CHANGE_SELECTED';
 export const PAGING_CHANGE_DENSE = 'paging/PAGING_CHANGE_DENSE';
+export const PAGING_CHANGE_ORDER_BY = 'paging/PAGING_CHANGE_ORDER_BY';
+export const PAGING_CHANGE_ORDER = 'paging/PAGING_CHANGE_ORDER';
 
 /******************************************************************************
  * 2. Action Function
@@ -43,3 +45,7 @@ export const pagingChangeSelected = createAction(PAGING_CHANGE_SELECTED,
      selected => selected);
 export const pagingChangeDense = createAction(PAGING_CHANGE_DENSE,
     checked => checked);
+export const pagingChangeOrderBy = createAction(PAGING_CHANGE_ORDER_BY,
+    orderBy => orderBy);
+export const pagingChangeOrder = createAction(PAGING_CHANGE_ORDER,
+    order => order);
