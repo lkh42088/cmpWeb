@@ -1,15 +1,16 @@
 /* eslint-disable react/prop-types */
 import React, {PureComponent} from 'react';
 import {
-    Badge, Button, Card, CardBody, Col, Collapse, Modal, Table,
+    Badge, Button, Card, CardBody, Col, Collapse, Modal, Table, ButtonToolbar,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 import classNames from "classnames";
 import moment from 'moment';
+import Select from 'react-select';
 
 import AssetsModal from "./AssetsModal";
 import AssetsWrite from "./AssetsWrite";
-import {postDevice} from "../../../../redux/actions/assetsAction";
+import {postDevice, postDeviceOutFlag} from "../../../../redux/actions/assetsAction";
 
 function replacer(key, value) {
     console.log("key : ", key);
@@ -32,6 +33,49 @@ export default class AssetsTop extends PureComponent {
 
     toggle = (e) => {
         this.setState(prevState => ({modalOpenFlag: !prevState.modalOpenFlag}));
+    };
+
+    toggleOutFlag = (val) => {
+        let division = ',';
+        let divisionCount = 0;
+        let deviceCodeData = '';
+        console.log("toggleOutFlag start");
+        const {assetState, dispatch} = this.props;
+
+        console.log("length : ", assetState.deviceSelected.length);
+        console.log("size : ", assetState.deviceSelected.size);
+
+        if (assetState.deviceSelected.size === undefined) {
+            // modal로 경고등 띄우기
+            alert("선택된 장비가 없습니다.");
+        } else {
+            // eslint-disable-next-line no-shadow
+            assetState.deviceSelected.forEach((value, key, map) => {
+                console.log(`14--->${key}$${value}`);
+                if (value === true) {
+                    if (divisionCount <= 0) {
+                        division = '';
+                    } else {
+                        division = ',';
+                    }
+                    divisionCount += 1;
+                    deviceCodeData = `${deviceCodeData}${division}${key}`;
+                }
+            });
+
+            //todo user setting
+            const submitData = ({
+                userId: 'lkb',
+                outFlag: '1',
+                deviceCode: deviceCodeData,
+            });
+
+            //console.log("value : ", value);
+            //postDeviceOutFlag
+            // 반출 요청을 할거다....(1)
+            // 반입은 (0)....
+            dispatch(postDeviceOutFlag(assetState, submitData));
+        }
     };
 
     handleSubmit = (values) => {
@@ -169,15 +213,46 @@ export default class AssetsTop extends PureComponent {
             <Col md="12">
                 <Card>
                     <CardBody className="search_panel__body">
-                        <div className="search_panel_topbtn circle-legend">
-                            <div className="float-left">
+                        <div className="search_panel_topbtn">
+                            <div className="float-left circle-legend">
                                 &nbsp;&nbsp;
+                                {/*<span className="circle__lit"/>장비반출&nbsp;&nbsp;*/}
+                                <div className="float-left" role="button" tabIndex="0" onClick={this.toggle}
+                                     onKeyDown={this.toggle}>
+                                    <span className="circle__ste"
+                                          role="button" tabIndex="0"/>반입장비&nbsp;&nbsp;
+                                </div>
+                                <div className="float-left" role="button" tabIndex="0"
+                                     onClick={event => this.toggleOutFlag("1")}
+                                     onKeyDown={event => this.toggleOutFlag("1")}>
+                                    <span className="circle__eth"
+                                          role="button" tabIndex="0"/>반출장비&nbsp;&nbsp;
+                                </div>
+                            </div>
+                            <div className="float-right">
+                                {/*                                &nbsp;&nbsp;
                                 <span className="circle__lit"/>장비반출&nbsp;&nbsp;
                                 <div className="float-left" role="button" tabIndex="0" onClick={this.toggle}
                                      onKeyDown={this.toggle}>
                                     <span className="circle__eos"
                                           role="button" tabIndex="0"/>장비등록&nbsp;&nbsp;
                                 </div>
+                                <div className="float-left" role="button" tabIndex="0" onClick={event => this.toggleOutFlag("1")}
+                                     onKeyDown={event => this.toggleOutFlag("1")}>
+                                    <span className="circle__lit"
+                                          role="button" tabIndex="0"/>장비반출&nbsp;&nbsp;
+                                </div>*/}
+                                <ButtonToolbar>
+                                    <span role="button" tabIndex="0"
+                                          onClick={this.toggle} onKeyDown={this.toggle}
+                                          className="top_btn_black_dep2">
+                                        장비등록</span>
+                                    <span role="button" tabIndex="0"
+                                            onClick={event => this.toggleOutFlag("1")}
+                                            onKeyDown={event => this.toggleOutFlag("1")}
+                                            className="top_btn_black_dep3">
+                                        장비반출</span>
+                                </ButtonToolbar>
                             </div>
                         </div>
                         <Modal
