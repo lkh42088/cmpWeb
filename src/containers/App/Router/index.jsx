@@ -9,7 +9,6 @@ import RegisterUser from "../../Account/RegisterUser";
 import LogInInputEmail from "../../Account/LoginInputEmail";
 import LogInConfirmEmail from "../../Account/LoginConfirm";
 import LogInEmailAuth from "../../Account/LoginEmailAuth";
-import SubnetWrite from "../../Management/Subnet";
 
 const Router = () => (
   <MainWrapper>
@@ -23,7 +22,6 @@ const Router = () => (
             <Route path="/log_in" component={LogIn} />
             <Route path="/register" component={Register} />
             <Route path="/registeruser" component={RegisterUser} />
-            <Route path="/subnetwrite" component={SubnetWrite} />
             <Route path="/" component={WrappedRoutes} />
         </Switch>
     </main>
