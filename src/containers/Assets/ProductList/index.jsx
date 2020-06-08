@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import {Col, Container, Row} from 'reactstrap';
-import {fetchPosts, getCodes} from '../../../redux/actions/assetsAction';
+import {fetchPosts, getCodes, setDeviceOutFlag} from '../../../redux/actions/assetsAction';
 
 import AssetsList from './components/AssetsList';
 import AssetsSearch from './components/AssetsSearch';
@@ -27,11 +27,13 @@ const MaterialTable = () => {
         order: 1,
         rowsPerPage: 10,
         overNum: 1000,
+        outFlag: assetState.deviceOutFlag,
     });
 
     const getDevices = () => dispatch(fetchPosts(dispatchVal));
     // TODO Reselect 사용으로 변경하기
     const getTotalCodes = () => dispatch(getCodes(dispatchVal));
+    // eslint-disable-next-line no-shadow
 
     useEffect(() => {
         getDevices();

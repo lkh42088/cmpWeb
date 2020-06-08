@@ -253,6 +253,7 @@ export default class AssetsList extends PureComponent {
             order,
             rowsPerPage,
             overNum,
+            outFlag: assetState.deviceOutFlag,
         });
 
         dispatch(fetchPosts(dispatchVal));
@@ -309,6 +310,7 @@ export default class AssetsList extends PureComponent {
                     rowsPerPage,
                     showPage,
                     overNum,
+                    outFlag: assetState.deviceOutFlag,
                 });
 
                 dispatch(fetchPostsCheckCount(dispatchVal));
@@ -354,6 +356,7 @@ export default class AssetsList extends PureComponent {
                     rowsPerPage,
                     showPage,
                     overNum,
+                    outFlag: assetState.deviceOutFlag,
                 });
                 dispatch(fetchPostsCheckCount(dispatchVal));
             } else {
@@ -472,6 +475,7 @@ export default class AssetsList extends PureComponent {
                 rowsPerPage,
                 showPage,
                 overNum,
+                outFlag: assetState.deviceOutFlag,
             });
 
             dispatch(fetchPostsCheckCount(dispatchVal));
@@ -499,6 +503,7 @@ export default class AssetsList extends PureComponent {
             order,
             rowsPerPage,
             overNum,
+            outFlag: assetState.deviceOutFlag,
         });
 
         dispatch(fetchPosts(dispatchVal));
@@ -694,7 +699,7 @@ export default class AssetsList extends PureComponent {
                                         <Fragment>
                                             <TableCell
                                                 className={tableCellClassName}
-                                            >{/*IP*/}{d.ip}
+                                            >{/*IP*/}{d.ip.toString().replace("|", "")}
                                             </TableCell>
                                             <TableCell
                                                 className={tableCellClassName}
