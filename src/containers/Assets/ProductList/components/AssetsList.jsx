@@ -27,6 +27,7 @@ import {
     fetchPostsCheckCount,
     getDeviceOriByIdx,
     setViewModalDivision, postDevice,
+    setDeviceSelected,
 } from '../../../../redux/actions/assetsAction';
 
 import AssetsHead from './AssetsHead';
@@ -262,7 +263,7 @@ export default class AssetsList extends PureComponent {
         if (checked) {
             const {assetState} = this.props;
             const newSelected = new Map();
-            assetState.devices.map(n => newSelected.set(n.Idx, true));
+            assetState.devices.map(n => newSelected.set(n.deviceCode, true));
             this.setState({selected: newSelected});
             return;
         }
@@ -270,6 +271,7 @@ export default class AssetsList extends PureComponent {
     };
 
     handleClick = (event, id) => {
+        const {dispatch} = this.props;
         const {selected} = this.state;
         const newSelected = new Map(selected);
         const value = newSelected.get(id);
@@ -279,6 +281,7 @@ export default class AssetsList extends PureComponent {
         }
         newSelected.set(id, isActive);
         this.setState({selected: newSelected});
+        dispatch(setDeviceSelected(newSelected));
     };
 
     handleChangePageBackOld = () => {

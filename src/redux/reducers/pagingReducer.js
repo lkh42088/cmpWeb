@@ -8,9 +8,14 @@
 import {handleActions} from "redux-actions";
 import {
     PAGING_CHANGE_CURRENT_PAGE,
-    PAGING_CHANGE_CURRENT_PAGE_NEXT, PAGING_CHANGE_CURRENT_PAGE_PREV, PAGING_CHANGE_DENSE,
-    PAGING_CHANGE_ROWS_PER_PAGE, PAGING_CHANGE_SELECTED,
-    PAGING_CHANGE_TOTAL_COUNT, PAGING_DUMP,
+    PAGING_CHANGE_CURRENT_PAGE_NEXT,
+    PAGING_CHANGE_CURRENT_PAGE_PREV,
+    PAGING_CHANGE_DENSE,
+    PAGING_CHANGE_ORDER, PAGING_CHANGE_ORDER_BY,
+    PAGING_CHANGE_ROWS_PER_PAGE,
+    PAGING_CHANGE_SELECTED,
+    PAGING_CHANGE_TOTAL_COUNT,
+    PAGING_DUMP,
     PAGING_SETUP,
 } from "../actions/pagingActions";
 
@@ -24,6 +29,8 @@ const initialState = {
     displayRowsList: [10, 20, 30, 50, 100],
     selected: new Map([]),
     dense: false,
+    orderBy: '',
+    order: 'asc',
 };
 
 const pagingReducer = handleActions(
@@ -38,6 +45,8 @@ const pagingReducer = handleActions(
             console.log("pageEndRow:", state.pageEndRow);
             console.log("selected:", state.selected);
             console.log("dense:", state.dense);
+            console.log("orderBy:", state.orderBy);
+            console.log("order:", state.order);
             return {
                 ...state,
             };
@@ -134,6 +143,14 @@ const pagingReducer = handleActions(
         [PAGING_CHANGE_DENSE]: (state, action) => ({
             ...state,
             dense: action.payload.checked,
+        }),
+        [PAGING_CHANGE_ORDER_BY]: (state, action) => ({
+            ...state,
+            orderBy: action.payload.orderBy,
+        }),
+        [PAGING_CHANGE_ORDER]: (state, action) => ({
+            ...state,
+            order: action.payload.order,
         }),
     },
     initialState,

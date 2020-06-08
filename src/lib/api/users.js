@@ -13,5 +13,5 @@ export const unRegiserUser = ({
 });
 
 export const getUserList = ({
-    rows, offset,
-}) => client.get(`/api/userlist/${rows}/${offset}`);
+    rows, offset, orderBy, order,
+}) => client.get(`/api/userlist/${rows}/${offset}/${orderBy}/${order}`);

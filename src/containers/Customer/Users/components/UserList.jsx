@@ -13,14 +13,15 @@ import Paper from '@material-ui/core/Paper';
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import {makeStyles} from "@material-ui/core/styles";
-import {getUserList} from "../../../../redux/actions/usersActions";
-import UserHead from "./UserHead";
 import {
     pagingChangeCurrentPage,
-    pagingChangeCurrentPageNext, pagingChangeCurrentPagePrev, pagingChangeDense,
+    pagingChangeCurrentPageNext, pagingChangeCurrentPagePrev, pagingChangeDense, pagingChangeOrder, pagingChangeOrderBy,
     pagingChangeRowsPerPage, pagingChangeSelected,
     pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
+import NBTableHead, {NBTableToolbar} from "./NBTableHead";
+import {getUserList} from "../../../../redux/actions/usersActions";
+import MatTableToolbar from "../../../Tables/MaterialTable/components/MatTableToolbar";
 
 const headRows = [
     {id: 'userId', disablePadding: false, label: '아이디'},
@@ -80,6 +81,8 @@ const UserList = () => {
         totalCount,
         displayRowsList,
         dense,
+        orderBy,
+        order,
     } = useSelector(({pagination}) => ({
         selected: pagination.selected,
         pageBeginRow: pagination.pageBeginRow,
@@ -89,6 +92,8 @@ const UserList = () => {
         totalCount: pagination.totalCount,
         displayRowsList: pagination.displayRowsList,
         dense: pagination.dense,
+        orderBy: pagination.orderBy,
+        order: pagination.order,
     }));
 
     /** Pagination */
@@ -146,6 +151,22 @@ const UserList = () => {
         dispatch(pagingChangeSelected({selected: newSelected}));
     };
 
+    const handleRequestSort = (event, property) => {
+        const isAsc = orderBy === property && order === "asc";
+        const changeOrder = isAsc ? "desc" : "asc";
+        dispatch(pagingChangeOrder({order: changeOrder}));
+        dispatch(pagingChangeOrderBy({orderBy: property}));
+    };
+
+    const handleDeleteSelected = () => {
+        let copyUser = [...users];
+        console.log("deleted Selected:");
+        for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
+            copyUser = copyUser.filter(obj => obj.id !== selected[i]);
+        }
+        console.log("copyUser:", copyUser);
+    };
+
     /** Pagination */
     const handleChangeDense = (event) => {
         dispatch(pagingChangeDense({checked: event.target.checked}));
@@ -157,8 +178,11 @@ const UserList = () => {
         if (currentPage > 0) {
             offset = rowsPerPage * currentPage;
         }
-        console.log("get Page Data: rows ", rowsPerPage, ", offset ", offset);
-        dispatch(getUserList({rows: rowsPerPage, offset}));
+        console.log("get Page Data: rows ", rowsPerPage, ", offset ", offset,
+            ", orderBy ", orderBy, ", order ", order);
+        dispatch(getUserList({
+            rows: rowsPerPage, offset, orderBy, order,
+        }));
     };
 
     /** Pagination */
@@ -166,6 +190,9 @@ const UserList = () => {
 
 
     useEffect(() => {
+        const changeOrderBy = "userId";
+        console.log("[] orderBy: ", changeOrderBy);
+        dispatch(pagingChangeOrderBy({orderBy: changeOrderBy}));
     }, []);
 
     useEffect(() => {
@@ -184,11 +211,7 @@ const UserList = () => {
         /** Pagination */
         getPageData();
         dispatch(pagingDump());
-    }, [pageBeginRow]);
-
-    useEffect(() => {
-        getPageData();
-    }, [rowsPerPage]);
+    }, [rowsPerPage, pageBeginRow, orderBy, order]);
 
     /** Pagination */
     const paginationBar = (
@@ -221,25 +244,43 @@ const UserList = () => {
                             key={user.idx}
                             selected={isSelected}
                         >
-                            <TableCell className="material-table__cell" padding="checkbox">
-                                <Checkbox checked={isSelected} className="material-table__checkbox" />
+                            <TableCell
+                                className="nb-material-table__cell"
+                                padding="checkbox"
+                            >
+                                <Checkbox
+                                    checked={isSelected}
+                                    className="nb-material-table__checkbox"
+                                />
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right">
+                            <TableCell
+                                className="nb-material-table__cell nb-material-table__cell-right"
+                            >
                                 {user.userId}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right">
+                            <TableCell
+                                className="nb-material-table__cell nb-material-table__cell-right"
+                            >
                                 {user.name}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right">
+                            <TableCell
+                                className="nb-material-table__cell nb-material-table__cell-right"
+                            >
                                 {user.email}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right">
+                            <TableCell
+                                className="nb-material-table__cell nb-material-table__cell-right"
+                            >
                                 {user.hp}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right">
+                            <TableCell
+                                className="nb-material-table__cell nb-material-table__cell-right"
+                            >
                                 {user.authLevel}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right">
+                            <TableCell
+                                className="nb-material-table__cell nb-material-table__cell-right"
+                            >
                                 {user.registerDate}
                             </TableCell>
                         </TableRow>
@@ -253,32 +294,42 @@ const UserList = () => {
         <Col md={12} lg={12}>
             <Card>
                 <CardBody>
-                    <Paper>
-                        <div className="card__title">
-                            <h5 className="bold-text">고객리스트</h5>
-                        </div>
-                        <div className="nb-material-table__wrap">
-                            <TableContainer>
-                                <Table
-                                    className="nb-material-table"
-                                    size={dense ? 'small' : 'medium'}
-                                >
-                                    <UserHead
-                                        numSelected={[...selected].filter(el => el[1]).length}
-                                        onSelectAllClick={handleSelectAllClick}
-                                        rowCount={users.length}
-                                        rows={headRows}
-                                    />
-                                    {usersTable}
-                                </Table>
-                            </TableContainer>
-                            {paginationBar}
-                        </div>
-                        <FormControlLabel
-                            control={<Switch checked={dense} onChange={handleChangeDense} />}
-                            label="Dense padding"
-                        />
-                    </Paper>
+                    <div className={classes.root}>
+                        <Paper className={classes.paper}>
+                            <div className="nb-material-table__wrap">
+                                <NBTableToolbar
+                                    numSelected={[...selected].filter(el => el[1]).length}
+                                    handleDeleteSelected={handleDeleteSelected}
+                                    onRequestSort={handleRequestSort}
+                                    rows={headRows}
+                                />
+                                <TableContainer>
+                                    <Table
+                                        // className="nb-material-table"
+                                        className={classes.table}
+                                        size={dense ? 'small' : 'medium'}
+                                    >
+                                        <NBTableHead
+                                            classes={classes}
+                                            numSelected={[...selected].filter(el => el[1]).length}
+                                            order={order}
+                                            orderBy={orderBy}
+                                            onSelectAllClick={handleSelectAllClick}
+                                            onRequestSort={handleRequestSort}
+                                            rowCount={users.length}
+                                            rows={headRows}
+                                        />
+                                        {usersTable}
+                                    </Table>
+                                </TableContainer>
+                                {paginationBar}
+                            </div>
+                            <FormControlLabel
+                                control={<Switch checked={dense} onChange={handleChangeDense} />}
+                                label="Dense padding"
+                            />
+                        </Paper>
+                    </div>
                 </CardBody>
             </Card>
         </Col>

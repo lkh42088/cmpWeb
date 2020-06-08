@@ -20,6 +20,7 @@ export const SET_STATUS = 'SET_STATUS';
 export const SET_MODAL_DIVISION = 'SET_MODAL_DIVISION';
 export const SET_ADD_ELE_IP_DATA = 'SET_ADD_ELE_IP_DATA';
 export const SET_ADD_ELE_SPLA_DATA = 'SET_ADD_ELE_SPLA_DATA';
+export const SET_DEVICE_SELECTED = 'SET_DEVICE_SELECTED';
 
 // const API_ROUTE = 'http://127.0.0.1:8081/v1';
 // order direction
@@ -410,7 +411,7 @@ export const postDevice = (division, assetState, submitData) => async (dispatch)
 
         const postJsonData = JSON.stringify(submitData);
 
-        axios({
+         axios({
             method,
             url,
             data: postJsonData,
@@ -514,22 +515,32 @@ export const postDeviceComment = (division, assetState, submitData) => async (di
 };
 
 // 장비 반입/반출 update
-export const postDeviceOutFlag = (assetState, outFlag) => async (dispatch) => {
+export const postDeviceOutFlag = (assetState, dispatchVal) => async (dispatch) => {
     try {
         //todo 잠깐!! deviceCode 값 여러개일 수 있음 확인
-        //API_ROUTE/device/outFlag/${type}/${deviceCode}/${outFlag}
-        const res = await axios.get(`${API_ROUTE}/device/outFlag/${assetState.deviceType}/${assetState.deviceByDeviceCode}/${outFlag}`);
-        dispatch({
-            type: GET_DEVICES,
-            payload: res.data,
-            deviceType: assetState.deviceType,
-        });
+        /*"API_ROUTE/devices/update/$(type)
+
+        jsonData ->
+        {""userId"":"""",""outFlag"":"""",""deviceCode"":""""}"*/
+        const method = 'put';
+        const url = `${API_ROUTE}/devices/update/${assetState.deviceType}`;
+        const postJsonData = JSON.stringify(dispatchVal);
+
+        console.log("postJsonData : ", postJsonData);
+
+        axios({
+            method,
+            url,
+            data: postJsonData,
+        })
+            .then((response) => {
+                console.log("success");
+            })
+            .catch((error) => {
+                console.log('error : ', error.response);
+                console.log("error");
+            });
     } catch (error) {
-        dispatch({
-            type: GET_DEVICES,
-            payload: undefined,
-            deviceType: 'server',
-        });
         console.log("submitDeviceOutFlag error : ", error);
     }
 };
@@ -547,11 +558,23 @@ export const setAddEleData = (type, value) => async (dispatch) => {
             dispatchType = SET_ADD_ELE_SPLA_DATA;
         }
 
-        //console.log("setAddEleData value : ", value);
-
         dispatch({
             type: dispatchType,
             payload: value,
+        });
+    } catch (error) {
+        console.log("setAddEleData error : ", error);
+    }
+};
+
+// 리스트에서 selected redux 저장
+export const setDeviceSelected = dispatchVal => async (dispatch) => {
+    try {
+        console.log("💎 setDeviceSelected start"); //SET_DEVICE_SELECTED
+
+        dispatch({
+            type: SET_DEVICE_SELECTED,
+            payload: dispatchVal,
         });
     } catch (error) {
         console.log("setAddEleData error : ", error);
