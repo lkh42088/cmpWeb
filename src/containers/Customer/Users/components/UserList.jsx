@@ -21,7 +21,6 @@ import {
 } from "../../../../redux/actions/pagingActions";
 import NBTableHead, {NBTableToolbar} from "./NBTableHead";
 import {getUserList} from "../../../../redux/actions/usersActions";
-import MatTableToolbar from "../../../Tables/MaterialTable/components/MatTableToolbar";
 
 const headRows = [
     {id: 'userId', disablePadding: false, label: '아이디'},

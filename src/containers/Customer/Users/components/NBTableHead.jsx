@@ -14,7 +14,6 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from '@material-ui/core/MenuItem';
-import {boolean} from "smooth-scrollbar/decorators";
 
 const useToolbarStyles = makeStyles(theme => ({
     root: {
