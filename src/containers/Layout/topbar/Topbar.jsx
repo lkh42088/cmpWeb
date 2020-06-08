@@ -1,6 +1,9 @@
 import React, {PureComponent} from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import InfoIcon from '@material-ui/icons/Info';
+
 import TopbarSidebarButton from './TopbarSidebarButton';
 import TopbarProfile from './TopbarProfile';
 import TopbarMail from './TopbarMail';
@@ -25,6 +28,9 @@ class Topbar extends PureComponent {
 
         //const localMenuTitle = JSON.parse(localStorage.getItem("localMenuTitle"));
 
+        console.log("changeSidebarVisibility : ", changeSidebarVisibility);
+
+        //log
         return (
             <div className="topbar">
                 <div className="topbar__wrapper">
@@ -33,18 +39,19 @@ class Topbar extends PureComponent {
                             changeMobileSidebarVisibility={changeMobileSidebarVisibility}
                             changeSidebarVisibility={changeSidebarVisibility}
                         />
-                        {/*<Link className="topbar__logo" to="/dashboard_default" />*/}
+                        <Link className="topbar__logo" to="/assets/list" />
                         <div style={{paddingLeft: '10px'}}>
-                            <span className="text-danger">Nubes-Bridge</span>
-                            <h3 className="account__title">
+                            {/*<span className="text-danger">-</span>*/}
+                            <h3 className="topbar__title">
                                 {/*<span
                                   className="account__logo"> {localMenuTitle.title ? localMenuTitle.title : 'title'}
                                   <span
                                       className="account__logo-accent"> {localMenuTitle.subTitle ? localMenuTitle.subTitle : 'subTitle'}</span>
                               </span>*/}
-                                <span className="account__logo">
+                                <DoubleArrowIcon/>
+                                <span className="topbar__menuTitle">
                                     {menuTitle.title}
-                                    <span className="account__logo-accent">
+                                    <span className="topbar__menuTitle-side">
                                     {menuTitle.subTitle}
                                     </span>
                               </span>

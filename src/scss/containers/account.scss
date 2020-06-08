@@ -268,12 +268,15 @@
 }
 
 .account__logo {
+  color: $color-cb-logo;
   font-weight: 700;
+  margin-top: 20px;
 }
 
 .account__logo-accent {
-  color: $color-blue;
+  color: $color-black-dep2;
   font-size: medium;
+  margin-top: 20px;
 }
 
 .account__have-account {
