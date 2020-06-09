@@ -227,7 +227,7 @@ export default class AssetsTop extends PureComponent {
         return (
             <Col md="12">
                 <Card>
-                    <CardBody className="search_panel__body">
+                    <CardBody className="card-body__thin-padding dsearch_panel__body">
                         <div className="search_panel_topbtn">
                             <div className="float-left circle-legend">
                                 &nbsp;&nbsp;

@@ -229,7 +229,6 @@ const UserList = () => {
     const usersTable = (
         <TableBody>
             { users
-                // .slice(pagingRedux.pageBeginRow, pagingRedux.pageEndRow)
                 .map((user) => {
                     const isSelected = getSelected(user.idx);
                     return (
@@ -243,43 +242,25 @@ const UserList = () => {
                             key={user.idx}
                             selected={isSelected}
                         >
-                            <TableCell
-                                className="nb-material-table__cell"
-                                padding="checkbox"
-                            >
-                                <Checkbox
-                                    checked={isSelected}
-                                    className="nb-material-table__checkbox"
-                                />
+                            <TableCell className="nb-material-table__cell" padding="checkbox" >
+                                <Checkbox checked={isSelected} className="nb-material-table__checkbox" />
                             </TableCell>
-                            <TableCell
-                                className="nb-material-table__cell nb-material-table__cell-right"
-                            >
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
                                 {user.userId}
                             </TableCell>
-                            <TableCell
-                                className="nb-material-table__cell nb-material-table__cell-right"
-                            >
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
                                 {user.name}
                             </TableCell>
-                            <TableCell
-                                className="nb-material-table__cell nb-material-table__cell-right"
-                            >
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
                                 {user.email}
                             </TableCell>
-                            <TableCell
-                                className="nb-material-table__cell nb-material-table__cell-right"
-                            >
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
                                 {user.hp}
                             </TableCell>
-                            <TableCell
-                                className="nb-material-table__cell nb-material-table__cell-right"
-                            >
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
                                 {user.authLevel}
                             </TableCell>
-                            <TableCell
-                                className="nb-material-table__cell nb-material-table__cell-right"
-                            >
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
                                 {user.registerDate}
                             </TableCell>
                         </TableRow>
@@ -293,42 +274,41 @@ const UserList = () => {
         <Col md={12} lg={12}>
             <Card>
                 <CardBody>
-                    <div className={classes.root}>
-                        <Paper className={classes.paper}>
-                            <div className="nb-material-table__wrap">
-                                <NBTableToolbar
+                    <div className="card__title">
+                        <h4 className="bold-text">사용자 목록</h4>
+                    </div>
+                    <NBTableToolbar
+                        numSelected={[...selected].filter(el => el[1]).length}
+                        handleDeleteSelected={handleDeleteSelected}
+                        onRequestSort={handleRequestSort}
+                        rows={headRows}
+                        toolbarTitle="사용자 목록"
+                    />
+                    <div className="nb-material-table__wrap">
+                        <TableContainer>
+                            <Table
+                                className="nb-material-table"
+                                size={dense ? 'small' : 'medium'}
+                            >
+                                <NBTableHead
+                                    classes={classes}
                                     numSelected={[...selected].filter(el => el[1]).length}
-                                    handleDeleteSelected={handleDeleteSelected}
+                                    order={order}
+                                    orderBy={orderBy}
+                                    onSelectAllClick={handleSelectAllClick}
                                     onRequestSort={handleRequestSort}
+                                    rowCount={users.length}
                                     rows={headRows}
                                 />
-                                <TableContainer>
-                                    <Table
-                                        // className="nb-material-table"
-                                        className={classes.table}
-                                        size={dense ? 'small' : 'medium'}
-                                    >
-                                        <NBTableHead
-                                            classes={classes}
-                                            numSelected={[...selected].filter(el => el[1]).length}
-                                            order={order}
-                                            orderBy={orderBy}
-                                            onSelectAllClick={handleSelectAllClick}
-                                            onRequestSort={handleRequestSort}
-                                            rowCount={users.length}
-                                            rows={headRows}
-                                        />
-                                        {usersTable}
-                                    </Table>
-                                </TableContainer>
-                                {paginationBar}
-                            </div>
-                            <FormControlLabel
-                                control={<Switch checked={dense} onChange={handleChangeDense} />}
-                                label="Dense padding"
-                            />
-                        </Paper>
+                                {usersTable}
+                            </Table>
+                        </TableContainer>
+                        {paginationBar}
                     </div>
+                    <FormControlLabel
+                        control={<Switch checked={dense} onChange={handleChangeDense} />}
+                        label="Dense padding"
+                    />
                 </CardBody>
             </Card>
         </Col>

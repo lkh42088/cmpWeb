@@ -9,7 +9,12 @@ const paddingCol = {
 
 const MaterialTable = () => (
     <Container>
-        <UserList/>
+        <Row>
+            <Col md={12}>
+                <h3 className="page-title">고객 정보</h3>
+            </Col>
+            <UserList/>
+        </Row>
     </Container>
 );
 
