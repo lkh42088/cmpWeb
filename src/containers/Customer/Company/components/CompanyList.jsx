@@ -1,33 +1,39 @@
 import React, {useEffect} from "react";
 import { Card, CardBody, Col } from 'reactstrap';
-
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TablePagination from '@material-ui/core/TablePagination';
 import {useDispatch, useSelector} from "react-redux";
+import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
+import Table from "@material-ui/core/Table";
+import TablePagination from "@material-ui/core/TablePagination";
 import TableContainer from "@material-ui/core/TableContainer";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import {makeStyles} from "@material-ui/core/styles";
+import Switch from "@material-ui/core/Switch";
+import {getCompanyList} from "../../../../redux/actions/companiesActions";
 import {
     pagingChangeCurrentPage,
-    pagingChangeCurrentPageNext, pagingChangeCurrentPagePrev, pagingChangeDense, pagingChangeOrder, pagingChangeOrderBy,
-    pagingChangeRowsPerPage, pagingChangeSelected,
+    pagingChangeCurrentPageNext,
+    pagingChangeCurrentPagePrev,
+    pagingChangeDense,
+    pagingChangeOrder,
+    pagingChangeOrderBy,
+    pagingChangeRowsPerPage,
+    pagingChangeSelected,
     pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
 import NBTableHead, {NBTableToolbar} from "../../../Common/NBTableHead";
-import {getUserList} from "../../../../redux/actions/usersActions";
 
 const headRows = [
-    {id: 'userId', disablePadding: false, label: '아이디'},
-    {id: 'userName', disablePadding: false, label: '이름'},
+    {id: 'idx', disablePadding: false, label: 'Index'},
+    {id: 'name', disablePadding: false, label: '회사명'},
     {id: 'email', disablePadding: false, label: '이메일'},
-    {id: 'hp', disablePadding: false, label: '핸드폰'},
-    {id: 'authlevel', disablePadding: false, label: '권한'},
-    {id: 'regdate', disablePadding: false, label: '등록일자'},
+    {id: 'homepage', disablePadding: false, label: '홈페이지'},
+    {id: 'tel', disablePadding: false, label: '전화번호'},
+    {id: 'hp', disablePadding: false, label: '핸드폰번호'},
+    {id: 'isCompany', disablePadding: false, label: '회사여부'},
+    {id: 'memo', disablePadding: false, label: '메모'},
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -54,7 +60,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const UserList = () => {
+const CompanyList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     /**
@@ -62,11 +68,10 @@ const UserList = () => {
      */
     const {
         data, getPage,
-    } = useSelector(({ userRd }) => ({
-        data: userRd.data,
-        getPage: userRd.page,
+    } = useSelector(({ companiesRd }) => ({
+        data: companiesRd.data,
+        getPage: companiesRd.page,
     }));
-
     /**
      * Pagination
      */
@@ -177,9 +182,9 @@ const UserList = () => {
         if (currentPage > 0) {
             offset = rowsPerPage * currentPage;
         }
-        console.log("get Page Data: rows ", rowsPerPage, ", offset ", offset,
+        console.log(">>>>>> get Page Data: rows ", rowsPerPage, ", offset ", offset,
             ", orderBy ", orderBy, ", order ", order);
-        dispatch(getUserList({
+        dispatch(getCompanyList({
             rows: rowsPerPage, offset, orderBy, order,
         }));
     };
@@ -187,9 +192,8 @@ const UserList = () => {
     /** Pagination */
     const getSelected = id => !!selected.get(id);
 
-
     useEffect(() => {
-        const changeOrderBy = "userId";
+        const changeOrderBy = "idx";
         console.log("[] orderBy: ", changeOrderBy);
         dispatch(pagingChangeOrderBy({orderBy: changeOrderBy}));
     }, []);
@@ -246,7 +250,7 @@ const UserList = () => {
                                 <Checkbox checked={isSelected} className="nb-material-table__checkbox" />
                             </TableCell>
                             <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
-                                {row.userId}
+                                {row.idx}
                             </TableCell>
                             <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
                                 {row.name}
@@ -255,13 +259,19 @@ const UserList = () => {
                                 {row.email}
                             </TableCell>
                             <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                                {row.hompage}
+                            </TableCell>
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                                {row.tel}
+                            </TableCell>
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
                                 {row.hp}
                             </TableCell>
                             <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
-                                {row.authLevel}
+                                {row.isCompany}
                             </TableCell>
                             <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
-                                {row.registerDate}
+                                {row.memo}
                             </TableCell>
                         </TableRow>
                     );
@@ -275,14 +285,14 @@ const UserList = () => {
             <Card>
                 <CardBody>
                     <div className="card__title">
-                        <h4 className="bold-text">사용자 목록</h4>
+                        <h4 className="bold-text">고객사 목록</h4>
                     </div>
                     <NBTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
                         handleDeleteSelected={handleDeleteSelected}
                         onRequestSort={handleRequestSort}
                         rows={headRows}
-                        toolbarTitle="사용자 목록"
+                        toolbarTitle="고객사 목록"
                     />
                     <div className="nb-material-table__wrap">
                         <TableContainer>
@@ -315,4 +325,4 @@ const UserList = () => {
     );
 };
 
-export default UserList;
+export default CompanyList;

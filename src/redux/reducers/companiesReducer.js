@@ -1,29 +1,29 @@
 import {List, Map} from "immutable";
 import {handleActions} from "redux-actions";
 import {
-    USERLIST_SUCCESS,
-} from "../actions/usersActions";
+    COMPANYLIST_SUCCESS,
+} from "../actions/companiesActions";
 
 const initialState = {
     data: List([
         Map({}),
     ]),
     page: {
-        count: 0, // total count
+        count: 0,
         rows: 0,
         offset: 0,
     },
 };
 
-const usersReducer = handleActions(
+const companiesReducer = handleActions(
     {
-        [USERLIST_SUCCESS]: (state, {payload: msg}) => ({
+        [COMPANYLIST_SUCCESS]: (state, action) => ({
             ...state,
-            data: msg.data,
-            page: msg.page,
+            data: action.payload.data,
+            page: action.payload.page,
         }),
     },
     initialState,
 );
 
-export default usersReducer;
+export default companiesReducer;
