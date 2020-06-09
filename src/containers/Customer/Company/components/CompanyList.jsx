@@ -64,7 +64,7 @@ const CompanyList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     /**
-     * User Data
+     * Company Data
      */
     const {
         data, getPage,

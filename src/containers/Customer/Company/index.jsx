@@ -2,7 +2,7 @@ import {Col, Container, Row} from "reactstrap";
 import React from "react";
 import CompanyList from "./components/CompanyList";
 
-const MaterialTable = () => (
+const CompaniesModule = () => (
     <Container>
         <Row>
             <Col md={12}>
@@ -16,4 +16,4 @@ const MaterialTable = () => (
     </Container>
 );
 
-export default MaterialTable;
+export default CompaniesModule;
