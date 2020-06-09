@@ -22,10 +22,10 @@ const SubnetWriteForm = ({handleSubmit, reset, t}) => {
         <Col xs={12} md={12} lg={12} xl={6} cssModule="table">
             <Card>
                 <CardBody>
-                    <div className="card__title">
-                        <h5 className="bold-text">{t('SUBNET Management')}</h5>
-                        <h5 className="subhead">SUBNET 등록.</h5>
-                    </div>
+                    {/*<div className="card__title">*/}
+                    {/*    <h5 className="bold-text">{t('SUBNET Management')}</h5>*/}
+                    {/*    <h5 className="subhead">SUBNET 등록.</h5>*/}
+                    {/*</div>*/}
                     <form className="form form--horizontal" onSubmit={handleSubmit}>
                         <DeviceSearch />    {/*장비 검색*/}
                         <div className="form__form-group">
