@@ -11,7 +11,8 @@
   @include directify($directions) {
     #{directed('padding-left')}: 0px;
   }
-  padding-top: 65px;
+  //padding-top: 65px; // eunbin
+  padding-top: 90px;
   min-height: 100vh;
   transition: padding-left 0.3s;
 
