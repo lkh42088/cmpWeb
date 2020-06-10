@@ -216,7 +216,7 @@ const UserList = () => {
     const paginationBar = (
         <TablePagination
             component="div"
-            className="nb-material-table__pagination"
+            className="material-table__pagination"
             count={totalCount}
             rowsPerPage={rowsPerPage}
             page={currentPage}
@@ -234,7 +234,7 @@ const UserList = () => {
                     return (
                         <TableRow
                             hover
-                            className="nb-material-table__row"
+                            className="material-table__row"
                             role="checkbox"
                             onClick={event => handleClick(event, row.idx)}
                             aria-checked={isSelected}
@@ -242,25 +242,25 @@ const UserList = () => {
                             key={row.idx}
                             selected={isSelected}
                         >
-                            <TableCell className="nb-material-table__cell" padding="checkbox" >
-                                <Checkbox checked={isSelected} className="nb-material-table__checkbox" />
+                            <TableCell className="material-table__cell" padding="checkbox" >
+                                <Checkbox checked={isSelected} className="material-table__checkbox" />
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                            <TableCell className="material-table__cell material-table__cell-right" >
                                 {row.userId}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                            <TableCell className="material-table__cell material-table__cell-right" >
                                 {row.name}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                            <TableCell className="material-table__cell material-table__cell-right" >
                                 {row.email}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                            <TableCell className="material-table__cell material-table__cell-right" >
                                 {row.hp}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                            <TableCell className="material-table__cell material-table__cell-right" >
                                 {row.authLevel}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                            <TableCell className="material-table__cell material-table__cell-right" >
                                 {row.registerDate}
                             </TableCell>
                         </TableRow>
@@ -284,10 +284,10 @@ const UserList = () => {
                         rows={headRows}
                         toolbarTitle="사용자 목록"
                     />
-                    <div className="nb-material-table__wrap">
+                    <div className="material-table__wrap">
                         <TableContainer>
                             <Table
-                                className="nb-material-table"
+                                className="material-table"
                                 size={dense ? 'small' : 'medium'}
                             >
                                 <NBTableHead

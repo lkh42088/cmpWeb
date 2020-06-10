@@ -91,12 +91,12 @@ export const NBTableToolbar = (props) => {
     } = props;
 
     return (
-        <div className="nb-material-table__toolbar-wrap">
+        <div className="material-table__toolbar-wrap">
             <Toolbar
                 // className={clsx(classes.root, {
                 //     [classes.highlight]: numSelected > 0,
                 // })}
-                className="nb-material-table__toolbar"
+                className="material-table__toolbar"
             >
                 {/*{numSelected > 0 ? (*/}
                 {/*    <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">*/}
@@ -111,7 +111,7 @@ export const NBTableToolbar = (props) => {
 
                 <div>
                     {numSelected > 0 && (
-                        <h5 className="nb-material-table__toolbar-selected">{numSelected} <span>selected</span></h5>
+                        <h5 className="material-table__toolbar-selected">{numSelected} <span>selected</span></h5>
                     )}
                 </div>
                 <div>
@@ -148,7 +148,7 @@ function NBTableHead(props) {
             <TableRow>
                 <TableCell padding="checkbox">
                     <Checkbox
-                        className={`nb-material-table__checkbox ${numSelected === rowCount && 'material-table__checkbox--checked'}`}
+                        className={`material-table__checkbox ${numSelected === rowCount && 'material-table__checkbox--checked'}`}
                         indeterminate={numSelected > 0 && numSelected < rowCount}
                         checked={rowCount > 0 && numSelected === rowCount}
                         onChange={onSelectAllClick}
@@ -157,7 +157,7 @@ function NBTableHead(props) {
                 </TableCell>
                 {rows.map(row => (
                     <TableCell
-                        className="nb-material-table__cell nb-material-table__cell--sort nb-material-table__cell-right"
+                        className="material-table__cell material-table__cell--sort material-table__cell-right"
                         key={row.id}
                         align="left"
                         padding={row.disablePadding ? 'none' : 'default'}
