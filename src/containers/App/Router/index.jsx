@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import MainWrapper from '../MainWrapper';
-// import WrappedRoutes from './WrappedRoutes';
+import WrappedRoutes from './WrappedRoutes';
 import CbWrappedRoutes from './CbWrappedRoutes';
 import TempPage from '../../DefaultPage/TempPage/index';
 import LogIn from "../../Account/LogIn";
@@ -23,8 +23,8 @@ const Router = () => (
             <Route path="/log_in" component={LogIn} />
             <Route path="/register" component={Register} />
             <Route path="/registeruser" component={RegisterUser} />
+            <Route path="/org" component={WrappedRoutes} />
             <Route path="/" component={CbWrappedRoutes} />
-            {/*<Route path="/" component={WrappedRoutes} />*/}
         </Switch>
     </main>
   </MainWrapper>
