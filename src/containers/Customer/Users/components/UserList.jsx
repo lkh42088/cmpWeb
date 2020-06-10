@@ -9,7 +9,6 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
 import TableContainer from "@material-ui/core/TableContainer";
-import Paper from '@material-ui/core/Paper';
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import {makeStyles} from "@material-ui/core/styles";
@@ -19,7 +18,7 @@ import {
     pagingChangeRowsPerPage, pagingChangeSelected,
     pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
-import NBTableHead, {NBTableToolbar} from "./NBTableHead";
+import NBTableHead, {NBTableToolbar} from "../../../Common/NBTableHead";
 import {getUserList} from "../../../../redux/actions/usersActions";
 
 const headRows = [
@@ -62,10 +61,10 @@ const UserList = () => {
      * User Data
      */
     const {
-        users, getPage,
-    } = useSelector(({ userList }) => ({
-        users: userList.users,
-        getPage: userList.page,
+        data, getPage,
+    } = useSelector(({ userRd }) => ({
+        data: userRd.data,
+        getPage: userRd.page,
     }));
 
     /**
@@ -82,17 +81,17 @@ const UserList = () => {
         dense,
         orderBy,
         order,
-    } = useSelector(({pagination}) => ({
-        selected: pagination.selected,
-        pageBeginRow: pagination.pageBeginRow,
-        rowsPerPage: pagination.rowsPerPage,
-        currentPage: pagination.currentPage,
-        totalPage: pagination.totalPage,
-        totalCount: pagination.totalCount,
-        displayRowsList: pagination.displayRowsList,
-        dense: pagination.dense,
-        orderBy: pagination.orderBy,
-        order: pagination.order,
+    } = useSelector(({pagingRd}) => ({
+        selected: pagingRd.selected,
+        pageBeginRow: pagingRd.pageBeginRow,
+        rowsPerPage: pagingRd.rowsPerPage,
+        currentPage: pagingRd.currentPage,
+        totalPage: pagingRd.totalPage,
+        totalCount: pagingRd.totalCount,
+        displayRowsList: pagingRd.displayRowsList,
+        dense: pagingRd.dense,
+        orderBy: pagingRd.orderBy,
+        order: pagingRd.order,
     }));
 
     /** Pagination */
@@ -116,6 +115,7 @@ const UserList = () => {
         }
     };
 
+    /** Pagination */
     const handleChangePage = (event, newPage) => {
         console.log("change page: ", newPage);
         dispatch(pagingChangeCurrentPage({currentPage: newPage}));
@@ -143,9 +143,9 @@ const UserList = () => {
     const handleSelectAllClick = (event, checked) => {
         const newSelected = new Map();
         if (checked) {
-            users.map(n => newSelected.set(n.idx, true));
+            data.map(n => newSelected.set(n.idx, true));
         } else {
-            users.map(n => newSelected.set(n.idx, false));
+            data.map(n => newSelected.set(n.idx, false));
         }
         dispatch(pagingChangeSelected({selected: newSelected}));
     };
@@ -158,7 +158,7 @@ const UserList = () => {
     };
 
     const handleDeleteSelected = () => {
-        let copyUser = [...users];
+        let copyUser = [...data];
         console.log("deleted Selected:");
         for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
             copyUser = copyUser.filter(obj => obj.id !== selected[i]);
@@ -226,42 +226,42 @@ const UserList = () => {
         />
     );
 
-    const usersTable = (
+    const tableRows = (
         <TableBody>
-            { users
-                .map((user) => {
-                    const isSelected = getSelected(user.idx);
+            { data
+                .map((row) => {
+                    const isSelected = getSelected(row.idx);
                     return (
                         <TableRow
                             hover
                             className="nb-material-table__row"
                             role="checkbox"
-                            onClick={event => handleClick(event, user.idx)}
+                            onClick={event => handleClick(event, row.idx)}
                             aria-checked={isSelected}
                             tabIndex={-1}
-                            key={user.idx}
+                            key={row.idx}
                             selected={isSelected}
                         >
                             <TableCell className="nb-material-table__cell" padding="checkbox" >
                                 <Checkbox checked={isSelected} className="nb-material-table__checkbox" />
                             </TableCell>
                             <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
-                                {user.userId}
+                                {row.userId}
                             </TableCell>
                             <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
-                                {user.name}
+                                {row.name}
                             </TableCell>
                             <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
-                                {user.email}
+                                {row.email}
                             </TableCell>
                             <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
-                                {user.hp}
+                                {row.hp}
                             </TableCell>
                             <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
-                                {user.authLevel}
+                                {row.authLevel}
                             </TableCell>
                             <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
-                                {user.registerDate}
+                                {row.registerDate}
                             </TableCell>
                         </TableRow>
                     );
@@ -297,10 +297,10 @@ const UserList = () => {
                                     orderBy={orderBy}
                                     onSelectAllClick={handleSelectAllClick}
                                     onRequestSort={handleRequestSort}
-                                    rowCount={users.length}
+                                    rowCount={data.length}
                                     rows={headRows}
                                 />
-                                {usersTable}
+                                {tableRows}
                             </Table>
                         </TableContainer>
                         {paginationBar}

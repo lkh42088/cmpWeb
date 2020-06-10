@@ -107,6 +107,7 @@ const pagingReducer = handleActions(
             }
             return {
                 ...state,
+                selected: new Map([]),
                 currentPage: pageNum,
                 pageBeginRow: beginRow,
                 pageEndRow: endRow,

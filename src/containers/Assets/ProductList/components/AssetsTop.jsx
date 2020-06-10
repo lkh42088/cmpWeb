@@ -52,7 +52,8 @@ export default class AssetsTop extends PureComponent {
 
         if (assetState.deviceSelected.size === undefined) {
             // modal로 경고등 띄우기
-            alert("선택된 장비가 없습니다.");
+            // alert("선택된 장비가 없습니다.");
+            console.log("선택된 장비가 없습니다.");
         } else {
             // eslint-disable-next-line no-shadow
             assetState.deviceSelected.forEach((value, key, map) => {

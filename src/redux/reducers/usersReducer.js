@@ -5,7 +5,7 @@ import {
 } from "../actions/usersActions";
 
 const initialState = {
-    users: List([
+    data: List([
         Map({}),
     ]),
     page: {
@@ -19,7 +19,7 @@ const usersReducer = handleActions(
     {
         [USERLIST_SUCCESS]: (state, {payload: msg}) => ({
             ...state,
-            users: msg.users,
+            data: msg.data,
             page: msg.page,
         }),
     },
