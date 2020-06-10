@@ -20,8 +20,8 @@ class SidebarContent extends Component {
         const {changeToLight, changeToDark, changeMenuTitle} = this.props;
 
         return (
-            <div className="sidebar__content">
-                <ul className="sidebar__block">
+            <div className="cb_sidebar__content">
+                <ul className="cb_sidebar__block">
                     <SidebarCategory title="자산관리" icon="diamond">
                         <SidebarLink title="서버" route="/assets/list"
                                      onClick={() => changeMenuTitle('자산관리', '서버', 'server')}/>

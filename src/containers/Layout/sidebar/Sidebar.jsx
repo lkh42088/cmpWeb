@@ -10,15 +10,15 @@ const Sidebar = ({
 }) => {
   const sidebarClass = classNames({
     sidebar: true,
-    'sidebar--show': sidebar.show,
-    'sidebar--collapse': sidebar.collapse,
+    'cb_sidebar--show': sidebar.show,
+    'cb_sidebar--collapse': sidebar.collapse,
   });
 
   return (
     <div className={sidebarClass}>
-      <button className="sidebar__back" type="button" onClick={changeMobileSidebarVisibility} />
-      <Scrollbar className="sidebar__scroll scroll">
-        <div className="sidebar__wrapper sidebar__wrapper--desktop">
+      <button className="cb_sidebar__back" type="button" onClick={changeMobileSidebarVisibility} />
+      <Scrollbar className="cb_sidebar__scroll scroll">
+        <div className="cb_sidebar__wrapper cb_sidebar__wrapper--desktop">
           <SidebarContent
             onClick={() => {}}
             changeToDark={changeToDark}
@@ -26,7 +26,7 @@ const Sidebar = ({
             changeMenuTitle={changeMenuTitle}
           />
         </div>
-        <div className="sidebar__wrapper sidebar__wrapper--mobile">
+        <div className="cb_sidebar__wrapper cb_sidebar__wrapper--mobile">
           <SidebarContent
             onClick={changeMobileSidebarVisibility}
             changeToDark={changeToDark}
