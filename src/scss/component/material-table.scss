@@ -111,6 +111,9 @@ td.material-table__cell {
 
   @include themify($themes) {
     color: themed('colorText');
+
+    font-size: 10px;   // Add For Table Cell [2020.06.10 LKH]
+    font-family: "Nanum Square acEB"; // Add for Table Cell [2020.06.10 LKH]
   }
 }
 

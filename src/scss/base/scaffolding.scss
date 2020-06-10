@@ -3,13 +3,13 @@ main {
 }
 
 body {
-  margin: 0;
   padding: 0 !important;
   box-sizing: border-box;
   //font-family: 'Roboto', sans-serif;
-  font-family: 'Nanum BarnGothic', sans-serif;  // [2020-06-08 byeonghwa jung]
+  //font-family: 'Nanum BarnGothic', sans-serif;  // [2020-06-08 byeonghwa jung]
+  font-family: 'Nanum Square acEB', sans-serif;  // Modify Global [2020-06-10 LKH]
   font-size: 9px;
-  line-height: 1.6;
+  line-height: 1.8;
 }
 
 * {

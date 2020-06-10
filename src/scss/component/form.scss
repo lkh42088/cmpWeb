@@ -12,7 +12,9 @@
   input, textarea {
     width: 100%;
     padding: 5px 10px;
-    font-size: 12px;
+    //font-size: 12px;  // Origin
+    font-size: 8px;  // Modify [2020-06-10 LKH]
+    font-family: 'Nanum Square acEB', sans-serif;  // Add for Input [2020-06-10 LKH]
     height: 32px;
     /*height: 39px;*/
     transition: border 0.3s;

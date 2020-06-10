@@ -220,7 +220,7 @@ const CompanyList = () => {
     const paginationBar = (
         <TablePagination
             component="div"
-            className="nb-material-table__pagination"
+            className="material-table__pagination"
             count={totalCount}
             rowsPerPage={rowsPerPage}
             page={currentPage}
@@ -238,7 +238,7 @@ const CompanyList = () => {
                     return (
                         <TableRow
                             hover
-                            className="nb-material-table__row"
+                            className="material-table__row"
                             role="checkbox"
                             onClick={event => handleClick(event, row.idx)}
                             aria-checked={isSelected}
@@ -246,31 +246,31 @@ const CompanyList = () => {
                             key={row.idx}
                             selected={isSelected}
                         >
-                            <TableCell className="nb-material-table__cell" padding="checkbox" >
-                                <Checkbox checked={isSelected} className="nb-material-table__checkbox" />
+                            <TableCell className="material-table__cell" padding="checkbox" >
+                                <Checkbox checked={isSelected} className="material-table__checkbox" />
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                            <TableCell className="material-table__cell material-table__cell-right" >
                                 {row.idx}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                            <TableCell className="material-table__cell material-table__cell-right" >
                                 {row.name}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                            <TableCell className="material-table__cell material-table__cell-right" >
                                 {row.email}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                            <TableCell className="material-table__cell material-table__cell-right" >
                                 {row.hompage}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                            <TableCell className="material-table__cell material-table__cell-right" >
                                 {row.tel}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                            <TableCell className="material-table__cell material-table__cell-right" >
                                 {row.hp}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                            <TableCell className="material-table__cell material-table__cell-right" >
                                 {row.isCompany}
                             </TableCell>
-                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                            <TableCell className="material-table__cell material-table__cell-right" >
                                 {row.memo}
                             </TableCell>
                         </TableRow>
@@ -294,10 +294,10 @@ const CompanyList = () => {
                         rows={headRows}
                         toolbarTitle="고객사 목록"
                     />
-                    <div className="nb-material-table__wrap">
+                    <div className="material-table__wrap">
                         <TableContainer>
                             <Table
-                                className="nb-material-table"
+                                className="material-table"
                                 size={dense ? 'small' : 'medium'}
                             >
                                 <NBTableHead
