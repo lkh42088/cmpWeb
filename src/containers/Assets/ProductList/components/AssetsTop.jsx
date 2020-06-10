@@ -52,7 +52,8 @@ export default class AssetsTop extends PureComponent {
 
         if (assetState.deviceSelected.size === undefined) {
             // modal로 경고등 띄우기
-            alert("선택된 장비가 없습니다.");
+            // alert("선택된 장비가 없습니다.");
+            console.log("선택된 장비가 없습니다.");
         } else {
             // eslint-disable-next-line no-shadow
             assetState.deviceSelected.forEach((value, key, map) => {
@@ -227,7 +228,7 @@ export default class AssetsTop extends PureComponent {
         return (
             <Col md="12">
                 <Card>
-                    <CardBody className="search_panel__body">
+                    <CardBody className="card-body__thin-padding dsearch_panel__body">
                         <div className="search_panel_topbtn">
                             <div className="float-left circle-legend">
                                 &nbsp;&nbsp;

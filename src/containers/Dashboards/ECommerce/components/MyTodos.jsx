@@ -23,7 +23,7 @@ class MyTodos extends PureComponent {
       },
       {
         id: '3',
-        label: 'Calculate the company budget',
+        label: 'Calculate the Company budget',
         checked: true,
       },
       {
