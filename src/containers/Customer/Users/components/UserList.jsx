@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import { Card, CardBody, Col } from 'reactstrap';
 
 import Table from '@material-ui/core/Table';
@@ -8,176 +8,260 @@ import {useDispatch, useSelector} from "react-redux";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
-import {getUserList} from "../../../../redux/actions/usersActions";
-import UserHead from "./UserHead";
+import TableContainer from "@material-ui/core/TableContainer";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+import {makeStyles} from "@material-ui/core/styles";
 import {
-    pagingChangeCurrentPageNext, pagingChangeCurrentPagePrev,
-    pagingChangeRowsPerPage,
-    pagingChangeTotalCount,
+    pagingChangeCurrentPage,
+    pagingChangeCurrentPageNext, pagingChangeCurrentPagePrev, pagingChangeDense, pagingChangeOrder, pagingChangeOrderBy,
+    pagingChangeRowsPerPage, pagingChangeSelected,
+    pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
+import NBTableHead, {NBTableToolbar} from "../../../Common/NBTableHead";
+import {getUserList} from "../../../../redux/actions/usersActions";
+
+const headRows = [
+    {id: 'userId', disablePadding: false, label: '아이디'},
+    {id: 'userName', disablePadding: false, label: '이름'},
+    {id: 'email', disablePadding: false, label: '이메일'},
+    {id: 'hp', disablePadding: false, label: '핸드폰'},
+    {id: 'authlevel', disablePadding: false, label: '권한'},
+    {id: 'regdate', disablePadding: false, label: '등록일자'},
+];
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        width: '100%',
+    },
+    paper: {
+        width: '100%',
+        marginBottom: theme.spacing(2),
+    },
+    table: {
+        minWidth: 750,
+    },
+    visuallyHidden: {
+        border: 0,
+        clip: 'rect(0 0 0 0)',
+        height: 1,
+        margin: -1,
+        overflow: 'hidden',
+        padding: 0,
+        position: 'absolute',
+        top: 20,
+        width: 1,
+    },
+}));
 
 const UserList = () => {
+    const classes = useStyles();
     const dispatch = useDispatch();
+    /**
+     * User Data
+     */
     const {
-        users, getPage, pageBeginRow, rowsPerPage, currentPage, totalPage, totalCount, displayRowsList,
-    } = useSelector(({userList, pagination}) => ({
-        users: userList.users,
-        getPage: userList.page,
-        // Pagination
-        pageBeginRow: pagination.pageBeginRow,
-        rowsPerPage: pagination.rowsPerPage,
-        currentPage: pagination.currentPage,
-        totalPage: pagination.totalPage,
-        totalCount: pagination.totalCount,
-        displayRowsList: pagination.displayRowsList,
+        data, getPage,
+    } = useSelector(({ userRd }) => ({
+        data: userRd.data,
+        getPage: userRd.page,
     }));
 
-    const dumpPagingVar = ({location}) => {
-        console.log(location, "-------------------------");
-        console.log("- rowsPerPage:", rowsPerPage);
-        console.log("- currentPage:", currentPage);
-        console.log("- totalPage:", totalPage);
-        console.log("- totalCount:", totalCount);
-    };
+    /**
+     * Pagination
+     */
+    const {
+        selected,
+        pageBeginRow,
+        rowsPerPage,
+        currentPage,
+        totalPage,
+        totalCount,
+        displayRowsList,
+        dense,
+        orderBy,
+        order,
+    } = useSelector(({pagingRd}) => ({
+        selected: pagingRd.selected,
+        pageBeginRow: pagingRd.pageBeginRow,
+        rowsPerPage: pagingRd.rowsPerPage,
+        currentPage: pagingRd.currentPage,
+        totalPage: pagingRd.totalPage,
+        totalCount: pagingRd.totalCount,
+        displayRowsList: pagingRd.displayRowsList,
+        dense: pagingRd.dense,
+        orderBy: pagingRd.orderBy,
+        order: pagingRd.order,
+    }));
 
+    /** Pagination */
     const updatePagingTotalCount = ({count}) => {
-        console.log("[update]", count);
-        console.log("--> totalCount:", totalCount);
-        console.log("--> rowsPerPage:", rowsPerPage);
         if (count !== totalCount) {
-            console.log("Change TotalCount");
             dispatch(pagingChangeTotalCount({totalCount: count}));
         }
     };
 
+    /** Pagination */
     const handleChangePagePrev = () => {
-        if (currentPage > 1) {
-            const pageNum = currentPage - 1;
+        if (currentPage > 0) {
             dispatch(pagingChangeCurrentPagePrev());
         }
     };
 
+    /** Pagination */
     const handleChangePageNext = () => {
         if (currentPage < totalCount) {
-            const pageNum = currentPage + 1;
             dispatch(pagingChangeCurrentPageNext());
         }
     };
 
+    /** Pagination */
+    const handleChangePage = (event, newPage) => {
+        console.log("change page: ", newPage);
+        dispatch(pagingChangeCurrentPage({currentPage: newPage}));
+    };
+
+    /** Pagination */
     const handleChangeRowsPerPage = (e) => {
         const changeRows = Number(e.target.value);
-        console.log("[handleChangeRowsPerPage]");
-        console.log("--> ", changeRows);
         dispatch(pagingChangeRowsPerPage({rowsPerPage: changeRows}));
     };
 
-    const getPageData = () => {
-        let offset = 0;
-        if (currentPage > 1) {
-            offset = rowsPerPage * currentPage;
+    /** Pagination */
+    const handleClick = (event, id) => {
+        const newSelected = new Map(selected);
+        const value = newSelected.get(id);
+        let isActive = true;
+        if (value) {
+            isActive = false;
         }
-        console.log("[dispatch-->getUserList] rows:", rowsPerPage, ", offset:", offset);
-        dispatch(getUserList({rows: rowsPerPage, offset}));
+        newSelected.set(id, isActive);
+        dispatch(pagingChangeSelected({selected: newSelected}));
     };
 
+    /** Pagination */
+    const handleSelectAllClick = (event, checked) => {
+        const newSelected = new Map();
+        if (checked) {
+            data.map(n => newSelected.set(n.idx, true));
+        } else {
+            data.map(n => newSelected.set(n.idx, false));
+        }
+        dispatch(pagingChangeSelected({selected: newSelected}));
+    };
+
+    const handleRequestSort = (event, property) => {
+        const isAsc = orderBy === property && order === "asc";
+        const changeOrder = isAsc ? "desc" : "asc";
+        dispatch(pagingChangeOrder({order: changeOrder}));
+        dispatch(pagingChangeOrderBy({orderBy: property}));
+    };
+
+    const handleDeleteSelected = () => {
+        let copyUser = [...data];
+        console.log("deleted Selected:");
+        for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
+            copyUser = copyUser.filter(obj => obj.id !== selected[i]);
+        }
+        console.log("copyUser:", copyUser);
+    };
+
+    /** Pagination */
+    const handleChangeDense = (event) => {
+        dispatch(pagingChangeDense({checked: event.target.checked}));
+    };
+
+    /** Pagination */
+    const getPageData = () => {
+        let offset = 0;
+        if (currentPage > 0) {
+            offset = rowsPerPage * currentPage;
+        }
+        console.log("get Page Data: rows ", rowsPerPage, ", offset ", offset,
+            ", orderBy ", orderBy, ", order ", order);
+        dispatch(getUserList({
+            rows: rowsPerPage, offset, orderBy, order,
+        }));
+    };
+
+    /** Pagination */
+    const getSelected = id => !!selected.get(id);
+
+
     useEffect(() => {
+        const changeOrderBy = "userId";
+        console.log("[] orderBy: ", changeOrderBy);
+        dispatch(pagingChangeOrderBy({orderBy: changeOrderBy}));
     }, []);
 
     useEffect(() => {
-        console.log("[useEffect] rowsPerPage - ", rowsPerPage);
-    }, [rowsPerPage]);
+        dispatch(pagingDump());
+    }, [totalCount]);
 
     useEffect(() => {
         if (getPage) {
             const {count} = getPage;
-            console.log("[getPage]", getPage);
-            console.log("--> count", count);
+            /** Pagination */
             updatePagingTotalCount({count});
         }
     }, [getPage]);
 
     useEffect(() => {
-        dumpPagingVar({location: "[USERS]"});
-        console.log("getPage:", getPage);
-        if (users) {
-            console.log("[users]");
-            console.log(users);
-        }
-    }, [users]);
-
-    useEffect(() => {
-        dumpPagingVar({location: "[INIT]"});
-    }, [totalCount]);
-
-    useEffect(() => {
-        console.log("[useEffect] rowsPerPage");
+        /** Pagination */
         getPageData();
-    }, [rowsPerPage]);
+        dispatch(pagingDump());
+    }, [rowsPerPage, pageBeginRow, orderBy, order]);
 
-    useEffect(() => {
-        console.log("[useEffect] pageBeginRow");
-        getPageData();
-    }, [pageBeginRow]);
-
-    const pageBar = (
+    /** Pagination */
+    const paginationBar = (
         <TablePagination
             component="div"
-            className="material-table__pagination"
+            className="nb-material-table__pagination"
             count={totalCount}
             rowsPerPage={rowsPerPage}
             page={currentPage}
-            backIconButtonProps={{
-                'aria-label': 'Previous Page',
-                disabled: false,
-                onClick: handleChangePagePrev,
-            }}
-            nextIconButtonProps={{'aria-label': 'Next Page'}}
-            onChangePage={handleChangePageNext}
+            onChangePage={handleChangePage}
             onChangeRowsPerPage={handleChangeRowsPerPage}
             rowsPerPageOptions={displayRowsList}
-            dir="ltr"
-            labelDisplayedRows={
-                ({to, count}) => (
-                    <span style={{fontSize: 14}}><span>page: {currentPage}</span>&nbsp;&nbsp;&nbsp; total : {totalCount}
-                                    </span>
-                )
-            }
-            SelectProps={{
-                inputProps: {'aria-label': 'rows per page'},
-                native: true,
-            }}
         />
     );
 
-    const usersTable = (
+    const tableRows = (
         <TableBody>
-            { users
-                // .slice(pagingRedux.pageBeginRow, pagingRedux.pageEndRow)
-                .map((user) => {
-                    console.log("rendering map...");
+            { data
+                .map((row) => {
+                    const isSelected = getSelected(row.idx);
                     return (
                         <TableRow
-                            className="material-table__row"
+                            hover
+                            className="nb-material-table__row"
+                            role="checkbox"
+                            onClick={event => handleClick(event, row.idx)}
+                            aria-checked={isSelected}
                             tabIndex={-1}
-                            key={user.idx}
+                            key={row.idx}
+                            selected={isSelected}
                         >
-                            <TableCell className="material-table__cell material-table__cell-right">
-                                {user.userId}
+                            <TableCell className="nb-material-table__cell" padding="checkbox" >
+                                <Checkbox checked={isSelected} className="nb-material-table__checkbox" />
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right">
-                                {user.name}
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                                {row.userId}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right">
-                                {user.email}
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                                {row.name}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right">
-                                {user.hp}
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                                {row.email}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right">
-                                {user.authLevel}
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                                {row.hp}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right">
-                                {user.registerDate}
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                                {row.authLevel}
+                            </TableCell>
+                            <TableCell className="nb-material-table__cell nb-material-table__cell-right" >
+                                {row.registerDate}
                             </TableCell>
                         </TableRow>
                     );
@@ -190,13 +274,41 @@ const UserList = () => {
         <Col md={12} lg={12}>
             <Card>
                 <CardBody>
-                    <div className="material-table__wrap">
-                        <Table className="material-table">
-                            <UserHead/>
-                            {usersTable}
-                        </Table>
-                        {pageBar}
-                   </div>
+                    <div className="card__title">
+                        <h4 className="bold-text">사용자 목록</h4>
+                    </div>
+                    <NBTableToolbar
+                        numSelected={[...selected].filter(el => el[1]).length}
+                        handleDeleteSelected={handleDeleteSelected}
+                        onRequestSort={handleRequestSort}
+                        rows={headRows}
+                        toolbarTitle="사용자 목록"
+                    />
+                    <div className="nb-material-table__wrap">
+                        <TableContainer>
+                            <Table
+                                className="nb-material-table"
+                                size={dense ? 'small' : 'medium'}
+                            >
+                                <NBTableHead
+                                    classes={classes}
+                                    numSelected={[...selected].filter(el => el[1]).length}
+                                    order={order}
+                                    orderBy={orderBy}
+                                    onSelectAllClick={handleSelectAllClick}
+                                    onRequestSort={handleRequestSort}
+                                    rowCount={data.length}
+                                    rows={headRows}
+                                />
+                                {tableRows}
+                            </Table>
+                        </TableContainer>
+                        {paginationBar}
+                    </div>
+                    <FormControlLabel
+                        control={<Switch checked={dense} onChange={handleChangeDense} />}
+                        label="Dense padding"
+                    />
                 </CardBody>
             </Card>
         </Col>

@@ -7,7 +7,8 @@ $landing-gradient: linear-gradient(228deg, rgba(127, 244, 222, 0.95), rgba(56, 1
 $landing-gradient-hover: linear-gradient(228deg, darken(rgba(127, 244, 222, 0.95), 5%), darken(rgba(56, 199, 225, 1), 5%));
 
 .landing {
-  font-family: 'Poppins', sans-serif;
+  //font-family: 'Poppins', sans-serif;
+  font-family: 'Nanum Gothic', 'Poppins', sans-serif; // [2020-06-08 byeonghwa jung]
   width: 100%;
   background: #ffffff;
   position: absolute;
@@ -73,7 +74,8 @@ $landing-gradient-hover: linear-gradient(228deg, darken(rgba(127, 244, 222, 0.95
     align-items: center;
     width: auto;
     padding: 16px 30px;
-    font-family: 'Poppins', sans-serif;
+    //font-family: 'Poppins', sans-serif;
+    font-family: 'Nanum Gothic', 'Poppins', sans-serif; // [2020-06-08 byeonghwa jung]
   }
 
   &.landing__btn--feedback {
@@ -81,7 +83,8 @@ $landing-gradient-hover: linear-gradient(228deg, darken(rgba(127, 244, 222, 0.95
     width: 174px;
     height: 50px;
     padding: 16px 30px;
-    font-family: 'Poppins', sans-serif;
+    //font-family: 'Poppins', sans-serif;
+    font-family: 'Nanum Gothic', 'Poppins', sans-serif; // [2020-06-08 byeonghwa jung]
     line-height: 20px;
   }
 }
@@ -98,7 +101,8 @@ $landing-gradient-hover: linear-gradient(228deg, darken(rgba(127, 244, 222, 0.95
 
   font-size: 14px;
   line-height: 49px;
-  font-family: inherit;
+  //font-family: inherit;
+  font-family: 'Nanum BarunPenR', inherit; // [2020-06-08 byeonghwa jung]
 
   background: #FFFFFF;
   opacity: 0.6;
@@ -204,7 +208,8 @@ $landing-gradient-hover: linear-gradient(228deg, darken(rgba(127, 244, 222, 0.95
     transition: 0.3s;
     cursor: pointer;
     display: none;
-    font-family: 'Poppins', sans-serif;
+    //font-family: 'Poppins', sans-serif;
+    font-family: 'Nanum Gothic', 'Poppins', sans-serif; // [2020-06-08 byeonghwa jung]
 
     &:hover {
       color: darken($landing-accent-color, 15%);
@@ -447,7 +452,8 @@ $landing-gradient-hover: linear-gradient(228deg, darken(rgba(127, 244, 222, 0.95
   font-size: 18px;
   line-height: 40px;
   color: #577687;
-  font-family: Poppins,sans-serif;
+  //font-family: Poppins,sans-serif;
+  font-family: 'Nanum Gothic', 'Poppins', sans-serif; // [2020-06-08 byeonghwa jung]
 }
 
 .applications__slider-btn--selected {

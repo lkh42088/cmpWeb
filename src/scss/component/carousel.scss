@@ -35,7 +35,8 @@
       top: calc(50% - 15px);
       font-size: 30px;
       line-height: 30px;
-      font-family: inherit;
+      //font-family: inherit;
+      font-family: 'Nanum BarunPenR', inherit; // [2020-06-08 byeonghwa jung]
       width: 30px;
       transition: all 0.3s;
     }

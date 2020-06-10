@@ -10,14 +10,20 @@
   }
 }
 
+// [2020-06-09 byeonghwa jung]
+.card-body__thin-padding {
+  height: 100%;
+  border-radius: 5px;
+  padding: 5px 5px 5px 5px;
+
+  @include themify($themes) {
+    background-color: themed('colorBackground');
+  }
+}
+
 .card-body {
   height: 100%;
   border-radius: 5px;
-  /*border: 1px solid red;*/
-  /*padding-top: 0px;
-  padding-left: 0px;*/
-  /*padding: 0 0.5rem 0 0.5rem;*/
-  padding: 0 0 0 0;
 
   @include themify($themes) {
     background-color: themed('colorBackground');

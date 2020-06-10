@@ -3,6 +3,9 @@
 //vendor...
 @import './vendor';
 
+//font... [2020-06-08 byeonghwa jung]
+@import 'plus/fonts.scss';
+
 //base...
 @import 'generic/normalize.scss';
 @import 'generic/box-sizing.scss';
@@ -87,3 +90,4 @@
 @import './plus/panel';
 @import './plus/modal';
 @import './plus/form';
+@import './plus/nb-material-table'; // [2020-06-09 byeonghwa jung]

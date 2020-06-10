@@ -4,8 +4,8 @@ import {
 } from '../actions/sidebarActions';
 
 const initialState = {
-  show: true,
-  collapse: true,
+  show: false,
+  collapse: false,
 };
 
 export default function (state = initialState, action) {

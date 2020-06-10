@@ -14,9 +14,9 @@ export const [USERLIST, USERLIST_SUCCESS, USERLIST_FAILURE] = createRequestActio
  * 2. Action Function
  *****************************************************************************/
 export const getUserList = createAction(USERLIST, ({
-    rows, offset,
+    rows, offset, orderBy, order,
 }) => ({
-    rows, offset,
+    rows, offset, orderBy, order,
 }));
 
 /******************************************************************************

@@ -56,7 +56,7 @@ export default class SidebarCategory extends Component {
         <Collapse isOpen={collapse} className="sidebar__submenu-wrap">
           <ul className="sidebar__submenu">
             <div type="button"
-                 onClick={this.hideSidebar} onKeyDown={this.hideSidebar}
+                 onClick={this.toggle} onKeyDown={this.toggle}
                  role="button" tabIndex="0">
               {children}
             </div>

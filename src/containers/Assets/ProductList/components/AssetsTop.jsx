@@ -1,15 +1,21 @@
 /* eslint-disable react/prop-types */
 import React, {PureComponent} from 'react';
 import {
-    Badge, Button, Card, CardBody, Col, Collapse, Modal, Table,
+    Badge, Button, Card, CardBody, Col, Collapse, Modal, Table, ButtonToolbar,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 import classNames from "classnames";
 import moment from 'moment';
+import Select from 'react-select';
 
 import AssetsModal from "./AssetsModal";
 import AssetsWrite from "./AssetsWrite";
-import {postDevice} from "../../../../redux/actions/assetsAction";
+import {
+    fetchPosts,
+    postDevice,
+    postDeviceOutFlag,
+    setDeviceOutFlag,
+} from "../../../../redux/actions/assetsAction";
 
 function replacer(key, value) {
     console.log("key : ", key);
@@ -34,9 +40,55 @@ export default class AssetsTop extends PureComponent {
         this.setState(prevState => ({modalOpenFlag: !prevState.modalOpenFlag}));
     };
 
+    toggleOutFlag = (val) => {
+        let division = ',';
+        let divisionCount = 0;
+        let deviceCodeData = '';
+        console.log("toggleOutFlag start");
+        const {assetState, dispatch} = this.props;
+
+        console.log("length : ", assetState.deviceSelected.length);
+        console.log("size : ", assetState.deviceSelected.size);
+
+        if (assetState.deviceSelected.size === undefined) {
+            // modal로 경고등 띄우기
+            // alert("선택된 장비가 없습니다.");
+            console.log("선택된 장비가 없습니다.");
+        } else {
+            // eslint-disable-next-line no-shadow
+            assetState.deviceSelected.forEach((value, key, map) => {
+                console.log(`14--->${key}$${value}`);
+                if (value === true) {
+                    if (divisionCount <= 0) {
+                        division = '';
+                    } else {
+                        division = ',';
+                    }
+                    divisionCount += 1;
+                    deviceCodeData = `${deviceCodeData}${division}${key}`;
+                }
+            });
+
+            //todo user setting
+            const submitData = ({
+                userId: 'lkb',
+                outFlag: '1',
+                deviceCode: deviceCodeData,
+            });
+
+            //console.log("value : ", value);
+            //postDeviceOutFlag
+            // 반출 요청을 할거다....(1)
+            // 반입은 (0)....
+            dispatch(postDeviceOutFlag(assetState, submitData));
+        }
+    };
+
     handleSubmit = (values) => {
         const {assetState, dispatch} = this.props;
 
+        let division = '|';
+        let divisionCount = 0;
         let IpArray = '';
         let SplaArray = '';
         let rentDataStart;
@@ -45,15 +97,42 @@ export default class AssetsTop extends PureComponent {
         let warehousingDate = '';
 
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
-        for (const arrData in values) {
-            //console.log("arrData : ", arrData, ", value : ", values[arrData]);
+        for (const arrData in assetState.deviceIp) {
+            if (assetState.deviceIp[arrData] !== '') {
+                if (divisionCount <= 0) {
+                    division = '';
+                } else {
+                    division = '|';
+                }
 
-            if (arrData.indexOf("ip") !== -1) {
-                IpArray = `${IpArray}|${values[arrData]}`;
-            } else if (arrData.indexOf("spla") !== -1) {
-                SplaArray = `${SplaArray}|${values[arrData]}`;
-            } else if (arrData.indexOf("rentDate") !== -1) {
-                if (values[arrData].start !== null) {
+                divisionCount += 1;
+                IpArray = `${IpArray}${division}${assetState.deviceIp[arrData]}`;
+            }
+        }
+
+        divisionCount = 0;
+        IpArray = `${IpArray}|`;
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in assetState.deviceSpla) {
+            if (assetState.deviceSpla[arrData] !== '') {
+                if (divisionCount <= 0) {
+                    division = '';
+                } else {
+                    division = '|';
+                }
+
+                divisionCount += 1;
+                SplaArray = `${SplaArray}${division}${assetState.deviceSpla[arrData]}`;
+            }
+        }
+
+        SplaArray = `${SplaArray}|`;
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in values) {
+            if (arrData.indexOf("rentDate") !== -1) {
+                if (values[arrData].start !== null && values[arrData].start !== undefined) {
                     rentDataStart = moment(values[arrData].start).format("YYYYMMDD");
                 } else {
                     rentDataStart = null;
@@ -74,8 +153,6 @@ export default class AssetsTop extends PureComponent {
             }
         }
 
-        // const tempJson = JSON.stringify(JSON.stringify(values), replacer);
-
         const submitData = ({
             outFlag: '',
             commentCnt: '',
@@ -83,9 +160,9 @@ export default class AssetsTop extends PureComponent {
             registerId: 'lkb',
             registerDate: '',
             model: values.model,
+            manufacture: values.manufacture,
             contents: values.contents,
             customer: values.customer,
-            manufacture: values.manufacture,
             deviceType: values.deviceType,
             ownership: values.ownership,
             ownershipDiv: values.ownershipDiv,
@@ -112,42 +189,27 @@ export default class AssetsTop extends PureComponent {
             warranty: values.warranty,
         });
 
-        /*const submitData = ({
-            outFlag: true,
-            commentCnt: 0,
-            commentLastDate: "",
-            registerId: "lkb",
-            contents: "들어가자~↵와~",
-            cost: "3243",
-            cpu: "cpu",
-            customer: "",
-            deviceCode: "CBS09998",
-            deviceType: "7",
-            hdd: "hdd2",
-            hwSn: "hw",
-            idc: "15",
-            ip: "|22.2.2.2|1.1.1.1",
-            manufacture: undefined,
-            memory: "memory",
-            model: "39",
-            monitoringFlag: "",
-            monitoringMethod: "",
-            ownerCompany: "",
-            ownership: "1",
-            ownershipDiv: "4",
-            purpos: "5000",
-            rack: "87",
-            rackLoc: "12",
-            rackTag: "rack tag",
-            registerDate: "",
-            rentDate: "20200501|20200504",
-            size: "23",
-            spla: "|587|88",
-            warehousingDate: "20200507",
-        });*/
-
-        console.log("🙊🙊🙊🙊🙊🙊🙊 : ", submitData);
+        console.log("TOP 🙊🙊🙊 가공 전 : ", values);
+        console.log("TOP 🙊🙊🙊 가공 후: ", submitData);
         dispatch(postDevice('create', assetState, submitData));
+    };
+
+    setToggleOutFlag = (outFlag) => {
+        console.log("outFlag : ", outFlag);
+        const {assetState, dispatch} = this.props;
+
+        dispatch(setDeviceOutFlag(outFlag));
+        const dispatchVal = ({
+            deviceType: 'server',
+            orderBy: 'DeviceCode',
+            order: 1,
+            rowsPerPage: 10,
+            overNum: 1000,
+            outFlag,
+        });
+
+        dispatch(setDeviceOutFlag(outFlag));
+        dispatch(fetchPosts(dispatchVal));
     };
 
     render() {
@@ -166,16 +228,48 @@ export default class AssetsTop extends PureComponent {
         return (
             <Col md="12">
                 <Card>
-                    <CardBody className="search_panel__body">
-                        <div className="search_panel_topbtn circle-legend">
-                            <div className="float-left">
+                    <CardBody className="card-body__thin-padding dsearch_panel__body">
+                        <div className="search_panel_topbtn">
+                            <div className="float-left circle-legend">
                                 &nbsp;&nbsp;
+                                {/*<span className="circle__lit"/>장비반출&nbsp;&nbsp;*/}
+                                <div className="float-left" role="button" tabIndex="0"
+                                     onClick={event => this.setToggleOutFlag('0')}
+                                     onKeyDown={event => this.setToggleOutFlag('0')}>
+                                    <span className="circle__ste"
+                                          role="button" tabIndex="0"/>반입장비&nbsp;&nbsp;
+                                </div>
+                                <div className="float-left" role="button" tabIndex="0"
+                                     onClick={event => this.setToggleOutFlag("1")}
+                                     onKeyDown={event => this.setToggleOutFlag("1")}>
+                                    <span className="circle__eth"
+                                          role="button" tabIndex="0"/>반출장비&nbsp;&nbsp;
+                                </div>
+                            </div>
+                            <div className="float-right">
+                                {/*                                &nbsp;&nbsp;
                                 <span className="circle__lit"/>장비반출&nbsp;&nbsp;
                                 <div className="float-left" role="button" tabIndex="0" onClick={this.toggle}
                                      onKeyDown={this.toggle}>
                                     <span className="circle__eos"
                                           role="button" tabIndex="0"/>장비등록&nbsp;&nbsp;
                                 </div>
+                                <div className="float-left" role="button" tabIndex="0" onClick={event => this.toggleOutFlag("1")}
+                                     onKeyDown={event => this.toggleOutFlag("1")}>
+                                    <span className="circle__lit"
+                                          role="button" tabIndex="0"/>장비반출&nbsp;&nbsp;
+                                </div>*/}
+                                <ButtonToolbar>
+                                    <span role="button" tabIndex="0"
+                                          onClick={this.toggle} onKeyDown={this.toggle}
+                                          className="top_btn_black_dep2">
+                                        장비등록</span>
+                                    <span role="button" tabIndex="0"
+                                            onClick={event => this.toggleOutFlag("1")}
+                                            onKeyDown={event => this.toggleOutFlag("1")}
+                                            className="top_btn_black_dep3">
+                                        장비반출</span>
+                                </ButtonToolbar>
                             </div>
                         </div>
                         <Modal

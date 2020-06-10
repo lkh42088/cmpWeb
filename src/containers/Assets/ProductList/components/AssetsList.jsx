@@ -26,7 +26,8 @@ import {
     fetchPosts,
     fetchPostsCheckCount,
     getDeviceOriByIdx,
-    setViewModalDivision,
+    setViewModalDivision, postDevice,
+    setDeviceSelected,
 } from '../../../../redux/actions/assetsAction';
 
 import AssetsHead from './AssetsHead';
@@ -119,7 +120,113 @@ export default class AssetsList extends PureComponent {
     };
 
     handleSubmit = (values) => {
-      console.log("🙀 handleSubmit : ", values);
+        const {assetState, dispatch} = this.props;
+
+        let division = '|';
+        let divisionCount = 0;
+        let IpArray = '';
+        let SplaArray = '';
+        let rentDataStart;
+        let rentDataEnd;
+        let rentData = '|';
+        let warehousingDate = '';
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in assetState.deviceIp) {
+            if (assetState.deviceIp[arrData] !== '') {
+                if (divisionCount <= 0) {
+                    division = '';
+                } else {
+                    division = '|';
+                }
+
+                divisionCount += 1;
+                IpArray = `${IpArray}${division}${assetState.deviceIp[arrData]}`;
+            }
+        }
+
+        divisionCount = 0;
+        IpArray = `${IpArray}|`;
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in assetState.deviceSpla) {
+            if (assetState.deviceSpla[arrData] !== '') {
+                if (divisionCount <= 0) {
+                    division = '';
+                } else {
+                    division = '|';
+                }
+
+                divisionCount += 1;
+                SplaArray = `${SplaArray}${division}${assetState.deviceSpla[arrData]}`;
+            }
+        }
+
+        SplaArray = `${SplaArray}|`;
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in values) {
+            //console.log("arrData : ", arrData, ", value : ", values[arrData]);
+            if (arrData.indexOf("rentDate") !== -1) {
+                //console.log("arrData : ", arrData, ", value : ", values[arrData]);
+                //console.log("start : ", values[arrData].start, ", end : ", values[arrData].end);
+                if (values[arrData].start !== undefined) {
+                    rentDataStart = moment(values[arrData].start).format("YYYYMMDD");
+                    rentDataEnd = `|${moment(values[arrData].end).format("YYYYMMDD")}`;
+                    rentData = `${rentDataStart}${rentDataEnd}`;
+                } else if (values[arrData] !== '' && values[arrData] !== undefined) {
+                    rentData = values[arrData];
+                } else {
+                    rentData = "|";
+                }
+            } else if (arrData.indexOf("warehousingDate") !== -1) {
+                warehousingDate = moment(values[arrData]).format("YYYYMMDD");
+            }
+        }
+
+        warehousingDate = warehousingDate.toString();
+
+        const submitData = ({
+            deviceCode: values.deviceCode,
+            idx: values.idx,
+            outFlag: '',
+            commentCnt: '',
+            commentLastDate: '',
+            registerId: 'lkb',
+            registerDate: '',
+            model: values.model,
+            contents: values.contents,
+            customer: values.customer,
+            manufacture: values.manufacture,
+            deviceType: values.deviceType,
+            ownership: values.ownership,
+            ownershipDiv: values.ownershipDiv,
+            ownerCompany: values.ownerCompany,
+            hwSn: values.hwSn,
+            idc: values.idc,
+            rack: values.rack,
+            cost: values.cost,
+            purpose: values.purpose,
+            size: values.size,
+            cpu: values.cpu,
+            memory: values.memory,
+            hdd: values.hdd,
+            rackTag: values.rackTag,
+            rackLoc: values.rackLoc.toString(),
+            ip: IpArray,
+            spla: SplaArray,
+            rentDate: rentData,
+            warehousingDate,
+            monitoringFlag: '',
+            monitoringMethod: '',
+            rackCode: values.rackCode,
+            firmwareVersion: values.firmwareVersion,
+            warranty: values.warranty,
+        });
+
+        console.log("UPDATE 🙊🙊🙊 가공 전 : ", values);
+        console.log("UPDATE 🙊🙊🙊 가공 후 : ", submitData);
+        dispatch(postDevice('update', assetState, submitData));
     };
 
     handleRequestSort = (event, property) => {
@@ -146,6 +253,7 @@ export default class AssetsList extends PureComponent {
             order,
             rowsPerPage,
             overNum,
+            outFlag: assetState.deviceOutFlag,
         });
 
         dispatch(fetchPosts(dispatchVal));
@@ -156,7 +264,7 @@ export default class AssetsList extends PureComponent {
         if (checked) {
             const {assetState} = this.props;
             const newSelected = new Map();
-            assetState.devices.map(n => newSelected.set(n.Idx, true));
+            assetState.devices.map(n => newSelected.set(n.deviceCode, true));
             this.setState({selected: newSelected});
             return;
         }
@@ -164,6 +272,7 @@ export default class AssetsList extends PureComponent {
     };
 
     handleClick = (event, id) => {
+        const {dispatch} = this.props;
         const {selected} = this.state;
         const newSelected = new Map(selected);
         const value = newSelected.get(id);
@@ -173,6 +282,7 @@ export default class AssetsList extends PureComponent {
         }
         newSelected.set(id, isActive);
         this.setState({selected: newSelected});
+        dispatch(setDeviceSelected(newSelected));
     };
 
     handleChangePageBackOld = () => {
@@ -200,6 +310,7 @@ export default class AssetsList extends PureComponent {
                     rowsPerPage,
                     showPage,
                     overNum,
+                    outFlag: assetState.deviceOutFlag,
                 });
 
                 dispatch(fetchPostsCheckCount(dispatchVal));
@@ -245,6 +356,7 @@ export default class AssetsList extends PureComponent {
                     rowsPerPage,
                     showPage,
                     overNum,
+                    outFlag: assetState.deviceOutFlag,
                 });
                 dispatch(fetchPostsCheckCount(dispatchVal));
             } else {
@@ -363,6 +475,7 @@ export default class AssetsList extends PureComponent {
                 rowsPerPage,
                 showPage,
                 overNum,
+                outFlag: assetState.deviceOutFlag,
             });
 
             dispatch(fetchPostsCheckCount(dispatchVal));
@@ -390,6 +503,7 @@ export default class AssetsList extends PureComponent {
             order,
             rowsPerPage,
             overNum,
+            outFlag: assetState.deviceOutFlag,
         });
 
         dispatch(fetchPosts(dispatchVal));
@@ -585,7 +699,7 @@ export default class AssetsList extends PureComponent {
                                         <Fragment>
                                             <TableCell
                                                 className={tableCellClassName}
-                                            >{/*IP*/}{d.ip}
+                                            >{/*IP*/}{d.ip.toString().replace("|", "")}
                                             </TableCell>
                                             <TableCell
                                                 className={tableCellClassName}

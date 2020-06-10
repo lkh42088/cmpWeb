@@ -46,6 +46,7 @@ const showNotification = (rtl) => {
 
 class Layout extends Component {
   static propTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
     dispatch: PropTypes.func.isRequired,
     sidebar: SidebarProps.isRequired,
     customizer: CustomizerProps.isRequired,
@@ -105,6 +106,7 @@ class Layout extends Component {
     localMenuTitle.title = title;
     localMenuTitle.subTitle = subTitle;
     localStorage.localMenuTitle = JSON.stringify(localMenuTitle);*/
+    const assetState = useSelector(state => state.assets);
 
     if (title === '자산관리') {
       const dispatchVal = ({
@@ -113,6 +115,7 @@ class Layout extends Component {
         order: 1,
         rowsPerPage: 10,
         overNum: 1000,
+        outFlag: '1',
       });
 
       dispatch(fetchPosts(dispatchVal));
