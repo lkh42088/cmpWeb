@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import NotificationSystem from 'rc-notification';
 
-import {fetchPosts} from '../../redux/actions/assetsAction';
+import {fetchPosts, setDeviceType} from '../../redux/actions/assetsAction';
 
 import Topbar from './topbar/Topbar';
 import TopbarWithNavigation from './topbar_with_navigation/TopbarWithNavigation';
@@ -47,6 +47,7 @@ const showNotification = (rtl) => {
 class Layout extends Component {
   static propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
+    assetState: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     sidebar: SidebarProps.isRequired,
     customizer: CustomizerProps.isRequired,
@@ -95,7 +96,7 @@ class Layout extends Component {
   };
 
   changeMenuTitle = (title, subTitle, val) => {
-    const { dispatch } = this.props;
+    const { assetState, dispatch } = this.props;
     dispatch(changeMenuTitle(title, subTitle));
 /*
     const localMenuTitle = {
@@ -109,7 +110,8 @@ class Layout extends Component {
     //const assetState = useSelector(state => state.assets);
 
     if (title === '자산관리') {
-      const dispatchVal = ({
+      dispatch(setDeviceType(val));
+      /*const dispatchVal = ({
         deviceType: val,
         orderBy: 'DeviceCode',
         order: 1,
@@ -118,7 +120,9 @@ class Layout extends Component {
         outFlag: '0',
       });
 
-      dispatch(fetchPosts(dispatchVal));
+      console.log("layout index assetState : ", assetState);
+
+      dispatch(fetchPosts(assetState));*/
     }
   };
 

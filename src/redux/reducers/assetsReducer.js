@@ -12,7 +12,7 @@ import {
     GET_DEVICES_CHECKCOUNT, SET_STATUS,
     GET_DEVICE_ORI_BY_DEVICECODE, SET_MODAL_DIVISION,
     SET_ADD_ELE_IP_DATA, SET_ADD_ELE_SPLA_DATA,
-    SET_DEVICE_SELECTED, SET_DEVICE_OUTFLAG,
+    SET_DEVICE_SELECTED, SET_DEVICE_OUTFLAG, SET_DEVICE_TYPE,
 } from "../actions/assetsAction";
 
 export const initialState = {
@@ -178,6 +178,11 @@ const assetsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 deviceOutFlag: payload,
+            };
+        case SET_DEVICE_TYPE:
+            return {
+                ...state,
+                deviceType: payload,
             };
         default:
             return state;

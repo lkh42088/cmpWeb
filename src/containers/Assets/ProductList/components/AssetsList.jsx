@@ -186,6 +186,16 @@ export default class AssetsList extends PureComponent {
 
         warehousingDate = warehousingDate.toString();
 
+        let rackLog;
+
+        console.log("values.rackLoc : ", values.rackLoc);
+
+        if (values.rackLoc !== undefined) {
+            rackLog = values.rackLoc.toString();
+        } else {
+            rackLog = 0;
+        }
+
         const submitData = ({
             deviceCode: values.deviceCode,
             idx: values.idx,
@@ -212,7 +222,7 @@ export default class AssetsList extends PureComponent {
             memory: values.memory,
             hdd: values.hdd,
             rackTag: values.rackTag,
-            rackLoc: values.rackLoc.toString(),
+            rackLog,
             ip: IpArray,
             spla: SplaArray,
             rentDate: rentData,
@@ -227,6 +237,8 @@ export default class AssetsList extends PureComponent {
         console.log("UPDATE 🙊🙊🙊 가공 전 : ", values);
         console.log("UPDATE 🙊🙊🙊 가공 후 : ", submitData);
         dispatch(postDevice('update', assetState, submitData));
+        this.toggle();
+        //dispatch(fetchPosts(assetState));
     };
 
     handleRequestSort = (event, property) => {
@@ -256,7 +268,7 @@ export default class AssetsList extends PureComponent {
             outFlag: assetState.deviceOutFlag,
         });
 
-        dispatch(fetchPosts(dispatchVal));
+        dispatch(fetchPosts(assetState));
     };
 
     handleSelectAllClick = (event, checked) => {
@@ -506,7 +518,7 @@ export default class AssetsList extends PureComponent {
             outFlag: assetState.deviceOutFlag,
         });
 
-        dispatch(fetchPosts(dispatchVal));
+        dispatch(fetchPosts(assetState));
     };
 
     isSelected = (id) => {
@@ -589,6 +601,7 @@ export default class AssetsList extends PureComponent {
     };
 
     render() {
+        //console.log("👉👉👉👉👉👉👉👉 render start list");
         const {
             order, orderBy, selected, rowsPerPage, page, viewModalContent, modal, showPage,
             pageCount, pageSize, pageNoNum, isOpenView, isOpenWrite, viewModalContentDivision,

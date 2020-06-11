@@ -38,16 +38,24 @@ const MaterialTable = () => {
     });
 
     // eslint-disable-next-line no-undef
-    const getDevices = () => dispatch(fetchPosts(dispatchVal));
+    const getDevices = () => dispatch(fetchPosts(assetState));
     // TODO Reselect 사용으로 변경하기
-    const getTotalCodes = () => dispatch(getCodes(dispatchVal));
+    const getTotalCodes = () => dispatch(getCodes(assetState));
     // eslint-disable-next-line no-shadow
 
+/*    useEffect(() => {
+        getDevices();
+        getTotalCodes();
+        //console.log("💋💋💋💋💋💋 ~~~> : ", assetState.deviceType);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [assetState.deviceType]);*/
     useEffect(() => {
         getDevices();
         getTotalCodes();
+        //console.log("💋💋💋💋💋💋 ~~~> : ", assetState.deviceType);
+        console.log("💋💋💋💋💋💋 assetState.device : ", assetState.device);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [assetState.deviceType, assetState.device]);
 
     return (
         <Container>

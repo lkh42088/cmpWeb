@@ -158,6 +158,16 @@ class AssetsTop extends PureComponent {
             }
         }
 
+        let rackLog;
+
+        console.log("values.rackLoc : ", values.rackLoc);
+
+        if (values.rackLoc !== undefined) {
+            rackLog = values.rackLoc.toString();
+        } else {
+            rackLog = 0;
+        }
+
         const submitData = ({
             outFlag: '',
             commentCnt: '',
@@ -182,7 +192,7 @@ class AssetsTop extends PureComponent {
             memory: values.memory,
             hdd: values.hdd,
             rackTag: values.rackTag,
-            rackLoc: values.rackLoc,
+            rackLog,
             ip: IpArray,
             spla: SplaArray,
             rentDate: rentData,
@@ -197,6 +207,7 @@ class AssetsTop extends PureComponent {
         console.log("TOP 🙊🙊🙊 가공 전 : ", values);
         console.log("TOP 🙊🙊🙊 가공 후: ", submitData);
         dispatch(postDevice('create', assetState, submitData));
+        this.toggle(); // modal close
     };
 
     setToggleOutFlag = (outFlag) => {
@@ -214,7 +225,7 @@ class AssetsTop extends PureComponent {
         });
 
         dispatch(setDeviceOutFlag(outFlag));
-        dispatch(fetchPosts(dispatchVal));
+        dispatch(fetchPosts(assetState));
     };
 
     render() {

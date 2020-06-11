@@ -165,6 +165,7 @@ class AssetsView extends PureComponent {
 
         let ipSliceStr;
         let splaSliceStr;
+        let rentDateSliceStr;
 
         if (ip !== undefined) {
             ipSliceStr = ip.replace(/\|/gi, ", ").slice(0, -2);
@@ -176,6 +177,12 @@ class AssetsView extends PureComponent {
             splaSliceStr = spla.replace(/\|/gi, ", ").slice(0, -2);
         } else {
             splaSliceStr = "";
+        }
+
+        if (rentDate === "|") {
+            rentDateSliceStr = "";
+        } else {
+            rentDateSliceStr = rentDate;
         }
 
         switch (assetState.deviceType) {
@@ -374,7 +381,7 @@ class AssetsView extends PureComponent {
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>임대기간</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {rentDate}
+                                {rentDateSliceStr}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
