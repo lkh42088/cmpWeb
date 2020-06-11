@@ -142,8 +142,11 @@
     /*width: 180px;*/
     transition: left 0.3s;
     top: 50%;
-    color: $color-accent;
     transform: translateY(-50%);
+
+    @include themify($themes) {
+      color: themed('colorText');
+    }
   }
 
   &:hover {
@@ -231,11 +234,11 @@
   .cb_sidebar__link {
     display: block;
   }
-
+/*
   .cb_sidebar__div_button {
     box-shadow: 0 1px 30px 1px rgba(0, 0, 0, 0.11);
     border: 1px solid $color-light-gray;
-  }
+  }*/
 
 }
 
@@ -305,15 +308,23 @@
   font-weight: bold;
   line-height: 16px;
   padding-left: 43px;
-  background-color: $color-green;
-  color: $color-white;
-  text-shadow: 2px 2px 6px $color-light-gray;
+  background-color: $color-white;
+  /*color: $color-black;*/
+  text-shadow: 4px 4px 6px $color-blue;
+  /*box-shadow: 0 1px 30px 1px rgba(0, 0, 0, 0.11);*/
+  @include themify($themes) {
+    color: themed('colorText');
+  }
 }
 
 
 .cb_sidebar__div_button {
-  box-shadow: 0 1px 30px 1px rgba(0, 0, 0, 0.11);
-  border: 1px solid $color-light-gray;
+  /*box-shadow: 0 1px 30px 1px rgba(0, 0, 0, 0.11);*/
+  /*border: 1px solid $color-light-gray;*/
+  background-color: $color-white;
+  @include themify($themes) {
+    color: themed('colorText');
+  }
 }
 
 .cb_sidebar__category-new {
@@ -403,23 +414,17 @@
 
       .cb_sidebar__submenu-wrap {
         position: absolute;
-/*        width: 185px;
-        box-shadow: 0 2px 3px gray;*/
         width: 230px;
         border-radius: 5px;
 
         @include directify($directions) {
           #{directed('left')}: 55px;
         }
-        /*width: 0;*/
         transition: 0.3s;
         overflow: hidden;
 
         .cb_sidebar__link {
           width: 240px;
-          //@include directify($directions) {
-            //#{directed('padding-left')}: 15px;
-          //}
 
           p {
             position: relative;

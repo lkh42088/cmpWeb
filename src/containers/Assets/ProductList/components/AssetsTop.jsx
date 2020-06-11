@@ -6,7 +6,10 @@ import {
 import PropTypes from 'prop-types';
 import classNames from "classnames";
 import moment from 'moment';
+import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
 import Select from 'react-select';
+import {withRouter} from "react-router-dom";
+import {connect} from "react-redux";
 
 import AssetsModal from "./AssetsModal";
 import AssetsWrite from "./AssetsWrite";
@@ -16,17 +19,19 @@ import {
     postDeviceOutFlag,
     setDeviceOutFlag,
 } from "../../../../redux/actions/assetsAction";
+import {UserProps, MenuTitleProps} from '../../../../shared/prop-types/ReducerProps';
 
 function replacer(key, value) {
     console.log("key : ", key);
     console.log("value : ", value);
 }
 
-export default class AssetsTop extends PureComponent {
+class AssetsTop extends PureComponent {
     static propTypes = {
         // eslint-disable-next-line react/forbid-prop-types
         assetState: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
+        menuTitle: MenuTitleProps.isRequired,
     };
 
     constructor() {
@@ -57,7 +62,7 @@ export default class AssetsTop extends PureComponent {
         } else {
             // eslint-disable-next-line no-shadow
             assetState.deviceSelected.forEach((value, key, map) => {
-                console.log(`14--->${key}$${value}`);
+                //console.log(`14--->${key}$${value}`);
                 if (value === true) {
                     if (divisionCount <= 0) {
                         division = '';
@@ -213,7 +218,7 @@ export default class AssetsTop extends PureComponent {
     };
 
     render() {
-        const {assetState, dispatch} = this.props;
+        const {assetState, dispatch, menuTitle} = this.props;
 
         const {
             modalOpenFlag,
@@ -228,26 +233,33 @@ export default class AssetsTop extends PureComponent {
         return (
             <Col md="12">
                 <Card>
-                    <CardBody className="card-body__thin-padding dsearch_panel__body">
-                        <div className="search_panel_topbtn">
-                            <div className="float-left circle-legend">
-                                &nbsp;&nbsp;
-                                {/*<span className="circle__lit"/>장비반출&nbsp;&nbsp;*/}
-                                <div className="float-left" role="button" tabIndex="0"
-                                     onClick={event => this.setToggleOutFlag('0')}
-                                     onKeyDown={event => this.setToggleOutFlag('0')}>
+                    {/*<div className="search_panel_topbtn">
+                            <span className="topbar__menuTitle">
+                                    {menuTitle.title}&nbsp;
+                                <span className="topbar__menuTitle-side">
+                                    {menuTitle.subTitle}
+                                </span>
+                            </span>
+                    </div>*/}
+                    <div className="search_panel_topbtn">
+                        <div className="float-left circle-legend">
+                            &nbsp;&nbsp;
+                            {/*<span className="circle__lit"/>장비반출&nbsp;&nbsp;*/}
+                            <div className="float-left" role="button" tabIndex="0"
+                                 onClick={event => this.setToggleOutFlag('0')}
+                                 onKeyDown={event => this.setToggleOutFlag('0')}>
                                     <span className="circle__ste"
                                           role="button" tabIndex="0"/>반입장비&nbsp;&nbsp;
-                                </div>
-                                <div className="float-left" role="button" tabIndex="0"
-                                     onClick={event => this.setToggleOutFlag("1")}
-                                     onKeyDown={event => this.setToggleOutFlag("1")}>
+                            </div>
+                            <div className="float-left" role="button" tabIndex="0"
+                                 onClick={event => this.setToggleOutFlag("1")}
+                                 onKeyDown={event => this.setToggleOutFlag("1")}>
                                     <span className="circle__eth"
                                           role="button" tabIndex="0"/>반출장비&nbsp;&nbsp;
-                                </div>
                             </div>
-                            <div className="float-right">
-                                {/*                                &nbsp;&nbsp;
+                        </div>
+                        <div className="float-right">
+                            {/*                                &nbsp;&nbsp;
                                 <span className="circle__lit"/>장비반출&nbsp;&nbsp;
                                 <div className="float-left" role="button" tabIndex="0" onClick={this.toggle}
                                      onKeyDown={this.toggle}>
@@ -259,33 +271,37 @@ export default class AssetsTop extends PureComponent {
                                     <span className="circle__lit"
                                           role="button" tabIndex="0"/>장비반출&nbsp;&nbsp;
                                 </div>*/}
-                                <ButtonToolbar>
+                            <ButtonToolbar>
                                     <span role="button" tabIndex="0"
                                           onClick={this.toggle} onKeyDown={this.toggle}
                                           className="top_btn_black_dep2">
                                         장비등록</span>
-                                    <span role="button" tabIndex="0"
-                                            onClick={event => this.toggleOutFlag("1")}
-                                            onKeyDown={event => this.toggleOutFlag("1")}
-                                            className="top_btn_black_dep3">
+                                <span role="button" tabIndex="0"
+                                      onClick={event => this.toggleOutFlag("1")}
+                                      onKeyDown={event => this.toggleOutFlag("1")}
+                                      className="top_btn_black_dep3">
                                         장비반출</span>
-                                </ButtonToolbar>
-                            </div>
+                            </ButtonToolbar>
                         </div>
-                        <Modal
-                            isOpen={modalOpenFlag}
-                            modalClassName="ltr-support"
-                            className={`assets_write__modal-dialog 
+                    </div>
+                    <Modal
+                        isOpen={modalOpenFlag}
+                        modalClassName="ltr-support"
+                        className={`assets_write__modal-dialog 
                             assets_write__modal-dialog ${modalClass}`}
-                        >
-                            <AssetsWrite closeToggle={this.toggle} assetState={assetState} dispatch={dispatch}
-                                         title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다."
-                                         onSubmit={this.handleSubmit}
-                            />
-                        </Modal>
-                    </CardBody>
+                    >
+                        <AssetsWrite closeToggle={this.toggle} assetState={assetState} dispatch={dispatch}
+                                     title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다."
+                                     onSubmit={this.handleSubmit}
+                        />
+                    </Modal>
                 </Card>
             </Col>
         );
     }
 }
+
+export default withRouter(connect(state => ({
+    user: state.user,
+    menuTitle: state.menuTitle,
+}))(AssetsTop));
