@@ -102,7 +102,7 @@
 }
 
 .cb_sidebar__block {
-  padding: 15px 0;
+  padding: 15px 0; // Origin
 
   @include themify($themes) {
     border-bottom: 1px solid themed('colorBorder');
@@ -114,13 +114,14 @@
 }
 
 .cb_sidebar__link {
-  //height: 36px;   // Origin
+  //height: 36px;   // Origin : Remove [2020.06.11 LKH]
   width: 230px;
   /*transition: all 0.3s;*/
   position: relative;
   cursor: pointer;
   display: flex;
-  padding: 11px 20px;
+  //padding: 7px 20px;    //Origin
+  padding: 9px 20px;      // Modify [2020.06.11 LKH]
   overflow: hidden;
   background: transparent;
   border: none;
@@ -179,9 +180,11 @@
     #{directed('margin-right')}: 10px;
   }
   //font-size: 13px;     // Origin
-  line-height: 13px;    // Origin
+  line-height: 13px;
   //color: #b1c3c8;     // Origin
-  font-size: 16px;
+  // Add [2020.06.11 LKH]
+  width: 20px;
+  font-size: 17px;
   color: #4a4e52;
 }
 
@@ -288,6 +291,17 @@
     width: 26px;
     text-align: center;
   }
+}
+
+// Add for side-bar company name [2020.06.11 LKH]
+.cb_sidebar__wrapper--company {
+  height : 25px;
+  font-size: 15px;
+  padding-top: 5px;
+  margin: 5px;
+  text-align: center;
+  color: chocolate;
+  //display: none;
 }
 
 .cb_sidebar__wrapper--desktop {
