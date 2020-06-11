@@ -1,0 +1,204 @@
+.cb-material-table {
+
+  th {
+    white-space: nowrap;
+  }
+}
+
+.cb-material-table__toolbar-wrap {
+  position: absolute;
+  top: 10px;
+  @include directify($directions) {
+    #{directed('right')}: 0px;
+  }
+
+  .cb-material-table__toolbar {
+    padding: 0 30px;
+  }
+
+  .cb-material-table__toolbar-button {
+    height: 36px;
+    width: 36px;
+    padding: 0;
+  }
+}
+
+.cb-material-table__toolbar-selected {
+  @include directify($directions) {
+    #{directed('margin-right')}: 10px;
+  }
+}
+
+.cb-material-table__tooltip-wrap {
+  position: absolute;
+  top: 10px;
+  @include directify($directions) {
+    #{directed('right')}: 0px;
+  }
+
+  .cb-material-table__tooltip {
+    padding: 0 30px;
+  }
+
+  .cb-material-table__tooltip-button {
+    height: 36px;
+    width: 36px;
+    padding: 0;
+  }
+}
+
+.cb-material-table__tooltip-selected {
+  @include directify($directions) {
+    #{directed('margin-right')}: 10px;
+  }
+}
+
+.cb-material-table__row {
+  transition: 0.3s;
+  cursor: pointer;
+
+  &[aria-checked="true"] {
+
+    @include themify($themes) {
+      background-color: themed('colorHover');
+    }
+
+    .cb-material-table__checkbox span {
+      color: $color-accent;
+    }
+  }
+
+  &:hover {
+
+    @include themify($themes) {
+      background-color: themed('colorBackgroundBody');
+    }
+  }
+}
+
+.cb-material-table__checkbox--checked span {
+  color: $color-accent;
+}
+
+.cb-material-table__cell-right{
+  @include directify($directions) {
+    text-align: directed('left');
+  }
+
+}
+
+.cb-material-table__cell.cb-material-table__cell--sort {
+
+  span {
+    transition: 0.3s;
+
+    @include themify($themes) {
+      color: themed('colorText');
+    }
+
+    &:hover {
+      color: $color-accent;
+    }
+  }
+}
+
+.cb-material-table__cell, .cb-material-table__sort-label, .cb-material-table__toolbar-button {
+
+  @include themify($themes) {
+    color: themed('colorText');
+    font-size: 12px;
+    font-family: "Nanum BarunGothic";
+  }
+}
+
+.cb-material-table__checkbox {
+  transition: 0.3s;
+
+  @include themify($themes) {
+    color: themed('colorIcon');
+  }
+}
+
+.cb-material-table__pagination {
+  @include directify($directions) {
+    float: directed('right');
+  }
+
+  button:hover {
+    @include themify($themes) {
+      background-color: themed('colorHover') !important;
+    }
+  }
+
+  & > div {
+    padding: 0;
+  }
+
+  span, div, svg {
+
+    @include themify($themes) {
+      color: themed('colorText');
+      //font-size: 12px;
+      font-family: "Nanum BarunGothic Bold";
+    }
+  }
+}
+
+.cb-material-table__wrap {
+  overflow-x: auto;
+}
+
+.cb-material-table__filter-menu {
+
+  div:last-child {
+    box-shadow: 0 10px 30px 1px rgba(0, 0, 0, 0.06);
+  }
+
+  .cb-material-table__filter-menu-item {
+    color: #646777;
+    transition: 0.3s;
+    font-size: 13px;
+    padding: 7px 24px;
+    height: auto;
+
+    &:hover {
+      background: #fafbfe;
+    }
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+
+  .cb-material-table__pagination {
+
+    div {
+      margin-left: 8px;
+      margin-right: 8px;
+
+      &:last-child {
+        @include directify($directions) {
+          #{directed('margin-right')}: 0px;
+        }
+      }
+
+      &:first-child {
+        margin: 0;
+      }
+    }
+
+    div > span:first-of-type {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 420px) {
+
+  .cb-material-table__toolbar-selected {
+
+    span {
+      display: none;
+    }
+  }
+}
