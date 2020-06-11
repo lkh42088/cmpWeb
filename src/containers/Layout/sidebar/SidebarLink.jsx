@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Badge } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
+import { Icon, InlineIcon } from '@iconify/react';
 
 const SidebarLink = ({
   title, icon, newLink, route, onClick,
@@ -12,7 +13,8 @@ const SidebarLink = ({
     activeClassName="cb_sidebar__link-active"
   >
     <li className="cb_sidebar__link">
-      {icon ? <span className={`cb_sidebar__link-icon lnr lnr-${icon}`} /> : ''}
+      {/*{icon ? <span className={`cb_sidebar__link-icon lnr lnr-${icon}`} /> : ''}*/}
+      {icon ? <Icon icon={icon} className="cb_sidebar__link-icon" /> : ''}
       <p className="cb_sidebar__link-title">
         {title}
         {newLink ? <Badge className="cb_sidebar__link-badge"><span>New</span></Badge> : ''}
