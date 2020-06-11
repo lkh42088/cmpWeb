@@ -23,7 +23,8 @@ import {
     pagingChangeSelected,
     pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
-import CbTableHead, {CbTableToolbar} from "./CbTableHead";
+import {CompanyTableToolbar} from "./CompanyTableToolbar";
+import CommonTableHead from "../../../Common/CommonTableHead";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -287,7 +288,7 @@ const CompanyList = () => {
                     {/*<div className="card__title">*/}
                     {/*    <h4 className="bold-text">고객사 목록</h4>*/}
                     {/*</div>*/}
-                    <CbTableToolbar
+                    <CompanyTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
                         handleDeleteSelected={handleDeleteSelected}
                         onRequestSort={handleRequestSort}
@@ -300,7 +301,7 @@ const CompanyList = () => {
                                 className="cb-material-table"
                                 size={dense ? 'small' : 'medium'}
                             >
-                                <CbTableHead
+                                <CommonTableHead
                                     classes={classes}
                                     numSelected={[...selected].filter(el => el[1]).length}
                                     order={order}

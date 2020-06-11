@@ -1,38 +1,33 @@
-import React, {useState, Fragment} from "react";
-import clsx from "clsx";
-import Grid from '@material-ui/core/Grid';
-import TableHead from '@material-ui/core/TableHead';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import {lighten, makeStyles} from "@material-ui/core/styles";
-import Toolbar from "@material-ui/core/Toolbar";
-import Tooltip from "@material-ui/core/Tooltip";
-import Typography from "@material-ui/core/Typography";
-import AddIcon from "@material-ui/icons/Add";
+import React, {Fragment, useState} from "react";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import Menu from "@material-ui/core/Menu";
-import MenuItem from '@material-ui/core/MenuItem';
+import MenuItem from "@material-ui/core/MenuItem";
+import {lighten, makeStyles} from "@material-ui/core/styles";
+import Toolbar from "@material-ui/core/Toolbar";
+import clsx from "clsx";
+import Typography from "@material-ui/core/Typography";
+import Tooltip from "@material-ui/core/Tooltip";
+import DeleteIcon from "@material-ui/icons/Delete";
+import Grid from "@material-ui/core/Grid";
+import AddIcon from "@material-ui/icons/Add";
 
-export const CbTableFilterButton = (props) => {
+export const TableFilterButton = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const { rows, onRequestSort } = props;
 
     const handleClick = (event) => {
-        console.log("CbTableFilterButton: handleClick");
+        console.log("TableFilterButton: handleClick");
         setAnchorEl(event.currentTarget);
     };
 
     const handleClose = () => {
-        console.log("CbTableFilterButton: handleClose");
+        console.log("TableFilterButton: handleClose");
         setAnchorEl(null);
     };
 
     const handleSort = property => (event) => {
-        console.log("CbTableFilterButton: handleSort");
+        console.log("TableFilterButton: handleSort");
         onRequestSort(event, property);
     };
 
@@ -104,7 +99,7 @@ const useToolbarStyles = makeStyles(theme => ({
     },
 }));
 
-export const CbTableToolbar = (props) => {
+export const CompanyTableToolbar = (props) => {
     const classes = useToolbarStyles();
     const {
         toolbarTitle, rows, numSelected, handleDeleteSelected, onRequestSort,
@@ -150,7 +145,7 @@ export const CbTableToolbar = (props) => {
                                         </Tooltip>
                                     ) : (
                                         <Tooltip title="정렬 목록" aria-label="sort">
-                                            <CbTableFilterButton rows={rows} onRequestSort={onRequestSort}/>
+                                            <TableFilterButton rows={rows} onRequestSort={onRequestSort}/>
                                         </Tooltip>
                                     )}
                                 </Grid>
@@ -162,54 +157,3 @@ export const CbTableToolbar = (props) => {
         </Fragment>
     );
 };
-
-function CbTableHead(props) {
-    const {
-        classes, order, orderBy, numSelected, rowCount, rows,
-        onRequestSort, onSelectAllClick,
-    } = props;
-    const createSortHandler = property => (event) => {
-        onRequestSort(event, property);
-    };
-    return (
-        <TableHead>
-            <TableRow>
-                <TableCell padding="checkbox">
-                    <Checkbox
-                        className={`cb-material-table__checkbox ${numSelected === rowCount && 'cb-material-table__checkbox--checked'}`}
-                        indeterminate={numSelected > 0 && numSelected < rowCount}
-                        checked={rowCount > 0 && numSelected === rowCount}
-                        onChange={onSelectAllClick}
-                        inputProps={{ 'aria-label': 'select all desserts' }}
-                    />
-                </TableCell>
-                {rows.map(row => (
-                    <TableCell
-                        className="cb-material-table__cell cb-material-table__cell--sort cb-material-table__cell-right"
-                        key={row.id}
-                        align="left"
-                        padding={row.disablePadding ? 'none' : 'default'}
-                        sortDirection={orderBy === row.id ? order : false}
-                    >
-                        <TableSortLabel
-                            active={orderBy === row.id}
-                            direction={orderBy === row.id ? order : 'asc'}
-                            onClick={createSortHandler(row.id)}
-                            className="cb-material-table__sort-label"
-                            dir="ltr"
-                        >
-                            {row.label}
-                            {orderBy === row.id ? (
-                                <span className={classes.visuallyHidden}>
-                                {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                            </span>
-                            ) : null}
-                        </TableSortLabel>
-                    </TableCell>
-                ))}
-            </TableRow>
-        </TableHead>
-    );
-}
-
-export default CbTableHead;
