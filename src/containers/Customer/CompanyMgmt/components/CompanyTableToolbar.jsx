@@ -11,6 +11,8 @@ import Tooltip from "@material-ui/core/Tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
+import {Modal} from "@material-ui/core";
+import AddCompany from "./AddCompany";
 
 export const TableFilterButton = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -102,7 +104,7 @@ const useToolbarStyles = makeStyles(theme => ({
 export const CompanyTableToolbar = (props) => {
     const classes = useToolbarStyles();
     const {
-        toolbarTitle, rows, numSelected, handleDeleteSelected, onRequestSort,
+        toolbarTitle, rows, numSelected, handleDeleteSelected, onRequestSort, handleAddCompany,
     } = props;
 
     return (
@@ -133,6 +135,9 @@ export const CompanyTableToolbar = (props) => {
                                         <IconButton>
                                             <AddIcon/>
                                         </IconButton>
+                                        {/*<Modal open={open} >*/}
+                                        {/*    <AddCompany/>*/}
+                                        {/*</Modal>*/}
                                     </Tooltip>
                                     {numSelected > 0 ? (
                                         <Tooltip title="선택한 고객사 삭제" aria-label="delete">
