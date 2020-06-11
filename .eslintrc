@@ -56,7 +56,8 @@
     "react/jsx-one-expression-per-line": [0, { "allow": "literal" }],
 
     "react/no-danger": "off",
-    "react/prop-types": 0
+    "react/prop-types": 0,
+    "import/no-extraneous-dependencies": 0
 
     /*"arrow-body-style": ["error", "never"]*/
   }
