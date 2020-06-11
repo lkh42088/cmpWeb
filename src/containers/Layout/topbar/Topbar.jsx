@@ -17,18 +17,13 @@ class Topbar extends PureComponent {
         changeMobileSidebarVisibility: PropTypes.func.isRequired,
         changeSidebarVisibility: PropTypes.func.isRequired,
         user: UserProps.isRequired,
-        menuTitle: MenuTitleProps.isRequired,
         logout: PropTypes.func.isRequired,
     };
 
     render() {
         const {
-            changeMobileSidebarVisibility, changeSidebarVisibility, user, menuTitle, logout,
+            changeMobileSidebarVisibility, changeSidebarVisibility, user, logout,
         } = this.props;
-
-        //const localMenuTitle = JSON.parse(localStorage.getItem("localMenuTitle"));
-
-        console.log("changeSidebarVisibility : ", changeSidebarVisibility);
 
         //log
         return (
@@ -40,14 +35,14 @@ class Topbar extends PureComponent {
                             changeSidebarVisibility={changeSidebarVisibility}
                         />
                         <Link className="topbar__logo" to="/assets/list" />
-                        <div style={{paddingLeft: '10px'}}>
-                            {/*<span className="text-danger">-</span>*/}
+                        {/*<div style={{paddingLeft: '10px'}}>
+                            <span className="text-danger">-</span>
                             <h3 className="topbar__title">
-                                {/*<span
+                                <span
                                   className="account__logo"> {localMenuTitle.title ? localMenuTitle.title : 'title'}
                                   <span
                                       className="account__logo-accent"> {localMenuTitle.subTitle ? localMenuTitle.subTitle : 'subTitle'}</span>
-                              </span>*/}
+                              </span>
                                 <DoubleArrowIcon/>
                                 <span className="topbar__menuTitle">
                                     {menuTitle.title}
@@ -56,7 +51,7 @@ class Topbar extends PureComponent {
                                     </span>
                               </span>
                             </h3>
-                        </div>
+                        </div>*/}
                     </div>
                     <div className="topbar__right">
                         <TopbarSearch/>
