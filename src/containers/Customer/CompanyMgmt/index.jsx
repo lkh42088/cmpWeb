@@ -6,7 +6,7 @@ const CompaniesModule = () => (
     <Container>
         <Row>
             <Col md={12}>
-                <h3 className="page-title">고객사 정보</h3>
+                <h3 className="page-title">고객사 관리</h3>
                 <h3 className="page-subhead subhead">Use this elements, if you want to show some hints or additional
                     information
                 </h3>

@@ -33,29 +33,29 @@ const useToolbarStyles = makeStyles(theme => ({
     },
 }));
 
-export const NBTableFilterButton = (props) => {
+export const CbTableFilterButton = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const { rows, onRequestSort } = props;
 
     const handleClick = (event) => {
-        console.log("NBTableFilterButton: handleClick");
+        console.log("CbTableFilterButton: handleClick");
         setAnchorEl(event.currentTarget);
     };
 
     const handleClose = () => {
-        console.log("NBTableFilterButton: handleClose");
+        console.log("CbTableFilterButton: handleClose");
         setAnchorEl(null);
     };
 
     const handleSort = property => (event) => {
-        console.log("NBTableFilterButton: handleSort");
+        console.log("CbTableFilterButton: handleSort");
         onRequestSort(event, property);
     };
 
     return (
         <div>
                 <IconButton
-                    className="material-table__toolbar-button"
+                    className="cb-material-table__toolbar-button"
                     aria-owns={anchorEl ? 'simple-menu' : null}
                     aria-haspopup="true"
                     onClick={handleClick}
@@ -67,13 +67,13 @@ export const NBTableFilterButton = (props) => {
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
-                    className="material-table__filter-menu"
+                    className="cb-material-table__filter-menu"
                 >
                     {
                         rows.map(row => (
                             <MenuItem
                                 onClick={handleSort(rows.id)}
-                                className="material-table__filter-menu-item"
+                                className="cb-material-table__filter-menu-item"
                             >
                                 {row.label}
                             </MenuItem>
@@ -84,19 +84,19 @@ export const NBTableFilterButton = (props) => {
     );
 };
 
-export const NBTableToolbar = (props) => {
+export const CbTableToolbar = (props) => {
     const classes = useToolbarStyles();
     const {
         toolbarTitle, rows, numSelected, handleDeleteSelected, onRequestSort,
     } = props;
 
     return (
-        <div className="material-table__toolbar-wrap">
+        <div className="cb-material-table__toolbar-wrap">
             <Toolbar
                 // className={clsx(classes.root, {
                 //     [classes.highlight]: numSelected > 0,
                 // })}
-                className="material-table__toolbar"
+                className="cb-material-table__toolbar"
             >
                 {/*{numSelected > 0 ? (*/}
                 {/*    <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">*/}
@@ -111,7 +111,7 @@ export const NBTableToolbar = (props) => {
 
                 <div>
                     {numSelected > 0 && (
-                        <h5 className="material-table__toolbar-selected">{numSelected} <span>selected</span></h5>
+                        <h5 className="cb-material-table__toolbar-selected">{numSelected} <span>selected</span></h5>
                     )}
                 </div>
                 <div>
@@ -126,7 +126,7 @@ export const NBTableToolbar = (props) => {
                         </Tooltip>
                     ) : (
                         <Tooltip title="Filter list">
-                            <NBTableFilterButton rows={rows} onRequestSort={onRequestSort}/>
+                            <CbTableFilterButton rows={rows} onRequestSort={onRequestSort}/>
                         </Tooltip>
                     )}
                 </div>
@@ -135,7 +135,7 @@ export const NBTableToolbar = (props) => {
     );
 };
 
-function NBTableHead(props) {
+function CbTableHead(props) {
     const {
         classes, order, orderBy, numSelected, rowCount, rows,
         onRequestSort, onSelectAllClick,
@@ -148,7 +148,7 @@ function NBTableHead(props) {
             <TableRow>
                 <TableCell padding="checkbox">
                     <Checkbox
-                        className={`material-table__checkbox ${numSelected === rowCount && 'material-table__checkbox--checked'}`}
+                        className={`cb-material-table__checkbox ${numSelected === rowCount && 'cb-material-table__checkbox--checked'}`}
                         indeterminate={numSelected > 0 && numSelected < rowCount}
                         checked={rowCount > 0 && numSelected === rowCount}
                         onChange={onSelectAllClick}
@@ -157,7 +157,7 @@ function NBTableHead(props) {
                 </TableCell>
                 {rows.map(row => (
                     <TableCell
-                        className="material-table__cell material-table__cell--sort material-table__cell-right"
+                        className="cb-material-table__cell cb-material-table__cell--sort cb-material-table__cell-right"
                         key={row.id}
                         align="left"
                         padding={row.disablePadding ? 'none' : 'default'}
@@ -167,7 +167,7 @@ function NBTableHead(props) {
                             active={orderBy === row.id}
                             direction={orderBy === row.id ? order : 'asc'}
                             onClick={createSortHandler(row.id)}
-                            className="material-table__sort-label"
+                            className="cb-material-table__sort-label"
                             dir="ltr"
                         >
                             {row.label}
@@ -184,4 +184,4 @@ function NBTableHead(props) {
     );
 }
 
-export default NBTableHead;
+export default CbTableHead;
