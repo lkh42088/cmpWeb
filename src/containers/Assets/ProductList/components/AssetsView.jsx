@@ -163,6 +163,21 @@ class AssetsView extends PureComponent {
             rackLoc, firmwareVersion, warranty, customerName, ownerCompanyName,
         } = deviceValue;
 
+        let ipSliceStr;
+        let splaSliceStr;
+
+        if (ip !== undefined) {
+            ipSliceStr = ip.replace(/\|/gi, ", ").slice(0, -2);
+        } else {
+            ipSliceStr = "";
+        }
+
+        if (spla !== undefined) {
+            splaSliceStr = spla.replace(/\|/gi, ", ").slice(0, -2);
+        } else {
+            splaSliceStr = "";
+        }
+
         switch (assetState.deviceType) {
             case 'server':
                 viewModalContent = (
@@ -194,7 +209,7 @@ class AssetsView extends PureComponent {
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>IP</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {ip}
+                                {ipSliceStr}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
@@ -206,7 +221,7 @@ class AssetsView extends PureComponent {
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>SPLA</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {spla}
+                                {splaSliceStr}
                             </div>
                         </div>
                     </Fragment>
@@ -218,7 +233,7 @@ class AssetsView extends PureComponent {
                         <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>IP</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {ip}
+                                {ipSliceStr}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>

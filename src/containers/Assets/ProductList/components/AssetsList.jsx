@@ -613,6 +613,13 @@ export default class AssetsList extends PureComponent {
                         .slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)
                         .map((d, index) => {
                             const isSelected = this.isSelected(d.deviceCode);
+                            let ipSliceStr;
+
+                            if (d.ip !== undefined) {
+                                ipSliceStr = d.ip.replace(/\|/gi, ", ").slice(0, -2);
+                            } else {
+                                ipSliceStr = "";
+                            }
 
                             return (
                                 <TableRow
@@ -686,7 +693,7 @@ export default class AssetsList extends PureComponent {
                                         <Fragment>
                                             <TableCell
                                                 className={tableCellClassName}
-                                            >{/*IP*/}{d.ip}
+                                            >{/*IP*/}{ipSliceStr}
                                             </TableCell>
                                             <TableCell
                                                 className={tableCellClassName}
@@ -699,7 +706,7 @@ export default class AssetsList extends PureComponent {
                                         <Fragment>
                                             <TableCell
                                                 className={tableCellClassName}
-                                            >{/*IP*/}{d.ip.toString().replace("|", "")}
+                                            >{/*IP*/}{ipSliceStr}
                                             </TableCell>
                                             <TableCell
                                                 className={tableCellClassName}

@@ -33,7 +33,7 @@ class SidebarContent extends Component {
                     <SidebarCategory title="관리자" icon="diamond">
                         <SidebarLink title="계정관리" route="/customers/users"
                                      onClick={() => changeMenuTitle('관리자', '', '')}/>
-                        <SidebarLink title="고객사관리" route="/customers/companies"
+                        <SidebarLink title="고객사관리" route="/customers/admin/companies"
                                      onClick={() => changeMenuTitle('관리자', '고객사관리', '')}/>
                         <SidebarLink title="모니터링 관리" route="/management/monitoring/main"
                                      onClick={() => changeMenuTitle('관리자', '모니터링관리', '')}/>
