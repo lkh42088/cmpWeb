@@ -1,6 +1,6 @@
 import {Col, Container, Row} from "reactstrap";
 import React from "react";
-import CompanyList from "./components/CompanyList";
+import CompanyMgmtList from "./components/CompanyMgmtList";
 
 const CompaniesModule = () => (
     <Container>
@@ -11,7 +11,7 @@ const CompaniesModule = () => (
                     information
                 </h3>
             </Col>
-            <CompanyList/>
+            <CompanyMgmtList/>
         </Row>
     </Container>
 );
