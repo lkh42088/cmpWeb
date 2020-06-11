@@ -31,7 +31,7 @@ class SidebarContent extends Component {
                     <SidebarCategory title="DASHBOARD" icon={outlineDashboard} />
                     <SidebarCategory title="SERVER" icon={serverOutlineBadged} />
                     <SidebarCategory title="NETWORK" icon={routerNetwork} />
-                    <SidebarCategory title="자산관리" icon={inventoryManagement}>
+                    <SidebarCategory title="INVENTORY" icon={inventoryManagement}>
                         <SidebarLink title="서버" route="/assets/list"
                                      onClick={() => changeMenuTitle('자산관리', '서버', 'server')}/>
                         <SidebarLink title="네트워크" route="/assets/list"
@@ -39,7 +39,7 @@ class SidebarContent extends Component {
                         <SidebarLink title="파트/기타" route="/assets/list"
                                      onClick={() => changeMenuTitle('자산관리', '파트/기타', 'part')}/>
                     </SidebarCategory>
-                    <SidebarCategory title="관리자" icon={usersIcon}>
+                    <SidebarCategory title="MANAGER" icon={usersIcon}>
                         <SidebarLink title="계정관리" route="/customers/users"
                                      onClick={() => changeMenuTitle('관리자', '', '')}/>
                         <SidebarLink title="고객사관리" route="/customers/admin/companies"
