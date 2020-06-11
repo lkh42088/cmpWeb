@@ -39,23 +39,26 @@ export default class SidebarCategory extends Component {
     } = this.props;
     const { collapse } = this.state;
     const categoryClass = classNames({
-      'sidebar__category-wrap': true,
-      'sidebar__category-wrap--open': collapse,
-      'sidebar__link sidebar__category': true,
+      'cb_sidebar__category-wrap': true,
+      'cb_sidebar__category-wrap--open': collapse,
+      'cb_sidebar__link cb_sidebar__category': true,
     });
 
     return (
-      <div>
+      <div style={{display: "flex"}}>
         <button className={categoryClass} type="button" onClick={this.toggle}>
-          {icon ? <span className={`sidebar__link-icon lnr lnr-${icon}`} /> : ''}
-          <p className="sidebar__link-title">{title}
-            {isNew && <span className="sidebar__category-new" />}
+          {icon ? <span className={`cb_sidebar__link-icon lnr lnr-${icon}`} /> : ''}
+          <p className="cb_sidebar__link-title">{title}
+            {isNew && <span className="cb_sidebar__category-new" />}
           </p>
-          <span className="sidebar__category-icon lnr lnr-chevron-right" />
+          <span className="cb_sidebar__category-icon lnr lnr-chevron-right" />
         </button>
-        <Collapse isOpen={collapse} className="sidebar__submenu-wrap">
-          <ul className="sidebar__submenu">
-            <div type="button"
+        <Collapse isOpen={collapse} className="cb_sidebar__submenu-wrap" style={{position: "absolute"}}>
+          <ul className="cb_sidebar__submenu">
+            <div className="cb_sidebar__div_title">
+              {title}
+            </div>
+            <div type="button" className="cb_sidebar__div_button"
                  onClick={this.toggle} onKeyDown={this.toggle}
                  role="button" tabIndex="0">
               {children}

@@ -9,13 +9,13 @@ const SidebarLink = ({
   <NavLink
     to={route}
     onClick={onClick}
-    activeClassName="sidebar__link-active"
+    activeClassName="cb_sidebar__link-active"
   >
-    <li className="sidebar__link">
-      {icon ? <span className={`sidebar__link-icon lnr lnr-${icon}`} /> : ''}
-      <p className="sidebar__link-title">
+    <li className="cb_sidebar__link">
+      {icon ? <span className={`cb_sidebar__link-icon lnr lnr-${icon}`} /> : ''}
+      <p className="cb_sidebar__link-title">
         {title}
-        {newLink ? <Badge className="sidebar__link-badge"><span>New</span></Badge> : ''}
+        {newLink ? <Badge className="cb_sidebar__link-badge"><span>New</span></Badge> : ''}
       </p>
     </li>
   </NavLink>
