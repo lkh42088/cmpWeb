@@ -65,7 +65,7 @@ const logger = createLogger();
 export const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
     rootReducer,
-    applyMiddleware(ReduxThunk, sagaMiddleware),
+    applyMiddleware(logger, ReduxThunk, sagaMiddleware),
 );
 
 export function loadUser() {

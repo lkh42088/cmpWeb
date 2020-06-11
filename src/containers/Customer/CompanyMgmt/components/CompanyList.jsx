@@ -23,7 +23,7 @@ import {
     pagingChangeSelected,
     pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
-import {CommonTableToolbar} from "../../../Common/CommonTableToolbar";
+import {CompanyTableToolbar} from "./CompanyTableToolbar";
 import CommonTableHead from "../../../Common/CommonTableHead";
 
 const headRows = [
@@ -221,7 +221,7 @@ const CompanyList = () => {
     const paginationBar = (
         <TablePagination
             component="div"
-            className="material-table__pagination"
+            className="cb-material-table__pagination"
             count={totalCount}
             rowsPerPage={rowsPerPage}
             page={currentPage}
@@ -239,7 +239,7 @@ const CompanyList = () => {
                     return (
                         <TableRow
                             hover
-                            className="material-table__row"
+                            className="cb-material-table__row"
                             role="checkbox"
                             onClick={event => handleClick(event, row.idx)}
                             aria-checked={isSelected}
@@ -247,31 +247,31 @@ const CompanyList = () => {
                             key={row.idx}
                             selected={isSelected}
                         >
-                            <TableCell className="material-table__cell" padding="checkbox" >
-                                <Checkbox checked={isSelected} className="material-table__checkbox" />
+                            <TableCell className="cb-material-table__cell" padding="checkbox" >
+                                <Checkbox checked={isSelected} className="cb-material-table__checkbox" />
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right" >
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.idx}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right" >
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.name}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right" >
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.email}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right" >
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.hompage}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right" >
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.tel}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right" >
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.hp}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right" >
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.isCompany}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right" >
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.memo}
                             </TableCell>
                         </TableRow>
@@ -285,20 +285,20 @@ const CompanyList = () => {
         <Col md={12} lg={12}>
             <Card>
                 <CardBody>
-                    <div className="card__title">
-                        <h4 className="bold-text">고객사 목록</h4>
-                    </div>
-                    <CommonTableToolbar
+                    {/*<div className="card__title">*/}
+                    {/*    <h4 className="bold-text">고객사 목록</h4>*/}
+                    {/*</div>*/}
+                    <CompanyTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
                         handleDeleteSelected={handleDeleteSelected}
                         onRequestSort={handleRequestSort}
                         rows={headRows}
                         toolbarTitle="고객사 목록"
                     />
-                    <div className="material-table__wrap">
+                    <div className="cb-material-table__wrap">
                         <TableContainer>
                             <Table
-                                className="material-table"
+                                className="cb-material-table"
                                 size={dense ? 'small' : 'medium'}
                             >
                                 <CommonTableHead
@@ -317,6 +317,7 @@ const CompanyList = () => {
                         {paginationBar}
                     </div>
                     <FormControlLabel
+                        className="cb-material-table__sort-label"
                         control={<Switch checked={dense} onChange={handleChangeDense} />}
                         label="Dense padding"
                     />

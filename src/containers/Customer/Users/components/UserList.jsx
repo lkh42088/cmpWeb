@@ -18,8 +18,9 @@ import {
     pagingChangeRowsPerPage, pagingChangeSelected,
     pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
-import NBTableHead, {NBTableToolbar} from "../../../Common/NBTableHead";
 import {getUserList} from "../../../../redux/actions/usersActions";
+import {CommonTableToolbar} from "../../../Common/CommonTableToolbar";
+import CommonTableHead from "../../../Common/CommonTableHead";
 
 const headRows = [
     {id: 'userId', disablePadding: false, label: '아이디'},
@@ -277,7 +278,7 @@ const UserList = () => {
                     <div className="card__title">
                         <h4 className="bold-text">사용자 목록</h4>
                     </div>
-                    <NBTableToolbar
+                    <CommonTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
                         handleDeleteSelected={handleDeleteSelected}
                         onRequestSort={handleRequestSort}
@@ -290,7 +291,7 @@ const UserList = () => {
                                 className="material-table"
                                 size={dense ? 'small' : 'medium'}
                             >
-                                <NBTableHead
+                                <CommonTableHead
                                     classes={classes}
                                     numSelected={[...selected].filter(el => el[1]).length}
                                     order={order}

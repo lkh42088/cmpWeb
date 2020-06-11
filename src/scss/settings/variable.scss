@@ -62,7 +62,6 @@ $themes: (
 @function themed($key) {
   @return map-get($theme-map, $key);
 }
-
 //$color-accent: #55967e; // ori -> #4ce1b6
 $color-accent: #4ce1b6;
 $color-accent-hover: darken($color-accent, 10%);
@@ -89,6 +88,9 @@ $color-light-gray: #d8dfe9;
 //$color-green: #6d9d88; // ori -> #b8e986
 $color-green: #b8e986;
 $color-green-hover: darken($color-green, 10%);
+$color-green-hover2: darken($color-green, 70%);
+
+$color-light-green: #fcf7bb;
 
 $color-cb-logo: #00005c;
 

@@ -106,7 +106,7 @@ class Layout extends Component {
     localMenuTitle.title = title;
     localMenuTitle.subTitle = subTitle;
     localStorage.localMenuTitle = JSON.stringify(localMenuTitle);*/
-    const assetState = useSelector(state => state.assets);
+    //const assetState = useSelector(state => state.assets);
 
     if (title === '자산관리') {
       const dispatchVal = ({
@@ -115,7 +115,7 @@ class Layout extends Component {
         order: 1,
         rowsPerPage: 10,
         overNum: 1000,
-        outFlag: '1',
+        outFlag: '0',
       });
 
       dispatch(fetchPosts(dispatchVal));
@@ -201,7 +201,6 @@ class Layout extends Component {
               changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
               changeSidebarVisibility={this.changeSidebarVisibility}
               user={user}
-              menuTitle={menuTitle}
               logout={this.logout}
             />
           )
