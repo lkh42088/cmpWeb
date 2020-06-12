@@ -365,7 +365,7 @@ const CompanyMgmtList = () => {
                         </TableContainer>
                         {paginationBar}
                         <FormControlLabel
-                            // className="cb-material-table__sort-label"
+                            className="cb-material-table__padding"
                             // className="cb-material-table__pagination"
                             control={<Switch checked={dense} onChange={handleChangeDense} />}
                             label="Dense padding"
