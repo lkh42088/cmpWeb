@@ -158,6 +158,16 @@ class AssetsTop extends PureComponent {
             }
         }
 
+        let rackLog;
+
+        console.log("values.rackLoc : ", values.rackLoc);
+
+        if (values.rackLoc !== undefined) {
+            rackLog = values.rackLoc.toString();
+        } else {
+            rackLog = 0;
+        }
+
         const submitData = ({
             outFlag: '',
             commentCnt: '',
@@ -182,7 +192,7 @@ class AssetsTop extends PureComponent {
             memory: values.memory,
             hdd: values.hdd,
             rackTag: values.rackTag,
-            rackLoc: values.rackLoc,
+            rackLog,
             ip: IpArray,
             spla: SplaArray,
             rentDate: rentData,
@@ -197,10 +207,10 @@ class AssetsTop extends PureComponent {
         console.log("TOP 🙊🙊🙊 가공 전 : ", values);
         console.log("TOP 🙊🙊🙊 가공 후: ", submitData);
         dispatch(postDevice('create', assetState, submitData));
+        this.toggle(); // modal close
     };
 
     setToggleOutFlag = (outFlag) => {
-        console.log("outFlag : ", outFlag);
         const {assetState, dispatch} = this.props;
 
         dispatch(setDeviceOutFlag(outFlag));
@@ -214,7 +224,7 @@ class AssetsTop extends PureComponent {
         });
 
         dispatch(setDeviceOutFlag(outFlag));
-        dispatch(fetchPosts(dispatchVal));
+        dispatch(fetchPosts(assetState));
     };
 
     render() {
@@ -249,7 +259,7 @@ class AssetsTop extends PureComponent {
                                  onClick={event => this.setToggleOutFlag('0')}
                                  onKeyDown={event => this.setToggleOutFlag('0')}>
                                     <span className="circle__ste"
-                                          role="button" tabIndex="0"/>반입장비&nbsp;&nbsp;
+                                          role="button" tabIndex="0"/>운영장비&nbsp;&nbsp;
                             </div>
                             <div className="float-left" role="button" tabIndex="0"
                                  onClick={event => this.setToggleOutFlag("1")}
@@ -275,12 +285,25 @@ class AssetsTop extends PureComponent {
                                     <span role="button" tabIndex="0"
                                           onClick={this.toggle} onKeyDown={this.toggle}
                                           className="top_btn_black_dep2">
-                                        장비등록</span>
-                                <span role="button" tabIndex="0"
-                                      onClick={event => this.toggleOutFlag("1")}
-                                      onKeyDown={event => this.toggleOutFlag("1")}
-                                      className="top_btn_black_dep3">
-                                        장비반출</span>
+                                        장비 등록</span>
+                                {
+                                    assetState.deviceOutFlag === '0'
+                                        ? (
+                                            <span role="button" tabIndex="0"
+                                                  onClick={event => this.toggleOutFlag("1")}
+                                                  onKeyDown={event => this.toggleOutFlag("1")}
+                                                  className="top_btn_black_dep3">
+                                                반출
+                                            </span>
+                                        ) : (
+                                            <span role="button" tabIndex="0"
+                                                  onClick={event => this.toggleOutFlag("0")}
+                                                  onKeyDown={event => this.toggleOutFlag("0")}
+                                                  className="top_btn_black_dep3">
+                                                반입
+                                            </span>
+                                        )
+                                }
                             </ButtonToolbar>
                         </div>
                     </div>

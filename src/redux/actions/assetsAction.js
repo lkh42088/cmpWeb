@@ -15,13 +15,13 @@ export const GET_COMPANIES = 'GET_COMPANIES';
 
 export const SET_DEVICE_DEVICECODE = 'SET_DEVICE_DEVICECODE';
 export const SET_COMMENT = 'SET_COMMENT';
-
 export const SET_STATUS = 'SET_STATUS';
 export const SET_MODAL_DIVISION = 'SET_MODAL_DIVISION';
 export const SET_ADD_ELE_IP_DATA = 'SET_ADD_ELE_IP_DATA';
 export const SET_ADD_ELE_SPLA_DATA = 'SET_ADD_ELE_SPLA_DATA';
 export const SET_DEVICE_SELECTED = 'SET_DEVICE_SELECTED';
 export const SET_DEVICE_OUTFLAG = 'SET_DEVICE_OUTFLAG';
+export const SET_DEVICE_TYPE = 'SET_DEVICE_TYPE';
 
 // const API_ROUTE = 'http://127.0.0.1:8081/v1';
 // order direction
@@ -141,24 +141,45 @@ export const getCodes = dispatchVal => async (dispatch) => {
 };
 
 // first dispatch
-export const fetchPosts = dispatchVal => async (dispatch) => {
+export const fetchPosts = assetState => async (dispatch) => {
     try {
+        // first get device
         console.log("💎 fetchPosts start");
-        const rowsPerPage = checkUndefined(dispatchVal.rowsPerPage, 10);
+       /* const rowsPerPage = checkUndefined(dispatchVal.rowsPerPage, 10);
         const orderBy = checkUndefined(dispatchVal.orderBy, "DeviceCode");
         const order = checkOrder(dispatchVal.order);
         console.log("dispatchVal : ", dispatchVal);
 
-        console.log("?? -> ", `${API_ROUTE}/page/${dispatchVal.deviceType}/${dispatchVal.outFlag}/${dispatchVal.overNum}/${rowsPerPage}/${orderBy}/${order}`);
+        /!*console.log("fetchPosts url -> ", `${API_ROUTE}/page/${dispatchVal.deviceType}/${dispatchVal.outFlag}/${dispatchVal.overNum}/${rowsPerPage}/${orderBy}/${order}`);*!/
 
-        const res = await axios.get(`${API_ROUTE}/page/${dispatchVal.deviceType}/${dispatchVal.outFlag}/${dispatchVal.overNum}/${rowsPerPage}/${orderBy}/${order}`);
 
-        console.log("res : ", res.data);
+        const dispatchVal = ({
+            deviceType: 'server',
+            orderBy: 'DeviceCode',
+            order: 1,
+            rowsPerPage: 10,
+            overNum: 1000,
+            outFlag: assetState.deviceOutFlag,
+        });*/
+        
+        const deviceTypeData = assetState.deviceType;
+        const orderBy = 'DeviceCode';
+        const order = 1;
+        const rowsPerPage = 10;
+        const overNum = 1000;
+        const outFlag = assetState.deviceOutFlag;
+        console.log("fetchPosts url : ", `${API_ROUTE}/page/${deviceTypeData}/${outFlag}/${overNum}/${rowsPerPage}/${orderBy}/${order}`);
+
+       /* const res = await axios.get(`${API_ROUTE}/page/${dispatchVal.deviceType}/${dispatchVal.outFlag}/${dispatchVal.overNum}/${rowsPerPage}/${orderBy}/${order}`);*/
+        const res = await axios.get(`${API_ROUTE}/page/${deviceTypeData}/${outFlag}/${overNum}/${rowsPerPage}/${orderBy}/${order}`);
+
+
+        //console.log("res : ", res.data);
 
         dispatch({
             type: GET_DEVICES,
             payload: res.data,
-            deviceType: dispatchVal.deviceType,
+            deviceType: deviceTypeData,
             page: 0,
         });
     } catch (error) {
@@ -248,6 +269,9 @@ export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) =>
         console.log("💎 getDeviceOriByIdx start");
         const res = await axios.get(`${API_ROUTE}/raw/device/${deviceType}/${deviceCode}`);
 
+        console.log("특정 장비 ori res : ", res.data);
+        console.log("deviceType : ", deviceType);
+
         let deviceIpArray = new Map();
         let deviceSplaArray = new Map();
         const jsonData = res.data[0];
@@ -256,42 +280,76 @@ export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) =>
         let ipCheckCount = 1000;
         let splaCheckCount = 1000;
 
-        IpArray = jsonData.ip.split("|");
+        switch (deviceType) {
+            case 'server':
+                IpArray = jsonData.ip.split("|");
+                // eslint-disable-next-line no-loop-func,no-return-assign
+                IpArray.map(d => (
+                    d !== undefined && d !== "" && (
+                        /*                ipCheckCount === 1000 ? (
+                                            ipCheckCount += 1,
+                                                deviceIpArray = deviceIpArray.set(`ip_0`, d)
+                                        ) : (
+                                            deviceIpArray = deviceIpArray.set(`ip_${ipCheckCount}`, d)
+                                        )*/
+                        deviceIpArray = deviceIpArray.set(`ip_${ipCheckCount}`, d),
+                            ipCheckCount += 1
+                    )));
 
-        // eslint-disable-next-line no-loop-func,no-return-assign
-        IpArray.map(d => (
-            d !== undefined && d !== "" && (
-                ipCheckCount === 1000 ? (
-                    ipCheckCount += 1,
-                        deviceIpArray = deviceIpArray.set(`ip_0`, d)
-                ) : (
-                    deviceIpArray = deviceIpArray.set(`ip_${ipCheckCount}`, d)
-                )
-            )));
+                dispatch({
+                    type: SET_ADD_ELE_IP_DATA,
+                    payload: JSON.parse(JSON.stringify(deviceIpArray)),
+                });
 
-        dispatch({
-            type: SET_ADD_ELE_IP_DATA,
-            payload: JSON.parse(JSON.stringify(deviceIpArray)),
-        });
 
-        SplaArray = jsonData.spla.split("|");
+                SplaArray = jsonData.spla.split("|");
+                // eslint-disable-next-line no-loop-func,no-return-assign
+                SplaArray.map(d => (
+                    d !== undefined && d !== "" && (
+                        splaCheckCount === 1000 ? (
+                            splaCheckCount += 1,
+                                deviceSplaArray = deviceSplaArray.set(`spla0`, d)
+                        ) : (
+                            deviceSplaArray = deviceSplaArray.set(`spla${splaCheckCount}`, d)
+                        )
+                    )));
 
-        // eslint-disable-next-line no-loop-func,no-return-assign
-        SplaArray.map(d => (
-            d !== undefined && d !== "" && (
-                splaCheckCount === 1000 ? (
-                    splaCheckCount += 1,
-                        deviceSplaArray = deviceSplaArray.set(`spla0`, d)
-                ) : (
-                    deviceSplaArray = deviceSplaArray.set(`spla${splaCheckCount}`, d)
-                )
-            )));
+                dispatch({
+                    type: SET_ADD_ELE_SPLA_DATA,
+                    payload: JSON.parse(JSON.stringify(deviceSplaArray)),
+                });
 
-        dispatch({
-            type: SET_ADD_ELE_SPLA_DATA,
-            payload: JSON.parse(JSON.stringify(deviceSplaArray)),
-        });
+                break;
+            case 'network':
+                IpArray = jsonData.ip.split("|");
+                // eslint-disable-next-line no-loop-func,no-return-assign
+                IpArray.map(d => (
+                    d !== undefined && d !== "" && (
+                        /*                ipCheckCount === 1000 ? (
+                                            ipCheckCount += 1,
+                                                deviceIpArray = deviceIpArray.set(`ip_0`, d)
+                                        ) : (
+                                            deviceIpArray = deviceIpArray.set(`ip_${ipCheckCount}`, d)
+                                        )*/
+                        deviceIpArray = deviceIpArray.set(`ip_${ipCheckCount}`, d),
+                            ipCheckCount += 1
+                    )));
 
+                dispatch({
+                    type: SET_ADD_ELE_IP_DATA,
+                    payload: JSON.parse(JSON.stringify(deviceIpArray)),
+                });
+
+                dispatch({
+                    type: SET_ADD_ELE_SPLA_DATA,
+                    payload: '',
+                });
+                break;
+            case 'part':
+                break;
+            default:
+                break;
+        }
 
         // todo 이제는 굳이 시간 들여서 가져올 필요는 없음... 리팩토링 필요
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
@@ -431,6 +489,15 @@ export const postDevice = (division, assetState, submitData) => async (dispatch)
                     type: SET_STATUS,
                     payload: stateVal,
                 });
+                dispatch({
+                    type: SET_MODAL_DIVISION,
+                    payload: 'read',
+                });
+                dispatch({
+                    type: GET_DEVICE_BY_DEVICECODE,
+                    payload: postJsonData,
+                    comment: assetState.comments,
+                });
             })
             .catch((error) => {
                 console.log('error : ', error.response);
@@ -531,7 +598,7 @@ export const postDeviceOutFlag = (assetState, dispatchVal) => async (dispatch) =
         const url = `${API_ROUTE}/devices/update/${assetState.deviceType}`;
         const postJsonData = JSON.stringify(dispatchVal);
 
-        console.log("postJsonData : ", postJsonData);
+        //console.log("postJsonData : ", postJsonData);
 
         axios({
             method,
@@ -597,5 +664,19 @@ export const setDeviceOutFlag = dispatchVal => async (dispatch) => {
         });
     } catch (error) {
         console.log("setDeviceOutFlag error : ", error);
+    }
+};
+
+// deviceType 저장
+export const setDeviceType = dispatchVal => async (dispatch) => {
+    try {
+        console.log("💎 setDeviceType start"); //SET_DEVICE_TYPE
+
+        dispatch({
+            type: SET_DEVICE_TYPE,
+            payload: dispatchVal,
+        });
+    } catch (error) {
+        console.log("setDeviceType error : ", error);
     }
 };

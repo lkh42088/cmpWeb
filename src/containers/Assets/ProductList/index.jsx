@@ -8,6 +8,7 @@ import {MenuTitleProps} from '../../../shared/prop-types/ReducerProps';
 import AssetsList from './components/AssetsList';
 import AssetsSearch from './components/AssetsSearch';
 import AssetsTop from './components/AssetsTop';
+import VisitorsSessions from './components/VisitorsSessions';
 
 const paddingCol = {
     paddingRight: '0px',
@@ -38,30 +39,37 @@ const MaterialTable = () => {
     });
 
     // eslint-disable-next-line no-undef
-    const getDevices = () => dispatch(fetchPosts(dispatchVal));
+    const getDevices = () => dispatch(fetchPosts(assetState));
     // TODO Reselect 사용으로 변경하기
-    const getTotalCodes = () => dispatch(getCodes(dispatchVal));
+    const getTotalCodes = () => dispatch(getCodes(assetState));
     // eslint-disable-next-line no-shadow
 
+/*    useEffect(() => {
+        getDevices();
+        getTotalCodes();
+        //console.log("💋💋💋💋💋💋 ~~~> : ", assetState.deviceType);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [assetState.deviceType]);*/
     useEffect(() => {
         getDevices();
         getTotalCodes();
+        //console.log("💋💋💋💋💋💋 ~~~> : ", assetState.deviceType);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [assetState.deviceType, assetState.device]);
 
     return (
-        <Container>
+        <Container className="dashboard">
             <Row>
                 <Col md={12}>
                     <h3 className="page-title">{title.title}/{title.subTitle}</h3>
                 </Col>
             </Row>
             <Row>
-                <Col md={12} style={paddingCol}>
-                    <AssetsTop assetState={assetState} dispatch={dispatch}/>
-                    <AssetsSearch/>
-                    <AssetsList assetState={assetState} dispatch={dispatch}/>
-                </Col>
+                <AssetsTop assetState={assetState} dispatch={dispatch}/>
+                <AssetsSearch/>
+            </Row>
+            <Row>
+                <AssetsList assetState={assetState} dispatch={dispatch}/>
             </Row>
         </Container>
     );

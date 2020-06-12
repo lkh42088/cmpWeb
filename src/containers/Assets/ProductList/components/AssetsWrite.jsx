@@ -37,9 +37,6 @@ const warringStyle = {
 function validate(values) {
     const errors = {};
 
-    /*console.log("values : ", values);
-    console.log("values.customer : ", values.customer);
-
     if (!values.customer) {
         errors.customer = "고객사를 선택해주세요.";
     }
@@ -59,8 +56,6 @@ function validate(values) {
     if (!values.ownerCompany) {
         errors.ownerCompany = "소유업체명을 선택해주세요.";
     }
-
-    console.log("errors : ", errors);*/
 
     return errors;
 }
@@ -141,6 +136,13 @@ class AssetsWrite extends PureComponent {
             ipArrayMap: {},
             splaArrayMap: {},
         };
+    }
+
+    componentDidMount() {
+        const {
+            initialize,
+        } = this.props;
+        initialize({warehousingDate: new Date()});
     }
 
     searchToggle = (division) => {
@@ -375,7 +377,7 @@ class AssetsWrite extends PureComponent {
                         <input
                             name={`${reName}`}
                             type="text"
-                            onChange={this.handleChangeIp}
+                            onBlur={this.handleChangeIp}
                             className="input_col_5"
                         />
                         <svg className="mdi-icon " width="24" height="24" fill="currentColor"
@@ -1027,10 +1029,10 @@ class AssetsWrite extends PureComponent {
                         <div className="modal_btn">
                             <ButtonToolbar className="assets_write__modal__footer">
                                 <Button className="assets_write__modal_ok" color="primary"
-                                        onClick={this.onClose}>Submit</Button>
+                                        type="submit">Submit</Button>
                                 <Button className="assets_write__modal_cancel"
-                                        onClick={this.onClose}>Cancel</Button>{' '}
-                                <button type="submit">Submit[test]</button>
+                                        onClick={this.onClose}>Cancel</Button>
+                                {/*<button type="submit">Submit[test]</button>*/}
                             </ButtonToolbar>
                         </div>
                     </form>

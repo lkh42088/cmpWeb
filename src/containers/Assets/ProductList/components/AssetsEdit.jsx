@@ -35,11 +35,6 @@ function checkIP(strIP) {
 
 function validate(values) {
     const errors = {};
-/*    let IpArray = '';
-    let IpTemp;
-    let elIp;
-    const elIpName = document.getElementsByName("errorTextIp");*/
-    //console.log("values : ", values);
 
     if (values.deviceType === '0' || values.deviceType === undefined) {
         errors.deviceType = "장비구분을 선택해주세요.";
@@ -53,23 +48,24 @@ function validate(values) {
         errors.ownershipDiv = "소유권구분을 선택해주세요.";
     }
 
-    // eslint-disable-next-line no-plusplus
-   /* for (let i = 0; i < elIpName.length; i++) {
-        elIpName[i].style.display = "none";
-    }
+    /* // eslint-disable-next-line no-plusplus
+     for (let i = 0; i < elIpName.length; i++) {
+         elIpName[i].style.display = "none";
+     }
 
-    // eslint-disable-next-line guard-for-in,no-restricted-syntax
-    for (const arrData in values) {
-        if (arrData.indexOf("ip_") === 0) {
-            IpArray = values[arrData];
+     // eslint-disable-next-line guard-for-in,no-restricted-syntax
+     for (const arrData in values) {
+         console.log("arrData : ", arrData, " values : ", values[arrData]);
+         if (arrData.indexOf("ip_") === 0) {
+             IpArray = values[arrData];
 
-            elIp = document.getElementById(`errorTextIp_${arrData}`);
+             elIp = document.getElementById(`errorTextIp_${arrData}`);
 
-            if (checkIP(IpArray) === false) {
-                elIp.style.display = "";
-            }
-        }
-    }*/
+             if (checkIP(IpArray) === false) {
+                 elIp.style.display = "";
+             }
+         }
+     }*/
 
     return errors;
 }
@@ -353,6 +349,8 @@ class AssetsEdit extends PureComponent {
     };
 
     handleChangeIp = (e) => {
+        //console.log("🤑🤑 handleChangeIp start : ", e.charCode);
+        //console.log("🤑🤑 handleChangeIp start : ");
         const {assetState, dispatch} = this.props;
         const {
             ipArrayMap,
@@ -476,8 +474,8 @@ class AssetsEdit extends PureComponent {
         let setSplaArrayTemp = new Map();
 
         if (val === 'ip') {
-/*            const AddIpComponentTemp = IpArray.slice(IpArray.length)
-                .concat(IpArray.filter(d => d.toString() !== reName.toString()));*/
+            /*            const AddIpComponentTemp = IpArray.slice(IpArray.length)
+                            .concat(IpArray.filter(d => d.toString() !== reName.toString()));*/
 
             // eslint-disable-next-line guard-for-in,no-restricted-syntax
             for (const arrData in ipArrayMap) {
@@ -500,8 +498,8 @@ class AssetsEdit extends PureComponent {
             dispatch(setAddEleData('ip', setIpArrayTemp));
             //initialize(initializeData);
         } else if (val === 'spla') {
-/*            const AddSplaComponentTemp = SplaArray.slice(SplaArray.length)
-                .concat(SplaArray.filter(d => d.toString() !== reName.toString()));*/
+            /*            const AddSplaComponentTemp = SplaArray.slice(SplaArray.length)
+                            .concat(SplaArray.filter(d => d.toString() !== reName.toString()));*/
 
             // eslint-disable-next-line guard-for-in,no-restricted-syntax
             for (const arrData in splaArrayMap) {
@@ -519,37 +517,8 @@ class AssetsEdit extends PureComponent {
         }
     };
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-
-        const {
-            onSubmit, initialize,
-        } = this.props;
-        const {
-            initializeData,
-        } = this.state;
-
-        console.log("handleSubmit -> ", initializeData);
-        initialize(initializeData);
-        // TODO... 와 무슨 의미야...이게...후...ONCHANGE
-        onSubmit(initializeData);
-    };
-
-/*    componentDidUpdate = (prevProps, prevState) => {
-        console.log("prevState : ", prevState.initializeData);
-        console.log("prevProps : ", prevProps.assetState.deviceOri);
-
-        const {initializeData} = this.state;
-        const {initialize} = this.props;
-
-        if (prevState.initializeData !== prevProps.assetState.deviceOri) {
-            initialize(initializeData);
-        }
-        //initialize(initializeData);
-    };*/
-
     render() {
-        console.log("👉👉👉👉👉👉👉👉 render start");
+        //console.log("👉👉👉👉👉👉👉👉 render start edit");
         const {
             title, message,
             assetState, dispatch, handleSubmit,
@@ -600,9 +569,9 @@ class AssetsEdit extends PureComponent {
                                     <input
                                         name={`${arrData}`}
                                         type="text"
-                                        onChange={this.handleChangeIp}
+                                        onBlur={this.handleChangeIp}
                                         className="input_col_5"
-                                        value={ipArrayMap[arrData]}
+                                        defaultValue={ipArrayMap[arrData]}
                                     />
                                     <svg className="mdi-icon " width="24" height="24"
                                          fill="currentColor"
@@ -612,7 +581,8 @@ class AssetsEdit extends PureComponent {
                                          role="button" tabIndex="0">
                                         <MinusIcon/>
                                     </svg>
-                                    <span id={`errorTextIp_${arrData}`} name="errorTextIp" style={{display: "none"}}>
+                                    <span id={`errorTextIp_${arrData}`} name="errorTextIp"
+                                          style={{display: "none"}}>
                                     ※ IP를 정확히 입력해 주세요.</span>
                                 </div>
                             )
@@ -942,7 +912,7 @@ class AssetsEdit extends PureComponent {
                 <div className="assets_write__modal__body assets_write__modal__tableLine">
                     <form className="modal_form modal_form--horizontal"
                           onSubmit={handleSubmit}>
-{/*                        onSubmit={this.handleSubmit}>*/}
+                        {/*                        onSubmit={this.handleSubmit}>*/}
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label text_cor_green">장비코드</span>
                             <div className="modal_form__form-group-field">
@@ -1172,10 +1142,10 @@ class AssetsEdit extends PureComponent {
                         <div className="modal_btn">
                             <ButtonToolbar className="assets_write__modal__footer">
                                 <Button className="assets_write__modal_ok" color="primary"
-                                        onClick={this.onClose}>Submit</Button>
+                                        type="submit">Submit</Button>
                                 <Button className="assets_write__modal_cancel"
                                         onClick={this.onClose}>Cancel</Button>
-                                <Button type="submit">Submit[test]</Button>
+                                {/*<Button type="submit">Submit[test]</Button>*/}
                             </ButtonToolbar>
                         </div>
                     </form>
