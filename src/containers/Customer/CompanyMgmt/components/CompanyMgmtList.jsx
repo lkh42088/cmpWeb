@@ -1,6 +1,10 @@
-import React, {useEffect, useState} from "react";
-import PropTypes from 'prop-types';
-import { Card, CardBody, Col } from 'reactstrap';
+import 'date-fns';
+import React, {Fragment, useEffect, useState} from "react";
+import {
+    Card,
+    CardBody,
+    Col,
+} from 'reactstrap';
 import {useDispatch, useSelector} from "react-redux";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
@@ -14,8 +18,11 @@ import {makeStyles} from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
-import {useSpring, animated } from "react-spring/web.cjs";
 import Fade from "@material-ui/core/Fade";
+import TextField from "@material-ui/core/TextField";
+import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import Grid from "@material-ui/core/Grid";
 import {getCompanyList} from "../../../../redux/actions/companiesActions";
 import {
     pagingChangeCurrentPage,
@@ -127,6 +134,15 @@ const CompanyMgmtList = () => {
 
     const handleClose = () => {
         setOpen(false);
+    };
+
+    /**
+     * Date variable
+     */
+    const [selectedDate, setSelectedDate] = useState(new Date('2014-08-18T21:11:54'));
+
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
     };
 
     /** Pagination */
@@ -314,9 +330,6 @@ const CompanyMgmtList = () => {
         <Col md={12} lg={12}>
             <Card>
                 <CardBody>
-                    {/*<div className="card__title">*/}
-                    {/*    <h4 className="bold-text">고객사 목록</h4>*/}
-                    {/*</div>*/}
                     <CompanyTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
                         handleDeleteSelected={handleDeleteSelected}
@@ -325,25 +338,6 @@ const CompanyMgmtList = () => {
                         toolbarTitle="고객사 리스트"
                         handleOpen={handleOpen}
                     />
-                    <Modal
-                        aria-labelledby="spring-modal-title"
-                        aria-describedby="spring-modal-description"
-                        className={classes.modal}
-                        open={open}
-                        onClose={handleClose}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
-                        }}
-                    >
-                        <Fade in={open}>
-                            <div className={classes.modalPaper}>
-                                <h2 id="spring-modal-title">Spring modal</h2>
-                                <p id="spring-modal-description">react-spring animates me.</p>
-                            </div>
-                        </Fade>
-                    </Modal>
                     <div className="cb-material-table__wrap">
                         <TableContainer>
                             <Table
@@ -366,11 +360,24 @@ const CompanyMgmtList = () => {
                         {paginationBar}
                         <FormControlLabel
                             className="cb-material-table__padding"
-                            // className="cb-material-table__pagination"
                             control={<Switch checked={dense} onChange={handleChangeDense} />}
                             label="Dense padding"
                         />
                     </div>
+                    <Modal
+                        aria-labelledby="transition-modal-title"
+                        aria-describedby="transition-modal-title"
+                        className={classes.modal}
+                        open={open}
+                        onClose={handleClose}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <AddCompany open={open} />
+                    </Modal>
                 </CardBody>
             </Card>
         </Col>
