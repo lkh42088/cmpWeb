@@ -26,12 +26,9 @@ export default class SidebarCategory extends Component {
         };
     }
 
-    toggle = (props) => {
+    toggle = () => {
         const {collapse} = this.state;
         this.setState({collapse: !collapse});
-        if (props.title === "DESHBOARD") {
-           console.log(colors.blueGrey800, "TEST TEST");
-        }
     };
 
     toggleHover = () => {
