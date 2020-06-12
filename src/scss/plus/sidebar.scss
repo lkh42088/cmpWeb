@@ -12,6 +12,9 @@
   padding-top: 60px;
   transition: transform 0.3s, width 0.3s;
 
+  // LKH
+  //font-family: "Nanum Square acEB";
+
   @include themify($themes) {
     background: themed('colorBackground');
   }
@@ -191,6 +194,7 @@
 .cb_sidebar__submenu {
   transition: height 0.5s 0s, padding 0.5s 0s, opacity 0.4s 0.1s;
   /*padding: 15px 0;*/
+  //padding-left: 240px;
   padding-left: 240px;
 
   & .cb_sidebar__submenu {
@@ -199,6 +203,7 @@
     padding-top: 0;
 
     .cb_sidebar__link {
+      // [2020.06.12 LKH]
       @include directify($directions) {
         #{directed('padding-left')}: 53px;
       }

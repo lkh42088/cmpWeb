@@ -79,6 +79,25 @@
       }
     }
 
+    // Add for InputIpAddr [2020.06.12 LKH]
+    .form__form-group-field-ip {
+      width: calc(100% - 80px);
+
+      @include directify($directions) {
+        #{directed('padding-left')}: 10px;
+        #{directed('margin-left')}: 80px;
+      }
+    }
+
+    .form__form-group-field-ip-right {
+      width: calc(100% - 80px);
+      float:right;
+      @include directify($directions) {
+        #{directed('padding-left')}: 10px;
+        #{directed('margin-left')}: 80px;
+      }
+    }
+
     .form__form-group-label {
       width: 80px;
       max-height: 32px;

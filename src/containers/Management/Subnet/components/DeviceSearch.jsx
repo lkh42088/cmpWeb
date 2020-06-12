@@ -19,7 +19,7 @@ const DeviceSearch = () => {
             <span className="form__form-group-label">DEVICE 검색</span>
             <div className="form__form-group-field">
                 <div className="form__form-group-icon">
-                    <AccountOutlineIcon />
+                    {/*<AccountOutlineIcon />*/}
                 </div>
                 <Field
                     name="user_name"

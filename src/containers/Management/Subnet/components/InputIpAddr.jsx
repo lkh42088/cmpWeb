@@ -3,19 +3,18 @@ import {Field, reduxForm} from "redux-form";
 import {withTranslation} from "react-i18next";
 import MailRuIcon from "mdi-react/MailRuIcon";
 import WebIcon from "mdi-react/WebIcon";
-import AccountOutlineIcon from "mdi-react/AccountOutlineIcon";
+import { Icon } from '@iconify/react';
 
 const InputIpAddr = ({
-contents, icon, nameText, holderText,
+contents, icon, nameText, holderText, activeIcon,
 }) => {
     const [ipAddr, setIpAddr] = useState('');
-    let activeIcon;
     if (icon === "MailRuIcon") {
-        activeIcon = <MailRuIcon />;
+        // activeIcon = <MailRuIcon />;
     } else if (icon === "WebIcon") {
-        activeIcon = <WebIcon />;
+        // activeIcon = <WebIcon />;
     } else {
-        activeIcon = <AccountOutlineIcon />;
+        activeIcon = <Icon icon={activeIcon} />;
     }
 
     let isValid;
@@ -28,21 +27,18 @@ contents, icon, nameText, holderText,
     };
 
     return (
-        <div className="form__form-group">
-            <span className="form__form-group-label">{contents}</span>
-            <div className="form__form-group-field">
-                <div className="form__form-group-icon">
-                    {activeIcon}
-                </div>
-                <Field
-                    name={nameText}
-                    component="input"
-                    type="ip"
-                    placeholder={holderText}
-                    onChange={onChangeText}
-                />
+        <>
+            <div className="form__form-group-icon">
+                {activeIcon}
             </div>
-        </div>
+            <Field
+                name={nameText}
+                component="input"
+                type="ip"
+                placeholder={holderText}
+                onChange={onChangeText}
+            />
+        </>
     );
 };
 
