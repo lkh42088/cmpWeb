@@ -7,6 +7,7 @@ import Customer from './Customer';
 import Management from "./Management";
 import DefaultPages from './DefaultPages';
 import Subnet from "./Subnet";
+import Dashboards from "./Dashboards";
 
 export default () => (
     <div>
@@ -18,6 +19,7 @@ export default () => (
             <Route path="/subnet/write" component={Subnet}/>
             <Route path="/default_pages" component={DefaultPages}/>
             <Route path="/404" component={DefaultPages}/>
+            <Route path="/dashboards" component={Dashboards}/>
         </div>
     </div>
 );

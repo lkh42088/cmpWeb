@@ -188,8 +188,6 @@ export default class AssetsList extends PureComponent {
 
         let rackLog;
 
-        console.log("values.rackLoc : ", values.rackLoc);
-
         if (values.rackLoc !== undefined) {
             rackLog = values.rackLoc.toString();
         } else {

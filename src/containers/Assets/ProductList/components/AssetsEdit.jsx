@@ -67,9 +67,6 @@ function validate(values) {
          }
      }*/
 
-    console.log("values : ", values);
-    console.log("errors : ", errors);
-
     return errors;
 }
 
@@ -519,35 +516,6 @@ class AssetsEdit extends PureComponent {
             dispatch(setAddEleData('spla', setSplaArrayTemp));
         }
     };
-
-    handleSubmit = (e) => {
-        e.preventDefault();
-
-        const {
-            onSubmit, initialize,
-        } = this.props;
-        const {
-            initializeData,
-        } = this.state;
-
-        console.log("handleSubmit -> ", initializeData);
-        initialize(initializeData);
-        // TODO... 와 무슨 의미야...이게...후...ONCHANGE
-        onSubmit(initializeData);
-    };
-
-    /*    componentDidUpdate = (prevProps, prevState) => {
-            console.log("prevState : ", prevState.initializeData);
-            console.log("prevProps : ", prevProps.assetState.deviceOri);
-
-            const {initializeData} = this.state;
-            const {initialize} = this.props;
-
-            if (prevState.initializeData !== prevProps.assetState.deviceOri) {
-                initialize(initializeData);
-            }
-            //initialize(initializeData);
-        };*/
 
     render() {
         //console.log("👉👉👉👉👉👉👉👉 render start edit");
