@@ -106,8 +106,8 @@
 
   @include themify($themes) {
     color: themed('colorText');
-    font-size: 12px;
-    font-family: "Nanum Gothic Extra Bold";
+    font-size: 10px;
+    font-family: "Nanum Square acEB"; // Add for Table Cell [2020.06.10 LKH]
   }
 }
 
@@ -138,8 +138,33 @@
 
     @include themify($themes) {
       color: themed('colorText');
-      //font-size: 12px;
-      font-family: "Nanum BarunGothic Bold";
+
+      //padding: 5px 0px;    // Add For Table Cell [2020.06.10 LKH]
+      //font-size: 14px;
+      //font-family: "Nanum Square acEB"; // Add for Table Cell [2020.06.10 LKH]
+    }
+  }
+}
+
+.cb-material-table__padding {
+  overflow-x: auto;
+  padding-top: 10px;
+  padding-left: 10px;
+  //width: 10px;
+  //
+  //@include directify($directions) {
+  //  float: directed('right');
+  //}
+  //
+  span, div, svg {
+
+    @include themify($themes) {
+      color: themed('colorText');
+
+      //padding: 5px 0px;    // Add For Table Cell [2020.06.10 LKH]
+      //padding-top: 5px;
+      font-size: 14px;
+      //font-family: "Nanum Square acEB"; // Add for Table Cell [2020.06.10 LKH]
     }
   }
 }

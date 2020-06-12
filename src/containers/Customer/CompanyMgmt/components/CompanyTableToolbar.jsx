@@ -12,6 +12,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
 import {Modal} from "@material-ui/core";
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
 import AddCompany from "./AddCompany";
 
 export const TableFilterButton = (props) => {
@@ -99,16 +101,18 @@ const useToolbarStyles = makeStyles(theme => ({
         fontSize: 15,
         fontFamily: "Nanum BarunGothic Bold",
     },
+
 }));
 
+/** Modal */
 export const CompanyTableToolbar = (props) => {
     const classes = useToolbarStyles();
     const {
-        toolbarTitle, rows, numSelected, handleDeleteSelected, onRequestSort, handleAddCompany,
+        toolbarTitle, rows, numSelected, handleDeleteSelected, onRequestSort, handleOpen,
     } = props;
 
     return (
-        <Fragment>
+        <div>
             <Toolbar
                 className={clsx(classes.root, { [classes.highlight]: numSelected > 0 })}
             >
@@ -132,12 +136,9 @@ export const CompanyTableToolbar = (props) => {
                             <Grid item container xs={12} alignItems="flex-end" direction="column">
                                 <Grid item>
                                     <Tooltip title="고객사 추가" aria-label="add">
-                                        <IconButton>
-                                            <AddIcon/>
-                                        </IconButton>
-                                        {/*<Modal open={open} >*/}
-                                        {/*    <AddCompany/>*/}
-                                        {/*</Modal>*/}
+                                            <IconButton type="button" onClick={handleOpen}>
+                                                <AddIcon/>
+                                            </IconButton>
                                     </Tooltip>
                                     {numSelected > 0 ? (
                                         <Tooltip title="선택한 고객사 삭제" aria-label="delete">
@@ -156,9 +157,10 @@ export const CompanyTableToolbar = (props) => {
                                 </Grid>
                             </Grid>
                         </Grid>
+
                     </Fragment>
                 )}
             </Toolbar>
-        </Fragment>
+       </div>
     );
 };

@@ -1,4 +1,5 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
+import PropTypes from 'prop-types';
 import { Card, CardBody, Col } from 'reactstrap';
 import {useDispatch, useSelector} from "react-redux";
 import TableBody from "@material-ui/core/TableBody";
@@ -11,6 +12,10 @@ import TableContainer from "@material-ui/core/TableContainer";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {makeStyles} from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
+import Modal from "@material-ui/core/Modal";
+import Backdrop from "@material-ui/core/Backdrop";
+import {useSpring, animated } from "react-spring/web.cjs";
+import Fade from "@material-ui/core/Fade";
 import {getCompanyList} from "../../../../redux/actions/companiesActions";
 import {
     pagingChangeCurrentPage,
@@ -25,6 +30,7 @@ import {
 } from "../../../../redux/actions/pagingActions";
 import {CompanyTableToolbar} from "./CompanyTableToolbar";
 import CommonTableHead from "../../../Common/CommonTableHead";
+import AddCompany from "./AddCompany";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -59,9 +65,20 @@ const useStyles = makeStyles(theme => ({
         top: 20,
         width: 1,
     },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    modalPaper: {
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+    },
 }));
 
-const CompanyList = () => {
+const CompanyMgmtList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     /**
@@ -99,6 +116,18 @@ const CompanyList = () => {
         orderBy: pagingRd.orderBy,
         order: pagingRd.order,
     }));
+    /**
+     * Modal variable
+     */
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     /** Pagination */
     const updatePagingTotalCount = ({count}) => {
@@ -293,8 +322,28 @@ const CompanyList = () => {
                         handleDeleteSelected={handleDeleteSelected}
                         onRequestSort={handleRequestSort}
                         rows={headRows}
-                        toolbarTitle="고객사 목록"
+                        toolbarTitle="고객사 리스트"
+                        handleOpen={handleOpen}
                     />
+                    <Modal
+                        aria-labelledby="spring-modal-title"
+                        aria-describedby="spring-modal-description"
+                        className={classes.modal}
+                        open={open}
+                        onClose={handleClose}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <Fade in={open}>
+                            <div className={classes.modalPaper}>
+                                <h2 id="spring-modal-title">Spring modal</h2>
+                                <p id="spring-modal-description">react-spring animates me.</p>
+                            </div>
+                        </Fade>
+                    </Modal>
                     <div className="cb-material-table__wrap">
                         <TableContainer>
                             <Table
@@ -315,16 +364,17 @@ const CompanyList = () => {
                             </Table>
                         </TableContainer>
                         {paginationBar}
+                        <FormControlLabel
+                            className="cb-material-table__padding"
+                            // className="cb-material-table__pagination"
+                            control={<Switch checked={dense} onChange={handleChangeDense} />}
+                            label="Dense padding"
+                        />
                     </div>
-                    <FormControlLabel
-                        className="cb-material-table__sort-label"
-                        control={<Switch checked={dense} onChange={handleChangeDense} />}
-                        label="Dense padding"
-                    />
                 </CardBody>
             </Card>
         </Col>
     );
 };
 
-export default CompanyList;
+export default CompanyMgmtList;
