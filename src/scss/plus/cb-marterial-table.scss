@@ -139,8 +139,8 @@
     @include themify($themes) {
       color: themed('colorText');
 
-      padding: 5px 0px;    // Add For Table Cell [2020.06.10 LKH]
-      font-size: 14px;
+      //padding: 5px 0px;    // Add For Table Cell [2020.06.10 LKH]
+      //font-size: 14px;
       //font-family: "Nanum Square acEB"; // Add for Table Cell [2020.06.10 LKH]
     }
   }
