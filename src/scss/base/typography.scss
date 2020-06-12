@@ -165,6 +165,27 @@ blockquote {
   }
 }
 
+// [2020-06-12 byeonghwa jung]
+.page-title-cb {
+
+  @include directify($directions) {
+    text-align: directed('left');
+  }
+  font-weight: 500;
+  text-transform: capitalize;
+  //font-size: 20px;    // Origin
+  font-size: 16px;    // Modify Title [2020.06.10 LKH]
+  font-family: "Nanum Gothic Extra Bold", inherit; // Add [2020.06.10 LKH]
+
+  &:last-child {
+    margin-bottom: 15px;
+  }
+
+  &.page-title--not-last {
+    margin-top: 50px;
+  }
+}
+
 .page-subhead {
   @include directify($directions) {
     text-align: directed('left');

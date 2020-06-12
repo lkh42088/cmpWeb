@@ -322,7 +322,7 @@ const CompanyMgmtList = () => {
                         handleDeleteSelected={handleDeleteSelected}
                         onRequestSort={handleRequestSort}
                         rows={headRows}
-                        toolbarTitle="고객사 목록"
+                        toolbarTitle="고객사 리스트"
                         handleOpen={handleOpen}
                     />
                     <Modal
@@ -364,12 +364,13 @@ const CompanyMgmtList = () => {
                             </Table>
                         </TableContainer>
                         {paginationBar}
+                        <FormControlLabel
+                            // className="cb-material-table__sort-label"
+                            // className="cb-material-table__pagination"
+                            control={<Switch checked={dense} onChange={handleChangeDense} />}
+                            label="Dense padding"
+                        />
                     </div>
-                    <FormControlLabel
-                        className="cb-material-table__sort-label"
-                        control={<Switch checked={dense} onChange={handleChangeDense} />}
-                        label="Dense padding"
-                    />
                 </CardBody>
             </Card>
         </Col>

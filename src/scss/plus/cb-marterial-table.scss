@@ -138,8 +138,10 @@
 
     @include themify($themes) {
       color: themed('colorText');
-      //font-size: 12px;
-      font-family: "Nanum BarunGothic Bold";
+
+      padding: 5px 0px;    // Add For Table Cell [2020.06.10 LKH]
+      font-size: 10px;
+      font-family: "Nanum Square acEB"; // Add for Table Cell [2020.06.10 LKH]
     }
   }
 }
