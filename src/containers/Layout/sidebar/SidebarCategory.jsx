@@ -3,7 +3,6 @@ import {Badge, Collapse} from 'reactstrap';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Icon, InlineIcon } from '@iconify/react';
-import {colors} from "@material-ui/core";
 
 export default class SidebarCategory extends Component {
     static propTypes = {
@@ -64,14 +63,8 @@ export default class SidebarCategory extends Component {
 
         return (
             <div style={{display: "flex"}}>
-                <button
-                    className={categoryClass}
-                    type="button"
-                    onClick={this.toggle}
-                    style={{zIndex: "120"}}
-                    onMouseEnter={this.toggleHover}
-                    onMouseLeave={this.toggleHover}
-                >
+                <button className={categoryClass} type="button" onClick={this.toggle} style={{zIndex: "120"}}
+                        onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>
                     {icon ? <span className="cb_sidebar__link-icon" ><Icon icon={icon} /></span> : ''}
                     <p className="cb_sidebar__link-title">{title}
                         {isNew && <span className="cb_sidebar__category-new"/>}
