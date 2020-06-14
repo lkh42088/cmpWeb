@@ -1,37 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Card, CardBody, Col, Button, ButtonToolbar,
 } from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-
-import WebIcon from 'mdi-react/WebIcon';
-import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
-import sineWave from "@iconify/icons-mdi/sine-wave";
-import renderCheckBoxField from '../../../../shared/components/form/CheckBox';
+import {useDispatch, useSelector} from "react-redux";
 import DeviceSearch from "./DeviceSearch";
 import InputIpAddr from "./InputIpAddr";
-import IconPanelDivider from "../../../UI/Panels/components/IconPanelDivider";
+
 
 // src/scss/component/form.scss
-const SubnetWriteForm = ({handleSubmit, reset, t}) => {
-    handleSubmit.propTypes = {handleSubmit: PropTypes.func.isRequired};
-    reset.propTypes = {reset: PropTypes.func.isRequired};
-    t.propTypes = {t: PropTypes.func.isRequired};
+const SubnetWriteForm = ({
+    input,
+    onChange,
+    onClick,
+    onMouseOver,
+    onSubmit,
+    }) => {
+    const dispatch = useDispatch();
+    // const {
+    //     deviceCode, subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
+    // } = useSelector(({ createSubnet }) => ({
+    //     deviceCode: createSubnet.deviceCode,
+    //     subnetTag: createSubnet.subnetTag,
+    //     subnetStart: createSubnet.subnetStart,
+    //     subnetEnd: createSubnet.subnetEnd,
+    //     subnetMask: createSubnet.subnetMask,
+    //     gateway: createSubnet.gateway,
+    // }));
+
+    /* useEffect */
+    useEffect(() => {
+        //console.log("=============");
+    }, []);
 
     return (
         <Col xs={12} md={12} lg={12} xl={8} cssModule="table">
             <Card>
                 <CardBody>
-                    <form className="form form--horizontal" onSubmit={handleSubmit}>
-                        <DeviceSearch />    {/*장비 검색*/}
+                    <form className="form form--horizontal" onSubmit={onSubmit}>
+                        <DeviceSearch/> {/*장비 검색*/}
                         <div className="form__form-group">
                             <span className="form__form-group-label">SUBNET</span>
                             <div className="form__form-group-field">
-                                <InputIpAddr nameText="subnet_start" holderText="Start" />
-                                {/*<InputIpAddr nameText="subnet_end" holderText="End" activeIcon={WebIcon} />*/}
-                                <InputIpAddr nameText="subnet_end" holderText="End" />
+                                <InputIpAddr nameText="subnet_start" holderText="Start"/>
+                                <InputIpAddr nameText="subnet_end" holderText="End"/>
                             </div>
                         </div>
                         <div className="form__form-group">
@@ -52,27 +66,35 @@ const SubnetWriteForm = ({handleSubmit, reset, t}) => {
                         <div className="form__form-group">
                             <span className="form__form-group-label">SUBNET 마스크</span>
                             <div className="form__form-group-field">
-                                <InputIpAddr icon="MailRuIcon" nameText="subnet_mask" holderText="Mask" />
+                                <InputIpAddr icon="MailRuIcon" nameText="subnet_mask" holderText="Mask"/>
                             </div>
                         </div>
                         <div className="form__form-group">
                             <span className="form__form-group-label">SUBNET 게이트웨이</span>
                             <div className="form__form-group-field">
-                                <InputIpAddr icon="MailRuIcon" nameText="subnet_gateway" holderText="Gateway" />
+                                <InputIpAddr icon="MailRuIcon" nameText="subnet_gateway" holderText="Gateway"/>
                             </div>
                         </div>
                         {/*Button*/}
                         <ButtonToolbar className="form__button-toolbar">
                             <Button color="primary" type="submit">Submit</Button>
-                            <Button type="button" onClick={reset}>
+                            <Button type="button" onClick={onClick}>
                                 Cancel
-                                </Button>
+                            </Button>
                         </ButtonToolbar>
                     </form>
                 </CardBody>
             </Card>
         </Col>
     );
+};
+
+SubnetWriteForm.propTypes = {
+    input: PropTypes.shape().isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    onMouseOver: PropTypes.func.isRequired,
+    onClick: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
 };
 
 export default reduxForm({
