@@ -1,0 +1,215 @@
+.cb-modal {
+
+}
+
+.cb-login-modal-form {
+  .cb-modal-content {
+    padding-top: 20px;
+    padding-bottom: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.cb-modal-dialog {
+  max-width: 385px;
+}
+
+.cb-modal-content {
+  border-radius: 0;
+  border: none;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+  position: relative;
+  padding: 50px 40px 60px 40px;
+  text-align: center;
+
+  @include themify($themes) {
+    background-color: themed('colorBackground');
+    color: themed('colorText');
+  }
+}
+
+.cb-modal__close-btn {
+  position: absolute;
+  top: 15px;
+  @include directify($directions) {
+    #{directed('right')}: 15px;
+  }
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  background: transparent;
+
+  @include themify($themes) {
+    color: themed('colorIcon');
+  }
+}
+
+.cb-modal__title-icon {
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+}
+
+.cb-modal__title {
+  margin-top: 10px;
+  margin-bottom: 15px;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.cb-modal__footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0;
+  @include directify($directions) {
+    flex-flow: directed('flex-flow')!important;
+  }
+
+  button {
+    min-width: 100px;
+    padding: 4px 25px;
+    margin-bottom: 0;
+  }
+
+}
+
+.cb-modal-dialog--primary {
+
+  .cb-modal__title-icon {
+    color: $color-blue;
+  }
+}
+
+.cb-modal-dialog--success {
+
+  .cb-modal__title-icon {
+    color: $color-accent;
+  }
+}
+
+.cb-modal-dialog--warning {
+
+  .cb-modal__title-icon {
+    color: $color-yellow;
+  }
+}
+
+.cb-modal-dialog--danger {
+
+  .cb-modal__title-icon {
+    color: $color-red;
+  }
+}
+
+.cb-modal-dialog--colored {
+  color: white;
+
+  .cb-modal__title-icon {
+    color: white;
+  }
+
+  .cb-modal__close-btn {
+    color: white;
+  }
+
+  .cb-modal__footer {
+
+    button:first-child {
+      color: #ffffff;
+      background-color: rgba(255, 255, 255, 0.3);
+      border-color: #ffffff;
+
+      &:before {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    }
+
+    button:last-child {
+      border-color: white;
+      color: white;
+    }
+  }
+
+  &.cb-modal-dialog--primary .cb-modal-content {
+    background-color: $color-blue;
+  }
+
+  &.cb-modal-dialog--success .cb-modal-content {
+    background-color: $color-accent;
+  }
+
+  &.cb-modal-dialog--warning .cb-modal-content {
+    background-color: $color-yellow;
+  }
+
+  &.cb-modal-dialog--danger .cb-modal-content {
+    background-color: $color-red;
+  }
+}
+
+.cb-modal-dialog--header {
+  max-width: 520px;
+
+  .cb-modal-content {
+    padding: 0;
+    @include directify($directions) {
+      text-align: directed('left');
+    }
+  }
+
+  .cb-modal__header {
+    color: white;
+    padding: 15px 20px;
+    position: relative;
+  }
+
+  .cb-modal__title {
+    margin: 0;
+    font-weight: 300;
+  }
+
+  .cb-modal__close-btn {
+    color: white;
+    top: calc(50% - 8px);
+  }
+
+  .cb-modal__body {
+    @include directify($directions) {
+      #{directed('padding-right')}: 40px;
+      #{directed('padding-left')}: 20px;
+    }
+    padding-top: 25px;
+    padding-bottom: 20px;
+  }
+
+  .cb-modal__footer {
+    margin-bottom: 40px;
+    justify-content: flex-end;
+    @include directify($directions) {
+      #{directed('padding-right')}: 20px;
+    }
+  }
+
+  &.cb-modal-dialog--primary .cb-modal__header {
+    background-color: $color-blue;
+  }
+
+  &.cb-modal-dialog--success .cb-modal__header {
+    background-color: $color-accent;
+  }
+
+  &.cb-modal-dialog--warning .cb-modal__header {
+    background-color: $color-yellow;
+  }
+
+  &.cb-modal-dialog--danger .cb-modal__header {
+    background-color: $color-red;
+  }
+}

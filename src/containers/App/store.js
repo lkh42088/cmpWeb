@@ -2,7 +2,6 @@ import {combineReducers, createStore, applyMiddleware } from 'redux';
 import {reducer as reduxFormReducer} from 'redux-form';
 import { all } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
-// eslint-disable-next-line import/no-unresolved
 import {createLogger} from 'redux-logger';
 import ReduxThunk from "redux-thunk";
 
@@ -30,7 +29,6 @@ import {regUserSaga} from "../../redux/actions/regUserActions";
 import {userListSaga} from "../../redux/actions/usersActions";
 import {companiesSaga} from "../../redux/actions/companiesActions";
 
-// 여러 리듀서를 쉽게 처리하기 위해 만든 메서드 => combineReducers
 const rootReducer = combineReducers({
     form: reduxFormReducer, // mounted under "form",
     theme: themeReducer,
@@ -65,7 +63,7 @@ const logger = createLogger();
 export const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
     rootReducer,
-    applyMiddleware(ReduxThunk, sagaMiddleware),
+    applyMiddleware(ReduxThunk, sagaMiddleware /* , logger */),
 );
 
 export function loadUser() {

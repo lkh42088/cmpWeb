@@ -8,25 +8,25 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import DateFnsUtils from "@date-io/date-fns";
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 import {Button} from "@material-ui/core";
+import DateFnsUtils from "@date-io/date-fns";
 
 const useStyles = makeStyles(theme => ({
-    form: {
-        '& > *': {
-            margin: theme.spacing(1),
-            width: '25ch',
-        },
-    },
     paper: {
         backgroundColor: theme.palette.background.paper,
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
+    },
+    form: {
+        '& > *': {
+            margin: theme.spacing(1),
+            width: '25em',
+        },
     },
     formControl: {
         margin: theme.spacing(1),
@@ -39,6 +39,10 @@ const useStyles = makeStyles(theme => ({
         '& > *': {
             margin: theme.spacing(1),
         },
+    },
+    textField: {
+        fontSize: '1em',
+        fontFamily: 'Nanum Brush',
     },
 }));
 
@@ -66,7 +70,8 @@ const AddCompany = (props) => {
                     <p id="transition-modal-description">react-spring animates me.</p>
                     <form className={classes.form} noValidate autoComplete="off">
                         <div>
-                            <FormControl variant="outlined" className={classes.formControl}>
+                            {/*<FormControl variant="outlined" className={classes.formControl}>*/}
+                            <FormControl variant="outlined">
                                 <InputLabel id="demo-simple-select-outlined-label">회사여부</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-outlined-label"
@@ -84,19 +89,19 @@ const AddCompany = (props) => {
                             </FormControl>
                         </div>
                         <div>
-                            <TextField id="company-name" label="고객사 이름" variant="outlined"/>
+                            <TextField className={classes.textField} id="company-name" label="고객사 이름" variant="outlined"/>
                         </div>
                         <div>
-                            <TextField id="company-address" label="고객사 주소" variant="outlined"/>
+                            <TextField label="고객사 주소" variant="outlined"/>
                         </div>
                         <div>
-                            <TextField id="company-tel" label="전화번호" variant="outlined"/>
+                            <TextField label="전화번호" variant="outlined"/>
                         </div>
                         <div>
-                            <TextField id="company-homepage" label="홈페이지" variant="outlined"/>
+                            <TextField label="홈페이지" variant="outlined"/>
                         </div>
                         <div>
-                            <TextField id="company-email" label="이메일" variant="outlined"/>
+                            <TextField label="이메일" variant="outlined"/>
                         </div>
                         <div>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
