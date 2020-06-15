@@ -310,7 +310,7 @@ export default class AssetsList extends PureComponent {
                     order,
                     rowsPerPage,
                     showPage,
-                    overNum,
+                    overNum: rowsPerPage,
                     outFlag: assetState.deviceOutFlag,
                 });
 
@@ -329,54 +329,30 @@ export default class AssetsList extends PureComponent {
     handleChangePageBack = () => {
         const {assetState, dispatch} = this.props;
         const {
-            orderBy, rowsPerPage, order, showPage, page,
-            pageCount, pageSize, pageNoNum,
+            orderBy, rowsPerPage, order, showPage,
         } = this.state;
         const checkPageNumCount = (showPage - 1) * rowsPerPage;
 
-        console.log("👔 start------------------------------------> 이전");
-        console.log("showPage : ", showPage);
-        // console.log("changePageCount : ", changePageCount);
-        // console.log("changePageNoNum : ", changePageNoNum);
-        console.log("pageCount : ", pageCount);
-        console.log("pageNoNum : ", pageNoNum);
-        console.log("pageSize : ", pageSize);
-
         if (showPage !== 1) {
-            if (pageNoNum === 0) { // 초기화 된 상태
-                this.setState({
-                    pageCount: pageSize,
-                    pageNoNum: pageSize - 1,
-                    page: pageSize - 1,
-                    showPage: showPage - 1,
-                });
-                const dispatchVal = ({
-                    deviceType: assetState.deviceType,
-                    checkPageNumCount: Number(checkPageNumCount),
-                    orderBy,
-                    order,
-                    rowsPerPage,
-                    showPage,
-                    overNum,
-                    outFlag: assetState.deviceOutFlag,
-                });
-                dispatch(fetchPostsCheckCount(dispatchVal));
-            } else {
-                this.setState({
-                    pageCount: pageCount - 1,
-                    pageNoNum: pageNoNum - 1,
-                    page: pageNoNum - 1,
-                    showPage: showPage - 1,
-                });
-            }
+            this.setState({
+                pageCount: 1,
+                pageNoNum: 0,
+                page: 0,
+                showPage: showPage - 1,
+            });
+
+            const dispatchVal = ({
+                deviceType: assetState.deviceType,
+                checkPageNumCount: Number(checkPageNumCount),
+                orderBy,
+                order,
+                rowsPerPage,
+                showPage: showPage - 2,
+                overNum: rowsPerPage,
+                outFlag: assetState.deviceOutFlag,
+            });
+            dispatch(fetchPostsCheckCount(dispatchVal));
         }
-        console.log("👔 End------------------------------------> 이전");
-        console.log("showPage : ", showPage);
-        // console.log("changePageCount : ", changePageCount);
-        // console.log("changePageNoNum : ", changePageNoNum);
-        console.log("pageCount : ", pageCount);
-        console.log("pageNoNum : ", pageNoNum);
-        console.log("pageSize : ", pageSize);
     };
 
     handleChangePage = (event, page) => {
@@ -393,31 +369,25 @@ export default class AssetsList extends PureComponent {
             showPage: showPage + 1,
             page: pageNoNum + 1,
         });
-        const changePageCount = pageCount + 1;
 
-        /*console.log("pageCount : ", pageCount);
-        console.log("pageSize : ", pageSize);*/
-        // TODO overNum 처리 필요~
-        if (pageCount === pageSize) {
-            this.setState({
-                pageCount: 1,
-                pageNoNum: 0,
-                page: 0,
-            });
+        this.setState({
+            pageCount: 1,
+            pageNoNum: 0,
+            page: 0,
+        });
 
-            const dispatchVal = ({
-                deviceType: assetState.deviceType,
-                checkPageNumCount: Number(checkPageNumCount),
-                orderBy,
-                order,
-                rowsPerPage,
-                showPage,
-                overNum,
-                outFlag: assetState.deviceOutFlag,
-            });
+        const dispatchVal = ({
+            deviceType: assetState.deviceType,
+            checkPageNumCount: Number(checkPageNumCount),
+            orderBy,
+            order,
+            rowsPerPage,
+            showPage,
+            overNum: rowsPerPage,
+            outFlag: assetState.deviceOutFlag,
+        });
 
-            dispatch(fetchPostsCheckCount(dispatchVal));
-        }
+        dispatch(fetchPostsCheckCount(dispatchVal));
     };
 
     handleChangeRowsPerPage = (event) => {
@@ -435,7 +405,16 @@ export default class AssetsList extends PureComponent {
             pageNoNum: 0,
         });
 
-        dispatch(fetchPosts(assetState));
+        const dispatchVal = ({
+            deviceType: assetState.deviceType,
+            orderBy,
+            order,
+            rowsPerPage: Number(event.target.value),
+            page: 0,
+            showPage: 0,
+            outFlag: assetState.deviceOutFlag,
+        });
+        dispatch(fetchPostsCheckCount(dispatchVal));
     };
 
     isSelected = (id) => {
@@ -532,6 +511,8 @@ export default class AssetsList extends PureComponent {
             'assets_write__modal-dialog--colored': false,
             'assets_write__modal-dialog--header': false,
         });
+
+        //console.log("------> : ", assetState.devices);
 
         //TODO length 값 0 일때도 처리해야함
 

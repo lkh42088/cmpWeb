@@ -165,12 +165,14 @@ export const fetchPosts = assetState => async (dispatch) => {
         const orderBy = 'DeviceCode';
         const order = 1;
         const rowsPerPage = 10;
-        const overNum = 1000;
+        const overNum = 10;
         const outFlag = assetState.deviceOutFlag;
-        console.log("fetchPosts url : ", `${API_ROUTE}/page/${deviceTypeData}/${outFlag}/${overNum}/${rowsPerPage}/${orderBy}/${order}`);
+        const limitPage = 10;
+        const offsetPage = 0;
+        console.log("fetchPosts url : ", `${API_ROUTE}/page/${deviceTypeData}/${outFlag}/${rowsPerPage}/1/${orderBy}/${order}`);
 
        /* const res = await axios.get(`${API_ROUTE}/page/${dispatchVal.deviceType}/${dispatchVal.outFlag}/${dispatchVal.overNum}/${rowsPerPage}/${orderBy}/${order}`);*/
-        const res = await axios.get(`${API_ROUTE}/page/${deviceTypeData}/${outFlag}/${overNum}/${rowsPerPage}/${orderBy}/${order}`);
+        const res = await axios.get(`${API_ROUTE}/page/${deviceTypeData}/${outFlag}/${rowsPerPage}/1/${orderBy}/${order}/${offsetPage}`);
 
 
         //console.log("res : ", res.data);
@@ -196,26 +198,16 @@ export const fetchPostsCheckCount = dispatchVal => async (dispatch) => {
     try {
         console.log("💎 fetchPostsCheckCount start");
         const order = checkOrder(dispatchVal.order);
-        let minNum;
+        const offsetPage = (dispatchVal.rowsPerPage * (dispatchVal.showPage));
+        const res = await axios.get(`${API_ROUTE}/page/${dispatchVal.deviceType}/${dispatchVal.outFlag}/${dispatchVal.rowsPerPage}/${dispatchVal.showPage + 1}/${dispatchVal.orderBy}/${order}/${offsetPage}`);
 
-        /*console.log("API_ROUTE/page/", dispatchVal.deviceType, "/0/", dispatchVal.overNum, "/", dispatchVal.checkPageNumCount, "/", dispatchVal.orderBy, "/", order);*/
-
-        const res = await axios.get(`${API_ROUTE}/page/${dispatchVal.deviceType}/${dispatchVal.outFlag}/${dispatchVal.overNum}/${dispatchVal.checkPageNumCount}/${dispatchVal.orderBy}/${order}`);
-
-        /*        console.log("res Devices : ", res.data.Devices[0].DeviceCode);
-                console.log("res Devices : ", res.data.Devices[99].DeviceCode);*/
-
-        if (dispatchVal.overNum === dispatchVal.checkPageNumCount) {
-            minNum = -(dispatchVal.showPage);
-        } else {
-            minNum = 0;
-        }
+        console.log("★★★★★ dispatchVal : ", dispatchVal);
 
         dispatch({
             type: GET_DEVICES_CHECKCOUNT,
             payload: res.data,
             deviceType: dispatchVal.deviceType,
-            page: dispatchVal.showPage + minNum,
+            page: dispatchVal.showPage,
         });
     } catch (error) {
         dispatch({

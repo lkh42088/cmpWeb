@@ -2,14 +2,33 @@ import React from 'react';
 import {
     Card, CardBody, Col, Row, Container,
 } from 'reactstrap';
+import {useDispatch, useSelector} from "react-redux";
 import MagnifyIcon from "mdi-react/MagnifyIcon";
 import {Field, reduxForm} from 'redux-form';
 import {withTranslation} from 'react-i18next';
+import {fetchPostsCheckCount, setDeviceOutFlag} from "../../../../redux/actions/assetsAction";
 
 const AssetsSearch = ({assetState}) => {
     /*console.log("😈😈assetState : ", assetState);
     console.log("😈😈codeOwnership : ", assetState.codes.codeOwnership);*/
     console.log("AssetsSearch start");
+    const dispatch = useDispatch();
+
+    const setToggleOutFlag = (outFlag) => {
+        dispatch(setDeviceOutFlag(outFlag));
+
+        const dispatchVal = ({
+            deviceType: assetState.deviceType,
+            orderBy: "deviceCode",
+            order: "asc",
+            rowsPerPage: "10",
+            showPage: 0,
+            outFlag,
+        });
+
+        dispatch(fetchPostsCheckCount(dispatchVal));
+    };
+
     return (
         <Col md="12">
             <Card>
@@ -77,6 +96,22 @@ const AssetsSearch = ({assetState}) => {
                         </Col>
                         <Col md={2} sm={12}>
                             &nbsp;&nbsp;
+                            <div className="float-left circle-legend">
+                                &nbsp;&nbsp;
+                                {/*<span className="circle__lit"/>장비반출&nbsp;&nbsp;*/}
+                                <div className="float-left" role="button" tabIndex="0"
+                                     onClick={event => setToggleOutFlag('0')}
+                                     onKeyDown={event => setToggleOutFlag('0')}>
+                                    <span className="circle__ste"
+                                          role="button" tabIndex="0"/>운영장비&nbsp;&nbsp;
+                                </div>
+                                <div className="float-left" role="button" tabIndex="0"
+                                     onClick={event => setToggleOutFlag("1")}
+                                     onKeyDown={event => setToggleOutFlag("1")}>
+                                    <span className="circle__eth"
+                                          role="button" tabIndex="0"/>반출장비&nbsp;&nbsp;
+                                </div>
+                            </div>
                         </Col>
                     </Row>
                 </CardBody>

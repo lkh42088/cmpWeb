@@ -243,9 +243,9 @@ class AssetsTop extends PureComponent {
                             </span>
                     </div>*/}
                     <div className="search_panel_topbtn">
-                        <div className="float-left circle-legend">
+                        {/*<div className="float-left circle-legend">
                             &nbsp;&nbsp;
-                            {/*<span className="circle__lit"/>장비반출&nbsp;&nbsp;*/}
+                            <span className="circle__lit"/>장비반출&nbsp;&nbsp;
                             <div className="float-left" role="button" tabIndex="0"
                                  onClick={event => this.setToggleOutFlag('0')}
                                  onKeyDown={event => this.setToggleOutFlag('0')}>
@@ -258,8 +258,8 @@ class AssetsTop extends PureComponent {
                                     <span className="circle__eth"
                                           role="button" tabIndex="0"/>반출장비&nbsp;&nbsp;
                             </div>
-                        </div>
-                        <div className="float-right">
+                        </div>*/}
+                        <div className="float-left">
                             <ButtonToolbar>
                                     <span role="button" tabIndex="0"
                                           onClick={this.toggle} onKeyDown={this.toggle}
