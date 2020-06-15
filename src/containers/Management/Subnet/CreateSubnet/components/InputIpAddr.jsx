@@ -1,28 +1,38 @@
-import React, {useState} from 'react';
-import {Field, reduxForm} from "redux-form";
-import {withTranslation} from "react-i18next";
-import MailRuIcon from "mdi-react/MailRuIcon";
-import WebIcon from "mdi-react/WebIcon";
+import React, { useState } from 'react';
+import { Field, reduxForm } from "redux-form";
+import { withTranslation } from "react-i18next";
 import { Icon } from '@iconify/react';
+import { useDispatch } from "react-redux";
+import { inputSubnet } from '../../../../../redux/actions/subnetActions';
+import {themes} from "../../../../../shared/helpers";
 
 const InputIpAddr = ({
-contents, icon, nameText, holderText, activeIcon,
+    icon, nameText, holderText, activeIcon, id, theme,
 }) => {
-    const [ipAddr, setIpAddr] = useState('');
-    if (icon === "MailRuIcon") {
-        // activeIcon = <MailRuIcon />;
-    } else if (icon === "WebIcon") {
-        // activeIcon = <WebIcon />;
-    } else {
+    const dispatch = useDispatch();
+    if (icon) {
         activeIcon = <Icon icon={activeIcon} />;
     }
 
     let isValid;
-    const onChangeText = (e) => {
-        isValid = /^(([1-9]?d|1dd|2[0-4]d|25[0-5])(.(?!$)|$)){4}$/.test(e.target.value);
+    const msg = document.getElementById(id);
+
+
+    const handleChange = (e) => {
+        // eslint-disable-next-line no-undef,react/no-this-in-sfc
+        const { name, value } = e.target;
+        console.log(test);
+        isValid = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value);
         if (isValid === true) {
-            console.log(e.target.value);
-            setIpAddr(e.target.value);
+            console.log(name, value);
+            if (isValid === 'theme-light') {
+                msg.style.color = '#646777';
+            } else {
+                msg.style.color = '#dddddd';
+            }
+            dispatch(inputSubnet({key: name, value}));
+        } else {
+            msg.style.color = 'red';
         }
     };
 
@@ -32,11 +42,12 @@ contents, icon, nameText, holderText, activeIcon,
                 {activeIcon}
             </div>
             <Field
+                id={id}
                 name={nameText}
                 component="input"
                 type="ip"
                 placeholder={holderText}
-                onChange={onChangeText}
+                onChange={handleChange}
             />
         </>
     );

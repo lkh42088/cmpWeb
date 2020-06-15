@@ -3,6 +3,9 @@
   @include directify($directions) {
     flex-direction: #{directed('row')};
   }
+  @include themify($themes) {
+    color: themed('colorText');
+  }
 
   text-transform: capitalize;
   align-items: center;
@@ -11,14 +14,14 @@
 }
 
 .cb_card__title-head {
-  font-size: 18px;
+  font-size: 15px;
   @include directify($directions) {
     text-align: directed('left');
   }
 }
 
 .cb_card__title-subhead {
-  font-size: 16px;
+  font-size: 14px;
   padding-left: 5px;
   color: $color-additional;
 }

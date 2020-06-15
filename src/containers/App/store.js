@@ -5,7 +5,6 @@ import createSagaMiddleware from 'redux-saga';
 // eslint-disable-next-line import/no-unresolved
 import {createLogger} from 'redux-logger';
 import ReduxThunk from "redux-thunk";
-
 import {
     cryptoTableReducer,
     newOrderTableReducer,
@@ -23,6 +22,7 @@ import {
     usersReducer,
     pagingReducer,
     companiesReducer,
+    subnetReducer,
 } from '../../redux/reducers/index';
 import {authSaga} from "../../redux/actions/authActions";
 import {tempSetUser, check, userSaga} from "../../redux/actions/accountActions";
@@ -49,6 +49,7 @@ const rootReducer = combineReducers({
     userRd: usersReducer,
     pagingRd: pagingReducer,
     companiesRd: companiesReducer,
+    subnetRd: subnetReducer,
 });
 
 export function* rootSaga() {

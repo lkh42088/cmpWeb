@@ -5,10 +5,10 @@ import {
 import { Field, reduxForm } from 'redux-form';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DeviceSearch from "./DeviceSearch";
 import InputIpAddr from "./InputIpAddr";
-
+import { inputSubnet } from "../../../../../redux/actions/subnetActions";
 
 // src/scss/component/form.scss
 const SubnetWriteForm = ({
@@ -19,33 +19,47 @@ const SubnetWriteForm = ({
     onSubmit,
     }) => {
     const dispatch = useDispatch();
-    // const {
-    //     deviceCode, subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
-    // } = useSelector(({ createSubnet }) => ({
-    //     deviceCode: createSubnet.deviceCode,
-    //     subnetTag: createSubnet.subnetTag,
-    //     subnetStart: createSubnet.subnetStart,
-    //     subnetEnd: createSubnet.subnetEnd,
-    //     subnetMask: createSubnet.subnetMask,
-    //     gateway: createSubnet.gateway,
-    // }));
+    const {
+        deviceCode, subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
+    } = useSelector(({ subnetRd }) => ({
+        // deviceCode: createSubnet.deviceCode,
+        // subnetTag: createSubnet.subnetTag,
+        // subnetStart: createSubnet.subnetStart,
+        // subnetEnd: createSubnet.subnetEnd,
+        // subnetMask: createSubnet.subnetMask,
+        // gateway: createSubnet.gateway,
+    }));
 
     /* useEffect */
     useEffect(() => {
-        //console.log("=============");
+        console.log();
     }, []);
+
+    const handleChange = () => {
+    //     const { value } = e.target.value;
+    //     console.log("data : ", value);
+    //     dispatch(inputSubnet);
+    };
 
     return (
         <Col xs={12} md={12} lg={12} xl={8} cssModule="table">
             <Card>
                 <CardBody>
                     <form className="form form--horizontal" onSubmit={onSubmit}>
-                        <DeviceSearch/> {/*장비 검색*/}
+                        {/*<DeviceSearch onClick={onClick} onChange={handleChange} /> /!*장비 검색*!/*/}
                         <div className="form__form-group">
                             <span className="form__form-group-label">SUBNET</span>
                             <div className="form__form-group-field">
-                                <InputIpAddr nameText="subnet_start" holderText="Start"/>
-                                <InputIpAddr nameText="subnet_end" holderText="End"/>
+                                <InputIpAddr
+                                    id="ipaddr1"
+                                    nameText="subnet_start"
+                                    holderText="Start"
+                                    onChange={handleChange} />
+                                <InputIpAddr
+                                    id="ipaddr2"
+                                    nameText="subnet_end"
+                                    holderText="End"
+                                    onChange={handleChange} />
                             </div>
                         </div>
                         <div className="form__form-group">
@@ -59,20 +73,28 @@ const SubnetWriteForm = ({
                                     component="input"
                                     type="text"
                                     placeholder="Tag"
-                                    // onChange={onChangeSubnetTag}
+                                    onChange={handleChange}
                                 />
                             </div>
                         </div>
                         <div className="form__form-group">
                             <span className="form__form-group-label">SUBNET 마스크</span>
                             <div className="form__form-group-field">
-                                <InputIpAddr icon="MailRuIcon" nameText="subnet_mask" holderText="Mask"/>
+                                <InputIpAddr
+                                    id="ipaddr3"
+                                    nameText="subnet_mask"
+                                    holderText="Mask"
+                                    onChange={handleChange} />
                             </div>
                         </div>
                         <div className="form__form-group">
                             <span className="form__form-group-label">SUBNET 게이트웨이</span>
                             <div className="form__form-group-field">
-                                <InputIpAddr icon="MailRuIcon" nameText="subnet_gateway" holderText="Gateway"/>
+                                <InputIpAddr
+                                    id="ipaddr4"
+                                    nameText="subnet_gateway"
+                                    holderText="Gateway"
+                                    onChange={handleChange} />
                             </div>
                         </div>
                         {/*Button*/}
@@ -98,5 +120,5 @@ SubnetWriteForm.propTypes = {
 };
 
 export default reduxForm({
-    form: 'horizontal_form_layout_with_icons', // a unique identifier for this form
+    form: 'create_subnet',
 })(withTranslation('common')(SubnetWriteForm));

@@ -13,8 +13,8 @@
     width: 100%;
     padding: 5px 10px;
     //font-size: 12px;  // Origin
-    font-size: 8px;  // Modify [2020-06-10 LKH]
-    font-family: 'Nanum Square acEB', sans-serif;  // Add for Input [2020-06-10 LKH]
+    font-size: 8px;  // Modify (10June2020,khlee)
+    font-family: 'Nanum Square acEB', sans-serif;  // Add for Input (10June2020,khlee)
     height: 32px;
     /*height: 39px;*/
     transition: border 0.3s;
@@ -79,7 +79,7 @@
       }
     }
 
-    // Add for InputIpAddr [2020.06.12 LKH]
+    // Add for InputIpAddr (12June2020,khlee)
     .form__form-group-field-ip {
       width: calc(100% - 80px);
 

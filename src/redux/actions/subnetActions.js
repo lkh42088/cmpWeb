@@ -41,7 +41,7 @@ export const inputSubnet = createAction(
 /******************************************************************************
  * 3. Saga
  *****************************************************************************/
-//const ceateSubnet = createRequestSaga(CREATE_SUBNET, subnet.createSubnetSaga);
+//const createSubnet = createRequestSaga(CREATE_SUBNET, subnet.createSubnetSaga);
 
 
 /******************************************************************************
