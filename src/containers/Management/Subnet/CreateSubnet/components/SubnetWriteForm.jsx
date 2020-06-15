@@ -52,12 +52,12 @@ const SubnetWriteForm = ({
                             <div className="form__form-group-field">
                                 <InputIpAddr
                                     id="ipaddr1"
-                                    nameText="subnet_start"
+                                    nameText="subnetStart"
                                     holderText="Start"
                                     onChange={handleChange} />
                                 <InputIpAddr
                                     id="ipaddr2"
-                                    nameText="subnet_end"
+                                    nameText="subnetEnd"
                                     holderText="End"
                                     onChange={handleChange} />
                             </div>
@@ -69,7 +69,7 @@ const SubnetWriteForm = ({
                                     {/*<WebIcon />*/}
                                 </div>
                                 <Field
-                                    name="subnet_tag"
+                                    name="subnetTag"
                                     component="input"
                                     type="text"
                                     placeholder="Tag"
@@ -82,7 +82,7 @@ const SubnetWriteForm = ({
                             <div className="form__form-group-field">
                                 <InputIpAddr
                                     id="ipaddr3"
-                                    nameText="subnet_mask"
+                                    nameText="subnetMask"
                                     holderText="Mask"
                                     onChange={handleChange} />
                             </div>
@@ -92,7 +92,7 @@ const SubnetWriteForm = ({
                             <div className="form__form-group-field">
                                 <InputIpAddr
                                     id="ipaddr4"
-                                    nameText="subnet_gateway"
+                                    nameText="gateway"
                                     holderText="Gateway"
                                     onChange={handleChange} />
                             </div>

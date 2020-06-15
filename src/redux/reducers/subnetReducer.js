@@ -15,7 +15,7 @@ const initSubnet = {
     subnetEnd: '',
     subnetTag: '',
     subnetMask: '',
-    subnetGateway: '',
+    gateway: '',
 };
 
 const subnetReducer = handleActions(
@@ -38,7 +38,8 @@ const subnetReducer = handleActions(
         [DELETE_SUBNET]: () => ({
 
         }),
-        [INPUT_SUBNET]: (state, action) => ({ ...state, input: action.payload }),
+        [INPUT_SUBNET]: (state, { payload: { key, value }}) => (
+            { ...state, payload: { key, value }}),
     },
     initSubnet,
 );

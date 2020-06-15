@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { Field, reduxForm } from "redux-form";
 import { withTranslation } from "react-i18next";
 import { Icon } from '@iconify/react';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { inputSubnet } from '../../../../../redux/actions/subnetActions';
-import {themes} from "../../../../../shared/helpers";
 
 const InputIpAddr = ({
-    icon, nameText, holderText, activeIcon, id, theme,
+    icon, nameText, holderText, activeIcon, id,
 }) => {
     const dispatch = useDispatch();
     if (icon) {
@@ -16,23 +15,43 @@ const InputIpAddr = ({
 
     let isValid;
     const msg = document.getElementById(id);
+    const themeName = useSelector(({theme}) => ({
+        className: theme.className,
+    }));
 
+    const { subnetMask, gateway } = useSelector(({subnetRd}) => ({
+        subnetMask: subnetRd.subnetMask,
+        gateway: subnetRd.gateway,
+    }));
+
+    const validateIp = (value) => {
+        isValid = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value);
+        return isValid;
+    };
 
     const handleChange = (e) => {
-        // eslint-disable-next-line no-undef,react/no-this-in-sfc
         const { name, value } = e.target;
-        console.log(test);
-        isValid = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value);
+        // Check IP address
+        isValid = validateIp(value);
         if (isValid === true) {
-            console.log(name, value);
-            if (isValid === 'theme-light') {
+            // theme font-color 원복
+            if (themeName.className === 'theme-light') {
                 msg.style.color = '#646777';
             } else {
                 msg.style.color = '#dddddd';
             }
-            dispatch(inputSubnet({key: name, value}));
         } else {
+            // IP Address 형식에 맞지 않을 경우 font-color : red
             msg.style.color = 'red';
+            console.log(gateway);
+        }
+    };
+
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+        isValid = validateIp(value);
+        if (isValid) {
+            dispatch(inputSubnet({key: name, value}));
         }
     };
 
@@ -48,11 +67,12 @@ const InputIpAddr = ({
                 type="ip"
                 placeholder={holderText}
                 onChange={handleChange}
+                onBlur={handleBlur}
             />
         </>
     );
 };
 
 export default reduxForm({
-    form: 'horizontal_form_layout_with_icons',
+    form: 'input_ip_address',
 })(withTranslation('common')(InputIpAddr));
