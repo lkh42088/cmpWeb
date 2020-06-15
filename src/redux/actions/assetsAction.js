@@ -101,7 +101,6 @@ export const getCodes = dispatchVal => async (dispatch) => {
         // Name: "MCS 7800"
         // Order: 1
 
-        //const codeType = "device_/"{dispatchVal.deviceType.toString()};
         const codeType = `device_${dispatchVal.deviceType}`;
 
         const DeviceType = setCodeMap(Codes.data, codeType, 'device_type_cd');
@@ -346,6 +345,15 @@ export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) =>
                 });
                 break;
             case 'part':
+                dispatch({
+                    type: SET_ADD_ELE_IP_DATA,
+                    payload: '',
+                });
+
+                dispatch({
+                    type: SET_ADD_ELE_SPLA_DATA,
+                    payload: '',
+                });
                 break;
             default:
                 break;

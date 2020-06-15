@@ -213,16 +213,7 @@ class AssetsTop extends PureComponent {
     setToggleOutFlag = (outFlag) => {
         const {assetState, dispatch} = this.props;
 
-        dispatch(setDeviceOutFlag(outFlag));
-        const dispatchVal = ({
-            deviceType: 'server',
-            orderBy: 'DeviceCode',
-            order: 1,
-            rowsPerPage: 10,
-            overNum: 1000,
-            outFlag,
-        });
-
+        /*dispatch(setDeviceOutFlag(outFlag));*/
         dispatch(setDeviceOutFlag(outFlag));
         dispatch(fetchPosts(assetState));
     };
@@ -269,18 +260,6 @@ class AssetsTop extends PureComponent {
                             </div>
                         </div>
                         <div className="float-right">
-                            {/*                                &nbsp;&nbsp;
-                                <span className="circle__lit"/>장비반출&nbsp;&nbsp;
-                                <div className="float-left" role="button" tabIndex="0" onClick={this.toggle}
-                                     onKeyDown={this.toggle}>
-                                    <span className="circle__eos"
-                                          role="button" tabIndex="0"/>장비등록&nbsp;&nbsp;
-                                </div>
-                                <div className="float-left" role="button" tabIndex="0" onClick={event => this.toggleOutFlag("1")}
-                                     onKeyDown={event => this.toggleOutFlag("1")}>
-                                    <span className="circle__lit"
-                                          role="button" tabIndex="0"/>장비반출&nbsp;&nbsp;
-                                </div>*/}
                             <ButtonToolbar>
                                     <span role="button" tabIndex="0"
                                           onClick={this.toggle} onKeyDown={this.toggle}
