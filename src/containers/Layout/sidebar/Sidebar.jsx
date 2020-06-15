@@ -19,9 +19,9 @@ const Sidebar = ({
       <button className="cb_sidebar__back" type="button" onClick={changeMobileSidebarVisibility} />
       <Scrollbar className="cb_sidebar__scroll scroll">
         {/*company-name TAG*/}
-        <div className="cb_sidebar__wrapper cb_sidebar__wrapper--company">
+        {/*<div className="cb_sidebar__wrapper cb_sidebar__wrapper--company">
           <br />
-        </div>
+        </div>*/}
         <div className="cb_sidebar__wrapper cb_sidebar__wrapper--desktop">
           <SidebarContent
             onClick={() => {}}

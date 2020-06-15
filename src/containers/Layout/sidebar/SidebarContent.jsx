@@ -28,13 +28,16 @@ class SidebarContent extends Component {
         return (
             <div className="cb_sidebar__content">
                 <ul className="cb_sidebar__block">
-                    {/*<SidebarCategory title="DASHBOARD" icon={outlineDashboard} />*/}
-                    <SidebarLink
-                        title="DASHBOARD"
-                        icon={outlineDashboard}
-                        route="/dashboards/manager"
-                        onClick={() => changeMenuTitle('대시보드', '관리자', 'server')}
-                    />
+                    {/*<SidebarCategory title="DASHBOARD" icon={outlineDashboard} route="/dashboards/manager"
+                                     />*/}
+                    {/*<SidebarLink title="관리자"
+                                 route="/dashboards/manager"
+                                 onClick={() => changeMenuTitle('대시보드', '관리자', 'server')}/>*/}
+                    <SidebarCategory title="DASHBOARD" icon={outlineDashboard}>
+                        <SidebarLink title="관리자"
+                                     route="/dashboards/manager"
+                                     onClick={() => changeMenuTitle('대시보드', '관리자', 'server')}/>
+                    </SidebarCategory>
                     <SidebarCategory title="SERVER" icon={serverOutlineBadged} />
                     <SidebarCategory title="NETWORK" icon={routerNetwork} />
                     <SidebarCategory title="INVENTORY" icon={inventoryManagement}>
@@ -50,6 +53,10 @@ class SidebarContent extends Component {
                                      onClick={() => changeMenuTitle('관리자', '', '')}/>
                         <SidebarLink title="고객사관리" route="/customers/admin/companies"
                                      onClick={() => changeMenuTitle('관리자', '고객사관리', '')}/>
+                        <SidebarLink title="고객사설정" route="/customers/admin/add-company"
+                                     onClick={() => changeMenuTitle('관리자', '고객사설정', '')}/>
+                        <SidebarLink title="Picker" route="/customers/admin/pick-company"
+                                     onClick={() => changeMenuTitle('관리자', '고객사설정', '')}/>
                         <SidebarLink title="모니터링 관리" route="/management/monitoring/main"
                                      onClick={() => changeMenuTitle('관리자', '모니터링관리', '')}/>
                     </SidebarCategory>

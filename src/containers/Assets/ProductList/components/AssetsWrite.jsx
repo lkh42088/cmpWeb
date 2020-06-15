@@ -872,7 +872,6 @@ class AssetsWrite extends PureComponent {
                                 placeholder="고객사"
                                 initialValues={searchCustomerId}
                                 component={renderCustomerField}
-                                /*ref={(ref) => { this.input = ref; }}*/
                                 searchToggle={event => this.searchToggle('customer')}
                                 ref={(ref) => {
                                     // eslint-disable-next-line react/no-find-dom-node
@@ -886,8 +885,6 @@ class AssetsWrite extends PureComponent {
                                 }}
                                 withRef
                             />
-                            {/* eslint-disable-next-line no-return-assign */}
-                            {/*<input ref={(ref => this.input = ref)}/>*/}
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">소유권/소유권구분</span>

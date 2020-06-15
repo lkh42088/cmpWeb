@@ -1,488 +1,532 @@
 import React, {PureComponent, Fragment} from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {Button, ButtonToolbar, Modal} from 'reactstrap';
-import classNames from 'classnames';
-import {Field, reduxForm, FieldArray} from "redux-form";
-import {findDOMNode} from "react-dom";
-import {List, Map} from "immutable";
-import CalendarBlankIcon from "mdi-react/CalendarBlankIcon";
-import AccountSearchIcon from "mdi-react/AccountSearchIcon";
-import PlusIcon from "mdi-react/PlusIcon";
-import MinusIcon from "mdi-react/MinusIcon";
-import TableBody from "@material-ui/core/TableBody";
-import Table from "@material-ui/core/Table";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import {withTranslation} from "react-i18next";
+import {Link} from 'react-router-dom';
+import {connect} from "react-redux";
 import {
-    getCompanyByName, setViewModalDivision,
-} from "../../../../redux/actions/assetsAction";
-/*import renderDatePickerField from "../../../../shared/components/form/DatePicker";*/
-import renderIntervalDatePickerField from "./IntervalDatePicker";
-import renderDatePickerField from "./DatePicker";
-import {changeField} from "../../../../redux/actions/authActions";
+    ButtonToolbar,
+    Card,
+    CardBody,
+    Col, Modal, Row,
+} from 'reactstrap';
 
-const warringStyle = {
-    color: "#0f4c81",
-    fontWeight: "bold",
-};
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import Checkbox from '@material-ui/core/Checkbox';
 
-function checkIP(strIP) {
-    const expUrl = /^(1|2)?\d?\d([.](1|2)?\d?\d){3}$/;
-    return expUrl.test(strIP);
+import PropTypes, {string} from 'prop-types';
+import moment from "moment";
+import classNames from "classnames";
+
+import {changeMenuTitle} from '../../../../redux/actions/titleActions';
+import {
+    getDeviceByIdx,
+    postDeviceComment,
+    fetchPosts,
+    fetchPostsCheckCount,
+    getDeviceOriByIdx,
+    setViewModalDivision, postDevice,
+    setDeviceSelected,
+} from '../../../../redux/actions/assetsAction';
+
+import AssetsHead from './AssetsHead';
+import AssetsWrite from "./AssetsWrite";
+import AssetsView from "./AssetsView";
+import AssetsEdit from "./AssetsEdit";
+import {RTLProps} from "../../../../shared/prop-types/ReducerProps";
+
+/*order by 사용 함수*/
+function getSorting(order, orderBy) {
+    if (order === 'desc') {
+        return (a, b) => {
+            if (a[orderBy] < b[orderBy]) {
+                return -1;
+            }
+            if (a[orderBy] > b[orderBy]) {
+                return 1;
+            }
+            return 0;
+        };
+    }
+    return (a, b) => {
+        if (a[orderBy] > b[orderBy]) {
+            return -1;
+        }
+        if (a[orderBy] < b[orderBy]) {
+            return 1;
+        }
+        return 0;
+    };
 }
 
-function validate(values) {
-    const errors = {};
-    /*    let IpArray = '';
-        let IpTemp;
-        let elIp;
-        const elIpName = document.getElementsByName("errorTextIp");*/
-    //console.log("values : ", values);
+/*api 요청 시 한번에 가지고 오는 device 개수
+* 변경 시 index.jsx도 변경해 줘야 함.
+* */
+const overNum = 1000;
 
-    if (values.deviceType === '0' || values.deviceType === undefined) {
-        errors.deviceType = "장비구분을 선택해주세요.";
-    }
+export default class AssetsList extends PureComponent {
+    state = {
+        order: 'asc',
+        orderBy: 'deviceCode',
+        selected: new Map([]),
+        page: 0,
+        rowsPerPage: 10,
+        viewModalContent: '',
+        showPage: 1,
+        pageCount: 1,
+        pageSize: 10,
+        pageNoNum: 0,
+        isOpenView: false,
+        isOpenWrite: false,
+    };
 
-    if (values.ownership === '0' || values.ownership === undefined) {
-        errors.ownership = "소유권을 선택해주세요.";
-    }
-
-    if (values.ownershipDiv === '0' || values.ownershipDiv === undefined) {
-        errors.ownershipDiv = "소유권구분을 선택해주세요.";
-    }
-
-    // eslint-disable-next-line no-plusplus
-    /* for (let i = 0; i < elIpName.length; i++) {
-         elIpName[i].style.display = "none";
-     }
-
-     // eslint-disable-next-line guard-for-in,no-restricted-syntax
-     for (const arrData in values) {
-         if (arrData.indexOf("ip_") === 0) {
-             IpArray = values[arrData];
-
-             elIp = document.getElementById(`errorTextIp_${arrData}`);
-
-             if (checkIP(IpArray) === false) {
-                 elIp.style.display = "";
-             }
-         }
-     }*/
-
-    return errors;
-}
-
-const renderCustomerField = field => (
-    <Fragment>
-        <div className="modal_form__form-group-field">
-            <input {...field.input} type={field.type} placeholder={field.placeholder}
-                   value={field.initialValues} onClick={field.searchToggle} onKeyDown={field.searchToggle}
-                   role="button" tabIndex="0"
-            />
-            <span className="search_btn_span"
-                  onClick={field.searchToggle} onKeyDown={field.searchToggle}
-                  role="button" tabIndex="0"
-            ><AccountSearchIcon/></span>
-            &nbsp;&nbsp;
-            <b className="text_cor_orange"
-               style={{lineHeight: "20px"}}>{field
-                .label.name} / {field.label.id}</b>
-        </div>
-        {field.meta.touched && field.meta.error
-        && <span className="modal_form__form-group-description">※ {field.meta.error}</span>}
-    </Fragment>
-);
-
-const renderSelectCustomField = ({
-                                     input, placeholder, codeDivision,
-                                     meta: {touched, error},
-                                 }) => (
-    <Fragment>
-        <div className="modal_form__form-group-field">
-            <select
-                {...input}
-                placeholder={placeholder}
-            >
-                <option value="0">선택하세요.</option>
-                {
-                    codeDivision.code.map((d, index) => (
-                        <option key={d.codeId.toString()}
-                                value={d.codeId}>{d.name}</option>
-                    ))}
-            </select>
-        </div>
-        {touched && error && <span className="modal_form__form-group-description">※ {error}</span>}
-    </Fragment>
-);
-
-class AssetsEdit extends PureComponent {
+    //handleSubmit: PropTypes.func.isRequired,
+    //assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
     static propTypes = {
         // eslint-disable-next-line react/forbid-prop-types
         assetState: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
-        title: PropTypes.string,
-        message: PropTypes.string,
-        closeToggle: PropTypes.func,
     };
 
-    static defaultProps = {
-        title: '',
-        message: '',
-        closeToggle: '',
+    // form submit dispatch 관리
+    setTotalManager = (data) => {
+        const {assetState, dispatch} = this.props;
+
+        const submitData = ({
+            idx: data.commentIdx,
+            /*registerId: data.registerId,*/ //TODO 로그인한 ID
+            registerId: 'lkb',
+            contents: data.comment,
+            deviceCode: data.deviceCode,
+        });
+
+        //const jsonSubmitData = JSON.stringify(submitData);
+
+        console.log("submitData : ", submitData);
+
+        switch (data.postType) {
+            case 'comment':
+                dispatch(postDeviceComment(data.postDivision, assetState, submitData));
+                break;
+            case 'device':
+                if (data.postDivision === 'create') {
+                    console.log("device create");
+                }
+                break;
+            default:
+                break;
+        }
     };
 
-    constructor() {
-        super();
-        //console.log("👉 constructor start");
-        this.state = {
-            modal: false,
-            showPassword: false,
-            RackComponent: <span style={warringStyle}>※ IDC를 선택하세요.</span>,
-            ModelComponent: <span style={warringStyle}>※ Model을 선택하세요.</span>,
-            AddIpComponent: [],
-            AddIpComponentMax: 0,
-            AddSplaComponent: [],
-            AddSplaComponentMax: 0,
-            RegisterId: '',
-            IpArray: [],
-            SplaArray: [],
-            warehousingDateError: 'test',
-            searchToggleDivision: '',
-            searchCompanyName: '',
-            searchCustomerId: '',
-            searchOwnerCompanyId: '',
-            deviceDataArray: {},
-            initializeData: ({}),
-        };
-    }
+    handleSubmit = (values) => {
+        const {assetState, dispatch} = this.props;
 
-    componentDidMount() {
-        const {
-            initialize, assetState,
-        } = this.props;
-        const {
-            IpArray, SplaArray, initializeData,
-        } = this.state;
-
-        //console.log("👉 componentDidMount start");
-
-        const setIpArray = [];
-        const setSplaArray = [];
+        let division = '|';
+        let divisionCount = 0;
+        let IpArray = '';
+        let SplaArray = '';
+        let rentDataStart;
+        let rentDataEnd;
+        let rentData = '|';
+        let warehousingDate = '';
 
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
-        for (const arrData in assetState.deviceOri) {
-            if (arrData.indexOf("ip", 0) === 0) {
-                setIpArray.push(arrData);
-            } else if (arrData.indexOf("spla", 0) === 0) {
-                setSplaArray.push(arrData);
+        for (const arrData in assetState.deviceIp) {
+            if (assetState.deviceIp[arrData] !== '') {
+                if (divisionCount <= 0) {
+                    division = '';
+                } else {
+                    division = '|';
+                }
+
+                divisionCount += 1;
+                IpArray = `${IpArray}${division}${assetState.deviceIp[arrData]}`;
             }
         }
 
-        setIpArray.slice(1, setIpArray.length);
-        setIpArray.splice(0, 1);
+        divisionCount = 0;
+        IpArray = `${IpArray}|`;
 
-        this.setState({
-            IpArray: IpArray.concat(setIpArray),
-            SplaArray: SplaArray.concat(setSplaArray),
-            initializeData: assetState.deviceOri,
-        });
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in assetState.deviceSpla) {
+            if (assetState.deviceSpla[arrData] !== '') {
+                if (divisionCount <= 0) {
+                    division = '';
+                } else {
+                    division = '|';
+                }
 
-        this.setState({
-            initializeData: ({
-                ...assetState.deviceOri,
-                inIpArray: setIpArray,
-            }),
-        });
+                divisionCount += 1;
+                SplaArray = `${SplaArray}${division}${assetState.deviceSpla[arrData]}`;
+            }
+        }
 
-        initialize(assetState.deviceOri);
-    }
+        SplaArray = `${SplaArray}|`;
 
-    searchToggle = (division) => {
-        this.setState({
-            searchToggleDivision: division,
-        });
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in values) {
+            //console.log("arrData : ", arrData, ", value : ", values[arrData]);
+            if (arrData.indexOf("rentDate") !== -1) {
+                //console.log("arrData : ", arrData, ", value : ", values[arrData]);
+                //console.log("start : ", values[arrData].start, ", end : ", values[arrData].end);
+                if (values[arrData].start !== undefined) {
+                    rentDataStart = moment(values[arrData].start).format("YYYYMMDD");
+                    rentDataEnd = `|${moment(values[arrData].end).format("YYYYMMDD")}`;
+                    rentData = `${rentDataStart}${rentDataEnd}`;
+                } else if (values[arrData] !== '' && values[arrData] !== undefined) {
+                    rentData = values[arrData];
+                } else {
+                    rentData = "|";
+                }
+            } else if (arrData.indexOf("warehousingDate") !== -1) {
+                warehousingDate = moment(values[arrData]).format("YYYYMMDD");
+            }
+        }
 
-        if (division === 'customer') {
-            this.customerField.focus();
-            this.ownerCompanyField.blur();
+        warehousingDate = warehousingDate.toString();
+
+        let rackLog;
+
+        if (values.rackLoc !== undefined) {
+            rackLog = values.rackLoc.toString();
         } else {
-            this.ownerCompanyField.focus();
-            this.customerField.blur();
+            rackLog = 0;
         }
 
-        this.setState(prevState => ({modal: !prevState.modal}));
-    };
-
-    searchCompany = () => {
-        const {
-            assetState, dispatch,
-        } = this.props;
-        const {
-            searchCompanyName,
-        } = this.state;
-
-        dispatch(getCompanyByName(searchCompanyName));
-    };
-
-    setSearchCompany = (val) => {
-        const {
-            assetState, dispatch, handleSubmit,
-        } = this.props;
-        const {searchToggleDivision} = this.state;
-        //console.log("searchToggleDivision : ", searchToggleDivision);
-
-        if (searchToggleDivision === 'customer') {
-            this.setState({
-                searchCustomerId: val,
-            });
-            this.customerField.blur();
-        } else if (searchToggleDivision === 'ownerCompany') {
-            this.setState({
-                searchOwnerCompanyId: val,
-            });
-            this.ownerCompanyField.blur();
-        }
-
-        this.setState(prevState => ({modal: !prevState.modal}));
-    };
-
-    handleChangeAdd = (e) => {
-        const {
-            initializeData,
-        } = this.state;
-
-        this.setState({
-            initializeData: ({
-                ...initializeData,
-                [e.target.name]: e.target.value,
-            }),
-        });
-    };
-
-    handleChange = (e) => {
-        const {
-            assetState, dispatch, handleSubmit,
-        } = this.props;
-        const {
-            initializeData,
-        } = this.state;
-        let tempContent;
-
-        this.setState({
-            initializeData: ({
-                ...initializeData,
-                [e.target.name]: e.target.value,
-            }),
+        const submitData = ({
+            deviceCode: values.deviceCode,
+            idx: values.idx,
+            outFlag: '',
+            commentCnt: '',
+            commentLastDate: '',
+            registerId: 'lkb',
+            registerDate: '',
+            model: values.model,
+            contents: values.contents,
+            customer: values.customer,
+            manufacture: values.manufacture,
+            deviceType: values.deviceType,
+            ownership: values.ownership,
+            ownershipDiv: values.ownershipDiv,
+            ownerCompany: values.ownerCompany,
+            hwSn: values.hwSn,
+            idc: values.idc,
+            rack: values.rack,
+            cost: values.cost,
+            purpose: values.purpose,
+            size: values.size,
+            cpu: values.cpu,
+            memory: values.memory,
+            hdd: values.hdd,
+            rackTag: values.rackTag,
+            rackLog,
+            ip: IpArray,
+            spla: SplaArray,
+            rentDate: rentData,
+            warehousingDate,
+            monitoringFlag: '',
+            monitoringMethod: '',
+            rackCode: values.rackCode,
+            firmwareVersion: values.firmwareVersion,
+            warranty: values.warranty,
         });
 
-        // TODO 축약 가능~ 리팩토링 필수!
-        if (e.target.name === 'idc') { // IDC
-            // RACK
-            if (Number(e.target.value) > 0) {
-                const hasSubCode = assetState.subCodes.data.some(d => (Number(d.codeId) === Number(e.target.value)));
-
-                if (hasSubCode === true) {
-                    tempContent = (
-                        <Field
-                            name="rack"
-                            component="select">
-                            <option value="none">렉없음</option>
-                            {assetState.subCodes.data
-                                .map(d => (Number(d.codeId) === Number(e.target.value)
-                                    && <option key={d.id} value={d.id}>{d.name}</option>))
-                            }
-                        </Field>
-                    );
-                } else {
-                    tempContent = <span style={warringStyle}>※ 연결된 Rack이 없습니다.</span>;
-                }
-            } else {
-                tempContent = <span style={warringStyle}>※ IDC를 선택하세요.</span>;
-            }
-            this.setState({
-                RackComponent: tempContent,
-            });
-        } else if (e.target.name === 'manufacture') { // 제조사
-            // MODEL
-            if (Number(e.target.value) > 0) {
-                const hasSubCode = assetState.subCodes.data.some(d => (Number(d.codeId) === Number(e.target.value)));
-
-                if (hasSubCode === true) {
-                    tempContent = (
-                        <Field
-                            name="model"
-                            component="select">
-                            {assetState.subCodes.data
-                                .map(d => (Number(d.codeId) === Number(e.target.value)
-                                    && <option key={d.id} value={d.id}>{d.name}</option>))
-                            }
-                        </Field>
-                    );
-                } else {
-                    tempContent = <span style={warringStyle}>※ 연결된 Model이 없습니다.</span>;
-                }
-            } else {
-                tempContent = <span style={warringStyle}>※ 제조사를 선택하세요.</span>;
-            }
-            this.setState({
-                ModelComponent: tempContent,
-            });
-        }
+        console.log("UPDATE 🙊🙊🙊 가공 전 : ", values);
+        console.log("UPDATE 🙊🙊🙊 가공 후 : ", submitData);
+        dispatch(postDevice('update', assetState, submitData));
+        this.toggle();
+        //dispatch(fetchPosts(assetState));
     };
 
-    onClose = () => {
-        const {
-            assetState, dispatch, closeToggle,
-        } = this.props;
-        dispatch(setViewModalDivision('read'));
-        closeToggle(); //
-    };
-
-    showPassword = (e) => {
-        e.preventDefault();
-        this.setState(prevState => ({showPassword: !prevState.showPassword}));
-    };
-
-    setHtmlPlus = (val) => {
+    handleRequestSort = (event, property) => {
+        const orderBy = property;
         const {assetState, dispatch} = this.props;
-        const {initialize} = this.props;
+        let order = 'desc';
+        const {orderBy: stateOrderBy, order: stateOrder} = this.state;
         const {
-            initializeData,
-            AddIpComponent, AddIpComponentMax, AddSplaComponent, AddSplaComponentMax,
-            IpArray, SplaArray,
+            rowsPerPage, page,
         } = this.state;
-        let tempContent;
 
-        if (val === 'ip') {
-            const reName = `ip_${AddIpComponentMax + 1}`;
+        if (stateOrderBy === property && stateOrder === 'desc') {
+            order = 'asc';
+        }
 
-            console.log("PLUS -----------------------------------");
-            console.log("PLUS reName ->  : ", reName);
-            console.log("PLUS IpArray ->  : ", IpArray);
-            console.log("PLUS FIN ->  : ", IpArray.concat([reName]));
+        this.setState({
+            order,
+            orderBy,
+        });
 
-            if (IpArray.length < 11) {
+        dispatch(fetchPosts(assetState));
+    };
+
+    handleSelectAllClick = (event, checked) => {
+        console.log("💎 handleSelectAllClick  checked: ", checked);
+        if (checked) {
+            const {assetState} = this.props;
+            const newSelected = new Map();
+            assetState.devices.map(n => newSelected.set(n.deviceCode, true));
+            this.setState({selected: newSelected});
+            return;
+        }
+        this.setState({selected: new Map([])});
+    };
+
+    handleClick = (event, id) => {
+        const {dispatch} = this.props;
+        const {selected} = this.state;
+        const newSelected = new Map(selected);
+        const value = newSelected.get(id);
+        let isActive = true;
+        if (value) {
+            isActive = false;
+        }
+        newSelected.set(id, isActive);
+        this.setState({selected: newSelected});
+        dispatch(setDeviceSelected(newSelected));
+    };
+
+    handleChangePageBackOld = () => {
+        const {assetState, dispatch} = this.props;
+        const {
+            orderBy, rowsPerPage, order, showPage, page,
+            pageCount, pageSize, pageNoNum,
+        } = this.state;
+        const checkPageNumCount = (showPage - 1) * rowsPerPage;
+
+        if (showPage !== 1) {
+            if (pageNoNum === 0) { // 초기화 된 상태
                 this.setState({
-                    IpArray: IpArray.concat([reName]),
-                    AddIpComponentMax: AddIpComponentMax + 1,
-                    initializeData: ({
-                        ...initializeData,
-                        [reName]: '',
-                        inIpArray: IpArray.concat(reName),
-                    }),
+                    pageCount: pageSize,
+                    pageNoNum: pageSize - 1,
+                    page: pageSize - 1,
+                    showPage: showPage - 1,
                 });
 
-                /*                this.setState({
-                                    IpArray: IpArray.concat([reName]),
-                                    AddIpComponentMax: AddIpComponentMax + 1,
-                                    initializeData: ({
-                                        ...initializeData,
-                                        inIpArray: IpArray.concat(reName),
-                                    }),
-                                });*/
-            }
-        } else if (val === 'spla') {
-            const reName = `spla${AddSplaComponentMax + 1}`;
-
-            if (SplaArray.length < 11) {
-                this.setState({
-                    SplaArray: SplaArray.concat([reName]),
-                    AddSplaComponentMax: AddSplaComponentMax + 1,
+                const dispatchVal = ({
+                    deviceType: assetState.deviceType,
+                    checkPageNumCount: Number(checkPageNumCount),
+                    orderBy,
+                    order,
+                    rowsPerPage,
+                    showPage,
+                    overNum: rowsPerPage,
+                    outFlag: assetState.deviceOutFlag,
                 });
 
-                console.log("SplaArray : ", SplaArray);
+                dispatch(fetchPostsCheckCount(dispatchVal));
+            } else {
+                this.setState({
+                    pageCount: pageCount - 1,
+                    pageNoNum: pageNoNum - 1,
+                    page: pageNoNum - 1,
+                    showPage: showPage - 1,
+                });
             }
         }
     };
 
-    setHtmlMinus = (reName, val, e) => {
+    handleChangePageBack = () => {
+        const {assetState, dispatch} = this.props;
         const {
-            IpArray, SplaArray, initializeData,
+            orderBy, rowsPerPage, order, showPage, page,
+            pageCount, pageSize, pageNoNum,
         } = this.state;
-        const {initialize} = this.props;
+        const checkPageNumCount = (showPage - 1) * rowsPerPage;
 
-        if (val === 'ip') {
-            const AddIpComponentTemp = IpArray.slice(IpArray.length)
-                .concat(IpArray.filter(d => d.toString() !== reName.toString()));
+        console.log("👔 start------------------------------------> 이전");
+        console.log("showPage : ", showPage);
+        // console.log("changePageCount : ", changePageCount);
+        // console.log("changePageNoNum : ", changePageNoNum);
+        console.log("pageCount : ", pageCount);
+        console.log("pageNoN um : ", pageNoNum);
+        console.log("pageSize : ", pageSize);
 
-            /*const header = document.getElementById(reName.toString());
-            header.remove();*/
+        if (showPage !== 1) {
+            if (pageNoNum === 0) { // 초기화 된 상태
+                this.setState({
+                    pageCount: pageSize,
+                    pageNoNum: pageSize - 1,
+                    page: pageSize - 1,
+                    showPage: showPage - 1,
+                });
+                const dispatchVal = ({
+                    deviceType: assetState.deviceType,
+                    checkPageNumCount: Number(checkPageNumCount),
+                    orderBy,
+                    order,
+                    rowsPerPage,
+                    showPage,
+                    overNum: rowsPerPage,
+                    outFlag: assetState.deviceOutFlag,
+                });
+                dispatch(fetchPostsCheckCount(dispatchVal));
+            } else {
+                this.setState({
+                    pageCount: pageCount - 1,
+                    pageNoNum: pageNoNum - 1,
+                    page: pageNoNum - 1,
+                    showPage: showPage - 1,
+                });
+            }
+        }
+        console.log("👔 End------------------------------------> 이전");
+        console.log("showPage : ", showPage);
+        // console.log("changePageCount : ", changePageCount);
+        // console.log("changePageNoNum : ", changePageNoNum);
+        console.log("pageCount : ", pageCount);
+        console.log("pageNoNum : ", pageNoNum);
+        console.log("pageSize : ", pageSize);
+    };
 
-            console.log("reName : ", reName);
+    handleChangePage = (event, page) => {
+        const {assetState, dispatch} = this.props;
+        const {
+            orderBy, rowsPerPage, order, showPage,
+            pageCount, pageSize, pageNoNum,
+        } = this.state;
+        const checkPageNumCount = (showPage + 1) * rowsPerPage;
 
+        this.setState({
+            pageCount: pageCount + 1,
+            pageNoNum: pageNoNum + 1,
+            showPage: showPage + 1,
+            page: pageNoNum + 1,
+        });
+        const changePageCount = pageCount + 1;
+
+        console.log("pageCount : ", pageCount);
+        console.log("pageSize : ", pageSize);
+        console.log("checkPageNumCount : ", checkPageNumCount);
+        // TODO overNum 처리 필요~
+        if (pageCount === pageSize) {
             this.setState({
-                IpArray: AddIpComponentTemp,
-                initializeData: ({
-                    ...initializeData,
-                    inIpArray: AddIpComponentTemp,
-                    [reName.toString()]: '',
-                }),
+                pageCount: 1,
+                pageNoNum: 0,
+                page: 0,
             });
 
-            //initialize(initializeData);
-        } else if (val === 'spla') {
-            const AddSplaComponentTemp = SplaArray.slice(SplaArray.length)
-                .concat(SplaArray.filter(d => d.toString() !== reName.toString()));
-
-            this.setState({
-                SplaArray: AddSplaComponentTemp,
+            const dispatchVal = ({
+                deviceType: assetState.deviceType,
+                checkPageNumCount: Number(checkPageNumCount),
+                orderBy,
+                order,
+                rowsPerPage,
+                showPage,
+                overNum: rowsPerPage,
+                outFlag: assetState.deviceOutFlag,
             });
+
+            dispatch(fetchPostsCheckCount(dispatchVal));
         }
     };
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-
+    handleChangeRowsPerPage = (event) => {
+        const {assetState, dispatch} = this.props;
         const {
-            onSubmit, initialize,
-        } = this.props;
-        const {
-            initializeData,
+            orderBy, rowsPerPage, order,
         } = this.state;
 
-        console.log("handleSubmit -> ", initializeData);
-        initialize(initializeData);
-        // TODO... 와 무슨 의미야...이게...후...ONCHANGE
-        onSubmit(initializeData);
+        this.setState({
+            page: 0,
+            showPage: 1,
+            rowsPerPage: Number(event.target.value),
+            pageCount: 1,
+            pageSize: overNum / Number(event.target.value),
+            pageNoNum: 0,
+        });
+
+        dispatch(fetchPosts(assetState));
+    };
+
+    isSelected = (id) => {
+        const {selected} = this.state;
+        return !!selected.get(id);
+    };
+
+    toggle = (e) => {
+        this.setState(prevState => ({isOpenView: !prevState.isOpenView}));
+    };
+
+    updateToggle = (deviceCode) => {
+        const {dispatch, assetState} = this.props;
+        this.setState({
+            viewModalContentDivision: 'update',
+        });
+        this.setComponents('update');
+        dispatch(setViewModalDivision('update'));
+    };
+
+    setDeviceIdx = (event, deviceCode) => {
+        const {dispatch, assetState} = this.props;
+
+        dispatch(getDeviceByIdx(deviceCode, assetState.deviceType));
+        dispatch(getDeviceOriByIdx(deviceCode, assetState.deviceType));
+
+        this.setComponents('read', deviceCode);
+    };
+
+    setComponents = (division, deviceCode) => {
+        //console.log("👑 setComponents : ", division);
+        const {dispatch, assetState} = this.props;
+
+        let tempViewModalContent;
+        let checkDivision;
+
+        let checkDeviceCode = deviceCode;
+
+        if (deviceCode === undefined) {
+            checkDeviceCode = 'temp';
+        }
+
+        // todo checkDeviceCode 사용 여부 확인 필요
+        switch (division) {
+            case 'read':
+                tempViewModalContent = (
+                    <AssetsView closeToggle={this.toggle}
+                                updateToggle={this.updateToggle}
+                                title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다." deviceCode={checkDeviceCode}
+                                assetState={assetState} dispatch={dispatch}
+                                setTotalManager={this.setTotalManager}
+                    />
+                );
+                break;
+            case "update":
+                tempViewModalContent = (
+                    <AssetsEdit closeToggle={this.toggle}
+                                title="장비 확인" message="자산관리 > 장비 수정 페이지 입니다."
+                                assetState={assetState} dispatch={dispatch}
+                                setTotalManager={this.setTotalManager}
+                                onSubmit={this.handleSubmit}
+                    />
+                );
+                break;
+            default:
+                tempViewModalContent = 'test';
+                break;
+        }
+
+        this.setState({
+            viewModalContent: tempViewModalContent,
+        });
     };
 
     componentDidUpdate = (prevProps, prevState) => {
-        console.log("prevState : ", prevState.initializeData);
-        console.log("prevProps : ", prevProps.assetState.deviceOri);
-
-        const {initializeData} = this.state;
-        const {initialize} = this.props;
-
-        if (prevState.initializeData !== prevProps.assetState.deviceOri) {
-            initialize(initializeData);
+        const {assetState, dispatch} = this.props;
+        if (assetState !== prevProps.assetState) {
+            this.setComponents(assetState.viewModalDivison);
         }
-        //initialize(initializeData);
     };
 
     render() {
-        console.log("👉👉👉👉👉👉👉👉 render start");
+        //console.log("👉👉👉👉👉👉👉👉 render start list");
         const {
-            title, message,
-            assetState, dispatch, handleSubmit,
-        } = this.props;
-        const {
-            deviceDataArray, initializeData,
-            modal, RackComponent, ModelComponent, AddIpComponent, AddSplaComponent,
-            RegisterId, IpArray, SplaArray, warehousingDateError,
-            searchCompanyName, searchCustomerId, searchOwnerCompanyId, searchToggleDivision,
-            manufacture, idc,
+            order, orderBy, selected, rowsPerPage, page, viewModalContent, modal, showPage,
+            pageCount, pageSize, pageNoNum, isOpenView, isOpenWrite, viewModalContentDivision,
         } = this.state;
-        const {showPassword} = this.state;
-        let deviceRawValue = new Map([]);
+        const {assetState, dispatch} = this.props;
 
-        const deviceStyle = {
-            textDecoration: '#ffdd67 underline',
-            fontWeight: 'bold',
-        };
-
-        console.log("★★★★ initializeData : ", initializeData);
+        const tableCellClassName = 'material-table__cell material-table__cell-right';
 
         const modalClass = classNames({
             'assets_write__modal-dialog': true,
@@ -490,703 +534,217 @@ class AssetsEdit extends PureComponent {
             'assets_write__modal-dialog--header': false,
         });
 
-        let viewContent;
+        //TODO length 값 0 일때도 처리해야함
 
-        const deviceValue = assetState.device[0];
-        deviceRawValue = assetState.deviceOri;
-        let IpList = '';
-        const SplaList = '';
-        const setIpArray = [];
+        const deviceServer = (
+            <Fragment>
+                <TableBody>
+                    {assetState.devices
+                        .sort(getSorting(order, orderBy))
+                        .slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)
+                        .map((d, index) => {
+                            const isSelected = this.isSelected(d.deviceCode);
+                            let ipSliceStr;
 
-        /*console.log("★★★★ size initializeData : ", initializeData.size);
-
-        if (initializeData.size !== undefined) {
-            // eslint-disable-next-line guard-for-in,no-restricted-syntax
-            for (const arrData in initializeData.inIpArray) {
-                console.log("arrData : ", arrData, ", value : ", initializeData[arrData]);
-                if (arrData.indexOf("ip", 0) === 0) {
-                    setIpArray.push(
-                        <Fragment key={arrData}>
-                            {
-                                arrData !== undefined && arrData !== "" && arrData !== "ip" && checkIP(initializeData[arrData])
-                                && (
-                                    <div className="modal_form__form-group-field">
-                                        <Field name={`${arrData}`}
-                                               component="input"
-                                               type="text"
-                                               className="input_col_5"
-                                        />
-                                        <svg className="mdi-icon " width="24" height="24"
-                                             fill="currentColor"
-                                             viewBox="0 0 24 24"
-                                             onClick={event => this.setHtmlMinus(`${arrData}`, 'ip', this)}
-                                             onKeyDown={event => this.setHtmlMinus(`${arrData}`, 'ip', this)}
-                                             role="button" tabIndex="0">
-                                            <MinusIcon/>
-                                        </svg>
-                                        <span id={`errorTextIp_${arrData}`} name="errorTextIp" style={{display: "none"}}>
-                                    ※ IP를 정확히 입력해 주세요.</span>
-                                    </div>
-                                )
+                            if (d.ip !== undefined) {
+                                ipSliceStr = d.ip.replace(/\|/gi, ", ").slice(0, -2);
+                            } else {
+                                ipSliceStr = "";
                             }
-                        </Fragment>,
-                    );
-                }
-            }
-        }*/
 
-
-        if (initializeData.size !== undefined) {
-            IpList = initializeData.inIpArray.map(
-                (d, index) => (
-                    <Fragment key={d}>
-                        {
-                            d !== undefined && d !== "" && d !== "ip"
-                            && (
-                                <div className="modal_form__form-group-field">
-                                    <Field name={`${d}`}
-                                           component="input"
-                                           type="text"
-                                           className="input_col_5"
-                                           onChange={this.handleChangeAdd}
-                                    />
-                                    <svg className="mdi-icon " width="24" height="24"
-                                         fill="currentColor"
-                                         viewBox="0 0 24 24"
-                                         onClick={event => this.setHtmlMinus(`${d}`, 'ip')}
-                                         onKeyDown={event => this.setHtmlMinus(`${d}`, 'ip')}
-                                         role="button" tabIndex="0">
-                                        <MinusIcon/>
-                                    </svg>
-                                    <span id={`errorTextIp_${d}`} name="errorTextIp" style={{display: "none"}}>
-                                    ※ IP를 정확히 입력해 주세요.</span>
-                                </div>
-                            )
-                        }
-                    </Fragment>
-                ),
-            );
-        }
-
-        /* const IpList = IpArray.map(
-             (d, index) => (
-                 <Fragment key={d}>
-                     {
-                         d !== undefined && d !== "" && d !== "ip"
-                         && (
-                             <div className="modal_form__form-group-field">
-                                 <Field name={`${d}`}
-                                        component="input"
-                                        type="text"
-                                        className="input_col_5"
-                                 />
-                                 <svg className="mdi-icon " width="24" height="24"
-                                      fill="currentColor"
-                                      viewBox="0 0 24 24"
-                                      onClick={event => this.setHtmlMinus(`${d}`, 'ip')}
-                                      onKeyDown={event => this.setHtmlMinus(`${d}`, 'ip')}
-                                      role="button" tabIndex="0">
-                                     <MinusIcon/>
-                                 </svg>
-                                 <span id={`errorTextIp_${d}`} name="errorTextIp" style={{display: "none"}}>
-                                     ※ IP를 정확히 입력해 주세요.</span>
-                             </div>
-                         )
-                     }
-                 </Fragment>
-             ),
-         );
-
-         const SplaList = SplaArray.map(
-             (d, index) => (
-                 <Fragment key={d}>
-                     {
-                         d !== undefined && d !== "" && d !== "spla"
-                         && (
-                             <div className="modal_form__form-group-field">
-                                 <Field
-                                     name={`${d}`}
-                                     component="select"
-                                 >
-                                     <option value="0">선택하세요.</option>
-                                     {assetState.codes.codeSpla
-                                         .map(c => (
-                                             <option key={c.codeId.toString()}
-                                                     value={c.codeId}>{c.name}</option>
-                                         ))}
-                                 </Field>
-                                 <svg className="mdi-icon " width="24" height="24"
-                                      fill="currentColor"
-                                      viewBox="0 0 24 24"
-                                      onClick={event => this.setHtmlMinus(`${d}`, 'spla')}
-                                      onKeyDown={event => this.setHtmlMinus(`${d}`, 'spla')}
-                                      role="button" tabIndex="0">
-                                     <MinusIcon/>
-                                 </svg>
-                             </div>
-                         )
-                     }
-                 </Fragment>
-             ),
-         );*/
-
-        switch (assetState.deviceType) {
-            case 'server':
-                viewContent = (
-                    <Fragment>
-                        <div className="modal_form__form-group">
-                                <span
-                                    className="modal_form__form-group-label modal_form_label_blue">CPU</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="cpu"
-                                    component="input"
-                                    type="text"
-                                    className="input_col_10"
-                                    placeholder="CPU"
-                                />
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                                <span
-                                    className="modal_form__form-group-label modal_form_label_blue">MEMORY</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="memory"
-                                    component="input"
-                                    type="text"
-                                    className="input_col_10"
-                                    placeholder="MEMORY"
-                                />
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                                <span
-                                    className="modal_form__form-group-label modal_form_label_blue">HDD</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="hdd"
-                                    component="input"
-                                    type="text"
-                                    className="input_col_10"
-                                    placeholder="HDD"
-                                />
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">IP</span>
-                            <div className="modal_form__form-group-field">
-                                <svg className="mdi-icon" width="24" height="24" fill="currentColor"
-                                     viewBox="0 0 24 24"
-                                     onClick={event => this.setHtmlPlus('ip')}
-                                     onKeyDown={event => this.setHtmlPlus('ip')}
-                                     role="button" tabIndex="0">
-                                    <PlusIcon/>
-                                </svg>
-                                {/*TODO 디자인 통합 필요*/}
-                                <span>※ 최대 등록 개수는 10개 입니다.</span>
-                            </div>
-                            {IpList}
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">Size</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="size"
-                                    component="select"
+                            return (
+                                <TableRow
+                                    key={d.deviceCode}
+                                    className="material-table__row"
+                                    role="checkbox"
+                                    aria-checked={isSelected}
+                                    tabIndex={-1}
+                                    selected={isSelected}
                                 >
-                                    <option value="0">선택하세요.</option>
-                                    {assetState.codes.codeSize
-                                        .map((d, index) => (
-                                            <option key={d.codeId.toString()}
-                                                    value={d.codeId}>{d.name}</option>
-                                        ))}
-                                </Field>
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">SPLA</span>
-                            {/*<div className="modal_form__form-group-field">
-                                <Field
-                                    name="spla"
-                                    component="select"
-                                >
-                                    <option value="0">선택하세요.</option>
-                                    {assetState.codes.codeSpla
-                                        .map((d, index) => (
-                                            <option key={d.codeId.toString()}
-                                                    value={d.codeId}>{d.name}</option>
-                                        ))}
-                                </Field>
-                                <svg className="mdi-icon " width="24" height="24" fill="currentColor"
-                                     viewBox="0 0 24 24"
-                                     onClick={event => this.setHtmlPlus('spla')}
-                                     onKeyDown={event => this.setHtmlPlus('spla')}
-                                     role="button" tabIndex="0">
-                                    <PlusIcon/>
-                                </svg>
-                                TODO 디자인 통합 필요
-                                <span>※ 최대 등록 개수는 10개 입니다.</span>
-                            </div>*/}
-                            <div className="modal_form__form-group-field">
-                                <svg className="mdi-icon" width="24" height="24" fill="currentColor"
-                                     viewBox="0 0 24 24"
-                                     onClick={event => this.setHtmlPlus('spla')}
-                                     onKeyDown={event => this.setHtmlPlus('spla')}
-                                     role="button" tabIndex="0">
-                                    <PlusIcon/>
-                                </svg>
-                                {/*TODO 디자인 통합 필요*/}
-                                <span>※ 최대 등록 개수는 10개 입니다.</span>
-                            </div>
-                            {SplaList}
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">Rack Tag</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="rackTag"
-                                    component="input"
-                                    className="input_col_5"
-                                    type="text"
-                                    placeholder="Rack Tag"
-                                />
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">Rack Location</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="rackLoc"
-                                    component="input"
-                                    className="input_col_5"
-                                    type="number"
-                                    placeholder="Rack Location"
-                                />
-                            </div>
-                        </div>
-                    </Fragment>
-                );
-                break;
-            case 'network':
-                viewContent = (
-                    <Fragment>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">IP</span>
-                            <div className="modal_form__form-group-field">
-                                <svg className="mdi-icon" width="24" height="24" fill="currentColor"
-                                     viewBox="0 0 24 24"
-                                     onClick={event => this.setHtmlPlus('ip')}
-                                     onKeyDown={event => this.setHtmlPlus('ip')}
-                                     role="button" tabIndex="0">
-                                    <PlusIcon/>
-                                </svg>
-                                {/*TODO 디자인 통합 필요*/}
-                                <span>※ 최대 등록 개수는 10개 입니다.</span>
-                            </div>
-                            {IpList}
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">FIRMWARE VERSION</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="firmwareVersion"
-                                    component="input"
-                                    className="input_col_5"
-                                    type="text"
-                                    placeholder="FIRMWARE VERSION"
-                                />
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">Rack Tag</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="rackTag"
-                                    component="input"
-                                    className="input_col_5"
-                                    type="text"
-                                    placeholder="Rack Tag"
-                                />
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">Rack Location</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="rackLoc"
-                                    component="input"
-                                    className="input_col_5"
-                                    type="number"
-                                    placeholder="Rack Location"
-                                />
-                            </div>
-                        </div>
-                    </Fragment>
-                );
-                break;
-            case 'part':
-                viewContent = (
-                    <Fragment>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">WARRANTY</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="warranty"
-                                    component="input"
-                                    className="input_col_5"
-                                    type="text"
-                                    placeholder="WARRANTY"
-                                />
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">Rack Size</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="rackCode"
-                                    component="select"
-                                >
-                                    <option value="0">선택하세요.</option>
-                                    {assetState.codes.codeRackCode
-                                        .map((d, index) => (
-                                            <option key={d.codeId.toString()}
-                                                    value={d.codeId}>{d.name}</option>
-                                        ))}
-                                </Field>
-                            </div>
-                        </div>
-                    </Fragment>
-                );
-                break;
-            default:
-                break;
-        }
+                                    <TableCell className="material-table__cell"
+                                               padding="checkbox"
+                                               onClick={event => this.handleClick(event, d.deviceCode)}>
+                                        <Checkbox checked={isSelected}
+                                                  className="material-table__checkbox"/>
+                                    </TableCell>
+                                    {/*<TableCell
+                                        className={tableCellClassName}
+                                    >No
+                                        {d.Idx}
+                                    </TableCell>*/}
+                                    <TableCell
+                                        className={tableCellClassName}
+                                        onClick={event => this.setDeviceIdx(event, d.deviceCode)}
+                                    >{/*장비코드*/}
+                                        <b className="text_cor_green mouse_over_list">
+                                            <div className="assets_add_modal_div" onClick={this.toggle}
+                                                 onKeyDown={this.toggle}
+                                                 role="button" tabIndex="0"><span
+                                                className="circle__ste"/>{d.deviceCode}</div>
+                                        </b>
+                                    </TableCell>
+                                    <TableCell
+                                        className={tableCellClassName}
+                                    >{/*구분*/}{d.deviceType}
+                                    </TableCell>
+                                    <TableCell
+                                        className={tableCellClassName}
+                                    >{/*제조사*/}{d.manufacture}
+                                    </TableCell>
+                                    <TableCell
+                                        className={tableCellClassName}
+                                    >{/*모델명*/}{d.model}
+                                    </TableCell>
+                                    <TableCell
+                                        className={tableCellClassName}
+                                    >{/*소유권*/}{d.ownership}
+                                    </TableCell>
+                                    <TableCell
+                                        className={tableCellClassName}
+                                    >{/*소유권구분*/}{d.ownerCompany}
+                                    </TableCell>
+                                    <TableCell
+                                        className={tableCellClassName}
+                                    >{/*고객사*/}
+                                        {d.customerName}
+                                        {/*<b className="text_cor_orange">{d.customerName}</b>*/}
+                                        {/*<b className="text_cor_red">{d.customer}</b>*/}
+                                    </TableCell>
+                                    <TableCell
+                                        className={tableCellClassName}
+                                    >{/*IDC/위치*/}{d.idc}/{d.rack}
+                                    </TableCell>
+                                    <TableCell
+                                        className={tableCellClassName}
+                                    >{/*용도*/}{d.purpose}
+                                    </TableCell>
 
-        // TODO 디자인은 나중에
-        const viewSearchCompany = (
-            <TableBody>
-                {assetState.company.length !== undefined
-                    ? (
-                        assetState.company.map(d => (
-                            <TableRow key={d.userId.toString()}>
-                                <TableCell className="material-table__cell material-table__cell-right"
-                                >{/*회사명*/}
-                                    <b className="text_cor_green mouse_over_list">
-                                        <div className="assets_add_modal_div"
-                                             onClick={event => this.setSearchCompany(d.userId)}
-                                             onKeyDown={event => this.setSearchCompany(d.userId)}
-                                             role="button" tabIndex="0"><span
-                                            className="circle__ste"/>{d.name}</div>
-                                    </b>
-                                </TableCell>
-                                <TableCell className="material-table__cell material-table__cell-right"
-                                >{/*회사 대표 ID*/}{d.userId}
-                                </TableCell>
-                                <TableCell className="material-table__cell material-table__cell-right"
-                                >{/*회사 email*/}{d.email}
-                                </TableCell>
-                            </TableRow>
-                        ))
-                    )
-                    : (
-                        <TableRow>
-                            <TableCell>검색 하세요.</TableCell>
-                        </TableRow>
-                    )
-                }
-            </TableBody>
+                                    {assetState.deviceType === 'server'
+                                    && (
+                                        <Fragment>
+                                            <TableCell
+                                                className={tableCellClassName}
+                                            >{/*IP*/}{ipSliceStr}
+                                            </TableCell>
+                                            <TableCell
+                                                className={tableCellClassName}
+                                            >{/*크기*/}{d.size}
+                                            </TableCell>
+                                        </Fragment>
+                                    )}
+                                    {assetState.deviceType === 'network'
+                                    && (
+                                        <Fragment>
+                                            <TableCell
+                                                className={tableCellClassName}
+                                            >{/*IP*/}{ipSliceStr}
+                                            </TableCell>
+                                            <TableCell
+                                                className={tableCellClassName}
+                                            >{/*HW S/N*/}{d.hwSn}
+                                            </TableCell>
+                                            <TableCell
+                                                className={tableCellClassName}
+                                            >{/*펌웨어*/}{d.firmwareVersion}
+                                            </TableCell>
+                                            <TableCell
+                                                className={tableCellClassName}
+                                            >{/*입고일*/}{d.warehousingDate}
+                                            </TableCell>
+                                        </Fragment>
+                                    )}
+                                    {assetState.deviceType === 'part'
+                                    && (
+                                        <Fragment>
+                                            <TableCell
+                                                className={tableCellClassName}
+                                            >{/*HW S/N*/}{d.hwSn}
+                                            </TableCell>
+                                            <TableCell
+                                                className={tableCellClassName}
+                                            >{/*워런티*/}{d.warranty}
+                                            </TableCell>
+                                            <TableCell
+                                                className={tableCellClassName}
+                                            >{/*입고일*/}{d.warehousingDate}
+                                            </TableCell>
+                                        </Fragment>
+                                    )}
+                                </TableRow>
+                            );
+                        })}
+                </TableBody>
+            </Fragment>
         );
 
         return (
-            <div>
-                <div className="assets_write__modal__header">
-                    <p className="text-modal assets_write__modal__title">{title}
-                        &nbsp;&nbsp;
-                        <span className="assets_write__modal__title_sub">{message}</span></p>
-                    <button className="lnr lnr-cross assets_write__modal__close-btn" type="button"
-                            onClick={this.onClose}/>
-                </div>
-                <div className="assets_write__modal__body assets_write__modal__tableLine">
-                    <form className="modal_form modal_form--horizontal"
-                          onSubmit={handleSubmit}>
-                        {/*                        onSubmit={this.handleSubmit}>*/}
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label text_cor_green">장비코드</span>
-                            <div className="modal_form__form-group-field">
-                                <b><h6 style={deviceStyle}>{deviceValue.deviceCode}</h6></b>
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">IDC / 랙번호</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="idc"
-                                    component="select"
-                                    onChange={this.handleChange}>
-                                    <option value="0">선택하세요.</option>
-                                    {assetState.codes.codeIdc
-                                        .map((d, index) => (
-                                            <option key={d.codeId.toString()}
-                                                    value={d.codeId}>{d.name}</option>
-                                        ))}
-                                </Field>
-                                &nbsp;&nbsp;
-                                {idc ? (
-                                    RackComponent
-                                ) : (
-                                    <Field
-                                        name="rack"
-                                        component="select">
-                                        <option value="0">선택하세요.</option>
-                                        {assetState.subCodes.data
-                                            .map(d => (Number(d.codeId) === Number(deviceValue.idc)
-                                                && <option key={d.id} value={d.id}>{d.name}</option>))
-                                        }
-                                    </Field>
-                                )}
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">제조사 / 모델명</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="manufacture"
-                                    component="select"
-                                    onChange={this.handleChange}>
-                                    <option value="0">선택하세요.</option>
-                                    {assetState.codes.codeManufacture
-                                        .map((d, index) => (
-                                            <option key={d.codeId.toString()}
-                                                    value={d.codeId}>{d.name}</option>
-                                        ))}
-                                </Field>
-                                {/*                                <select name="manufacture"
-                                        onChange={this.handleChange}>
-                                    <option value="0">선택하세요.</option>
-                                    {assetState.codes.codeManufacture
-                                        .map((d, index) => (
-                                            <option key={d.codeId.toString()}
-                                                    value={d.codeId.toString()}>{d.codeId}/{d.name}</option>
-                                        ))}
-                                </select>*/}
-                                &nbsp;&nbsp;
-                                {manufacture ? (
-                                    ModelComponent
-                                ) : (
-                                    <Field
-                                        name="model"
-                                        component="select">
-                                        <option value="0">선택하세요.</option>
-                                        {assetState.subCodes.data
-                                            .map(d => (Number(d.codeId) === Number(deviceRawValue.manufacture)
-                                                && <option key={d.id} value={d.id}>{d.name}</option>))
-                                        }
-                                    </Field>
-                                )}
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">장비구분</span>
-                            <Field
-                                name="deviceType"
-                                component={renderSelectCustomField}
-                                codeDivision={{
-                                    code: assetState.codes.codeDeviceType,
-                                }}
-                            />
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label text_cor_orange">고객사</span>
-                            <Field
-                                name="customer"
-                                type="text"
-                                className="input_col_7"
-                                placeholder="고객사"
-                                label={{name: deviceValue.customerName, id: deviceValue.customer}}
-                                initialValues={searchCustomerId}
-                                component={renderCustomerField}
-                                /*ref={(ref) => { this.input = ref; }}*/
-                                searchToggle={event => this.searchToggle('customer')}
-                                ref={(ref) => {
-                                    // eslint-disable-next-line react/no-find-dom-node
-                                    const node = findDOMNode(ref);
-                                    if (node) {
-                                        // Material UI wraps input element,
-                                        // use querySelector() to obtain reference to it
-                                        // if not using MUI, querySelector() likely not needed
-                                        this.customerField = node.querySelector("input");
-                                    }
-                                }}
-                                withRef
-                            />
-                            {/* eslint-disable-next-line no-return-assign */}
-                            {/*<input ref={(ref => this.input = ref)}/>*/}
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">소유권/소유권구분</span>
-                            <Field
-                                name="ownership"
-                                component={renderSelectCustomField}
-                                codeDivision={{
-                                    code: assetState.codes.codeOwnership,
-                                }}
-                            />
-                            <Field
-                                name="ownershipDiv"
-                                component={renderSelectCustomField}
-                                codeDivision={{
-                                    code: assetState.codes.codeOwnershipDiv,
-                                }}
-                            />
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">소유업체명</span>
-                            <Field
-                                name="ownerCompany"
-                                type="text"
-                                className="input_col_7"
-                                placeholder="소유업체명"
-                                initialValues={searchOwnerCompanyId}
-                                label={{name: deviceValue.ownerCompanyName, id: deviceValue.ownerCompany}}
-                                component={renderCustomerField}
-                                searchToggle={event => this.searchToggle('ownerCompany')}
-                                ref={(ref) => {
-                                    // eslint-disable-next-line react/no-find-dom-node
-                                    const node = findDOMNode(ref);
-                                    if (node) {
-                                        // Material UI wraps input element,
-                                        // use querySelector() to obtain reference to it
-                                        // if not using MUI, querySelector() likely not needed
-                                        this.ownerCompanyField = node.querySelector("input");
-                                    }
-                                }}
-                                withRef
-                            />
-                        </div>
-                        <div className="modal_form__form-group">
-                                <span
-                                    className="modal_form__form-group-label modal_form_label_blue">HW S/N</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="hwSn"
-                                    component="input"
-                                    type="text"
-                                    className="input_col_10"
+            <Col md={12} lg={12}>
+                <Card>
+                    <CardBody>
+                        <div className="material-table__wrap">
+                            <Table className="material-table" size="small">
+                                <AssetsHead
+                                    numSelected={[...selected].filter(el => el[1]).length}
+                                    order={order}
+                                    orderBy={orderBy}
+                                    onSelectAllClick={this.handleSelectAllClick}
+                                    onRequestSort={this.handleRequestSort}
+                                    rowCount={Number(assetState.devices.length)}
+                                    assetState={assetState}
                                 />
-                            </div>
+                                {deviceServer}
+                            </Table>
                         </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">임대기간</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="rentDate"
-                                    className="input_col_5"
-                                    value={deviceRawValue.rentDate}
-                                    component={renderIntervalDatePickerField}
-                                />
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">입고일</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="warehousingDate"
-                                    className="input_col_5"
-                                    value={deviceRawValue.warehousingDate}
-                                    component={renderDatePickerField}
-                                />
-                                <div className="modal_form__form-group-icon">
-                                    <CalendarBlankIcon/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">원가</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="cost"
-                                    component="input"
-                                    className="input_col_5"
-                                    type="number"
-                                    placeholder="원가"
-                                />
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">용도</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="purpose"
-                                    component="input"
-                                    className="input_col_10"
-                                    type="text"
-                                    placeholder="용도"
-                                    onChange={this.handleChange}
-                                />
-                            </div>
-                        </div>
-                        {/*---------------------------------------------------------------------------------*/}
-                        {viewContent}
-                        {/*---------------------------------------------------------------------------------*/}
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">기타사항</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="contents"
-                                    component="textarea"
-                                />
-                            </div>
-                        </div>
-                        <div className="modal_btn">
-                            <ButtonToolbar className="assets_write__modal__footer">
-                                <Button className="assets_write__modal_ok" color="primary"
-                                        onClick={this.onClose}>Submit</Button>
-                                <Button className="assets_write__modal_cancel"
-                                        onClick={this.onClose}>Cancel</Button>
-                                <Button type="submit">Submit[test]</Button>
-                            </ButtonToolbar>
-                        </div>
-                    </form>
-                    <Modal
-                        isOpen={modal}
-                        toggle={this.searchToggle}
-                        className={`assets_write__modal-dialog assets_write__modal-dialog--success ${modalClass}`}
-                    >
-                        <div className="assets_write__modal__body assets_write__modal__tableLine">
-                            <div className="modal_form__form-group">
-                                <span
-                                    className="modal_form__form-group-label text_cor_green">
-                                    고객사명 : <input name="searchCompanyName" value={searchCompanyName}
-                                                  onChange={this.handleChange}/>
-                                </span>
-                                <button type="submit" onClick={event => this.searchCompany()}>Search</button>
-                                <br/>
-                                <span className="modal_form__form-group-label text_cor_blue">
-                                    ※ 업체명으로 검색하세요.
-                                </span>
-                                <div className="modal_form__form-group-field">
-                                    <Table className="material-table" size="small">
-                                        {viewSearchCompany}
-                                    </Table>
-                                </div>
-                            </div>
-                        </div>
-                        <ButtonToolbar className="assets_write__modal__footer_comment">
-                            {/*<Button className="assets_write__modal_ok"
-                                    color="success"
-                                    onClick={this.searchToggle}>Submit</Button>&nbsp;&nbsp;*/}
-                            <Button className="assets_write__modal_cancel"
-                                    onClick={this.searchToggle}>Cancel</Button>
-                        </ButtonToolbar>
-                    </Modal>
-                </div>
-            </div>
+                        {/*장비 상세*/}
+                        <Modal
+                            isOpen={isOpenView}
+                            modalClassName="ltr-support"
+                            className={`assets_write__modal-dialog 
+                            assets_write__modal-dialog ${modalClass}`}
+                        >
+                            {viewModalContent}
+                        </Modal>
+                        {/*장비 등록*/}
+                        <Modal
+                            isOpen={isOpenWrite}
+                            modalClassName="ltr-support"
+                            className={`assets_write__modal-dialog 
+                            assets_write__modal-dialog ${modalClass}`}
+                        >
+                            <AssetsWrite closeToggle={this.toggle}
+                                         title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다."/>
+                        </Modal>
+                        <TablePagination
+                            component="div"
+                            className="material-table__pagination"
+                            count={Number(assetState.page.count)}
+                            rowsPerPage={rowsPerPage}
+                            page={pageNoNum}
+                            backIconButtonProps={{
+                                'aria-label': 'Previous Page',
+                                disabled: false,
+                                onClick: this.handleChangePageBack,
+                            }}
+                            nextIconButtonProps={{'aria-label': 'Next Page'}}
+                            onChangePage={this.handleChangePage}
+                            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                            rowsPerPageOptions={[10, 50, 100]}
+                            dir="ltr"
+                            labelDisplayedRows={
+                                ({to, count}) => (
+                                    <span
+                                        style={{fontSize: 14}}><span>page: {showPage}</span>&nbsp;&nbsp;&nbsp; total : {count}
+                                    </span>
+                                )
+                            }
+                            SelectProps={{
+                                inputProps: {'aria-label': 'rows per page'},
+                                native: true,
+                            }}
+                        />
+                    </CardBody>
+                </Card>
+            </Col>
         );
     }
 }
-
-export default reduxForm({
-    form: 'AssetsEditForm', // a unique identifier for this form
-    validate,
-})(withTranslation('common')(AssetsEdit));

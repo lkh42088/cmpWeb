@@ -942,7 +942,7 @@ class AssetsEdit extends PureComponent {
                                         component="select">
                                         <option value="0">선택하세요.</option>
                                         {assetState.subCodes.data
-                                            .map(d => (Number(d.codeId) === Number(deviceValue.idc)
+                                            .map(d => (Number(d.codeId) === Number(deviceRawValue.idc)
                                                 && <option key={d.id} value={d.id}>{d.name}</option>))
                                         }
                                     </Field>
@@ -999,7 +999,7 @@ class AssetsEdit extends PureComponent {
                             />
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label text_cor_orange">고객사</span>
+                            <span className="modal_form__form-group-label">고객사</span>
                             <Field
                                 name="customer"
                                 type="text"
@@ -1161,7 +1161,8 @@ class AssetsEdit extends PureComponent {
                                     고객사명 : <input name="searchCompanyName" value={searchCompanyName}
                                                   onChange={this.handleChange}/>
                                 </span>
-                                <button type="submit" onClick={event => this.searchCompany()}>Search</button>
+                                <button type="submit"
+                                        onClick={event => this.searchCompany()}>검색</button>
                                 <br/>
                                 <span className="modal_form__form-group-label text_cor_blue">
                                     ※ 업체명으로 검색하세요.
