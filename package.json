@@ -102,6 +102,7 @@
     "recompose": "^0.30.0",
     "redux": "^4.0.1",
     "redux-actions": "latest",
+    "redux-devtools-extension": "^2.13.8",
     "redux-form": "^8.1.0",
     "redux-logger": "^3.0.6",
     "redux-saga": "^1.1.3",

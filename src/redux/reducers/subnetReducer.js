@@ -1,4 +1,5 @@
 import { handleActions } from 'redux-actions';
+import produce from 'immer';
 import {
     INIT_SUBNET,
     CREATE_SUBNET,
@@ -38,8 +39,9 @@ const subnetReducer = handleActions(
         [DELETE_SUBNET]: () => ({
 
         }),
-        [INPUT_SUBNET]: (state, { payload: { key, value }}) => (
-            { ...state, payload: { key, value }}),
+        [INPUT_SUBNET]: (state, { payload: { key, value }}) => produce(state, (draft) => {
+             draft[key] = value;
+        }),
     },
     initSubnet,
 );

@@ -8,22 +8,24 @@ import { inputSubnet } from '../../../../../redux/actions/subnetActions';
 const InputIpAddr = ({
     icon, nameText, holderText, activeIcon, id,
 }) => {
+    // Hook
     const dispatch = useDispatch();
-    if (icon) {
-        activeIcon = <Icon icon={activeIcon} />;
-    }
-
-    let isValid;
-    const msg = document.getElementById(id);
     const themeName = useSelector(({theme}) => ({
         className: theme.className,
     }));
-
     const { subnetMask, gateway } = useSelector(({subnetRd}) => ({
         subnetMask: subnetRd.subnetMask,
         gateway: subnetRd.gateway,
     }));
 
+    // Variable
+    let isValid;
+    const msg = document.getElementById(id);
+    if (icon) {
+        activeIcon = <Icon icon={activeIcon} />;
+    }
+
+    // Function
     const validateIp = (value) => {
         isValid = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value);
         return isValid;
@@ -47,6 +49,7 @@ const InputIpAddr = ({
         }
     };
 
+    // 마우스 포인터가 필드를 벗어나면 redux 에 저장
     const handleBlur = (e) => {
         const { name, value } = e.target;
         isValid = validateIp(value);
