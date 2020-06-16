@@ -3,49 +3,56 @@ import {
     Card, CardBody, Col, Button, ButtonToolbar,
 } from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
-import { withTranslation } from 'react-i18next';
-import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from "react-redux";
-import DeviceSearch from "./DeviceSearch";
 import InputIpAddr from "./InputIpAddr";
-import { inputSubnet } from "../../../../../redux/actions/subnetActions";
+import {createSubnet, initSubnet, inputSubnet} from "../../../../../redux/actions/subnetActions";
 
 // src/scss/component/form.scss
-const SubnetWriteForm = ({
-    input,
-    onChange,
-    onClick,
-    onMouseOver,
-    onSubmit,
-    }) => {
+const SubnetWriteForm = () => {
+    let isValid;
     const dispatch = useDispatch();
     const {
         deviceCode, subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
     } = useSelector(({ subnetRd }) => ({
-        // deviceCode: createSubnet.deviceCode,
-        // subnetTag: createSubnet.subnetTag,
-        // subnetStart: createSubnet.subnetStart,
-        // subnetEnd: createSubnet.subnetEnd,
-        // subnetMask: createSubnet.subnetMask,
-        // gateway: createSubnet.gateway,
+        deviceCode: subnetRd.deviceCode,
+        subnetTag: subnetRd.subnetTag,
+        subnetStart: subnetRd.subnetStart,
+        subnetEnd: subnetRd.subnetEnd,
+        subnetMask: subnetRd.subnetMask,
+        gateway: subnetRd.gateway,
     }));
 
-    /* useEffect */
-    useEffect(() => {
-        console.log();
-    }, []);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        console.log("name:", name, ", value:", value);
+        dispatch(inputSubnet({key: name, value}));
+    };
 
-    const handleChange = () => {
-    //     const { value } = e.target.value;
-    //     console.log("data : ", value);
-    //     dispatch(inputSubnet);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+    };
+
+    const handleCreate = (e) => {
+        e.preventDefault();
+        if (subnetStart && subnetEnd && subnetMask) {
+            console.log("handleCreate.....");
+            dispatch(createSubnet({
+                deviceCode, subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
+            }));
+        }
+        //dispatch(initSubnet());
+    };
+
+    const handleCancel = (e) => {
+        e.preventDefault();
+        dispatch(initSubnet());
     };
 
     return (
         <Col xs={12} md={12} lg={12} xl={8} cssModule="table">
             <Card>
                 <CardBody>
-                    <form className="form form--horizontal" onSubmit={onSubmit}>
+                    <form className="form form-horizontal" onSubmit={handleSubmit}>
                         {/*<DeviceSearch onClick={onClick} onChange={handleChange} /> /!*장비 검색*!/*/}
                         <div className="form__form-group">
                             <span className="form__form-group-label">SUBNET</span>
@@ -53,13 +60,13 @@ const SubnetWriteForm = ({
                                 <InputIpAddr
                                     id="ipaddr1"
                                     nameText="subnetStart"
-                                    holderText="Start"
-                                    onChange={handleChange} />
+                                    text={subnetStart}
+                                    holderText="Start" />
                                 <InputIpAddr
                                     id="ipaddr2"
                                     nameText="subnetEnd"
-                                    holderText="End"
-                                    onChange={handleChange} />
+                                    // text={subnetEnd}
+                                    holderText="End" />
                             </div>
                         </div>
                         <div className="form__form-group">
@@ -68,7 +75,8 @@ const SubnetWriteForm = ({
                                 <div className="form__form-group-icon">
                                     {/*<WebIcon />*/}
                                 </div>
-                                <Field
+                                <input
+                                    id="subnetTag"
                                     name="subnetTag"
                                     component="input"
                                     type="text"
@@ -83,8 +91,9 @@ const SubnetWriteForm = ({
                                 <InputIpAddr
                                     id="ipaddr3"
                                     nameText="subnetMask"
+                                    // text={subnetMask}
                                     holderText="Mask"
-                                    onChange={handleChange} />
+                                />
                             </div>
                         </div>
                         <div className="form__form-group">
@@ -93,15 +102,18 @@ const SubnetWriteForm = ({
                                 <InputIpAddr
                                     id="ipaddr4"
                                     nameText="gateway"
+                                    // text={gateway}
                                     holderText="Gateway"
-                                    onChange={handleChange} />
+                                />
                             </div>
                         </div>
                         {/*Button*/}
                         <ButtonToolbar className="form__button-toolbar">
-                            <Button color="primary" type="submit">Submit</Button>
-                            <Button type="button" onClick={onClick}>
-                                Cancel
+                            <Button color="primary" type="submit" onClick={handleCreate}>
+                                생성
+                            </Button>
+                            <Button type="button" onClick={handleCancel}>
+                                취소
                             </Button>
                         </ButtonToolbar>
                     </form>
@@ -112,13 +124,17 @@ const SubnetWriteForm = ({
 };
 
 SubnetWriteForm.propTypes = {
-    input: PropTypes.shape().isRequired,
-    onSubmit: PropTypes.func.isRequired,
-    onMouseOver: PropTypes.func.isRequired,
-    onClick: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
+    // input: PropTypes.shape().isRequired,
+    // onSubmit: PropTypes.func.isRequired,
+    // onMouseOver: PropTypes.func.isRequired,
+    // onClick: PropTypes.func.isRequired,
+    // onChange: PropTypes.func.isRequired,
 };
 
-export default reduxForm({
-    form: 'create_subnet',
-})(withTranslation('common')(SubnetWriteForm));
+export default SubnetWriteForm;
+// export default reduxForm({
+//     form: 'create_subnet',
+// })(SubnetWriteForm);
+// export default reduxForm({
+//     form: 'create_subnet',
+// })(withTranslation('common')(SubnetWriteForm));

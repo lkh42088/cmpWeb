@@ -29,6 +29,7 @@ import {tempSetUser, check, userSaga} from "../../redux/actions/accountActions";
 import {regUserSaga} from "../../redux/actions/regUserActions";
 import {userListSaga} from "../../redux/actions/usersActions";
 import {companiesSaga} from "../../redux/actions/companiesActions";
+import {createSubnetSaga} from "../../redux/actions/subnetActions";
 
 const rootReducer = combineReducers({
     form: reduxFormReducer, // mounted under "form",
@@ -58,6 +59,7 @@ export function* rootSaga() {
         regUserSaga(),
         userListSaga(),
         companiesSaga(),
+        createSubnetSaga(),
     ]);
 }
 
@@ -65,7 +67,7 @@ const logger = createLogger();
 export const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
     rootReducer,
-    composeWithDevTools(applyMiddleware(ReduxThunk, sagaMiddleware /* , logger */)),
+    composeWithDevTools(applyMiddleware(ReduxThunk, sagaMiddleware, logger)),
 );
 
 export function loadUser() {

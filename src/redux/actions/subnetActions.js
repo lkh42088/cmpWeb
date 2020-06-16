@@ -1,6 +1,7 @@
 import {createAction} from "redux-actions";
 import {takeLatest} from 'redux-saga/effects';
 import createRequestSaga, {createRequestActionTypes} from "../../lib/createRequestSaga";
+import * as subnet from '../../lib/api/subnet';
 
 /******************************************************************************
  * 1. Action Type
@@ -41,12 +42,12 @@ export const inputSubnet = createAction(
 /******************************************************************************
  * 3. Saga
  *****************************************************************************/
-//const createSubnet = createRequestSaga(CREATE_SUBNET, subnet.createSubnetSaga);
+const sendCreateSubnetSaga = createRequestSaga(CREATE_SUBNET, subnet.createSubnet);
 
 
 /******************************************************************************
  * 4. Saga Generation Function
  *****************************************************************************/
 export function* createSubnetSaga() {
-    yield takeLatest(CREATE_SUBNET, createSubnetSaga);
+    yield takeLatest(CREATE_SUBNET, sendCreateSubnetSaga);
 }
