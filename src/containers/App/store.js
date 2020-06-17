@@ -36,8 +36,8 @@ const rootReducer = combineReducers({
     theme: themeReducer,
     rtl: rtlReducer,
     sidebar: sidebarReducer,
-    cryptoTable: cryptoTableReducer,
-    newOrder: newOrderTableReducer,
+    // cryptoTable: cryptoTableReducer,
+    // newOrder: newOrderTableReducer,
     customizer: customizerReducer,
     todos: todoReducer,
     assets: assetsReducer,
@@ -67,7 +67,7 @@ const logger = createLogger();
 export const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
     rootReducer,
-    composeWithDevTools(applyMiddleware(ReduxThunk, sagaMiddleware, logger)),
+    composeWithDevTools(applyMiddleware(ReduxThunk, sagaMiddleware /*, logger*/)),
 );
 
 export function loadUser() {

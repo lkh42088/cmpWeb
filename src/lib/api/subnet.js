@@ -1,9 +1,9 @@
 import client from "./client";
 
 export const createSubnet = ({
-    deviceCode, subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
+    subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
 }) => client.post('/v1/subnet/create', {
-    deviceCode, subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
+    subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
 });
 
 export const getSubnet = ({

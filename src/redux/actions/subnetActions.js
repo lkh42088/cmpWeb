@@ -20,9 +20,9 @@ export const INPUT_SUBNET = 'subnet/INPUT';
  *****************************************************************************/
 export const initSubnet = createAction(INIT_SUBNET);
 export const createSubnet = createAction(CREATE_SUBNET, ({
-    deviceCode, subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
+    subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
 }) => ({
-    deviceCode, subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
+    subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
 }));
 // 장비코드로 검색한 결과를 표시
 export const searchDeviceSubnet = createAction(SEARCH_DEVICE_SUBNET, ({

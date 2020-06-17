@@ -13,6 +13,9 @@ const InputIpAddr = ({
     const themeName = useSelector(({theme}) => ({
         className: theme.className,
     }));
+    const formRd = useSelector(({form}) => ({
+        subnetRd: form.subnetRd,
+    }));
 
     // Variable
     let isValid;
@@ -22,11 +25,10 @@ const InputIpAddr = ({
     }
 
     // Function
-    const validateIp = (value) => {
-        isValid = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value);
-        return isValid;
-    };
-
+    const required = value => (value);
+    const validateIp = value => (value && !/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(value)
+            ? '잘못된 IP 형식 입니다.'
+            : undefined);
     const handleChange = (e) => {
         const { name, value } = e.target;
         console.log("[InputIpAddr] name:", name, ",value:", value);
@@ -49,7 +51,7 @@ const InputIpAddr = ({
     // 마우스 포인터가 필드를 벗어나면 redux 에 저장
     const handleBlur = (e) => {
         const { name, value } = e.target;
-        isValid = validateIp(value);
+        // isValid = validateIp(value);
         // if (isValid) {
         //     dispatch(inputSubnet({key: name, value}));
         // }
@@ -60,24 +62,21 @@ const InputIpAddr = ({
             <div className="form__form-group-icon">
                 {activeIcon}
             </div>
-            <input
+            <Field
                 id={id}
                 name={nameText}
                 component="input"
                 type="ip"
                 value={text}
                 placeholder={holderText}
-                onChange={handleChange}
-                onBlur={handleBlur}
+                validate={validateIp()}
+                // onChange={handleChange}
+                // onBlur={handleBlur}
             />
         </>
     );
 };
 
-export default InputIpAddr;
-// export default reduxForm({
-//    form: 'input_ip_address',
-// })(InputIpAddr);
-// export default reduxForm({
-//     form: 'input_ip_address',
-// })(withTranslation('common')(InputIpAddr));
+export default reduxForm({
+    form: 'input_ip_address',
+})(InputIpAddr);
