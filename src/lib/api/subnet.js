@@ -6,8 +6,6 @@ export const createSubnet = ({
     subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
 });
 
-export const getSubnet = ({
-    deviceCode, subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
-}) => client.get('/v1/subnet/', {
-    deviceCode, subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
-});
+export const readSubnet = ({
+    size, offset, orderby, order,
+}) => client.get(`/v1/subnet/${size}/${offset}/${orderby}/${order}`);
