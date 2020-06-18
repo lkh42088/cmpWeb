@@ -60,11 +60,6 @@ function getSorting(order, orderBy) {
     };
 }
 
-/*api 요청 시 한번에 가지고 오는 device 개수
-* 변경 시 index.jsx도 변경해 줘야 함.
-* */
-const overNum = 1000;
-
 export default class AssetsList extends PureComponent {
     state = {
         order: 'asc',
@@ -100,8 +95,6 @@ export default class AssetsList extends PureComponent {
             contents: data.comment,
             deviceCode: data.deviceCode,
         });
-
-        //const jsonSubmitData = JSON.stringify(submitData);
 
         console.log("submitData : ", submitData);
 
@@ -286,54 +279,15 @@ export default class AssetsList extends PureComponent {
         dispatch(setDeviceSelected(newSelected));
     };
 
-    handleChangePageBackOld = () => {
-        const {assetState, dispatch} = this.props;
-        const {
-            orderBy, rowsPerPage, order, showPage, page,
-            pageCount, pageSize, pageNoNum,
-        } = this.state;
-        const checkPageNumCount = (showPage - 1) * rowsPerPage;
-
-        if (showPage !== 1) {
-            if (pageNoNum === 0) { // 초기화 된 상태
-                this.setState({
-                    pageCount: pageSize,
-                    pageNoNum: pageSize - 1,
-                    page: pageSize - 1,
-                    showPage: showPage - 1,
-                });
-
-                const dispatchVal = ({
-                    deviceType: assetState.deviceType,
-                    checkPageNumCount: Number(checkPageNumCount),
-                    orderBy,
-                    order,
-                    rowsPerPage,
-                    showPage,
-                    overNum: rowsPerPage,
-                    outFlag: assetState.deviceOutFlag,
-                });
-
-                dispatch(fetchPostsCheckCount(dispatchVal));
-            } else {
-                this.setState({
-                    pageCount: pageCount - 1,
-                    pageNoNum: pageNoNum - 1,
-                    page: pageNoNum - 1,
-                    showPage: showPage - 1,
-                });
-            }
-        }
-    };
-
     handleChangePageBack = () => {
         const {assetState, dispatch} = this.props;
         const {
             orderBy, rowsPerPage, order, showPage,
         } = this.state;
-        const checkPageNumCount = (showPage - 1) * rowsPerPage;
 
-        if (showPage !== 1) {
+        const pageCnt = assetState.page.page;
+
+        if (pageCnt !== 1) {
             this.setState({
                 pageCount: 1,
                 pageNoNum: 0,
@@ -343,51 +297,45 @@ export default class AssetsList extends PureComponent {
 
             const dispatchVal = ({
                 deviceType: assetState.deviceType,
-                checkPageNumCount: Number(checkPageNumCount),
                 orderBy,
                 order,
                 rowsPerPage,
-                showPage: showPage - 2,
+                showPage: pageCnt - 1,
                 overNum: rowsPerPage,
                 outFlag: assetState.deviceOutFlag,
             });
-            dispatch(fetchPostsCheckCount(dispatchVal));
+            dispatch(fetchPostsCheckCount(assetState, dispatchVal));
         }
     };
 
-    handleChangePage = (event, page) => {
+    handleChangePage = () => {
         const {assetState, dispatch} = this.props;
         const {
             orderBy, rowsPerPage, order, showPage,
-            pageCount, pageSize, pageNoNum,
         } = this.state;
-        const checkPageNumCount = (showPage + 1) * rowsPerPage;
 
-        this.setState({
-            pageCount: pageCount + 1,
-            pageNoNum: pageNoNum + 1,
-            showPage: showPage + 1,
-            page: pageNoNum + 1,
-        });
+        const pageCount = rowsPerPage * (assetState.page.page);
 
-        this.setState({
-            pageCount: 1,
-            pageNoNum: 0,
-            page: 0,
-        });
+        if (pageCount !== assetState.page.count && pageCount < assetState.page.count) {
+            this.setState({
+                pageCount: 1,
+                pageNoNum: 0,
+                showPage: showPage + 1,
+                page: 0,
+            });
 
-        const dispatchVal = ({
-            deviceType: assetState.deviceType,
-            checkPageNumCount: Number(checkPageNumCount),
-            orderBy,
-            order,
-            rowsPerPage,
-            showPage,
-            overNum: rowsPerPage,
-            outFlag: assetState.deviceOutFlag,
-        });
+            const dispatchVal = ({
+                deviceType: assetState.deviceType,
+                orderBy,
+                order,
+                rowsPerPage,
+                showPage: assetState.page.page + 1,
+                overNum: rowsPerPage,
+                outFlag: assetState.deviceOutFlag,
+            });
 
-        dispatch(fetchPostsCheckCount(dispatchVal));
+            dispatch(fetchPostsCheckCount(assetState, dispatchVal));
+        }
     };
 
     handleChangeRowsPerPage = (event) => {
@@ -401,7 +349,6 @@ export default class AssetsList extends PureComponent {
             showPage: 1,
             rowsPerPage: Number(event.target.value),
             pageCount: 1,
-            pageSize: overNum / Number(event.target.value),
             pageNoNum: 0,
         });
 
@@ -411,10 +358,10 @@ export default class AssetsList extends PureComponent {
             order,
             rowsPerPage: Number(event.target.value),
             page: 0,
-            showPage: 0,
+            showPage: 1,
             outFlag: assetState.deviceOutFlag,
         });
-        dispatch(fetchPostsCheckCount(dispatchVal));
+        dispatch(fetchPostsCheckCount(assetState, dispatchVal));
     };
 
     isSelected = (id) => {
@@ -445,7 +392,6 @@ export default class AssetsList extends PureComponent {
     };
 
     setComponents = (division, deviceCode) => {
-        //console.log("👑 setComponents : ", division);
         const {dispatch, assetState} = this.props;
 
         let tempViewModalContent;
@@ -705,15 +651,21 @@ export default class AssetsList extends PureComponent {
                                 disabled: false,
                                 onClick: this.handleChangePageBack,
                             }}
-                            nextIconButtonProps={{'aria-label': 'Next Page'}}
-                            onChangePage={this.handleChangePage}
+                            /*nextIconButtonProps={{'aria-label': 'Next Page'}}*/
+                            nextIconButtonProps={{
+                                'aria-label': 'Next Page',
+                                disabled: false,
+                                onClick: this.handleChangePage,
+                            }}
+                            /*onChangePage={this.handleChangePage}*/
                             onChangeRowsPerPage={this.handleChangeRowsPerPage}
                             rowsPerPageOptions={[10, 50, 100]}
                             dir="ltr"
                             labelDisplayedRows={
                                 ({to, count}) => (
                                     <span
-                                        style={{fontSize: 14}}><span>page: {showPage}</span>&nbsp;&nbsp;&nbsp; total : {count}
+                                        style={{fontSize: 14}}><span>page: {assetState.page.page}</span>
+                                        &nbsp;&nbsp;&nbsp; total : {count}
                                     </span>
                                 )
                             }

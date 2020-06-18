@@ -12,6 +12,7 @@ export const GET_COMMENTS_BY_DEVICECODE = 'GET_COMMENTS_BY_DEVICECODE';
 export const GET_CODES = 'GET_CODES';
 export const GET_SUBCODES = 'GET_SUBCODES';
 export const GET_COMPANIES = 'GET_COMPANIES';
+export const GET_DEVICES_SEARCH = 'GET_DEVICES_SEARCH';
 
 export const SET_DEVICE_DEVICECODE = 'SET_DEVICE_DEVICECODE';
 export const SET_COMMENT = 'SET_COMMENT';
@@ -22,6 +23,9 @@ export const SET_ADD_ELE_SPLA_DATA = 'SET_ADD_ELE_SPLA_DATA';
 export const SET_DEVICE_SELECTED = 'SET_DEVICE_SELECTED';
 export const SET_DEVICE_OUTFLAG = 'SET_DEVICE_OUTFLAG';
 export const SET_DEVICE_TYPE = 'SET_DEVICE_TYPE';
+export const SET_DEVICE_SEARCH = 'SET_DEVICE_SEARCH';
+export const SET_DEVICE_OUTFLAG_OPERATING = 'SET_DEVICE_OUTFLAG_OPERATING';
+export const SET_DEVICE_OUTFLAG_CARRYING = 'SET_DEVICE_OUTFLAG_CARRYING';
 
 // const API_ROUTE = 'http://127.0.0.1:8081/v1';
 // order direction
@@ -144,36 +148,14 @@ export const fetchPosts = assetState => async (dispatch) => {
     try {
         // first get device
         console.log("💎 fetchPosts start");
-       /* const rowsPerPage = checkUndefined(dispatchVal.rowsPerPage, 10);
-        const orderBy = checkUndefined(dispatchVal.orderBy, "DeviceCode");
-        const order = checkOrder(dispatchVal.order);
-        console.log("dispatchVal : ", dispatchVal);
 
-        /!*console.log("fetchPosts url -> ", `${API_ROUTE}/page/${dispatchVal.deviceType}/${dispatchVal.outFlag}/${dispatchVal.overNum}/${rowsPerPage}/${orderBy}/${order}`);*!/
-
-
-        const dispatchVal = ({
-            deviceType: 'server',
-            orderBy: 'DeviceCode',
-            order: 1,
-            rowsPerPage: 10,
-            overNum: 1000,
-            outFlag: assetState.deviceOutFlag,
-        });*/
-        
         const deviceTypeData = assetState.deviceType;
         const orderBy = 'DeviceCode';
         const order = 1;
         const rowsPerPage = 10;
-        const overNum = 10;
         const outFlag = assetState.deviceOutFlag;
-        const limitPage = 10;
         const offsetPage = 0;
-        console.log("fetchPosts url : ", `${API_ROUTE}/page/${deviceTypeData}/${outFlag}/${rowsPerPage}/1/${orderBy}/${order}`);
-
-       /* const res = await axios.get(`${API_ROUTE}/page/${dispatchVal.deviceType}/${dispatchVal.outFlag}/${dispatchVal.overNum}/${rowsPerPage}/${orderBy}/${order}`);*/
         const res = await axios.get(`${API_ROUTE}/page/${deviceTypeData}/${outFlag}/${rowsPerPage}/1/${orderBy}/${order}/${offsetPage}`);
-
 
         //console.log("res : ", res.data);
 
@@ -194,21 +176,41 @@ export const fetchPosts = assetState => async (dispatch) => {
     }
 };
 
-export const fetchPostsCheckCount = dispatchVal => async (dispatch) => {
+export const fetchPostsCheckCount = (assetState, dispatchVal) => async (dispatch) => {
     try {
         console.log("💎 fetchPostsCheckCount start");
         const order = checkOrder(dispatchVal.order);
-        const offsetPage = (dispatchVal.rowsPerPage * (dispatchVal.showPage));
-        const res = await axios.get(`${API_ROUTE}/page/${dispatchVal.deviceType}/${dispatchVal.outFlag}/${dispatchVal.rowsPerPage}/${dispatchVal.showPage + 1}/${dispatchVal.orderBy}/${order}/${offsetPage}`);
+        const offsetPage = (dispatchVal.rowsPerPage * (dispatchVal.showPage - 1));
+        //const res = await
+        //axios.get(`${API_ROUTE}/page/${dispatchVal.deviceType}/${dispatchVal.outFlag}/${dispatchVal.rowsPerPage}/${dispatchVal.showPage + 1}/${dispatchVal.orderBy}/${order}/${offsetPage}`);
+        const url = `${API_ROUTE}/search/devices/${dispatchVal.deviceType}/${dispatchVal.outFlag}/${dispatchVal.rowsPerPage}/${dispatchVal.showPage}/${dispatchVal.orderBy}/${order}/${offsetPage}`;
 
-        console.log("★★★★★ dispatchVal : ", dispatchVal);
+        const postJsonData = JSON.stringify(assetState.searchRd);
+        /*
+        outFlag
+        1 : true , 0 : false
+        outFlagRd: {
+            operatingFlag: '1',
+            carryingFlag: '1',
+            },
+        */
 
-        dispatch({
-            type: GET_DEVICES_CHECKCOUNT,
-            payload: res.data,
-            deviceType: dispatchVal.deviceType,
-            page: dispatchVal.showPage,
-        });
+        axios({
+            method: 'post',
+            url,
+            data: postJsonData,
+        })
+            .then((response) => {
+                dispatch({
+                    type: GET_DEVICES_CHECKCOUNT,
+                    payload: response.data,
+                    deviceType: dispatchVal.deviceType,
+                    page: dispatchVal.showPage,
+                });
+            })
+            .catch((error) => {
+                console.log('error : ', error.response);
+            });
     } catch (error) {
         dispatch({
             type: GET_DEVICES_CHECKCOUNT,
@@ -217,6 +219,95 @@ export const fetchPostsCheckCount = dispatchVal => async (dispatch) => {
             page: 0,
         });
         console.log(" fetchPostsCheckCount error : ", error);
+    }
+};
+
+// 리스트에서 검색
+export const fetchPostSearchDevice = (assetState, dispatchVal) => async (dispatch) => {
+    try {
+        console.log("💎 fetchPostSearchDevice start");
+        const tempCustomer = [];
+        let postJsonData = JSON.stringify(dispatchVal);
+        const orderBy = 'DeviceCode';
+        const order = 1;
+        const rowsPerPage = 10;
+        const outFlag = 0;
+        const offsetPage = 0;
+
+        // v1/search/devices/:type/:outFlag/:row/:page/:order/:dir/:offsetPage
+        const url = `${API_ROUTE}/search/devices/${assetState.deviceType}/${outFlag}/${rowsPerPage}/1/${orderBy}/${order}/${offsetPage}`;
+
+        if (dispatchVal.customer !== '' && dispatchVal.customer !== undefined) {
+            axios({
+                url: `${API_ROUTE}/companies/${dispatchVal.customer}`,
+                method: 'get',
+            })
+                .then((response) => {
+                    response.data
+                        // eslint-disable-next-line no-return-assign
+                        .map(c => (
+                            /*tempCustomer = `${tempCustomer},${c.userId}`*/
+                            tempCustomer.push(`'${c.userId}'`)
+                        ));
+
+                    dispatchVal = ({
+                        ...dispatchVal,
+                        customer: tempCustomer.toString(),
+                    });
+                    dispatch({
+                        type: SET_DEVICE_SEARCH,
+                        payload: dispatchVal,
+                    });
+
+                    postJsonData = JSON.stringify(dispatchVal);
+
+                    if (response.data.length > 0) {
+                        axios({
+                            method: 'post',
+                            url,
+                            data: postJsonData,
+                        })
+                            .then((responseSearch) => {
+                                dispatch({
+                                    type: GET_DEVICES_CHECKCOUNT,
+                                    payload: responseSearch.data,
+                                    deviceType: assetState.deviceType,
+                                    page: responseSearch.data,
+                                });
+                            })
+                            .catch((error) => {
+                                console.log('error : ', error.response);
+                            });
+                    }
+                })
+                .catch((error) => {
+                    console.log('error : ', error.response);
+                });
+        } else { // 그 외
+            axios({
+                method: 'post',
+                url,
+                data: postJsonData,
+            })
+                .then((responseSearch) => {
+                    dispatch({
+                        type: GET_DEVICES_CHECKCOUNT,
+                        payload: responseSearch.data,
+                        deviceType: assetState.deviceType,
+                        page: responseSearch.data,
+                    });
+
+                    dispatch({
+                        type: SET_DEVICE_SEARCH,
+                        payload: dispatchVal,
+                    });
+                })
+                .catch((error) => {
+                    console.log('error : ', error.response);
+                });
+        }
+    } catch (error) {
+        console.log(" fetchPostSearchDevice error : ", error);
     }
 };
 
@@ -654,14 +745,25 @@ export const setDeviceSelected = dispatchVal => async (dispatch) => {
 };
 
 // outFlag 저장
-export const setDeviceOutFlag = dispatchVal => async (dispatch) => {
+export const setDeviceOutFlag = (assetState, outFlag, division) => async (dispatch) => {
     try {
         console.log("💎 setDeviceOutFlag start"); //SET_DEVICE_SELECTED
 
-        dispatch({
-            type: SET_DEVICE_OUTFLAG,
-            payload: dispatchVal,
-        });
+        ////SET_DEVICE_OUTFLAG_OPERATING, SET_DEVICE_OUTFLAG_CARRYING,
+
+        if (division === 'operatingFlag') {
+            dispatch({
+                type: SET_DEVICE_OUTFLAG_OPERATING,
+                payload: outFlag,
+            });
+        } else if (division === 'carryingFlag') {
+            dispatch({
+                type: SET_DEVICE_OUTFLAG_CARRYING,
+                payload: outFlag,
+            });
+        }
+
+        //fetchPostSearchDevice(assetState, assetState.searchRd);
     } catch (error) {
         console.log("setDeviceOutFlag error : ", error);
     }

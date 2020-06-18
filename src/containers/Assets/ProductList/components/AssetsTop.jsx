@@ -17,7 +17,6 @@ import {
     fetchPosts,
     postDevice,
     postDeviceOutFlag,
-    setDeviceOutFlag,
 } from "../../../../redux/actions/assetsAction";
 import {UserProps, MenuTitleProps} from '../../../../shared/prop-types/ReducerProps';
 
@@ -210,14 +209,6 @@ class AssetsTop extends PureComponent {
         this.toggle(); // modal close
     };
 
-    setToggleOutFlag = (outFlag) => {
-        const {assetState, dispatch} = this.props;
-
-        /*dispatch(setDeviceOutFlag(outFlag));*/
-        dispatch(setDeviceOutFlag(outFlag));
-        dispatch(fetchPosts(assetState));
-    };
-
     render() {
         const {assetState, dispatch, menuTitle} = this.props;
 
@@ -234,31 +225,7 @@ class AssetsTop extends PureComponent {
         return (
             <Col md="12">
                 <Card>
-                    {/*<div className="search_panel_topbtn">
-                            <span className="topbar__menuTitle">
-                                    {menuTitle.title}&nbsp;
-                                <span className="topbar__menuTitle-side">
-                                    {menuTitle.subTitle}
-                                </span>
-                            </span>
-                    </div>*/}
                     <div className="search_panel_topbtn">
-                        {/*<div className="float-left circle-legend">
-                            &nbsp;&nbsp;
-                            <span className="circle__lit"/>장비반출&nbsp;&nbsp;
-                            <div className="float-left" role="button" tabIndex="0"
-                                 onClick={event => this.setToggleOutFlag('0')}
-                                 onKeyDown={event => this.setToggleOutFlag('0')}>
-                                    <span className="circle__ste"
-                                          role="button" tabIndex="0"/>운영장비&nbsp;&nbsp;
-                            </div>
-                            <div className="float-left" role="button" tabIndex="0"
-                                 onClick={event => this.setToggleOutFlag("1")}
-                                 onKeyDown={event => this.setToggleOutFlag("1")}>
-                                    <span className="circle__eth"
-                                          role="button" tabIndex="0"/>반출장비&nbsp;&nbsp;
-                            </div>
-                        </div>*/}
                         <div className="float-left">
                             <ButtonToolbar>
                                     <span role="button" tabIndex="0"
