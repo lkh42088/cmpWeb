@@ -9,6 +9,24 @@
     padding-left: 20px;
     padding-right: 20px;
   }
+  margin: inherit;
+}
+
+.cb-modal-form {
+  padding-top: 20px;
+  padding-bottom: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  @include themify($themes) {
+    background-color: themed('colorBackground');
+    color: themed('colorText');
+  }
+  .cb-text-field {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
 }
 
 .cb-modal-dialog {
@@ -22,6 +40,8 @@
   position: relative;
   padding: 50px 40px 60px 40px;
   text-align: center;
+  height: 100px;
+  width: 100px;
 
   @include themify($themes) {
     background-color: themed('colorBackground');

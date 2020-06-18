@@ -18,7 +18,7 @@ export const [REGUSER, REGUSER_SUCCESS, REGUSER_FAILURE] = createRequestActionTy
  * 2. Action Function
  *****************************************************************************/
 export const initialize = createAction(INITIALIZE);
-export const changeField = createAction(
+export const changeUserField = createAction(
     CHANGE_FIELD,
     ({ key, value }) => ({ key, value }),
 );
