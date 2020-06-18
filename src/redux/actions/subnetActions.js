@@ -18,7 +18,7 @@ export const INPUT_SUBNET = 'subnet/INPUT';
 /******************************************************************************
  * 2. Action Function
  *****************************************************************************/
-export const initSubnet = createAction(INIT_SUBNET);
+// export const initSubnet = createAction(INIT_SUBNET);
 export const createSubnet = createAction(CREATE_SUBNET, ({
     subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
 }) => ({

@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
     Card, CardBody, Col, Button, ButtonToolbar,
 } from 'reactstrap';
 import {
-    Field, getFormValues, formValueSelector, reduxForm,
+    Field, formValueSelector, reduxForm,
 } from 'redux-form';
-import { connect, useDispatch, useSelector } from "react-redux";
-import InputIpAddr from "./InputIpAddr";
-import {createSubnet, initSubnet, inputSubnet} from "../../../../../redux/actions/subnetActions";
+import {connect, useDispatch} from "react-redux";
+import {createSubnet} from "../../../../../redux/actions/subnetActions";
 
 // reduxForm Field 형식
 const renderField = ({
-    input, label, type, meta: { touched, error, warning },
+    input, label, type, meta: { touched, error },
 }) => (
     <div className="form__form-group-field" >
         <div className="form__form-group-icon" > </div>
         <div className="form__form-group">
             <input {...input} placeholder={label} type={type} />
-            {touched && (error && <span>{error}</span>)}
+            {touched && (error && <span style={{ color: '#FFC0CB' }}>{error}</span>)}
         </div>
     </div>
 );
@@ -45,106 +44,35 @@ const gatewayCheck = value => (value && !check(value)
 // src/scss/component/form.scss
 // eslint-disable-next-line import/no-mutable-exports
 let SubnetWriteForm = (props) => {
-    let isValid;
-    // const msg = document.getElementById(id);
     const dispatch = useDispatch();
-    // const {
-    //     deviceCode, subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
-    // } = useSelector(({ subnetRd }) => ({
-    //     deviceCode: subnetRd.deviceCode,
-    //     subnetTag: subnetRd.subnetTag,
-    //     subnetStart: subnetRd.subnetStart,
-    //     subnetEnd: subnetRd.subnetEnd,
-    //     subnetMask: subnetRd.subnetMask,
-    //     gateway: subnetRd.gateway,
-    // }));
-
-    // const selector = formValueSelector("subnetForm")
-    // const {
-    //     subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
-    // } = selector('subnetTag', 'subnetStart', 'subnetEnd', 'subnetMask', 'gateway');
-    //
-    // const {
-    //     subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
-    // } = useSelector(({form}) => ({
-    //     subnetStart: form.subnetRd.subnetStart,
-    //     subnetEnd: form.subnetRd.subnetEnd,
-    //     subnetTag: form.subnetRd.subnetTag,
-    //     subnetMask: form.subnetRd.subnetMask,
-    //     gateway: form.subnetRd.gateway,
-    // }));
-
-    // const themeName = useSelector(({theme}) => ({
-    //     className: theme.className,
-    // }));
-
     const {
         error, handleSubmit, pristine, reset, submitting,
+        subnetStartValue, subnetEndValue, subnetTagValue, subnetMaskValue, gatewayValue,
     } = props;
 
-    const submitCheck = () => {
-      if (document.getElementById("subnetStart").value === ""
-          || document.getElementById("subnetEnd").value === ""
-          || document.getElementById("subnetMask").value === "") {
-            return true;
-      }
-      return false;
+    const handleCreate = (e) => {
+        e.preventDefault();
+        // subnet action call
+        dispatch(createSubnet({
+                subnetTag: subnetTagValue,
+                subnetStart: subnetStartValue,
+                subnetEnd: subnetEndValue,
+                subnetMask: subnetMaskValue,
+                gateway: gatewayValue,
+        }));
+        // Init field
+        dispatch(reset);
     };
-
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     console.log("name:", name, ", value:", value);
-    //     dispatch(inputSubnet({key: name, value}));
-    // };
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     //console.log(formRd.subnetRd.subnetMask);
-    // };
-
-    const handleCreate = (values) => {
-        // if (subnetStart && subnetEnd && subnetMask) {
-        //     console.log("handleCreate.....", this.state.subnetStart);
-            // dispatch(createSubnet({
-            //     deviceCode, subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
-            // }));
-        dispatch(createSubnet(values));
-        // }
-        // dispatch(initSubnet());
-    };
-
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     console.log("[InputIpAddr] name:", name, ",value:", value);
-    //     // Check IP address
-    //     // isValid = validateIp(value);
-    //     if (isValid === true) {
-    //         // theme font-color 원복
-    //         if (themeName.className === 'theme-light') {
-    //             e.target.style.color = '#646777';
-    //         } else {
-    //             e.target.style.color = '#dddddd';
-    //         }
-    //     } else {
-    //         // IP Address 형식에 맞지 않을 경우 font-color : red
-    //         e.target.style.color = 'red';
-    //     }
-    //     dispatch(inputSubnet({key: name, value}));
-    //
-    //     // console.log("val: ", subnetTagVal);
-    // };
 
     return (
-        <Col xs={12} md={12} lg={9} xl={6} cssModule="table">
+        <Col xs={12} md={12} lg={9} xl={5} cssModule="table">
             <Card>
                 <CardBody>
-                    {/*<form className="form form-horizontal" onSubmit={handleSubmit}>*/}
-                    <form className="form form-horizontal" name="subnetForm">
+                    <form className="form form-horizontal">
                         <div className="form__form-group">
                             <span className="form__form-group-label">SUBNET</span>
                             <div className="form__form-group-field">
                                 <Field
-                                    id="subnetStart"
                                     name="subnetStart"
                                     component={renderField}
                                     label="Start"
@@ -153,7 +81,6 @@ let SubnetWriteForm = (props) => {
                             </div>
                             <div className="form__form-group-field">
                                 <Field
-                                    id="subnetEnd"
                                     name="subnetEnd"
                                     component={renderField}
                                     label="End"
@@ -177,7 +104,6 @@ let SubnetWriteForm = (props) => {
                             <span className="form__form-group-label">SUBNET 마스크</span>
                             <div className="form__form-group-field">
                                 <Field
-                                    id="subnetMask"
                                     name="subnetMask"
                                     component={renderField}
                                     label="Mask"
@@ -200,7 +126,8 @@ let SubnetWriteForm = (props) => {
                         <div className="form__form-group">
                             <ButtonToolbar className="form__button-toolbar-sub">
                                 <Button color="primary"
-                                        disabled={pristine || submitting}
+                                        disabled={!(subnetStartValue && subnetEndValue && subnetMaskValue)
+                                        || pristine || submitting}
                                         onClick={handleCreate}
                                         type="submit">
                                     생성
@@ -219,14 +146,6 @@ let SubnetWriteForm = (props) => {
     );
 };
 
-SubnetWriteForm.propTypes = {
-    // input: PropTypes.shape().isRequired,
-    // onSubmit: PropTypes.func.isRequired,
-    // onMouseOver: PropTypes.func.isRequired,
-    // onClick: PropTypes.func.isRequired,
-    // onChange: PropTypes.func.isRequired,
-};
-
 SubnetWriteForm = reduxForm({
     form: 'create_subnet',
 })(SubnetWriteForm);
@@ -234,17 +153,17 @@ SubnetWriteForm = reduxForm({
 // Data Selector
 const selector = formValueSelector('create_subnet');
 SubnetWriteForm = connect((state) => {
-    const subnetTag = selector(state, 'subnetTag');
-    const subnetStart = selector(state, 'subnetStart');
-    const subnetEnd = selector(state, 'subnetEnd');
-    const subnetMask = selector(state, 'subnetMask');
-    const gateway = selector(state, 'gateway');
+    const subnetTagValue = selector(state, 'subnetTag');
+    const subnetStartValue = selector(state, 'subnetStart');
+    const subnetEndValue = selector(state, 'subnetEnd');
+    const subnetMaskValue = selector(state, 'subnetMask');
+    const gatewayValue = selector(state, 'gateway');
     return {
-        subnetTag,
-        subnetStart,
-        subnetEnd,
-        subnetMask,
-        gateway,
+        subnetTagValue,
+        subnetStartValue,
+        subnetEndValue,
+        subnetMaskValue,
+        gatewayValue,
     };
 })(SubnetWriteForm);
 
