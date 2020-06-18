@@ -30,12 +30,14 @@ class SidebarContent extends Component {
                 <ul className="cb_sidebar__block">
                     {/*<SidebarCategory title="DASHBOARD" icon={outlineDashboard} route="/dashboards/manager"
                                      />*/}
-                    <SidebarLink
-                        title="DASHBOARD"
-                        icon={outlineDashboard}
-                        route="/dashboards/manager"
-                        onClick={() => changeMenuTitle('대시보드', '관리자', 'server')}
-                    />
+                    {/*<SidebarLink title="관리자"
+                                 route="/dashboards/manager"
+                                 onClick={() => changeMenuTitle('대시보드', '관리자', 'server')}/>*/}
+                    <SidebarCategory title="DASHBOARD" icon={outlineDashboard}>
+                        <SidebarLink title="관리자"
+                                     route="/dashboards/manager"
+                                     onClick={() => changeMenuTitle('대시보드', '관리자', 'server')}/>
+                    </SidebarCategory>
                     <SidebarCategory title="SERVER" icon={serverOutlineBadged} />
                     <SidebarCategory title="NETWORK" icon={routerNetwork} />
                     <SidebarCategory title="INVENTORY" icon={inventoryManagement}>

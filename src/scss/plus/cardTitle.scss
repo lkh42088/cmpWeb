@@ -1,0 +1,29 @@
+.cb_card__title {
+  display: flex;
+  @include directify($directions) {
+    flex-direction: #{directed('row')};
+  }
+  @include themify($themes) {
+    color: themed('colorText');
+  }
+
+  text-transform: capitalize;
+  align-items: center;
+  font-family: "Nanum Gothic Extra Bold", inherit;
+  padding-bottom: 30px;
+}
+
+.cb_card__title-head {
+  font-size: 15px;
+  @include directify($directions) {
+    text-align: directed('left');
+  }
+}
+
+.cb_card__title-subhead {
+  font-size: 14px;
+  padding-left: 5px;
+  color: $color-additional;
+}
+
+

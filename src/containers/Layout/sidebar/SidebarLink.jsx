@@ -13,8 +13,7 @@ const SidebarLink = ({
     activeClassName="cb_sidebar__link-active"
   >
     <li className="cb_sidebar__link">
-      {/*{icon ? <span className={`cb_sidebar__link-icon lnr lnr-${icon}`} /> : ''}*/}
-      {icon ? <Icon icon={icon} className="cb_sidebar__link-icon" /> : ''}
+      {icon ? <span className="cb_sidebar__link-icon" ><Icon icon={icon} /></span> : ''}
       <p className="cb_sidebar__link-title">
         {title}
         {newLink ? <Badge className="cb_sidebar__link-badge"><span>New</span></Badge> : ''}

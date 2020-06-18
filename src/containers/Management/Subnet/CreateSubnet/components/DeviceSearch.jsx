@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Field} from "redux-form";
 import AccountOutlineIcon from "mdi-react/AccountOutlineIcon";
-import EyeIcon from "mdi-react/EyeIcon";
+import MagnifyIcon from "mdi-react/MagnifyIcon";
 
 const DeviceSearch = () => {
     const [search, setSearch] = useState(false);
@@ -19,7 +19,7 @@ const DeviceSearch = () => {
             <span className="form__form-group-label">DEVICE 검색</span>
             <div className="form__form-group-field">
                 <div className="form__form-group-icon">
-                    <AccountOutlineIcon />
+                    {/*<AccountOutlineIcon />*/}
                 </div>
                 <Field
                     name="user_name"
@@ -32,7 +32,7 @@ const DeviceSearch = () => {
                     type="button"
                     className="form__form-group-button"
                     onClick={onClickSearch}
-                ><EyeIcon />
+                ><MagnifyIcon />
                 </button>
             </div>
         </div>

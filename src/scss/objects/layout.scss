@@ -24,6 +24,7 @@
     @include directify($directions) {
       #{directed('padding-left')}: 250px;
     }
+    overflow-x: hidden; // (15jun2020,ebjee) sidebar top width error
   }
 }
 

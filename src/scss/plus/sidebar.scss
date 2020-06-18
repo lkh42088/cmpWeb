@@ -12,6 +12,9 @@
   padding-top: 60px;
   transition: transform 0.3s, width 0.3s;
 
+  // LKH
+  //font-family: "Nanum Square acEB";
+
   @include themify($themes) {
     background: themed('colorBackground');
   }
@@ -23,7 +26,7 @@
   &.cb_sidebar--show {
     display: block;
     @include directify($directions) {
-      transform:  #{directed('sidebar-close')};
+      transform: #{directed('sidebar-close')};
     }
 
     .cb_sidebar__back {
@@ -49,6 +52,7 @@
       opacity: 1;
     }
   }
+
   /*background-color: #f6f7fc;*/
   /*@include themify($themes) {
     background: themed('sidebarColor');
@@ -86,7 +90,7 @@
 }
 
 .cb_sidebar__content {
-  /*padding-top: 15px;*/
+  padding-top: 15px;
   height: 100%;
   overflow: auto;
   /*border: 1px solid red;*/
@@ -121,11 +125,12 @@
   cursor: pointer;
   display: flex;
   //padding: 7px 20px;    //Origin
-  padding: 9px 20px;      // Modify [2020.06.11 LKH]
+  padding: 9px 20px; // Modify [2020.06.11 LKH]
   overflow: hidden;
   background: transparent;
   border: none;
   z-index: 105;
+  height: 30px;
 
   @include themify($themes) {
     color: themed('colorText');
@@ -139,7 +144,7 @@
     position: absolute;
     @include directify($directions) {
       //#{directed('left')}: 43px;    //Origin
-      #{directed('left')}: 50px;      // Modify [2020.06.11 LKH]
+      #{directed('left')}: 50px; // Modify [2020.06.11 LKH]
     }
     /*width: 180px;*/
     transition: left 0.3s;
@@ -191,6 +196,7 @@
 .cb_sidebar__submenu {
   transition: height 0.5s 0s, padding 0.5s 0s, opacity 0.4s 0.1s;
   /*padding: 15px 0;*/
+  //padding-left: 240px;
   padding-left: 240px;
 
   & .cb_sidebar__submenu {
@@ -199,6 +205,7 @@
     padding-top: 0;
 
     .cb_sidebar__link {
+      // [2020.06.12 LKH]
       @include directify($directions) {
         #{directed('padding-left')}: 53px;
       }
@@ -210,6 +217,7 @@
       }
     }
   }
+
   /*
     좌측메뉴 기본 background
     @include themify($themes) {
@@ -240,11 +248,12 @@
   .cb_sidebar__link {
     display: block;
   }
-/*
-  .cb_sidebar__div_button {
-    box-shadow: 0 1px 30px 1px rgba(0, 0, 0, 0.11);
-    border: 1px solid $color-light-gray;
-  }*/
+
+  /*
+    .cb_sidebar__div_button {
+      box-shadow: 0 1px 30px 1px rgba(0, 0, 0, 0.11);
+      border: 1px solid $color-light-gray;
+    }*/
 
 }
 
@@ -295,7 +304,7 @@
 
 // Add for side-bar company name [2020.06.11 LKH]
 .cb_sidebar__wrapper--company {
-  height : 25px;
+  height: 25px;
   font-size: 15px;
   padding-top: 5px;
   margin: 5px;
@@ -321,16 +330,17 @@
 .cb_sidebar__div_title {
   height: 36px;
   padding: 11px 20px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
-  line-height: 16px;
+  line-height: 18px;
   padding-left: 43px;
   background-color: $color-white;
   /*color: $color-black;*/
-  text-shadow: 4px 4px 6px $color-blue;
+  /*text-shadow: 4px 4px 6px $color-blue;*/
   /*box-shadow: 0 1px 30px 1px rgba(0, 0, 0, 0.11);*/
   @include themify($themes) {
     color: themed('colorText');
+    background-color: themed('colorBackground');
   }
 }
 
@@ -339,8 +349,13 @@
   /*box-shadow: 0 1px 30px 1px rgba(0, 0, 0, 0.11);*/
   /*border: 1px solid $color-light-gray;*/
   background-color: $color-white;
+
+  /*@include themify($themes) {
+    background-color: themed('colorBackground');
+  }*/
   @include themify($themes) {
     color: themed('colorText');
+    background-color: themed('colorBackground');
   }
 }
 
@@ -370,6 +385,7 @@
       @include directify($directions) {
         //transform: translateX(calc(directed('-')100% directed('-') 20px));
       }
+
       &.cb_sidebar--show {
         transform: translateX(0);
       }
@@ -511,6 +527,20 @@
 
   .cb_sidebar__wrapper--mobile {
     display: none;
+  }
+
+
+  .cb_sidebar__block {
+    padding: 15px 0; // Origin
+    padding-top: 0; // (15jun2020,ebjee)
+
+    @include themify($themes) {
+      border-bottom: 1px solid themed('colorBorder');
+    }
+
+    &:last-child {
+      border: none;
+    }
   }
 
 }

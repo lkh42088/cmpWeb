@@ -231,6 +231,18 @@ class AssetsView extends PureComponent {
                                 {splaSliceStr}
                             </div>
                         </div>
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>Rack Tag</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {rackTag}
+                            </div>
+                        </div>
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>Rack Location</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {rackLoc}
+                            </div>
+                        </div>
                     </Fragment>
                 );
                 break;
@@ -244,15 +256,21 @@ class AssetsView extends PureComponent {
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>FirmwareVersion</span>
+                            <span className={classNameMap.formSpanClass}>FIRMWARE VERSION</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {firmwareVersion}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>WarehousingDate</span>
+                            <span className={classNameMap.formSpanClass}>Rack Tag</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {warehousingDate}
+                                {rackTag}
+                            </div>
+                        </div>
+                        <div className={classNameMap.formDivClass}>
+                            <span className={classNameMap.formSpanClass}>Rack Location</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {rackLoc}
                             </div>
                         </div>
                     </Fragment>
@@ -268,9 +286,9 @@ class AssetsView extends PureComponent {
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>WarehousingDate</span>
+                            <span className={classNameMap.formSpanClass}>Rack Size</span>
                             <div className={classNameMap.formDivSubClass}>
-                                {warehousingDate}
+                                {rackCode}
                             </div>
                         </div>
                     </Fragment>
@@ -358,7 +376,7 @@ class AssetsView extends PureComponent {
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
-                            <span className="modal_form__form-group-label text_cor_orange">고객사명</span>
+                            <span className="modal_form__form-group-label">고객사</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {customerName}/{customer}
                             </div>
@@ -376,6 +394,14 @@ class AssetsView extends PureComponent {
                             <span className={classNameMap.formSpanClass}>소유업체명</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {ownerCompanyName}/{ownerCompany}
+                            </div>
+                        </div>
+                        <div className={classNameMap.formDivClass}>
+                                <span
+                                    className="modal_form__form-group-label
+                                    modal_form_label_blue">HW S/N</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {hwSn}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
@@ -400,14 +426,6 @@ class AssetsView extends PureComponent {
                             <span className={classNameMap.formSpanClass}>용도</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {purpose}
-                            </div>
-                        </div>
-                        <div className={classNameMap.formDivClass}>
-                                <span
-                                    className="modal_form__form-group-label
-                                    modal_form_label_blue">HW S/N</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {hwSn}
                             </div>
                         </div>
                         {/*---------------------------------------------------------------------------------*/}

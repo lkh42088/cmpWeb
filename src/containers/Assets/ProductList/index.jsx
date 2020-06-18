@@ -24,36 +24,18 @@ const MaterialTable = () => {
     } = useSelector(({ menuTitle }) => ({
         title: menuTitle,
     }));
-
-    //console.log("최상위 index assetState : ", assetState);
-
-    //overNum 값 10으로 test 한다면 list component의 overPageCheckr값 다시 설정해야함
-    // todo 다시 확인...
-    const dispatchVal = ({
-        deviceType: 'server',
-        orderBy: 'DeviceCode',
-        order: 1,
-        rowsPerPage: 10,
-        overNum: 1000,
-        outFlag: assetState.deviceOutFlag,
-    });
-
+    // TODO Reselect 사용으로 변경하기
+    // eslint-disable-next-line no-shadow
+    const getTotalCodes = () => dispatch(getCodes(assetState));
     // eslint-disable-next-line no-undef
     const getDevices = () => dispatch(fetchPosts(assetState));
-    // TODO Reselect 사용으로 변경하기
-    const getTotalCodes = () => dispatch(getCodes(assetState));
-    // eslint-disable-next-line no-shadow
 
-/*    useEffect(() => {
-        getDevices();
+    useEffect(() => {
         getTotalCodes();
-        //console.log("💋💋💋💋💋💋 ~~~> : ", assetState.deviceType);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [assetState.deviceType]);*/
+    }, []);
+
     useEffect(() => {
         getDevices();
-        getTotalCodes();
-        //console.log("💋💋💋💋💋💋 ~~~> : ", assetState.deviceType);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [assetState.deviceType, assetState.device]);
 
@@ -66,7 +48,7 @@ const MaterialTable = () => {
             </Row>
             <Row>
                 <AssetsTop assetState={assetState} dispatch={dispatch}/>
-                <AssetsSearch/>
+                {assetState.codes.codeDeviceType !== undefined ? <AssetsSearch assetState={assetState} /> : false}
             </Row>
             <Row>
                 <AssetsList assetState={assetState} dispatch={dispatch}/>
