@@ -4,6 +4,7 @@ import { all } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
 import {createLogger} from 'redux-logger';
 import ReduxThunk from "redux-thunk";
+import {composeWithDevTools} from "redux-devtools-extension";
 
 import {
     cryptoTableReducer,
@@ -63,7 +64,7 @@ const logger = createLogger();
 export const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
     rootReducer,
-    applyMiddleware(ReduxThunk, sagaMiddleware /* , logger */),
+    composeWithDevTools(applyMiddleware(ReduxThunk, sagaMiddleware /* , logger */)),
 );
 
 export function loadUser() {

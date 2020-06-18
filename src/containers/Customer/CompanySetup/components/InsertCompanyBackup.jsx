@@ -2,27 +2,31 @@ import 'date-fns';
 import React, {Fragment, useEffect, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import {makeStyles, withStyles} from "@material-ui/core/styles";
+import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
-import Fade from "@material-ui/core/Fade";
+// import Fade from "@material-ui/core/Fade";
+import Button from "@material-ui/core/Button";
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+/** stepper */
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import Typography from '@material-ui/core/Typography';
+import DateFnsUtils from "@date-io/date-fns";
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
-import {Button} from "@material-ui/core";
-import DateFnsUtils from "@date-io/date-fns";
 import {Card, CardBody, Col} from "reactstrap";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import Typography from "@material-ui/core/Typography";
-import styled from "styled-components";
+import PropTypes from 'prop-types';
+import Fade from "@material-ui/core/Fade";
+import {Field, Form} from "redux-form";
 import {useDispatch, useSelector} from "react-redux";
-import {changeCompanyRegField} from "../../../../redux/actions/companiesActions";
 import {changeUserField} from "../../../../redux/actions/regUserActions";
+import {changeCompanyRegField} from "../../../../redux/actions/companiesActions";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -126,18 +130,18 @@ const StyledTextField = styled(TextField)`
  * (16jun2020,bhjung)
  */
 const CbTextField = ({
-                         label,
-                         required,
-                         width,
-                         labelFont,
-                         inputFont,
-                         labelFontSize,
-                         inputFontSize,
-                         disabled,
-                         onChange,
-                         name,
-                         value,
-                     }) => {
+    label,
+    required,
+    width,
+    labelFont,
+    inputFont,
+    labelFontSize,
+    inputFontSize,
+    disabled,
+    onChange,
+    name,
+    value,
+}) => {
     const handleChange = (event) => {
         event.preventDefault();
         console.log("name:", name, ", value:", event.target.value);
@@ -196,40 +200,40 @@ CbTextField.defaultProps = {
 // `;
 
 const CbSelectField = ({
-                           labelValue,
-                           classes,
-                           name,
-                           value,
-                           onChange,
-                       }) => {
+    labelValue,
+    classes,
+    name,
+    value,
+    onChange,
+}) => {
     const handleChange = (e) => {
         console.log("CbSelectField: ", e.target.value);
         onChange({name, value: e.target.value});
     };
 
     return (
-        <FormControl
-            variant="outlined"
-            className={classes.formControl}
-            size="small"
+    <FormControl
+        variant="outlined"
+        className={classes.formControl}
+        size="small"
+    >
+        <InputLabel id="demo-simple-select-outlined-label">
+            {labelValue}
+        </InputLabel>
+        <Select
+            labelId="demo-simple-select-outlined-label"
+            id="demo-simple-select-outlined"
+            value={value}
+            onChange={handleChange}
+            label={name}
         >
-            <InputLabel id="demo-simple-select-outlined-label">
-                {labelValue}
-            </InputLabel>
-            <Select
-                labelId="demo-simple-select-outlined-label"
-                id="demo-simple-select-outlined"
-                value={value}
-                onChange={handleChange}
-                label={name}
-            >
-                <MenuItem value="">
-                    <em>사용 안함</em>
-                </MenuItem>
-                <MenuItem value={1}>개인 이메일 인증</MenuItem>
-                <MenuItem value={2}>그룹 이메일 인증</MenuItem>
-            </Select>
-        </FormControl>
+            <MenuItem value="">
+                <em>사용 안함</em>
+            </MenuItem>
+            <MenuItem value={1}>개인 이메일 인증</MenuItem>
+            <MenuItem value={2}>그룹 이메일 인증</MenuItem>
+        </Select>
+    </FormControl>
     );
 };
 
@@ -250,48 +254,48 @@ CbSelectField.defaultProps = {
  * (16jun2020,jungbh)
  */
 const CbDatePicker = ({
-                          label,
-                          selectedDate,
-                          handleDateChange,
-                          width,
-                          labelFont,
-                          inputFont,
-                          labelFontSize,
-                          inputFontSize,
-                      }) => (
+    label,
+    selectedDate,
+    handleDateChange,
+    width,
+    labelFont,
+    inputFont,
+    labelFontSize,
+    inputFontSize,
+}) => (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
         {/*<Grid container justify="space-around">*/}
-        <KeyboardDatePicker
-            disableToolbar
-            variant="inline"
-            inputVariant="outlined"
-            // format="MM/dd/yyyy"
-            format="yyyy년 MM월 dd일"
-            // format="yyyy-MM-dd"
-            margin="normal"
-            id="date-picker-inline"
-            label={label}
-            value={selectedDate}
-            onChange={handleDateChange}
-            KeyboardButtonProps={{
-                'aria-label': 'change date',
-            }}
-            size="small"
-            InputLabelProps={{
-                style: {
-                    fontFamily: `${labelFont}`,
-                    fontSize: `${labelFontSize}`,
-                },
-            }}
-            inputProps={{
-                style: {
-                    fontFamily: `${inputFont}`,
-                    fontSize: `${inputFontSize}`,
-                    width: `${width}`,
-                    fontWeight: 700,
-                },
-            }}
-        />
+            <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                inputVariant="outlined"
+                // format="MM/dd/yyyy"
+                format="yyyy년 MM월 dd일"
+                // format="yyyy-MM-dd"
+                margin="normal"
+                id="date-picker-inline"
+                label={label}
+                value={selectedDate}
+                onChange={handleDateChange}
+                KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                }}
+                size="small"
+                InputLabelProps={{
+                    style: {
+                        fontFamily: `${labelFont}`,
+                        fontSize: `${labelFontSize}`,
+                    },
+                }}
+                inputProps={{
+                    style: {
+                        fontFamily: `${inputFont}`,
+                        fontSize: `${inputFontSize}`,
+                        width: `${width}`,
+                        fontWeight: 700,
+                    },
+                }}
+            />
         {/*</Grid>*/}
     </MuiPickersUtilsProvider>
 );
@@ -484,6 +488,8 @@ const CompanyPage = ({ classes }) => {
      ************************************************************************************/
     return (
         <div>
+            <h2>고객사 정보 등록</h2>
+            <p>react-spring animates me.</p>
             <form className={classes.form} noValidate autoComplete="off">
                 <div>
                     <CbTextField
@@ -556,6 +562,15 @@ const CompanyPage = ({ classes }) => {
                     label="해지일자"
                     handleDateChange={handleChangeDateField}
                 />
+
+                <div>
+                    <NubesButtonPrimary
+                        size="small"
+                    >다음</NubesButtonPrimary>
+                    <NubesButtonDefault
+                        size="small"
+                    >취소</NubesButtonDefault>
+                </div>
             </form>
         </div>
     );
@@ -603,6 +618,8 @@ const UserPage = ({ classes }) => {
     console.log("User Page..");
     return (
         <div>
+            <h2>고객사 이메일 등록</h2>
+            <p>react-spring animates me.</p>
             <form className={classes.form} noValidate autoComplete="off">
                 <div>
                     <CbTextField
@@ -668,6 +685,11 @@ const UserPage = ({ classes }) => {
                         onChange={onChangeField}
                     />
                 </div>
+                <div>
+                    <NubesButtonPrimary size="small">이전</NubesButtonPrimary>
+                    <NubesButtonPrimary size="small">등록</NubesButtonPrimary>
+                    <NubesButtonDefault size="small">취소</NubesButtonDefault>
+                </div>
             </form>
         </div>
     );
@@ -679,8 +701,7 @@ function getSteps() {
 }
 
 function getStepsAddingCompany() {
-    return ['고객정보 등록', '이메일 계정 등록'];
-    // return ['고객정보 등록', '이메일 계정 등록', '담당자 등록'];
+    return ['고객정보 등록', '이메일 계정 등록', '담당자 등록'];
 }
 
 function getStepAddingCompany(step) {
@@ -690,6 +711,8 @@ function getStepAddingCompany(step) {
             return <CompanyPage classes={classes}/>;
         case 1:
             return <UserPage classes={classes}/>;
+        case 2:
+            return <CompanyPage classes={classes}/>;
         default:
             return <UserPage classes={classes}/>;
     }
@@ -701,13 +724,16 @@ function getStepContent(step) {
             return 'Step 1: Select campaign settings...';
         case 1:
             return 'Step 2: What is an ad group anyways?';
+        case 2:
+            return 'Step 3: This is the bit I really care about!';
         default:
             return 'Unknown step';
     }
 }
-const AddCompany = (props) => {
+
+const InsertCompany = () => {
     const classes = useStyles();
-    const {open} = props;
+    const [isCompanyPage, setIsCompanyPage] = useState(false);
 
     /** Stepper */
     const [activeStep, setActiveStep] = React.useState(0);
@@ -726,10 +752,10 @@ const AddCompany = (props) => {
     const handleNext = () => {
         const newActiveStep = isLastStep() && !allStepsCompleted()
             // eslint-disable-next-line operator-linebreak
-            ? // It's the last step, but not all steps have been completed,
-              // find the first step that has been completed
-            steps.findIndex((step, i) => !(i in completed))
-            : activeStep + 1;
+                ? // It's the last step, but not all steps have been completed,
+                  // find the first step that has been completed
+                steps.findIndex((step, i) => !(i in completed))
+                : activeStep + 1;
         setActiveStep(newActiveStep);
     };
 
@@ -753,52 +779,61 @@ const AddCompany = (props) => {
         setCompleted({});
     };
 
+
     console.log("AddCompany");
     return (
-        <div>
-            <Fade in={open}>
-                {/*<Col md={6} lg={5}>*/}
-                    <Card className={classes.paper}>
-                        <div className={classes.root3}>
-                            <Stepper activeStep={activeStep} alternativeLabel>
-                                {steps.map(label => (
-                                    <Step key={label}>
-                                        <StepLabel>{label}</StepLabel>
-                                    </Step>
-                                ))}
-                            </Stepper>
-                            <CardBody>
-                                <div>
-                                    {activeStep === steps.length ? (
-                                        <div>
-                                            <Typography className={classes.instructions}>All steps completed</Typography>
-                                            <CompanyPage classes={classes}/>
-                                        </div>
-                                    ) : (
-                                        <div>
-                                            {getStepAddingCompany(activeStep)}
-                                            <div>
-                                                <Button
-                                                    disabled={activeStep === 0}
-                                                    onClick={handleBack}
-                                                    className={classes.backButton}
-                                                >
-                                                    Back
-                                                </Button>
-                                                <Button variant="contained" color="primary" onClick={handleNext}>
-                                                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            </CardBody>
+        // <Col md={6} lg={8}>
+        //     <Card className={classes.paper}>
+        //         <CardBody>
+        //             {isCompanyPage ? <CompanyPage classes={classes}/>
+        //                 : <UserPage classes={classes}/>
+        //             }
+        //         </CardBody>
+        //     </Card>
+        // </Col>
+        <Col md={6} lg={8}>
+            <Card>
+        <div className={classes.root3}>
+            <Stepper activeStep={activeStep} alternativeLabel>
+                {steps.map(label => (
+                    <Step key={label}>
+                        <StepLabel>{label}</StepLabel>
+                    </Step>
+                ))}
+            </Stepper>
+            <CardBody>
+            <div>
+                {activeStep === steps.length ? (
+                    <div>
+                        <Typography className={classes.instructions}>All steps completed</Typography>
+                        <CompanyPage classes={classes}/>
+                    </div>
+                ) : (
+                    <div>
+                        {/*<Typography className={classes.instructions}>*/}
+                        {/*    {getStepContent(activeStep)}*/}
+                        {/*</Typography>*/}
+                        {getStepAddingCompany(activeStep)}
+                        <div>
+                            <Button
+                                disabled={activeStep === 0}
+                                onClick={handleBack}
+                                className={classes.backButton}
+                            >
+                                Back
+                            </Button>
+                            <Button variant="contained" color="primary" onClick={handleNext}>
+                                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                            </Button>
                         </div>
-                    </Card>
-                {/*</Col>*/}
-            </Fade>
+                    </div>
+                )}
+            </div>
+            </CardBody>
         </div>
+            </Card>
+        </Col>
     );
 };
 
-export default AddCompany;
+export default InsertCompany;
