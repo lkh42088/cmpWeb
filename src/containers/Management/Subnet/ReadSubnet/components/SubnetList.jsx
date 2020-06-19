@@ -1,6 +1,11 @@
 import React, {forwardRef, Component} from 'react';
-//import { Grid, Form, Pagination, Segment } from 'semantic-ui-react'
-import {useDispatch} from "react-redux";
+import {
+    Grid, Form, Pagination, Segment,
+} from 'semantic-ui-react';
+import {
+    Card, CardBody, Col, Row, Container,
+} from 'reactstrap';
+import {useDispatch, useSelector, useState} from "react-redux";
 import MaterialTable from 'material-table';
 import {makeStyles} from "@material-ui/core/styles";
 // icon
@@ -19,6 +24,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import PaginationCustomization from "./PaginationBar";
 
 // Custom style
 const useStyles = makeStyles(theme => ({
@@ -50,6 +56,18 @@ const tableIcons = {
     SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
     ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
+};
+
+// PaginationBar
+const style = <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.1/dist/semantic.min.css"/>;
+const pagingData = {
+    activePage: 1,
+    boundaryRange: 1,
+    siblingRange: 1,
+    showEllipsis: true,
+    showFirstAndLastNav: true,
+    showPreviousAndNextNav: true,
+    totalPages: 50,
 };
 
 const SubnetList = () => {
@@ -121,17 +139,23 @@ const SubnetList = () => {
     };
 
     return (
-        <MaterialTable
-            title="SUBNET LIST"
-            icons={tableIcons}
-            columns={state.columns}
-            data={state.data}
-            className={nb.root}
-            editable={{
-                onRowUpdate: RowAdd,
-                onRowDelete: RowUpdate,
-            }}
-        />
+        <>
+            <MaterialTable
+                title="SUBNET LIST"
+                icons={tableIcons}
+                columns={state.columns}
+                data={state.data}
+                className={nb.root}
+                editable={{
+                    onRowUpdate: RowAdd,
+                    onRowDelete: RowUpdate,
+                }}
+            />
+            <div>{style}</div>
+            <PaginationCustomization
+                data={pagingData}
+            />
+        </>
     );
 };
 
