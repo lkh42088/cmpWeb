@@ -24,7 +24,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import PaginationCustomization from "./PaginationBar";
+import PaginationCustomization from "../../../../Common/PaginationBar";
 
 // Custom style
 const useStyles = makeStyles(theme => ({
@@ -58,18 +58,6 @@ const tableIcons = {
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
 };
 
-// PaginationBar
-const style = <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.1/dist/semantic.min.css"/>;
-const pagingData = {
-    activePage: 1,
-    boundaryRange: 1,
-    siblingRange: 1,
-    showEllipsis: true,
-    showFirstAndLastNav: true,
-    showPreviousAndNextNav: true,
-    totalPages: 50,
-};
-
 const SubnetList = () => {
     const dispatch = useDispatch();
     const nb = useStyles();
@@ -95,6 +83,12 @@ const SubnetList = () => {
             },
         ],
     });
+    const paging = {
+        activePage: 1,
+        boundaryRange: 1,
+        siblingRange: 1,
+        totalPages: 50,
+    };
 
     const RowAdd = (newData, oldData) => new Promise((resolve) => {
         setTimeout(() => {
@@ -151,9 +145,15 @@ const SubnetList = () => {
                     onRowDelete: RowUpdate,
                 }}
             />
-            <div>{style}</div>
             <PaginationCustomization
-                data={pagingData}
+                activePage={paging.activePage}
+                boundaryRange={paging.boundaryRange}
+                siblingRange={paging.siblingRange}
+                totalPages={paging.totalPages}
+                showEllipsis="true"
+                showFirstAndLastNav="true"
+                showPreviousAndNextNav="true"
+                size="mini"
             />
         </>
     );
