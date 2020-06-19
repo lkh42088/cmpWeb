@@ -5,7 +5,6 @@ import CloseIcon from 'mdi-react/CloseIcon';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-
 class CheckBoxField extends PureComponent {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
@@ -15,33 +14,36 @@ class CheckBoxField extends PureComponent {
       PropTypes.bool,
     ]).isRequired,
     label: PropTypes.string,
-    defaultChecked: PropTypes.bool,
     disabled: PropTypes.bool,
     className: PropTypes.string,
     color: PropTypes.string,
+    valueChk: PropTypes.string,
   };
 
   static defaultProps = {
     label: '',
-    defaultChecked: false,
     disabled: false,
     className: '',
     color: '',
+    valueChk: '1',
   };
 
   componentDidMount() {
-    const { onChange, defaultChecked } = this.props;
-    onChange(defaultChecked);
+    const { onChange, valueChk } = this.props;
+    onChange(valueChk);
   }
 
   render() {
     const {
-      disabled, className, name, value, onChange, label, color,
+      disabled, className, name, value, onChange, label, color, valueChk,
     } = this.props;
     const CheckboxClass = classNames({
       'checkbox-btn': true,
       disabled,
     });
+
+    console.log(label, "....체크박스 실행");
+    //console.log(label, "....valueChk : ", Boolean(valueChk));
 
     return (
       <label
@@ -54,7 +56,7 @@ class CheckBoxField extends PureComponent {
           id={name}
           name={name}
           onChange={onChange}
-          checked={value}
+          checked={Boolean(Number(valueChk))}
           disabled={disabled}
         />
         <span
@@ -80,7 +82,7 @@ class CheckBoxField extends PureComponent {
 
 const renderCheckBoxField = (props) => {
   const {
-    input, label, defaultChecked, disabled, className, color,
+    input, label, defaultChecked, disabled, className, color, valueChk,
   } = props;
 
   return (
@@ -91,6 +93,7 @@ const renderCheckBoxField = (props) => {
       disabled={disabled}
       className={className}
       color={color}
+      valueChk={valueChk}
     />
   );
 };
@@ -109,6 +112,7 @@ renderCheckBoxField.propTypes = {
   disabled: PropTypes.bool,
   className: PropTypes.string,
   color: PropTypes.string,
+  valueChk: PropTypes.string,
 };
 
 renderCheckBoxField.defaultProps = {
@@ -117,6 +121,7 @@ renderCheckBoxField.defaultProps = {
   disabled: false,
   className: '',
   color: '',
+  valueChk: '1',
 };
 
 export default renderCheckBoxField;
