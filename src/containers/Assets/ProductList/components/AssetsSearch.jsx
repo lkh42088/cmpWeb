@@ -118,18 +118,20 @@ const AssetsSearch = ({assetState}) => {
                         <Col md={10} sm={12}>
                             <form>
                                 <div className="search_card_body" style={{maxWidth: "100%"}}>
-                                    <div className="inbox__emails-controls-left">
+                                    <div >
                                         <select name="schSelect" className="search_select"
                                                 onChange={onChangeSelect}>
                                             <option value="0">:: SELECT ::</option>
                                             <option value="deviceCode">장비코드</option>
                                             <option value="customer">고객사</option>
                                         </select>
+                                        &nbsp;&nbsp;
                                         <input placeholder="Search..." name="schText"
                                                className="search_input"/>
-                                        <MagnifyIcon role="button" tabIndex="0" onClick={onSearch}
+                                        <MagnifyIcon className="search_icon" role="button" tabIndex="0" onClick={onSearch}
                                                      onKeyDown={onSearch}/>
-                                        <br/><br/>
+                                    </div>
+                                    <div style={{paddingTop: "5px"}}>
                                         {
                                             assetState.codes.codeDeviceType !== undefined ? (
                                                 <Fragment>
@@ -185,7 +187,7 @@ const AssetsSearch = ({assetState}) => {
                                                 </Fragment>
                                             ) : (
                                                 <Fragment>
-                                                    test
+                                                    error
                                                 </Fragment>
                                             )
                                         }
@@ -194,23 +196,6 @@ const AssetsSearch = ({assetState}) => {
                             </form>
                         </Col>
                         <Col md={2} sm={12}>
-                            {/*&nbsp;&nbsp;
-                            <div className="float-left circle-legend">
-                                &nbsp;&nbsp;
-                                <span className="circle__lit"/>장비반출&nbsp;&nbsp;
-                                <div className="float-left" role="button" tabIndex="0"
-                                     onClick={event => setToggleOutFlag('0')}
-                                     onKeyDown={event => setToggleOutFlag('0')}>
-                                    <span className="circle__ste"
-                                          role="button" tabIndex="0"/>운영장비&nbsp;&nbsp;
-                                </div>
-                                <div className="float-left" role="button" tabIndex="0"
-                                     onClick={event => setToggleOutFlag("1")}
-                                     onKeyDown={event => setToggleOutFlag("1")}>
-                                    <span className="circle__eth"
-                                          role="button" tabIndex="0"/>반출장비&nbsp;&nbsp;
-                                </div>
-                            </div>*/}
                             {/*1 : true , 0 : false */}
                             {/*0 : 반입, 1 : 반출*/}
                             <div className="search_card_body" style={{maxWidth: "100%"}}>
@@ -221,7 +206,7 @@ const AssetsSearch = ({assetState}) => {
                                                value={device.operatingFlag}
                                                onChange={setToggleOutFlag}/>&nbsp;
                                         <span className="search_checkboxText">
-                                            운영장비
+                                            &nbsp;운영장비
                                         </span>
                                     </span>
                                     &nbsp;&nbsp;
@@ -231,7 +216,7 @@ const AssetsSearch = ({assetState}) => {
                                                value={device.carryingFlag}
                                                onChange={setToggleOutFlag}/>&nbsp;
                                         <span className="search_checkboxText">
-                                            반출장비
+                                            &nbsp;반출장비
                                         </span>
                                     </span>
                                 </div>

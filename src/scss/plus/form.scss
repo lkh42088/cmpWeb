@@ -296,7 +296,11 @@
 }
 
 .modal_form_label_blue {
-  color: #2C86A2;
+  color: $color-blue;
+}
+
+.modal_form_label_orange {
+  color: $color-orange;
 }
 
 .modal_form__form-group-button {

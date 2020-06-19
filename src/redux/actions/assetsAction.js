@@ -743,31 +743,65 @@ export const setDeviceSelected = dispatchVal => async (dispatch) => {
         console.log("setAddEleData error : ", error);
     }
 };
-
+/*
 // outFlag 저장
 export const setDeviceOutFlag = (assetState, outFlag, division) => async (dispatch) => {
     try {
         console.log("💎 setDeviceOutFlag start"); //SET_DEVICE_SELECTED
 
-        ////SET_DEVICE_OUTFLAG_OPERATING, SET_DEVICE_OUTFLAG_CARRYING,
+        //SET_DEVICE_OUTFLAG_OPERATING, SET_DEVICE_OUTFLAG_CARRYING,
+        //SET_DEVICE_OUTFLAG
 
-        if (division === 'operatingFlag') {
+        let checkOutFlag;
+        let returnVal;
+
+        if (division === 'operatingFlag') { // 운영값이 넘어오면 반출값 조회 후 판단~
+            checkOutFlag = assetState.searchRd.carryingFlag; //반출값 조회 후
+            if (outFlag) {
+                if (checkOutFlag) {
+                    returnVal = '2';
+                } else {
+                    returnVal = '0';
+                }
+            } else {
+                if (checkOutFlag) {
+                    returnVal = '1';
+                } else {
+                    returnVal = '3';
+                }
+            }
+
             dispatch({
                 type: SET_DEVICE_OUTFLAG_OPERATING,
                 payload: outFlag,
             });
         } else if (division === 'carryingFlag') {
+            checkOutFlag = assetState.searchRd.operatingFlag;
+
+
             dispatch({
                 type: SET_DEVICE_OUTFLAG_CARRYING,
                 payload: outFlag,
             });
         }
 
-        //fetchPostSearchDevice(assetState, assetState.searchRd);
+        // 운영값이 넘어오면 반출값 조회 후 판단~
+            // 반출값 조회
+            // 넘어온 운영값이 true
+                // 반출값이 true
+                    // outFlag = '2' -> 둘다 true
+                // 반출값이 false
+                    // outFlag = '2'
+            // 넘어온 운영값이 false
+                // outFlag = '1'
+        // 반출값이 넘어오면 운영값 조회 후 판단~
+            // 운영값 조회
+
+       //fetchPostSearchDevice(assetState, assetState.searchRd);
     } catch (error) {
         console.log("setDeviceOutFlag error : ", error);
     }
-};
+};*/
 
 // deviceType 저장
 export const setDeviceType = dispatchVal => async (dispatch) => {

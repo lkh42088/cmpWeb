@@ -195,7 +195,7 @@ const assetsReducer = (state = initialState, action) => {
                 ...state,
                 searchRd: payload,
             };
-        case SET_DEVICE_OUTFLAG_OPERATING:
+        /*case SET_DEVICE_OUTFLAG_OPERATING:
             return {
                 ...state,
                 operatingFlag: payload,
@@ -204,7 +204,12 @@ const assetsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 carryingFlag: payload,
-            };
+            };*/
+        /*case SET_DEVICE_OUTFLAG:
+            return {
+                ...state,
+                deviceOutFlag: payload,
+            };*/
         default:
             return state;
     }

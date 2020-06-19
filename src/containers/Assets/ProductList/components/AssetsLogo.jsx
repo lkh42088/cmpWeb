@@ -74,8 +74,6 @@ class AssetsLogo extends PureComponent {
         let Icon;
         //let commentValue = new Map([]);
 
-        console.log("comments : ", assetState.comments);
-
         /*        if (assetState.comments.length > 0) {
                     // eslint-disable-next-line prefer-destructuring
                     commentValue = assetState.device[0];
@@ -87,9 +85,13 @@ class AssetsLogo extends PureComponent {
                     Idx, parentTable, fkIdx, dvcDepth, dvcContents, registerId, registerName, registerDate,
                 } = commentValue;*/
 
-        let deviceComments;
+        const deviceComments = (
+            <Fragment>
+                <span>▶ 등록된 로고가 없습니다.</span>
+            </Fragment>
+        );
 
-        if (assetState.comments.length > 0) {
+        /*if (assetState.comments.length > 0) {
             deviceComments = (
                 <Fragment>
                     {assetState.comments
@@ -113,7 +115,8 @@ class AssetsLogo extends PureComponent {
                     <span>▶ 등록된 로고가 없습니다.</span>
                 </Fragment>
             );
-        }
+        }*/
+
 
         return (
             <div>

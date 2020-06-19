@@ -134,6 +134,12 @@
     }
   }
 
+  .search_icon {
+    @include themify($themes) {
+      color: themed('colorText');
+    }
+  }
+
   select.search_select {
     max-width: 100%;
     height: 32px;
@@ -144,8 +150,8 @@
     // Modify for Dark Theme [2020.06.11 LKH]
     @include themify($themes) {
       color: themed('colorText');
-      border: themed('colorFieldBorder');
       background: themed('colorBackgroundBody');
+      border: 1px solid themed('colorFieldsBorder');
     }
     option {
       //color: $color-black-dep1;   // Origin
@@ -163,6 +169,21 @@
       line-height: 12px;
       font-weight: bold;
     }
+  }
+
+  .search_btn {
+    border-radius: 5px;
+    padding: 5px 15px;
+    /* margin-left: 5px; */
+    margin: 0px 5px;
+    /* transition: all 0.4s; */
+    font-size: 12px;
+    /* position: relative; */
+    /* overflow: hidden; */
+    z-index: 0;
+    background-color: #e7e2e2;
+    border-color: #e7e2e2;
+    color: #646777;
   }
 }
 
@@ -505,7 +526,7 @@
 }
 
 .text_cor_orange {
-  color: #fd5f00;
+  color: $color-orange;
 }
 
 .mouse_over_list {
@@ -530,6 +551,16 @@
   padding: 3px;
   margin: 4px;
   border: 1px solid $color-gray;
+}
+
+.warringStyle {
+  color: $color-red;
+  font-weight: bold;
+}
+
+.cautionStyle {
+  color: $color-dep-blue;
+  font-weight: bold;
 }
 
 /*common----------------------------------------------------------------------------------------------common*/

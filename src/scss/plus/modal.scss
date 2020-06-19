@@ -43,6 +43,26 @@
   }
 }
 
+.assets_write__modal__close__notitle-btn {
+  float: right;
+  top: 15px;
+  @include directify($directions) {
+    #{directed('right')}: 15px;
+  }
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  background: transparent;
+
+  @include themify($themes) {
+    color: themed('colorIcon');
+  }
+}
+
+
 .assets_write__modal__title-icon {
   width: 24px;
   height: 24px;

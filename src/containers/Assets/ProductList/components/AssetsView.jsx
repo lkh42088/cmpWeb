@@ -16,6 +16,7 @@ import renderDatePickerField from "../../../../shared/components/form/DatePicker
 import Collapse from "../../../../shared/components/Collapse";
 
 import AssetsComment from "./AssetsComment";
+import AssetsLogo from "./AssetsLogo";
 
 //assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
 class AssetsView extends PureComponent {
@@ -191,24 +192,21 @@ class AssetsView extends PureComponent {
                     <Fragment>
                         <div className={classNameMap.formDivClass}>
                                 <span
-                                    className="modal_form__form-group-label
-                                    modal_form_label_blue">CPU</span>
+                                    className="modal_form__form-group-label">CPU</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {cpu}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                                 <span
-                                    className="modal_form__form-group-label
-                                    modal_form_label_blue">MEMORY</span>
+                                    className="modal_form__form-group-label">MEMORY</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {memory}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                                 <span
-                                    className="modal_form__form-group-label
-                                    modal_form_label_blue">HDD</span>
+                                    className="modal_form__form-group-label">HDD</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {hdd}
                             </div>
@@ -376,12 +374,6 @@ class AssetsView extends PureComponent {
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
-                            <span className="modal_form__form-group-label">고객사</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {customerName}/{customer}
-                            </div>
-                        </div>
-                        <div className={classNameMap.formDivClass}>
                             <span className={classNameMap.formSpanClass}>소유권/소유권구분</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {ownership}
@@ -391,15 +383,20 @@ class AssetsView extends PureComponent {
                             </span>
                         </div>
                         <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>소유업체명</span>
+                            <span className="modal_form__form-group-label text_cor_orange">고객사</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {customerName}/{customer}
+                            </div>
+                        </div>
+                        <div className={classNameMap.formDivClass}>
+                            <span className="modal_form__form-group-label text_cor_orange">소유업체명</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {ownerCompanyName}/{ownerCompany}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                                 <span
-                                    className="modal_form__form-group-label
-                                    modal_form_label_blue">HW S/N</span>
+                                    className="modal_form__form-group-label">HW S/N</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {hwSn}
                             </div>
@@ -440,6 +437,7 @@ class AssetsView extends PureComponent {
                 </div>
                 {/*-----------------------------------------------------------------------------------------*/}
                 <AssetsComment assetState={assetState} dispatch={dispatch} setTotalManager={setTotalManager}/>
+                <AssetsLogo/>
                 {/*-----------------------------------------------------------------------------------------*/}
                 <ButtonToolbar className="assets_write__modal__footer">
                     <Button className="assets_write__modal_ok" outline={colored} color="primary"
