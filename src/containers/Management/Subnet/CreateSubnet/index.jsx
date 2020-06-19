@@ -7,7 +7,7 @@ const SubnetWrite = () => (
     <Container>
         <Row>
             <Col md={12} >
-                <SubnetHeader />
+                <SubnetHeader head="SUBNET Management > " subhead="SUBNET 등록" />
                 <SubnetWriteForm />
             </Col>
         </Row>

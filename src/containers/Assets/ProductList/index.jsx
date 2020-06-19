@@ -48,10 +48,11 @@ const MaterialTable = () => {
             </Row>
             <Row>
                 <AssetsTop assetState={assetState} dispatch={dispatch}/>
-                {assetState.codes.codeDeviceType !== undefined ? <AssetsSearch assetState={assetState} /> : false}
+                {/*{assetState.codes.codeDeviceType !== undefined ? <AssetsSearch assetState={assetState} /> : false}*/}
+                <AssetsSearch assetState={assetState} />
             </Row>
             <Row>
-                <AssetsList assetState={assetState} dispatch={dispatch}/>
+                {assetState.devices !== undefined ? <AssetsList assetState={assetState} dispatch={dispatch}/> : false}
             </Row>
         </Container>
     );

@@ -2,7 +2,7 @@
 import {List, Map} from "immutable";
 import {
     GET_DEVICE_BY_DEVICECODE,
-    GET_DEVICES,
+    GET_DEVICES, GET_DEVICES_SEARCH,
     GET_CODES,
     GET_SUBCODES,
     GET_COMPANIES,
@@ -13,6 +13,7 @@ import {
     GET_DEVICE_ORI_BY_DEVICECODE, SET_MODAL_DIVISION,
     SET_ADD_ELE_IP_DATA, SET_ADD_ELE_SPLA_DATA,
     SET_DEVICE_SELECTED, SET_DEVICE_OUTFLAG, SET_DEVICE_TYPE,
+    SET_DEVICE_SEARCH, SET_DEVICE_OUTFLAG_OPERATING, SET_DEVICE_OUTFLAG_CARRYING,
 } from "../actions/assetsAction";
 
 export const initialState = {
@@ -49,6 +50,7 @@ export const initialState = {
         Map({}),
     ]),
     page: {
+        page: '1',
         count: '',
         curPage: '',
         deviceType: '',
@@ -58,15 +60,25 @@ export const initialState = {
         size: '',
         totalPage: '',
     },
-    frontPage: {
-        oriPage: 0,
-        showPage: 1,
-    },
     stateVal: {
         type: '',
         division: '',
         state: '',
     },
+    searchRd: {
+        customer: '',
+        deviceCode: '',
+        deviceType: '',
+        idc: '',
+        manufacture: '',
+        outFlag: '',
+        ownership: '',
+        ownershipDiv: '',
+        operatingFlag: true,
+        carryingFlag: true,
+    },
+    operatingFlag: true,
+    carryingFlag: true,
 };
 
 function getId(state) {
@@ -78,7 +90,7 @@ function getId(state) {
 // state 값을 직접 수정하면 안되고, 기존 상태 값에 원하는 값을 덮어쓴 새로운 객체를 만들어서 반환
 const assetsReducer = (state = initialState, action) => {
     const {
-        payload, type, deviceType, page, comment,
+        payload, type, deviceType, page, comment, division,
     } = action;
     //const devices = state.get('devices');
     // ... 은 자바스크립트의 전개연산자, 기존의 객체안에 있는 내용을 해당 위치에다가 풀어준다는 의미
@@ -108,9 +120,6 @@ const assetsReducer = (state = initialState, action) => {
                 ...state,
                 devices: payload.Devices,
                 page: payload.Page,
-                front: {
-                    oriPage: page,
-                },
                 deviceType,
             };
         case GET_COMPANIES:
@@ -144,9 +153,6 @@ const assetsReducer = (state = initialState, action) => {
                 ...state,
                 devices: payload.Devices,
                 page: payload.Page,
-                front: {
-                    oriPage: page,
-                },
                 deviceType,
             };
         case SET_STATUS:
@@ -174,15 +180,30 @@ const assetsReducer = (state = initialState, action) => {
                 ...state,
                 deviceSelected: payload,
             };
-        case SET_DEVICE_OUTFLAG:
-            return {
-                ...state,
-                deviceOutFlag: payload,
-            };
         case SET_DEVICE_TYPE:
             return {
                 ...state,
                 deviceType: payload,
+            };
+        case GET_DEVICES_SEARCH:
+            return {
+                ...state,
+                devices: payload,
+            };
+        case SET_DEVICE_SEARCH:
+            return {
+                ...state,
+                searchRd: payload,
+            };
+        case SET_DEVICE_OUTFLAG_OPERATING:
+            return {
+                ...state,
+                operatingFlag: payload,
+            };
+        case SET_DEVICE_OUTFLAG_CARRYING:
+            return {
+                ...state,
+                carryingFlag: payload,
             };
         default:
             return state;

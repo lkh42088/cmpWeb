@@ -16,7 +16,7 @@ export default () => (
             <Route path="/assets" component={Assets}/>
             <Route path="/customers" component={Customer}/>
             <Route path="/management" component={Management}/>
-            <Route path="/subnet/write" component={Subnet}/>
+            <Route path="/subnet" component={Subnet}/>
             <Route path="/default_pages" component={DefaultPages}/>
             <Route path="/404" component={DefaultPages}/>
             <Route path="/dashboards" component={Dashboards}/>
