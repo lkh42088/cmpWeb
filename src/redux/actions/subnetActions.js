@@ -30,7 +30,11 @@ export const searchDeviceSubnet = createAction(SEARCH_DEVICE_SUBNET, ({
 }) => ({
     deviceCode, deviceType, customer,
 }));
-export const readSubnet = createAction(READ_SUBNET);
+export const readSubnet = createAction(READ_SUBNET, ({
+    idx, subnetTag, usbnetStart, subnetEnd, subnetMask, gateway, page, totalCount,
+}) => ({
+    idx, subnetTag, usbnetStart, subnetEnd, subnetMask, gateway, page, totalCount,
+}));
 export const updateSubnet = createAction(UPDATE_SUBNET);
 export const deleteSubnet = createAction(DELETE_SUBNET);
 export const inputSubnet = createAction(
@@ -43,6 +47,7 @@ export const inputSubnet = createAction(
  * 3. Saga
  *****************************************************************************/
 const sendCreateSubnetSaga = createRequestSaga(CREATE_SUBNET, subnet.createSubnet);
+const sendReadSubnetSaga = createRequestSaga(READ_SUBNET, subnet.readSubnet);
 
 
 /******************************************************************************
@@ -50,4 +55,7 @@ const sendCreateSubnetSaga = createRequestSaga(CREATE_SUBNET, subnet.createSubne
  *****************************************************************************/
 export function* createSubnetSaga() {
     yield takeLatest(CREATE_SUBNET, sendCreateSubnetSaga);
+}
+export function* readSubnetSaga() {
+    yield takeLatest(READ_SUBNET, sendReadSubnetSaga);
 }
