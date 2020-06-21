@@ -245,7 +245,7 @@ const CompanyMgmtList = () => {
     }, []);
 
     useEffect(() => {
-        dispatch(pagingDump());
+        // dispatch(pagingDump());
     }, [totalCount]);
 
     useEffect(() => {
@@ -259,7 +259,7 @@ const CompanyMgmtList = () => {
     useEffect(() => {
         /** Pagination */
         getPageData();
-        dispatch(pagingDump());
+        // dispatch(pagingDump());
     }, [rowsPerPage, pageBeginRow, orderBy, order]);
 
     /** Pagination */
@@ -314,7 +314,7 @@ const CompanyMgmtList = () => {
                                 {row.hp}
                             </TableCell>
                             <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
-                                {row.isCompany}
+                                {row.isCompany ? "회사" : "개인"}
                             </TableCell>
                             <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.memo}
@@ -364,20 +364,21 @@ const CompanyMgmtList = () => {
                             label="Dense padding"
                         />
                     </div>
-                    <Modal
-                        aria-labelledby="transition-modal-title"
-                        aria-describedby="transition-modal-title"
-                        className={classes.modal}
-                        open={open}
-                        onClose={handleClose}
-                        closeAfterTransition
-                        BackdropComponent={Backdrop}
-                        BackdropProps={{
-                            timeout: 500,
-                        }}
-                    >
-                        <AddCompany open={open} />
-                    </Modal>
+                    {/*<Modal*/}
+                    {/*    aria-labelledby="transition-modal-title"*/}
+                    {/*    aria-describedby="transition-modal-title"*/}
+                    {/*    className={classes.modal}*/}
+                    {/*    open={open}*/}
+                    {/*    onClose={handleClose}*/}
+                    {/*    closeAfterTransition*/}
+                    {/*    BackdropComponent={Backdrop}*/}
+                    {/*    BackdropProps={{*/}
+                    {/*        timeout: 500,*/}
+                    {/*    }}*/}
+                    {/*>*/}
+                    {/*    <AddCompany open={open} handleClose={handleClose}/>*/}
+                    {/*</Modal>*/}
+                    <AddCompany open={open} handleClose={handleClose}/>
                 </CardBody>
             </Card>
         </Col>

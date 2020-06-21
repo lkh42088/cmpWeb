@@ -65,6 +65,7 @@ const AssetsSearch = ({assetState}) => {
         }
 
         if (schSelect === "0") {
+            // eslint-disable-next-line no-alert
             alert("경고창 생성");
         } else {
             postArray[schSelect] = schText;

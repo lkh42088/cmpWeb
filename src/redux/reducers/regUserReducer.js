@@ -8,6 +8,7 @@ import {
     DELETE_EMAIL_GROUP,
     REGUSER_SUCCESS,
     REGUSER_FAILURE, CHANGE_EMAIL_AUTH_FLAG, CHANGE_EMAIL_AUTH_GROUP_FLAG,
+    USER_BASE_INFO_BY_COMPANY,
 } from "../actions/regUserActions";
 
 const initialState = {
@@ -28,7 +29,18 @@ const initialState = {
 const regUserReducer = handleActions(
     {
         [INITIALIZE]: () => ({
-            initialState,
+            userId: '',
+            password: '',
+            username: '',
+            cellPhone: '',
+            email: '',
+            level: '',
+            emailAuthValue: "",
+            emailAuthFlag: false,
+            emailAuthGroupFlag: false,
+            emailAuthGroupList: [],
+            msg: null,
+            msgError: null,
         }),
         [CHANGE_FIELD]: (state, { payload: { key, value } }) => produce(state, (draft) => {
                     draft[key] = value;
@@ -55,6 +67,13 @@ const regUserReducer = handleActions(
         }),
         [CHANGE_EMAIL_AUTH_GROUP_FLAG]: state => produce(state, (draft) => {
             draft.emailAuthGroupFlag = !draft.emailAuthGroupFlag;
+        }),
+        [USER_BASE_INFO_BY_COMPANY]: (state, {payload}) => ({
+            ...state,
+            username: payload.username,
+            email: payload.email,
+            cellPhone: payload.cellPhone,
+            level: 5,
         }),
     },
     initialState,

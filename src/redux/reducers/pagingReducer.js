@@ -30,7 +30,7 @@ const initialState = {
     selected: new Map([]),
     dense: false,
     orderBy: '',
-    order: 'asc',
+    order: 'desc', // asc, desc
 };
 
 const pagingReducer = handleActions(
