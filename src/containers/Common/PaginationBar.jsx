@@ -1,20 +1,9 @@
-import React from "react";
+import React, {useCallback, useEffect} from "react";
 import {
     Grid, Pagination,
 } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
-import {useDispatch, useSelector} from "react-redux";
-import {
-    pagingChangeCurrentPage,
-    pagingChangeCurrentPageNext,
-    pagingChangeCurrentPagePrev,
-    pagingChangeDense,
-    pagingChangeOrder,
-    pagingChangeOrderBy,
-    pagingChangeRowsPerPage,
-    pagingChangeSelected,
-    pagingChangeTotalCount, pagingDump,
-} from "../../redux/actions/pagingActions";
+import {useDispatch} from "react-redux";
 
 const PaginationCustomization = (props) => {
     const dispatch = useDispatch();
@@ -27,37 +16,8 @@ const PaginationCustomization = (props) => {
         showPreviousAndNextNav,
         totalPages,
         size,
+        onPageChange,
     } = props;
-
-    const {
-        // selected,
-        // pageBeginRow,
-        // rowsPerPage,
-        currentPage,
-        totalPage,
-        // totalCount,
-        // displayRowsList,
-        // dense,
-        // orderBy,
-        // order,
-    } = useSelector(({pagingRd}) => ({
-        // selected: pagingRd.selected,
-        // pageBeginRow: pagingRd.pageBeginRow,
-        // rowsPerPage: pagingRd.rowsPerPage,
-        currentPage: pagingRd.currentPage,
-        totalPage: pagingRd.totalPage,
-        // totalCount: pagingRd.totalCount,
-        // displayRowsList: pagingRd.displayRowsList,
-        // dense: pagingRd.dense,
-        // orderBy: pagingRd.orderBy,
-        // order: pagingRd.order,
-    }));
-
-    // Event
-    const handlePaginationChange = () => {
-        dispatch(pagingChangeCurrentPage({currentPage: activePage}));
-        dispatch(pagingChangeTotalCount({totalCount: totalPages}));
-    };
 
     return (
         <Grid columns={1}>
@@ -65,7 +25,7 @@ const PaginationCustomization = (props) => {
                 <Pagination
                     activePage={activePage}
                     boundaryRange={boundaryRange}
-                    onPageChange={handlePaginationChange}
+                    onPageChange={onPageChange}
                     size={size}
                     siblingRange={siblingRange}
                     totalPages={totalPages}
@@ -80,4 +40,4 @@ const PaginationCustomization = (props) => {
     );
 };
 
-export default PaginationCustomization;
+export default React.memo(PaginationCustomization);
