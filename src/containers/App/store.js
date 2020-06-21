@@ -30,7 +30,7 @@ import {tempSetUser, check, userSaga} from "../../redux/actions/accountActions";
 import {regUserSaga} from "../../redux/actions/regUserActions";
 import {userListSaga} from "../../redux/actions/usersActions";
 import {companiesSaga} from "../../redux/actions/companiesActions";
-import {createSubnetSaga} from "../../redux/actions/subnetActions";
+import {createSubnetSaga, readSubnetSaga} from "../../redux/actions/subnetActions";
 
 const rootReducer = combineReducers({
     form: reduxFormReducer, // mounted under "form",
@@ -61,6 +61,7 @@ export function* rootSaga() {
         userListSaga(),
         companiesSaga(),
         createSubnetSaga(),
+        readSubnetSaga(),
     ]);
 }
 
