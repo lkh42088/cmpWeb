@@ -1,16 +1,11 @@
 import React, {
     forwardRef, Component, useEffect, useState, useCallback,
 } from 'react';
-import {
-    Grid, Form, Pagination, Segment,
-} from 'semantic-ui-react';
-import {
-    Card, CardBody, Col, Row, Container,
-} from 'reactstrap';
 import {useDispatch, useSelector} from "react-redux";
 import MaterialTable from 'material-table';
-import {makeStyles} from "@material-ui/core/styles";
-// icon
+import {makeStyles, withStyles} from "@material-ui/core/styles";
+import TableCell from "@material-ui/core/TableCell";
+/** icon **/
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -26,24 +21,39 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import {reduxForm} from "redux-form";
 import PaginationCustomization from "../../../../Common/PaginationBar";
 import {pagingChangeCurrentPage, pagingChangeTotalCount} from "../../../../../redux/actions/pagingActions";
 import {readSubnet} from "../../../../../redux/actions/subnetActions";
-import SubnetWriteForm from "../../CreateSubnet/components/SubnetWriteForm";
 
-// Custom style
+/** Custom CSS **/
 const useStyles = makeStyles(theme => ({
     root: {
         fontFamily: 'Nanum Square acEB',
         fontSize: 8,
         color: "red",
     },
-    title: {
+    tab: {
         fontSize: 12,
+        color: "red",
     },
+
 }));
 
+const headerStyle = makeStyles(theme => ({
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.primary.contrastText,
+}));
+const StyledTableCell = withStyles(theme => ({
+    head: {
+        backgroundColor: theme.palette.common.black,
+        color: theme.palette.common.white,
+    },
+    body: {
+        fontSize: 14,
+    },
+}))(TableCell);
+
+/** Metarial table icons **/
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
     Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -85,12 +95,6 @@ const SubnetList = () => {
             { title: 'SUBNET 마스크', field: 'subnetMask' },
             { title: '게이트웨이', field: 'gateway' },
         ],
-        // data: [{
-        //     subnetTag: data.subnetTag,
-        //     subnetStart: data.subnetStart.concat(" ~ ").concat(data.subnetEnd),
-        //     subnetMask: data.subnetMask,
-        //     gateway: data.gateway,
-        // }],
         data: [],
     });
     /**
@@ -168,30 +172,17 @@ const SubnetList = () => {
         // }, 600);
     });
 
-    // cosnt SubRow = () => {
-    //     {rows.map(row => (
-    //         <Row key={row.name} row={row} />
-    //     ))}
-    // }
-
-    // const DataBinding = query =>
-    //     new Promise((resolve, reject) => {
-    //         resolve({
-    //             data: // your data array
-    //             page: // current page number
-    //         totalCount: // total row number
-    //             });
-    //     })
-
     const paginationBar = (
       <PaginationCustomization
           activePage={currentPage}
           boundaryRange="1"
           siblingRange="2"
-          totalPages={totalPage}
+          //totalPages={totalPage}
+          totalPages="20"
           onPageChange={handlePaginationChange}
           showEllipsis="true"
           showFirstAndLastNav="true"
+          showPreviousAndNextNav="true"
           size="mini"
       />
     );
@@ -208,7 +199,29 @@ return (
                     onRowUpdate: RowUpdate,
                     onRowDelete: RowDelete,
                 }}
-                actionsComponent={paginationBar}
+                headerStyle={headerStyle}
+                // actionsComponent={paginationBar}
+
+                components={{
+                    Pagination: props => (
+                        <div style={{textAlign: "center", padding: 30 }}>
+                            {paginationBar}
+                        </div>
+                        // <PaginationCustomization
+                        //     {...props}
+                        //     rowsPerPageOptions={[5, 10, 20, 30]}
+                        //     rowsPerPage={state.numberRowPerPage}
+                        //     count={state.totalRow}
+                        //     page={state.pageNumber}
+                        //     onChangePage={(e, page) => this.handleChangePage(page + 1)
+                        //     }
+                        //     onChangeRowsPerPage={(event) => {
+                        //         props.onChangeRowsPerPage(event);
+                        //         //handleChangeRowPerPage(event.target.value);
+                        //     }}
+                        // />
+                    ),
+                }}
             />
             {/*<PaginationCustomization*/}
             {/*    activePage={currentPage}*/}
