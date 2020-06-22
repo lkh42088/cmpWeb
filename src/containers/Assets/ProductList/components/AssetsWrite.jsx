@@ -28,12 +28,6 @@ import AssetsEdit from "./AssetsEdit";
 
 //const required = value => (value ? undefined : 'Required');
 
-
-const warringStyle = {
-    color: "#0f4c81",
-    fontWeight: "bold",
-};
-
 function validate(values) {
     const errors = {};
 
@@ -71,9 +65,9 @@ const renderCustomerField = field => (
                   onClick={field.searchToggle} onKeyDown={field.searchToggle}
                   role="button" tabIndex="0"
             ><AccountSearchIcon/></span>
+            {field.meta.touched && field.meta.error
+            && <span className="warringStyle">&nbsp;※ {field.meta.error}</span>}
         </div>
-        {field.meta.touched && field.meta.error
-        && <span className="modal_form__form-group-description">※ {field.meta.error}</span>}
     </Fragment>
 );
 
@@ -87,15 +81,15 @@ const renderSelectCustomField = ({
                 {...input}
                 placeholder={placeholder}
             >
-                <option value="0">선택하세요.</option>
+                <option value="0">:: SELECT ::.</option>
                 {
                     codeDivision.code.map((d, index) => (
                         <option key={d.codeId.toString()}
                                 value={d.codeId}>{d.name}</option>
                     ))}
             </select>
+            {touched && error && <span className="warringStyle">&nbsp;※ {error}</span>}
         </div>
-        {touched && error && <span className="modal_form__form-group-description">※ {error}</span>}
     </Fragment>
 );
 
@@ -120,8 +114,8 @@ class AssetsWrite extends PureComponent {
         this.state = {
             modal: false,
             showPassword: false,
-            RackComponent: <span style={warringStyle}>※ IDC를 선택하세요.</span>,
-            ModelComponent: <span style={warringStyle}>※ Model을 선택하세요.</span>,
+            RackComponent: <span className="cautionStyle">※ IDC를 선택하세요.</span>,
+            ModelComponent: <span className="cautionStyle">※ Model을 선택하세요.</span>,
             AddIpComponent: [],
             AddIpComponentMax: 0,
             AddSplaComponent: [],
@@ -229,7 +223,7 @@ class AssetsWrite extends PureComponent {
                         <Field
                             name="rack"
                             component="select">
-                            <option value="0">선택하세요.</option>
+                            <option value="0">:: SELECT ::</option>
                             <option value="none">렉없음</option>
                             {assetState.subCodes.data
                                 .map(d => (Number(d.codeId) === Number(e.target.value)
@@ -238,10 +232,10 @@ class AssetsWrite extends PureComponent {
                         </Field>
                     );
                 } else {
-                    tempContent = <span style={warringStyle}>※ 연결된 Rack이 없습니다.</span>;
+                    tempContent = <span className="cautionStyle">※ 연결된 Rack이 없습니다.</span>;
                 }
             } else {
-                tempContent = <span style={warringStyle}>※ IDC를 선택하세요.</span>;
+                tempContent = <span className="cautionStyle">※ IDC를 선택하세요.</span>;
             }
             this.setState({
                 RackComponent: tempContent,
@@ -256,7 +250,7 @@ class AssetsWrite extends PureComponent {
                         <Field
                             name="model"
                             component="select">
-                            <option value="0">선택하세요.</option>
+                            <option value="0">:: SELECT ::</option>
                             {assetState.subCodes.data
                                 .map(d => (Number(d.codeId) === Number(e.target.value)
                                     && <option key={d.id} value={d.id}>{d.name}</option>))
@@ -264,10 +258,10 @@ class AssetsWrite extends PureComponent {
                         </Field>
                     );
                 } else {
-                    tempContent = <span style={warringStyle}>※ 연결된 Model이 없습니다.</span>;
+                    tempContent = <span className="cautionStyle">※ 연결된 Model이 없습니다.</span>;
                 }
             } else {
-                tempContent = <span style={warringStyle}>※ 제조사를 선택하세요.</span>;
+                tempContent = <span className="cautionStyle">※ 제조사를 선택하세요.</span>;
             }
             this.setState({
                 ModelComponent: tempContent,
@@ -366,14 +360,6 @@ class AssetsWrite extends PureComponent {
                 setIpArrayTemp = setIpArrayTemp.set(reName, "");
                 tempContent = (
                     <div className="modal_form__form-group-field" key={reName}>
-                        {/*<Field
-                            name={reName}
-                            onChange={this.handleChangeIp}
-                            component="input"
-                            type="text"
-                            className="input_col_5"
-                            placeholder="ip"
-                        />*/}
                         <input
                             name={`${reName}`}
                             type="text"
@@ -410,21 +396,11 @@ class AssetsWrite extends PureComponent {
                 }
                 tempContent = (
                     <div className="modal_form__form-group-field" key={reName}>
-                        {/*<Field
-                            name={reName}
-                            component="select"
-                        >
-                            <option value="0">선택하세요.</option>
-                            {assetState.codes.codeSpla
-                                .map((d, index) => (
-                                    <option key={d.codeId.toString()} value={d.codeId}>{d.name}</option>
-                                ))}
-                        </Field>*/}
                         <select
                             name={`${reName}`}
                             onChange={this.handleChangeSpla}
                         >
-                            <option value="0">선택하세요.</option>
+                            <option value="0">:: SELECT ::</option>
                             {assetState.codes.codeSpla
                                 .map(c => (
                                     <option key={c.codeId.toString()}
@@ -534,7 +510,7 @@ class AssetsWrite extends PureComponent {
                     <Fragment>
                         <div className="modal_form__form-group">
                                 <span
-                                    className="modal_form__form-group-label modal_form_label_blue">CPU</span>
+                                    className="modal_form__form-group-label">CPU</span>
                             <div className="modal_form__form-group-field">
                                 <Field
                                     name="cpu"
@@ -547,7 +523,7 @@ class AssetsWrite extends PureComponent {
                         </div>
                         <div className="modal_form__form-group">
                                 <span
-                                    className="modal_form__form-group-label modal_form_label_blue">MEMORY</span>
+                                    className="modal_form__form-group-label">MEMORY</span>
                             <div className="modal_form__form-group-field">
                                 <Field
                                     name="memory"
@@ -560,7 +536,7 @@ class AssetsWrite extends PureComponent {
                         </div>
                         <div className="modal_form__form-group">
                                 <span
-                                    className="modal_form__form-group-label modal_form_label_blue">HDD</span>
+                                    className="modal_form__form-group-label">HDD</span>
                             <div className="modal_form__form-group-field">
                                 <Field
                                     name="hdd"
@@ -574,13 +550,6 @@ class AssetsWrite extends PureComponent {
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">IP</span>
                             <div className="modal_form__form-group-field">
-                                {/*<Field
-                                    name="ip"
-                                    component="input"
-                                    type="text"
-                                    className="input_col_5"
-                                    placeholder="ip"
-                                />*/}
                                 <svg className="mdi-icon " width="24" height="24" fill="currentColor"
                                      viewBox="0 0 24 24"
                                      onClick={event => this.setHtmlPlus('ip')}
@@ -589,7 +558,7 @@ class AssetsWrite extends PureComponent {
                                     <PlusIcon/>
                                 </svg>
                                 {/*TODO 디자인 통합 필요*/}
-                                <span>※ 최대 등록 개수는 10개 입니다.</span>
+                                <span className="cautionStyle">※ 최대 등록 개수는 10개 입니다.</span>
                             </div>
                             {AddIpComponent}
                         </div>
@@ -600,7 +569,7 @@ class AssetsWrite extends PureComponent {
                                     name="size"
                                     component="select"
                                 >
-                                    <option value="0">선택하세요.</option>
+                                    <option value="0">:: SELECT ::</option>
                                     {assetState.codes.codeSize
                                         .map((d, index) => (
                                             <option key={d.codeId.toString()}
@@ -612,17 +581,6 @@ class AssetsWrite extends PureComponent {
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">SPLA</span>
                             <div className="modal_form__form-group-field">
-                                {/*<Field
-                                    name="spla"
-                                    component="select"
-                                >
-                                    <option value="0">선택하세요.</option>
-                                    {assetState.codes.codeSpla
-                                        .map((d, index) => (
-                                            <option key={d.codeId.toString()}
-                                                    value={d.codeId}>{d.name}</option>
-                                        ))}
-                                </Field>*/}
                                 <svg className="mdi-icon " width="24" height="24" fill="currentColor"
                                      viewBox="0 0 24 24"
                                      onClick={event => this.setHtmlPlus('spla')}
@@ -631,7 +589,7 @@ class AssetsWrite extends PureComponent {
                                     <PlusIcon/>
                                 </svg>
                                 {/*TODO 디자인 통합 필요*/}
-                                <span>※ 최대 등록 개수는 10개 입니다.</span>
+                                <span className="cautionStyle">※ 최대 등록 개수는 10개 입니다.</span>
                             </div>
                             {AddSplaComponent}
                         </div>
@@ -668,13 +626,6 @@ class AssetsWrite extends PureComponent {
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">IP</span>
                             <div className="modal_form__form-group-field">
-                                {/*<Field
-                                    name="ip"
-                                    component="input"
-                                    type="text"
-                                    className="input_col_5"
-                                    placeholder="ip"
-                                />*/}
                                 <svg className="mdi-icon " width="24" height="24" fill="currentColor"
                                      viewBox="0 0 24 24"
                                      onClick={event => this.setHtmlPlus('ip')}
@@ -683,7 +634,7 @@ class AssetsWrite extends PureComponent {
                                     <PlusIcon/>
                                 </svg>
                                 {/*TODO 디자인 통합 필요*/}
-                                <span>※ 최대 등록 개수는 10개 입니다.</span>
+                                <span className="cautionStyle">※ 최대 등록 개수는 10개 입니다.</span>
                             </div>
                             {AddIpComponent}
                         </div>
@@ -748,7 +699,7 @@ class AssetsWrite extends PureComponent {
                                     name="rackCode"
                                     component="select"
                                 >
-                                    <option value="0">선택하세요.</option>
+                                    <option value="0">:: SELECT ::</option>
                                     {assetState.codes.codeRackCode
                                         .map((d, index) => (
                                             <option key={d.codeId.toString()}
@@ -824,7 +775,7 @@ class AssetsWrite extends PureComponent {
                                     name="idc"
                                     component="select"
                                     onChange={this.handleChange}>
-                                    <option value="0">선택하세요.</option>
+                                    <option value="0">:: SELECT ::</option>
                                     {assetState.codes.codeIdc
                                         .map((d, index) => (
                                             <option key={d.codeId.toString()}
@@ -842,7 +793,7 @@ class AssetsWrite extends PureComponent {
                                     name="manufacture"
                                     component="select"
                                     onChange={this.handleChange}>
-                                    <option value="0">선택하세요.</option>
+                                    <option value="0">:: SELECT ::</option>
                                     {assetState.codes.codeManufacture
                                         .map((d, index) => (
                                             <option key={d.codeId.toString()}
@@ -860,6 +811,23 @@ class AssetsWrite extends PureComponent {
                                 component={renderSelectCustomField}
                                 codeDivision={{
                                     code: assetState.codes.codeDeviceType,
+                                }}
+                            />
+                        </div>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">소유권/소유권구분</span>
+                            <Field
+                                name="ownership"
+                                component={renderSelectCustomField}
+                                codeDivision={{
+                                    code: assetState.codes.codeOwnership,
+                                }}
+                            />
+                            <Field
+                                name="ownershipDiv"
+                                component={renderSelectCustomField}
+                                codeDivision={{
+                                    code: assetState.codes.codeOwnershipDiv,
                                 }}
                             />
                         </div>
@@ -887,48 +855,7 @@ class AssetsWrite extends PureComponent {
                             />
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">소유권/소유권구분</span>
-                            <Field
-                                name="ownership"
-                                component={renderSelectCustomField}
-                                codeDivision={{
-                                    code: assetState.codes.codeOwnership,
-                                }}
-                            />
-                            <Field
-                                name="ownershipDiv"
-                                component={renderSelectCustomField}
-                                codeDivision={{
-                                    code: assetState.codes.codeOwnershipDiv,
-                                }}
-                            />
-
-                            {/*<Field
-                                name="ownership"
-                                component="select"
-                            >
-                                <option value="0">선택하세요.</option>
-                                {assetState.codes.codeOwnership
-                                    .map((d, index) => (
-                                        <option key={d.codeId.toString()}
-                                                value={d.codeId}>{d.name}</option>
-                                    ))}
-                            </Field>
-                            &nbsp;&nbsp;
-                            <Field
-                                name="ownershipDiv"
-                                component="select"
-                            >
-                                <option value="0">선택하세요.</option>
-                                {assetState.codes.codeOwnershipDiv
-                                    .map((d, index) => (
-                                        <option key={d.codeId.toString()}
-                                                value={d.codeId}>{d.name}</option>
-                                    ))}
-                            </Field>*/}
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">소유업체명</span>
+                            <span className="modal_form__form-group-label text_cor_orange">소유업체명</span>
                             <Field
                                 name="ownerCompany"
                                 type="text"
@@ -952,7 +879,7 @@ class AssetsWrite extends PureComponent {
                         </div>
                         <div className="modal_form__form-group">
                                 <span
-                                    className="modal_form__form-group-label modal_form_label_blue">HW S/N</span>
+                                    className="modal_form__form-group-label">HW S/N</span>
                             <div className="modal_form__form-group-field">
                                 <Field
                                     name="hwSn"
@@ -1026,9 +953,9 @@ class AssetsWrite extends PureComponent {
                         <div className="modal_btn">
                             <ButtonToolbar className="assets_write__modal__footer">
                                 <Button className="assets_write__modal_ok" color="primary"
-                                        type="submit">Submit</Button>
+                                        type="submit">등록</Button>
                                 <Button className="assets_write__modal_cancel"
-                                        onClick={this.onClose}>Cancel</Button>
+                                        onClick={this.onClose}>닫기</Button>
                                 {/*<button type="submit">Submit[test]</button>*/}
                             </ButtonToolbar>
                         </div>
@@ -1038,32 +965,35 @@ class AssetsWrite extends PureComponent {
                         toggle={this.searchToggle}
                         className={`assets_write__modal-dialog assets_write__modal-dialog--success ${modalClass}`}
                     >
-                        <div className="assets_write__modal__body assets_write__modal__tableLine">
-                            <div className="modal_form__form-group">
+                        <div className="search_card_body">
+                            <div className="assets_write__modal__header">
+                                &nbsp;&nbsp;
+                                <button className="lnr lnr-cross assets_write__modal__close__notitle-btn" type="button"
+                                        onClick={this.searchToggle}/>
+                            </div>
+                            <div className="assets_write__modal__body assets_write__modal__tableLine">
+                                <div className="modal_form__form-group">
                                 <span
                                     className="modal_form__form-group-label text_cor_green">
-                                    고객사명 : <input name="searchCompanyName" value={searchCompanyName}
+                                    <input name="searchCompanyName" className="search_input"
+                                                  value={searchCompanyName}
+                                                  placeholder="고객사명..."
                                                   onChange={this.handleChange}/>
                                 </span>
-                                <button type="submit" onClick={event => this.searchCompany()}>Search</button>
-                                <br/>
-                                <span className="modal_form__form-group-label text_cor_blue">
+                                    {/*<button type="submit" onClick={event => this.searchCompany()}>검색</button>*/}
+                                    <Button className="search_btn" type="submit"
+                                            onClick={event => this.searchCompany()}>검색</Button>
+                                    <span className="modal_form__form-group-label text_cor_blue">
                                     ※ 업체명으로 검색하세요.
                                 </span>
-                                <div className="modal_form__form-group-field">
-                                    <Table className="material-table" size="small">
-                                        {viewSearchCompany}
-                                    </Table>
+                                    <div className="modal_form__form-group-field">
+                                        <Table className="material-table" size="small">
+                                            {viewSearchCompany}
+                                        </Table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <ButtonToolbar className="assets_write__modal__footer_comment">
-                            {/*<Button className="assets_write__modal_ok"
-                                    color="success"
-                                    onClick={this.searchToggle}>Submit</Button>&nbsp;&nbsp;*/}
-                            <Button className="assets_write__modal_cancel"
-                                    onClick={this.searchToggle}>Cancel</Button>
-                        </ButtonToolbar>
                     </Modal>
                 </div>
             </div>

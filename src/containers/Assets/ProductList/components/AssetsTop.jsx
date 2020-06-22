@@ -1,12 +1,15 @@
 /* eslint-disable react/prop-types */
-import React, {PureComponent} from 'react';
+import React, {PureComponent, Fragment} from 'react';
 import {
     Badge, Button, Card, CardBody, Col, Collapse, Modal, Table, ButtonToolbar,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 import classNames from "classnames";
 import moment from 'moment';
-import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
+import DoneOutlineIcon from "@material-ui/icons/DoneOutline";
+import CreateIcon from "@material-ui/icons/Create";
+import InputIcon from "@material-ui/icons/Input";
+import LaunchIcon from "@material-ui/icons/Launch";
 import Select from 'react-select';
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
@@ -19,6 +22,7 @@ import {
     postDeviceOutFlag,
 } from "../../../../redux/actions/assetsAction";
 import {UserProps, MenuTitleProps} from '../../../../shared/prop-types/ReducerProps';
+import API_ROUTE from "../../../../shared/apiRoute";
 
 function replacer(key, value) {
     console.log("key : ", key);
@@ -222,34 +226,61 @@ class AssetsTop extends PureComponent {
             'assets_write__modal-dialog--header': false,
         });
 
+        const componentOperatinng = (
+            <span role="button" tabIndex="0"
+                  onClick={event => this.toggleOutFlag("0")}
+                  onKeyDown={event => this.toggleOutFlag("0")}>
+                    <InputIcon/>&nbsp;
+                    반입
+            </span>
+        );
+
+        const componentCarrying = (
+            <span role="button" tabIndex="0"
+                  onClick={event => this.toggleOutFlag("1")}
+                  onKeyDown={event => this.toggleOutFlag("1")}>
+                <LaunchIcon/>&nbsp;
+                    반출
+            </span>
+        );
+
+        let viewComponentOutFlag;
+
+        if (assetState.searchRd.operatingFlag === true && assetState.searchRd.carryingFlag === true) {
+            viewComponentOutFlag = (
+                <Fragment>
+                    {componentOperatinng}
+                    {componentCarrying}
+                </Fragment>
+            );
+        } else if (assetState.searchRd.operatingFlag === true && assetState.searchRd.carryingFlag === false) {
+            viewComponentOutFlag = (
+                <Fragment>
+                    {componentOperatinng}
+                </Fragment>
+            );
+        } else if (assetState.searchRd.operatingFlag === false && assetState.searchRd.carryingFlag === true) {
+            viewComponentOutFlag = (
+                <Fragment>
+                    {componentCarrying}
+                </Fragment>
+            );
+        } else if (assetState.searchRd.operatingFlag === false && assetState.searchRd.carryingFlag === false) {
+            viewComponentOutFlag = "";
+        }
+
         return (
             <Col md="12">
                 <Card>
                     <div className="search_panel_topbtn">
                         <div className="float-left">
                             <ButtonToolbar>
-                                    <span role="button" tabIndex="0"
-                                          onClick={this.toggle} onKeyDown={this.toggle}
-                                          className="top_btn_black_dep2">
+                                {/*className="top_btn_black_dep3"*/}
+                                <span role="button" tabIndex="0"
+                                      onClick={this.toggle} onKeyDown={this.toggle}>
+                                <CreateIcon/>&nbsp;
                                         장비 등록</span>
-                                {
-                                    assetState.deviceOutFlag === '0'
-                                        ? (
-                                            <span role="button" tabIndex="0"
-                                                  onClick={event => this.toggleOutFlag("1")}
-                                                  onKeyDown={event => this.toggleOutFlag("1")}
-                                                  className="top_btn_black_dep3">
-                                                반출
-                                            </span>
-                                        ) : (
-                                            <span role="button" tabIndex="0"
-                                                  onClick={event => this.toggleOutFlag("0")}
-                                                  onKeyDown={event => this.toggleOutFlag("0")}
-                                                  className="top_btn_black_dep3">
-                                                반입
-                                            </span>
-                                        )
-                                }
+                                {viewComponentOutFlag}
                             </ButtonToolbar>
                         </div>
                     </div>

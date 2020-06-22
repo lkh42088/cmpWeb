@@ -26,7 +26,7 @@ import Fade from "@material-ui/core/Fade";
 import {Field, Form} from "redux-form";
 import {useDispatch, useSelector} from "react-redux";
 import {changeUserField} from "../../../../redux/actions/regUserActions";
-import {changeCompanyRegField} from "../../../../redux/actions/companiesActions";
+import {changeCompanyRegisterField} from "../../../../redux/actions/companiesActions";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -469,7 +469,7 @@ const CompanyPage = ({ classes }) => {
      ************************************************************************************/
     const handleChange = ({name, value}) => {
         console.log("[handleChange] name: ", name, ", value: ", value);
-        dispatch(changeCompanyRegField({ key: name, value }));
+        dispatch(changeCompanyRegisterField({ key: name, value }));
     };
 
     const handleChangeDateField = (date) => {
@@ -478,7 +478,7 @@ const CompanyPage = ({ classes }) => {
             date.getMonth(),
             date.getDate(),
             date.getDay());
-        dispatch(changeCompanyRegField({ key: "cpTerminationDate", value: date}));
+        dispatch(changeCompanyRegisterField({ key: "cpTerminationDate", value: date}));
     };
 
     console.log("Company Page..");

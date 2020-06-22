@@ -35,9 +35,14 @@ export const getCompanyList = createAction(COMPANYLIST, ({
 }));
 
 /** B. Company Register Page */
-export const changeCompanyRegField = createAction(
+export const changeCompanyRegisterField = createAction(
     COMPANY_CHANGE_REGISTER_FIELD,
     ({ key, value }) => ({ key, value }),
+);
+
+export const changeCompanyField = createAction(
+    COMPANY_CHANGE_REGISTER_FIELD,
+    ({ type, key, value }) => ({ type, key, value }),
 );
 
 export const initializeCompany = createAction(INITIALIZE_COMPANY);

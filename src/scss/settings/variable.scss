@@ -78,9 +78,13 @@ $color-violet: #c88ffa;
 $color-red: #ff4861;
 $color-red-hover: darken($color-red, 10%);
 
+$color-orange: #fa744f;
+
 //$color-blue: #4ea1d3; // ori -> #70bbfd
 $color-blue: #70bbfd;
 $color-blue-hover: darken($color-blue, 10%);
+
+$color-dep-blue: #0f4c81;
 
 $color-gray: #787985;
 $color-light-gray: #d8dfe9;
@@ -104,6 +108,8 @@ $color-black-dep5: #d0d0d0;
 $color-white: #ffffff;
 
 $color-bg: #e7eaf6;
+
+$color-bg-sub: #f6f7fc;
 
 $directions: (
   ltr: (

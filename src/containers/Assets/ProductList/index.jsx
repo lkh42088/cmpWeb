@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import {Col, Container, Row} from 'reactstrap';
 import PropTypes from "prop-types";
-import {fetchPosts, getCodes, setDeviceOutFlag} from '../../../redux/actions/assetsAction';
+import {fetchPosts, getCodes} from '../../../redux/actions/assetsAction';
 import {MenuTitleProps} from '../../../shared/prop-types/ReducerProps';
 
 import AssetsList from './components/AssetsList';

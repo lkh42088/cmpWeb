@@ -16,6 +16,7 @@ import renderDatePickerField from "../../../../shared/components/form/DatePicker
 import Collapse from "../../../../shared/components/Collapse";
 
 import AssetsComment from "./AssetsComment";
+import AssetsLogo from "./AssetsLogo";
 
 //assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
 class AssetsView extends PureComponent {
@@ -156,7 +157,6 @@ class AssetsView extends PureComponent {
         }
 
         const {
-            idx, outFlag, commentCnt, commentLastDate, registerId, registerDate,
             deviceCode, model, contents, customer, manufacture, deviceType, warehousingDate,
             rentDate, ownership, ownershipDiv, ownerCompany, hwSn, idc, rack, cost, purpose,
             monitoringFlag, MonitoringMethod, ip, size, spla, cpu, memory, hdd, rackCode, rackTag,
@@ -191,24 +191,21 @@ class AssetsView extends PureComponent {
                     <Fragment>
                         <div className={classNameMap.formDivClass}>
                                 <span
-                                    className="modal_form__form-group-label
-                                    modal_form_label_blue">CPU</span>
+                                    className="modal_form__form-group-label">CPU</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {cpu}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                                 <span
-                                    className="modal_form__form-group-label
-                                    modal_form_label_blue">MEMORY</span>
+                                    className="modal_form__form-group-label">MEMORY</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {memory}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                                 <span
-                                    className="modal_form__form-group-label
-                                    modal_form_label_blue">HDD</span>
+                                    className="modal_form__form-group-label">HDD</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {hdd}
                             </div>
@@ -342,12 +339,11 @@ class AssetsView extends PureComponent {
                                             </div>
                                         </div>
                                         <ButtonToolbar className="assets_write__modal__footer_comment">
-                                            <Button className="assets_write__modal_ok"
-                                                    outline={colored} type="submit"
-                                                    color="success">등록</Button>
+                                            <Button className="assets_write__modal_ok" color="primary"
+                                                    outline={colored} type="submit">등록</Button>
                                             &nbsp;&nbsp;
                                             <Button className="assets_write__modal_cancel"
-                                                    onClick={this.commentToggle}>Cancel</Button>
+                                                    onClick={this.commentToggle}>닫기</Button>
                                         </ButtonToolbar>
                                     </form>
                                 </Modal>
@@ -376,30 +372,29 @@ class AssetsView extends PureComponent {
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
-                            <span className="modal_form__form-group-label">고객사</span>
+                            <span className={classNameMap.formSpanClass}>소유권/소유권구분</span>
+                            <div className={classNameMap.formDivSubClass}>
+                                {ownership}
+                            </div>
+                            {/*<span className="modal_form__form-group-description">
+                                  Explanation.
+                            </span>*/}
+                        </div>
+                        <div className={classNameMap.formDivClass}>
+                            <span className="modal_form__form-group-label text_cor_orange">고객사</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {customerName}/{customer}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>소유권/소유권구분</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {ownership}
-                            </div>
-                            <span className="modal_form__form-group-description">
-                                  Explanation.
-                            </span>
-                        </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>소유업체명</span>
+                            <span className="modal_form__form-group-label text_cor_orange">소유업체명</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {ownerCompanyName}/{ownerCompany}
                             </div>
                         </div>
                         <div className={classNameMap.formDivClass}>
                                 <span
-                                    className="modal_form__form-group-label
-                                    modal_form_label_blue">HW S/N</span>
+                                    className="modal_form__form-group-label">HW S/N</span>
                             <div className={classNameMap.formDivSubClass}>
                                 {hwSn}
                             </div>
@@ -440,12 +435,13 @@ class AssetsView extends PureComponent {
                 </div>
                 {/*-----------------------------------------------------------------------------------------*/}
                 <AssetsComment assetState={assetState} dispatch={dispatch} setTotalManager={setTotalManager}/>
+                <AssetsLogo assetState={assetState} dispatch={dispatch} setTotalManager={setTotalManager}/>
                 {/*-----------------------------------------------------------------------------------------*/}
                 <ButtonToolbar className="assets_write__modal__footer">
                     <Button className="assets_write__modal_ok" outline={colored} color="primary"
-                            onClick={this.onUpdate}>Edit</Button>
+                            onClick={this.onUpdate}>수정</Button>
                     <Button className="assets_write__modal_cancel"
-                            onClick={this.onClose}>Cancel</Button>
+                            onClick={this.onClose}>닫기</Button>
                 </ButtonToolbar>
             </div>
         );
