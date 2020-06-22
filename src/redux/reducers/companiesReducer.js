@@ -200,6 +200,17 @@ const companiesReducer = handleActions(
         }),
         [COMPANY_REGISTER_CHECK_FIELD]: (state) => {
             const errorMsg = "* 필수 입력 사항입니다!";
+            const nameErrorMsg = "* 고객사 중복을 확인하세요!";
+            const emailErrorMsg = "* 잘못된 이메일 주소입니다.!";
+            // eslint-disable-next-line no-useless-escape
+            const checkEmail = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+            // let isReady = true;
+            let isCorrectEmail = true;
+
+            if (state.register.cpEmail !== "" && checkEmail.test(state.register.cpEmail) === false) {
+                isCorrectEmail = false;
+            }
+
             return {
                 ...state,
                 isError: {
@@ -208,15 +219,20 @@ const companiesReducer = handleActions(
                     cpAddr: state.register.cpAddr === "",
                     cpAddrDetail: state.register.cpAddrDetail === "",
                     cpTel: state.register.cpTel === "",
-                    cpEmail: state.register.cpEmail === "",
+                    // eslint-disable-next-line no-nested-ternary
+                    cpEmail: state.register.cpEmail === "" ? true : (!isCorrectEmail),
                 },
                 helperText: {
-                    cpName: state.register.cpName === "" ? errorMsg : "",
+                    // eslint-disable-next-line no-nested-ternary
+                    cpName: state.register.cpName === "" ? errorMsg : (
+                            state.checkDupCompany && state.confirmCompany ? "" : nameErrorMsg),
                     cpZip: state.register.cpZip === "" ? errorMsg : "",
                     cpAddr: state.register.cpAddr === "" ? errorMsg : "",
                     cpAddrDetail: state.register.cpAddrDetail === "" ? errorMsg : "",
                     cpTel: state.register.cpTel === "" ? errorMsg : "",
-                    cpEmail: state.register.cpEmail === "" ? errorMsg : "",
+                    // eslint-disable-next-line no-nested-ternary
+                    cpEmail: state.register.cpEmail === "" ? errorMsg : (
+                        isCorrectEmail ? "" : emailErrorMsg),
                 },
             };
         },

@@ -1,7 +1,7 @@
 import {useDispatch} from "react-redux";
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {changeUserField} from "../../../../redux/actions/regUserActions";
+import {changeUserField} from "../../../../redux/actions/usersActions";
 import CbTextField from "./CbTextField";
 import CbSelectField from "./CbSelectField";
 import {NubesButtonSecondary} from "./NubesButton";
@@ -31,21 +31,25 @@ const RegisterUserPage = ({ userProps }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const {
+        isError,
+        required,
+        disabled,
+        helperText,
         userId, userPassword, userName, userHp, userEmail,
         userLevel, emailAuthValue, emailAuthFlag, emailAuthGroupFlag,
         emailAuthGroupList, msg, msgError,
         // } = useSelector(({ regUser }) => ({
     } = ({
-        userId: userProps.userId,
-        userPassword: userProps.password,
-        userName: userProps.username,
-        userEmail: userProps.email,
-        userHp: userProps.cellPhone,
-        userLevel: userProps.level,
-        emailAuthValue: userProps.emailAuthValue,
-        emailAuthFlag: userProps.emailAuthFlag,
-        emailAuthGroupFlag: userProps.emailAuthGroupFlag,
-        emailAuthGroupList: userProps.emailAuthGroupList,
+        userId: userProps.register.userId,
+        userPassword: userProps.register.password,
+        userName: userProps.register.username,
+        userEmail: userProps.register.email,
+        userHp: userProps.register.cellPhone,
+        userLevel: userProps.register.level,
+        emailAuthValue: userProps.register.emailAuthValue,
+        emailAuthFlag: userProps.register.emailAuthFlag,
+        emailAuthGroupFlag: userProps.register.emailAuthGroupFlag,
+        emailAuthGroupList: userProps.register.emailAuthGroupList,
         msg: userProps.msg,
         msgError: userProps.msgError,
     });

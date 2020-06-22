@@ -1,6 +1,6 @@
 import 'date-fns';
-import React, {Fragment, useEffect, useState} from 'react';
-import {makeStyles, withStyles} from "@material-ui/core/styles";
+import React, {useEffect, useState} from 'react';
+import {makeStyles} from "@material-ui/core/styles";
 import {Button} from "@material-ui/core";
 import {Card, CardBody, Col} from "reactstrap";
 import Stepper from "@material-ui/core/Stepper";
@@ -17,7 +17,7 @@ import {
     initializeUser,
     registerUser,
     setupUserBaseByCompany,
-} from "../../../../redux/actions/regUserActions";
+} from "../../../../redux/actions/usersActions";
 
 import RegisterCompanyPage from "./RegisterCompanyPage";
 import RegisterUserPage from "./RegisterUserPage";
@@ -120,18 +120,21 @@ const AddCompany = (props) => {
 
     /** 1.1 Stepper *********************************************************************/
     const {open, handleClose} = props;
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [completed, setCompleted] = React.useState({});
-    // const steps = getSteps();
+    const [activeStep, setActiveStep] = useState(0);
+    const [completed, setCompleted] = useState({});
     const steps = getStepsAddingCompany();
 
     /** 1.2 Company, User ***************************************************************/
     const {
         company,
         user,
-    } = useSelector(({ companiesRd, regUser }) => ({
+        checkDupCompany,
+        confirmCompany,
+    } = useSelector(({ companiesRd, usersRd }) => ({
+        checkDupCompany: companiesRd.checkDupCompany,
+        confirmCompany: companiesRd.confirmCompany,
         company: companiesRd.register,
-        user: regUser,
+        user: usersRd,
     }));
 
     /************************************************************************************
@@ -140,12 +143,25 @@ const AddCompany = (props) => {
 
     /** 2.1 Stepper */
     const totalSteps = () => steps.length;
-
     const completedSteps = () => Object.keys(completed).length;
-
     const isLastStep = () => activeStep === totalSteps() - 1;
-
     const allStepsCompleted = () => completedSteps() === totalSteps();
+
+    const isReadyRegister = () => {
+        if (company.cpName !== ""
+            && company.cpZip !== ""
+            && company.cpAddr !== ""
+            && company.cpAddrDetail !== ""
+            && company.cpTel !== ""
+            && company.cpEmail !== ""
+            && checkDupCompany
+            && confirmCompany
+        ) {
+            return true;
+        }
+        return false;
+    };
+
 
     const handleNext = () => {
         const lastStep = isLastStep();
@@ -177,9 +193,17 @@ const AddCompany = (props) => {
             console.log("--> [dispatch] send user/company!!!");
             handleClose();
         } else {
-            // check
             if (activeStep === 0) {
+                /** Company page */
                 dispatch(checkCompanyRegisterCheckField());
+                // check
+                if (isReadyRegister() === false) {
+                    return;
+                }
+            } else if (activeStep === 1) {
+                /** User page */
+                dispatch(checkCompanyRegisterCheckField());
+                // check
                 return;
             }
             console.log("--> [dispatch] setup User: ", company.cpName, ", ", company.cpEmail, ", ", company.cpTel);
@@ -223,16 +247,10 @@ const AddCompany = (props) => {
         setActiveStep(0);
         setCompleted({});
     };
-    /** 2.2 Company Page */
-
-    /** 2.3 User Page */
 
     /************************************************************************************
      * 3. useEffect
      ************************************************************************************/
-    /** 3.1 Stepper Page */
-    /** 3.2 Company Page */
-    /** 3.3 User Page */
 
     /************************************************************************************
      * 4. JSX Template

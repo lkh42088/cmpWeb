@@ -10,7 +10,6 @@ import titleReducer from './titleReducer';
 import authReducer from "./authReducer";
 import accountReducer from "./accountReducer";
 import loadingReducer from "./loadingReducer";
-import regUserReducer from "./regUserReducer";
 import usersReducer from "./usersReducer";
 import pagingReducer from "./pagingReducer";
 import companiesReducer from "./companiesReducer";
@@ -29,7 +28,6 @@ export {
     authReducer,
     accountReducer,
     loadingReducer,
-    regUserReducer,
     usersReducer,
     pagingReducer,
     companiesReducer,
