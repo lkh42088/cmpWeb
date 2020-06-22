@@ -83,11 +83,13 @@ const SubnetList = () => {
         data: subnetRd.data,
         page: subnetRd.page,
     }));
-    // const {count, currentPage, offset, order, orderBy }
+    // const {
+    //     count, currentPage, offset, order, orderBy, rows,
+    // } = page;
     /**
      * Pagination state
      **/
-    const rows = 15;
+    //const rows = 15;
     // const {
     //     selected,
     //     pageBeginRow,
@@ -126,7 +128,8 @@ const SubnetList = () => {
 
     const handleChangePage = useCallback(
         (event, pageData) => dispatch(pagingChangeCurrentPage({
-            offset: (pageData.activePage - 1) * rows,
+            // offset: (pageData.activePage - 1) * rows,
+            offset: (pageData.activePage - 1) * 15,
         })), [dispatch],
     );
 
@@ -150,7 +153,7 @@ const SubnetList = () => {
         console.log();
         dispatch(currentPageSubnet({currentPage: 1}));
         dispatch(readSubnet({
-            rows,
+            rows: 15,
             offset: 0,
             orderBy: "sub_idx",
             order: "asc",
@@ -168,15 +171,15 @@ const SubnetList = () => {
     // }, [currentPage]);
 
     /** Bind Subnet data **/
-    useEffect(() => {
-        console.log(page);
-        dispatch(readSubnet({
-            rows,
-            offset: page.offset,
-            orderBy: page.orderBy,
-            order: page.order,
-        }));
-    }, [page]);
+    // useEffect(() => {
+    //     console.log(page);
+    //     dispatch(readSubnet({
+    //         rows,
+    //         offset,
+    //         orderBy,
+    //         order,
+    //     }));
+    // }, [page]);
 
     /** Update & Register Device **/
     const RowAdd = (newData) => {
@@ -222,10 +225,10 @@ const SubnetList = () => {
     const paginationBar = props => (
             <PaginationCustomization
                 className={classes.root}
-                activePage={Math.ceil(page.offset / page.rows)}
+                // activePage={Math.ceil(offset / rows)}
                 boundaryRange="1"
                 siblingRange="2"
-                totalPages={Math.ceil(page.count / page.rows)}
+                // totalPages={Math.ceil(count / rows)}
                 // totalPages="20"
                 onPageChange={handleChangePage}
                 showEllipsis="true"
