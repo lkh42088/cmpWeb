@@ -14,10 +14,12 @@ export const CHANGE_EMAIL_AUTH_FLAG = 'user/CHANGE_EMAIL_AUTH_FLAG';
 export const CHANGE_EMAIL_AUTH_GROUP_FLAG = 'user/CHANGE_EMAIL_AUTH_GROUP_FLAG';
 export const [REGUSER, REGUSER_SUCCESS, REGUSER_FAILURE] = createRequestActionTypes('user/REGUSER');
 
+export const USER_BASE_INFO_BY_COMPANY = 'user/USER_BASE_INFO_BY_COMPANY';
+
 /******************************************************************************
  * 2. Action Function
  *****************************************************************************/
-export const initialize = createAction(INITIALIZE);
+export const initializeUser = createAction(INITIALIZE);
 export const changeUserField = createAction(
     CHANGE_FIELD,
     ({ key, value }) => ({ key, value }),
@@ -36,6 +38,12 @@ export const registerUser = createAction(REGUSER, ({
     userId, password, username, email, emailAuthFlag, emailAuthGroupFlag, emailAuthGroupList,
 }) => ({
     id: userId, password, name: username, email, emailAuthFlag, emailAuthGroupFlag, emailAuthGroupList,
+}));
+
+export const setupUserBaseByCompany = createAction(USER_BASE_INFO_BY_COMPANY, ({
+    username, email, cellPhone,
+}) => ({
+    username, email, cellPhone,
 }));
 
 /******************************************************************************

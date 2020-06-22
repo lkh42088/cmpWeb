@@ -23,6 +23,7 @@ import {CommonTableToolbar} from "../../../Common/CommonTableToolbar";
 import CommonTableHead from "../../../Common/CommonTableHead";
 
 const headRows = [
+    {id: 'idx', disablePadding: false, label: 'Index'},
     {id: 'userId', disablePadding: false, label: '아이디'},
     {id: 'userName', disablePadding: false, label: '이름'},
     {id: 'email', disablePadding: false, label: '이메일'},
@@ -190,7 +191,7 @@ const UserList = () => {
 
 
     useEffect(() => {
-        const changeOrderBy = "userId";
+        const changeOrderBy = "idx";
         console.log("[] orderBy: ", changeOrderBy);
         dispatch(pagingChangeOrderBy({orderBy: changeOrderBy}));
     }, []);
@@ -245,6 +246,9 @@ const UserList = () => {
                         >
                             <TableCell className="material-table__cell" padding="checkbox" >
                                 <Checkbox checked={isSelected} className="material-table__checkbox" />
+                            </TableCell>
+                            <TableCell className="material-table__cell material-table__cell-right" >
+                                {row.idx}
                             </TableCell>
                             <TableCell className="material-table__cell material-table__cell-right" >
                                 {row.userId}

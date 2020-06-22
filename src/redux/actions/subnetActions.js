@@ -9,7 +9,7 @@ import * as subnet from '../../lib/api/subnet';
 export const INIT_SUBNET = 'subnet/INIT';
 export const CREATE_SUBNET = 'subnet/CREATE';
 export const SEARCH_DEVICE_SUBNET = 'subnet/SEARCH_DEVICE';
-export const READ_SUBNET = 'subnet/READ';
+export const [READ_SUBNET, READ_SUBNET_SUCCESS, READ_SUBNET_FAILURE] = createRequestActionTypes('subnet/READ');
 export const UPDATE_SUBNET = 'subnet/UPDATE';
 export const DELETE_SUBNET = 'subnet/DELETE';
 export const INPUT_SUBNET = 'subnet/INPUT';
@@ -30,10 +30,15 @@ export const searchDeviceSubnet = createAction(SEARCH_DEVICE_SUBNET, ({
 }) => ({
     deviceCode, deviceType, customer,
 }));
+// export const readSubnet = createAction(READ_SUBNET, ({
+//     idx, subnetTag, usbnetStart, subnetEnd, subnetMask, gateway, page, totalPage,
+// }) => ({
+//     idx, subnetTag, usbnetStart, subnetEnd, subnetMask, gateway, page, totalPage,
+// }));
 export const readSubnet = createAction(READ_SUBNET, ({
-    idx, subnetTag, usbnetStart, subnetEnd, subnetMask, gateway, page, totalCount,
+    rows, offset, orderBy, order,
 }) => ({
-    idx, subnetTag, usbnetStart, subnetEnd, subnetMask, gateway, page, totalCount,
+    rows, offset, orderBy, order,
 }));
 export const updateSubnet = createAction(UPDATE_SUBNET);
 export const deleteSubnet = createAction(DELETE_SUBNET);

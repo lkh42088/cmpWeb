@@ -7,5 +7,5 @@ export const createSubnet = ({
 });
 
 export const readSubnet = ({
-    size, offset, orderby, order,
-}) => client.get(`/v1/subnet/${size}/${offset}/${orderby}/${order}`);
+    rows, offset, orderBy, order,
+}) => client.get(`/v1/subnet/${rows}/${offset}/${orderBy}/${order}`);

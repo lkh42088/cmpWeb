@@ -1,9 +1,24 @@
 import client from "./client";
 
 export const addCompany = ({
-    id, password, name, email, emailAuthFlag, emailAuthGroupFlag, emailAuthGroupList,
-}) => client.post('/v1/customers/companies-add', {
-    id, password, name, email, emailAuthFlag, emailAuthGroupFlag, emailAuthGroupList,
+    cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage, cpTel, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
+}) => client.post('/v1/customers/companies', {
+    name: cpName,
+    zipcode: cpZip,
+    address: cpAddr,
+    addressDetail: cpAddrDetail,
+    homepage: cpHomepage,
+    tel: cpTel,
+    email: cpEmail,
+    isCompany: cpIsCompany,
+    memo: cpMemo,
+    termDate: cpTerminationDate,
+});
+
+export const checkDuplicatedCompany = ({
+    cpName,
+}) => client.post('/v1/customers/check-company', {
+    name: cpName,
 });
 
 export const getCompanyList = ({
