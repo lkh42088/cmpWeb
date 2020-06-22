@@ -53,7 +53,7 @@ const subnetReducer = handleActions(
         }),
         [CURRENT_PAGE_SUBNET]: (state, currentPage) => ({
             ...state,
-            offset: (currentPage / state.page.rows),
+            currentPage,
         }),
     },
     initSubnet,

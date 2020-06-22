@@ -75,7 +75,7 @@ const SubnetList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     /**
-     * Subnet Data state
+     * Subnet Data
      **/
     const {
         data, page,
@@ -126,13 +126,6 @@ const SubnetList = () => {
         data: [],
     });
 
-    const handleChangePage = useCallback(
-        (event, pageData) => dispatch(pagingChangeCurrentPage({
-            // offset: (pageData.activePage - 1) * rows,
-            offset: (pageData.activePage - 1) * 15,
-        })), [dispatch],
-    );
-
     // const handleOrderChange = (event, direction) => {
     //     const isAsc = page.order === direction && page.order === "asc";
     //     const changeOrder = isAsc ? "desc" : "asc";
@@ -145,6 +138,21 @@ const SubnetList = () => {
     //     dispatch(pagingChangeOrderBy({orderBy: filter}));
     //     dispatch(pagingChangeOrder({order: "asc"}));
     // };
+
+    const getPageData = () => {
+        const {
+            currentPage, rows, orderBy, order, offset,
+        } = page;
+        let offsetTmp = 0;
+        if (currentPage > 0) {
+            offsetTmp = Number(rows * currentPage);
+        }
+        console.log(">>>>>> get Page Data: rows ", rows, ", offset ", offsetTmp,
+            ", orderBy ", orderBy, ", order ", order);
+        dispatch(readSubnet({
+            rows, offsetTmp, orderBy, order,
+        }));
+    };
 
     /** Init pagination **/
     useEffect(() => {
@@ -171,15 +179,22 @@ const SubnetList = () => {
     // }, [currentPage]);
 
     /** Bind Subnet data **/
-    // useEffect(() => {
-    //     console.log(page);
-    //     dispatch(readSubnet({
-    //         rows,
-    //         offset,
-    //         orderBy,
-    //         order,
-    //     }));
-    // }, [page]);
+    useEffect(() => {
+        // {count, currentPage, offset, order, orderBy, rows} = page;
+        getPageData();
+        // dispatch(readSubnet({
+        //     rows,
+        //     offset: page.offset,
+        //     orderBy: page.orderBy,
+        //     order: page.order,
+        // }));
+    }, [page]);
+
+    const handleChangePage = useCallback(
+        (event, pageData) => dispatch(pagingChangeCurrentPage({
+            currentPage: pageData.activePage,
+        })), [dispatch],
+    );
 
     /** Update & Register Device **/
     const RowAdd = (newData) => {
@@ -222,23 +237,28 @@ const SubnetList = () => {
     });
 
     /** Customizing Pagination Bar **/
-    const paginationBar = props => (
+    const paginationBar = (props) => {
+        const {
+            count, currentPage, rows, orderBy, order, offset,
+        } = page;
+        return (
             <PaginationCustomization
                 className={classes.root}
-                // activePage={Math.ceil(offset / rows)}
+                activePage={Math.ceil(offset / rows)}
                 boundaryRange="1"
+                showEllipsis="true"
                 siblingRange="2"
-                // totalPages={Math.ceil(count / rows)}
+                totalPages={Math.ceil(count / rows)}
                 // totalPages="20"
                 onPageChange={handleChangePage}
-                showEllipsis="true"
                 showFirstAndLastNav="true"
                 showPreviousAndNextNav="true"
                 size="mini"
                 o
                 // rowsPerPageOptions={displayRowsList}
             />
-        );
+            ); 
+    };
 
     /** Material-Table component override **/
     const customComponents = {
