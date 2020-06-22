@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {changeCompanyRegField, checkDuplicatedCompany} from "../../../../redux/actions/companiesActions";
+import {changeCompanyRegisterField, checkDuplicatedCompany} from "../../../../redux/actions/companiesActions";
 import CbTextField from "./CbTextField";
 import {NubesButtonSecondary} from "./NubesButton";
 import SearchZip from "./SearchZip";
@@ -64,9 +64,9 @@ const RegisterCompanyPage = () => {
      ************************************************************************************/
     const handleNameChange = (value) => {
         if (checkDuplicatedCompany === true) {
-            dispatch(changeCompanyRegField({key: "checkDupCompany", value: false}));
+            dispatch(changeCompanyRegisterField({key: "checkDupCompany", value: false}));
             if (confirmCompany === true) {
-                dispatch(changeCompanyRegField({key: "confirmCompany", value: false}));
+                dispatch(changeCompanyRegisterField({key: "confirmCompany", value: false}));
             }
         }
 
@@ -81,7 +81,8 @@ const RegisterCompanyPage = () => {
 
     const handleChange = ({name, value}) => {
         console.log("[handleChange] name: ", name, ", value: ", value);
-        dispatch(changeCompanyRegField({ key: name, value }));
+        // dispatch(changeCompanyRegField({ key: name, value }));
+        dispatch(changeCompanyRegisterField({ key: name, value }));
         if (name === "cpName") {
             handleNameChange(value);
         }
@@ -93,7 +94,7 @@ const RegisterCompanyPage = () => {
             date.getMonth(),
             date.getDate(),
             date.getDay());
-        dispatch(changeCompanyRegField({ key: "cpTerminationDate", value: date}));
+        dispatch(changeCompanyRegisterField({ key: "cpTerminationDate", value: date}));
     };
 
     const handleCheckDuplicatedName = () => {
@@ -114,9 +115,9 @@ const RegisterCompanyPage = () => {
 
     const handleCompleteZip = ({zip, address}) => {
         console.log("handleComplete: zip ", zip);
-        dispatch(changeCompanyRegField({ key: "cpZip", value: zip }));
+        dispatch(changeCompanyRegisterField({ key: "cpZip", value: zip }));
         console.log("handleComplete: address ", address);
-        dispatch(changeCompanyRegField({ key: "cpAddr", value: address }));
+        dispatch(changeCompanyRegisterField({ key: "cpAddr", value: address }));
     };
 
     /************************************************************************************

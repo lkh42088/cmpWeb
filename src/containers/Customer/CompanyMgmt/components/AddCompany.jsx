@@ -96,13 +96,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /** Stepper */
-// function getSteps() {
-//     return ['Select campaign settings', 'Create an ad group', 'Create an ad'];
-// }
-
 function getStepsAddingCompany() {
-    return ['고객정보 등록', '이메일 계정 등록'];
-    // return ['고객정보 등록', '이메일 계정 등록', '담당자 등록'];
+    return ['고객사 등록', '대표 계정 등록'];
 }
 
 function getStepAddingCompany(step, company, user) {
@@ -115,17 +110,6 @@ function getStepAddingCompany(step, company, user) {
             return <RegisterUserPage userProps={user}/>;
     }
 }
-
-// function getStepContent(step) {
-//     switch (step) {
-//         case 0:
-//             return 'Step 1: Select campaign settings...';
-//         case 1:
-//             return 'Step 2: What is an ad group anyways?';
-//         default:
-//             return 'Unknown step';
-//     }
-// }
 
 const AddCompany = (props) => {
     /************************************************************************************

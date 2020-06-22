@@ -162,6 +162,8 @@ const companiesReducer = handleActions(
         }),
         [COMPANY_CHANGE_REGISTER_FIELD]: (state, { payload: { key, value }}) => produce(state, (draft) => {
             draft.register[key] = value;
+            draft.isError[key] = "";
+            draft.helperText[key] = false;
         }),
         [COMPANY_CHANGE_FIELD]: (state, { payload: { type, key, value }}) => produce(state, (draft) => {
             draft[type][key] = value;
@@ -176,11 +178,23 @@ const companiesReducer = handleActions(
         }),
         [CHECK_DUP_COMPANY_SUCCESS]: (state, action) => ({
             ...state,
+            isError: {
+                cpName: false,
+            },
+            helperText: {
+                cpName: "* 사용 가능한 이름입니다.",
+            },
             checkDupCompany: true,
             confirmCompany: true, // 동일한 회사가 없음
         }),
         [CHECK_DUP_COMPANY_FAILURE]: (state, action) => ({
             ...state,
+            isError: {
+                cpName: true,
+            },
+                helperText: {
+                cpName: "* 이미 사용하고 있는 이름입니다.",
+            },
             checkDupCompany: true,
             confirmCompany: false, // 동일한 회사가 있음
         }),
