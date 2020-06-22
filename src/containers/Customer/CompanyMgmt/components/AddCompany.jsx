@@ -1,6 +1,6 @@
 import 'date-fns';
-import React, {Fragment, useEffect, useState} from 'react';
-import {makeStyles, withStyles} from "@material-ui/core/styles";
+import React, {useEffect, useState} from 'react';
+import {makeStyles} from "@material-ui/core/styles";
 import {Button} from "@material-ui/core";
 import {Card, CardBody, Col} from "reactstrap";
 import Stepper from "@material-ui/core/Stepper";
@@ -10,14 +10,15 @@ import Typography from "@material-ui/core/Typography";
 import {useDispatch, useSelector} from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
 import {
-    addCompany, checkCompanyRegisterCheckField,
+    addCompany, checkCompanyRegisterField,
     initializeCompany,
 } from "../../../../redux/actions/companiesActions";
 import {
+    checkUserRegisterField,
     initializeUser,
     registerUser,
     setupUserBaseByCompany,
-} from "../../../../redux/actions/regUserActions";
+} from "../../../../redux/actions/usersActions";
 
 import RegisterCompanyPage from "./RegisterCompanyPage";
 import RegisterUserPage from "./RegisterUserPage";
@@ -111,6 +112,50 @@ function getStepAddingCompany(step, company, user) {
     }
 }
 
+function checkPasswordPattern(str) {
+    const pass = str.value;
+    let message = "";
+
+    // 비밀번호 문자열에 숫자 존재 여부 검사
+    const pattern1 = /[0-9]/; // 숫자
+    if (pattern1.test(pass) === false) {
+        message = "비밀번호에 숫자가 입력되지 않았습니다.\n숫자를 입력하여 주시기 바랍니다.";
+    }
+
+    // 비밀번호 문자열에 영문 소문자 존재 여부 검사
+    const pattern2 = /[a-z]/;
+    if (pattern2.test(pass) === false) {
+        message = "비밀번호에 영문 소문자가 입력되지 않았습니다.\n영문 소문자를 입력하여 주시기 바랍니다.";
+    }
+
+    // 비밀번호 문자열에 영문 대문자 존재 여부 검사
+    const pattern3 = /[A-Z]/;
+    if (pattern3.test(pass) === false) {
+        message = "비밀번호에 영문 대문자가 입력되지 않았습니다.\n영문 대문자를 입력하여 주시기 바랍니다.";
+    }
+
+    // 비밀번호 문자열에 특수문자 존재 여부 검사
+    const pattern4 = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
+    if (pattern4.test(pass) === false) {
+        message = "비밀번호에 특수문자가 입력되지 않았습니다.\n특수문자를 입력하여 주시기 바랍니다.";
+    }
+
+    // 비밀번호 문자열의 입력 길이 검사
+    if (pass.length < 8 || pass.length > 16) {
+        message = "비밀번호는 8자리 이상 16자리 이하만 가능합니다.\n비밀번호를 다시 입력하여 주시기 바랍니다.";
+    }
+
+    // 비밀번호 문자열 결과 출력
+    if (message) {
+        // alert(message);
+        // str.value = "";
+        // str.focus();
+        return false;
+    }
+    // alert("사용하셔도 좋은 비밀번호 입니다.");
+    return true;
+}
+
 const AddCompany = (props) => {
     /************************************************************************************
      * 1. Variable
@@ -120,18 +165,25 @@ const AddCompany = (props) => {
 
     /** 1.1 Stepper *********************************************************************/
     const {open, handleClose} = props;
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [completed, setCompleted] = React.useState({});
-    // const steps = getSteps();
+    const [activeStep, setActiveStep] = useState(0);
+    const [completed, setCompleted] = useState({});
     const steps = getStepsAddingCompany();
 
     /** 1.2 Company, User ***************************************************************/
     const {
         company,
         user,
-    } = useSelector(({ companiesRd, regUser }) => ({
+        checkCompany,
+        confirmCompany,
+        checkUser,
+        confirmUser,
+    } = useSelector(({ companiesRd, usersRd }) => ({
+        checkCompany: companiesRd.checkCompany,
+        confirmCompany: companiesRd.confirmCompany,
+        checkUser: usersRd.checkUser,
+        confirmUser: usersRd.confirmUser,
         company: companiesRd.register,
-        user: regUser,
+        user: usersRd.register,
     }));
 
     /************************************************************************************
@@ -140,18 +192,64 @@ const AddCompany = (props) => {
 
     /** 2.1 Stepper */
     const totalSteps = () => steps.length;
-
     const completedSteps = () => Object.keys(completed).length;
-
     const isLastStep = () => activeStep === totalSteps() - 1;
-
     const allStepsCompleted = () => completedSteps() === totalSteps();
+
+    const isReadyRegisterCompany = () => {
+        // eslint-disable-next-line no-useless-escape
+        const checkEmail = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+        if (company.cpName !== ""
+            && company.cpZip !== ""
+            && company.cpAddr !== ""
+            && company.cpAddrDetail !== ""
+            && company.cpTel !== ""
+            && company.cpEmail !== ""
+            && checkEmail.test(company.cpEmail)
+            && checkCompany
+            && confirmCompany
+        ) {
+            return true;
+        }
+        return false;
+    };
+
+    const isReadyRegisterUser = () => {
+        if (user.userId !== ""
+            && user.password !== ""
+            && user.email !== ""
+            && user.username !== ""
+            && user.cellPhone !== ""
+            && checkUser
+            && confirmUser
+        ) {
+            return true;
+        }
+        return false;
+    };
 
     const handleNext = () => {
         const lastStep = isLastStep();
         const completeComplete = allStepsCompleted();
         console.log("activeStep ", activeStep);
         console.log("totalStep", totalSteps() - 1);
+
+        if (activeStep === 0) {
+            /** Company page */
+            dispatch(checkCompanyRegisterField());
+            // check
+            if (isReadyRegisterCompany() === false) {
+                return;
+            }
+        } else if (activeStep === 1) {
+            /** User page */
+            dispatch(checkUserRegisterField());
+            // check
+            if (isReadyRegisterUser() === false) {
+                return;
+            }
+        }
+
         if (activeStep === (totalSteps() - 1)) {
             dispatch(addCompany({
                 cpName: company.cpName, 
@@ -177,11 +275,6 @@ const AddCompany = (props) => {
             console.log("--> [dispatch] send user/company!!!");
             handleClose();
         } else {
-            // check
-            if (activeStep === 0) {
-                dispatch(checkCompanyRegisterCheckField());
-                return;
-            }
             console.log("--> [dispatch] setup User: ", company.cpName, ", ", company.cpEmail, ", ", company.cpTel);
             dispatch(setupUserBaseByCompany({username: company.cpName, email: company.cpEmail, cellPhone: company.cpTel}));
         }
@@ -223,16 +316,10 @@ const AddCompany = (props) => {
         setActiveStep(0);
         setCompleted({});
     };
-    /** 2.2 Company Page */
-
-    /** 2.3 User Page */
 
     /************************************************************************************
      * 3. useEffect
      ************************************************************************************/
-    /** 3.1 Stepper Page */
-    /** 3.2 Company Page */
-    /** 3.3 User Page */
 
     /************************************************************************************
      * 4. JSX Template

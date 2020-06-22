@@ -7,19 +7,15 @@ import ReduxThunk from "redux-thunk";
 import {composeWithDevTools} from "redux-devtools-extension";
 
 import {
-    cryptoTableReducer,
-    newOrderTableReducer,
     sidebarReducer,
     themeReducer,
-    customizerReducer,
-    rtlReducer,
+    customizerReducer, rtlReducer,
     todoReducer,
     assetsReducer,
     titleReducer,
     authReducer,
     accountReducer,
     loadingReducer,
-    regUserReducer,
     usersReducer,
     pagingReducer,
     companiesReducer,
@@ -27,8 +23,7 @@ import {
 } from '../../redux/reducers/index';
 import {authSaga} from "../../redux/actions/authActions";
 import {tempSetUser, check, userSaga} from "../../redux/actions/accountActions";
-import {regUserSaga} from "../../redux/actions/regUserActions";
-import {userListSaga} from "../../redux/actions/usersActions";
+import {usersSaga} from "../../redux/actions/usersActions";
 import {companiesSaga} from "../../redux/actions/companiesActions";
 import {createSubnetSaga, readSubnetSaga} from "../../redux/actions/subnetActions";
 
@@ -37,8 +32,6 @@ const rootReducer = combineReducers({
     theme: themeReducer,
     rtl: rtlReducer,
     sidebar: sidebarReducer,
-    // cryptoTable: cryptoTableReducer,
-    // newOrder: newOrderTableReducer,
     customizer: customizerReducer,
     todos: todoReducer,
     assets: assetsReducer,
@@ -46,8 +39,7 @@ const rootReducer = combineReducers({
     auth: authReducer,
     loading: loadingReducer,
     account: accountReducer,
-    regUser: regUserReducer,
-    userRd: usersReducer,
+    usersRd: usersReducer,
     pagingRd: pagingReducer,
     companiesRd: companiesReducer,
     subnetRd: subnetReducer,
@@ -57,8 +49,7 @@ export function* rootSaga() {
     yield all([
         authSaga(),
         userSaga(),
-        regUserSaga(),
-        userListSaga(),
+        usersSaga(),
         companiesSaga(),
         createSubnetSaga(),
         readSubnetSaga(),

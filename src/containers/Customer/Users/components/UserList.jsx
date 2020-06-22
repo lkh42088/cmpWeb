@@ -64,9 +64,9 @@ const UserList = () => {
      */
     const {
         data, getPage,
-    } = useSelector(({ userRd }) => ({
-        data: userRd.data,
-        getPage: userRd.page,
+    } = useSelector(({ usersRd }) => ({
+        data: usersRd.data,
+        getPage: usersRd.page,
     }));
 
     /**

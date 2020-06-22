@@ -25,7 +25,7 @@ import PropTypes from 'prop-types';
 import Fade from "@material-ui/core/Fade";
 import {Field, Form} from "redux-form";
 import {useDispatch, useSelector} from "react-redux";
-import {changeUserField} from "../../../../redux/actions/regUserActions";
+import {changeUserField} from "../../../../redux/actions/usersActions";
 import {changeCompanyRegisterField} from "../../../../redux/actions/companiesActions";
 
 const useStyles = makeStyles(theme => ({
