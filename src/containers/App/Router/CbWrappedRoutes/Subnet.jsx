@@ -7,7 +7,7 @@ import SubnetWrite from '../../../Management/Subnet/CreateSubnet';
 export default () => (
     <Switch>
         <Route path="/subnet/write" component={SubnetWrite} />
-        <Route path="/subnet/list" component={SubnetList} />
+        <Route path="/subnet" component={SubnetList} />
         <Route path="/subnet/list2" component={SubnetList2} />
     </Switch>
 );
