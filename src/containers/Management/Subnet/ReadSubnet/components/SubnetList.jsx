@@ -53,7 +53,7 @@ const StyledTableCell = withStyles(theme => ({
     },
 }))(TableCell);
 
-/** Metarial table icons **/
+/** Material table icons **/
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
     Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -172,22 +172,58 @@ const SubnetList = () => {
         // }, 600);
     });
 
-    const paginationBar = (
-      <PaginationCustomization
-          activePage={currentPage}
-          boundaryRange="1"
-          siblingRange="2"
-          //totalPages={totalPage}
-          totalPages="20"
-          onPageChange={handlePaginationChange}
-          showEllipsis="true"
-          showFirstAndLastNav="true"
-          showPreviousAndNextNav="true"
-          size="mini"
-      />
-    );
+    /** Customizing Pagination Bar **/
+    const paginationBar = props => (
+        // const [current, total, onPageChange] = props;
+            <PaginationCustomization
+                activePage={currentPage}
+                boundaryRange="1"
+                siblingRange="2"
+                // totalPages={totalPage}
+                totalPages="20"
+                onPageChange={handlePaginationChange}
+                showEllipsis="true"
+                showFirstAndLastNav="true"
+                showPreviousAndNextNav="true"
+                size="mini"
+                rowsPerPageOptions={displayRowsList}
+            />
+        );
 
-return (
+    /** Material-Table component override **/
+    const customComponents = {
+        Pagination: props => (
+            <div style={{textAlign: "center", padding: 30 }}>
+                {paginationBar(props)}
+            </div>
+        ),
+    };
+
+    /** Material-Table options attribute **/
+    const themeName = useSelector(({theme}) => ({
+        className: theme.className,
+    }));
+    const options = {
+        headerStyle: {
+            backgroundColor: "#000000",
+            color: "#FFFFFF",
+            minWidth: 120,
+            fontSize: 12,
+            fontWeight: "bold",
+        },
+    };
+
+    /** Material-Table localization **/
+    const localization = {
+        header: {
+            actions: "수정/삭제",
+        },
+        body: {
+            emptyDataSourceMessage: "해당 자료가 없습니다.",
+        },
+    };
+
+    return (
         <>
             <MaterialTable
                 title="SUBNET 리스트"
@@ -199,41 +235,10 @@ return (
                     onRowUpdate: RowUpdate,
                     onRowDelete: RowDelete,
                 }}
-                headerStyle={headerStyle}
-                // actionsComponent={paginationBar}
-
-                components={{
-                    Pagination: props => (
-                        <div style={{textAlign: "center", padding: 30 }}>
-                            {paginationBar}
-                        </div>
-                        // <PaginationCustomization
-                        //     {...props}
-                        //     rowsPerPageOptions={[5, 10, 20, 30]}
-                        //     rowsPerPage={state.numberRowPerPage}
-                        //     count={state.totalRow}
-                        //     page={state.pageNumber}
-                        //     onChangePage={(e, page) => this.handleChangePage(page + 1)
-                        //     }
-                        //     onChangeRowsPerPage={(event) => {
-                        //         props.onChangeRowsPerPage(event);
-                        //         //handleChangeRowPerPage(event.target.value);
-                        //     }}
-                        // />
-                    ),
-                }}
+                components={customComponents}
+                options={options}
+                localization={localization}
             />
-            {/*<PaginationCustomization*/}
-            {/*    activePage={currentPage}*/}
-            {/*    boundaryRange="1"*/}
-            {/*    siblingRange="5"*/}
-            {/*    totalPages={totalPage}*/}
-            {/*    onPageChange={handlePaginationChange}*/}
-            {/*    showEllipsis="true"*/}
-            {/*    showFirstAndLastNav="true"*/}
-            {/*    showPreviousAndNextNav="true"*/}
-            {/*    size="mini"*/}
-            {/*/>*/}
         </>
     );
 };
