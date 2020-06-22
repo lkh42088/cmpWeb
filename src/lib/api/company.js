@@ -1,8 +1,9 @@
 import client from "./client";
 
-export const addCompany = ({
-    cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage, cpTel, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
-}) => client.post('/v1/customers/companies', {
+export const registerCompany = ({
+    cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage, cpTel, cpEmail,
+    cpIsCompany, cpMemo, cpTerminationDate,
+}) => client.post('/v1/customers/register', {
     name: cpName,
     zipcode: cpZip,
     address: cpAddr,
@@ -15,7 +16,7 @@ export const addCompany = ({
     termDate: cpTerminationDate,
 });
 
-export const checkDuplicatedCompany = ({
+export const checkDupCompany = ({
     cpName,
 }) => client.post('/v1/customers/check-company', {
     name: cpName,

@@ -5,12 +5,13 @@ import MenuItem from "@material-ui/core/MenuItem";
 import React from "react";
 
 const CbSelectField = ({
-                           labelValue,
-                           classes,
-                           name,
-                           value,
-                           onChange,
-    }) => {
+    disabled,
+    labelValue,
+    classes,
+    name,
+    value,
+    onChange,
+}) => {
     const handleChange = (e) => {
         console.log("CbSelectField: ", e.target.value);
         onChange({name, value: e.target.value});
@@ -18,6 +19,7 @@ const CbSelectField = ({
 
     return (
         <FormControl
+            disabled={disabled}
             variant="outlined"
             className={classes.formControl}
             size="small"
@@ -26,6 +28,7 @@ const CbSelectField = ({
                 {labelValue}
             </InputLabel>
             <Select
+                open={!disabled}
                 labelId="demo-simple-select-outlined-label"
                 id="demo-simple-select-outlined"
                 value={value}

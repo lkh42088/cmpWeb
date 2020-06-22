@@ -6,9 +6,9 @@ import {
     ADD_COMPANY_FAILURE,
     COMPANY_CHANGE_FIELD,
     COMPANY_CHANGE_REGISTER_FIELD,
-    COMPANYLIST_SUCCESS, INITIALIZE_COMPANY,
+    GET_COMPANY_LIST_SUCCESS, INITIALIZE_COMPANY,
     CHECK_DUP_COMPANY_SUCCESS,
-    CHECK_DUP_COMPANY_FAILURE, COMPANY_REGISTER_CHECK_FIELD,
+    CHECK_DUP_COMPANY_FAILURE, CHECK_COMPANY_REGISTER_FIELD,
 } from "../actions/companiesActions";
 
 const initialState = {
@@ -82,7 +82,7 @@ const initialState = {
     },
     responseData: null,
     responseError: null,
-    checkDupCompany: false,
+    checkCompany: false,
     confirmCompany: false,
 };
 
@@ -152,10 +152,10 @@ const companiesReducer = handleActions(
             },
             responseData: null,
             responseError: null,
-            checkDupCompany: false,
+            checkCompany: false,
             confirmCompany: false,
         }),
-        [COMPANYLIST_SUCCESS]: (state, action) => ({
+        [GET_COMPANY_LIST_SUCCESS]: (state, action) => ({
             ...state,
             data: action.payload.data,
             page: action.payload.page,
@@ -182,9 +182,9 @@ const companiesReducer = handleActions(
                 cpName: false,
             },
             helperText: {
-                cpName: "* 사용 가능한 이름입니다.",
+                cpName: "* 사용 가능한 고객사명 입니다.",
             },
-            checkDupCompany: true,
+            checkCompany: true,
             confirmCompany: true, // 동일한 회사가 없음
         }),
         [CHECK_DUP_COMPANY_FAILURE]: (state, action) => ({
@@ -193,15 +193,15 @@ const companiesReducer = handleActions(
                 cpName: true,
             },
                 helperText: {
-                cpName: "* 이미 사용하고 있는 이름입니다.",
+                cpName: "* 이미 사용하고 있는 고객사명 입니다.",
             },
-            checkDupCompany: true,
+            checkCompany: true,
             confirmCompany: false, // 동일한 회사가 있음
         }),
-        [COMPANY_REGISTER_CHECK_FIELD]: (state) => {
+        [CHECK_COMPANY_REGISTER_FIELD]: (state) => {
             const errorMsg = "* 필수 입력 사항입니다!";
             const nameErrorMsg = "* 고객사 중복을 확인하세요!";
-            const emailErrorMsg = "* 잘못된 이메일 주소입니다.!";
+            const emailErrorMsg = "* 잘못된 이메일 주소입니다!";
             // eslint-disable-next-line no-useless-escape
             const checkEmail = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
             // let isReady = true;
@@ -214,7 +214,8 @@ const companiesReducer = handleActions(
             return {
                 ...state,
                 isError: {
-                    cpName: state.register.cpName === "",
+                    cpName: state.register.cpName === "" ? true : (
+                        !(state.checkCompany && state.confirmCompany)),
                     cpZip: state.register.cpZip === "",
                     cpAddr: state.register.cpAddr === "",
                     cpAddrDetail: state.register.cpAddrDetail === "",
@@ -225,7 +226,7 @@ const companiesReducer = handleActions(
                 helperText: {
                     // eslint-disable-next-line no-nested-ternary
                     cpName: state.register.cpName === "" ? errorMsg : (
-                            state.checkDupCompany && state.confirmCompany ? "" : nameErrorMsg),
+                            state.checkCompany && state.confirmCompany ? "" : nameErrorMsg),
                     cpZip: state.register.cpZip === "" ? errorMsg : "",
                     cpAddr: state.register.cpAddr === "" ? errorMsg : "",
                     cpAddrDetail: state.register.cpAddrDetail === "" ? errorMsg : "",

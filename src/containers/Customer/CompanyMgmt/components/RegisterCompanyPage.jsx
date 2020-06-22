@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import React, {useEffect, useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {changeCompanyRegisterField, checkDuplicatedCompany} from "../../../../redux/actions/companiesActions";
+import {changeCompanyRegisterField, checkDupCompany} from "../../../../redux/actions/companiesActions";
 import CbTextField from "./CbTextField";
 import {NubesButtonSecondary} from "./NubesButton";
 import SearchZip from "./SearchZip";
@@ -23,14 +23,13 @@ const RegisterCompanyPage = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const {
-        register,
         isError,
         required,
         helperText,
         disabled,
         cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage, cpEmail,
         cpTel, cpIsCompany, cpMemo, cpTerminationDate,
-        checkDupCompany, confirmCompany,
+        checkCompany, confirmCompany,
     } = useSelector(({ companiesRd }) => ({
         isError: companiesRd.isError,
         helperText: companiesRd.helperText,
@@ -47,7 +46,7 @@ const RegisterCompanyPage = () => {
         cpIsCompany: companiesRd.register.cpIsCompany,
         cpMemo: companiesRd.register.cpMemo,
         cpTerminationDate: companiesRd.register.cpTerminationDate,
-        checkDupCompany: companiesRd.checkDupCompany,
+        checkCompany: companiesRd.checkCompany,
         confirmCompany: companiesRd.confirmCompany,
     }));
 
@@ -56,15 +55,13 @@ const RegisterCompanyPage = () => {
     const [open, setOpen] = useState(false);
     const requiredVal = true;
     const disableVal = true;
-    const [cpNameError, setCpNameError] = useState(false);
-    const [cpNameHelper, setCpNameHelper] = useState(false);
 
     /************************************************************************************
      * Function
      ************************************************************************************/
     const handleNameChange = (value) => {
-        if (checkDuplicatedCompany === true) {
-            dispatch(changeCompanyRegisterField({key: "checkDupCompany", value: false}));
+        if (checkCompany === true) {
+            dispatch(changeCompanyRegisterField({key: "checkCompany", value: false}));
             if (confirmCompany === true) {
                 dispatch(changeCompanyRegisterField({key: "confirmCompany", value: false}));
             }
@@ -75,8 +72,6 @@ const RegisterCompanyPage = () => {
         } else if (value.length !== 0 && nameButtonDisable === true) {
             setNameButtonDisable(false);
         }
-        setCpNameError(false);
-        setCpNameHelper("");
     };
 
     const handleChange = ({name, value}) => {
@@ -97,10 +92,10 @@ const RegisterCompanyPage = () => {
         dispatch(changeCompanyRegisterField({ key: "cpTerminationDate", value: date}));
     };
 
-    const handleCheckDuplicatedName = () => {
-        console.log("handleCheckDuplicatedName: ", cpName);
+    const handleCheckDupCompany = () => {
+        console.log("handleCheckDupCompany: ", cpName);
         if (cpName !== "") {
-            dispatch(checkDuplicatedCompany({cpName}));
+            dispatch(checkDupCompany({cpName}));
         }
     };
 
@@ -127,18 +122,6 @@ const RegisterCompanyPage = () => {
         console.log("[useEffect] INIT");
     }, []);
 
-    useEffect(() => {
-        if (checkDupCompany === true
-            && confirmCompany === false
-            && cpNameError === false) {
-            setCpNameError(true);
-            setCpNameHelper("* 이미 존재하는 이름입니다!");
-        } else if (checkDupCompany === true
-            && confirmCompany === true) {
-            setCpNameHelper("* 사용 가능한 이름입니다.");
-        }
-    }, [checkDupCompany, confirmCompany]);
-
     console.log("Company Page..");
 
     /************************************************************************************
@@ -160,7 +143,7 @@ const RegisterCompanyPage = () => {
                     />
                     <NubesButtonSecondary
                         disabled={nameButtonDisable}
-                        onClick={handleCheckDuplicatedName}
+                        onClick={handleCheckDupCompany}
                         size="small"
                     >
                         중복확인

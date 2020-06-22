@@ -10,10 +10,11 @@ import Typography from "@material-ui/core/Typography";
 import {useDispatch, useSelector} from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
 import {
-    addCompany, checkCompanyRegisterCheckField,
+    addCompany, checkCompanyRegisterField,
     initializeCompany,
 } from "../../../../redux/actions/companiesActions";
 import {
+    checkUserRegisterField,
     initializeUser,
     registerUser,
     setupUserBaseByCompany,
@@ -111,6 +112,50 @@ function getStepAddingCompany(step, company, user) {
     }
 }
 
+function checkPasswordPattern(str) {
+    const pass = str.value;
+    let message = "";
+
+    // 비밀번호 문자열에 숫자 존재 여부 검사
+    const pattern1 = /[0-9]/; // 숫자
+    if (pattern1.test(pass) === false) {
+        message = "비밀번호에 숫자가 입력되지 않았습니다.\n숫자를 입력하여 주시기 바랍니다.";
+    }
+
+    // 비밀번호 문자열에 영문 소문자 존재 여부 검사
+    const pattern2 = /[a-z]/;
+    if (pattern2.test(pass) === false) {
+        message = "비밀번호에 영문 소문자가 입력되지 않았습니다.\n영문 소문자를 입력하여 주시기 바랍니다.";
+    }
+
+    // 비밀번호 문자열에 영문 대문자 존재 여부 검사
+    const pattern3 = /[A-Z]/;
+    if (pattern3.test(pass) === false) {
+        message = "비밀번호에 영문 대문자가 입력되지 않았습니다.\n영문 대문자를 입력하여 주시기 바랍니다.";
+    }
+
+    // 비밀번호 문자열에 특수문자 존재 여부 검사
+    const pattern4 = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
+    if (pattern4.test(pass) === false) {
+        message = "비밀번호에 특수문자가 입력되지 않았습니다.\n특수문자를 입력하여 주시기 바랍니다.";
+    }
+
+    // 비밀번호 문자열의 입력 길이 검사
+    if (pass.length < 8 || pass.length > 16) {
+        message = "비밀번호는 8자리 이상 16자리 이하만 가능합니다.\n비밀번호를 다시 입력하여 주시기 바랍니다.";
+    }
+
+    // 비밀번호 문자열 결과 출력
+    if (message) {
+        // alert(message);
+        // str.value = "";
+        // str.focus();
+        return false;
+    }
+    // alert("사용하셔도 좋은 비밀번호 입니다.");
+    return true;
+}
+
 const AddCompany = (props) => {
     /************************************************************************************
      * 1. Variable
@@ -128,13 +173,17 @@ const AddCompany = (props) => {
     const {
         company,
         user,
-        checkDupCompany,
+        checkCompany,
         confirmCompany,
+        checkUser,
+        confirmUser,
     } = useSelector(({ companiesRd, usersRd }) => ({
-        checkDupCompany: companiesRd.checkDupCompany,
+        checkCompany: companiesRd.checkCompany,
         confirmCompany: companiesRd.confirmCompany,
+        checkUser: usersRd.checkUser,
+        confirmUser: usersRd.confirmUser,
         company: companiesRd.register,
-        user: usersRd,
+        user: usersRd.register,
     }));
 
     /************************************************************************************
@@ -147,14 +196,17 @@ const AddCompany = (props) => {
     const isLastStep = () => activeStep === totalSteps() - 1;
     const allStepsCompleted = () => completedSteps() === totalSteps();
 
-    const isReadyRegister = () => {
+    const isReadyRegisterCompany = () => {
+        // eslint-disable-next-line no-useless-escape
+        const checkEmail = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
         if (company.cpName !== ""
             && company.cpZip !== ""
             && company.cpAddr !== ""
             && company.cpAddrDetail !== ""
             && company.cpTel !== ""
             && company.cpEmail !== ""
-            && checkDupCompany
+            && checkEmail.test(company.cpEmail)
+            && checkCompany
             && confirmCompany
         ) {
             return true;
@@ -162,12 +214,42 @@ const AddCompany = (props) => {
         return false;
     };
 
+    const isReadyRegisterUser = () => {
+        if (user.userId !== ""
+            && user.password !== ""
+            && user.email !== ""
+            && user.username !== ""
+            && user.cellPhone !== ""
+            && checkUser
+            && confirmUser
+        ) {
+            return true;
+        }
+        return false;
+    };
 
     const handleNext = () => {
         const lastStep = isLastStep();
         const completeComplete = allStepsCompleted();
         console.log("activeStep ", activeStep);
         console.log("totalStep", totalSteps() - 1);
+
+        if (activeStep === 0) {
+            /** Company page */
+            dispatch(checkCompanyRegisterField());
+            // check
+            if (isReadyRegisterCompany() === false) {
+                return;
+            }
+        } else if (activeStep === 1) {
+            /** User page */
+            dispatch(checkUserRegisterField());
+            // check
+            if (isReadyRegisterUser() === false) {
+                return;
+            }
+        }
+
         if (activeStep === (totalSteps() - 1)) {
             dispatch(addCompany({
                 cpName: company.cpName, 
@@ -193,19 +275,6 @@ const AddCompany = (props) => {
             console.log("--> [dispatch] send user/company!!!");
             handleClose();
         } else {
-            if (activeStep === 0) {
-                /** Company page */
-                dispatch(checkCompanyRegisterCheckField());
-                // check
-                if (isReadyRegister() === false) {
-                    return;
-                }
-            } else if (activeStep === 1) {
-                /** User page */
-                dispatch(checkCompanyRegisterCheckField());
-                // check
-                return;
-            }
             console.log("--> [dispatch] setup User: ", company.cpName, ", ", company.cpEmail, ", ", company.cpTel);
             dispatch(setupUserBaseByCompany({username: company.cpName, email: company.cpEmail, cellPhone: company.cpTel}));
         }
