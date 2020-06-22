@@ -4,6 +4,7 @@ import {List, Map} from "immutable";
 import {
     // INIT_SUBNET,
     CREATE_SUBNET,
+    CURRENT_PAGE_SUBNET,
     SEARCH_DEVICE_SUBNET,
     READ_SUBNET,
     READ_SUBNET_SUCCESS,
@@ -13,15 +14,6 @@ import {
     INPUT_SUBNET,
 } from "../actions/subnetActions";
 
-// const initSubnet = {
-//     deviceCode: '',
-//     subnetStart: '',
-//     subnetEnd: '',
-//     subnetTag: '',
-//     subnetMask: '',
-//     gateway: '',
-// };
-
 const initSubnet = {
     data: List([
         Map({}),
@@ -30,6 +22,9 @@ const initSubnet = {
         count: 0, // total count
         rows: 0,
         offset: 0,
+        orderBy: "sub_idx",
+        order: "asc",
+        currentPage: 1,
     },
 };
 
@@ -55,6 +50,10 @@ const subnetReducer = handleActions(
         }),
         [DELETE_SUBNET]: () => ({
 
+        }),
+        [CURRENT_PAGE_SUBNET]: (state, currentPage) => ({
+            ...state,
+            offset: (currentPage / state.page.rows),
         }),
     },
     initSubnet,

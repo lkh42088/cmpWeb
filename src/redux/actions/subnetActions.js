@@ -13,6 +13,7 @@ export const [READ_SUBNET, READ_SUBNET_SUCCESS, READ_SUBNET_FAILURE] = createReq
 export const UPDATE_SUBNET = 'subnet/UPDATE';
 export const DELETE_SUBNET = 'subnet/DELETE';
 export const INPUT_SUBNET = 'subnet/INPUT';
+export const CURRENT_PAGE_SUBNET = 'subnet/CURRENT_PAGE';
 
 
 /******************************************************************************
@@ -46,7 +47,11 @@ export const inputSubnet = createAction(
     INPUT_SUBNET,
     ({key, value}) => ({key, value}),
 );
-
+export const currentPageSubnet = createAction(CURRENT_PAGE_SUBNET, ({
+    currentPage,
+}) => ({
+    currentPage,
+}));
 
 /******************************************************************************
  * 3. Saga
