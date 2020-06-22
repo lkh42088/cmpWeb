@@ -329,31 +329,33 @@
 }
 
 .modal_comment_register {
-  font-size: larger;
-  background-color: #f6f7fc;
+  /*font-size: larger;*/
+  background-color: $color-bg-sub;
   padding: 0;
 
   p {
     color: black;
 
     &:hover {
-      color: #0f4c81;
+      color: $color-cb-logo;
     }
   }
   /*.collapse__wrapper.with-shadow .collapse__title*/
   span {
-    color: #10375c;
+    color: black;
     font-weight: bold;
     /*display: inline-block;
     width: 100%;*/
-    background-color: #f6f7fc;
-    padding: 3px;
+    background-color: $color-bg-sub;
+    padding: 1px;
     /*border: 2px solid #10375c;
     border-style: none none solid none;*/
   }
 
   pre {
-    background-color: #f6f7fc;
+    background-color: $color-bg-sub;
+    /*font-size: medium;*/
+    padding: 1px;
   }
 
   .modal_comment_edit {

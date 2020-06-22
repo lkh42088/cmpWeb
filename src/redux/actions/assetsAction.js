@@ -322,8 +322,10 @@ export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
 
         const res = await axios.get(`${API_ROUTE}/device/${deviceType}/${deviceCode}`);
         const comments = await axios.get(`${API_ROUTE}/comments/${deviceCode}`);
+        //router.GET("/v1/log/device/:value", h.GetDevicesByLog)
+        const logs = await axios.get(`${API_ROUTE}/log/device/${deviceCode}`);
 
-        //console.log("comments : ", comments.data);
+        console.log("★★★★★★★★★★★★★★★★★logs : ", logs.data);
 
         dispatch({
             type: GET_DEVICE_BY_DEVICECODE,

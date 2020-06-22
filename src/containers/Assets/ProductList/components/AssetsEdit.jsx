@@ -1135,9 +1135,9 @@ class AssetsEdit extends PureComponent {
                         <div className="modal_btn">
                             <ButtonToolbar className="assets_write__modal__footer">
                                 <Button className="assets_write__modal_ok" color="primary"
-                                        type="submit">Submit</Button>
+                                        type="submit">수정</Button>
                                 <Button className="assets_write__modal_cancel"
-                                        onClick={this.onClose}>Cancel</Button>
+                                        onClick={this.onClose}>닫기</Button>
                                 {/*<Button type="submit">Submit[test]</Button>*/}
                             </ButtonToolbar>
                         </div>

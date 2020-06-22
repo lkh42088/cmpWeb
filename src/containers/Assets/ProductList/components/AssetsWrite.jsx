@@ -81,7 +81,7 @@ const renderSelectCustomField = ({
                 {...input}
                 placeholder={placeholder}
             >
-                <option value="0">선택하세요.</option>
+                <option value="0">:: SELECT ::.</option>
                 {
                     codeDivision.code.map((d, index) => (
                         <option key={d.codeId.toString()}
@@ -223,7 +223,7 @@ class AssetsWrite extends PureComponent {
                         <Field
                             name="rack"
                             component="select">
-                            <option value="0">선택하세요.</option>
+                            <option value="0">:: SELECT ::</option>
                             <option value="none">렉없음</option>
                             {assetState.subCodes.data
                                 .map(d => (Number(d.codeId) === Number(e.target.value)
@@ -250,7 +250,7 @@ class AssetsWrite extends PureComponent {
                         <Field
                             name="model"
                             component="select">
-                            <option value="0">선택하세요.</option>
+                            <option value="0">:: SELECT ::</option>
                             {assetState.subCodes.data
                                 .map(d => (Number(d.codeId) === Number(e.target.value)
                                     && <option key={d.id} value={d.id}>{d.name}</option>))
@@ -400,7 +400,7 @@ class AssetsWrite extends PureComponent {
                             name={`${reName}`}
                             onChange={this.handleChangeSpla}
                         >
-                            <option value="0">선택하세요.</option>
+                            <option value="0">:: SELECT ::</option>
                             {assetState.codes.codeSpla
                                 .map(c => (
                                     <option key={c.codeId.toString()}
@@ -569,7 +569,7 @@ class AssetsWrite extends PureComponent {
                                     name="size"
                                     component="select"
                                 >
-                                    <option value="0">선택하세요.</option>
+                                    <option value="0">:: SELECT ::</option>
                                     {assetState.codes.codeSize
                                         .map((d, index) => (
                                             <option key={d.codeId.toString()}
@@ -699,7 +699,7 @@ class AssetsWrite extends PureComponent {
                                     name="rackCode"
                                     component="select"
                                 >
-                                    <option value="0">선택하세요.</option>
+                                    <option value="0">:: SELECT ::</option>
                                     {assetState.codes.codeRackCode
                                         .map((d, index) => (
                                             <option key={d.codeId.toString()}
@@ -775,7 +775,7 @@ class AssetsWrite extends PureComponent {
                                     name="idc"
                                     component="select"
                                     onChange={this.handleChange}>
-                                    <option value="0">선택하세요.</option>
+                                    <option value="0">:: SELECT ::</option>
                                     {assetState.codes.codeIdc
                                         .map((d, index) => (
                                             <option key={d.codeId.toString()}
@@ -793,7 +793,7 @@ class AssetsWrite extends PureComponent {
                                     name="manufacture"
                                     component="select"
                                     onChange={this.handleChange}>
-                                    <option value="0">선택하세요.</option>
+                                    <option value="0">:: SELECT ::</option>
                                     {assetState.codes.codeManufacture
                                         .map((d, index) => (
                                             <option key={d.codeId.toString()}
@@ -953,9 +953,9 @@ class AssetsWrite extends PureComponent {
                         <div className="modal_btn">
                             <ButtonToolbar className="assets_write__modal__footer">
                                 <Button className="assets_write__modal_ok" color="primary"
-                                        type="submit">Submit</Button>
+                                        type="submit">등록</Button>
                                 <Button className="assets_write__modal_cancel"
-                                        onClick={this.onClose}>Cancel</Button>
+                                        onClick={this.onClose}>닫기</Button>
                                 {/*<button type="submit">Submit[test]</button>*/}
                             </ButtonToolbar>
                         </div>

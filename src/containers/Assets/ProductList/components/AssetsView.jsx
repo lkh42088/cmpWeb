@@ -157,7 +157,6 @@ class AssetsView extends PureComponent {
         }
 
         const {
-            idx, outFlag, commentCnt, commentLastDate, registerId, registerDate,
             deviceCode, model, contents, customer, manufacture, deviceType, warehousingDate,
             rentDate, ownership, ownershipDiv, ownerCompany, hwSn, idc, rack, cost, purpose,
             monitoringFlag, MonitoringMethod, ip, size, spla, cpu, memory, hdd, rackCode, rackTag,
@@ -340,12 +339,11 @@ class AssetsView extends PureComponent {
                                             </div>
                                         </div>
                                         <ButtonToolbar className="assets_write__modal__footer_comment">
-                                            <Button className="assets_write__modal_ok"
-                                                    outline={colored} type="submit"
-                                                    color="success">등록</Button>
+                                            <Button className="assets_write__modal_ok" color="primary"
+                                                    outline={colored} type="submit">등록</Button>
                                             &nbsp;&nbsp;
                                             <Button className="assets_write__modal_cancel"
-                                                    onClick={this.commentToggle}>Cancel</Button>
+                                                    onClick={this.commentToggle}>닫기</Button>
                                         </ButtonToolbar>
                                     </form>
                                 </Modal>
@@ -378,9 +376,9 @@ class AssetsView extends PureComponent {
                             <div className={classNameMap.formDivSubClass}>
                                 {ownership}
                             </div>
-                            <span className="modal_form__form-group-description">
+                            {/*<span className="modal_form__form-group-description">
                                   Explanation.
-                            </span>
+                            </span>*/}
                         </div>
                         <div className={classNameMap.formDivClass}>
                             <span className="modal_form__form-group-label text_cor_orange">고객사</span>
@@ -437,13 +435,13 @@ class AssetsView extends PureComponent {
                 </div>
                 {/*-----------------------------------------------------------------------------------------*/}
                 <AssetsComment assetState={assetState} dispatch={dispatch} setTotalManager={setTotalManager}/>
-                <AssetsLogo/>
+                <AssetsLogo assetState={assetState} dispatch={dispatch} setTotalManager={setTotalManager}/>
                 {/*-----------------------------------------------------------------------------------------*/}
                 <ButtonToolbar className="assets_write__modal__footer">
                     <Button className="assets_write__modal_ok" outline={colored} color="primary"
-                            onClick={this.onUpdate}>Edit</Button>
+                            onClick={this.onUpdate}>수정</Button>
                     <Button className="assets_write__modal_cancel"
-                            onClick={this.onClose}>Cancel</Button>
+                            onClick={this.onClose}>닫기</Button>
                 </ButtonToolbar>
             </div>
         );

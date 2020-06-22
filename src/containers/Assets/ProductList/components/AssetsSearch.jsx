@@ -8,7 +8,6 @@ import {Field, reduxForm} from 'redux-form';
 import {withTranslation} from 'react-i18next';
 import {
     fetchPostsCheckCount,
-    setDeviceOutFlag,
     fetchPostSearchDevice,
 } from "../../../../redux/actions/assetsAction";
 import renderRadioButtonField from '../../../../shared/components/form/RadioButton';
@@ -207,7 +206,7 @@ const AssetsSearch = ({assetState}) => {
                                                value={device.operatingFlag}
                                                onChange={setToggleOutFlag}/>&nbsp;
                                         <span className="search_checkboxText">
-                                            &nbsp;운영장비
+                                            &nbsp;운영장비&nbsp;
                                         </span>
                                     </span>
                                     &nbsp;&nbsp;
@@ -217,7 +216,7 @@ const AssetsSearch = ({assetState}) => {
                                                value={device.carryingFlag}
                                                onChange={setToggleOutFlag}/>&nbsp;
                                         <span className="search_checkboxText">
-                                            &nbsp;반출장비
+                                            &nbsp;반출장비&nbsp;
                                         </span>
                                     </span>
                                 </div>
