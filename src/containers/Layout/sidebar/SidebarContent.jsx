@@ -59,6 +59,8 @@ class SidebarContent extends Component {
                                      onClick={() => changeMenuTitle('관리자', '고객사설정', '')}/>
                         <SidebarLink title="모니터링 관리" route="/management/monitoring/main"
                                      onClick={() => changeMenuTitle('관리자', '모니터링관리', '')}/>
+                        <SidebarLink title="서브넷 관리" route="/subnet"
+                                     onClick={() => changeMenuTitle('관리자', '서브넷 관리', '')}/>
                     </SidebarCategory>
                     <SidebarCategory title="SETTING" icon={monitorDashboard} />
                 </ul>

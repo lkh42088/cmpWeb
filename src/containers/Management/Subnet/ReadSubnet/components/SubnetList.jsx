@@ -39,20 +39,6 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-const headerStyle = makeStyles(theme => ({
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.primary.contrastText,
-}));
-const StyledTableCell = withStyles(theme => ({
-    head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    body: {
-        fontSize: 14,
-    },
-}))(TableCell);
-
 /** Material table icons **/
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
