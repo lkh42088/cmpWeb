@@ -87,7 +87,7 @@ export default class SidebarCategory extends Component {
                     <p className="cb_sidebar__link-title">{title}
                         {isNew && <span className="cb_sidebar__category-new"/>}
                     </p>
-                    <span className="cb_sidebar__category-icon lnr lnr-chevron-right"/>
+                    {/*<span className="cb_sidebar__category-icon lnr lnr-chevron-right"/>*/}
                 </button>
                 <Collapse isOpen={collapse} id={`collapseId_${title}`} name="collapseName"
                           className="cb_sidebar__submenu-wrap"

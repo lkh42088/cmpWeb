@@ -22,7 +22,9 @@
 
   @media screen and (min-width: 576px) {
     @include directify($directions) {
-      #{directed('padding-left')}: 250px;
+      //#{directed('padding-left')}: 250px; // Origin
+      // Content 의 왼쪽 Padding (card view 등)
+      #{directed('padding-left')}: 210px; // [23June2020,khlee]
     }
     overflow-x: hidden; // (15jun2020,ebjee) sidebar top width error
   }
