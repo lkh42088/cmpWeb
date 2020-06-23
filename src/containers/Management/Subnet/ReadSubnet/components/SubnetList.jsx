@@ -123,18 +123,18 @@ const SubnetList = () => {
         data: [],
     });
 
-    // const handleOrderChange = (event, direction) => {
-    //     const isAsc = page.order === direction && page.order === "asc";
-    //     const changeOrder = isAsc ? "desc" : "asc";
-    //     console.log(direction);
-    //     dispatch(pagingChangeOrder({order: changeOrder}));
-    // };
-    //
-    // const handleFilterChange = (event, filter) => {
-    //     console.log(filter);
-    //     dispatch(pagingChangeOrderBy({orderBy: filter}));
-    //     dispatch(pagingChangeOrder({order: "asc"}));
-    // };
+    const handleOrderChange = (event, direction) => {
+        const isAsc = page.order === direction && page.order === "asc";
+        const changeOrder = isAsc ? "desc" : "asc";
+        console.log(direction);
+        dispatch(pagingChangeOrder({order: changeOrder}));
+    };
+
+    const handleFilterChange = (event, filter) => {
+        console.log(filter);
+        dispatch(pagingChangeOrderBy({orderBy: filter}));
+        dispatch(pagingChangeOrder({order: "asc"}));
+    };
 
     const getPageData = () => {
         let offset = 0;
@@ -144,7 +144,7 @@ const SubnetList = () => {
         console.log("[PAGE DATA]: rows ", rowsPerPage, ", offset ", offset,
             ", orderBy ", orderBy, ", order ", order);
         dispatch(readSubnet({
-            rowsPerPage, offset, orderBy, order,
+            rows: rowsPerPage, offset, orderBy, order,
         }));
     };
 
@@ -158,24 +158,21 @@ const SubnetList = () => {
         }));
         dispatch(pagingChangeOrderBy({orderBy: "sub_idx"}));
         dispatch(pagingChangeOrder({order: "desc"}));
-        console.log("[rows]:", rows, page.count);
+        if (page) {
+            const {count} = page;
+            dispatch(pagingSetup({
+                rowsPerPage: rows,
+                currentPage: 1,
+                totalPage: Math.ceil(count / rows),
+                totalCount: count,
+            }));
+        }
         // dispatch(pagingDump());
     }, []);
 
-    // todo
-    // useEffect(() => {
-    //     dispatch(pagingSetup({
-    //         rowsPerPage: rows,
-    //         currentPage: 1,
-    //         totalPage: Math.ceil(count / rows),
-    //         totalCount: count,
-    //     }));
-    //     // dispatch(pagingDump());
-    // }, [page]);
-
     /** Get subnet data **/
     useEffect(() => {
-        // getPageData();
+        getPageData();
     }, [rowsPerPage, currentPage, orderBy, order]);
 
     const handleChangePage = useCallback(
@@ -314,8 +311,8 @@ const SubnetList = () => {
                     onRowUpdate: RowUpdate,
                     onRowDelete: RowDelete,
                 }}
-                // onOrderChange={handleOrderChange}
-                // onFilterChange={handleFilterChange}
+                onOrderChange={handleOrderChange}
+                onFilterChange={handleFilterChange}
                 components={customComponents}
                 options={options}
                 localization={localization}
