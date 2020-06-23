@@ -27,9 +27,9 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import PaginationCustomization from "../../../../Common/PaginationBar";
 import {
-    pagingChangeCurrentPage, pagingChangeOrder, pagingChangeOrderBy, pagingSetup,
+    pagingChangeCurrentPage, pagingChangeOrder, pagingChangeOrderBy, pagingDump, pagingSetup,
 } from "../../../../../redux/actions/pagingActions";
-import {currentPageSubnet, pageSetupSubnet, readSubnet} from "../../../../../redux/actions/subnetActions";
+import {readSubnet} from "../../../../../redux/actions/subnetActions";
 /** Subnet Add Modal **/
 import SubnetWriteForm from "../../CreateSubnet/components/SubnetWriteForm";
 import SpringModal from "../../../../Common/SpringModal";
@@ -83,36 +83,33 @@ const SubnetList = () => {
         data: subnetRd.data,
         page: subnetRd.page,
     }));
-    // const {
-    //     count, currentPage, offset, order, orderBy, rows,
-    // } = page;
     /**
      * Pagination state
      **/
-    //const rows = 15;
-    // const {
-    //     selected,
-    //     pageBeginRow,
-    //     rowsPerPage,
-    //     currentPage,
-    //     totalPage,
-    //     totalCount,
-    //     displayRowsList,
-    //     dense,
-    //     orderBy,
-    //     order,
-    // } = useSelector(({pagingRd}) => ({
-    //     selected: pagingRd.selected,
-    //     pageBeginRow: pagingRd.pageBeginRow,
-    //     rowsPerPage: rows,
-    //     currentPage: pagingRd.currentPage,
-    //     totalPage: pagingRd.totalPage,
-    //     totalCount: pagingRd.totalCount,
-    //     displayRowsList: pagingRd.displayRowsList,
-    //     dense: pagingRd.dense,
-    //     orderBy: pagingRd.orderBy,
-    //     order: pagingRd.order,
-    // }));
+    const rows = 15;
+    const {
+        selected,
+        pageBeginRow,
+        rowsPerPage,
+        currentPage,
+        totalPage,
+        totalCount,
+        displayRowsList,
+        dense,
+        orderBy,
+        order,
+    } = useSelector(({pagingRd}) => ({
+        selected: pagingRd.selected,
+        pageBeginRow: pagingRd.pageBeginRow,
+        rowsPerPage: pagingRd.rowsPerPage,
+        currentPage: pagingRd.currentPage,
+        totalPage: pagingRd.totalPage,
+        totalCount: pagingRd.totalCount,
+        displayRowsList: pagingRd.displayRowsList,
+        dense: pagingRd.dense,
+        orderBy: pagingRd.orderBy,
+        order: pagingRd.order,
+    }));
 
     /** Initial data **/
     const [state, setState] = React.useState({
@@ -140,56 +137,45 @@ const SubnetList = () => {
     // };
 
     const getPageData = () => {
-        // // const {
-        // //     currentPage, rows, orderBy, order, offset,
-        // // } = page;
-        // let offsetTmp = 0;
-        // if (currentPage > 0) {
-        //     offsetTmp = Number(rows * currentPage);
-        // }
-        // console.log(">>>>>> get Page Data: rows ", rows, ", offset ", offsetTmp,
-        //     ", orderBy ", orderBy, ", order ", order);
-        // dispatch(readSubnet({
-        //     rows, offsetTmp, orderBy, order,
-        // }));
+        let offset = 0;
+        if (currentPage > 0) {
+            offset = Number(rowsPerPage * currentPage);
+        }
+        console.log("[PAGE DATA]: rows ", rowsPerPage, ", offset ", offset,
+            ", orderBy ", orderBy, ", order ", order);
+        dispatch(readSubnet({
+            rowsPerPage, offset, orderBy, order,
+        }));
     };
 
     /** Init pagination **/
     useEffect(() => {
         dispatch(readSubnet({
-            rows: 15, offset: 0, orderBy: "sub_idx", order: "asc",
+            rows: 15,
+            offset: 0,
+            orderBy: "sub_idx",
+            order: "desc",
         }));
-        // dispatch(pageSetupSubnet({
-        //     rows: 15,
-        //     offset: 0,
-        //     orderBy: "sub_idx",
-        //     order: "asc",
-        // }));
-        // dispatch(currentPageSubnet({currentPage: 1}));
-        // console.log(page);
+        dispatch(pagingChangeOrderBy({orderBy: "sub_idx"}));
+        dispatch(pagingChangeOrder({order: "desc"}));
+        console.log("[rows]:", rows, page.count);
+        dispatch(pagingSetup({
+            rowsPerPage: rows,
+            currentPage: 1,
+            totalPage: Math.ceil(page.count / rows),
+            totalCount: page.count,
+        }));
+        // dispatch(pagingDump());
     }, []);
 
-    /** Get subnet data **/
-    // useEffect(() => {
-    //     dispatch(readSubnet({
-    //         rows,
-    //         offset: rows * currentPage,
-    //         orderBy,
-    //         order,
-    //     }));
-    // }, [currentPage]);
-
-    /** Bind Subnet data **/
     useEffect(() => {
-        // {count, currentPage, offset, order, orderBy, rows} = page;
-        getPageData();
-        // dispatch(readSubnet({
-        //     rows,
-        //     offset: page.offset,
-        //     orderBy: page.orderBy,
-        //     order: page.order,
-        // }));
-    }, [page]);
+
+    }, [page.count]);
+
+    /** Get subnet data **/
+    useEffect(() => {
+        // getPageData();
+    }, [rowsPerPage, currentPage, orderBy, order]);
 
     const handleChangePage = useCallback(
         (event, pageData) => dispatch(pagingChangeCurrentPage({
@@ -241,13 +227,13 @@ const SubnetList = () => {
     const paginationBar = props => (
             <PaginationCustomization
                 className={classes.root}
-                activePage="1"
-                // activePage={Math.ceil(offset / rows)}
+                // activePage="1"
+                activePage={currentPage}
                 boundaryRange="1"
                 showEllipsis="true"
                 siblingRange="2"
-                // totalPages={Math.ceil(count / rows)}
-                totalPages="20"
+                totalPages={Math.ceil(totalCount / rowsPerPage)}
+                // totalPages="20"
                 onPageChange={handleChangePage}
                 showFirstAndLastNav="true"
                 showPreviousAndNextNav="true"

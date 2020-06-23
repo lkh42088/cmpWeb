@@ -13,9 +13,6 @@ export const [READ_SUBNET, READ_SUBNET_SUCCESS, READ_SUBNET_FAILURE] = createReq
 export const UPDATE_SUBNET = 'subnet/UPDATE';
 export const DELETE_SUBNET = 'subnet/DELETE';
 export const INPUT_SUBNET = 'subnet/INPUT';
-/** Pagination */
-export const CURRENT_PAGE_SUBNET = 'subnet/CURRENT_PAGE';
-export const PAGE_SETUP_SUBNET = 'subnet/PAGE_SETUP';
 
 
 /******************************************************************************
@@ -49,17 +46,6 @@ export const inputSubnet = createAction(
     INPUT_SUBNET,
     ({key, value}) => ({key, value}),
 );
-/** Pagination */
-export const currentPageSubnet = createAction(CURRENT_PAGE_SUBNET, ({
-    currentPage,
-}) => ({
-    currentPage,
-}));
-export const pageSetupSubnet = createAction(PAGE_SETUP_SUBNET, ({
-    rows, offset, orderBy, order,
-}) => ({
-    rows, offset, orderBy, order,
-}));
 
 
 /******************************************************************************
