@@ -29,7 +29,7 @@ import PaginationCustomization from "../../../../Common/PaginationBar";
 import {
     pagingChangeCurrentPage, pagingChangeOrder, pagingChangeOrderBy, pagingSetup,
 } from "../../../../../redux/actions/pagingActions";
-import {currentPageSubnet, readSubnet} from "../../../../../redux/actions/subnetActions";
+import {currentPageSubnet, pageSetupSubnet, readSubnet} from "../../../../../redux/actions/subnetActions";
 /** Subnet Add Modal **/
 import SubnetWriteForm from "../../CreateSubnet/components/SubnetWriteForm";
 import SpringModal from "../../../../Common/SpringModal";
@@ -75,7 +75,7 @@ const SubnetList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     /**
-     * Subnet Data state
+     * Subnet Data
      **/
     const {
         data, page,
@@ -126,13 +126,6 @@ const SubnetList = () => {
         data: [],
     });
 
-    const handleChangePage = useCallback(
-        (event, pageData) => dispatch(pagingChangeCurrentPage({
-            // offset: (pageData.activePage - 1) * rows,
-            offset: (pageData.activePage - 1) * 15,
-        })), [dispatch],
-    );
-
     // const handleOrderChange = (event, direction) => {
     //     const isAsc = page.order === direction && page.order === "asc";
     //     const changeOrder = isAsc ? "desc" : "asc";
@@ -146,18 +139,34 @@ const SubnetList = () => {
     //     dispatch(pagingChangeOrder({order: "asc"}));
     // };
 
+    const getPageData = () => {
+        // // const {
+        // //     currentPage, rows, orderBy, order, offset,
+        // // } = page;
+        // let offsetTmp = 0;
+        // if (currentPage > 0) {
+        //     offsetTmp = Number(rows * currentPage);
+        // }
+        // console.log(">>>>>> get Page Data: rows ", rows, ", offset ", offsetTmp,
+        //     ", orderBy ", orderBy, ", order ", order);
+        // dispatch(readSubnet({
+        //     rows, offsetTmp, orderBy, order,
+        // }));
+    };
+
     /** Init pagination **/
     useEffect(() => {
-        const defaultOrderBy = "sub_idx";
-        // dispatch(pagingChangeOrderBy({orderBy: defaultOrderBy}));
-        console.log();
-        dispatch(currentPageSubnet({currentPage: 1}));
         dispatch(readSubnet({
-            rows: 15,
-            offset: 0,
-            orderBy: "sub_idx",
-            order: "asc",
+            rows: 15, offset: 0, orderBy: "sub_idx", order: "asc",
         }));
+        // dispatch(pageSetupSubnet({
+        //     rows: 15,
+        //     offset: 0,
+        //     orderBy: "sub_idx",
+        //     order: "asc",
+        // }));
+        // dispatch(currentPageSubnet({currentPage: 1}));
+        // console.log(page);
     }, []);
 
     /** Get subnet data **/
@@ -171,15 +180,22 @@ const SubnetList = () => {
     // }, [currentPage]);
 
     /** Bind Subnet data **/
-    // useEffect(() => {
-    //     console.log(page);
-    //     dispatch(readSubnet({
-    //         rows,
-    //         offset,
-    //         orderBy,
-    //         order,
-    //     }));
-    // }, [page]);
+    useEffect(() => {
+        // {count, currentPage, offset, order, orderBy, rows} = page;
+        getPageData();
+        // dispatch(readSubnet({
+        //     rows,
+        //     offset: page.offset,
+        //     orderBy: page.orderBy,
+        //     order: page.order,
+        // }));
+    }, [page]);
+
+    const handleChangePage = useCallback(
+        (event, pageData) => dispatch(pagingChangeCurrentPage({
+            currentPage: pageData.activePage,
+        })), [dispatch],
+    );
 
     /** Update & Register Device **/
     const RowAdd = (newData) => {
@@ -225,20 +241,20 @@ const SubnetList = () => {
     const paginationBar = props => (
             <PaginationCustomization
                 className={classes.root}
+                activePage="1"
                 // activePage={Math.ceil(offset / rows)}
                 boundaryRange="1"
+                showEllipsis="true"
                 siblingRange="2"
                 // totalPages={Math.ceil(count / rows)}
-                // totalPages="20"
+                totalPages="20"
                 onPageChange={handleChangePage}
-                showEllipsis="true"
                 showFirstAndLastNav="true"
                 showPreviousAndNextNav="true"
                 size="mini"
-                o
                 // rowsPerPageOptions={displayRowsList}
             />
-        );
+            );
 
     /** Material-Table component override **/
     const customComponents = {

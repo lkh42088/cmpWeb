@@ -5,13 +5,14 @@ import {
     // INIT_SUBNET,
     CREATE_SUBNET,
     CURRENT_PAGE_SUBNET,
-    SEARCH_DEVICE_SUBNET,
+    DELETE_SUBNET,
+    INPUT_SUBNET,
+    PAGE_SETUP_SUBNET,
     READ_SUBNET,
     READ_SUBNET_SUCCESS,
     READ_SUBNET_FAILURE,
+    SEARCH_DEVICE_SUBNET,
     UPDATE_SUBNET,
-    DELETE_SUBNET,
-    INPUT_SUBNET,
 } from "../actions/subnetActions";
 
 const initSubnet = {
@@ -53,7 +54,14 @@ const subnetReducer = handleActions(
         }),
         [CURRENT_PAGE_SUBNET]: (state, currentPage) => ({
             ...state,
-            offset: (currentPage / state.page.rows),
+            currentPage,
+        }),
+        [PAGE_SETUP_SUBNET]: (state, payload) => ({
+            ...state,
+            rows: payload.rows,
+            offset: payload.offset,
+            orderBy: payload.orderBy,
+            order: payload.order,
         }),
     },
     initSubnet,
