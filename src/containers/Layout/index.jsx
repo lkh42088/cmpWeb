@@ -57,10 +57,24 @@ class Layout extends Component {
     menuTitle: MenuTitleProps.isRequired,
   };
 
+  state = {
+      user: null,
+  };
+
   componentWillMount() {
     const { dispatch } = this.props;
     // 처음 시작
     dispatch(changeMenuTitle('자산관리', '서버'));
+
+    const xuser = localStorage.getItem('user');
+    console.log("[Layout] cookie user ", xuser);
+    if (xuser != null) {
+      const jsonUser = JSON.parse(xuser);
+      console.log("[Layout] cookie name ", xuser.name);
+      console.log("[Layout] cookie email ", xuser.email);
+      console.log("[Layout] cookie jsonUser", jsonUser);
+      this.setState({user: jsonUser});
+    }
 
     /*
     localStorage.clear();
@@ -171,9 +185,9 @@ class Layout extends Component {
 
   render() {
     const {
-      customizer, sidebar, theme, rtl, account, menuTitle,
+      customizer, sidebar, theme, rtl, menuTitle,
     } = this.props;
-    const {user} = account;
+    const { user } = this.state;
     const layoutClass = classNames({
       layout: true,
       'layout--collapse': sidebar.collapse,
@@ -245,6 +259,5 @@ export default withRouter(connect(state => ({
   sidebar: state.sidebar,
   theme: state.theme,
   rtl: state.rtl,
-  account: state.accountRd,
   menuTitle: state.menuTitle,
 }))(Layout));
