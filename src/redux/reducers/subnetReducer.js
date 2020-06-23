@@ -4,10 +4,8 @@ import {List, Map} from "immutable";
 import {
     // INIT_SUBNET,
     CREATE_SUBNET,
-    CURRENT_PAGE_SUBNET,
     DELETE_SUBNET,
     INPUT_SUBNET,
-    PAGE_SETUP_SUBNET,
     READ_SUBNET,
     READ_SUBNET_SUCCESS,
     READ_SUBNET_FAILURE,
@@ -25,10 +23,9 @@ const initSubnet = {
         offset: 0,
         orderBy: "sub_idx",
         order: "asc",
-        currentPage: 1,
+        currentPage: 0,
     },
 };
-
 
 const subnetReducer = handleActions(
     {
@@ -51,17 +48,6 @@ const subnetReducer = handleActions(
         }),
         [DELETE_SUBNET]: () => ({
 
-        }),
-        [CURRENT_PAGE_SUBNET]: (state, currentPage) => ({
-            ...state,
-            currentPage,
-        }),
-        [PAGE_SETUP_SUBNET]: (state, payload) => ({
-            ...state,
-            rows: payload.rows,
-            offset: payload.offset,
-            orderBy: payload.orderBy,
-            order: payload.order,
         }),
     },
     initSubnet,
