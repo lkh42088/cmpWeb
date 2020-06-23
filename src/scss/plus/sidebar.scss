@@ -138,13 +138,19 @@
     color: themed('colorText');
   }
 
-  // 사이드바 마우스 오버 시 TEXT SHADOW [23June2020,khlee]
-  &:hover {
-    text-shadow: 2px 4px 2px darkgray, 2px 4px 2px #666666;
-  }
-
+  // 사이드바 mouse over 시 color-bar 생성 [23June2020,khlee]
   &:before {
-
+    content: "";
+    position: absolute;
+    @include directify($directions) {
+      #{directed('left')}: 0px;
+    }
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: $color-orange;
+    opacity: 0;
+    transition: all 0.3s;
   }
 
   p {
@@ -165,10 +171,15 @@
 
   &:hover {
     text-decoration: none;
+
+    // 사이드바 마우스 오버 시 TEXT SHADOW [23June2020,khlee]
+    //text-shadow: 3px 4px 3px #DDDDDD;
+
     /*background-color: #f2a365;*/
 
     @include themify($themes) {
-      background-color: themed('colorHover');
+      // 사이드바 마우스 오버 시 배경색 변경
+      background-color: themed('colorBubbleActive');
     }
 
     &:before {
@@ -203,6 +214,7 @@
   color: #4a4e52;
 }
 
+// 사이드바 Window
 .cb_sidebar__submenu {
   transition: height 0.5s 0s, padding 0.5s 0s, opacity 0.4s 0.1s;
   /*padding: 15px 0;*/
@@ -250,7 +262,7 @@
 
     &:hover {
       @include themify($themes) {
-        background: themed('colorHover');
+        background: themed('colorBubbleActive');  // [23June2020,khlee]
       }
     }
   }
@@ -343,7 +355,7 @@
   height: 36px;
   width: 202px; // [23June2020,khlee]
   padding: 11px 20px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
   line-height: 18px;
   padding-left: 43px;
@@ -482,7 +494,6 @@
         .cb_sidebar__link {
           //width: 240px; // Origin
           width: 200px; // [23June2020,khlee]
-
           p {
             position: relative;
             @include directify($directions) {
@@ -523,7 +534,7 @@
 
         /*&:hover {
           width: 285px;
-          !*border: 1px solid #738598;*!
+          border: 1px solid #738598;
 
           @include themify($themes) {
             background: themed('colorHover');
