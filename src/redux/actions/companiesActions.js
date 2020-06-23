@@ -9,7 +9,7 @@ import * as companies from "../../lib/api/company";
 export const COMPANY_CHANGE_REGISTER_FIELD = 'company/CHANGE_REGISTER_FIELD';
 export const CHECK_COMPANY_REGISTER_FIELD = 'company/COMPANY_REGISTER_CHECK_FIELD';
 export const COMPANY_CHANGE_FIELD = 'company/CHANGE_FIELD';
-export const INITIALIZE_COMPANY = 'company/INITIALIZE_COMPANY';
+export const INITIALIZE_REGISTER_COMPANY = 'company/INITIALIZE_COMPANY';
 
 /** Saga Action Type */
 export const [GET_COMPANY_LIST, GET_COMPANY_LIST_SUCCESS, GET_COMPANY_LIST_FAILURE] = createRequestActionTypes('company/COMPANYLIST');
@@ -19,7 +19,7 @@ export const [CHECK_DUP_COMPANY, CHECK_DUP_COMPANY_SUCCESS, CHECK_DUP_COMPANY_FA
 /******************************************************************************
  * 2. Action Function
  *****************************************************************************/
-export const initializeCompany = createAction(INITIALIZE_COMPANY);
+export const initRegisterCompany = createAction(INITIALIZE_REGISTER_COMPANY);
 export const checkCompanyRegisterField = createAction(CHECK_COMPANY_REGISTER_FIELD);
 export const changeCompanyRegisterField = createAction(COMPANY_CHANGE_REGISTER_FIELD, ({ key, value }) => ({ key, value }));
 export const changeCompanyField = createAction(COMPANY_CHANGE_REGISTER_FIELD, ({ type, key, value }) => ({ type, key, value }));

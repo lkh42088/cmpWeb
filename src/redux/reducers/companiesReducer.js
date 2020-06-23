@@ -6,7 +6,7 @@ import {
     ADD_COMPANY_FAILURE,
     COMPANY_CHANGE_FIELD,
     COMPANY_CHANGE_REGISTER_FIELD,
-    GET_COMPANY_LIST_SUCCESS, INITIALIZE_COMPANY,
+    GET_COMPANY_LIST_SUCCESS, INITIALIZE_REGISTER_COMPANY,
     CHECK_DUP_COMPANY_SUCCESS,
     CHECK_DUP_COMPANY_FAILURE, CHECK_COMPANY_REGISTER_FIELD,
 } from "../actions/companiesActions";
@@ -80,15 +80,15 @@ const initialState = {
         cpMemo: "",
         cpTerminationDate: "",
     },
-    responseData: null,
-    responseError: null,
+    msg: null,
+    msgError: null,
     checkCompany: false,
     confirmCompany: false,
 };
 
 const companiesReducer = handleActions(
     {
-        [INITIALIZE_COMPANY]: state => ({
+        [INITIALIZE_REGISTER_COMPANY]: state => ({
             ...state,
             register: {
                 cpName: "",
@@ -150,8 +150,8 @@ const companiesReducer = handleActions(
                 cpMemo: "",
                 cpTerminationDate: "",
             },
-            responseData: null,
-            responseError: null,
+            msg: null,
+            msgError: null,
             checkCompany: false,
             confirmCompany: false,
         }),
@@ -170,11 +170,11 @@ const companiesReducer = handleActions(
         }),
         [ADD_COMPANY_SUCCESS]: (state, action) => ({
             ...state,
-            responseData: action.payload,
+            msg: action.payload,
         }),
         [ADD_COMPANY_FAILURE]: (state, action) => ({
             ...state,
-            responseError: action.payload,
+            msgError: action.payload,
         }),
         [CHECK_DUP_COMPANY_SUCCESS]: (state, action) => ({
             ...state,

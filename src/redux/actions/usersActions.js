@@ -6,7 +6,7 @@ import * as users from "../../lib/api/users";
 /******************************************************************************
  * 1. Action Type
  *****************************************************************************/
-export const INITIALIZE = 'user/INITIALIZE';
+export const INITIALIZE_REGISTER_USER = 'user/INITIALIZE';
 export const CHANGE_FIELD = 'user/CHANGE_FIELD';
 export const ADD_EMAIL_GROUP = 'user/ADD_EMAIL_GROUP';
 export const DELETE_EMAIL_GROUP = 'user/ADD_EMAIL_GROUP';
@@ -23,7 +23,7 @@ export const [GET_USER_LIST, GET_USER_LIST_SUCCESS, GET_USER_LIST_FAILURE] = cre
 /******************************************************************************
  * 2. Action Function
  *****************************************************************************/
-export const initializeUser = createAction(INITIALIZE);
+export const initRegisterUser = createAction(INITIALIZE_REGISTER_USER);
 export const checkUserRegisterField = createAction(CHECK_USER_REGISTER_FIELD);
 export const changeUserField = createAction(
     CHANGE_FIELD,

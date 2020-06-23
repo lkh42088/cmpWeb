@@ -7,7 +7,7 @@ import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
 import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { changeField, initializeForm, login } from "../../../redux/actions/authActions";
-import { check } from "../../../redux/actions/accountActions";
+import { checkLoginUser } from "../../../redux/actions/accountActions";
 import renderCheckBoxField from '../form/CheckBox';
 
 // eslint-disable-next-line react/prop-types
@@ -66,7 +66,7 @@ const LoginForm = ({ history, secret }) => {
         }
         if (auth) {
             console.log('로그인 성공');
-            dispatch(check());
+            dispatch(checkLoginUser());
         }
         console.log('[LoginForm 2] end');
     }, [auth, authError, dispatch]);

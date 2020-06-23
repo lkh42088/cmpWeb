@@ -2,7 +2,7 @@ import produce from "immer";
 import {List, Map} from "immutable";
 import {handleActions} from 'redux-actions';
 import {
-    INITIALIZE,
+    INITIALIZE_REGISTER_USER,
     GET_USER_LIST_SUCCESS,
     CHANGE_FIELD,
     ADD_EMAIL_GROUP,
@@ -95,7 +95,7 @@ const initialState = {
 
 const usersReducer = handleActions(
     {
-        [INITIALIZE]: () => ({
+        [INITIALIZE_REGISTER_USER]: () => ({
             register: {
                 cpName: '',
                 cpIdx: '',
