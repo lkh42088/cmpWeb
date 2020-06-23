@@ -26,6 +26,8 @@ const initialState = {
         offset: 0,
     },
     register: {
+        cpName: '',
+        cpIdx: '',
         userId: '',
         password: '',
         username: '',
@@ -95,6 +97,8 @@ const usersReducer = handleActions(
     {
         [INITIALIZE]: () => ({
             register: {
+                cpName: '',
+                cpIdx: '',
                 userId: '',
                 password: '',
                 username: '',
@@ -193,12 +197,15 @@ const usersReducer = handleActions(
         [USER_BASE_INFO_BY_COMPANY]: (state, {payload}) => ({
             ...state,
             register: {
+                ...state,
+                cpName: payload.cpName,
                 username: payload.username,
                 email: payload.email,
                 cellPhone: payload.cellPhone,
                 level: 5,
             },
             disabled: {
+                ...state,
                 username: true,
                 email: true,
                 cellPhone: true,
@@ -209,9 +216,11 @@ const usersReducer = handleActions(
         [CHECK_DUP_USER_SUCCESS]: state => ({
             ...state,
             isError: {
+                ...state,
                 userId: false,
             },
             helperText: {
+                ...state,
                 userId: "* 사용 가능한 아이디 입니다.",
             },
             checkUser: true,
@@ -220,9 +229,11 @@ const usersReducer = handleActions(
         [CHECK_DUP_USER_FAILURE]: state => ({
             ...state,
             isError: {
+                ...state,
                 userId: true,
             },
             helperText: {
+                ...state,
                 userId: "* 이미 사용하고 있는 아이디 입니다!",
             },
             checkUser: true,
@@ -243,6 +254,7 @@ const usersReducer = handleActions(
             return {
                 ...state,
                 isError: {
+                    ...state,
                     userId: state.register.userId === "" ? true : (
                         !(state.checkUser && state.confirmUser)),
                     password: state.register.password === "",
@@ -252,6 +264,7 @@ const usersReducer = handleActions(
                     level: state.register.level === "",
                 },
                 helperText: {
+                    ...state,
                     // eslint-disable-next-line no-nested-ternary
                     userId: state.register.userId === "" ? errorMsg : (
                         state.checkUser && state.confirmUser ? "" : nameErrorMsg),

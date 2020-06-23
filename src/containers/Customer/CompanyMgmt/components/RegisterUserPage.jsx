@@ -43,6 +43,7 @@ const RegisterUserPage = () => {
         required: usersRd.required,
         disabled: usersRd.disabled,
         helperText: usersRd.helperText,
+        /** register */
         userId: usersRd.register.userId,
         userPassword: usersRd.register.password,
         userName: usersRd.register.username,
@@ -53,12 +54,10 @@ const RegisterUserPage = () => {
         emailAuthFlag: usersRd.register.emailAuthFlag,
         emailAuthGroupFlag: usersRd.register.emailAuthGroupFlag,
         emailAuthGroupList: usersRd.register.emailAuthGroupList,
+        /** message */
         msg: usersRd.msg,
         msgError: usersRd.msgError,
     }));
-
-    const requiredVal = true;
-    const disableVal = true;
 
     /************************************************************************************
      * useEffect

@@ -276,7 +276,9 @@ const AddCompany = (props) => {
             handleClose();
         } else {
             console.log("--> [dispatch] setup User: ", company.cpName, ", ", company.cpEmail, ", ", company.cpTel);
-            dispatch(setupUserBaseByCompany({username: company.cpName, email: company.cpEmail, cellPhone: company.cpTel}));
+            dispatch(setupUserBaseByCompany({
+                cpName: company.cpName, username: company.cpName, email: company.cpEmail, cellPhone: company.cpTel,
+            }));
         }
 
         const newActiveStep = isLastStep() && !allStepsCompleted()

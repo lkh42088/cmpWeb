@@ -40,16 +40,16 @@ export const deleteEmailGroup = createAction(
 export const changeEmailAuthFlag = createAction(CHANGE_EMAIL_AUTH_FLAG);
 export const changeEmailAuthGroupFlag = createAction(CHANGE_EMAIL_AUTH_GROUP_FLAG);
 export const setupUserBaseByCompany = createAction(USER_BASE_INFO_BY_COMPANY, ({
-    username, email, cellPhone,
+    cpName, username, email, cellPhone,
 }) => ({
-    username, email, cellPhone,
+    cpName, username, email, cellPhone,
 }));
 
 /** SAGA Action Function */
 export const registerUser = createAction(REGISTER_USER, ({
-    userId, password, username, email, emailAuthFlag, emailAuthGroupFlag, emailAuthGroupList,
+    cpIdx, cpName, userId, password, username, email, emailAuthFlag, emailAuthGroupFlag, emailAuthGroupList,
 }) => ({
-    id: userId, password, name: username, email, emailAuthFlag, emailAuthGroupFlag, emailAuthGroupList,
+    cpIdx, cpName, id: userId, password, name: username, email, emailAuthFlag, emailAuthGroupFlag, emailAuthGroupList,
 }));
 export const getUserList = createAction(GET_USER_LIST, ({
     rows, offset, orderBy, order,
