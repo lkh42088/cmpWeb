@@ -7,7 +7,7 @@ import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
 import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { changeField, initializeForm, login } from "../../../../redux/actions/authActions";
-import { check } from "../../../../redux/actions/accountActions";
+import { checkLoginUser } from "../../../../redux/actions/accountActions";
 import renderCheckBoxField from '../../../../shared/components/form/CheckBox';
 
 // eslint-disable-next-line react/prop-types
@@ -21,13 +21,13 @@ const LoginForm = ({ history }) => {
     const {
         form, auth, authInputEmail, authSentEmail, authError, user,
         // eslint-disable-next-line no-shadow
-    } = useSelector(({ auth, account }) => ({
+    } = useSelector(({ auth, accountRd }) => ({
         form: auth.login,
         auth: auth.auth,
         authInputEmail: auth.authInputEmail,
         authSentEmail: auth.authSentEmail,
         authError: auth.authError,
-        user: account.user,
+        user: accountRd.user,
     }));
 
     const onChange = (e) => {
@@ -67,17 +67,21 @@ const LoginForm = ({ history }) => {
         }
         if (auth) {
             console.log('로그인 성공');
-            dispatch(check());
+            dispatch(checkLoginUser());
         }
     }, [auth, authError, dispatch]);
 
     useEffect(() => {
         console.log('[LoginForm 3] ');
         if (user) {
+            /********************************************************************
+             * 로그인 성공!
+             ********************************************************************/
             console.log('check API 성공');
             // eslint-disable-next-line react/prop-types
-            history.push('/');
+            history.push('/dashboards/manager');
             try {
+                /** Insert 'user' to Local Storage */
                 localStorage.setItem('user', JSON.stringify(user));
             } catch (e) {
                 console.log('localStorage is not working');

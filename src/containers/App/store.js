@@ -25,7 +25,7 @@ import {
     subnetReducer,
 } from '../../redux/reducers/index';
 import {authSaga} from "../../redux/actions/authActions";
-import {tempSetUser, check, userSaga} from "../../redux/actions/accountActions";
+import {setLoginUser, checkLoginUser, userSaga} from "../../redux/actions/accountActions";
 import {usersSaga} from "../../redux/actions/usersActions";
 import {companiesSaga} from "../../redux/actions/companiesActions";
 import {createSubnetSaga, readSubnetSaga} from "../../redux/actions/subnetActions";
@@ -43,7 +43,7 @@ const rootReducer = combineReducers({
     menuTitle: titleReducer,
     auth: authReducer,
     loading: loadingReducer,
-    account: accountReducer,
+    accountRd: accountReducer,
     usersRd: usersReducer,
     pagingRd: pagingReducer,
     companiesRd: companiesReducer,
@@ -71,10 +71,11 @@ const store = createStore(
 export function loadUser() {
     try {
         const user = localStorage.getItem('user');
-        if (!user) return;
-
-        store.dispatch(tempSetUser(user));
-        store.dispatch(check());
+        if (!user) {
+            return;
+        }
+        store.dispatch(setLoginUser(user));
+        store.dispatch(checkLoginUser());
     } catch (e) {
         console.log('localStorage is not working');
     }

@@ -16,7 +16,10 @@ import TableContainer from "@material-ui/core/TableContainer";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {makeStyles} from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
-import {getCompanyList} from "../../../../redux/actions/companiesActions";
+// eslint-disable-next-line import/named
+import { initRegisterCompany, getCompanyList } from "../../../../redux/actions/companiesActions";
+// eslint-disable-next-line import/named
+import {initRegisterUser} from "../../../../redux/actions/usersActions";
 import {
     pagingChangeCurrentPage,
     pagingChangeCurrentPageNext,
@@ -122,6 +125,8 @@ const CompanyMgmtList = () => {
     const [open, setOpen] = React.useState(false);
 
     const handleOpen = () => {
+        dispatch(initRegisterCompany());
+        dispatch(initRegisterUser());
         setOpen(true);
     };
 
@@ -357,7 +362,7 @@ const CompanyMgmtList = () => {
                             label="Dense padding"
                         />
                     </div>
-                    <AddCompany open={open} handleClose={handleClose}/>
+                    <AddCompany open={open} handleClose={handleClose} refreshPage={getPageData}/>
                 </CardBody>
             </Card>
         </Col>

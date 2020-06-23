@@ -4,7 +4,7 @@ import { Button, ButtonToolbar } from 'reactstrap';
 import {Field, Form, reduxForm} from 'redux-form';
 import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import {check, tempSetUser} from "../../../../redux/actions/accountActions";
+import {checkLoginUser, setLoginUser} from "../../../../redux/actions/accountActions";
 import {loginConfirm} from "../../../../redux/actions/authActions";
 
 // eslint-disable-next-line react/prop-types
@@ -13,11 +13,11 @@ const LoginConfirmEmailForm = ({ history }) => {
     const {
         form, auth, authError, user,
         // eslint-disable-next-line no-shadow
-    } = useSelector(({ auth, account }) => ({
+    } = useSelector(({ auth, accountRd }) => ({
         form: auth.login,
         auth: auth.auth,
         authError: auth.authError,
-        user: account.user,
+        user: accountRd.user,
     }));
 
     const handleSubmit = async (e) => {
@@ -49,7 +49,7 @@ const LoginConfirmEmailForm = ({ history }) => {
         console.log("auth..");
         if (auth) {
             console.log("auth:", user, " --> user");
-            dispatch(check());
+            dispatch(checkLoginUser());
         }
     }, [auth]);
 

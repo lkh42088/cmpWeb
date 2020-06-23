@@ -15,6 +15,7 @@ import store from './store';
 import ScrollToTop from './ScrollToTop';
 import {config as i18nextConfig} from '../../translations';
 import Loading from '../../shared/components/Loading';
+import CbAuthProvider from "../Auth/CbAuthProvider";
 
 i18next.init(i18nextConfig);
 
@@ -60,24 +61,26 @@ class App extends Component {
         const {loaded, loading} = this.state;
         return (
             <Provider store={store}>
-                <BrowserRouter>
-                    <I18nextProvider i18n={i18next}>
-                        <ScrollToTop>
-                            <Fragment>
-                                {!loaded
-                                && (
-                                    <Loading loading={loading}/>
-                                )
-                                }
-                                <ConnectedThemeComponent>
-                                    <div>
-                                        <Router/>
-                                    </div>
-                                </ConnectedThemeComponent>
-                            </Fragment>
-                        </ScrollToTop>
-                    </I18nextProvider>
-                </BrowserRouter>
+                {/*<CbAuthProvider>*/}
+                    <BrowserRouter>
+                        <I18nextProvider i18n={i18next}>
+                            <ScrollToTop>
+                                <Fragment>
+                                    {!loaded
+                                    && (
+                                        <Loading loading={loading}/>
+                                    )
+                                    }
+                                    <ConnectedThemeComponent>
+                                        <div>
+                                            <Router/>
+                                        </div>
+                                    </ConnectedThemeComponent>
+                                </Fragment>
+                            </ScrollToTop>
+                        </I18nextProvider>
+                    </BrowserRouter>
+                {/*</CbAuthProvider>*/}
             </Provider>
         );
     }

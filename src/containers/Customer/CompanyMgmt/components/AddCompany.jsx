@@ -11,11 +11,9 @@ import {useDispatch, useSelector} from "react-redux";
 import Dialog from "@material-ui/core/Dialog";
 import {
     addCompany, checkCompanyRegisterField,
-    initializeCompany,
 } from "../../../../redux/actions/companiesActions";
 import {
     checkUserRegisterField,
-    initializeUser,
     registerUser,
     setupUserBaseByCompany,
 } from "../../../../redux/actions/usersActions";
@@ -112,8 +110,51 @@ function getStepAddingCompany(step, company, user) {
     }
 }
 
-function checkPasswordPattern(str) {
-    const pass = str.value;
+// function checkPasswordPattern(str) {
+//     const pass = str.value;
+//     let message = "";
+//
+//     // 비밀번호 문자열에 숫자 존재 여부 검사
+//     const pattern1 = /[0-9]/; // 숫자
+//     if (pattern1.test(pass) === false) {
+//         message = "비밀번호에 숫자가 입력되지 않았습니다.\n숫자를 입력하여 주시기 바랍니다.";
+//     }
+//
+//     // 비밀번호 문자열에 영문 소문자 존재 여부 검사
+//     const pattern2 = /[a-z]/;
+//     if (pattern2.test(pass) === false) {
+//         message = "비밀번호에 영문 소문자가 입력되지 않았습니다.\n영문 소문자를 입력하여 주시기 바랍니다.";
+//     }
+//
+//     // 비밀번호 문자열에 영문 대문자 존재 여부 검사
+//     // const pattern3 = /[A-Z]/;
+//     // if (pattern3.test(pass) === false) {
+//     //     message = "비밀번호에 영문 대문자가 입력되지 않았습니다.\n영문 대문자를 입력하여 주시기 바랍니다.";
+//     // }
+//
+//     // 비밀번호 문자열에 특수문자 존재 여부 검사
+//     // const pattern4 = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
+//     // if (pattern4.test(pass) === false) {
+//     //     message = "비밀번호에 특수문자가 입력되지 않았습니다.\n특수문자를 입력하여 주시기 바랍니다.";
+//     // }
+//
+//     // 비밀번호 문자열의 입력 길이 검사
+//     if (pass.length < 8 || pass.length > 16) {
+//         message = "비밀번호는 8자리 이상 16자리 이하만 가능합니다.\n비밀번호를 다시 입력하여 주시기 바랍니다.";
+//     }
+//
+//     // 비밀번호 문자열 결과 출력
+//     if (message) {
+//         // alert(message);
+//         // str.value = "";
+//         // str.focus();
+//         return false;
+//     }
+//     // alert("사용하셔도 좋은 비밀번호 입니다.");
+//     return true;
+// }
+
+function checkPasswordPattern(pass) {
     let message = "";
 
     // 비밀번호 문자열에 숫자 존재 여부 검사
@@ -129,16 +170,16 @@ function checkPasswordPattern(str) {
     }
 
     // 비밀번호 문자열에 영문 대문자 존재 여부 검사
-    const pattern3 = /[A-Z]/;
-    if (pattern3.test(pass) === false) {
-        message = "비밀번호에 영문 대문자가 입력되지 않았습니다.\n영문 대문자를 입력하여 주시기 바랍니다.";
-    }
+    // const pattern3 = /[A-Z]/;
+    // if (pattern3.test(pass) === false) {
+    //     message = "비밀번호에 영문 대문자가 입력되지 않았습니다.\n영문 대문자를 입력하여 주시기 바랍니다.";
+    // }
 
     // 비밀번호 문자열에 특수문자 존재 여부 검사
-    const pattern4 = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
-    if (pattern4.test(pass) === false) {
-        message = "비밀번호에 특수문자가 입력되지 않았습니다.\n특수문자를 입력하여 주시기 바랍니다.";
-    }
+    // const pattern4 = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
+    // if (pattern4.test(pass) === false) {
+    //     message = "비밀번호에 특수문자가 입력되지 않았습니다.\n특수문자를 입력하여 주시기 바랍니다.";
+    // }
 
     // 비밀번호 문자열의 입력 길이 검사
     if (pass.length < 8 || pass.length > 16) {
@@ -164,7 +205,7 @@ const AddCompany = (props) => {
     const dispatch = useDispatch();
 
     /** 1.1 Stepper *********************************************************************/
-    const {open, handleClose} = props;
+    const {open, handleClose, refreshPage } = props;
     const [activeStep, setActiveStep] = useState(0);
     const [completed, setCompleted] = useState({});
     const steps = getStepsAddingCompany();
@@ -172,18 +213,26 @@ const AddCompany = (props) => {
     /** 1.2 Company, User ***************************************************************/
     const {
         company,
-        user,
         checkCompany,
         confirmCompany,
+        cpMsg,
+        cpMsgError,
+        user,
         checkUser,
         confirmUser,
+        userMsg,
+        userMsgError,
     } = useSelector(({ companiesRd, usersRd }) => ({
+        company: companiesRd.register,
         checkCompany: companiesRd.checkCompany,
         confirmCompany: companiesRd.confirmCompany,
+        cpMsg: companiesRd.msg,
+        cpMsgError: companiesRd.msgError,
+        user: usersRd.register,
         checkUser: usersRd.checkUser,
         confirmUser: usersRd.confirmUser,
-        company: companiesRd.register,
-        user: usersRd.register,
+        userMsg: usersRd.msg,
+        userMsgError: usersRd.msgError,
     }));
 
     /************************************************************************************
@@ -222,6 +271,7 @@ const AddCompany = (props) => {
             && user.cellPhone !== ""
             && checkUser
             && confirmUser
+            && checkPasswordPattern(user.password)
         ) {
             return true;
         }
@@ -263,15 +313,7 @@ const AddCompany = (props) => {
                 cpMemo: company.cpMemo, 
                 cpTerminationDate: company.cpTerminationDate,
             }));
-            dispatch(registerUser({
-                userId: user.userId,
-                password: user.password,
-                username: user.username,
-                email: user.email,
-                emailAuthFlag: user.emailAuthFlag,
-                emailAuthGroupFlag: user.emailAuthGroupFlag,
-                emailAuthGroupList: user.emailAuthGroupList,
-            }));
+
             console.log("--> [dispatch] send user/company!!!");
             handleClose();
         } else {
@@ -294,8 +336,6 @@ const AddCompany = (props) => {
         console.log("handleBack: prevActiveStep ", activeStep);
         if (activeStep === 0) {
             console.log("handleBack: --> dispatch");
-            dispatch(initializeUser());
-            dispatch(initializeCompany());
             handleClose();
             return;
         }
@@ -322,6 +362,34 @@ const AddCompany = (props) => {
     /************************************************************************************
      * 3. useEffect
      ************************************************************************************/
+    useEffect(() => {
+        if (cpMsg !== null && cpMsg.msg && cpMsg.success === true) {
+            console.log("registerUser: cpMsg.idx ", cpMsg.idx);
+            console.log("registerUser: cpMsg ", cpMsg);
+            dispatch(registerUser({
+                cpIdx: cpMsg.msg.idx,
+                userId: user.userId,
+                password: user.password,
+                username: user.username,
+                email: user.email,
+                emailAuthFlag: user.emailAuthFlag,
+                emailAuthGroupFlag: user.emailAuthGroupFlag,
+                emailAuthGroupList: user.emailAuthGroupList,
+            }));
+        }
+    }, [cpMsg]);
+
+    useEffect(() => {
+    }, [cpMsgError]);
+
+    useEffect(() => {
+    }, [userMsg]);
+
+    useEffect(() => {
+        if (refreshPage !== null) {
+            refreshPage();
+        }
+    }, [userMsgError]);
 
     /************************************************************************************
      * 4. JSX Template

@@ -53,7 +53,7 @@ class Layout extends Component {
     customizer: CustomizerProps.isRequired,
     theme: ThemeProps.isRequired,
     rtl: RTLProps.isRequired,
-    user: UserProps.isRequired,
+    // user: UserProps.isRequired,
     menuTitle: MenuTitleProps.isRequired,
   };
 
@@ -62,7 +62,8 @@ class Layout extends Component {
     // 처음 시작
     dispatch(changeMenuTitle('자산관리', '서버'));
 
-/*    localStorage.clear();
+    /*
+    localStorage.clear();
     const localMenuTitle = {
       title: '',
       subTitle: '',
@@ -98,6 +99,7 @@ class Layout extends Component {
   changeMenuTitle = (title, subTitle, val) => {
     const { assetState, dispatch } = this.props;
     dispatch(changeMenuTitle(title, subTitle));
+
 /*
     const localMenuTitle = {
       title: '',
@@ -165,19 +167,24 @@ class Layout extends Component {
     const { dispatch } = this.props;
     dispatch(logout());
     localStorage.removeItem('user');
-    console.log("logout topbar");
   }
 
   render() {
     const {
-      customizer, sidebar, theme, rtl, user, menuTitle,
+      customizer, sidebar, theme, rtl, account, menuTitle,
     } = this.props;
+    const {user} = account;
     const layoutClass = classNames({
       layout: true,
       'layout--collapse': sidebar.collapse,
       'layout--top-navigation': customizer.topNavigation,
     });
 
+    console.log("layout: user -", user);
+    if (user != null) {
+      console.log("layout: name -", user.name);
+      console.log("layout: email -", user.email);
+    }
     return (
       <div className={layoutClass}>
         <Customizer
@@ -238,6 +245,6 @@ export default withRouter(connect(state => ({
   sidebar: state.sidebar,
   theme: state.theme,
   rtl: state.rtl,
-  user: state.user,
+  account: state.accountRd,
   menuTitle: state.menuTitle,
 }))(Layout));

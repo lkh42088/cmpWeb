@@ -110,7 +110,7 @@ const RegisterUserPage = () => {
                         helperText={helperText.password}
                         label="패스워드"
                         name="password"
-                        type="password"
+                        // type="password"
                         value={userPassword}
                         onChange={onChangeField}
                     />
