@@ -29,7 +29,7 @@ import PaginationCustomization from "../../../../Common/PaginationBar";
 import {
     pagingChangeCurrentPage, pagingChangeOrder, pagingChangeOrderBy, pagingSetup,
 } from "../../../../../redux/actions/pagingActions";
-import {currentPageSubnet, readSubnet} from "../../../../../redux/actions/subnetActions";
+import {currentPageSubnet, pageSetupSubnet, readSubnet} from "../../../../../redux/actions/subnetActions";
 /** Subnet Add Modal **/
 import SubnetWriteForm from "../../CreateSubnet/components/SubnetWriteForm";
 import SpringModal from "../../../../Common/SpringModal";
@@ -140,32 +140,33 @@ const SubnetList = () => {
     // };
 
     const getPageData = () => {
-        const {
-            currentPage, rows, orderBy, order, offset,
-        } = page;
-        let offsetTmp = 0;
-        if (currentPage > 0) {
-            offsetTmp = Number(rows * currentPage);
-        }
-        console.log(">>>>>> get Page Data: rows ", rows, ", offset ", offsetTmp,
-            ", orderBy ", orderBy, ", order ", order);
-        dispatch(readSubnet({
-            rows, offsetTmp, orderBy, order,
-        }));
+        // // const {
+        // //     currentPage, rows, orderBy, order, offset,
+        // // } = page;
+        // let offsetTmp = 0;
+        // if (currentPage > 0) {
+        //     offsetTmp = Number(rows * currentPage);
+        // }
+        // console.log(">>>>>> get Page Data: rows ", rows, ", offset ", offsetTmp,
+        //     ", orderBy ", orderBy, ", order ", order);
+        // dispatch(readSubnet({
+        //     rows, offsetTmp, orderBy, order,
+        // }));
     };
 
     /** Init pagination **/
     useEffect(() => {
-        const defaultOrderBy = "sub_idx";
-        // dispatch(pagingChangeOrderBy({orderBy: defaultOrderBy}));
-        console.log();
-        dispatch(currentPageSubnet({currentPage: 1}));
         dispatch(readSubnet({
-            rows: 15,
-            offset: 0,
-            orderBy: "sub_idx",
-            order: "asc",
+            rows: 15, offset: 0, orderBy: "sub_idx", order: "asc",
         }));
+        // dispatch(pageSetupSubnet({
+        //     rows: 15,
+        //     offset: 0,
+        //     orderBy: "sub_idx",
+        //     order: "asc",
+        // }));
+        // dispatch(currentPageSubnet({currentPage: 1}));
+        // console.log(page);
     }, []);
 
     /** Get subnet data **/
@@ -237,28 +238,23 @@ const SubnetList = () => {
     });
 
     /** Customizing Pagination Bar **/
-    const paginationBar = (props) => {
-        const {
-            count, currentPage, rows, orderBy, order, offset,
-        } = page;
-        return (
+    const paginationBar = props => (
             <PaginationCustomization
                 className={classes.root}
-                activePage={Math.ceil(offset / rows)}
+                activePage="1"
+                // activePage={Math.ceil(offset / rows)}
                 boundaryRange="1"
                 showEllipsis="true"
                 siblingRange="2"
-                totalPages={Math.ceil(count / rows)}
-                // totalPages="20"
+                // totalPages={Math.ceil(count / rows)}
+                totalPages="20"
                 onPageChange={handleChangePage}
                 showFirstAndLastNav="true"
                 showPreviousAndNextNav="true"
                 size="mini"
-                o
                 // rowsPerPageOptions={displayRowsList}
             />
-            ); 
-    };
+            );
 
     /** Material-Table component override **/
     const customComponents = {

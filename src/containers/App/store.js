@@ -7,9 +7,12 @@ import ReduxThunk from "redux-thunk";
 import {composeWithDevTools} from "redux-devtools-extension";
 
 import {
+    cryptoTableReducer,
+    newOrderTableReducer,
     sidebarReducer,
     themeReducer,
-    customizerReducer, rtlReducer,
+    customizerReducer,
+    rtlReducer,
     todoReducer,
     assetsReducer,
     titleReducer,
@@ -32,6 +35,8 @@ const rootReducer = combineReducers({
     theme: themeReducer,
     rtl: rtlReducer,
     sidebar: sidebarReducer,
+    cryptoTable: cryptoTableReducer,
+    newOrder: newOrderTableReducer,
     customizer: customizerReducer,
     todos: todoReducer,
     assets: assetsReducer,
