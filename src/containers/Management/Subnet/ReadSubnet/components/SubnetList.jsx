@@ -27,7 +27,7 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import PaginationCustomization from "../../../../Common/PaginationBar";
 import {
-    pagingChangeCurrentPage, pagingChangeOrder, pagingChangeOrderBy, pagingDump, pagingSetup,
+    pagingChangeCurrentPage, pagingChangeOrder, pagingChangeOrderBy, pagingChangeTotalCount, pagingDump, pagingSetup,
 } from "../../../../../redux/actions/pagingActions";
 import {readSubnet} from "../../../../../redux/actions/subnetActions";
 /** Subnet Add Modal **/
@@ -159,18 +159,19 @@ const SubnetList = () => {
         dispatch(pagingChangeOrderBy({orderBy: "sub_idx"}));
         dispatch(pagingChangeOrder({order: "desc"}));
         console.log("[rows]:", rows, page.count);
-        dispatch(pagingSetup({
-            rowsPerPage: rows,
-            currentPage: 1,
-            totalPage: Math.ceil(page.count / rows),
-            totalCount: page.count,
-        }));
         // dispatch(pagingDump());
     }, []);
 
-    useEffect(() => {
-
-    }, [page.count]);
+    // todo
+    // useEffect(() => {
+    //     dispatch(pagingSetup({
+    //         rowsPerPage: rows,
+    //         currentPage: 1,
+    //         totalPage: Math.ceil(count / rows),
+    //         totalCount: count,
+    //     }));
+    //     // dispatch(pagingDump());
+    // }, [page]);
 
     /** Get subnet data **/
     useEffect(() => {
