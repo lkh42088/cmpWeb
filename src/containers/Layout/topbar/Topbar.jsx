@@ -16,7 +16,7 @@ class Topbar extends PureComponent {
     static propTypes = {
         changeMobileSidebarVisibility: PropTypes.func.isRequired,
         changeSidebarVisibility: PropTypes.func.isRequired,
-        user: UserProps.isRequired,
+        // user: UserProps.isRequired,
         logout: PropTypes.func.isRequired,
     };
 
