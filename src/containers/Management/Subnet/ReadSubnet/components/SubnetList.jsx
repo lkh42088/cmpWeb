@@ -44,6 +44,7 @@ const useStyles = makeStyles(theme => ({
     root: {
         fontFamily: 'Nanum Square acEB',
         fontSize: 8,
+        fontWeight: "revert",
         backgroundColor: theme.backgroundColor,
         color: theme.color,
     },
@@ -131,7 +132,7 @@ const SubnetList = () => {
     const handleOrderChange = (event, direction) => {
         const isAsc = page.order === direction && page.order === "asc";
         const changeOrder = isAsc ? "desc" : "asc";
-        console.log(direction);
+        console.log(changeOrder);
         dispatch(pagingChangeOrder({order: changeOrder}));
     };
 
@@ -141,17 +142,17 @@ const SubnetList = () => {
         dispatch(pagingChangeOrder({order: "asc"}));
     };
 
-    const getPageData = () => {
-        let offset = 0;
-        if (currentPage > 0) {
-            offset = Number(rowsPerPage * currentPage);
-        }
-        console.log("[PAGE DATA]: rows ", rowsPerPage, ", offset ", offset,
-            ", orderBy ", orderBy, ", order ", order);
-        dispatch(readSubnet({
-            rows: rowsPerPage, offset, orderBy, order,
-        }));
-    };
+    // const getPageData = () => {
+    //     let offset = 0;
+    //     if (currentPage > 0) {
+    //         offset = Number(rowsPerPage * currentPage);
+    //     }
+    //     console.log("[PAGE DATA]: rows ", rowsPerPage, ", offset ", offset,
+    //         ", orderBy ", orderBy, ", order ", order);
+    //     dispatch(readSubnet({
+    //         rows: rowsPerPage, offset, orderBy, order,
+    //     }));
+    // };
 
     /** Init pagination **/
     useEffect(() => {
@@ -168,7 +169,7 @@ const SubnetList = () => {
             dispatch(pagingSetup({
                 rowsPerPage: rows,
                 currentPage: 1,
-                totalPage: Math.ceil(count / rows),
+                totalPage: Math.ceil(count / rows) - 1,
                 totalCount: count,
             }));
         }
@@ -177,7 +178,24 @@ const SubnetList = () => {
 
     /** Get subnet data **/
     useEffect(() => {
-        getPageData();
+        //getPageData();
+        let offset = 0;
+        let orderByData;
+        let rowData;
+        if (orderBy) {
+            orderByData = "sub_idx";
+        }
+        if (rowsPerPage) {
+            rowData = 15;
+        }
+        if (currentPage > 0) {
+            offset = Number(rowsPerPage * currentPage);
+        }
+        console.log("[PAGE DATA]: rows ", rowsPerPage, ", offset ", offset,
+            ", orderBy ", orderBy, ", order ", order);
+        dispatch(readSubnet({
+            rows: rowData, offset, orderBy: orderByData, order,
+        }));
     }, [rowsPerPage, currentPage, orderBy, order]);
 
     const handleChangePage = useCallback(
@@ -230,13 +248,11 @@ const SubnetList = () => {
     const paginationBar = props => (
             <PaginationCustomization
                 className={classes.root}
-                // activePage="1"
                 activePage={currentPage}
                 boundaryRange="1"
                 showEllipsis="true"
                 siblingRange="2"
-                totalPages={Math.ceil(totalCount / rowsPerPage)}
-                // totalPages="20"
+                totalPages={Math.ceil(totalCount / rowsPerPage) - 1}
                 onPageChange={handleChangePage}
                 showFirstAndLastNav="true"
                 showPreviousAndNextNav="true"
