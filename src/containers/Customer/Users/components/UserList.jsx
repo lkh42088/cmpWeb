@@ -1,5 +1,6 @@
 import React, {useEffect} from "react";
 import { Card, CardBody, Col } from 'reactstrap';
+import Avatar from "react-avatar";
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -19,17 +20,18 @@ import {
     pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
 import {getUserList} from "../../../../redux/actions/usersActions";
-import {CommonTableToolbar} from "../../../Common/CommonTableToolbar";
 import CommonTableHead from "../../../Common/CommonTableHead";
+import CbAdminTableToolbar from "../../../Common/CbAdminTableToolbar";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
+    {id: 'avata', disablePadding: false, label: '아바타'},
     {id: 'userId', disablePadding: false, label: '아이디'},
     {id: 'userName', disablePadding: false, label: '이름'},
     {id: 'email', disablePadding: false, label: '이메일'},
-    {id: 'hp', disablePadding: false, label: '핸드폰'},
+    {id: 'hp', disablePadding: false, label: '전화번호'},
+    {id: 'cpName', disablePadding: false, label: '회사명'},
     {id: 'authlevel', disablePadding: false, label: '권한'},
-    {id: 'regdate', disablePadding: false, label: '등록일자'},
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -236,7 +238,7 @@ const UserList = () => {
                     return (
                         <TableRow
                             hover
-                            className="material-table__row"
+                            className="cb-material-table__row"
                             role="checkbox"
                             onClick={event => handleClick(event, row.idx)}
                             aria-checked={isSelected}
@@ -244,29 +246,32 @@ const UserList = () => {
                             key={row.idx}
                             selected={isSelected}
                         >
-                            <TableCell className="material-table__cell" padding="checkbox" >
-                                <Checkbox checked={isSelected} className="material-table__checkbox" />
+                            <TableCell className="cb-material-table__cell" padding="checkbox" >
+                                <Checkbox checked={isSelected} className="cb-material-table__checkbox" />
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right" >
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.idx}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right" >
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
+                                <Avatar className="topbar__avatar-img-list" name={row.userId} size="40" />
+                            </TableCell>
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.userId}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right" >
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.name}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right" >
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.email}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right" >
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.hp}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right" >
-                                {row.authLevel}
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
+                                {row.cpName}
                             </TableCell>
-                            <TableCell className="material-table__cell material-table__cell-right" >
-                                {row.registerDate}
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
+                                {row.authLevel}
                             </TableCell>
                         </TableRow>
                     );
@@ -279,20 +284,18 @@ const UserList = () => {
         <Col md={12} lg={12}>
             <Card>
                 <CardBody>
-                    <div className="card__title">
-                        <h4 className="bold-text">사용자 목록</h4>
-                    </div>
-                    <CommonTableToolbar
+                    <CbAdminTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
                         handleDeleteSelected={handleDeleteSelected}
                         onRequestSort={handleRequestSort}
                         rows={headRows}
-                        toolbarTitle="사용자 목록"
+                        toolbarTitle="계정 리스트"
+                        contents="계정"
                     />
-                    <div className="material-table__wrap">
+                    <div className="cb-material-table__wrap">
                         <TableContainer>
                             <Table
-                                className="material-table"
+                                className="cb-material-table"
                                 size={dense ? 'small' : 'medium'}
                             >
                                 <CommonTableHead
@@ -309,11 +312,12 @@ const UserList = () => {
                             </Table>
                         </TableContainer>
                         {paginationBar}
+                        <FormControlLabel
+                            className="cb-material-table__padding"
+                            control={<Switch checked={dense} onChange={handleChangeDense} />}
+                            label="Dense padding"
+                        />
                     </div>
-                    <FormControlLabel
-                        control={<Switch checked={dense} onChange={handleChangeDense} />}
-                        label="Dense padding"
-                    />
                 </CardBody>
             </Card>
         </Col>

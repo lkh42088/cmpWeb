@@ -31,14 +31,8 @@ const TopbarProfile = (props) => {
     return (
         <div className="topbar__profile">
             <button className="topbar__avatar" type="button" onClick={toggle}>
-                {/*<img*/}
-                {/*  className="topbar__avatar-img"*/}
-                {/*  // src={(auth0.user && auth0.user.picture) || user.avatar || Ava}*/}
-                {/*  alt="avatar"*/}
-                {/*/>*/}
-                {/*<Avatar className="topbar__avatar-img">*/}
-                { (user && user.name) ? (
-                    <Avatar className="topbar__avatar-img" name={user.name} size="40" />
+                { (user && user.id) ? (
+                    <Avatar className="topbar__avatar-img" name={user.id} size="40" />
                 ) : (
                     <MuAvatar className={classes.avatar}>
                         <PersonIcon />
@@ -46,7 +40,6 @@ const TopbarProfile = (props) => {
                 )}
                 <p className="topbar__avatar-name">
                     {user != null && user.name != null ? user.name : ""}
-                    {/*{ auth0.loading ? 'Loading...' : (auth0.user && auth0.user.name) || user.fullName}*/}
                 </p>
                 <DownIcon className="topbar__icon" />
             </button>

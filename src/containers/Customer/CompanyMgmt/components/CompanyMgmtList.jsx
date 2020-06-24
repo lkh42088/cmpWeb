@@ -31,7 +31,7 @@ import {
     pagingChangeSelected,
     pagingChangeTotalCount,
 } from "../../../../redux/actions/pagingActions";
-import {CompanyTableToolbar} from "./CompanyTableToolbar";
+import CbAdminTableToolbar from "../../../Common/CbAdminTableToolbar";
 import CommonTableHead from "../../../Common/CommonTableHead";
 import AddCompany from "./AddCompany";
 
@@ -328,13 +328,14 @@ const CompanyMgmtList = () => {
         <Col md={12} lg={12}>
             <Card>
                 <CardBody>
-                    <CompanyTableToolbar
+                    <CbAdminTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
                         handleDeleteSelected={handleDeleteSelected}
                         onRequestSort={handleRequestSort}
                         rows={headRows}
                         toolbarTitle="고객사 리스트"
                         handleOpen={handleOpen}
+                        contents="계정"
                     />
                     <div className="cb-material-table__wrap">
                         <TableContainer>

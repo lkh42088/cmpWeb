@@ -57,36 +57,23 @@ class Layout extends Component {
     menuTitle: MenuTitleProps.isRequired,
   };
 
+  // (23jun2020,bhjung)
   state = {
       user: null,
   };
 
   componentWillMount() {
     const { dispatch } = this.props;
-    // 처음 시작
+
+    // ebjee
     dispatch(changeMenuTitle('자산관리', '서버'));
 
+    // (23jun2020,bhjung)
     const xuser = localStorage.getItem('user');
-    console.log("[Layout] cookie user ", xuser);
     if (xuser != null) {
       const jsonUser = JSON.parse(xuser);
-      console.log("[Layout] cookie name ", xuser.name);
-      console.log("[Layout] cookie email ", xuser.email);
-      console.log("[Layout] cookie jsonUser", jsonUser);
       this.setState({user: jsonUser});
     }
-
-    /*
-    localStorage.clear();
-    const localMenuTitle = {
-      title: '',
-      subTitle: '',
-    };
-
-    localMenuTitle.title = '자산관리';
-    localMenuTitle.subTitle = '서버';
-    localStorage.localMenuTitle = JSON.stringify(localMenuTitle);*/
-    /*console.log("★★★★★ componentWillMount");*/
   }
 
   componentDidMount() {
@@ -114,32 +101,10 @@ class Layout extends Component {
     const { assetState, dispatch } = this.props;
     dispatch(changeMenuTitle(title, subTitle));
 
-/*
-    const localMenuTitle = {
-      title: '',
-      subTitle: '',
-    };
-
-    localMenuTitle.title = title;
-    localMenuTitle.subTitle = subTitle;
-    localStorage.localMenuTitle = JSON.stringify(localMenuTitle);*/
-    //const assetState = useSelector(state => state.assets);
-
+    // ebjee
     if (title === '자산관리') {
       dispatch(setDeviceType(val));
-      /*const dispatchVal = ({
-        deviceType: val,
-        orderBy: 'DeviceCode',
-        order: 1,
-        rowsPerPage: 10,
-        overNum: 1000,
-        outFlag: '0',
-      });
-
-      console.log("layout index assetState : ", assetState);
-
-      dispatch(fetchPosts(assetState));*/
-    }
+   }
   };
 
   changeToDark = () => {
@@ -194,11 +159,6 @@ class Layout extends Component {
       'layout--top-navigation': customizer.topNavigation,
     });
 
-    console.log("layout: user -", user);
-    if (user != null) {
-      console.log("layout: name -", user.name);
-      console.log("layout: email -", user.email);
-    }
     return (
       <div className={layoutClass}>
         <Customizer
