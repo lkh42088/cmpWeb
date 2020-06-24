@@ -1,41 +1,36 @@
-import React, {Component} from 'react';
+import React, {
+    Component, useCallback, useEffect, useState,
+} from 'react';
 import {Badge, Collapse} from 'reactstrap';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {Icon, InlineIcon} from '@iconify/react';
+import {useDispatch, useSelector} from "react-redux";
 import API_ROUTE from "../../../shared/apiRoute";
 
-export default class SidebarCategory extends Component {
-    static propTypes = {
-        title: PropTypes.string.isRequired,
-        icon: PropTypes.string,
-        isNew: PropTypes.bool,
-        children: PropTypes.arrayOf(PropTypes.element).isRequired,
-    };
+const SidebarCategory = ({
+    title, icon, isNew, children,
+}) => {
+    const dispatch = useDispatch();
+    const [show, setShow] = useState('false');
+    const [hover, setHover] = useState('false');
 
-    static defaultProps = {
-        icon: '',
-        isNew: false,
-    };
+    const {
+        titleRd, subTitleRd,
+    } = useSelector(({menuTitle}) => ({
+        titleRd: menuTitle.title,
+        subTitleRd: menuTitle.subTitle,
+    }));
 
-    constructor() {
-        super();
-        this.state = {
-            collapse: false,
-            hover: false,
-        };
-    }
+    const toggle = (titleTmp) => {
+        //setCollapse(!collapse);
 
-    toggle = (title) => {
-        const {collapse} = this.state;
-        this.setState({collapse: !collapse});
-
-        const collapseId = document.getElementById(`collapseId_${title}`);
+        const collapseId = document.getElementById(`collapseId_${titleTmp}`);
         const collapseName = document.getElementsByName("collapseName");
 
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < collapseName.length; i++) {
-            if (collapseName[i].id !== `collapseId_${title}`) {
+            if (collapseName[i].id !== `collapseId_${titleTmp}`) {
                 collapseName[i].style.display = 'none';
             }
         }
@@ -47,73 +42,91 @@ export default class SidebarCategory extends Component {
         }
     };
 
-    toggleHover = () => {
-        const {collapse, hover} = this.state;
-        this.setState({hover: !hover});
+    const toggleHover = () => {
+        setHover(!hover);
     };
 
-    hideSidebar = () => {
-        const {collapse} = this.state;
-        this.setState({collapse: !collapse});
+    const hideSidebar = () => {
+        setShow(!show);
+        toggle(title);
     };
 
-    render() {
-        const {
-            title, icon, isNew, children,
-        } = this.props;
-        const {collapse, hover} = this.state;
-        const categoryClass = classNames({
-            'cb_sidebar__category-wrap': true,
-            'cb_sidebar__category-wrap--open': collapse,
-            'cb_sidebar__link cb_sidebar__category': true,
-        });
+    const categoryClass = classNames({
+        'cb_sidebar__category-wrap': true,
+        'cb_sidebar__category-wrap--open': !show,
+        'cb_sidebar__link cb_sidebar__category': true,
+    });
 
-
-        let linkStyle;
-        if (hover) {
-            linkStyle = {
-                position: "absolute", zIndex: "115",
-            };
-        } else {
-            linkStyle = {position: "absolute"};
-        }
-
-        return (
-            <div style={{display: "flex"}}>
-                <button className={categoryClass} type="button" onClick={event => this.toggle(title)}
-                        style={{zIndex: "120"}}
-                        onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover}>
-                    {icon ? <span className="cb_sidebar__link-icon"><Icon icon={icon}/></span> : ''}
-                    <p className="cb_sidebar__link-title">{title}
-                        {isNew && <span className="cb_sidebar__category-new"/>}
-                    </p>
-                    {/*<span className="cb_sidebar__category-icon lnr lnr-chevron-right"/>*/}
-                </button>
-                <Collapse isOpen={collapse} id={`collapseId_${title}`} name="collapseName"
-                          className="cb_sidebar__submenu-wrap"
-                          style={{position: "absolute", zIndex: "110"}}>
-                    <ul className="cb_sidebar__submenu">
-                        <div className="cb_sidebar__div_title">
-                            {title}
-                        </div>
-                        <div type="button" className="cb_sidebar__div_button"
-                             role="button" tabIndex="0">
-                            {children}
-                        </div>
-                    </ul>
-                </Collapse>
-                <Collapse isOpen={hover} className="cb_sidebar__submenu-wrap" style={linkStyle}>
-                    <ul className="cb_sidebar__submenu">
-                        <div className="cb_sidebar__div_title">
-                            {title}
-                        </div>
-                        <div type="button" className="cb_sidebar__div_button"
-                             role="button" tabIndex="0">
-                            {children}
-                        </div>
-                    </ul>
-                </Collapse>
-            </div>
-        );
+    let linkStyle;
+    if (hover) {
+        linkStyle = {
+            position: "absolute",
+            display: "none",
+        };
+    } else {
+        linkStyle = {
+            position: "absolute",
+        };
     }
-}
+
+    const handleClick = () => {
+        hideSidebar();
+    };
+
+    return (
+        <div style={{display: "flex"}} onMouseEnter={toggleHover} onMouseLeave={toggleHover}>
+            <button className={categoryClass} type="button" onClick={handleClick} style={{zIndex: "120"}}>
+                {icon ? <span className="cb_sidebar__link-icon"><Icon icon={icon}/></span> : ''}
+                <p className="cb_sidebar__link-title">
+                    {title}
+                    {isNew && <span className="cb_sidebar__hr"/>}
+                </p>
+                {/*<span className="cb_sidebar__category-icon lnr lnr-chevron-right"/>*/}
+            </button>
+            <Collapse isOpen="false" id={`collapseId_${title}`} name="collapseName"
+                      className="cb_sidebar__submenu-wrap"
+                      style={{position: "absolute", zIndex: "110", display: "none"}}>
+                {/** Collapse Sidebar hover window * */}
+                <ul className="cb_sidebar__submenu">
+                    <div className="cb_sidebar__submenu-wrap-border">
+                        <div className="cb_sidebar__div_title">
+                            {title}
+                        </div>
+                        <div type="button" className="cb_sidebar__div_button"
+                             role="button" tabIndex="0">
+                            {children}
+                        </div>
+                    </div>
+                </ul>
+            </Collapse>
+            <Collapse isOpen={!hover} className="cb_sidebar__submenu-wrap" style={linkStyle}>
+                {/** Sidebar hover window * */}
+                <ul className="cb_sidebar__submenu">
+                    <div className="cb_sidebar__submenu-wrap-border">
+                        <div className="cb_sidebar__div_title">
+                            {title}
+                        </div>
+                        <div type="button" className="cb_sidebar__div_button"
+                             role="button" tabIndex="0">
+                            {children}
+                        </div>
+                    </div>
+                </ul>
+            </Collapse>
+        </div>
+    );
+};
+
+SidebarCategory.propTypes = {
+    title: PropTypes.string.isRequired,
+    icon: PropTypes.string,
+    isNew: PropTypes.bool,
+    children: PropTypes.arrayOf(PropTypes.element).isRequired,
+};
+
+SidebarCategory.defaultProps = {
+    icon: '',
+    isNew: false,
+};
+
+export default React.memo(SidebarCategory);

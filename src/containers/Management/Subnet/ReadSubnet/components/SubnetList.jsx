@@ -1,6 +1,11 @@
 import React, {
     forwardRef, Component, useEffect, useState, useCallback,
 } from 'react';
+import {
+    Card,
+    CardBody,
+    Col,
+} from 'reactstrap';
 import {useDispatch, useSelector} from "react-redux";
 import MaterialTable, {MTableToolbar} from 'material-table';
 import {makeStyles, withStyles} from "@material-ui/core/styles";
@@ -294,30 +299,33 @@ const SubnetList = () => {
             actions: "수정/삭제",
         },
         body: {
-            emptyDataSourceMessage: "해당 자료가 없습니다.",
+            //emptyDataSourceMessage: "해당 자료가 없습니다.",
+            emptyDataSourceMessage: "",
         },
     };
 
     return (
-        <>
-            <MaterialTable
-                title=""
-                icons={tableIcons}
-                columns={state.columns}
-                data={data}
-                className={classes.root}
-                editable={{
-                    // onRowAdd: RowAdd,
-                    onRowUpdate: RowUpdate,
-                    onRowDelete: RowDelete,
-                }}
-                onOrderChange={handleOrderChange}
-                onFilterChange={handleFilterChange}
-                components={customComponents}
-                options={options}
-                localization={localization}
-            />
-        </>
+        <Col md={12} lg={12} >
+            <Card className="card cb-card">
+                <MaterialTable
+                    title=""
+                    icons={tableIcons}
+                    columns={state.columns}
+                    data={data}
+                    className={classes.root}
+                    editable={{
+                        // onRowAdd: RowAdd,
+                        onRowUpdate: RowUpdate,
+                        onRowDelete: RowDelete,
+                    }}
+                    onOrderChange={handleOrderChange}
+                    onFilterChange={handleFilterChange}
+                    components={customComponents}
+                    options={options}
+                    localization={localization}
+                />
+            </Card>
+        </Col>
     );
 };
 

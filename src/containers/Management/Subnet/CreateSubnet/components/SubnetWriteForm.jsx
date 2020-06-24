@@ -66,7 +66,7 @@ let SubnetWriteForm = (props) => {
 
     return (
         <Col xs={12} md={12} lg={9} xl={5} cssModule="table">
-            <Card>
+            <Card className="cb-card">
                 <CardBody>
                     <form className="form form-horizontal">
                         <div className="form__form-group">

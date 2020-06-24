@@ -1,0 +1,101 @@
+.cb-card {
+  width: 100%;
+  padding-bottom: 0px; //[24June2020,khlee]
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  font-family: 'Nanum Square acEB', sans-serif;  // [22June2020,khlee]
+
+  &.cb-card--not-full-height {
+    height: auto;
+  }
+
+  &:hover {
+    //text-decoration: none;
+
+    // 사이드바 마우스 오버 시 CARD SHADOW [24June2020,khlee]
+    @include themify($themes) {
+      box-shadow: 1px 2px 5px themed('colorShadow');
+    }
+  }
+}
+
+// [2020-06-09 byeonghwa jung]
+.cb-card-body__thin-padding {
+  height: 100%;
+  border-radius: 5px;
+  padding: 5px 5px 5px 5px;
+
+  @include themify($themes) {
+    background-color: themed('colorBackground');
+  }
+}
+
+.cb-card-body {
+  height: 100%;
+  border-radius: 5px;
+  font-family: 'Nanum Square acEB', sans-serif;  // [22June2020,khlee]
+
+  @include themify($themes) {
+    background-color: themed('colorBackground');
+  }
+}
+
+.cb-card-body__assets_sch {
+  height: 100%;
+  border-radius: 5px;
+  /*background-color: #D4DFE6;*/
+  background-color: transparent;
+  padding: 1rem;
+  /*border: 2px solid $color-green;*/
+
+  /*@include themify($themes) {
+    background-color: themed('colorBackground');
+  }*/
+}
+
+.cb-card__title {
+  @include directify($directions) {
+    text-align: directed('left');
+  }
+  h5.card__title-center {
+    text-align: center;
+  }
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  position: relative;
+
+  &:not(:first-child) {
+    margin-top: 40px;
+  }
+
+  .subhead {
+    text-transform: none;
+    font-size: 12px;
+    line-height: 18px;
+    opacity: 0.7;
+    margin-top: 3px;
+  }
+
+  * {
+    margin-bottom: 0;
+  }
+
+  h5 {
+    font-size: 13px;
+  }
+}
+
+.cb-squared-corner-theme {
+
+  .card-body {
+    border-radius: 0;
+  }
+}
+
+.cb-blocks-with-shadow-theme {
+
+  .card-body {
+    box-shadow: 0 10px 30px 1px rgba(0, 0, 0, 0.06);
+  }
+}

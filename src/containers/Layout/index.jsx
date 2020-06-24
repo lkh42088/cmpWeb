@@ -206,6 +206,7 @@ class Layout extends Component {
               changeToLight={this.changeToLight}
               changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
               changeMenuTitle={this.changeMenuTitle}
+              user={user}
             />
           )
         }
