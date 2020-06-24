@@ -11,6 +11,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
+import RefreshIcon from '@material-ui/icons/Refresh';
 
 export const TableFilterButton = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -103,7 +104,8 @@ const useToolbarStyles = makeStyles(theme => ({
 const CbAdminTableToolbar = (props) => {
     const classes = useToolbarStyles();
     const {
-        toolbarTitle, rows, numSelected, handleDeleteSelected, onRequestSort, handleOpen, contents,
+        toolbarTitle, rows, numSelected, handleDeleteSelected, onRequestSort,
+        handleOpen, contents, handleRefresh,
     } = props;
     const addComment = contents.concat(" 추가");
     const deleteComment = `선택한 ${contents} 삭제`;
@@ -133,8 +135,13 @@ const CbAdminTableToolbar = (props) => {
                             <Grid item container xs={12} alignItems="flex-end" direction="column">
                                 <Grid item>
                                     <Tooltip title={addComment} aria-label="add">
-                                            <IconButton type="button" onClick={handleOpen}>
-                                                <AddIcon/>
+                                        <IconButton type="button" onClick={handleOpen}>
+                                            <AddIcon/>
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Refresh" aria-label="refresh">
+                                            <IconButton type="button" onClick={handleRefresh}>
+                                                <RefreshIcon/>
                                             </IconButton>
                                     </Tooltip>
                                     {numSelected > 0 ? (
@@ -147,14 +154,13 @@ const CbAdminTableToolbar = (props) => {
                                             </IconButton>
                                         </Tooltip>
                                     ) : (
-                                        <Tooltip title="정렬 목록" aria-label="sort">
+                                        <Tooltip title="정렬목록" aria-label="sort">
                                             <TableFilterButton rows={rows} onRequestSort={onRequestSort}/>
                                         </Tooltip>
                                     )}
                                 </Grid>
                             </Grid>
                         </Grid>
-
                     </Fragment>
                 )}
             </Toolbar>

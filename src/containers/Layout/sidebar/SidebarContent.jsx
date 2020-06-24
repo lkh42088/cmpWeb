@@ -46,7 +46,7 @@ class SidebarContent extends Component {
                     <SidebarCategory title="MANAGER" icon={usersIcon}>
                         <SidebarLink title="계정관리" route="/customers/users"
                                      onClick={() => changeMenuTitle('관리자', '', '')}/>
-                        <SidebarLink title="고객사관리" route="/customers/admin/companies"
+                        <SidebarLink title="고객사관리" route="/customers/companies"
                                      onClick={() => changeMenuTitle('관리자', '고객사관리', '')}/>
                         <SidebarLink title="서브넷 관리" route="/subnet"
                                      onClick={() => changeMenuTitle('관리자', '서브넷 관리', '')}/>
