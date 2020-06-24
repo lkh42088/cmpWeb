@@ -3,6 +3,61 @@
     text-align: directed('left');
   }
 
+  // (24jun2020,bhjung)
+  .material-form__field-cb {
+    width: 100%;
+    margin-bottom: 20px;
+
+    div {
+      @include themify($themes) {
+        color: themed('colorText');
+      }
+    }
+
+    & > div:before {
+
+      @include themify($themes) {
+        border-bottom-color: themed('colorFieldsBorder');
+      }
+    }
+
+    & > div:hover:before {
+      border-bottom: 1px solid $color-accent !important;
+    }
+
+    & > div:after {
+      border-color: $color-accent;
+    }
+
+    input, textarea {
+      font-size: 14px;
+      font-family:"Nanum BarnGothic Light";
+
+      @include themify($themes) {
+        color: themed('colorText');
+      }
+    }
+    label {
+      font-size: 14px;
+      font-family:"Nanum BarnGothic Light";
+      @include directify($directions) {
+        #{directed('left')}: 0px;
+        #{directed('right')}: auto;
+      }
+    }
+
+    svg {
+      @include directify($directions) {
+        #{directed('left')}: auto;
+        #{directed('right')}: 0;
+      }
+
+      @include themify($themes) {
+        fill: themed('colorText');
+      }
+    }
+  }
+
   .material-form__field {
     width: 100%;
     margin-bottom: 20px;
@@ -57,6 +112,17 @@
   .material-form__label {
     margin: 0;
     font-size: 12px;
+
+    @include themify($themes) {
+      color: themed('colorText');
+    }
+  }
+
+  // (24jun2020,bhjung)
+  .material-form__label-cb {
+    margin: 0;
+    font-size: 12px;
+    font-family:"Nanum BarnGothic Light";
 
     @include themify($themes) {
       color: themed('colorText');

@@ -11,10 +11,7 @@ const MaterialTable = () => (
     <Container>
         <Row>
             <Col md={12}>
-                <h3 className="page-title">고객사 계정 정보</h3>
-                <h3 className="page-subhead subhead">Use this elements, if you want to show some hints or additional
-                    information
-                </h3>
+                <h3 className="page-title">MANAGER &gt; 계정 관리</h3>
             </Col>
             <UserList/>
         </Row>

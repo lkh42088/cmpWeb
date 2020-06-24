@@ -1,37 +1,49 @@
-import React, {useEffect} from "react";
-import { Card, CardBody, Col } from 'reactstrap';
-import Avatar from "react-avatar";
-
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TablePagination from '@material-ui/core/TablePagination';
+import 'date-fns';
+import React, {useEffect, useState} from "react";
+import {
+    Card,
+    CardBody,
+    Col,
+} from 'reactstrap';
 import {useDispatch, useSelector} from "react-redux";
+import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
+import Table from "@material-ui/core/Table";
+import TablePagination from "@material-ui/core/TablePagination";
 import TableContainer from "@material-ui/core/TableContainer";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import {makeStyles} from "@material-ui/core/styles";
+import Switch from "@material-ui/core/Switch";
+// eslint-disable-next-line import/named
+import { initRegisterCompany, getCompanyList } from "../../../../redux/actions/companiesActions";
+// eslint-disable-next-line import/named
+import {initRegisterUser} from "../../../../redux/actions/usersActions";
 import {
     pagingChangeCurrentPage,
-    pagingChangeCurrentPageNext, pagingChangeCurrentPagePrev, pagingChangeDense, pagingChangeOrder, pagingChangeOrderBy,
-    pagingChangeRowsPerPage, pagingChangeSelected,
-    pagingChangeTotalCount, pagingDump,
+    pagingChangeCurrentPageNext,
+    pagingChangeCurrentPagePrev,
+    pagingChangeDense,
+    pagingChangeOrder,
+    pagingChangeOrderBy,
+    pagingChangeRowsPerPage,
+    pagingChangeSelected,
+    pagingChangeTotalCount,
 } from "../../../../redux/actions/pagingActions";
-import {getUserList} from "../../../../redux/actions/usersActions";
-import CommonTableHead from "../../../Common/CommonTableHead";
 import CbAdminTableToolbar from "../../../Common/CbAdminTableToolbar";
+import CommonTableHead from "../../../Common/CommonTableHead";
+import AddCompany from "./AddCompany";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
-    {id: 'avata', disablePadding: false, label: '아바타'},
-    {id: 'userId', disablePadding: false, label: '아이디'},
-    {id: 'userName', disablePadding: false, label: '이름'},
+    {id: 'name', disablePadding: false, label: '회사명'},
     {id: 'email', disablePadding: false, label: '이메일'},
-    {id: 'hp', disablePadding: false, label: '전화번호'},
-    {id: 'cpName', disablePadding: false, label: '회사명'},
-    {id: 'authlevel', disablePadding: false, label: '권한'},
+    {id: 'homepage', disablePadding: false, label: '홈페이지'},
+    {id: 'tel', disablePadding: false, label: '전화번호'},
+    {id: 'hp', disablePadding: false, label: '핸드폰번호'},
+    {id: 'isCompany', disablePadding: false, label: '회사여부'},
+    {id: 'memo', disablePadding: false, label: '메모'},
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -56,21 +68,31 @@ const useStyles = makeStyles(theme => ({
         top: 20,
         width: 1,
     },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    modalPaper: {
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+    },
 }));
 
-const UserList = () => {
+const CompanyList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     /**
-     * User Data
+     * Company Data
      */
     const {
         data, getPage,
-    } = useSelector(({ usersRd }) => ({
-        data: usersRd.data,
-        getPage: usersRd.page,
+    } = useSelector(({ companiesRd }) => ({
+        data: companiesRd.data,
+        getPage: companiesRd.page,
     }));
-
     /**
      * Pagination
      */
@@ -97,6 +119,29 @@ const UserList = () => {
         orderBy: pagingRd.orderBy,
         order: pagingRd.order,
     }));
+    /**
+     * Modal variable
+     */
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpen = () => {
+        dispatch(initRegisterCompany());
+        dispatch(initRegisterUser());
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    /**
+     * Date variable
+     */
+    const [selectedDate, setSelectedDate] = useState(new Date('2014-08-18T21:11:54'));
+
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    };
 
     /** Pagination */
     const updatePagingTotalCount = ({count}) => {
@@ -181,9 +226,9 @@ const UserList = () => {
         if (currentPage > 0) {
             offset = rowsPerPage * currentPage;
         }
-        console.log("get Page Data: rows ", rowsPerPage, ", offset ", offset,
+        console.log(">>>>>> get Page Data: rows ", rowsPerPage, ", offset ", offset,
             ", orderBy ", orderBy, ", order ", order);
-        dispatch(getUserList({
+        dispatch(getCompanyList({
             rows: rowsPerPage, offset, orderBy, order,
         }));
     };
@@ -202,7 +247,7 @@ const UserList = () => {
     }, []);
 
     useEffect(() => {
-        dispatch(pagingDump());
+        // dispatch(pagingDump());
     }, [totalCount]);
 
     useEffect(() => {
@@ -216,14 +261,14 @@ const UserList = () => {
     useEffect(() => {
         /** Pagination */
         getPageData();
-        dispatch(pagingDump());
+        // dispatch(pagingDump());
     }, [rowsPerPage, pageBeginRow, orderBy, order]);
 
     /** Pagination */
     const paginationBar = (
         <TablePagination
             component="div"
-            className="material-table__pagination"
+            className="cb-material-table__pagination"
             count={totalCount}
             rowsPerPage={rowsPerPage}
             page={currentPage}
@@ -256,25 +301,25 @@ const UserList = () => {
                                 {row.idx}
                             </TableCell>
                             <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
-                                <Avatar className="topbar__avatar-img-list" name={row.userId} size="40" />
-                            </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
-                                {row.userId}
-                            </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.name}
                             </TableCell>
                             <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.email}
                             </TableCell>
                             <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
+                                {row.hompage}
+                            </TableCell>
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
+                                {row.tel}
+                            </TableCell>
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.hp}
                             </TableCell>
                             <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
-                                {row.cpName}
+                                {row.isCompany ? "회사" : "개인"}
                             </TableCell>
                             <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
-                                {row.authLevel}
+                                {row.memo}
                             </TableCell>
                         </TableRow>
                     );
@@ -290,10 +335,11 @@ const UserList = () => {
                     <CbAdminTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
                         handleDeleteSelected={handleDeleteSelected}
-                        handleRefresh={handleRefresh}
                         onRequestSort={handleRequestSort}
+                        handleRefresh={handleRefresh}
                         rows={headRows}
-                        toolbarTitle="계정 리스트"
+                        toolbarTitle="고객사 리스트"
+                        handleOpen={handleOpen}
                         contents="계정"
                     />
                     <div className="cb-material-table__wrap">
@@ -322,10 +368,11 @@ const UserList = () => {
                             label="Dense padding"
                         />
                     </div>
+                    <AddCompany open={open} handleClose={handleClose} refreshPage={getPageData}/>
                 </CardBody>
             </Card>
         </Col>
     );
 };
 
-export default UserList;
+export default CompanyList;

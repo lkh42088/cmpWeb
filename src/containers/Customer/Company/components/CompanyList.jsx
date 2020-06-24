@@ -33,7 +33,8 @@ import {
 } from "../../../../redux/actions/pagingActions";
 import CbAdminTableToolbar from "../../../Common/CbAdminTableToolbar";
 import CommonTableHead from "../../../Common/CommonTableHead";
-import AddCompany from "./AddCompany";
+// import AddCompany from "./AddCompany";
+import RegisterCompanyPage from "./RegisterCompanyPage";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -81,7 +82,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const CompanyMgmtList = () => {
+const CompanyList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     /**
@@ -236,6 +237,10 @@ const CompanyMgmtList = () => {
     /** Pagination */
     const getSelected = id => !!selected.get(id);
 
+    const handleRefresh = () => {
+        getPageData();
+    };
+
     useEffect(() => {
         const changeOrderBy = "idx";
         console.log("[] orderBy: ", changeOrderBy);
@@ -332,6 +337,7 @@ const CompanyMgmtList = () => {
                         numSelected={[...selected].filter(el => el[1]).length}
                         handleDeleteSelected={handleDeleteSelected}
                         onRequestSort={handleRequestSort}
+                        handleRefresh={handleRefresh}
                         rows={headRows}
                         toolbarTitle="고객사 리스트"
                         handleOpen={handleOpen}
@@ -363,11 +369,12 @@ const CompanyMgmtList = () => {
                             label="Dense padding"
                         />
                     </div>
-                    <AddCompany open={open} handleClose={handleClose} refreshPage={getPageData}/>
+                    {/*<AddCompany open={open} handleClose={handleClose} refreshPage={getPageData}/>*/}
+                    <RegisterCompanyPage open={open} handleClose={handleClose} refreshPage={getPageData}/>
                 </CardBody>
             </Card>
         </Col>
     );
 };
 
-export default CompanyMgmtList;
+export default CompanyList;
