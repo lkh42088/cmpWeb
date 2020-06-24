@@ -22,6 +22,7 @@ const CbTextField = ({
         value,
         isError,
         helperText,
+        // type,
     }) => {
     const handleChange = (event) => {
         event.preventDefault();
@@ -55,6 +56,7 @@ const CbTextField = ({
             name={name}
             onChange={handleChange}
             helperText={helperText}
+            // type={type}
         />
     );
 };
@@ -72,6 +74,7 @@ CbTextField.defaultProps = {
     nbValue: '',
     isError: false,
     helperText: '',
+    // type: "",
 };
 
 export const StyledTextField = styled(TextField)`

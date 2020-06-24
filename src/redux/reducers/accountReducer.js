@@ -1,8 +1,8 @@
 import {handleActions} from "redux-actions";
 import {
-    TEMP_SET_USER,
-    CHECK_SUCCESS,
-    CHECK_FAILURE, LOGOUT,
+    SET_LOGIN_USER,
+    CHECK_LOGIN_USER_SUCCESS,
+    CHECK_LOGIN_USER_FAILURE, LOGOUT,
 } from "../actions/accountActions";
 
 const initialState = {
@@ -12,16 +12,16 @@ const initialState = {
 
 export default handleActions(
     {
-        [TEMP_SET_USER]: (state, { payload: user }) => ({
+        [SET_LOGIN_USER]: (state, { payload: user }) => ({
             ...state,
             user,
         }),
-        [CHECK_SUCCESS]: (state, { payload: user }) => ({
+        [CHECK_LOGIN_USER_SUCCESS]: (state, { payload: user }) => ({
             ...state,
-            user,
+            user: user.user.User,
             checkError: null,
         }),
-        [CHECK_FAILURE]: (state, { payload: error }) => ({
+        [CHECK_LOGIN_USER_FAILURE]: (state, { payload: error }) => ({
             ...state,
             user: null,
             checkError: error,

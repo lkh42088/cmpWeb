@@ -19,16 +19,14 @@ import {
     authReducer,
     accountReducer,
     loadingReducer,
-    regUserReducer,
     usersReducer,
     pagingReducer,
     companiesReducer,
     subnetReducer,
 } from '../../redux/reducers/index';
 import {authSaga} from "../../redux/actions/authActions";
-import {tempSetUser, check, userSaga} from "../../redux/actions/accountActions";
-import {regUserSaga} from "../../redux/actions/regUserActions";
-import {userListSaga} from "../../redux/actions/usersActions";
+import {setLoginUser, checkLoginUser, userSaga} from "../../redux/actions/accountActions";
+import {usersSaga} from "../../redux/actions/usersActions";
 import {companiesSaga} from "../../redux/actions/companiesActions";
 import {createSubnetSaga, readSubnetSaga} from "../../redux/actions/subnetActions";
 
@@ -37,17 +35,16 @@ const rootReducer = combineReducers({
     theme: themeReducer,
     rtl: rtlReducer,
     sidebar: sidebarReducer,
-    // cryptoTable: cryptoTableReducer,
-    // newOrder: newOrderTableReducer,
+    cryptoTable: cryptoTableReducer,
+    newOrder: newOrderTableReducer,
     customizer: customizerReducer,
     todos: todoReducer,
     assets: assetsReducer,
     menuTitle: titleReducer,
     auth: authReducer,
     loading: loadingReducer,
-    account: accountReducer,
-    regUser: regUserReducer,
-    userRd: usersReducer,
+    accountRd: accountReducer,
+    usersRd: usersReducer,
     pagingRd: pagingReducer,
     companiesRd: companiesReducer,
     subnetRd: subnetReducer,
@@ -57,8 +54,7 @@ export function* rootSaga() {
     yield all([
         authSaga(),
         userSaga(),
-        regUserSaga(),
-        userListSaga(),
+        usersSaga(),
         companiesSaga(),
         createSubnetSaga(),
         readSubnetSaga(),
@@ -75,10 +71,11 @@ const store = createStore(
 export function loadUser() {
     try {
         const user = localStorage.getItem('user');
-        if (!user) return;
-
-        store.dispatch(tempSetUser(user));
-        store.dispatch(check());
+        if (!user) {
+            return;
+        }
+        store.dispatch(setLoginUser(user));
+        store.dispatch(checkLoginUser());
     } catch (e) {
         console.log('localStorage is not working');
     }

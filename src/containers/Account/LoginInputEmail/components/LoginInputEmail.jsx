@@ -14,10 +14,10 @@ const LoginInputEmailForm = ({ history, secret }) => {
     const {
         form, authError, user, authSentEmail,
         // eslint-disable-next-line no-shadow
-    } = useSelector(({ auth, account }) => ({
+    } = useSelector(({ auth, accountRd }) => ({
         form: auth.login,
         authError: auth.authError,
-        user: account.user,
+        user: accountRd.user,
         authSentEmail: auth.authSentEmail,
     }));
 

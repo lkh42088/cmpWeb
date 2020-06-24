@@ -2,10 +2,14 @@ import React, {
     forwardRef, Component, useEffect, useState, useCallback,
 } from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import MaterialTable from 'material-table';
+import MaterialTable, {MTableToolbar} from 'material-table';
 import {makeStyles, withStyles} from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
-/** icon **/
+/** Tooltip **/
+import Tooltip from '@material-ui/core/Tooltip';
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
+/** Material Icon **/
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -22,38 +26,31 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import PaginationCustomization from "../../../../Common/PaginationBar";
-import {pagingChangeCurrentPage, pagingChangeTotalCount} from "../../../../../redux/actions/pagingActions";
+import {
+    pagingChangeCurrentPage, pagingChangeOrder, pagingChangeOrderBy, pagingChangeTotalCount, pagingDump, pagingSetup,
+} from "../../../../../redux/actions/pagingActions";
 import {readSubnet} from "../../../../../redux/actions/subnetActions";
+/** Subnet Add Modal **/
+import SubnetWriteForm from "../../CreateSubnet/components/SubnetWriteForm";
+import SpringModal from "../../../../Common/SpringModal";
 
 /** Custom CSS **/
 const useStyles = makeStyles(theme => ({
     root: {
         fontFamily: 'Nanum Square acEB',
         fontSize: 8,
-        color: "red",
+        backgroundColor: theme.backgroundColor,
+        color: theme.color,
     },
     tab: {
         fontSize: 12,
-        color: "red",
     },
-
+    fab: {
+        margin: theme.spacing(2),
+    },
 }));
 
-const headerStyle = makeStyles(theme => ({
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.primary.contrastText,
-}));
-const StyledTableCell = withStyles(theme => ({
-    head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    body: {
-        fontSize: 14,
-    },
-}))(TableCell);
-
-/** Metarial table icons **/
+/** Material table icons **/
 const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
     Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -75,31 +72,21 @@ const tableIcons = {
 };
 
 const SubnetList = () => {
-    const nb = useStyles();
+    const classes = useStyles();
     const dispatch = useDispatch();
     /**
-     * Subnet Data state
+     * Subnet Data
      **/
     const {
-        data, getPage,
+        data, page,
     } = useSelector(({ subnetRd }) => ({
         data: subnetRd.data,
-        getPage: subnetRd.page,
+        page: subnetRd.page,
     }));
-
-    /** Initial data **/
-    const [state, setState] = React.useState({
-        columns: [
-            { title: 'SUBNET 태그', field: 'subnetTag' },
-            { title: 'SUBNET', field: 'subnetStart' },
-            { title: 'SUBNET 마스크', field: 'subnetMask' },
-            { title: '게이트웨이', field: 'gateway' },
-        ],
-        data: [],
-    });
     /**
      * Pagination state
      **/
+    const rows = 15;
     const {
         selected,
         pageBeginRow,
@@ -123,31 +110,93 @@ const SubnetList = () => {
         orderBy: pagingRd.orderBy,
         order: pagingRd.order,
     }));
-    const handlePaginationChange = useCallback(
+
+    /** Initial data **/
+    const [state, setState] = React.useState({
+        columns: [
+            { title: 'IDX', field: 'idx' },
+            { title: 'SUBNET 태그', field: 'subnetTag' },
+            { title: 'SUBNET', field: 'subnetStart' },
+            { title: 'SUBNET 마스크', field: 'subnetMask' },
+            { title: '게이트웨이', field: 'gateway' },
+        ],
+        data: [],
+    });
+
+    const handleOrderChange = (event, direction) => {
+        const isAsc = page.order === direction && page.order === "asc";
+        const changeOrder = isAsc ? "desc" : "asc";
+        console.log(direction);
+        dispatch(pagingChangeOrder({order: changeOrder}));
+    };
+
+    const handleFilterChange = (event, filter) => {
+        console.log(filter);
+        dispatch(pagingChangeOrderBy({orderBy: filter}));
+        dispatch(pagingChangeOrder({order: "asc"}));
+    };
+
+    const getPageData = () => {
+        let offset = 0;
+        if (currentPage > 0) {
+            offset = Number(rowsPerPage * currentPage);
+        }
+        console.log("[PAGE DATA]: rows ", rowsPerPage, ", offset ", offset,
+            ", orderBy ", orderBy, ", order ", order);
+        dispatch(readSubnet({
+            rows: rowsPerPage, offset, orderBy, order,
+        }));
+    };
+
+    /** Init pagination **/
+    useEffect(() => {
+        dispatch(readSubnet({
+            rows: 15,
+            offset: 0,
+            orderBy: "sub_idx",
+            order: "desc",
+        }));
+        dispatch(pagingChangeOrderBy({orderBy: "sub_idx"}));
+        dispatch(pagingChangeOrder({order: "desc"}));
+        if (page) {
+            const {count} = page;
+            dispatch(pagingSetup({
+                rowsPerPage: rows,
+                currentPage: 1,
+                totalPage: Math.ceil(count / rows),
+                totalCount: count,
+            }));
+        }
+        // dispatch(pagingDump());
+    }, []);
+
+    /** Get subnet data **/
+    useEffect(() => {
+        getPageData();
+    }, [rowsPerPage, currentPage, orderBy, order]);
+
+    const handleChangePage = useCallback(
         (event, pageData) => dispatch(pagingChangeCurrentPage({
             currentPage: pageData.activePage,
         })), [dispatch],
     );
 
-    /** Get subnet data **/
-    useEffect(() => {
-        dispatch(readSubnet({
-            rows: 10,
-            offset: rowsPerPage * currentPage,
-            orderBy: "sub_idx",
-            order,
-        }));
-    }, []);
-
-    /** Bind Subnet data **/
-    useEffect(() => {
-        // setState(prevState => ({
-        //         ...prevState,
-        //         data,
-        //     }));
-    }, [getPage]);
-
     /** Update & Register Device **/
+    const RowAdd = (newData) => {
+
+    };
+    // const RowAdd = newData => new Promise((resolve) => {
+    //         setTimeout(() => {
+    //             resolve();
+    //             setState((prevState) => {
+    //                 const data = [...prevState.data];
+    //                 data.push(newData);
+    //                 return { ...prevState, data };
+    //             });
+    //         }, 600);
+    //     });
+    // }
+
     const RowUpdate = (newData, oldData) => new Promise((resolve) => {
         // setTimeout(() => {
         //     resolve();
@@ -172,68 +221,102 @@ const SubnetList = () => {
         // }, 600);
     });
 
-    const paginationBar = (
-      <PaginationCustomization
-          activePage={currentPage}
-          boundaryRange="1"
-          siblingRange="2"
-          //totalPages={totalPage}
-          totalPages="20"
-          onPageChange={handlePaginationChange}
-          showEllipsis="true"
-          showFirstAndLastNav="true"
-          showPreviousAndNextNav="true"
-          size="mini"
-      />
-    );
+    /** Customizing Pagination Bar **/
+    const paginationBar = props => (
+            <PaginationCustomization
+                className={classes.root}
+                // activePage="1"
+                activePage={currentPage}
+                boundaryRange="1"
+                showEllipsis="true"
+                siblingRange="2"
+                totalPages={Math.ceil(totalCount / rowsPerPage)}
+                // totalPages="20"
+                onPageChange={handleChangePage}
+                showFirstAndLastNav="true"
+                showPreviousAndNextNav="true"
+                size="mini"
+                // rowsPerPageOptions={displayRowsList}
+            />
+            );
 
-return (
+    /** Material-Table component override **/
+    const customComponents = {
+        Pagination: props => (
+            <div style={{textAlign: "center", padding: 30 }}>
+                {paginationBar(props)}
+            </div>
+        ),
+        Tooltip: props => (
+            <Tooltip>
+                <Fab color="primary" className={classes.fab} />
+            </Tooltip>
+        ),
+        // Toolbar: props => (
+        //     <div style={{padding: '0px 10px'}}>
+        //         <MTableToolbar {...props} />
+        //         {SpringModal(SubnetWriteForm)}
+        //     </div>
+        // ),
+    };
+
+    /** Material-Table options attribute **/
+    const themeName = useSelector(({theme}) => ({
+        className: theme.className,
+    }));
+
+    const brushColor = () => {
+        if (themeName.className === "theme-light") {
+            return "#FFFFFF";
+        }
+        return "#AAAAAA";
+    };
+    const brushBack = () => {
+        if (themeName.className === "theme-light") {
+            return "#000000";
+        }
+        return "#343434";
+    };
+
+    const options = {
+        headerStyle: {
+            backgroundColor: brushBack(),
+            color: brushColor(),
+            minWidth: 120,
+            fontSize: 12,
+            fontWeight: "bold",
+        },
+    };
+
+    /** Material-Table localization **/
+    const localization = {
+        header: {
+            actions: "수정/삭제",
+        },
+        body: {
+            emptyDataSourceMessage: "해당 자료가 없습니다.",
+        },
+    };
+
+    return (
         <>
             <MaterialTable
-                title="SUBNET 리스트"
+                title=""
                 icons={tableIcons}
                 columns={state.columns}
                 data={data}
-                className={nb.root}
+                className={classes.root}
                 editable={{
+                    // onRowAdd: RowAdd,
                     onRowUpdate: RowUpdate,
                     onRowDelete: RowDelete,
                 }}
-                headerStyle={headerStyle}
-                // actionsComponent={paginationBar}
-
-                components={{
-                    Pagination: props => (
-                        <div style={{textAlign: "center", padding: 30 }}>
-                            {paginationBar}
-                        </div>
-                        // <PaginationCustomization
-                        //     {...props}
-                        //     rowsPerPageOptions={[5, 10, 20, 30]}
-                        //     rowsPerPage={state.numberRowPerPage}
-                        //     count={state.totalRow}
-                        //     page={state.pageNumber}
-                        //     onChangePage={(e, page) => this.handleChangePage(page + 1)
-                        //     }
-                        //     onChangeRowsPerPage={(event) => {
-                        //         props.onChangeRowsPerPage(event);
-                        //         //handleChangeRowPerPage(event.target.value);
-                        //     }}
-                        // />
-                    ),
-                }}
+                onOrderChange={handleOrderChange}
+                onFilterChange={handleFilterChange}
+                components={customComponents}
+                options={options}
+                localization={localization}
             />
-            {/*<PaginationCustomization*/}
-            {/*    activePage={currentPage}*/}
-            {/*    boundaryRange="1"*/}
-            {/*    siblingRange="5"*/}
-            {/*    totalPages={totalPage}*/}
-            {/*    onPageChange={handlePaginationChange}*/}
-            {/*    showEllipsis="true"*/}
-            {/*    showFirstAndLastNav="true"*/}
-            {/*    showPreviousAndNextNav="true"*/}
-            {/*    size="mini"*/}
-            {/*/>*/}
         </>
     );
 };

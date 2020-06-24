@@ -52,6 +52,7 @@ const pagingReducer = handleActions(
             };
         },
         [PAGING_SETUP]: (state, {payload}) => ({
+            ...state,
             rowsPerPage: payload.rowsPerPage,
             currentPage: payload.currentPage,
             totalPage: payload.totalPage,

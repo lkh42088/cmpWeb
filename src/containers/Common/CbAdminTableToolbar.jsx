@@ -11,10 +11,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
-import {Modal} from "@material-ui/core";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
-import AddCompany from "./AddCompany";
 
 export const TableFilterButton = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -104,12 +100,13 @@ const useToolbarStyles = makeStyles(theme => ({
 
 }));
 
-/** Modal */
-export const CompanyTableToolbar = (props) => {
+const CbAdminTableToolbar = (props) => {
     const classes = useToolbarStyles();
     const {
-        toolbarTitle, rows, numSelected, handleDeleteSelected, onRequestSort, handleOpen,
+        toolbarTitle, rows, numSelected, handleDeleteSelected, onRequestSort, handleOpen, contents,
     } = props;
+    const addComment = contents.concat(" 추가");
+    const deleteComment = `선택한 ${contents} 삭제`;
 
     return (
         <div>
@@ -135,13 +132,13 @@ export const CompanyTableToolbar = (props) => {
                         <Grid container justify="center">
                             <Grid item container xs={12} alignItems="flex-end" direction="column">
                                 <Grid item>
-                                    <Tooltip title="고객사 추가" aria-label="add">
+                                    <Tooltip title={addComment} aria-label="add">
                                             <IconButton type="button" onClick={handleOpen}>
                                                 <AddIcon/>
                                             </IconButton>
                                     </Tooltip>
                                     {numSelected > 0 ? (
-                                        <Tooltip title="선택한 고객사 삭제" aria-label="delete">
+                                        <Tooltip title={deleteComment} aria-label="delete">
                                             <IconButton
                                                 aria-label="delete"
                                                 onClick={handleDeleteSelected}
@@ -164,3 +161,5 @@ export const CompanyTableToolbar = (props) => {
        </div>
     );
 };
+
+export default CbAdminTableToolbar;

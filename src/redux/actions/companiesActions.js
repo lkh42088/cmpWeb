@@ -6,79 +6,49 @@ import * as companies from "../../lib/api/company";
 /******************************************************************************
  * 1. Action Type
  *****************************************************************************/
-/** A. Company List Page */
-export const [COMPANYLIST, COMPANYLIST_SUCCESS, COMPANYLIST_FAILURE] = createRequestActionTypes(
-    'company/COMPANYLIST',
-);
-
-/** B. Company Register Page */
 export const COMPANY_CHANGE_REGISTER_FIELD = 'company/CHANGE_REGISTER_FIELD';
+export const CHECK_COMPANY_REGISTER_FIELD = 'company/COMPANY_REGISTER_CHECK_FIELD';
 export const COMPANY_CHANGE_FIELD = 'company/CHANGE_FIELD';
-export const [ADD_COMPANY, ADD_COMPANY_SUCCESS, ADD_COMPANY_FAILURE] = createRequestActionTypes(
-    'company/ADD_COMPANY',
-);
-export const [CHECK_DUP_COMPANY, CHECK_DUP_COMPANY_SUCCESS, CHECK_DUP_COMPANY_FAILURE] = createRequestActionTypes(
-    'company/CHECK_DUP_COMPANY',
-);
+export const INITIALIZE_REGISTER_COMPANY = 'company/INITIALIZE_COMPANY';
 
-export const INITIALIZE_COMPANY = 'company/INITIALIZE_COMPANY';
-export const COMPANY_REGISTER_CHECK_FIELD = 'company/COMPANY_REGISTER_CHECK_FIELD';
+/** Saga Action Type */
+export const [GET_COMPANY_LIST, GET_COMPANY_LIST_SUCCESS, GET_COMPANY_LIST_FAILURE] = createRequestActionTypes('company/COMPANYLIST');
+export const [ADD_COMPANY, ADD_COMPANY_SUCCESS, ADD_COMPANY_FAILURE] = createRequestActionTypes('company/ADD_COMPANY');
+export const [CHECK_DUP_COMPANY, CHECK_DUP_COMPANY_SUCCESS, CHECK_DUP_COMPANY_FAILURE] = createRequestActionTypes('company/CHECK_DUP_COMPANY');
 
 /******************************************************************************
  * 2. Action Function
  *****************************************************************************/
-/** A. Company List Page */
-export const getCompanyList = createAction(COMPANYLIST, ({
+export const initRegisterCompany = createAction(INITIALIZE_REGISTER_COMPANY);
+export const checkCompanyRegisterField = createAction(CHECK_COMPANY_REGISTER_FIELD);
+export const changeCompanyRegisterField = createAction(COMPANY_CHANGE_REGISTER_FIELD, ({ key, value }) => ({ key, value }));
+export const changeCompanyField = createAction(COMPANY_CHANGE_REGISTER_FIELD, ({ type, key, value }) => ({ type, key, value }));
+
+/** Saga Action Function */
+export const checkDupCompany = createAction(CHECK_DUP_COMPANY, ({ cpName }) => ({ cpName }));
+export const getCompanyList = createAction(GET_COMPANY_LIST, ({
     rows, offset, orderBy, order,
 }) => ({
     rows, offset, orderBy, order,
 }));
-
-/** B. Company Register Page */
-export const changeCompanyRegisterField = createAction(
-    COMPANY_CHANGE_REGISTER_FIELD,
-    ({ key, value }) => ({ key, value }),
-);
-
-export const changeCompanyField = createAction(
-    COMPANY_CHANGE_REGISTER_FIELD,
-    ({ type, key, value }) => ({ type, key, value }),
-);
-
-export const initializeCompany = createAction(INITIALIZE_COMPANY);
-
-export const checkCompanyRegisterCheckField = createAction(COMPANY_REGISTER_CHECK_FIELD);
-
-/** C. Function about Saga */
 export const addCompany = createAction(ADD_COMPANY, ({
     cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage, cpTel, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
 }) => ({
     cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage, cpTel, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
 }));
 
-export const checkDuplicatedCompany = createAction(CHECK_DUP_COMPANY, ({
-    cpName,
-}) => ({
-    cpName,
-}));
-
 /******************************************************************************
  * 3. Saga
  *****************************************************************************/
-/** A. Company List Page */
-const getCompanyListSaga = createRequestSaga(COMPANYLIST, companies.getCompanyList);
-
-/** B. Company Register Page */
-const addCompanySaga = createRequestSaga(ADD_COMPANY, companies.addCompany);
-const checkDeplicatedCompanySaga = createRequestSaga(CHECK_DUP_COMPANY, companies.checkDuplicatedCompany);
+const getCompanyListSaga = createRequestSaga(GET_COMPANY_LIST, companies.getCompanyList);
+const addCompanySaga = createRequestSaga(ADD_COMPANY, companies.registerCompany);
+const checkDeplicatedCompanySaga = createRequestSaga(CHECK_DUP_COMPANY, companies.checkDupCompany);
 
 /******************************************************************************
  * 4. Saga Generation Function
  *****************************************************************************/
 export function* companiesSaga() {
-    /** A. Company List Page */
-    yield takeLatest(COMPANYLIST, getCompanyListSaga);
-    /** B. Company Register Page */
+    yield takeLatest(GET_COMPANY_LIST, getCompanyListSaga);
     yield takeLatest(ADD_COMPANY, addCompanySaga);
     yield takeLatest(CHECK_DUP_COMPANY, checkDeplicatedCompanySaga);
 }

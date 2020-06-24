@@ -16,7 +16,7 @@ import {
   changeEmailAuthFlag,
   changeEmailAuthGroupFlag,
   changeUserField, deleteEmailGroup, registerUser,
-} from "../../../../redux/actions/regUserActions";
+} from "../../../../redux/actions/usersActions";
 
 const renderTextField = ({
   input, label, meta: { touched, error }, children, select,

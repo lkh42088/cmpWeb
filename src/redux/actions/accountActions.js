@@ -3,19 +3,28 @@ import { takeLatest, call } from 'redux-saga/effects';
 import * as authAPI from '../../lib/api/auth';
 import createRequestSaga, {createRequestActionTypes} from "../../lib/createRequestSaga";
 
-export const TEMP_SET_USER = 'user/TEMP_SET_USER';
+/******************************************************************************
+ * 1. Action Type
+ *****************************************************************************/
+export const SET_LOGIN_USER = 'user/TEMP_SET_USER';
 
-export const [CHECK, CHECK_SUCCESS, CHECK_FAILURE] = createRequestActionTypes(
+export const [CHECK_LOGIN_USER, CHECK_LOGIN_USER_SUCCESS, CHECK_LOGIN_USER_FAILURE] = createRequestActionTypes(
     'user/CHECK',
 );
 
 export const LOGOUT = 'user/LOGOUT';
 
-export const tempSetUser = createAction(TEMP_SET_USER, user => user);
-export const check = createAction(CHECK);
+/******************************************************************************
+ * 2. Action Function
+ *****************************************************************************/
+export const setLoginUser = createAction(SET_LOGIN_USER, user => user);
+export const checkLoginUser = createAction(CHECK_LOGIN_USER);
 export const logout = createAction(LOGOUT);
 
-const checkSaga = createRequestSaga(CHECK, authAPI.check);
+/******************************************************************************
+ * 3. Saga
+ *****************************************************************************/
+const checkSaga = createRequestSaga(CHECK_LOGIN_USER, authAPI.check);
 
 function* logoutSaga() {
     try {
@@ -34,8 +43,11 @@ function checkFailureSaga() {
     }
 }
 
+/******************************************************************************
+ * 4. Saga Generation Function
+ *****************************************************************************/
 export function* userSaga() {
-    yield takeLatest(CHECK, checkSaga);
-    yield takeLatest(CHECK_FAILURE, checkFailureSaga);
+    yield takeLatest(CHECK_LOGIN_USER, checkSaga);
+    yield takeLatest(CHECK_LOGIN_USER_FAILURE, checkFailureSaga);
     yield takeLatest(LOGOUT, logoutSaga);
 }

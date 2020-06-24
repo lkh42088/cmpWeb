@@ -1,5 +1,5 @@
 import 'date-fns';
-import React, {Fragment, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
     Card,
     CardBody,
@@ -16,14 +16,10 @@ import TableContainer from "@material-ui/core/TableContainer";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {makeStyles} from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
-import TextField from "@material-ui/core/TextField";
-import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import Grid from "@material-ui/core/Grid";
-import {getCompanyList} from "../../../../redux/actions/companiesActions";
+// eslint-disable-next-line import/named
+import { initRegisterCompany, getCompanyList } from "../../../../redux/actions/companiesActions";
+// eslint-disable-next-line import/named
+import {initRegisterUser} from "../../../../redux/actions/usersActions";
 import {
     pagingChangeCurrentPage,
     pagingChangeCurrentPageNext,
@@ -33,9 +29,9 @@ import {
     pagingChangeOrderBy,
     pagingChangeRowsPerPage,
     pagingChangeSelected,
-    pagingChangeTotalCount, pagingDump,
+    pagingChangeTotalCount,
 } from "../../../../redux/actions/pagingActions";
-import {CompanyTableToolbar} from "./CompanyTableToolbar";
+import CbAdminTableToolbar from "../../../Common/CbAdminTableToolbar";
 import CommonTableHead from "../../../Common/CommonTableHead";
 import AddCompany from "./AddCompany";
 
@@ -129,6 +125,8 @@ const CompanyMgmtList = () => {
     const [open, setOpen] = React.useState(false);
 
     const handleOpen = () => {
+        dispatch(initRegisterCompany());
+        dispatch(initRegisterUser());
         setOpen(true);
     };
 
@@ -330,13 +328,14 @@ const CompanyMgmtList = () => {
         <Col md={12} lg={12}>
             <Card>
                 <CardBody>
-                    <CompanyTableToolbar
+                    <CbAdminTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
                         handleDeleteSelected={handleDeleteSelected}
                         onRequestSort={handleRequestSort}
                         rows={headRows}
                         toolbarTitle="고객사 리스트"
                         handleOpen={handleOpen}
+                        contents="계정"
                     />
                     <div className="cb-material-table__wrap">
                         <TableContainer>
@@ -364,21 +363,7 @@ const CompanyMgmtList = () => {
                             label="Dense padding"
                         />
                     </div>
-                    {/*<Modal*/}
-                    {/*    aria-labelledby="transition-modal-title"*/}
-                    {/*    aria-describedby="transition-modal-title"*/}
-                    {/*    className={classes.modal}*/}
-                    {/*    open={open}*/}
-                    {/*    onClose={handleClose}*/}
-                    {/*    closeAfterTransition*/}
-                    {/*    BackdropComponent={Backdrop}*/}
-                    {/*    BackdropProps={{*/}
-                    {/*        timeout: 500,*/}
-                    {/*    }}*/}
-                    {/*>*/}
-                    {/*    <AddCompany open={open} handleClose={handleClose}/>*/}
-                    {/*</Modal>*/}
-                    <AddCompany open={open} handleClose={handleClose}/>
+                    <AddCompany open={open} handleClose={handleClose} refreshPage={getPageData}/>
                 </CardBody>
             </Card>
         </Col>

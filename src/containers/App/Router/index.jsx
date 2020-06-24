@@ -3,7 +3,6 @@ import { Route, Switch } from 'react-router-dom';
 import MainWrapper from '../MainWrapper';
 import WrappedRoutes from './WrappedRoutes';
 import CbWrappedRoutes from './CbWrappedRoutes';
-import TempPage from '../../DefaultPage/TempPage/index';
 import LogIn from "../../Account/LogIn";
 import Register from "../../Account/Register";
 import RegisterUser from "../../Account/RegisterUser";
@@ -15,7 +14,7 @@ const Router = () => (
   <MainWrapper>
     <main>
         <Switch>
-            <Route exact path="/" component={TempPage} />
+            <Route exact path="/" component={LogIn} />
             <Route path="/log_in/confirm" component={LogInConfirmEmail} />
             <Route path="/log_in/input_email" component={LogInInputEmail} />
             {/*<Route path="/log_in/email/:id/:secret" component={EmailConfirmation} />*/}
