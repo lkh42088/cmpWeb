@@ -1,12 +1,14 @@
 /* eslint-disable no-return-assign */
-import React, { Component, useEffect } from 'react';
+import React, {Component, useEffect} from 'react';
 import {connect, useSelector, useDispatch} from "react-redux";
-import { withRouter } from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import NotificationSystem from 'rc-notification';
 
-import {fetchPosts, setDeviceType} from '../../redux/actions/assetsAction';
+import {
+  fetchPosts, setDeviceType, setApiPage, setSearch, setDeviceSelected,
+} from '../../redux/actions/assetsAction';
 
 import Topbar from './topbar/Topbar';
 import TopbarWithNavigation from './topbar_with_navigation/TopbarWithNavigation';
@@ -14,34 +16,38 @@ import Sidebar from './sidebar/Sidebar';
 import SidebarMobile from './topbar_with_navigation/sidebar_mobile/SidebarMobile';
 import Customizer from './customizer/Customizer';
 
-import { BasicNotification } from '../../shared/components/Notification';
-import { changeMobileSidebarVisibility, changeSidebarVisibility } from '../../redux/actions/sidebarActions';
-import { changeMenuTitle } from '../../redux/actions/titleActions';
+import {BasicNotification} from '../../shared/components/Notification';
+import {changeMobileSidebarVisibility, changeSidebarVisibility} from '../../redux/actions/sidebarActions';
+import {changeMenuTitle} from '../../redux/actions/titleActions';
 import {
-  changeThemeToDark, changeThemeToLight,
+    changeThemeToDark, changeThemeToLight,
 } from '../../redux/actions/themeActions';
 import {
-  changeDirectionToRTL, changeDirectionToLTR,
+    changeDirectionToRTL, changeDirectionToLTR,
 } from '../../redux/actions/rtlActions';
-import { changeBorderRadius, toggleBoxShadow, toggleTopNavigation } from '../../redux/actions/customizerActions';
 import {
-  CustomizerProps, SidebarProps, ThemeProps, RTLProps, UserProps, MenuTitleProps,
+    changeBorderRadius,
+    toggleBoxShadow,
+    toggleTopNavigation,
+} from '../../redux/actions/customizerActions';
+import {
+    CustomizerProps, SidebarProps, ThemeProps, RTLProps, UserProps, MenuTitleProps,
 } from '../../shared/prop-types/ReducerProps';
 import {logout} from "../../redux/actions/accountActions";
 
 let notification = null;
 
 const showNotification = (rtl) => {
-  notification.notice({
-    content: <BasicNotification
-      title="👋 Welcome to the Nubes-Bridge!"
-      message="I wish you success. Enjoy!"
-    />,
-    duration: 5,
-    closable: true,
-    style: { top: 0, left: 'calc(100vw - 100%)' },
-    className: `right-up ${rtl}-support`,
-  });
+    notification.notice({
+        content: <BasicNotification
+            title="👋 Welcome to the Nubes-Bridge!"
+            message="I wish you success. Enjoy!"
+        />,
+        duration: 5,
+        closable: true,
+        style: {top: 0, left: 'calc(100vw - 100%)'},
+        className: `right-up ${rtl}-support`,
+    });
 };
 
 class Layout extends Component {
@@ -97,15 +103,43 @@ class Layout extends Component {
     dispatch(changeMobileSidebarVisibility());
   };
 
-  changeMenuTitle = (title, subTitle, val) => {
-    const { assetState, dispatch } = this.props;
-    dispatch(changeMenuTitle(title, subTitle));
 
-    // ebjee
-    if (title === '자산관리') {
-      dispatch(setDeviceType(val));
-   }
-  };
+    changeMenuTitle = (title, subTitle, val) => {
+        const {assetState, dispatch} = this.props;
+        dispatch(changeMenuTitle(title, subTitle));
+
+        const submitDataPage = ({
+            deviceType: val,
+            orderBy: 'DeviceCode',
+            order: '1',
+            rowsPerPage: 10,
+            page: 0,
+            showPage: 1,
+            outFlag: '0',
+            offsetPage: 0,
+        });
+
+        const submitDataSearch = ({
+            customer: '',
+            deviceCode: '',
+            deviceType: '',
+            idc: '',
+            manufacture: '',
+            outFlag: '',
+            ownership: '',
+            ownershipDiv: '',
+            operatingFlag: true,
+            carryingFlag: true,
+        });
+
+        if (title === '자산관리') {
+            dispatch(setDeviceType(val));
+            //자산관리 메뉴 이동 시 초기화
+            dispatch(setDeviceSelected(''));
+            dispatch(setApiPage(submitDataPage));
+            dispatch(setSearch(submitDataSearch));
+        }
+    };
 
   changeToDark = () => {
     const { dispatch } = this.props;
@@ -159,59 +193,59 @@ class Layout extends Component {
       'layout--top-navigation': customizer.topNavigation,
     });
 
-    return (
-      <div className={layoutClass}>
-        <Customizer
-          customizer={customizer}
-          sidebar={sidebar}
-          theme={theme}
-          rtl={rtl}
-          changeSidebarVisibility={this.changeSidebarVisibility}
-          toggleTopNavigation={this.toggleTopNavigation}
-          changeToDark={this.changeToDark}
-          changeToLight={this.changeToLight}
-          changeToRTL={this.changeToRTL}
-          changeToLTR={this.changeToLTR}
-          changeBorderRadius={this.changeBorderRadius}
-          toggleBoxShadow={this.toggleBoxShadow}
-        />
-        {customizer.topNavigation
-          ? (
-            <TopbarWithNavigation
-              changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
-            />
-          )
-          : (
-            <Topbar
-              changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
-              changeSidebarVisibility={this.changeSidebarVisibility}
-              user={user}
-              logout={this.logout}
-            />
-          )
-        }
-        {customizer.topNavigation
-          ? (
-            <SidebarMobile
-              sidebar={sidebar}
-              changeToDark={this.changeToDark}
-              changeToLight={this.changeToLight}
-              changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
-            />
-          )
-          : (
-            <Sidebar
-              sidebar={sidebar}
-              changeToDark={this.changeToDark}
-              changeToLight={this.changeToLight}
-              changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
-              changeMenuTitle={this.changeMenuTitle}
-            />
-          )
-        }
-      </div>
-    );
-  }
+        return (
+            <div className={layoutClass}>
+                <Customizer
+                    customizer={customizer}
+                    sidebar={sidebar}
+                    theme={theme}
+                    rtl={rtl}
+                    changeSidebarVisibility={this.changeSidebarVisibility}
+                    toggleTopNavigation={this.toggleTopNavigation}
+                    changeToDark={this.changeToDark}
+                    changeToLight={this.changeToLight}
+                    changeToRTL={this.changeToRTL}
+                    changeToLTR={this.changeToLTR}
+                    changeBorderRadius={this.changeBorderRadius}
+                    toggleBoxShadow={this.toggleBoxShadow}
+                />
+                {customizer.topNavigation
+                    ? (
+                        <TopbarWithNavigation
+                            changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
+                        />
+                    )
+                    : (
+                        <Topbar
+                            changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
+                            changeSidebarVisibility={this.changeSidebarVisibility}
+                            user={user}
+                            logout={this.logout}
+                        />
+                    )
+                }
+                {customizer.topNavigation
+                    ? (
+                        <SidebarMobile
+                            sidebar={sidebar}
+                            changeToDark={this.changeToDark}
+                            changeToLight={this.changeToLight}
+                            changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
+                        />
+                    )
+                    : (
+                        <Sidebar
+                            sidebar={sidebar}
+                            changeToDark={this.changeToDark}
+                            changeToLight={this.changeToLight}
+                            changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
+                            changeMenuTitle={this.changeMenuTitle}
+                        />
+                    )
+                }
+            </div>
+        );
+    }
 }
 
 export default withRouter(connect(state => ({

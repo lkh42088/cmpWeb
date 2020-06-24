@@ -87,7 +87,7 @@ class AssetsLogo extends PureComponent {
 
         const deviceComments = (
             <Fragment>
-                <span>▶ 등록된 로고가 없습니다.</span>
+                <span>▶ 등록된 로그가 없습니다.</span>
             </Fragment>
         );
 
@@ -120,7 +120,7 @@ class AssetsLogo extends PureComponent {
 
         return (
             <div>
-                <Collapse title="로고 확인"
+                <Collapse title="로그 확인"
                           className="with-shadow modal_comment_register assets_write__modal__tableLine">
                     {deviceComments}
                 </Collapse>

@@ -12,7 +12,7 @@ import renderIntervalDatePickerField from "../../../../shared/components/form/In
 import renderDatePickerField from "../../../../shared/components/form/DatePicker";
 
 import AssetsWrite from "./AssetsWrite";
-import AssetsView from "./AssetsView";
+import _AssetsView from "./AssetsView";
 
 class AssetsModal extends PureComponent {
     static propTypes = {

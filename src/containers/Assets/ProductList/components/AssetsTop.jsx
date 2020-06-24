@@ -10,6 +10,7 @@ import DoneOutlineIcon from "@material-ui/icons/DoneOutline";
 import CreateIcon from "@material-ui/icons/Create";
 import InputIcon from "@material-ui/icons/Input";
 import LaunchIcon from "@material-ui/icons/Launch";
+import AutorenewIcon from "@material-ui/icons/Autorenew";
 import Select from 'react-select';
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
@@ -19,7 +20,7 @@ import AssetsWrite from "./AssetsWrite";
 import {
     fetchPosts,
     postDevice,
-    postDeviceOutFlag,
+    postDeviceOutFlag, setState,
 } from "../../../../redux/actions/assetsAction";
 import {UserProps, MenuTitleProps} from '../../../../shared/prop-types/ReducerProps';
 import API_ROUTE from "../../../../shared/apiRoute";
@@ -41,27 +42,85 @@ class AssetsTop extends PureComponent {
         super();
         this.state = {
             modalOpenFlag: false,
+            modalWarring: false,
+            warringTitle: '',
+            warringContents: '',
+            warringClass: 'modal-dialog--danger',
+            warringType: '',
         };
     }
 
+    static getDerivedStateFromProps = (nextProps, prevState) => {
+        /*console.log("nextProps : ", nextProps.assetState.stateVal);
+        console.log("type : ", nextProps.assetState.stateVal.type);
+        console.log("state : ", nextProps.assetState.stateVal.state);*/
+
+        if (nextProps.assetState.stateVal.type === 'device'
+            && nextProps.assetState.stateVal.division === 'outFlag') {
+            switch (nextProps.assetState.stateVal.state) {
+                case 'error':
+                    return {
+                        modalWarring: true,
+                        warringTitle: '경고',
+                        warringContents: '요청하신 작업에 실패하였습니다.',
+                        warringClass: 'modal-dialog--danger',
+                        warringType: 'danger',
+                    };
+                case 'success':
+                    return {
+                        modalWarring: true,
+                        warringTitle: '확인',
+                        warringContents: '요청하신 작업에 성공하였습니다.',
+                        warringClass: 'modal-dialog--primary',
+                        warringType: 'primary',
+                    };
+                case 'empty':
+                    return {
+                        modalWarring: true,
+                        warringTitle: '경고',
+                        warringContents: '선택된 장비가 없습니다.',
+                        warringClass: 'modal-dialog--danger',
+                        warringType: 'danger',
+                    };
+                default:
+                    break;
+            }
+        }
+        return null; // null 을 리턴하면 따로 업데이트 할 것은 없다라는 의미
+    };
+
     toggle = (e) => {
         this.setState(prevState => ({modalOpenFlag: !prevState.modalOpenFlag}));
+    };
+
+    warringToggle = (e) => {
+        const {assetState, dispatch} = this.props;
+        this.setState(prevState => ({modalWarring: !prevState.modalWarring}));
+
+        const stateVal = ({
+            type: 'device',
+            division: 'outFlag',
+            state: 'confirm',
+        });
+
+        dispatch(setState(stateVal));
     };
 
     toggleOutFlag = (val) => {
         let division = ',';
         let divisionCount = 0;
         let deviceCodeData = '';
-        console.log("toggleOutFlag start");
+
         const {assetState, dispatch} = this.props;
 
-        console.log("length : ", assetState.deviceSelected.length);
-        console.log("size : ", assetState.deviceSelected.size);
-
         if (assetState.deviceSelected.size === undefined) {
-            // modal로 경고등 띄우기
-            // alert("선택된 장비가 없습니다.");
-            console.log("선택된 장비가 없습니다.");
+            const stateVal = ({
+                type: 'device',
+                division: 'outFlag',
+                state: 'empty',
+            });
+
+            dispatch(setState(stateVal));
         } else {
             // eslint-disable-next-line no-shadow
             assetState.deviceSelected.forEach((value, key, map) => {
@@ -80,11 +139,10 @@ class AssetsTop extends PureComponent {
             //todo user setting
             const submitData = ({
                 userId: 'lkb',
-                outFlag: '1',
+                outFlag: val,
                 deviceCode: deviceCodeData,
             });
 
-            //console.log("value : ", value);
             //postDeviceOutFlag
             // 반출 요청을 할거다....(1)
             // 반입은 (0)....
@@ -163,8 +221,6 @@ class AssetsTop extends PureComponent {
 
         let rackLog;
 
-        console.log("values.rackLoc : ", values.rackLoc);
-
         if (values.rackLoc !== undefined) {
             rackLog = values.rackLoc.toString();
         } else {
@@ -217,7 +273,7 @@ class AssetsTop extends PureComponent {
         const {assetState, dispatch, menuTitle} = this.props;
 
         const {
-            modalOpenFlag,
+            modalOpenFlag, modalWarring, warringTitle, warringContents, warringClass, warringType,
         } = this.state;
 
         const modalClass = classNames({
@@ -228,19 +284,28 @@ class AssetsTop extends PureComponent {
 
         const componentOperatinng = (
             <span role="button" tabIndex="0"
-                  onClick={event => this.toggleOutFlag("0")}
-                  onKeyDown={event => this.toggleOutFlag("0")}>
+                  onClick={event => this.toggleOutFlag("1")}
+                  onKeyDown={event => this.toggleOutFlag("1")}>
                     <InputIcon/>&nbsp;
-                    반입
+                반출
             </span>
         );
 
         const componentCarrying = (
             <span role="button" tabIndex="0"
+                  onClick={event => this.toggleOutFlag("0")}
+                  onKeyDown={event => this.toggleOutFlag("0")}>
+                <LaunchIcon/>&nbsp;
+                반입
+            </span>
+        );
+
+        const componentOutFlagAll = (
+            <span role="button" tabIndex="0"
                   onClick={event => this.toggleOutFlag("1")}
                   onKeyDown={event => this.toggleOutFlag("1")}>
-                <LaunchIcon/>&nbsp;
-                    반출
+                <AutorenewIcon/>&nbsp;
+                반입/반출 자동 {/*없는 기능 ...*/}
             </span>
         );
 
@@ -249,8 +314,7 @@ class AssetsTop extends PureComponent {
         if (assetState.searchRd.operatingFlag === true && assetState.searchRd.carryingFlag === true) {
             viewComponentOutFlag = (
                 <Fragment>
-                    {componentOperatinng}
-                    {componentCarrying}
+                    &nbsp;
                 </Fragment>
             );
         } else if (assetState.searchRd.operatingFlag === true && assetState.searchRd.carryingFlag === false) {
@@ -279,7 +343,7 @@ class AssetsTop extends PureComponent {
                                 <span role="button" tabIndex="0"
                                       onClick={this.toggle} onKeyDown={this.toggle}>
                                 <CreateIcon/>&nbsp;
-                                        장비 등록</span>
+                                    장비 등록</span>
                                 {viewComponentOutFlag}
                             </ButtonToolbar>
                         </div>
@@ -294,6 +358,28 @@ class AssetsTop extends PureComponent {
                                      title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다."
                                      onSubmit={this.handleSubmit}
                         />
+                    </Modal>
+                    {/*1 : true , 0 : false */}
+                    {/*0 : 반입, 1 : 반출*/}
+                    <Modal
+                        isOpen={modalWarring}
+                        toggle={this.warringToggle}
+                        modalClassName="ltr-support"
+                        className={`modal-dialog-dialog ${warringClass}`}
+                    >
+                        <div className="modal__header">
+                            <button className="lnr lnr-cross modal__close-btn" type="button"
+                                    onClick={this.warringToggle}/>
+                            <span className="lnr lnr-cross-circle modal__title-icon"/>
+                            <h4 className="text-modal  modal__title">{warringTitle}</h4>
+                        </div>
+                        <div className="modal__body">
+                            {warringContents}
+                        </div>
+                        <ButtonToolbar className="modal__footer">
+                            <Button className="modal_ok" outline={warringType} color={warringType}
+                                    onClick={this.warringToggle}>Ok</Button>
+                        </ButtonToolbar>
                     </Modal>
                 </Card>
             </Col>
