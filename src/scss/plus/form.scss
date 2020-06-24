@@ -147,6 +147,10 @@
       padding-left: 5px;
       /*font-size: larger;*/
 
+      @include themify($themes) {
+        color: themed('colorText');
+      }
+
       & + .modal_form__form-group-field {
         @include directify($directions) {
           #{directed('margin-left')}: 0px;

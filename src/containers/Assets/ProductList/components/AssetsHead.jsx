@@ -7,6 +7,10 @@ import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import {RTLProps} from '../../../../shared/prop-types/ReducerProps';
+import {
+    fetchPosts,
+    setApiPage,
+} from '../../../../redux/actions/assetsAction';
 
 const rows = [
     /*{id: 'Idx', disablePadding: false, label: 'No.'},*/
@@ -66,6 +70,9 @@ class AssetsHead extends PureComponent {
     };
 
     static propTypes = {
+        // eslint-disable-next-line react/forbid-prop-types
+        assetState: PropTypes.object.isRequired,
+        dispatch: PropTypes.func.isRequired,
         numSelected: PropTypes.number.isRequired,
         onRequestSort: PropTypes.func.isRequired,
         onSelectAllClick: PropTypes.func.isRequired,
@@ -73,22 +80,53 @@ class AssetsHead extends PureComponent {
         orderBy: PropTypes.string.isRequired,
         rowCount: PropTypes.number.isRequired,
         rtl: RTLProps.isRequired,
-        // eslint-disable-next-line react/forbid-prop-types
-        assetState: PropTypes.object.isRequired,
+        selectedSize: PropTypes.number.isRequired,
+        rowsPerPage: PropTypes.number.isRequired,
     };
 
+    // eslint-disable-next-line consistent-return
+    static getDerivedStateFromProps = (nextProps, prevState) => {
+        if (nextProps.assetState.deviceType === 'server') {
+            return {
+                rows: rows.concat(
+                    {id: 'ip', disablePadding: false, label: 'IP'},
+                    {id: 'size', disablePadding: false, label: '크기'},
+                ),
+            };
+        }
 
-    componentWillMount() {
-        const {assetState} = this.props;
-        //updateHeadRows(assetState.deviceType);
-    }
+        if (nextProps.assetState.deviceType === 'network') {
+            return {
+                rows: rows.concat(
+                    {id: 'ip', disablePadding: false, label: 'IP'},
+                    {id: 'hwSn', disablePadding: false, label: 'HwSn'},
+                    {id: 'firmwareVersion', disablePadding: false, label: 'FirmwareVersion'},
+                    {id: 'warehousingDate', disablePadding: false, label: 'WarehousingDate'},
+                ),
+            };
+        }
 
-    componentWillReceiveProps(propData) {
-        /*컴포넌트가 prop 을 새로 받았을 때 실행
+        if (nextProps.assetState.deviceType === 'part') {
+            return {
+                rows: rows.concat(
+                    {id: 'hwSn', disablePadding: false, label: 'HwSn'},
+                    {id: 'warranty', disablePadding: false, label: 'Warranty'},
+                    {id: 'warehousingDate', disablePadding: false, label: 'WarehousingDate'},
+                ),
+            };
+        }
+
+      /*  if (nextProps.assetState.apiPageRd.order === prevState.stateOrder) {
+            onRequestSort(nextProps.assetState.apiPageRd.orderBy, nextProps.assetState.apiPageRd.order);
+        }*/
+    };
+
+    /*componentWillReceiveProps(propData) {
+        /!*컴포넌트가 prop 을 새로 받았을 때 실행
         prop 에 따라 state 를 업데이트 해야 할 때 사용
-        이 안에서 this.setState() 를 해도 추가적으로 렌더링하지 않음.*/
+        이 안에서 this.setState() 를 해도 추가적으로 렌더링하지 않음.*!/
         //updateHeadRows(assetState.deviceType);
-        //console.log("AssetsHead componentWillReceiveProps");
+        console.log("AssetsHead componentWillReceiveProps");
 
         this.setState({
             rows: rows.filter(id => id !== 'HwSn'),
@@ -134,17 +172,65 @@ class AssetsHead extends PureComponent {
                 ),
             });
         }
-    }
+    }*/
 
     createSortHandler = property => (event) => {
-        const {onRequestSort} = this.props;
-        onRequestSort(event, property);
+        const {
+            onRequestSort, dispatch, assetState, order,
+        } = this.props;
+        const {stateOrder, stateOrderBy} = this.state;
+        console.log("order : ", order, ", property : ", property);
+
+        let submitOrder = 'desc';
+
+        //dispatch(setApiPage());
+        if (order === 'desc') {
+            submitOrder = 'asc';
+        }
+
+        const submitData = ({
+            deviceType: assetState.apiPageRd.deviceType,
+            orderBy: property,
+            order: submitOrder,
+            rowsPerPage: assetState.apiPageRd.rowsPerPage,
+            page: assetState.apiPageRd.page,
+            showPage: assetState.apiPageRd.showPage,
+            outFlag: assetState.apiPageRd.outFlag,
+            offsetPage: assetState.apiPageRd.offsetPage,
+        });
+
+        dispatch(setApiPage(submitData));
+
+        setTimeout(() => {
+            onRequestSort(property, submitOrder);
+        }, 100);
     };
 
     render() {
         const {
-            onSelectAllClick, order, orderBy, numSelected, rowCount, rtl,
+            onSelectAllClick, order, orderBy, numSelected, rowCount, rtl, assetState,
+            selectedSize, rowsPerPage,
         } = this.props;
+
+        let allCheck = false;
+        if (selectedSize === undefined || selectedSize === 0) {
+            if (numSelected === rowCount) {
+                allCheck = true;
+            } else {
+                allCheck = false;
+            }
+        } else if (true) {
+            if (selectedSize === rowCount) {
+                allCheck = true;
+            } else {
+                allCheck = false;
+            }
+        }
+
+        /*console.log("all 클릭 numSelected : ", numSelected);
+        console.log("all 클릭 rowCount : ", rowCount);
+        console.log("---> size : ", assetState.deviceSelected.size);
+        console.log("allCheck : ", allCheck);*/
 
         return (
             <TableHead>
@@ -153,7 +239,7 @@ class AssetsHead extends PureComponent {
                         <Checkbox
                             className={`material-table__checkbox ${numSelected === rowCount && 'material-table__checkbox--checked'}`}
                             indeterminate={numSelected > 0 && numSelected < rowCount}
-                            checked={numSelected === rowCount}
+                            checked={allCheck}
                             onChange={onSelectAllClick}
                         />
                     </TableCell>
