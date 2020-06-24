@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Button, ButtonToolbar, Modal} from 'reactstrap';
 import classNames from 'classnames';
-import {Field, reduxForm} from "redux-form";
+import {Field, reduxForm, FieldArray} from "redux-form";
 import {findDOMNode} from "react-dom";
-import {Map} from "immutable";
+import {List, Map} from "immutable";
 import CalendarBlankIcon from "mdi-react/CalendarBlankIcon";
 import AccountSearchIcon from "mdi-react/AccountSearchIcon";
 import PlusIcon from "mdi-react/PlusIcon";
@@ -15,25 +15,20 @@ import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import {withTranslation} from "react-i18next";
-import TablePagination from "@material-ui/core/TablePagination";
-import {getCompanyByName, setAddEleData} from "../../../../redux/actions/assetsAction";
+import {
+    getCompanyByName, setViewModalDivision, setAddEleData,
+} from "../../../../redux/actions/assetsAction";
+import renderIntervalDatePickerField from "./IntervalDatePicker";
+import renderDatePickerField from "./DatePicker";
+import {changeField} from "../../../../redux/actions/authActions";
 
-import {RTLProps} from '../../../../shared/prop-types/ReducerProps';
-
-import TextEditor from "../../../../shared/components/text-editor/TextEditor";
-import renderIntervalDatePickerField from "../../../../shared/components/form/IntervalDatePicker";
-import renderDatePickerField from "../../../../shared/components/form/DatePicker";
-import renderSelectField from "../../../../shared/components/form/Select";
-import AssetsEdit from "./AssetsEdit";
-
-//const required = value => (value ? undefined : 'Required');
+function checkIP(strIP) {
+    const expUrl = /^(1|2)?\d?\d([.](1|2)?\d?\d){3}$/;
+    return expUrl.test(strIP);
+}
 
 function validate(values) {
     const errors = {};
-
-    if (!values.customer) {
-        errors.customer = "고객사를 선택해주세요.";
-    }
 
     if (values.deviceType === '0' || values.deviceType === undefined) {
         errors.deviceType = "장비구분을 선택해주세요.";
@@ -47,9 +42,24 @@ function validate(values) {
         errors.ownershipDiv = "소유권구분을 선택해주세요.";
     }
 
-    if (!values.ownerCompany) {
-        errors.ownerCompany = "소유업체명을 선택해주세요.";
-    }
+    /* // eslint-disable-next-line no-plusplus
+     for (let i = 0; i < elIpName.length; i++) {
+         elIpName[i].style.display = "none";
+     }
+
+     // eslint-disable-next-line guard-for-in,no-restricted-syntax
+     for (const arrData in values) {
+         console.log("arrData : ", arrData, " values : ", values[arrData]);
+         if (arrData.indexOf("ip_") === 0) {
+             IpArray = values[arrData];
+
+             elIp = document.getElementById(`errorTextIp_${arrData}`);
+
+             if (checkIP(IpArray) === false) {
+                 elIp.style.display = "";
+             }
+         }
+     }*/
 
     return errors;
 }
@@ -67,7 +77,13 @@ const renderCustomerField = field => (
             ><AccountSearchIcon/></span>
             {field.meta.touched && field.meta.error
             && <span className="warringStyle">&nbsp;※ {field.meta.error}</span>}
+            &nbsp;&nbsp;
+            <b className="text_cor_orange"
+               style={{lineHeight: "20px"}}>{field
+                .label.name} / {field.label.id}</b>
         </div>
+        {/*{field.meta.touched && field.meta.error
+        && <span className="modal_form__form-group-description">※ {field.meta.error}</span>}*/}
     </Fragment>
 );
 
@@ -81,7 +97,7 @@ const renderSelectCustomField = ({
                 {...input}
                 placeholder={placeholder}
             >
-                <option value="0">:: SELECT ::.</option>
+                <option value="0">선택하세요.</option>
                 {
                     codeDivision.code.map((d, index) => (
                         <option key={d.codeId.toString()}
@@ -93,7 +109,7 @@ const renderSelectCustomField = ({
     </Fragment>
 );
 
-class AssetsWrite extends PureComponent {
+class _AssetsEdit extends PureComponent {
     static propTypes = {
         // eslint-disable-next-line react/forbid-prop-types
         assetState: PropTypes.object.isRequired,
@@ -111,6 +127,7 @@ class AssetsWrite extends PureComponent {
 
     constructor() {
         super();
+        //console.log("👉 constructor start");
         this.state = {
             modal: false,
             showPassword: false,
@@ -122,11 +139,14 @@ class AssetsWrite extends PureComponent {
             AddSplaComponentMax: 0,
             RegisterId: '',
             IpArray: [],
+            SplaArray: [],
             warehousingDateError: 'test',
             searchToggleDivision: '',
             searchCompanyName: '',
             searchCustomerId: '',
             searchOwnerCompanyId: '',
+            deviceDataArray: {},
+            initializeData: ({}),
             ipArrayMap: {},
             splaArrayMap: {},
         };
@@ -134,9 +154,64 @@ class AssetsWrite extends PureComponent {
 
     componentDidMount() {
         const {
-            initialize,
+            initialize, assetState,
         } = this.props;
-        initialize({warehousingDate: new Date()});
+        const {
+            IpArray, SplaArray, initializeData, ipArrayMap, splaArrayMap,
+        } = this.state;
+
+        //console.log("👉 componentDidMount start");
+
+        const setIpArray = [];
+        const setSplaArray = [];
+        let setIpArrayTemp = new Map();
+        let setSplaArrayTemp = new Map();
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in assetState.deviceOri) {
+            if (arrData.indexOf("ip", 0) === 0) {
+                setIpArray.push(arrData);
+                if (arrData !== 'ip') {
+                    setIpArrayTemp = setIpArrayTemp.set(arrData, assetState.deviceOri[arrData]);
+                }
+            } else if (arrData.indexOf("spla", 0) === 0) {
+                setSplaArray.push(arrData);
+                if (arrData !== 'spla') {
+                    setSplaArrayTemp = setSplaArrayTemp.set(arrData, assetState.deviceOri[arrData]);
+                }
+            }
+        }
+
+        setIpArray.slice(1, setIpArray.length);
+        setIpArray.splice(0, 1);
+
+        //console.log("setIpArrayTemp : ", JSON.parse(JSON.stringify(setIpArrayTemp)));
+
+        this.setState({
+            IpArray: IpArray.concat(setIpArray),
+            SplaArray: SplaArray.concat(setSplaArray),
+            initializeData: assetState.deviceOri,
+        });
+
+        setIpArrayTemp = JSON.parse(JSON.stringify(setIpArrayTemp));
+        setSplaArrayTemp = JSON.parse(JSON.stringify(setSplaArrayTemp));
+
+        //console.log("setIpArrayTemp : ", setIpArrayTemp);
+        //console.log("setSplaArrayTemp : ", setSplaArrayTemp);
+
+        this.setState({
+            initializeData: ({
+                ...assetState.deviceOri,
+                inIpArray: setIpArray,
+            }),
+            ipArrayMap: assetState.deviceIp,
+            splaArrayMap: assetState.deviceSpla,
+        });
+
+        /*console.log("ipArrayMap : ", ipArrayMap);
+        console.log("splaArrayMap : ", splaArrayMap);*/
+
+        initialize(assetState.deviceOri);
     }
 
     searchToggle = (division) => {
@@ -163,20 +238,6 @@ class AssetsWrite extends PureComponent {
             searchCompanyName,
         } = this.state;
 
-        /*address: "서울시 강남구 언주로 517, 14층"
-        addressDetail: "(역삼동, 강남 KT-IDC)"
-        email: "idc@conbridge.co.kr"
-        homepage: "http://www.conbridge.co.kr"
-        hp: ""
-        idx: 6
-        isCompany: true
-        memo: ""
-        name: "(주)콘텐츠브릿지"
-        tel: "1899-2669"
-        termDate: "0001-01-01T00:00:00Z"
-        userId: "conbridge"
-        zipcode: "135-915"*/
-
         dispatch(getCompanyByName(searchCompanyName));
     };
 
@@ -185,7 +246,7 @@ class AssetsWrite extends PureComponent {
             assetState, dispatch, handleSubmit,
         } = this.props;
         const {searchToggleDivision} = this.state;
-        console.log("searchToggleDivision : ", searchToggleDivision);
+        //console.log("searchToggleDivision : ", searchToggleDivision);
 
         if (searchToggleDivision === 'customer') {
             this.setState({
@@ -206,6 +267,9 @@ class AssetsWrite extends PureComponent {
         const {
             assetState, dispatch, handleSubmit,
         } = this.props;
+        const {
+            initializeData,
+        } = this.state;
         let tempContent;
 
         this.setState({
@@ -223,7 +287,6 @@ class AssetsWrite extends PureComponent {
                         <Field
                             name="rack"
                             component="select">
-                            <option value="0">:: SELECT ::</option>
                             <option value="none">렉없음</option>
                             {assetState.subCodes.data
                                 .map(d => (Number(d.codeId) === Number(e.target.value)
@@ -250,7 +313,6 @@ class AssetsWrite extends PureComponent {
                         <Field
                             name="model"
                             component="select">
-                            <option value="0">:: SELECT ::</option>
                             {assetState.subCodes.data
                                 .map(d => (Number(d.codeId) === Number(e.target.value)
                                     && <option key={d.id} value={d.id}>{d.name}</option>))
@@ -269,7 +331,22 @@ class AssetsWrite extends PureComponent {
         }
     };
 
+    onClose = () => {
+        const {
+            assetState, dispatch, closeToggle,
+        } = this.props;
+        dispatch(setViewModalDivision('read'));
+        closeToggle(); //
+    };
+
+    showPassword = (e) => {
+        e.preventDefault();
+        this.setState(prevState => ({showPassword: !prevState.showPassword}));
+    };
+
     handleChangeIp = (e) => {
+        //console.log("🤑🤑 handleChangeIp start : ", e.charCode);
+        //console.log("🤑🤑 handleChangeIp start : ");
         const {assetState, dispatch} = this.props;
         const {
             ipArrayMap,
@@ -290,8 +367,6 @@ class AssetsWrite extends PureComponent {
 
         setIpArrayTemp = JSON.parse(JSON.stringify(setIpArrayTemp));
 
-        console.log("setIpArrayTemp : ", setIpArrayTemp);
-
         this.setState({
             ipArrayMap: setIpArrayTemp,
         });
@@ -305,7 +380,6 @@ class AssetsWrite extends PureComponent {
         const reName = e.target.name;
 
         let setSplaArrayTemp = new Map();
-        console.log("splaArrayMap : ", splaArrayMap);
 
         // todo... 나중에 map 으로 변경하는게 for 안돌리고 처리 괜찮을듯 (map 2개)
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
@@ -320,8 +394,6 @@ class AssetsWrite extends PureComponent {
         setSplaArrayTemp = JSON.parse(JSON.stringify(setSplaArrayTemp));
         //console.log("setSplaArrayTemp: ", setSplaArrayTemp);
 
-        console.log("setSplaArrayTemp : ", setSplaArrayTemp);
-
         this.setState({
             splaArrayMap: setSplaArrayTemp,
         });
@@ -329,119 +401,77 @@ class AssetsWrite extends PureComponent {
         dispatch(setAddEleData('spla', setSplaArrayTemp));
     };
 
-
-    onClose = () => {
-        const {closeToggle} = this.props;
-        closeToggle(); //
-    };
-
-    showPassword = (e) => {
-        e.preventDefault();
-        this.setState(prevState => ({showPassword: !prevState.showPassword}));
-    };
-
     setHtmlPlus = (val) => {
-        console.log("Plus val : ", val);
         const {assetState, dispatch} = this.props;
+        const {initialize} = this.props;
         const {
-            ipArrayMap, splaArrayMap,
+            initializeData, ipArrayMap, splaArrayMap,
             AddIpComponent, AddIpComponentMax, AddSplaComponent, AddSplaComponentMax,
+            IpArray, SplaArray,
         } = this.state;
         let tempContent;
-        if (val === 'ip') {
-            let setIpArrayTemp = new Map();
-            const reName = `ip${AddIpComponentMax}`;
 
-            if (AddIpComponent.length < 10) {
+        if (val === 'ip') {
+            const reName = `ip_${AddIpComponentMax + 1}`;
+            let setIpArrayTemp = new Map();
+
+            if (Object.keys(ipArrayMap).length < 10) {
                 // eslint-disable-next-line guard-for-in,no-restricted-syntax
                 for (const arrData in ipArrayMap) {
                     setIpArrayTemp = setIpArrayTemp.set(arrData, ipArrayMap[arrData]);
                 }
-                setIpArrayTemp = setIpArrayTemp.set(reName, "");
-                tempContent = (
-                    <div className="modal_form__form-group-field" key={reName}>
-                        <input
-                            name={`${reName}`}
-                            type="text"
-                            onBlur={this.handleChangeIp}
-                            className="input_col_5"
-                        />
-                        <svg className="mdi-icon " width="24" height="24" fill="currentColor"
-                             viewBox="0 0 24 24"
-                             onClick={event => this.setHtmlMinus(reName, val)}
-                             onKeyDown={event => this.setHtmlMinus(reName, val)}
-                             role="button" tabIndex="0">
-                            <MinusIcon/>
-                        </svg>
-                    </div>
-                );
 
+                setIpArrayTemp = setIpArrayTemp.set(reName, "");
                 setIpArrayTemp = JSON.parse(JSON.stringify(setIpArrayTemp));
 
                 this.setState({
+                    /*IpArray: IpArray.concat([reName]),
+                    initializeData: ({
+                        ...initializeData,
+                        [reName]: '',
+                        inIpArray: IpArray.concat(reName),
+                    }),*/
                     AddIpComponentMax: AddIpComponentMax + 1,
-                    AddIpComponent: AddIpComponent.concat(tempContent),
                     ipArrayMap: setIpArrayTemp,
                 });
+
                 dispatch(setAddEleData('ip', setIpArrayTemp));
             }
         } else if (val === 'spla') {
+            const reName = `spla${AddSplaComponentMax + 1}`;
             let setSplaArrayTemp = new Map();
-            const reName = `spla${AddSplaComponentMax}`;
 
-            if (AddSplaComponent.length < 10) {
+            if (Object.keys(splaArrayMap).length < 10) {
                 // eslint-disable-next-line guard-for-in,no-restricted-syntax
                 for (const arrData in splaArrayMap) {
                     setSplaArrayTemp = setSplaArrayTemp.set(arrData, splaArrayMap[arrData]);
                 }
-                tempContent = (
-                    <div className="modal_form__form-group-field" key={reName}>
-                        <select
-                            name={`${reName}`}
-                            onChange={this.handleChangeSpla}
-                        >
-                            <option value="0">:: SELECT ::</option>
-                            {assetState.codes.codeSpla
-                                .map(c => (
-                                    <option key={c.codeId.toString()}
-                                            value={c.codeId}
-                                    >{c.name}</option>
-                                ))}
-                        </select>
-                        <svg className="mdi-icon " width="24" height="24" fill="currentColor"
-                             viewBox="0 0 24 24"
-                             onClick={event => this.setHtmlMinus(reName, val)}
-                             onKeyDown={event => this.setHtmlMinus(reName, val)}
-                             role="button" tabIndex="0">
-                            <MinusIcon/>
-                        </svg>
-                    </div>
-                );
 
                 setSplaArrayTemp = setSplaArrayTemp.set(reName, "");
                 setSplaArrayTemp = JSON.parse(JSON.stringify(setSplaArrayTemp));
 
                 this.setState({
+                    /*SplaArray: SplaArray.concat([reName]),*/
                     AddSplaComponentMax: AddSplaComponentMax + 1,
-                    AddSplaComponent: AddSplaComponent.concat(tempContent),
                     splaArrayMap: setSplaArrayTemp,
                 });
+
                 dispatch(setAddEleData('spla', setSplaArrayTemp));
             }
         }
     };
 
-    setHtmlMinus = (reName, val) => {
+    setHtmlMinus = (reName, val, e) => {
         const {
-            AddIpComponent, AddSplaComponent, ipArrayMap, splaArrayMap,
+            IpArray, SplaArray, initializeData, ipArrayMap, splaArrayMap,
         } = this.state;
-        const {dispatch} = this.props;
+        const {initialize, dispatch} = this.props;
         let setIpArrayTemp = new Map();
         let setSplaArrayTemp = new Map();
 
         if (val === 'ip') {
-            const AddIpComponentTemp = AddIpComponent.slice(AddIpComponent.length)
-                .concat(AddIpComponent.filter(d => d.key !== reName));
+            /*            const AddIpComponentTemp = IpArray.slice(IpArray.length)
+                            .concat(IpArray.filter(d => d.toString() !== reName.toString()));*/
 
             // eslint-disable-next-line guard-for-in,no-restricted-syntax
             for (const arrData in ipArrayMap) {
@@ -453,13 +483,19 @@ class AssetsWrite extends PureComponent {
             setIpArrayTemp = JSON.parse(JSON.stringify(setIpArrayTemp));
 
             this.setState({
-                AddIpComponent: AddIpComponentTemp,
+                /*IpArray: AddIpComponentTemp,
+                initializeData: ({
+                    ...initializeData,
+                    inIpArray: AddIpComponentTemp,
+                   [reName.toString()]: '',
+                }),*/
                 ipArrayMap: setIpArrayTemp,
             });
             dispatch(setAddEleData('ip', setIpArrayTemp));
+            //initialize(initializeData);
         } else if (val === 'spla') {
-            const AddSplaComponentTemp = AddSplaComponent.slice(AddSplaComponent.length)
-                .concat(AddSplaComponent.filter(d => d.key !== reName));
+            /*            const AddSplaComponentTemp = SplaArray.slice(SplaArray.length)
+                            .concat(SplaArray.filter(d => d.toString() !== reName.toString()));*/
 
             // eslint-disable-next-line guard-for-in,no-restricted-syntax
             for (const arrData in splaArrayMap) {
@@ -470,7 +506,7 @@ class AssetsWrite extends PureComponent {
 
             setSplaArrayTemp = JSON.parse(JSON.stringify(setSplaArrayTemp));
             this.setState({
-                AddSplaComponent: AddSplaComponentTemp,
+                /*SplaArray: AddSplaComponentTemp,*/
                 splaArrayMap: setSplaArrayTemp,
             });
             dispatch(setAddEleData('spla', setSplaArrayTemp));
@@ -478,21 +514,27 @@ class AssetsWrite extends PureComponent {
     };
 
     render() {
+        //console.log("👉👉👉👉👉👉👉👉 render start edit");
         const {
             title, message,
             assetState, dispatch, handleSubmit,
         } = this.props;
         const {
+            deviceDataArray, initializeData, ipArrayMap, splaArrayMap,
             modal, RackComponent, ModelComponent, AddIpComponent, AddSplaComponent,
-            RegisterId, IpArray, warehousingDateError,
+            RegisterId, IpArray, SplaArray, warehousingDateError,
             searchCompanyName, searchCustomerId, searchOwnerCompanyId, searchToggleDivision,
+            manufacture, idc,
         } = this.state;
         const {showPassword} = this.state;
+        let deviceRawValue = new Map([]);
 
         const deviceStyle = {
             textDecoration: '#ffdd67 underline',
             fontWeight: 'bold',
         };
+
+        //console.log("★★★★ initializeData : ", initializeData);
 
         const modalClass = classNames({
             'assets_write__modal-dialog': true,
@@ -502,7 +544,89 @@ class AssetsWrite extends PureComponent {
 
         let viewContent;
 
-        //console.log("render searchCustomerId : ", searchCustomerId);
+        const deviceValue = assetState.device[0];
+        deviceRawValue = assetState.deviceOri;
+        const setIpArray = [];
+        const setSplaArray = [];
+
+        //console.log("★★★★ ipArrayMap : ", ipArrayMap, "redux : ", assetState.deviceIp);
+        //console.log("★★★★ splaArrayMap : ", splaArrayMap, "redux : ", assetState.deviceSpla);
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in ipArrayMap) {
+            //console.log("arrData : ", arrData, ", value : ", ipArrayMap[arrData]);
+            if (arrData.indexOf("ip", 0) === 0) {
+                setIpArray.push(
+                    <Fragment key={arrData}>
+                        {
+                            arrData !== undefined && arrData !== "" && arrData !== "ip"
+                            && (
+                                <div className="modal_form__form-group-field">
+                                    <input
+                                        name={`${arrData}`}
+                                        type="text"
+                                        onBlur={this.handleChangeIp}
+                                        className="input_col_5"
+                                        defaultValue={ipArrayMap[arrData]}
+                                    />
+                                    <svg className="mdi-icon " width="24" height="24"
+                                         fill="currentColor"
+                                         viewBox="0 0 24 24"
+                                         onClick={event => this.setHtmlMinus(`${arrData}`, 'ip', this)}
+                                         onKeyDown={event => this.setHtmlMinus(`${arrData}`, 'ip', this)}
+                                         role="button" tabIndex="0">
+                                        <MinusIcon/>
+                                    </svg>
+                                    <span id={`errorTextIp_${arrData}`} name="errorTextIp"
+                                          style={{display: "none"}}>
+                                    ※ IP를 정확히 입력해 주세요.</span>
+                                </div>
+                            )
+                        }
+                    </Fragment>,
+                );
+            }
+        }
+
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in splaArrayMap) {
+            //console.log("arrData : ", arrData, ", value : ", ipArrayMap[arrData]);
+            if (arrData.indexOf("spla", 0) === 0) {
+                setSplaArray.push(
+                    <Fragment key={arrData}>
+                        {
+                            arrData !== undefined && arrData !== "" && arrData !== "spla"
+                            && (
+                                <div className="modal_form__form-group-field">
+                                    <select
+                                        name={`${arrData}`}
+                                        defaultValue={splaArrayMap[arrData]}
+                                        onChange={this.handleChangeSpla}
+                                    >
+                                        <option value="0">선택하세요.</option>
+                                        {assetState.codes.codeSpla
+                                            .map(c => (
+                                                <option key={c.codeId.toString()}
+                                                        value={c.codeId}
+                                                >{c.name}</option>
+                                            ))}
+                                    </select>
+                                    <svg className="mdi-icon " width="24" height="24"
+                                         fill="currentColor"
+                                         viewBox="0 0 24 24"
+                                         onClick={event => this.setHtmlMinus(`${arrData}`, 'spla', this)}
+                                         onKeyDown={event => this.setHtmlMinus(`${arrData}`, 'spla', this)}
+                                         role="button" tabIndex="0">
+                                        <MinusIcon/>
+                                    </svg>
+                                </div>
+                            )
+                        }
+                    </Fragment>,
+                );
+            }
+        }
 
         switch (assetState.deviceType) {
             case 'server':
@@ -554,7 +678,7 @@ class AssetsWrite extends PureComponent {
                                     name="size"
                                     component="select"
                                 >
-                                    <option value="0">:: SELECT ::</option>
+                                    <option value="0">선택하세요.</option>
                                     {assetState.codes.codeSize
                                         .map((d, index) => (
                                             <option key={d.codeId.toString()}
@@ -566,32 +690,30 @@ class AssetsWrite extends PureComponent {
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">IP</span>
                             <div className="modal_form__form-group-field">
-                                <svg className="mdi-icon " width="24" height="24" fill="currentColor"
+                                <svg className="mdi-icon" width="24" height="24" fill="currentColor"
                                      viewBox="0 0 24 24"
                                      onClick={event => this.setHtmlPlus('ip')}
                                      onKeyDown={event => this.setHtmlPlus('ip')}
                                      role="button" tabIndex="0">
                                     <PlusIcon/>
                                 </svg>
-                                {/*TODO 디자인 통합 필요*/}
                                 <span className="cautionStyle">※ 최대 등록 개수는 10개 입니다.</span>
                             </div>
-                            {AddIpComponent}
+                            {setIpArray}
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">SPLA</span>
                             <div className="modal_form__form-group-field">
-                                <svg className="mdi-icon " width="24" height="24" fill="currentColor"
+                                <svg className="mdi-icon" width="24" height="24" fill="currentColor"
                                      viewBox="0 0 24 24"
                                      onClick={event => this.setHtmlPlus('spla')}
                                      onKeyDown={event => this.setHtmlPlus('spla')}
                                      role="button" tabIndex="0">
                                     <PlusIcon/>
                                 </svg>
-                                {/*TODO 디자인 통합 필요*/}
                                 <span className="cautionStyle">※ 최대 등록 개수는 10개 입니다.</span>
                             </div>
-                            {AddSplaComponent}
+                            {setSplaArray}
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">Rack Tag</span>
@@ -626,17 +748,16 @@ class AssetsWrite extends PureComponent {
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">IP</span>
                             <div className="modal_form__form-group-field">
-                                <svg className="mdi-icon " width="24" height="24" fill="currentColor"
+                                <svg className="mdi-icon" width="24" height="24" fill="currentColor"
                                      viewBox="0 0 24 24"
                                      onClick={event => this.setHtmlPlus('ip')}
                                      onKeyDown={event => this.setHtmlPlus('ip')}
                                      role="button" tabIndex="0">
                                     <PlusIcon/>
                                 </svg>
-                                {/*TODO 디자인 통합 필요*/}
                                 <span className="cautionStyle">※ 최대 등록 개수는 10개 입니다.</span>
                             </div>
-                            {AddIpComponent}
+                            {setIpArray}
                         </div>
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">FIRMWARE VERSION</span>
@@ -699,7 +820,7 @@ class AssetsWrite extends PureComponent {
                                     name="rackCode"
                                     component="select"
                                 >
-                                    <option value="0">:: SELECT ::</option>
+                                    <option value="0">선택하세요.</option>
                                     {assetState.codes.codeRackCode
                                         .map((d, index) => (
                                             <option key={d.codeId.toString()}
@@ -762,10 +883,11 @@ class AssetsWrite extends PureComponent {
                 <div className="assets_write__modal__body assets_write__modal__tableLine">
                     <form className="modal_form modal_form--horizontal"
                           onSubmit={handleSubmit}>
+                        {/*                        onSubmit={this.handleSubmit}>*/}
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label text_cor_green">장비코드</span>
                             <div className="modal_form__form-group-field">
-                                <b><h6 style={deviceStyle}>장비 등록 시 자동 생성</h6></b>
+                                <b><h6 style={deviceStyle}>{deviceValue.deviceCode}</h6></b>
                             </div>
                         </div>
                         <div className="modal_form__form-group">
@@ -775,7 +897,7 @@ class AssetsWrite extends PureComponent {
                                     name="idc"
                                     component="select"
                                     onChange={this.handleChange}>
-                                    <option value="0">:: SELECT ::</option>
+                                    <option value="0">선택하세요.</option>
                                     {assetState.codes.codeIdc
                                         .map((d, index) => (
                                             <option key={d.codeId.toString()}
@@ -783,7 +905,19 @@ class AssetsWrite extends PureComponent {
                                         ))}
                                 </Field>
                                 &nbsp;&nbsp;
-                                {RackComponent}
+                                {idc ? (
+                                    RackComponent
+                                ) : (
+                                    <Field
+                                        name="rack"
+                                        component="select">
+                                        <option value="0">선택하세요.</option>
+                                        {assetState.subCodes.data
+                                            .map(d => (Number(d.codeId) === Number(deviceRawValue.idc)
+                                                && <option key={d.id} value={d.id}>{d.name}</option>))
+                                        }
+                                    </Field>
+                                )}
                             </div>
                         </div>
                         <div className="modal_form__form-group">
@@ -793,15 +927,36 @@ class AssetsWrite extends PureComponent {
                                     name="manufacture"
                                     component="select"
                                     onChange={this.handleChange}>
-                                    <option value="0">:: SELECT ::</option>
+                                    <option value="0">선택하세요.</option>
                                     {assetState.codes.codeManufacture
                                         .map((d, index) => (
                                             <option key={d.codeId.toString()}
                                                     value={d.codeId}>{d.name}</option>
                                         ))}
                                 </Field>
+                                {/*                                <select name="manufacture"
+                                        onChange={this.handleChange}>
+                                    <option value="0">선택하세요.</option>
+                                    {assetState.codes.codeManufacture
+                                        .map((d, index) => (
+                                            <option key={d.codeId.toString()}
+                                                    value={d.codeId.toString()}>{d.codeId}/{d.name}</option>
+                                        ))}
+                                </select>*/}
                                 &nbsp;&nbsp;
-                                {ModelComponent}
+                                {manufacture ? (
+                                    ModelComponent
+                                ) : (
+                                    <Field
+                                        name="model"
+                                        component="select">
+                                        <option value="0">선택하세요.</option>
+                                        {assetState.subCodes.data
+                                            .map(d => (Number(d.codeId) === Number(deviceRawValue.manufacture)
+                                                && <option key={d.id} value={d.id}>{d.name}</option>))
+                                        }
+                                    </Field>
+                                )}
                             </div>
                         </div>
                         <div className="modal_form__form-group">
@@ -832,14 +987,16 @@ class AssetsWrite extends PureComponent {
                             />
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label text_cor_orange">고객사</span>
+                            <span className="modal_form__form-group-label">고객사</span>
                             <Field
                                 name="customer"
                                 type="text"
                                 className="input_col_7"
                                 placeholder="고객사"
+                                label={{name: deviceValue.customerName, id: deviceValue.customer}}
                                 initialValues={searchCustomerId}
                                 component={renderCustomerField}
+                                /*ref={(ref) => { this.input = ref; }}*/
                                 searchToggle={event => this.searchToggle('customer')}
                                 ref={(ref) => {
                                     // eslint-disable-next-line react/no-find-dom-node
@@ -853,15 +1010,18 @@ class AssetsWrite extends PureComponent {
                                 }}
                                 withRef
                             />
+                            {/* eslint-disable-next-line no-return-assign */}
+                            {/*<input ref={(ref => this.input = ref)}/>*/}
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label text_cor_orange">소유업체명</span>
+                            <span className="modal_form__form-group-label">소유업체명</span>
                             <Field
                                 name="ownerCompany"
                                 type="text"
                                 className="input_col_7"
                                 placeholder="소유업체명"
                                 initialValues={searchOwnerCompanyId}
+                                label={{name: deviceValue.ownerCompanyName, id: deviceValue.ownerCompany}}
                                 component={renderCustomerField}
                                 searchToggle={event => this.searchToggle('ownerCompany')}
                                 ref={(ref) => {
@@ -886,7 +1046,6 @@ class AssetsWrite extends PureComponent {
                                     component="input"
                                     type="text"
                                     className="input_col_10"
-                                    placeholder="HW S/N"
                                 />
                             </div>
                         </div>
@@ -896,6 +1055,7 @@ class AssetsWrite extends PureComponent {
                                 <Field
                                     name="rentDate"
                                     className="input_col_5"
+                                    value={deviceRawValue.rentDate}
                                     component={renderIntervalDatePickerField}
                                 />
                             </div>
@@ -906,6 +1066,7 @@ class AssetsWrite extends PureComponent {
                                 <Field
                                     name="warehousingDate"
                                     className="input_col_5"
+                                    value={deviceRawValue.warehousingDate}
                                     component={renderDatePickerField}
                                 />
                                 <div className="modal_form__form-group-icon">
@@ -921,7 +1082,6 @@ class AssetsWrite extends PureComponent {
                                     component="input"
                                     className="input_col_5"
                                     type="number"
-                                    label="5000"
                                     placeholder="원가"
                                 />
                             </div>
@@ -953,36 +1113,28 @@ class AssetsWrite extends PureComponent {
                         <div className="modal_btn">
                             <ButtonToolbar className="assets_write__modal__footer">
                                 <Button className="assets_write__modal_ok" color="primary"
-                                        type="submit">등록</Button>
+                                        type="submit">수정</Button>
                                 <Button className="assets_write__modal_cancel"
                                         onClick={this.onClose}>닫기</Button>
+                                {/*<Button type="submit">Submit[test]</Button>*/}
                             </ButtonToolbar>
                         </div>
                     </form>
-                </div>
-                <Modal
-                    isOpen={modal}
-                    toggle={this.searchToggle}
-                    className={`assets_write__modal-dialog assets_write__modal-dialog--success ${modalClass}`}
-                >
-                    <div className="search_card_body">
-                        <div className="assets_write__modal__header">
-                            &nbsp;&nbsp;
-                            <button className="lnr lnr-cross assets_write__modal__close__notitle-btn" type="button"
-                                    onClick={this.searchToggle}/>
-                        </div>
+                    {/*<Modal
+                        isOpen={modal}
+                        toggle={this.searchToggle}
+                        className={`assets_write__modal-dialog assets_write__modal-dialog--success ${modalClass}`}
+                    >
                         <div className="assets_write__modal__body assets_write__modal__tableLine">
                             <div className="modal_form__form-group">
                                 <span
                                     className="modal_form__form-group-label text_cor_green">
-                                    <input name="searchCompanyName" className="search_input"
-                                           value={searchCompanyName}
-                                           placeholder="고객사명..."
-                                           onChange={this.handleChange}/>
+                                    고객사명 : <input name="searchCompanyName" value={searchCompanyName}
+                                                  onChange={this.handleChange}/>
                                 </span>
-                                {/*<button type="submit" onClick={event => this.searchCompany()}>검색</button>*/}
-                                <Button className="search_btn" type="submit" color="primary"
-                                        onClick={event => this.searchCompany()}>검색</Button>
+                                <button type="submit"
+                                        onClick={event => this.searchCompany()}>검색</button>
+                                <br/>
                                 <span className="modal_form__form-group-label text_cor_blue">
                                     ※ 업체명으로 검색하세요.
                                 </span>
@@ -993,14 +1145,53 @@ class AssetsWrite extends PureComponent {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </Modal>
+                        <ButtonToolbar className="assets_write__modal__footer_comment">
+                            <Button className="assets_write__modal_cancel"
+                                    onClick={this.searchToggle}>Cancel</Button>
+                        </ButtonToolbar>
+                    </Modal>*/}
+                    <Modal
+                        isOpen={modal}
+                        toggle={this.searchToggle}
+                        className={`assets_write__modal-dialog assets_write__modal-dialog--success ${modalClass}`}
+                    >
+                        <div className="search_card_body">
+                            <div className="assets_write__modal__header">
+                                &nbsp;&nbsp;
+                                <button className="lnr lnr-cross assets_write__modal__close__notitle-btn" type="button"
+                                        onClick={this.searchToggle}/>
+                            </div>
+                            <div className="assets_write__modal__body assets_write__modal__tableLine">
+                                <div className="modal_form__form-group">
+                                <span
+                                    className="modal_form__form-group-label text_cor_green">
+                                    <input name="searchCompanyName" className="search_input"
+                                           value={searchCompanyName}
+                                           placeholder="고객사명..."
+                                           onChange={this.handleChange}/>
+                                </span>
+                                    {/*<button type="submit" onClick={event => this.searchCompany()}>검색</button>*/}
+                                    <Button className="search_btn" type="submit" color="primary"
+                                            onClick={event => this.searchCompany()}>검색</Button>
+                                    <span className="modal_form__form-group-label text_cor_blue">
+                                    ※ 업체명으로 검색하세요.
+                                </span>
+                                    <div className="modal_form__form-group-field">
+                                        <Table className="material-table" size="small">
+                                            {viewSearchCompany}
+                                        </Table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </Modal>
+                </div>
             </div>
         );
     }
 }
 
 export default reduxForm({
-    form: 'AssetsWriteForm', // a unique identifier for this form
+    form: 'AssetsEditForm', // a unique identifier for this form
     validate,
-})(withTranslation('common')(AssetsWrite));
+})(withTranslation('common')(_AssetsEdit));

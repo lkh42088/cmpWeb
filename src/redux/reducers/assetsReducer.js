@@ -14,11 +14,13 @@ import {
     SET_ADD_ELE_IP_DATA, SET_ADD_ELE_SPLA_DATA,
     SET_DEVICE_SELECTED, SET_DEVICE_OUTFLAG, SET_DEVICE_TYPE,
     SET_DEVICE_SEARCH, SET_DEVICE_OUTFLAG_OPERATING, SET_DEVICE_OUTFLAG_CARRYING,
+    SET_API_PAGE, SET_ASSETS_PAGE,
 } from "../actions/assetsAction";
 
 export const initialState = {
     deviceType: 'server',
     deviceByDeviceCode: '1',
+    assetsPage: 'list',
     viewModalDivison: 'read',
     deviceOutFlag: '0',
     device: {},
@@ -59,6 +61,16 @@ export const initialState = {
         outFlag: '',
         size: '',
         totalPage: '',
+    },
+    apiPageRd: {
+        deviceType: 'server',
+        orderBy: 'DeviceCode',
+        order: '1',
+        rowsPerPage: 10,
+        page: 0,
+        showPage: 1,
+        outFlag: '0',
+        offsetPage: 0,
     },
     stateVal: {
         type: '',
@@ -194,6 +206,16 @@ const assetsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 searchRd: payload,
+            };
+        case SET_API_PAGE:
+            return {
+                ...state,
+                apiPageRd: payload,
+            };
+        case SET_ASSETS_PAGE:
+            return {
+                ...state,
+                assetsPage: payload,
             };
         /*case SET_DEVICE_OUTFLAG_OPERATING:
             return {

@@ -26,6 +26,8 @@ export const SET_DEVICE_TYPE = 'SET_DEVICE_TYPE';
 export const SET_DEVICE_SEARCH = 'SET_DEVICE_SEARCH';
 export const SET_DEVICE_OUTFLAG_OPERATING = 'SET_DEVICE_OUTFLAG_OPERATING';
 export const SET_DEVICE_OUTFLAG_CARRYING = 'SET_DEVICE_OUTFLAG_CARRYING';
+export const SET_API_PAGE = 'SET_API_PAGE';
+export const SET_ASSETS_PAGE = 'SET_ASSETS_PAGE';
 
 // const API_ROUTE = 'http://127.0.0.1:8081/v1';
 // order direction
@@ -91,19 +93,8 @@ export const setViewModalDivision = dispatchVal => async (dispatch) => {
 export const getCodes = dispatchVal => async (dispatch) => {
     try {
         console.log("💎 getCodes start");
-        //console.log("dispatchVal : ", dispatchVal);
-        // API_ROUTE/code/$(code)/$(subcode)
         const Codes = await axios.get(`${API_ROUTE}/codes`);
-        // CodeID: 1
-        // Name: "자사장비"
-        // Order: 1
-        // SubType: "ownership_cd_1"
-        // Type: "total"
         const SubCodes = await axios.get(`${API_ROUTE}/subcodes`);
-        // CodeID: 58
-        // ID: 7
-        // Name: "MCS 7800"
-        // Order: 1
 
         const codeType = `device_${dispatchVal.deviceType}`;
 
@@ -118,15 +109,7 @@ export const getCodes = dispatchVal => async (dispatch) => {
         const RackCode = setCodeMap(Codes.data, 'total', 'rack_code_cd');
 
         const submitData = ({
-            DeviceType,
-            Manufacture,
-            Ownership,
-            OwnershipDiv,
-            Idc,
-            Size,
-            Spla,
-            Customer,
-            RackCode,
+            DeviceType, Manufacture, Ownership, OwnershipDiv, Idc, Size, Spla, Customer, RackCode,
         });
 
         dispatch({
@@ -147,24 +130,49 @@ export const getCodes = dispatchVal => async (dispatch) => {
 export const fetchPosts = assetState => async (dispatch) => {
     try {
         // first get device
-        console.log("💎 fetchPosts start");
+        console.log("💎 fetchPosts start : ", assetState.apiPageRd.order);
+        //console.log("assetState : ", assetState.apiPageRd);
 
         const deviceTypeData = assetState.deviceType;
-        const orderBy = 'DeviceCode';
-        const order = 1;
-        const rowsPerPage = 10;
         const outFlag = assetState.deviceOutFlag;
-        const offsetPage = 0;
-        const res = await axios.get(`${API_ROUTE}/page/${deviceTypeData}/${outFlag}/${rowsPerPage}/1/${orderBy}/${order}/${offsetPage}`);
+        const order = checkOrder(assetState.apiPageRd.order);
 
-        //console.log("res : ", res.data);
+        // v1/search/devices/:type/:outFlag/:row/:page/:order/:dir/:offsetPage
+        const url = `${API_ROUTE}/search/devices/${assetState.deviceType}/${assetState.apiPageRd.rowsPerPage}/${assetState.apiPageRd.showPage}/${assetState.apiPageRd.orderBy}/${order}/${assetState.apiPageRd.offsetPage}`;
 
-        dispatch({
-            type: GET_DEVICES,
-            payload: res.data,
-            deviceType: deviceTypeData,
-            page: 0,
-        });
+        const postJsonData = JSON.stringify(assetState.searchRd);
+
+        axios({
+            method: 'post',
+            url,
+            data: postJsonData,
+        })
+            .then((response) => {
+                const dispatchVal = ({
+                    deviceType: assetState.deviceType,
+                    orderBy: assetState.apiPageRd.orderBy,
+                    order,
+                    rowsPerPage: assetState.apiPageRd.rowsPerPage,
+                    showPage: assetState.page.page,
+                    outFlag: assetState.deviceOutFlag,
+                    offsetPage: assetState.apiPageRd.offsetPage,
+                });
+
+                dispatch({
+                    type: GET_DEVICES,
+                    payload: response.data,
+                    deviceType: deviceTypeData,
+                    page: 0,
+                });
+
+                dispatch({
+                    type: SET_API_PAGE,
+                    payload: dispatchVal,
+                });
+            })
+            .catch((error) => {
+                console.log('error : ', error.response);
+            });
     } catch (error) {
         dispatch({
             type: GET_DEVICES,
@@ -180,20 +188,10 @@ export const fetchPostsCheckCount = (assetState, dispatchVal) => async (dispatch
     try {
         console.log("💎 fetchPostsCheckCount start");
         const order = checkOrder(dispatchVal.order);
-        const offsetPage = (dispatchVal.rowsPerPage * (dispatchVal.showPage - 1));
-        //const res = await
-        //axios.get(`${API_ROUTE}/page/${dispatchVal.deviceType}/${dispatchVal.outFlag}/${dispatchVal.rowsPerPage}/${dispatchVal.showPage + 1}/${dispatchVal.orderBy}/${order}/${offsetPage}`);
-        const url = `${API_ROUTE}/search/devices/${dispatchVal.deviceType}/${dispatchVal.outFlag}/${dispatchVal.rowsPerPage}/${dispatchVal.showPage}/${dispatchVal.orderBy}/${order}/${offsetPage}`;
+        //const offsetPage = (dispatchVal.rowsPerPage * (dispatchVal.showPage - 1));
+        const url = `${API_ROUTE}/search/devices/${dispatchVal.deviceType}/${dispatchVal.rowsPerPage}/${dispatchVal.showPage}/${dispatchVal.orderBy}/${order}/${dispatchVal.offsetPage}`;
 
         const postJsonData = JSON.stringify(assetState.searchRd);
-        /*
-        outFlag
-        1 : true , 0 : false
-        outFlagRd: {
-            operatingFlag: '1',
-            carryingFlag: '1',
-            },
-        */
 
         axios({
             method: 'post',
@@ -206,6 +204,10 @@ export const fetchPostsCheckCount = (assetState, dispatchVal) => async (dispatch
                     payload: response.data,
                     deviceType: dispatchVal.deviceType,
                     page: dispatchVal.showPage,
+                });
+                dispatch({
+                    type: SET_API_PAGE,
+                    payload: dispatchVal,
                 });
             })
             .catch((error) => {
@@ -231,11 +233,10 @@ export const fetchPostSearchDevice = (assetState, dispatchVal) => async (dispatc
         const orderBy = 'DeviceCode';
         const order = 1;
         const rowsPerPage = 10;
-        const outFlag = 0;
         const offsetPage = 0;
 
         // v1/search/devices/:type/:outFlag/:row/:page/:order/:dir/:offsetPage
-        const url = `${API_ROUTE}/search/devices/${assetState.deviceType}/${outFlag}/${rowsPerPage}/1/${orderBy}/${order}/${offsetPage}`;
+        const url = `${API_ROUTE}/search/devices/${assetState.deviceType}/${rowsPerPage}/1/${orderBy}/${order}/${offsetPage}`;
 
         if (dispatchVal.customer !== '' && dispatchVal.customer !== undefined) {
             axios({
@@ -325,7 +326,7 @@ export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
         //router.GET("/v1/log/device/:value", h.GetDevicesByLog)
         const logs = await axios.get(`${API_ROUTE}/log/device/${deviceCode}`);
 
-        console.log("★★★★★★★★★★★★★★★★★logs : ", logs.data);
+        //console.log("★★★★★★★★★★★★★★★★★logs : ", logs.data);
 
         dispatch({
             type: GET_DEVICE_BY_DEVICECODE,
@@ -350,19 +351,19 @@ export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
 export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) => {
     try {
         // API_ROUTE/raw/device/$(type)/$(deviceCode)
-        console.log("💎 getDeviceOriByIdx start");
+        console.log("💎 getDeviceOriByIdx start : ", deviceCode, deviceType);
         const res = await axios.get(`${API_ROUTE}/raw/device/${deviceType}/${deviceCode}`);
 
-        console.log("특정 장비 ori res : ", res.data);
-        console.log("deviceType : ", deviceType);
+        //console.log("특정 장비 ori res : ", res.data);
+        //console.log("deviceType : ", deviceType);
 
         let deviceIpArray = new Map();
         let deviceSplaArray = new Map();
         const jsonData = res.data[0];
         let IpArray = '';
         let SplaArray = '';
-        let ipCheckCount = 1000;
-        let splaCheckCount = 1000;
+        let ipCheckCount = 0;
+        let splaCheckCount = 0;
 
         switch (deviceType) {
             case 'server':
@@ -380,6 +381,8 @@ export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) =>
                             ipCheckCount += 1
                     )));
 
+                //console.log("deviceIpArray : ", JSON.parse(JSON.stringify(deviceIpArray)));
+
                 dispatch({
                     type: SET_ADD_ELE_IP_DATA,
                     payload: JSON.parse(JSON.stringify(deviceIpArray)),
@@ -390,12 +393,15 @@ export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) =>
                 // eslint-disable-next-line no-loop-func,no-return-assign
                 SplaArray.map(d => (
                     d !== undefined && d !== "" && (
-                        splaCheckCount === 1000 ? (
+                        /*splaCheckCount === 1000 ? (
                             splaCheckCount += 1,
                                 deviceSplaArray = deviceSplaArray.set(`spla0`, d)
                         ) : (
                             deviceSplaArray = deviceSplaArray.set(`spla${splaCheckCount}`, d)
-                        )
+                        )*/
+
+                        deviceSplaArray = deviceSplaArray.set(`spla_${splaCheckCount}`, d),
+                            splaCheckCount += 1
                     )));
 
                 dispatch({
@@ -409,12 +415,6 @@ export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) =>
                 // eslint-disable-next-line no-loop-func,no-return-assign
                 IpArray.map(d => (
                     d !== undefined && d !== "" && (
-                        /*                ipCheckCount === 1000 ? (
-                                            ipCheckCount += 1,
-                                                deviceIpArray = deviceIpArray.set(`ip_0`, d)
-                                        ) : (
-                                            deviceIpArray = deviceIpArray.set(`ip_${ipCheckCount}`, d)
-                                        )*/
                         deviceIpArray = deviceIpArray.set(`ip_${ipCheckCount}`, d),
                             ipCheckCount += 1
                     )));
@@ -682,16 +682,9 @@ export const postDeviceComment = (division, assetState, submitData) => async (di
 // 장비 반입/반출 update
 export const postDeviceOutFlag = (assetState, dispatchVal) => async (dispatch) => {
     try {
-        //todo 잠깐!! deviceCode 값 여러개일 수 있음 확인
-        /*"API_ROUTE/devices/update/$(type)
-
-        jsonData ->
-        {""userId"":"""",""outFlag"":"""",""deviceCode"":""""}"*/
         const method = 'put';
         const url = `${API_ROUTE}/devices/update/${assetState.deviceType}`;
         const postJsonData = JSON.stringify(dispatchVal);
-
-        //console.log("postJsonData : ", postJsonData);
 
         axios({
             method,
@@ -700,10 +693,30 @@ export const postDeviceOutFlag = (assetState, dispatchVal) => async (dispatch) =
         })
             .then((response) => {
                 console.log("success");
+
+                const stateVal = ({
+                    type: 'device',
+                    division: 'outFlag',
+                    state: 'success',
+                });
+                dispatch({
+                    type: SET_STATUS,
+                    payload: stateVal,
+                });
             })
             .catch((error) => {
                 console.log('error : ', error.response);
                 console.log("error");
+                const stateVal = ({
+                    type: 'device',
+                    division: 'outFlag',
+                    state: 'error',
+                });
+
+                dispatch({
+                    type: SET_STATUS,
+                    payload: stateVal,
+                });
             });
     } catch (error) {
         console.log("submitDeviceOutFlag error : ", error);
@@ -736,6 +749,8 @@ export const setAddEleData = (type, value) => async (dispatch) => {
 export const setDeviceSelected = dispatchVal => async (dispatch) => {
     try {
         console.log("💎 setDeviceSelected start"); //SET_DEVICE_SELECTED
+
+        console.log("dispatchVal : ", dispatchVal);
 
         dispatch({
             type: SET_DEVICE_SELECTED,
@@ -816,5 +831,47 @@ export const setDeviceType = dispatchVal => async (dispatch) => {
         });
     } catch (error) {
         console.log("setDeviceType error : ", error);
+    }
+};
+
+// assetsPage 저장
+export const setAssetsPage = dispatchVal => async (dispatch) => {
+    try {
+        console.log("💎 setAssetsPage start"); //SET_ASSETS_PAGE
+
+        dispatch({
+            type: SET_ASSETS_PAGE,
+            payload: dispatchVal,
+        });
+    } catch (error) {
+        console.log("setDeviceType error : ", error);
+    }
+};
+
+// apiPage 저장 SET_API_PAGE
+export const setApiPage = dispatchVal => async (dispatch) => {
+    try {
+        console.log("💎 setApiPage start"); //SET_API_PAGE
+
+        dispatch({
+            type: SET_API_PAGE,
+            payload: dispatchVal,
+        });
+    } catch (error) {
+        console.log("setApiPage error : ", error);
+    }
+};
+
+// searchRd 저장
+export const setSearch = dispatchVal => async (dispatch) => {
+    try {
+        console.log("💎 setSearch start");
+
+        dispatch({
+            type: SET_DEVICE_SEARCH,
+            payload: dispatchVal,
+        });
+    } catch (error) {
+        console.log("setSearch error : ", error);
     }
 };
