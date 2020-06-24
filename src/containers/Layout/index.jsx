@@ -231,6 +231,8 @@ class Layout extends Component {
                             changeToDark={this.changeToDark}
                             changeToLight={this.changeToLight}
                             changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
+                            user={user}
+                            logout={this.logout}
                         />
                     )
                     : (
@@ -240,6 +242,8 @@ class Layout extends Component {
                             changeToLight={this.changeToLight}
                             changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
                             changeMenuTitle={this.changeMenuTitle}
+                            user={user}
+                            logout={this.logout}
                         />
                     )
                 }

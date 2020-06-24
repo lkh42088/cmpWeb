@@ -212,6 +212,7 @@
 
 // 사이드바 TITLE
 .cb_sidebar__link-title {
+  padding-left: 10px; // Add [25June2020,khlee]
   margin: 0;
   font-size: 14px;
   line-height: 16px;
@@ -409,6 +410,7 @@
   @include themify($themes) {
     border: 1px solid themed('colorShadow');
     box-shadow: 2px 1px 2px 0px themed('colorShadow'); // [23June2020,khlee]
+    border-radius: 0 3px 3px 0;
   }
 }
 
