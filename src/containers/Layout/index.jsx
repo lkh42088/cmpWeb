@@ -108,31 +108,32 @@ class Layout extends Component {
         const {assetState, dispatch} = this.props;
         dispatch(changeMenuTitle(title, subTitle));
 
-        const submitDataPage = ({
-            deviceType: val,
-            orderBy: 'DeviceCode',
-            order: '1',
-            rowsPerPage: 10,
-            page: 0,
-            showPage: 1,
-            outFlag: '0',
-            offsetPage: 0,
-        });
+        // 자산관리 메뉴 선택 시
+        if (title === 'SERVER' || title === 'NETWORK') {
+            const submitDataPage = ({
+                deviceType: val,
+                orderBy: 'DeviceCode',
+                order: '1',
+                rowsPerPage: 10,
+                page: 0,
+                showPage: 1,
+                outFlag: '0',
+                offsetPage: 0,
+            });
 
-        const submitDataSearch = ({
-            customer: '',
-            deviceCode: '',
-            deviceType: '',
-            idc: '',
-            manufacture: '',
-            outFlag: '',
-            ownership: '',
-            ownershipDiv: '',
-            operatingFlag: true,
-            carryingFlag: true,
-        });
+            const submitDataSearch = ({
+                customer: '',
+                deviceCode: '',
+                deviceType: '',
+                idc: '',
+                manufacture: '',
+                outFlag: '',
+                ownership: '',
+                ownershipDiv: '',
+                operatingFlag: true,
+                carryingFlag: true,
+            });
 
-        if (title === '자산관리') {
             dispatch(setDeviceType(val));
             //자산관리 메뉴 이동 시 초기화
             dispatch(setDeviceSelected(''));
