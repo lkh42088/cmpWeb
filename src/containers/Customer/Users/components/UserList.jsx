@@ -235,8 +235,7 @@ const UserList = () => {
 
     const tableRows = (
         <TableBody>
-            { data
-                .map((row) => {
+            { data && data.map((row) => {
                     const isSelected = getSelected(row.idx);
                     return (
                         <TableRow
@@ -309,7 +308,7 @@ const UserList = () => {
                                     orderBy={orderBy}
                                     onSelectAllClick={handleSelectAllClick}
                                     onRequestSort={handleRequestSort}
-                                    rowCount={data.length}
+                                    rowCount={data && data.length ? data.length : 0}
                                     rows={headRows}
                                 />
                                 {tableRows}

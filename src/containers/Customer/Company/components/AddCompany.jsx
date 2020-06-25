@@ -383,12 +383,12 @@ const AddCompany = (props) => {
     }, [cpMsgError]);
 
     useEffect(() => {
-    }, [userMsg]);
-
-    useEffect(() => {
         if (refreshPage !== null) {
             refreshPage();
         }
+    }, [userMsg]);
+
+    useEffect(() => {
     }, [userMsgError]);
 
     /************************************************************************************
