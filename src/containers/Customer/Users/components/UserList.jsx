@@ -19,9 +19,11 @@ import {
     pagingChangeRowsPerPage, pagingChangeSelected,
     pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
-import {getUserList} from "../../../../redux/actions/usersActions";
+import {getUserList, initRegisterUser} from "../../../../redux/actions/usersActions";
 import CommonTableHead from "../../../Common/CommonTableHead";
 import CbAdminTableToolbar from "../../../Common/CbAdminTableToolbar";
+import {initRegisterCompany} from "../../../../redux/actions/companiesActions";
+import RegisterUserPage from "./RegisterUserPage";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -97,6 +99,18 @@ const UserList = () => {
         orderBy: pagingRd.orderBy,
         order: pagingRd.order,
     }));
+
+    /** Modal variable */
+    const [open, setOpen] = React.useState(false);
+
+    const handleOpen = () => {
+        dispatch(initRegisterUser());
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     /** Pagination */
     const updatePagingTotalCount = ({count}) => {
@@ -293,6 +307,7 @@ const UserList = () => {
                         onRequestSort={handleRequestSort}
                         rows={headRows}
                         toolbarTitle="계정 리스트"
+                        handleOpen={handleOpen}
                         contents="계정"
                     />
                     <div className="cb-material-table__wrap">
@@ -321,6 +336,7 @@ const UserList = () => {
                             label="Dense padding"
                         />
                     </div>
+                    <RegisterUserPage open={open} handleClose={handleClose} />
                 </CardBody>
             </Card>
         </Col>

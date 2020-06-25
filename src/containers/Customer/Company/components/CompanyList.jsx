@@ -362,7 +362,7 @@ const CompanyList = () => {
                         rows={headRows}
                         toolbarTitle="고객사 리스트"
                         handleOpen={handleOpen}
-                        contents="계정"
+                        contents="고객사"
                     />
                     <div className="cb-material-table__wrap">
                         <TableContainer>

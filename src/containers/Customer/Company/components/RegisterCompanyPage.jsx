@@ -31,7 +31,7 @@ import SearchZip from "./SearchZip";
 import {
     changeUserField,
     checkDupUser,
-    checkUserRegisterField,
+    checkUserRegisterField, initRegisterUser,
     registerUser,
 } from "../../../../redux/actions/usersActions";
 import CbTextField from "./CbTextField";
@@ -253,6 +253,7 @@ const RegisterCompanyPage = (props) => {
     const handleCancel = () => {
         console.log("handleCancel: ");
         dispatch(initRegisterCompany());
+        dispatch(initRegisterUser());
         handleClose();
     };
 
