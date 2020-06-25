@@ -18,6 +18,9 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import SearchIcon from '@material-ui/icons/Search';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
 import {
     addCompany,
     changeCompanyRegisterField,
@@ -351,7 +354,8 @@ const RegisterCompanyPage = (props) => {
      * JSX Template
      ************************************************************************************/
     const variant = "filled";
-    const fieldSize = "medium";
+    const fieldSize = "small";
+    // const fieldSize = "medium";
     const buttonSize = "large";
     const formClassName = "cb-material-form";
     const labelClassName = "cb-material-form__label";
@@ -372,14 +376,15 @@ const RegisterCompanyPage = (props) => {
                             <Grid container spacing={1}>
                                 <Grid item xs={6}>
                                     <div>
-                                        <span className={labelClassName}>고객사 이름</span>
+                                        <span className={labelClassName}>* 고객사 이름</span>
                                         <FormControl
                                             className={fieldClassName}
+                                            size={fieldSize}
                                             // error={isError.cpName}
                                         >
-                                            <InputLabel
-                                                htmlFor="standard-adornment-password"
-                                            >고객사 이름</InputLabel>
+                                            {/*<InputLabel*/}
+                                            {/*    htmlFor="standard-adornment-password"*/}
+                                            {/*>고객사 이름</InputLabel>*/}
                                             <FilledInput
                                                 required={required.cpName}
                                                 helperText={helperText.cpName}
@@ -395,7 +400,7 @@ const RegisterCompanyPage = (props) => {
                                                             onMouseDown={handleMouseDownPassword}
                                                             edge="end"
                                                         >
-                                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                                            {confirmCompany ? <CheckBoxOutlinedIcon/> : <CheckBoxOutlineBlankIcon/>}
                                                         </IconButton>
                                                     </InputAdornment>
                                                 )}
@@ -406,14 +411,14 @@ const RegisterCompanyPage = (props) => {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <div>
-                                        <span className={labelClassName}>전화번호</span>
+                                        <span className={labelClassName}>* 전화번호</span>
                                         <TextField
                                             className={fieldClassName}
                                             isError={isError.cpTel}
                                             required={required.cpTel}
                                             helperText={helperText.cpTel}
                                             disabled={disabled.cpTel}
-                                            label="전화번호"
+                                            // label="전화번호"
                                             name="cpTel"
                                             value={cpTel}
                                             onChange={(e) => { handleChangeTextField({name: "cpTel", value: e.target.value}); }}
@@ -424,14 +429,14 @@ const RegisterCompanyPage = (props) => {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <div>
-                                        <span className={labelClassName}>이메일</span>
+                                        <span className={labelClassName}>* 이메일</span>
                                         <TextField
                                             className={fieldClassName}
                                             isError={isError.cpEmail}
                                             required={required.cpEmail}
                                             helperText={helperText.cpEmail}
                                             disabled={disabled.cpEmail}
-                                            label="이메일"
+                                            // label="이메일"
                                             name="cpEmail"
                                             value={cpEmail}
                                             onChange={(e) => { handleChangeTextField({name: "cpEmail", value: e.target.value}); }}
@@ -449,7 +454,7 @@ const RegisterCompanyPage = (props) => {
                                             required={required.cpHomepage}
                                             helperText={helperText.cpHomepage}
                                             disabled={disabled.cpHomepage}
-                                            label="홈페이지"
+                                            // label="홈페이지"
                                             name="cpHomepage"
                                             value={cpHomepage}
                                             onChange={(e) => { handleChangeTextField({name: "cpHomepage", value: e.target.value}); }}
@@ -460,12 +465,15 @@ const RegisterCompanyPage = (props) => {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <div>
-                                        <span className={labelClassName}>대표 계정 ID</span>
-                                        <FormControl className={fieldClassName}>
-                                            <InputLabel
-                                                // className={fieldClassName}
-                                                htmlFor="standard-adornment-password"
-                                            >계정 ID</InputLabel>
+                                        <span className={labelClassName}>* 대표 계정 ID</span>
+                                        <FormControl
+                                            size={fieldSize}
+                                            className={fieldClassName}
+                                        >
+                                            {/*<InputLabel*/}
+                                            {/*    // className={fieldClassName}*/}
+                                            {/*    htmlFor="standard-adornment-password"*/}
+                                            {/*>계정 ID</InputLabel>*/}
                                             <FilledInput
                                                 isError={userIsError.userId}
                                                 required={userRequired.userId}
@@ -482,7 +490,7 @@ const RegisterCompanyPage = (props) => {
                                                             onMouseDown={handleMouseDownPassword}
                                                             edge="end"
                                                         >
-                                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                                            {confirmUser ? <CheckBoxOutlinedIcon/> : <CheckBoxOutlineBlankIcon/>}
                                                         </IconButton>
                                                     </InputAdornment>
                                                 )}
@@ -493,18 +501,20 @@ const RegisterCompanyPage = (props) => {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <div>
-                                        <span className={labelClassName}>계정 암호</span>
-                                        <FormControl className={fieldClassName}>
-                                            <InputLabel
-                                                // className={fieldClassName}
-                                                htmlFor="standard-adornment-password"
-                                            >Password</InputLabel>
+                                        <span className={labelClassName}>* 계정 암호</span>
+                                        <FormControl
+                                            size={fieldSize}
+                                            className={fieldClassName}
+                                        >
+                                            {/*<InputLabel*/}
+                                            {/*    // className={fieldClassName}*/}
+                                            {/*    htmlFor="standard-adornment-password"*/}
+                                            {/*>Password</InputLabel>*/}
                                             <FilledInput
                                                 isError={userIsError.password}
                                                 required={userRequired.password}
                                                 disabled={userDisabled.password}
                                                 helperText={userHelperText.password}
-                                                label="패스워드"
                                                 name="password"
                                                 type={values.showPassword ? 'text' : 'password'}
                                                 value={userPassword}
@@ -528,9 +538,12 @@ const RegisterCompanyPage = (props) => {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <div>
-                                        <span className={labelClassName}>우편 번호</span>
-                                        <FormControl className={fieldClassName}>
-                                            <InputLabel>우편 번호</InputLabel>
+                                        <span className={labelClassName}>* 우편 번호</span>
+                                        <FormControl
+                                            size={fieldSize}
+                                            className={fieldClassName}
+                                        >
+                                            {/*<InputLabel>우편 번호</InputLabel>*/}
                                             <FilledInput
                                                 isError={isError.cpZip}
                                                 required={required.cpZip}
@@ -546,7 +559,7 @@ const RegisterCompanyPage = (props) => {
                                                             onMouseDown={handleMouseDownPassword}
                                                             edge="end"
                                                         >
-                                                            {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                                            <SearchIcon/>
                                                         </IconButton>
                                                     </InputAdornment>
                                                 )}
@@ -562,14 +575,14 @@ const RegisterCompanyPage = (props) => {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <div>
-                                        <span className={labelClassName}>주소</span>
+                                        <span className={labelClassName}>* 주소</span>
                                         <TextField
                                             className={fieldClassName}
                                             isError={isError.cpAddr}
                                             required={required.cpAddr}
                                             helperText={helperText.cpAddr}
                                             disabled={disabled.cpAddr}
-                                            label="주소"
+                                            // label="주소"
                                             name="cpAddr"
                                             value={cpAddr}
                                             onChange={(e) => { handleChangeTextField({name: "cpAddr", value: e.target.value}); }}
@@ -580,14 +593,14 @@ const RegisterCompanyPage = (props) => {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <div>
-                                        <span className={labelClassName}>상세주소</span>
+                                        <span className={labelClassName}>* 상세주소</span>
                                         <TextField
                                             className={fieldClassName}
                                             isError={isError.cpAddrDetail}
                                             required={required.cpAddrDetail}
                                             helperText={helperText.cpAddrDetail}
                                             disabled={disabled.cpAddrDetail}
-                                            label="상세주소"
+                                            // label="상세주소"
                                             name="cpAddrDetail"
                                             value={cpAddrDetail}
                                             onChange={(e) => { handleChangeTextField({name: "cpAddrDetail", value: e.target.value}); }}
