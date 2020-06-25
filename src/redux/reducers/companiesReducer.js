@@ -69,8 +69,8 @@ const initialState = {
         cpTerminationDate: false,
     },
     helperText: {
-        cpName: "",
-        cpZip: "",
+        cpName: "* 사용 가능한 이름인지 확인하십시오.",
+        cpZip: "* 우편번호를 검색하십시오.",
         cpAddr: "",
         cpAddrDetail: "",
         cpHomepage: "",
@@ -139,8 +139,8 @@ const companiesReducer = handleActions(
                 cpTerminationDate: false,
             },
             helperText: {
-                cpName: "",
-                cpZip: "",
+                cpName: "* 사용 가능한 고객사명인지 확인하십시오.",
+                cpZip: "* 우편번호를 검색하십시오.",
                 cpAddr: "",
                 cpAddrDetail: "",
                 cpHomepage: "",
@@ -179,9 +179,11 @@ const companiesReducer = handleActions(
         [CHECK_DUP_COMPANY_SUCCESS]: (state, action) => ({
             ...state,
             isError: {
+                ...state,
                 cpName: false,
             },
             helperText: {
+                ...state,
                 cpName: "* 사용 가능한 고객사명 입니다.",
             },
             checkCompany: true,
@@ -190,10 +192,13 @@ const companiesReducer = handleActions(
         [CHECK_DUP_COMPANY_FAILURE]: (state, action) => ({
             ...state,
             isError: {
+                ...state,
                 cpName: true,
             },
-                helperText: {
+            helperText: {
+                ...state,
                 cpName: "* 이미 사용하고 있는 고객사명 입니다.",
+                cpZip: state.helperText.cpZip,
             },
             checkCompany: true,
             confirmCompany: false, // 동일한 회사가 있음
@@ -214,6 +219,7 @@ const companiesReducer = handleActions(
             return {
                 ...state,
                 isError: {
+                    ...state,
                     cpName: state.register.cpName === "" ? true : (
                         !(state.checkCompany && state.confirmCompany)),
                     cpZip: state.register.cpZip === "",
@@ -224,10 +230,11 @@ const companiesReducer = handleActions(
                     cpEmail: state.register.cpEmail === "" ? true : (!isCorrectEmail),
                 },
                 helperText: {
+                    ...state,
                     // eslint-disable-next-line no-nested-ternary
                     cpName: state.register.cpName === "" ? errorMsg : (
-                            state.checkCompany && state.confirmCompany ? "" : nameErrorMsg),
-                    cpZip: state.register.cpZip === "" ? errorMsg : "",
+                        state.checkCompany && state.confirmCompany ? "* 사용 가능한 고객사명 입니다." : nameErrorMsg),
+                    cpZip: state.register.cpZip === "" ? errorMsg : "* 우편번호를 검색하십시오.",
                     cpAddr: state.register.cpAddr === "" ? errorMsg : "",
                     cpAddrDetail: state.register.cpAddrDetail === "" ? errorMsg : "",
                     cpTel: state.register.cpTel === "" ? errorMsg : "",
