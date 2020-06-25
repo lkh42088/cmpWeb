@@ -61,6 +61,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UserList = () => {
+    /************************************************************************************
+     * Variable
+     ************************************************************************************/
     const classes = useStyles();
     const dispatch = useDispatch();
     /**
@@ -103,8 +106,11 @@ const UserList = () => {
     /** Modal variable */
     const [open, setOpen] = React.useState(false);
 
+    /************************************************************************************
+     * Function
+     ************************************************************************************/
     const handleOpen = () => {
-        dispatch(initRegisterUser());
+        // dispatch(initRegisterUser());
         setOpen(true);
     };
 
@@ -209,6 +215,9 @@ const UserList = () => {
         getPageData();
     };
 
+    /************************************************************************************
+     * useEffect
+     ************************************************************************************/
     useEffect(() => {
         const changeOrderBy = "idx";
         console.log("[] orderBy: ", changeOrderBy);
@@ -233,7 +242,9 @@ const UserList = () => {
         dispatch(pagingDump());
     }, [rowsPerPage, pageBeginRow, orderBy, order]);
 
-    /** Pagination */
+    /************************************************************************************
+     * Component
+     ************************************************************************************/
     const paginationBar = (
         <TablePagination
             component="div"
@@ -247,6 +258,9 @@ const UserList = () => {
         />
     );
 
+    /************************************************************************************
+     * JSX Template
+     ************************************************************************************/
     const tableRows = (
         <TableBody>
             { data && data.map((row) => {

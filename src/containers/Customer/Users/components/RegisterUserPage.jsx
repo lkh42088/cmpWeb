@@ -396,13 +396,13 @@ const RegisterUserPage = (props) => {
                                         <span className={labelClassName}>상세주소</span>
                                         <TextField
                                             className={fieldClassName}
-                                            isError={userIsError.userAddr}
-                                            required={userRequired.userAddr}
-                                            disabled={userDisabled.userAddr}
-                                            helperText={userHelperText.userAddr}
-                                            name="userAddr"
-                                            value={user.userAddr}
-                                            onChange={(e) => { handleChangeUserTextField({name: "userAddr", value: e.target.value}); }}
+                                            isError={userIsError.userAddrDetail}
+                                            required={userRequired.userAddrDetail}
+                                            disabled={userDisabled.userAddrDetail}
+                                            helperText={userHelperText.userAddrDetail}
+                                            name="userAddrDetail"
+                                            value={user.userAddrDetail}
+                                            onChange={(e) => { handleChangeUserTextField({name: "userAddrDetail", value: e.target.value}); }}
                                             // label="상세주소"
                                             variant={variant}
                                             size={fieldSize}
