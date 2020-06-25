@@ -6,6 +6,7 @@ import serverOutlineBadged from '@iconify/icons-clarity/server-outline-badged';
 import routerNetwork from '@iconify/icons-mdi/router-network';
 import monitorDashboard from '@iconify/icons-mdi/monitor-dashboard';
 import usersIcon from '@iconify/icons-fa-solid/users';
+import {Link} from "react-router-dom";
 import listAlt from '@iconify/icons-el/list-alt';
 import SidebarCategory from './SidebarCategory';
 import SidebarLink from './SidebarLink';
@@ -29,14 +30,14 @@ class SidebarContent extends Component {
         return (
             <div className="cb_sidebar__content">
                 <ul className="cb_sidebar__block">
-                    <SidebarCategory title="DASHBOARD"
-                                     icon={outlineDashboard}
-                                     onClick={title => changeMenuTitle('대시보드', '관리자', '')}
-                    />
-                    {/*    <SidebarLink title="관리자" style={{disable: "true"}}*/}
-                    {/*                 route="/dashboards/manager"*/}
-                    {/*                 onClick={() => changeMenuTitle('대시보드', '관리자', '')}/>*/}
-                    {/*</SidebarCategory>*/}
+                    <Link to="/dashboards/manager" onClick={() => changeMenuTitle('DASHBOARD', '', '')} >
+                        <SidebarCategory title="DASHBOARD" icon={outlineDashboard} />
+                    </Link>
+                    {/*<SidebarLink title="DASHBOARD"*/}
+                    {/*             style={{disable: "true"}}*/}
+                    {/*             route="/dashboards/manager"*/}
+                    {/*             icon={outlineDashboard}*/}
+                    {/*             onClick={() => changeMenuTitle('DASHBOARD', '', '')}/>*/}
                     <SidebarCategory title="SERVER" icon={serverOutlineBadged}>
                         <SidebarLink title="온프레미스" route="/assets/server"
                                      onClick={() => changeMenuTitle('SERVER', '온프레미스', 'server')}/>

@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {Icon, InlineIcon} from '@iconify/react';
 import {useDispatch, useSelector} from "react-redux";
-import API_ROUTE from "../../../shared/apiRoute";
 
 const SidebarCategory = ({
     title, icon, isNew, children,
@@ -15,21 +14,11 @@ const SidebarCategory = ({
     const [show, setShow] = useState('false');
     const [hover, setHover] = useState('false');
 
-    const {
-        titleRd, subTitleRd,
-    } = useSelector(({menuTitle}) => ({
-        titleRd: menuTitle.title,
-        subTitleRd: menuTitle.subTitle,
-    }));
-
-    const toggle = (titleTmp) => {
-        //setCollapse(!collapse);
-
+    const toggle = (e, titleTmp) => {
         const collapseId = document.getElementById(`collapseId_${titleTmp}`);
         const collapseName = document.getElementsByName("collapseName");
 
-        // eslint-disable-next-line no-plusplus
-        for (let i = 0; i < collapseName.length; i++) {
+        for (let i = 0; i < collapseName.length; i += 1) {
             if (collapseName[i].id !== `collapseId_${titleTmp}`) {
                 collapseName[i].style.display = 'none';
             }
@@ -46,9 +35,10 @@ const SidebarCategory = ({
         setHover(!hover);
     };
 
-    const hideSidebar = () => {
+    const hideSidebar = (e) => {
         setShow(!show);
-        toggle(title);
+        toggle(e, title);
+        console.log("[TEST] show = ", show);
     };
 
     const categoryClass = classNames({
@@ -69,12 +59,12 @@ const SidebarCategory = ({
         };
     }
 
-    const handleClick = () => {
-        hideSidebar();
+    const handleClick = async (e) => {
+        await hideSidebar(e);
     };
 
     return (
-        <div style={{display: "flex"}} onMouseEnter={toggleHover} onMouseLeave={toggleHover}>
+        <div style={{display: "flex"}} onMouseEnter={toggleHover} onMouseLeave={toggleHover} >
             <button className={categoryClass} type="button" onClick={handleClick} style={{zIndex: "120"}}>
                 {icon ? <span className="cb_sidebar__link-icon"><Icon icon={icon}/></span> : ''}
                 <p className="cb_sidebar__link-title">

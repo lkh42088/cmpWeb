@@ -153,7 +153,7 @@
   background: transparent;
   border: none;
   z-index: 105;
-  height: 30px;
+  height: 42px; // 30->42 sidebar link [25June2020,khlee]
 
   @include themify($themes) {
     color: themed('colorText');
@@ -361,16 +361,6 @@
 
     .cb_sidebar__category-icon {
       transform: rotate(100deg);
-    }
-  }
-}
-
-//todo
-.cb_sidebar__category-wrap {
-  &:active {
-    @include themify($themes) {
-      // 사이드바 마우스 클릭 시 배경색 변경
-      background-color: themed('colorBubbleActive');
     }
   }
 }
