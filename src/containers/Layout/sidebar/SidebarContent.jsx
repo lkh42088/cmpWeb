@@ -25,7 +25,9 @@ class SidebarContent extends Component {
     };
 
     render() {
-        const {changeToLight, changeToDark, changeMenuTitle} = this.props;
+        const {
+            changeToLight, changeToDark, changeMenuTitle,
+        } = this.props;
 
         return (
             <div className="cb_sidebar__content">
@@ -33,11 +35,6 @@ class SidebarContent extends Component {
                     <Link to="/dashboards/manager" onClick={() => changeMenuTitle('DASHBOARD', '', '')} >
                         <SidebarCategory title="DASHBOARD" icon={outlineDashboard} />
                     </Link>
-                    {/*<SidebarLink title="DASHBOARD"*/}
-                    {/*             style={{disable: "true"}}*/}
-                    {/*             route="/dashboards/manager"*/}
-                    {/*             icon={outlineDashboard}*/}
-                    {/*             onClick={() => changeMenuTitle('DASHBOARD', '', '')}/>*/}
                     <SidebarCategory title="SERVER" icon={serverOutlineBadged}>
                         <SidebarLink title="온프레미스" route="/assets/server"
                                      onClick={() => changeMenuTitle('SERVER', '온프레미스', 'server')}/>
@@ -48,14 +45,6 @@ class SidebarContent extends Component {
                         <SidebarLink title="파트/기타" route="/assets/part"
                                      onClick={() => changeMenuTitle('NETWORK', '파트/기타', 'part')}/>
                     </SidebarCategory>
-                    {/*<SidebarCategory title="INVENTORY" icon={inventoryManagement}>*/}
-                    {/*    <SidebarLink title="서버" route="/assets/list"*/}
-                    {/*                 onClick={() => changeMenuTitle('자산관리', '서버', 'server')}/>*/}
-                    {/*    <SidebarLink title="네트워크" route="/assets/list"*/}
-                    {/*                 onClick={() => changeMenuTitle('자산관리', '네트워크', 'network')}/>*/}
-                    {/*    <SidebarLink title="파트/기타" route="/assets/list"*/}
-                    {/*                 onClick={() => changeMenuTitle('자산관리', '파트/기타', 'part')}/>*/}
-                    {/*</SidebarCategory>*/}
                     <SidebarCategory title="BILLING" icon={fileInvoiceDollar} />
                     <SidebarCategory title="BOARD" icon={listAlt} />
                     <SidebarCategory title="MANAGER" icon={usersIcon}>

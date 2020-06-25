@@ -376,8 +376,10 @@
   text-align: center;
 
   @include themify($themes) {
-    color: themed('colorEmoji');
-    text-shadow: 1px 1px 1px #CCCCCC;
+    //color: themed('colorEmoji');
+    //text-shadow: 1px 1px 1px #CCCCCC;
+    color: themed('colorFitness');
+    //text-shadow: 1px 1px 1px themed('colorShadow');
   }
 }
 
