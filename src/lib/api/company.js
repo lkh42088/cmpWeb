@@ -2,7 +2,7 @@ import client from "./client";
 
 export const registerCompany = ({
     cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage, cpTel, cpEmail,
-    cpIsCompany, cpMemo, cpTerminationDate,
+    cpIsCompany, cpMemo, cpTerminationDate, userId, userPassword,
 }) => client.post('/v1/customers/register', {
     name: cpName,
     zipcode: cpZip,
@@ -14,6 +14,8 @@ export const registerCompany = ({
     isCompany: cpIsCompany,
     memo: cpMemo,
     termDate: cpTerminationDate,
+    userId,
+    userPassword,
 });
 
 export const checkDupCompany = ({

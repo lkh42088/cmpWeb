@@ -19,9 +19,11 @@ import {
     pagingChangeRowsPerPage, pagingChangeSelected,
     pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
-import {getUserList} from "../../../../redux/actions/usersActions";
+import {getUserList, initRegisterUser} from "../../../../redux/actions/usersActions";
 import CommonTableHead from "../../../Common/CommonTableHead";
 import CbAdminTableToolbar from "../../../Common/CbAdminTableToolbar";
+import {initRegisterCompany} from "../../../../redux/actions/companiesActions";
+import RegisterUserPage from "./RegisterUserPage";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -59,6 +61,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UserList = () => {
+    /************************************************************************************
+     * Variable
+     ************************************************************************************/
     const classes = useStyles();
     const dispatch = useDispatch();
     /**
@@ -97,6 +102,21 @@ const UserList = () => {
         orderBy: pagingRd.orderBy,
         order: pagingRd.order,
     }));
+
+    /** Modal variable */
+    const [open, setOpen] = React.useState(false);
+
+    /************************************************************************************
+     * Function
+     ************************************************************************************/
+    const handleOpen = () => {
+        // dispatch(initRegisterUser());
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     /** Pagination */
     const updatePagingTotalCount = ({count}) => {
@@ -195,6 +215,9 @@ const UserList = () => {
         getPageData();
     };
 
+    /************************************************************************************
+     * useEffect
+     ************************************************************************************/
     useEffect(() => {
         const changeOrderBy = "idx";
         console.log("[] orderBy: ", changeOrderBy);
@@ -219,7 +242,9 @@ const UserList = () => {
         dispatch(pagingDump());
     }, [rowsPerPage, pageBeginRow, orderBy, order]);
 
-    /** Pagination */
+    /************************************************************************************
+     * Component
+     ************************************************************************************/
     const paginationBar = (
         <TablePagination
             component="div"
@@ -233,10 +258,12 @@ const UserList = () => {
         />
     );
 
+    /************************************************************************************
+     * JSX Template
+     ************************************************************************************/
     const tableRows = (
         <TableBody>
-            { data
-                .map((row) => {
+            { data && data.map((row) => {
                     const isSelected = getSelected(row.idx);
                     return (
                         <TableRow
@@ -294,6 +321,7 @@ const UserList = () => {
                         onRequestSort={handleRequestSort}
                         rows={headRows}
                         toolbarTitle="계정 리스트"
+                        handleOpen={handleOpen}
                         contents="계정"
                     />
                     <div className="cb-material-table__wrap">
@@ -309,7 +337,7 @@ const UserList = () => {
                                     orderBy={orderBy}
                                     onSelectAllClick={handleSelectAllClick}
                                     onRequestSort={handleRequestSort}
-                                    rowCount={data.length}
+                                    rowCount={data && data.length ? data.length : 0}
                                     rows={headRows}
                                 />
                                 {tableRows}
@@ -322,6 +350,7 @@ const UserList = () => {
                             label="Dense padding"
                         />
                     </div>
+                    <RegisterUserPage open={open} handleClose={handleClose} />
                 </CardBody>
             </Card>
         </Col>

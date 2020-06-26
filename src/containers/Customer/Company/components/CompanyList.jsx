@@ -16,6 +16,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {makeStyles} from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
+import { SnackbarProvider, useSnackbar } from 'notistack';
 // eslint-disable-next-line import/named
 import { initRegisterCompany, getCompanyList } from "../../../../redux/actions/companiesActions";
 // eslint-disable-next-line import/named
@@ -39,11 +40,9 @@ import RegisterCompanyPage from "./RegisterCompanyPage";
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
     {id: 'name', disablePadding: false, label: '회사명'},
-    {id: 'email', disablePadding: false, label: '이메일'},
-    {id: 'homepage', disablePadding: false, label: '홈페이지'},
     {id: 'tel', disablePadding: false, label: '전화번호'},
-    {id: 'hp', disablePadding: false, label: '핸드폰번호'},
-    {id: 'isCompany', disablePadding: false, label: '회사여부'},
+    {id: 'email', disablePadding: false, label: '이메일'},
+    {id: 'address', disablePadding: false, label: '주소'},
     {id: 'memo', disablePadding: false, label: '메모'},
 ];
 
@@ -85,14 +84,19 @@ const useStyles = makeStyles(theme => ({
 const CompanyList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
+    const { enqueueSnackbar } = useSnackbar();
     /**
      * Company Data
      */
     const {
         data, getPage,
-    } = useSelector(({ companiesRd }) => ({
+        cpMsg,
+        cpMsgError,
+    } = useSelector(({ companiesRd, usersRd }) => ({
         data: companiesRd.data,
         getPage: companiesRd.page,
+        cpMsg: companiesRd.msg,
+        cpMsgError: companiesRd.msgError,
     }));
     /**
      * Pagination
@@ -133,6 +137,15 @@ const CompanyList = () => {
 
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const handleTriggerFailure = () => {
+        enqueueSnackbar('고객사 등록에 실패했습니다!');
+    };
+
+    const handleTriggerSuccess = () => {
+        // variant could be success, error, warning, info, or default
+        enqueueSnackbar('고객사 등록에 성공했습니다.', { variant: "success" });
     };
 
     /**
@@ -265,6 +278,21 @@ const CompanyList = () => {
         // dispatch(pagingDump());
     }, [rowsPerPage, pageBeginRow, orderBy, order]);
 
+    useEffect(() => {
+        if (cpMsg) {
+            console.log("cpMsg: success!");
+            handleTriggerSuccess();
+            getPageData();
+        }
+    }, [cpMsg]);
+
+    useEffect(() => {
+        if (cpMsgError) {
+            console.log("cpMsg: failure!");
+            handleTriggerFailure();
+        }
+    }, [cpMsgError]);
+
     /** Pagination */
     const paginationBar = (
         <TablePagination
@@ -281,8 +309,7 @@ const CompanyList = () => {
 
     const tableRows = (
         <TableBody>
-            { data
-                .map((row) => {
+            { data && data.map((row) => {
                     const isSelected = getSelected(row.idx);
                     return (
                         <TableRow
@@ -305,19 +332,13 @@ const CompanyList = () => {
                                 {row.name}
                             </TableCell>
                             <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
-                                {row.email}
-                            </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
-                                {row.hompage}
-                            </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.tel}
                             </TableCell>
                             <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
-                                {row.hp}
+                                {row.email}
                             </TableCell>
                             <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
-                                {row.isCompany ? "회사" : "개인"}
+                                {row.address}
                             </TableCell>
                             <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.memo}
@@ -341,7 +362,7 @@ const CompanyList = () => {
                         rows={headRows}
                         toolbarTitle="고객사 리스트"
                         handleOpen={handleOpen}
-                        contents="계정"
+                        contents="고객사"
                     />
                     <div className="cb-material-table__wrap">
                         <TableContainer>
@@ -356,7 +377,7 @@ const CompanyList = () => {
                                     orderBy={orderBy}
                                     onSelectAllClick={handleSelectAllClick}
                                     onRequestSort={handleRequestSort}
-                                    rowCount={data.length}
+                                    rowCount={data && data.length ? data.length : 0}
                                     rows={headRows}
                                 />
                                 {tableRows}

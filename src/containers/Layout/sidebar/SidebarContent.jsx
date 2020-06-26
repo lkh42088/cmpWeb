@@ -6,6 +6,7 @@ import serverOutlineBadged from '@iconify/icons-clarity/server-outline-badged';
 import routerNetwork from '@iconify/icons-mdi/router-network';
 import monitorDashboard from '@iconify/icons-mdi/monitor-dashboard';
 import usersIcon from '@iconify/icons-fa-solid/users';
+import {Link} from "react-router-dom";
 import listAlt from '@iconify/icons-el/list-alt';
 import SidebarCategory from './SidebarCategory';
 import SidebarLink from './SidebarLink';
@@ -24,19 +25,16 @@ class SidebarContent extends Component {
     };
 
     render() {
-        const {changeToLight, changeToDark, changeMenuTitle} = this.props;
+        const {
+            changeToLight, changeToDark, changeMenuTitle,
+        } = this.props;
 
         return (
             <div className="cb_sidebar__content">
                 <ul className="cb_sidebar__block">
-                    <SidebarCategory title="DASHBOARD"
-                                     icon={outlineDashboard}
-                                     onClick={title => changeMenuTitle('대시보드', '관리자', '')}
-                    />
-                    {/*    <SidebarLink title="관리자" style={{disable: "true"}}*/}
-                    {/*                 route="/dashboards/manager"*/}
-                    {/*                 onClick={() => changeMenuTitle('대시보드', '관리자', '')}/>*/}
-                    {/*</SidebarCategory>*/}
+                    <Link to="/dashboards/manager" onClick={() => changeMenuTitle('DASHBOARD', '', '')} >
+                        <SidebarCategory title="DASHBOARD" icon={outlineDashboard} />
+                    </Link>
                     <SidebarCategory title="SERVER" icon={serverOutlineBadged}>
                         <SidebarLink title="온프레미스" route="/assets/server"
                                      onClick={() => changeMenuTitle('SERVER', '온프레미스', 'server')}/>
@@ -47,14 +45,6 @@ class SidebarContent extends Component {
                         <SidebarLink title="파트/기타" route="/assets/part"
                                      onClick={() => changeMenuTitle('NETWORK', '파트/기타', 'part')}/>
                     </SidebarCategory>
-                    {/*<SidebarCategory title="INVENTORY" icon={inventoryManagement}>*/}
-                    {/*    <SidebarLink title="서버" route="/assets/list"*/}
-                    {/*                 onClick={() => changeMenuTitle('자산관리', '서버', 'server')}/>*/}
-                    {/*    <SidebarLink title="네트워크" route="/assets/list"*/}
-                    {/*                 onClick={() => changeMenuTitle('자산관리', '네트워크', 'network')}/>*/}
-                    {/*    <SidebarLink title="파트/기타" route="/assets/list"*/}
-                    {/*                 onClick={() => changeMenuTitle('자산관리', '파트/기타', 'part')}/>*/}
-                    {/*</SidebarCategory>*/}
                     <SidebarCategory title="BILLING" icon={fileInvoiceDollar} />
                     <SidebarCategory title="BOARD" icon={listAlt} />
                     <SidebarCategory title="MANAGER" icon={usersIcon}>

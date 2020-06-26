@@ -28,10 +28,11 @@ const SearchZip = (props) => {
     return (
         <Dialog
             onClose={handleClose}
-            aria-labelledby="simple-dialog-title"
             open={open}
         >
-            <DialogTitle id="simple-dialog-title">우편번호 검색</DialogTitle>
+            <DialogTitle id="simple-dialog-title">
+                <h3 className="bold-text">우편번호 검색</h3>
+            </DialogTitle>
             <DialogContent>
                 <div>
                     <DaumPostcode
@@ -43,8 +44,8 @@ const SearchZip = (props) => {
             <DialogContent>
                 {zip !== "" ? (
                     <div>
-                        <h4> 우편번호 : {zip} </h4>
-                        <h4> 주소: {address} </h4>
+                        <h6> 우편번호 : {zip} <br/>
+                         주소: {address} </h6>
                     </div>
                 ) : "" }
             </DialogContent>

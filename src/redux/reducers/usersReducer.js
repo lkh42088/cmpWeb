@@ -15,6 +15,7 @@ import {
     CHECK_DUP_USER_SUCCESS,
     CHECK_DUP_USER_FAILURE, CHECK_USER_REGISTER_FIELD,
 } from "../actions/usersActions";
+import {checkPasswordPattern} from "../../lib/utils/utils";
 
 const initialState = {
     data: List([
@@ -38,6 +39,9 @@ const initialState = {
         emailAuthFlag: false,
         emailAuthGroupFlag: false,
         emailAuthGroupList: [],
+        userZip: '',
+        userAddr: '',
+        userAddrDetail: '',
     },
     isError: {
         userId: false,
@@ -50,6 +54,9 @@ const initialState = {
         emailAuthFlag: false,
         emailAuthGroupFlag: false,
         emailAuthGroupList: false,
+        userZip: false,
+        userAddr: false,
+        userAddrDetail: false,
     },
     required: {
         userId: true,
@@ -62,6 +69,9 @@ const initialState = {
         emailAuthFlag: false,
         emailAuthGroupFlag: false,
         emailAuthGroupList: false,
+        userZip: false,
+        userAddr: false,
+        userAddrDetail: false,
     },
     disabled: {
         userId: false,
@@ -74,10 +84,13 @@ const initialState = {
         emailAuthFlag: false,
         emailAuthGroupFlag: false,
         emailAuthGroupList: false,
+        userZip: false,
+        userAddr: false,
+        userAddrDetail: false,
     },
     helperText: {
-        userId: "",
-        password: "",
+        userId: "* 사용 가능한 ID 인지 확인하십시오.",
+        password: "* 영어 소문자, 숫자, 특수문자 포함 8~16 문자",
         username: "",
         cellPhone: "",
         email: "",
@@ -86,6 +99,9 @@ const initialState = {
         emailAuthFlag: "",
         emailAuthGroupFlag: "",
         emailAuthGroupList: "",
+        userZip: "",
+        userAddr: "",
+        userAddrDetail: "",
     },
     checkUser: false,
     confirmUser: false,
@@ -109,6 +125,9 @@ const usersReducer = handleActions(
                 emailAuthFlag: false,
                 emailAuthGroupFlag: false,
                 emailAuthGroupList: [],
+                userZip: '',
+                userAddr: '',
+                userAddrDetail: '',
             },
             isError: {
                 userId: false,
@@ -121,6 +140,9 @@ const usersReducer = handleActions(
                 emailAuthFlag: false,
                 emailAuthGroupFlag: false,
                 emailAuthGroupList: false,
+                userZip: false,
+                userAddr: false,
+                userAddrDetail: false,
             },
             required: {
                 userId: true,
@@ -133,6 +155,9 @@ const usersReducer = handleActions(
                 emailAuthFlag: false,
                 emailAuthGroupFlag: false,
                 emailAuthGroupList: false,
+                userZip: false,
+                userAddr: false,
+                userAddrDetail: false,
             },
             disabled: {
                 userId: false,
@@ -145,10 +170,13 @@ const usersReducer = handleActions(
                 emailAuthFlag: false,
                 emailAuthGroupFlag: false,
                 emailAuthGroupList: false,
+                userZip: false,
+                userAddr: false,
+                userAddrDetail: false,
             },
             helperText: {
-                userId: "",
-                password: "",
+                userId: "* 사용 가능한 ID 인지 확인하십시오.",
+                password: "* 영어 소문자, 숫자, 특수문자 포함 8~16 문자",
                 username: "",
                 cellPhone: "",
                 email: "",
@@ -157,6 +185,9 @@ const usersReducer = handleActions(
                 emailAuthFlag: "",
                 emailAuthGroupFlag: "",
                 emailAuthGroupList: "",
+                userZip: "",
+                userAddr: "",
+                userAddrDetail: "",
             },
             checkUser: false,
             confirmUser: false,
@@ -222,6 +253,7 @@ const usersReducer = handleActions(
             helperText: {
                 ...state,
                 userId: "* 사용 가능한 아이디 입니다.",
+                password: state.helperText.password,
             },
             checkUser: true,
             confirmUser: true,
@@ -235,6 +267,8 @@ const usersReducer = handleActions(
             helperText: {
                 ...state,
                 userId: "* 이미 사용하고 있는 아이디 입니다!",
+                password: state.helperText.password,
+
             },
             checkUser: true,
             confirmUser: false,
@@ -257,7 +291,7 @@ const usersReducer = handleActions(
                     ...state,
                     userId: state.register.userId === "" ? true : (
                         !(state.checkUser && state.confirmUser)),
-                    password: state.register.password === "",
+                    password: state.register.password === "" ? true : !(checkPasswordPattern(state.register.password)),
                     username: state.register.username === "",
                     email: state.register.email === "",
                     cellPhone: state.register.cellPhone === "",
@@ -267,8 +301,8 @@ const usersReducer = handleActions(
                     ...state,
                     // eslint-disable-next-line no-nested-ternary
                     userId: state.register.userId === "" ? errorMsg : (
-                        state.checkUser && state.confirmUser ? "" : nameErrorMsg),
-                    password: state.register.password === "" ? errorMsg : "",
+                        state.checkUser && state.confirmUser ? "* 사용 가능한 아이디 입니다." : nameErrorMsg),
+                    password: state.register.password === "" ? errorMsg : "* 영어 소문자, 숫자, 특수문자 포함 8~16 문자",
                     username: state.register.username === "" ? errorMsg : "",
                     // eslint-disable-next-line no-nested-ternary
                     email: state.register.email === "" ? errorMsg : (

@@ -33,8 +33,20 @@ export const getCompanyList = createAction(GET_COMPANY_LIST, ({
 }));
 export const addCompany = createAction(ADD_COMPANY, ({
     cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage, cpTel, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
+    userId, userPassword,
 }) => ({
-    cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage, cpTel, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
+    cpName,
+    cpZip,
+    cpAddr,
+    cpAddrDetail,
+    cpHomepage,
+    cpTel,
+    cpEmail,
+    cpIsCompany,
+    cpMemo,
+    cpTerminationDate,
+    userId,
+    userPassword,
 }));
 
 /******************************************************************************
