@@ -47,7 +47,7 @@ const RegisterUserPage = (props) => {
      * Variable
      ************************************************************************************/
     const classes = useStyles();
-    const {open, handleClose, refreshPage } = props;
+    const {open, handleClose, handleStrictlyClose } = props;
 
     const dispatch = useDispatch();
 
@@ -201,7 +201,6 @@ const RegisterUserPage = (props) => {
                                                 isError={userIsError.userId}
                                                 required={userRequired.userId}
                                                 disabled={userDisabled.userId}
-                                                helperText={userHelperText.userId}
                                                 name="userId"
                                                 value={userId}
                                                 onChange={(e) => { handleChangeUserTextField({name: "userId", value: e.target.value}); }}
@@ -234,7 +233,6 @@ const RegisterUserPage = (props) => {
                                                 isError={userIsError.password}
                                                 required={userRequired.password}
                                                 disabled={userDisabled.password}
-                                                helperText={userHelperText.password}
                                                 name="password"
                                                 value={userPassword}
                                                 onChange={(e) => { handleChangeUserTextField({name: "password", value: e.target.value}); }}
@@ -340,7 +338,6 @@ const RegisterUserPage = (props) => {
                                             isError={userIsError.userZip}
                                             required={userRequired.userZip}
                                             disabled={userDisabled.userZip}
-                                            helperText={userHelperText.userZip}
                                             name="userZip"
                                             value={user.userZip}
                                             onChange={(e) => { handleChangeUserTextField({name: "userZip", value: e.target.value}); }}
