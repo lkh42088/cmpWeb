@@ -24,33 +24,6 @@ const rows = [
     {id: 'idc', disablePadding: false, label: 'IDC/위치'},
     {id: 'purpos', disablePadding: false, label: '용도'},
 ];
-/*
-
-function updateHeadRows(type) {
-    //TODO 다시 정리 필요~ 마지막 처리
-    //console.log("type : ", type);
-
-    if (type === 'server') {
-        rows.concat(
-            {id: 'Ip', disablePadding: false, label: 'IP'},
-            {id: 'Size', disablePadding: false, label: '크기'},
-        );
-    } else if (type === 'network') {
-        rows.concat(
-            {id: 'Ip', disablePadding: false, label: 'IP'},
-            {id: 'HwSn', disablePadding: false, label: 'HwSn'},
-            {id: 'FirmwareVersion', disablePadding: false, label: 'FirmwareVersion'},
-            {id: 'WarehousingDate', disablePadding: false, label: 'WarehousingDate'},
-        );
-    } else if (type === 'part') {
-        rows.concat(
-            {id: 'HwSn', disablePadding: false, label: 'HwSn'},
-            {id: 'Warranty', disablePadding: false, label: 'Warranty'},
-            {id: 'WarehousingDate', disablePadding: false, label: 'WarehousingDate'},
-        );
-    }
-}
-*/
 
 class AssetsHead extends PureComponent {
     state = {
@@ -226,11 +199,6 @@ class AssetsHead extends PureComponent {
                 allCheck = false;
             }
         }
-
-        /*console.log("all 클릭 numSelected : ", numSelected);
-        console.log("all 클릭 rowCount : ", rowCount);
-        console.log("---> size : ", assetState.deviceSelected.size);
-        console.log("allCheck : ", allCheck);*/
 
         return (
             <TableHead>

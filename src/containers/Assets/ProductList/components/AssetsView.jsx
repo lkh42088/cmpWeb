@@ -8,7 +8,7 @@ import {withTranslation} from 'react-i18next';
 import PropTypes from 'prop-types';
 
 import AssetsComment from "./AssetsComment";
-import AssetsLogo from "./AssetsLogo";
+import AssetsLog from "./AssetsLog";
 import {postDeviceComment, setAssetsPage} from "../../../../redux/actions/assetsAction";
 
 class AssetsView extends PureComponent {
@@ -284,7 +284,7 @@ class AssetsView extends PureComponent {
         }
 
         return (
-            <Col md={10} lg={10}>
+            <Col md={12} lg={12}>
                 <Card>
                     <CardBody>
                         <div className="card__title">
@@ -419,7 +419,7 @@ class AssetsView extends PureComponent {
                     </ButtonToolbar>
                     {/*-----------------------------------------------------------------------------------------*/}
                     <AssetsComment assetState={assetState} dispatch={dispatch}/>
-                    <AssetsLogo assetState={assetState} dispatch={dispatch}/>
+                    <AssetsLog assetState={assetState} dispatch={dispatch}/>
                     {/*-----------------------------------------------------------------------------------------*/}
                 </Card>
             </Col>
