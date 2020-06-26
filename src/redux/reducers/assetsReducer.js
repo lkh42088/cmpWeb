@@ -91,6 +91,18 @@ export const initialState = {
     },
     operatingFlag: true,
     carryingFlag: true,
+    deviceLog: {
+        deviceCode: '',
+        field: '',
+        idx: '',
+        logLevel: '',
+        newStatus: '',
+        oldStatus: '',
+        registerDate: '',
+        registerId: '',
+        registerName: '',
+        workCode: '',
+    },
 };
 
 function getId(state) {
@@ -102,7 +114,7 @@ function getId(state) {
 // state 값을 직접 수정하면 안되고, 기존 상태 값에 원하는 값을 덮어쓴 새로운 객체를 만들어서 반환
 const assetsReducer = (state = initialState, action) => {
     const {
-        payload, type, deviceType, page, comment, division,
+        payload, type, deviceType, page, comment, division, log,
     } = action;
     //const devices = state.get('devices');
     // ... 은 자바스크립트의 전개연산자, 기존의 객체안에 있는 내용을 해당 위치에다가 풀어준다는 의미
@@ -144,6 +156,7 @@ const assetsReducer = (state = initialState, action) => {
                 ...state,
                 device: payload,
                 comments: comment,
+                deviceLog: log,
             };
         case GET_DEVICE_ORI_BY_DEVICECODE:
             return {

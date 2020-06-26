@@ -16,7 +16,7 @@ import renderDatePickerField from "../../../../shared/components/form/DatePicker
 import Collapse from "../../../../shared/components/Collapse";
 
 import AssetsComment from "./AssetsComment";
-import AssetsLogo from "./AssetsLogo";
+import AssetsLog from "./AssetsLog";
 
 //assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
 class _AssetsView extends PureComponent {
@@ -434,7 +434,7 @@ class _AssetsView extends PureComponent {
                 </div>
                 {/*-----------------------------------------------------------------------------------------*/}
                 <AssetsComment assetState={assetState} dispatch={dispatch} setTotalManager={setTotalManager}/>
-                <AssetsLogo assetState={assetState} dispatch={dispatch} setTotalManager={setTotalManager}/>
+                <AssetsLog assetState={assetState} dispatch={dispatch} setTotalManager={setTotalManager}/>
                 {/*-----------------------------------------------------------------------------------------*/}
                 <ButtonToolbar className="assets_write__modal__footer">
                     <Button className="assets_write__modal_ok" outline={colored} color="primary"
