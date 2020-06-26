@@ -111,7 +111,8 @@ const initialState = {
 
 const usersReducer = handleActions(
     {
-        [INITIALIZE_REGISTER_USER]: () => ({
+        [INITIALIZE_REGISTER_USER]: state => ({
+            ...state,
             register: {
                 cpName: '',
                 cpIdx: '',

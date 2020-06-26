@@ -13,6 +13,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import {makeStyles} from "@material-ui/core/styles";
+import {useSnackbar} from "notistack";
 import {
     pagingChangeCurrentPage,
     pagingChangeCurrentPageNext, pagingChangeCurrentPagePrev, pagingChangeDense, pagingChangeOrder, pagingChangeOrderBy,
@@ -66,14 +67,20 @@ const UserList = () => {
      ************************************************************************************/
     const classes = useStyles();
     const dispatch = useDispatch();
+    const { enqueueSnackbar } = useSnackbar();
     /**
      * User Data
      */
     const {
-        data, getPage,
+        data,
+        getPage,
+        msg,
+        msgError,
     } = useSelector(({ usersRd }) => ({
         data: usersRd.data,
         getPage: usersRd.page,
+        msg: usersRd.msg,
+        msgError: usersRd.msgError,
     }));
 
     /**
@@ -110,12 +117,20 @@ const UserList = () => {
      * Function
      ************************************************************************************/
     const handleOpen = () => {
-        // dispatch(initRegisterUser());
         setOpen(true);
     };
 
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const handleTriggerFailure = () => {
+        enqueueSnackbar('계정 등록에 실패했습니다!');
+    };
+
+    const handleTriggerSuccess = () => {
+        // variant could be success, error, warning, info, or default
+        enqueueSnackbar('계정 등록에 성공했습니다.', { variant: "success" });
     };
 
     /** Pagination */
@@ -242,6 +257,20 @@ const UserList = () => {
         dispatch(pagingDump());
     }, [rowsPerPage, pageBeginRow, orderBy, order]);
 
+    useEffect(() => {
+        if (msg) {
+            handleTriggerSuccess();
+            dispatch(initRegisterUser());
+        }
+    }, [msg]);
+
+    useEffect(() => {
+        if (msgError) {
+            dispatch(initRegisterUser());
+            handleTriggerFailure();
+        }
+    }, [msgError]);
+
     /************************************************************************************
      * Component
      ************************************************************************************/
@@ -350,7 +379,7 @@ const UserList = () => {
                             label="Dense padding"
                         />
                     </div>
-                    <RegisterUserPage open={open} handleClose={handleClose} />
+                    <RegisterUserPage open={open} handleClose={handleClose}/>
                 </CardBody>
             </Card>
         </Col>
