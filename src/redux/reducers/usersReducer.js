@@ -13,7 +13,8 @@ import {
     CHANGE_EMAIL_AUTH_GROUP_FLAG,
     USER_BASE_INFO_BY_COMPANY,
     CHECK_DUP_USER_SUCCESS,
-    CHECK_DUP_USER_FAILURE, CHECK_USER_REGISTER_FIELD,
+    CHECK_DUP_USER_FAILURE,
+    CHECK_USER_REGISTER_FIELD,
 } from "../actions/usersActions";
 import {checkPasswordPattern} from "../../lib/utils/utils";
 

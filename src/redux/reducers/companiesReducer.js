@@ -6,9 +6,15 @@ import {
     ADD_COMPANY_FAILURE,
     COMPANY_CHANGE_FIELD,
     COMPANY_CHANGE_REGISTER_FIELD,
-    GET_COMPANY_LIST_SUCCESS, INITIALIZE_REGISTER_COMPANY,
+    GET_COMPANY_LIST_SUCCESS,
+    INITIALIZE_REGISTER_COMPANY,
     CHECK_DUP_COMPANY_SUCCESS,
-    CHECK_DUP_COMPANY_FAILURE, CHECK_COMPANY_REGISTER_FIELD,
+    CHECK_DUP_COMPANY_FAILURE,
+    CHECK_COMPANY_REGISTER_FIELD,
+    GET_COMPANIES_BY_NAME_SUCCESS,
+    GET_COMPANIES_BY_NAME_FAILURE,
+    GET_COMPANIES_SUCCESS,
+    CLEAR_COMPANY_SEARCH,
 } from "../actions/companiesActions";
 
 const initialState = {
@@ -84,6 +90,8 @@ const initialState = {
     msgError: null,
     checkCompany: false,
     confirmCompany: false,
+    searchMsg: null,
+    searchMsgError: null,
 };
 
 const companiesReducer = handleActions(
@@ -155,10 +163,30 @@ const companiesReducer = handleActions(
             checkCompany: false,
             confirmCompany: false,
         }),
+        [CLEAR_COMPANY_SEARCH]: state => ({
+            ...state,
+            searchMsg: null,
+            searchMsgError: null,
+        }),
+        /** get companies List */
         [GET_COMPANY_LIST_SUCCESS]: (state, action) => ({
             ...state,
             data: action.payload.data,
             page: action.payload.page,
+        }),
+        /** get companies by name */
+        [GET_COMPANIES_BY_NAME_SUCCESS]: (state, action) => ({
+            ...state,
+            searchMsg: action.payload,
+        }),
+        [GET_COMPANIES_BY_NAME_FAILURE]: (state, action) => ({
+            ...state,
+            searchMsg: action.payload,
+        }),
+        /** get all companies */
+        [GET_COMPANIES_SUCCESS]: (state, action) => ({
+            ...state,
+            searchMsg: action.payload.data,
         }),
         [COMPANY_CHANGE_REGISTER_FIELD]: (state, { payload: { key, value }}) => produce(state, (draft) => {
             draft.register[key] = value;

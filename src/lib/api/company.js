@@ -27,3 +27,6 @@ export const checkDupCompany = ({
 export const getCompanyList = ({
     rows, offset, orderBy, order,
 }) => client.get(`/v1/customers/companies/${rows}/${offset}/${orderBy}/${order}`);
+
+export const getCompaniesByName = ({ cpName }) => client.get(`/v1/companies/${cpName}`);
+export const getCompanies = () => client.get(`/v1/companies`);

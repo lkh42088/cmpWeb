@@ -33,7 +33,7 @@ export default function createRequestSaga(type, request) {
                     payload: response.data,
                 });
             } else {
-                console.log('type:', SUCCESS);
+                console.log("type:", SUCCESS, ", payload(data): ", response.data);
                 yield put({
                     type: SUCCESS,
                     payload: response.data,

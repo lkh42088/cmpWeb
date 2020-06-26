@@ -25,6 +25,8 @@ import {
 } from "../../../../redux/actions/usersActions";
 import SearchZip from "../../Company/components/SearchZip";
 import {checkPasswordPattern} from "../../../../lib/utils/utils";
+import SearchCompany from "./SearchCompany";
+import {clearCompanySearch} from "../../../../redux/actions/companiesActions";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -60,7 +62,9 @@ const RegisterUserPage = (props) => {
         userDisabled,
         userHelperText,
         /** register */
-        userId, userPassword,
+        cpName,
+        userId,
+        userPassword,
         /** message */
     } = useSelector(({ usersRd }) => ({
         user: usersRd.register,
@@ -71,11 +75,13 @@ const RegisterUserPage = (props) => {
         userDisabled: usersRd.disabled,
         userHelperText: usersRd.helperText,
         /** register */
+        cpName: usersRd.register.cpName,
         userId: usersRd.register.userId,
         userPassword: usersRd.register.password,
     }));
 
     const [openZip, setOpenZip] = useState(false);
+    const [openSearchCompany, setOpenSearchCompany] = useState(false);
     const [values, setValues] = useState({
         amount: '',
         password: '',
@@ -102,6 +108,19 @@ const RegisterUserPage = (props) => {
     const handleChangeUserTextField = ({name, value}) => {
         console.log("[handleChange] name: ", name, ", value: ", value);
         dispatch(changeUserField({key: name, value}));
+    };
+
+    const handleOpenSearchCompany = () => {
+        dispatch(clearCompanySearch());
+        setOpenSearchCompany(true);
+    };
+
+    const handleCloseSearchCompany = () => {
+        setOpenSearchCompany(false);
+    };
+
+    const handleCompleteSearchCompany = () => {
+        console.log("handleCompleteSearchCompany");
     };
 
     const handleOpenSearchZip = () => {
@@ -189,6 +208,43 @@ const RegisterUserPage = (props) => {
                         </div>
                         <form className={formClassName}>
                             <Grid container spacing={1}>
+                                <Grid item xs={6}>
+                                    <div>
+                                        {/*1. 회사 */}
+                                        <span className={labelClassName}>* 회사</span>
+                                        <FormControl
+                                            size={fieldSize}
+                                            className={fieldClassName}
+                                        >
+                                            <FilledInput
+                                                isError={userIsError.cpName}
+                                                required={userRequired.cpName}
+                                                disabled={userDisabled.cpName}
+                                                name="cpName"
+                                                value={cpName}
+                                                onChange={(e) => { handleChangeUserTextField({name: "cpName", value: e.target.value}); }}
+                                                endAdornment={(
+                                                    <InputAdornment position="end">
+                                                        <IconButton
+                                                            aria-label="toggle password visibility"
+                                                            onClick={handleOpenSearchCompany}
+                                                            onMouseDown={handleMouseDownPassword}
+                                                            edge="end"
+                                                        >
+                                                            <SearchIcon/>
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                )}
+                                            />
+                                            <FormHelperText id="component-helper-text">{userHelperText.cpName}</FormHelperText>
+                                            <SearchCompany
+                                                open={openSearchCompany}
+                                                handleClose={handleCloseSearchCompany}
+                                                handleComplete={handleCompleteSearchCompany}
+                                            />
+                                        </FormControl>
+                                    </div>
+                                </Grid>
                                 <Grid item xs={6}>
                                     <div>
                                          {/*1. 아이디*/}
