@@ -17,7 +17,7 @@ export const GET_DEVICES_SEARCH = 'GET_DEVICES_SEARCH';
 export const SET_DEVICE_DEVICECODE = 'SET_DEVICE_DEVICECODE';
 export const SET_COMMENT = 'SET_COMMENT';
 export const SET_STATUS = 'SET_STATUS';
-export const SET_MODAL_DIVISION = 'SET_MODAL_DIVISION';
+//export const SET_MODAL_DIVISION = 'SET_MODAL_DIVISION';
 export const SET_ADD_ELE_IP_DATA = 'SET_ADD_ELE_IP_DATA';
 export const SET_ADD_ELE_SPLA_DATA = 'SET_ADD_ELE_SPLA_DATA';
 export const SET_DEVICE_SELECTED = 'SET_DEVICE_SELECTED';
@@ -28,6 +28,7 @@ export const SET_DEVICE_OUTFLAG_OPERATING = 'SET_DEVICE_OUTFLAG_OPERATING';
 export const SET_DEVICE_OUTFLAG_CARRYING = 'SET_DEVICE_OUTFLAG_CARRYING';
 export const SET_API_PAGE = 'SET_API_PAGE';
 export const SET_ASSETS_PAGE = 'SET_ASSETS_PAGE';
+export const SET_DEVICE_LOG = 'SET_DEVICE_LOG';
 
 // const API_ROUTE = 'http://127.0.0.1:8081/v1';
 // order direction
@@ -83,12 +84,12 @@ export const setState = dispatchVal => async (dispatch) => {
     });
 };
 
-export const setViewModalDivision = dispatchVal => async (dispatch) => {
+/*export const setViewModalDivision = dispatchVal => async (dispatch) => {
     dispatch({
         type: SET_MODAL_DIVISION,
         payload: dispatchVal,
     });
-};
+};*/
 
 export const getCodes = dispatchVal => async (dispatch) => {
     try {
@@ -326,13 +327,21 @@ export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
         //router.GET("/v1/log/device/:value", h.GetDevicesByLog)
         const logs = await axios.get(`${API_ROUTE}/log/device/${deviceCode}`);
 
-        console.log("★★★★★★★★★★★★★★★★★logs : ", logs.data);
+        //console.log("★★★★★★★★★★★★★★★★★logs : ", logs.data);
 
         dispatch({
             type: GET_DEVICE_BY_DEVICECODE,
             payload: res.data,
-            comment: comments.data,
-            log: logs.data,
+        });
+
+        dispatch({
+            type: SET_COMMENT,
+            payload: comments.data,
+        });
+
+        dispatch({
+            type: SET_DEVICE_LOG,
+            payload: logs.data,
         });
     } catch (error) {
         dispatch({
@@ -342,8 +351,6 @@ export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
         dispatch({
             type: GET_DEVICE_BY_DEVICECODE,
             payload: undefined,
-            comment: undefined,
-            log: undefined,
         });
         console.log("error : ", error);
     }
@@ -361,7 +368,9 @@ export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) =>
 
         let deviceIpArray = new Map();
         let deviceSplaArray = new Map();
+
         const jsonData = res.data[0];
+
         let IpArray = '';
         let SplaArray = '';
         let ipCheckCount = 0;
@@ -373,35 +382,19 @@ export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) =>
                 // eslint-disable-next-line no-loop-func,no-return-assign
                 IpArray.map(d => (
                     d !== undefined && d !== "" && (
-                        /*                ipCheckCount === 1000 ? (
-                                            ipCheckCount += 1,
-                                                deviceIpArray = deviceIpArray.set(`ip_0`, d)
-                                        ) : (
-                                            deviceIpArray = deviceIpArray.set(`ip_${ipCheckCount}`, d)
-                                        )*/
                         deviceIpArray = deviceIpArray.set(`ip_${ipCheckCount}`, d),
                             ipCheckCount += 1
                     )));
-
-                //console.log("deviceIpArray : ", JSON.parse(JSON.stringify(deviceIpArray)));
 
                 dispatch({
                     type: SET_ADD_ELE_IP_DATA,
                     payload: JSON.parse(JSON.stringify(deviceIpArray)),
                 });
 
-
                 SplaArray = jsonData.spla.split("|");
                 // eslint-disable-next-line no-loop-func,no-return-assign
                 SplaArray.map(d => (
                     d !== undefined && d !== "" && (
-                        /*splaCheckCount === 1000 ? (
-                            splaCheckCount += 1,
-                                deviceSplaArray = deviceSplaArray.set(`spla0`, d)
-                        ) : (
-                            deviceSplaArray = deviceSplaArray.set(`spla${splaCheckCount}`, d)
-                        )*/
-
                         deviceSplaArray = deviceSplaArray.set(`spla_${splaCheckCount}`, d),
                             splaCheckCount += 1
                     )));
@@ -531,12 +524,12 @@ export const getDeviceCommentByDeviceCode = assetState => async (dispatch) => {
             payload: stateVal,
         });
         dispatch({
-            type: GET_COMMENTS_BY_DEVICECODE,
-            comment: comments.data,
+            type: SET_COMMENT,
+            payload: comments.data,
         });
     } catch (error) {
         dispatch({
-            type: GET_COMMENTS_BY_DEVICECODE,
+            type: SET_COMMENT,
             comment: undefined,
         });
         console.log("getDeviceCommentByDeviceCode error : ", error);
@@ -549,7 +542,6 @@ export const postDevice = (division, assetState, submitData) => async (dispatch)
         console.log("💎 postDevice start");
         let method = '';
         //"API_ROUTE/device/create/$(type)/"
-
         let url = `${API_ROUTE}/device/${division}/${assetState.deviceType}`;
         switch (division) {
             case 'create':
@@ -566,7 +558,6 @@ export const postDevice = (division, assetState, submitData) => async (dispatch)
             default:
                 break;
         }
-
         const postJsonData = JSON.stringify(submitData);
 
         axios({
@@ -574,7 +565,7 @@ export const postDevice = (division, assetState, submitData) => async (dispatch)
             url,
             data: postJsonData,
         })
-            .then((response) => {
+            .then((responseDevice) => {
                 const stateVal = ({
                     type: 'device',
                     division,
@@ -584,15 +575,33 @@ export const postDevice = (division, assetState, submitData) => async (dispatch)
                     type: SET_STATUS,
                     payload: stateVal,
                 });
-                dispatch({
-                    type: SET_MODAL_DIVISION,
-                    payload: 'read',
-                });
-                dispatch({
-                    type: GET_DEVICE_BY_DEVICECODE,
-                    payload: postJsonData,
-                    comment: assetState.comments,
-                });
+
+                /*if (division === 'update') {
+                    axios({method: 'get', url: `${API_ROUTE}/log/device/${submitData.deviceCode}`})
+                        .then((response) => {
+                            dispatch({
+                                type: SET_DEVICE_LOG,
+                                payload: response.data,
+                            });
+                        })
+                        .catch((error) => {
+                            console.log('error : ', error.response);
+                        });
+
+                    axios({
+                        method: 'get',
+                        url: `${API_ROUTE}/device/${assetState.deviceType}/${submitData.deviceCode}`,
+                    })
+                        .then((response) => {
+                            dispatch({
+                                type: GET_DEVICE_BY_DEVICECODE,
+                                payload: response.data,
+                            });
+                        })
+                        .catch((error) => {
+                            console.log('error : ', error.response);
+                        });
+                }*/
             })
             .catch((error) => {
                 console.log('error : ', error.response);
@@ -875,5 +884,20 @@ export const setSearch = dispatchVal => async (dispatch) => {
         });
     } catch (error) {
         console.log("setSearch error : ", error);
+    }
+};
+
+// 로그 저장
+export const setDeviceLog = dispatchVal => async (dispatch) => {
+    try {
+        console.log("💎 setDeviceLog start");
+        const res = await axios.get(`${API_ROUTE}/log/device/${dispatchVal}`);
+
+        dispatch({
+            type: SET_DEVICE_LOG,
+            payload: res.data,
+        });
+    } catch (error) {
+        console.log("setDeviceLog error : ", error);
     }
 };

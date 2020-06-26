@@ -72,7 +72,7 @@ class Layout extends Component {
         const { dispatch } = this.props;
 
         // ebjee
-        dispatch(changeMenuTitle('자산관리', '서버'));
+        dispatch(changeMenuTitle('SERVER', '온프레미스'));
 
         // (23jun2020,bhjung)
         const xuser = localStorage.getItem('user');

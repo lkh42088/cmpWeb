@@ -334,7 +334,7 @@ class AssetsTop extends PureComponent {
         }
 
         return (
-            <Col md="12">
+            <Col md={12} lg={12}>
                 <Card>
                     <div className="search_panel_topbtn">
                         <div className="float-left">
