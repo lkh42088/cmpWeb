@@ -46,7 +46,7 @@ renderLegend.propTypes = {
     })).isRequired,
 };
 
-const CircleGraphCard = (dir) => {
+const CircleGraphCard = (dir, data) => {
     const [x, setX] = useState(0);
     const [y, setY] = useState(0);
     const {themeName} = useSelector(({theme}) => ({
@@ -61,19 +61,13 @@ const CircleGraphCard = (dir) => {
     };
 
     return (
-        <Panel
-            lg={12}
-            xl={4}
-            xs={12}
-            title="서버(Server) Kt Cloud (xxx)"
-        >
-            {/*subhead="Top selling items statistic by last month"*/}
+        <Panel title="서버(Server) Kt Cloud (xxx)">
             <div dir={dir}>
                 <ResponsiveContainer className="dashboard__chart-pie dashboard__chart-pie--crypto"
                                      height={360}>
                     <PieChart className="dashboard__chart-pie-container">
                         <Tooltip
-                            formatter={value => (`${value.toFixed(2)}`)}
+                            formatter={value => (`${value.toFixed(1)}`)}
                             position={{x, y}}
                             {...getTooltipStyles(themeName)}
                         />
