@@ -8,20 +8,22 @@ import {
     GET_COMPANIES,
     SET_DEVICE_DEVICECODE,
     SET_COMMENT,
+
     GET_COMMENTS_BY_DEVICECODE,
     GET_DEVICES_CHECKCOUNT, SET_STATUS,
-    GET_DEVICE_ORI_BY_DEVICECODE, SET_MODAL_DIVISION,
+    GET_DEVICE_ORI_BY_DEVICECODE,
+
     SET_ADD_ELE_IP_DATA, SET_ADD_ELE_SPLA_DATA,
     SET_DEVICE_SELECTED, SET_DEVICE_OUTFLAG, SET_DEVICE_TYPE,
     SET_DEVICE_SEARCH, SET_DEVICE_OUTFLAG_OPERATING, SET_DEVICE_OUTFLAG_CARRYING,
-    SET_API_PAGE, SET_ASSETS_PAGE,
+    SET_API_PAGE, SET_ASSETS_PAGE, SET_DEVICE_LOG,
 } from "../actions/assetsAction";
 
 export const initialState = {
     deviceType: 'server',
-    deviceByDeviceCode: '1',
+    deviceByDeviceCode: '',
     assetsPage: 'list',
-    viewModalDivison: 'read',
+    /*viewModalDivison: 'read',*/
     deviceOutFlag: '0',
     device: {},
     deviceOri: {},
@@ -155,8 +157,6 @@ const assetsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 device: payload,
-                comments: comment,
-                deviceLog: log,
             };
         case GET_DEVICE_ORI_BY_DEVICECODE:
             return {
@@ -168,11 +168,11 @@ const assetsReducer = (state = initialState, action) => {
                 ...state,
                 deviceByDeviceCode: payload,
             };
-        case GET_COMMENTS_BY_DEVICECODE:
+        /*case GET_COMMENTS_BY_DEVICECODE:
             return {
                 ...state,
-                comments: comment,
-            };
+                comments: payload,
+            };*/
         case GET_DEVICES_CHECKCOUNT:
             return {
                 ...state,
@@ -185,11 +185,11 @@ const assetsReducer = (state = initialState, action) => {
                 ...state,
                 stateVal: payload,
             };
-        case SET_MODAL_DIVISION:
+        /*case SET_MODAL_DIVISION:
             return {
                 ...state,
                 viewModalDivison: payload,
-            };
+            };*/
         case SET_ADD_ELE_IP_DATA:
             return {
                 ...state,
@@ -229,6 +229,16 @@ const assetsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 assetsPage: payload,
+            };
+        case SET_DEVICE_LOG:
+            return {
+              ...state,
+                deviceLog: payload,
+            };
+        case SET_COMMENT:
+            return {
+                ...state,
+                comments: payload,
             };
         /*case SET_DEVICE_OUTFLAG_OPERATING:
             return {

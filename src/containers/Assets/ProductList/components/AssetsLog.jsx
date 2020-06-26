@@ -130,11 +130,21 @@ class AssetsLog extends PureComponent {
             order, orderBy, selected, rowsPerPage, page,
         } = this.state;
         const {assetState, dispatch} = this.props;
-        const emptyRows = rowsPerPage - Math.min(rowsPerPage, assetState.deviceLog.length - (page * rowsPerPage));
+        let emptyRows;
+        let count;
         /*Collapse... with-shadow modal_comment_register*/
+
+        if (assetState.deviceLog.length > 0) {
+            emptyRows = rowsPerPage - Math.min(rowsPerPage, assetState.deviceLog.length - (page * rowsPerPage));
+            count = assetState.deviceLog.length;
+        } else {
+            emptyRows = 0;
+            count = 0;
+        }
+
         return (
-            <Collapse title="로그 확인"
-                      className="assets_write__modal__tableLine">
+            /*<Collapse title="로그 확인"
+                      className="assets_write__modal__tableLine">*/
                 <Col md={12} lg={12}>
                     <Card>
                         <CardBody>
@@ -175,38 +185,32 @@ class AssetsLog extends PureComponent {
                                                                 scope="row"
                                                                 padding="none"
                                                                 width="8%"
-                                                                style={{whiteSpace: "nowrap"}}
-                                                            >material-table__cell
+                                                            >
                                                                 {this.renderLogLevelSwitch(d.logLevel.toString())}
                                                             </TableCell>
                                                             <TableCell
                                                                 className="material-table__cell material-table__cell-right"
                                                                 width="10%"
-                                                                style={{whiteSpace: "nowrap"}}
                                                             >{this.renderSwitch(d.workCode.toString())}
                                                             </TableCell>
                                                             <TableCell
                                                                 className="material-table__cell material-table__cell-right"
                                                                 width="10%"
-                                                                style={{whiteSpace: "nowrap"}}
                                                             >{d.registerName} ({d.registerId})
                                                             </TableCell>
                                                             <TableCell
                                                                 className="material-table__cell material-table__cell-right"
                                                                 width="10%"
-                                                                style={{whiteSpace: "nowrap"}}
                                                             >{moment(d.registerDate).format("YYYY-MM-DD")}
                                                             </TableCell>
                                                             <TableCell
                                                                 className="material-table__cell material-table__cell-right"
                                                                 width="10%"
-                                                                style={{whiteSpace: "nowrap"}}
                                                             >{d.field}
                                                             </TableCell>
                                                             <TableCell
                                                                 className="material-table__cell material-table__cell-right"
                                                                 width="*"
-                                                                style={{whiteSpace: "nowrap"}}
                                                             >{
                                                                 d.workCode.toString() === '2' ? (
                                                                     <Fragment>
@@ -233,7 +237,13 @@ class AssetsLog extends PureComponent {
                                             </TableBody>
                                         ) : (
                                             <Fragment>
-                                                <span>▶ 등록된 로그가 없습니다.</span>
+                                                <TableBody>
+                                                    <TableRow>
+                                                    <TableCell collspan="6">
+                                                        등록된 로그가 없습니다.
+                                                    </TableCell>
+                                                    </TableRow>
+                                                </TableBody>
                                             </Fragment>
                                         )
                                     }
@@ -242,7 +252,7 @@ class AssetsLog extends PureComponent {
                             <TablePagination
                                 component="div"
                                 className="material-table__pagination"
-                                count={assetState.deviceLog.length}
+                                count={count}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
                                 backIconButtonProps={{'aria-label': 'Previous Page'}}
@@ -259,7 +269,7 @@ class AssetsLog extends PureComponent {
                         </CardBody>
                     </Card>
                 </Col>
-            </Collapse>
+            /*</Collapse>*/
         );
     }
 }

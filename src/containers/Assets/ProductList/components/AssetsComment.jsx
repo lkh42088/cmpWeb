@@ -2,7 +2,7 @@ import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
-    Button, ButtonToolbar, Modal,
+    Button, ButtonToolbar, Card, Col, Modal,
 } from 'reactstrap';
 import classNames from 'classnames';
 import Collapse from "../../../../shared/components/Collapse";
@@ -250,14 +250,17 @@ class AssetsComment extends PureComponent {
                         .map(d => (
                             <div key={d.idx}>
                                 <span>▶ {d.registerName} ({d.registerId}) -  [{d.registerDate}]</span>
-                                <div className="modal_comment_del" type="button" role="button" tabIndex="0"
-                                     onClick={() => this.commentToggle('delete', d)}
-                                     onKeyDown={() => this.commentToggle('delete', d)}>삭제
-                                </div>
-                                <div className="modal_comment_edit" type="button" role="button" tabIndex="0"
-                                     onClick={() => this.commentToggle('update', d)}
-                                     onKeyDown={() => this.commentToggle('update', d)}
-                                >수정
+                                <div>
+                                    <span className="modal_comment_del" type="button" role="button" tabIndex="0"
+                                          onClick={() => this.commentToggle('delete', d)}
+                                          onKeyDown={() => this.commentToggle('delete', d)}>삭제
+                                    </span>
+                                        <span className="modal_comment_edit" type="button" role="button"
+                                              tabIndex="0"
+                                              onClick={() => this.commentToggle('update', d)}
+                                              onKeyDown={() => this.commentToggle('update', d)}
+                                        >수정
+                                    </span>
                                 </div>
                                 <pre>
                                     {d.contents}
@@ -276,73 +279,77 @@ class AssetsComment extends PureComponent {
 
         return (
             <div>
-                <Collapse title="댓글 확인"
+                {/*<Collapse title="댓글 확인"
                           className="with-shadow modal_comment_register assets_write__modal__tableLine">
-                    <Fragment>
-                        {deviceComments}
-                        <Modal
-                            isOpen={modal}
-                            className={`assets_write__modal-dialog 
+                </Collapse>*/}
+                <Fragment>
+                    <Col md={12} lg={12}>
+                        <Card>
+                            {deviceComments}
+                        </Card>
+                    </Col>
+                    <Modal
+                        isOpen={modal}
+                        className={`assets_write__modal-dialog 
                                     assets_write__modal-dialog--success ${modalClass}`}
-                        >
-                            <form onSubmit={this.handleSubmit}>
-                                <div className="assets_write__modal__body assets_write__modal__tableLine">
-                                    <div className="modal_form__form-group">
+                    >
+                        <form onSubmit={this.handleSubmit}>
+                            <div className="assets_write__modal__body assets_write__modal__tableLine">
+                                <div className="modal_form__form-group">
                                             <span className="modal_form__form-group-label text_cor_green">
                                                 {registerName} ({registerId}) -  [{registerDate}]</span>
-                                        <div className="modal_form__form-group-field">
+                                    <div className="modal_form__form-group-field">
                                                     <textarea name="comment" value={comment}
                                                               className="assets_comment"
                                                               placeholder="댓글 입력 창"
                                                               onChange={this.handleChange}/>
-                                        </div>
                                     </div>
                                 </div>
-                                <ButtonToolbar className="assets_write__modal__footer_comment">
-                                    <Button className="assets_write__modal_ok"
-                                            type="submit" color="success">수정</Button>&nbsp;
-                                    <Button className="assets_write__modal_cancel"
-                                            onClick={() => this.commentToggle('close')}
-                                    >Cancel</Button>
-                                </ButtonToolbar>
-                            </form>
-                        </Modal>
-                        <Modal
-                            isOpen={modalWarring}
-                            toggle={this.modalClose}
-                            modalClassName="ltr-support"
-                            className={`modal-dialog-dialog ${warringClass}`}
-                        >
-                            <div className="modal__header">
-                                <button className="lnr lnr-cross modal__close-btn" type="button"
-                                        onClick={this.modalClose}/>
-                                <span className="lnr lnr-cross-circle modal__title-icon"/>
-                                <h4 className="text-modal  modal__title">{warringTitle}</h4>
                             </div>
-                            <div className="modal__body">
-                                {warringContents}
-                                <br/>
-                                <span className="modal_form__form-group-description">
+                            <ButtonToolbar className="assets_write__modal__footer_comment">
+                                <Button className="assets_write__modal_ok"
+                                        type="submit" color="success">수정</Button>&nbsp;
+                                <Button className="assets_write__modal_cancel"
+                                        onClick={() => this.commentToggle('close')}
+                                >Cancel</Button>
+                            </ButtonToolbar>
+                        </form>
+                    </Modal>
+                    <Modal
+                        isOpen={modalWarring}
+                        toggle={this.modalClose}
+                        modalClassName="ltr-support"
+                        className={`modal-dialog-dialog ${warringClass}`}
+                    >
+                        <div className="modal__header">
+                            <button className="lnr lnr-cross modal__close-btn" type="button"
+                                    onClick={this.modalClose}/>
+                            <span className="lnr lnr-cross-circle modal__title-icon"/>
+                            <h4 className="text-modal  modal__title">{warringTitle}</h4>
+                        </div>
+                        <div className="modal__body">
+                            {warringContents}
+                            <br/>
+                            <span className="modal_form__form-group-description">
                                   작성한 사용자만 수정/삭제 할 수 있습니다.
                                 </span>
-                            </div>
-                            <ButtonToolbar className="modal__footer">
-                                {
-                                    assetState.stateVal.state === 'request' ? (
-                                        <Button className="modal_ok" outline={warringType} color={warringType}
-                                                onClick={this.commentDelete}>Ok</Button>
-                                    ) : (
-                                        <Fragment>
-                                            &nbsp;
-                                        </Fragment>
-                                    )
-                                }
-                                <Button className="modal_ok" outline={warringType} color={warringType}
-                                        onClick={this.modalClose}>Close</Button>
-                            </ButtonToolbar>
-                        </Modal>
-                    </Fragment>
-                </Collapse>
+                        </div>
+                        <ButtonToolbar className="modal__footer">
+                            {
+                                assetState.stateVal.state === 'request' ? (
+                                    <Button className="modal_ok" outline={warringType} color={warringType}
+                                            onClick={this.commentDelete}>Ok</Button>
+                                ) : (
+                                    <Fragment>
+                                        &nbsp;
+                                    </Fragment>
+                                )
+                            }
+                            <Button className="modal_ok" outline={warringType} color={warringType}
+                                    onClick={this.modalClose}>Close</Button>
+                        </ButtonToolbar>
+                    </Modal>
+                </Fragment>
             </div>
         );
     }

@@ -1,8 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, Fragment} from 'react';
 import moment from "moment";
 import {useSelector, useDispatch} from "react-redux";
 import {Col, Container, Row} from 'reactstrap';
 import PropTypes from "prop-types";
+
+import {emphasize, withStyles} from '@material-ui/core/styles';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Chip from '@material-ui/core/Chip';
+import HomeIcon from '@material-ui/icons/Home';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import {
     fetchPosts, getCodes, postDevice, getDeviceOriByIdx, getDeviceByIdx, setAssetsPage,
 } from '../../../redux/actions/assetsAction';
@@ -37,124 +44,21 @@ const MaterialTable = () => {
     const getDeviceEdit = (deviceCode, deviceType) => dispatch(getDeviceByIdx(deviceCode, deviceType));
     const getDeviceEditOri = (deviceCode, deviceType) => dispatch(getDeviceOriByIdx(deviceCode, deviceType));
 
-    const handleSubmit = (values) => {
-        let division = '|';
-        let divisionCount = 0;
-        let IpArray = '';
-        let SplaArray = '';
-        let rentDataStart;
-        let rentDataEnd;
-        let rentData = '|';
-        let warehousingDate = '';
-
-        console.log("👋 assetState.deviceIp : ", assetState.deviceIp);
-
-        // eslint-disable-next-line guard-for-in,no-restricted-syntax
-        for (const arrData in assetState.deviceIp) {
-            console.log("👋👋 assetState.deviceIp[arrData] : ", assetState.deviceIp[arrData]);
-            if (assetState.deviceIp[arrData] !== '') {
-                if (divisionCount <= 0) {
-                    division = '';
-                } else {
-                    division = '|';
-                }
-
-                divisionCount += 1;
-                IpArray = `${IpArray}${division}${assetState.deviceIp[arrData]}`;
-            }
-        }
-
-        divisionCount = 0;
-        IpArray = `${IpArray}|`;
-
-        // eslint-disable-next-line guard-for-in,no-restricted-syntax
-        for (const arrData in assetState.deviceSpla) {
-            if (assetState.deviceSpla[arrData] !== '') {
-                if (divisionCount <= 0) {
-                    division = '';
-                } else {
-                    division = '|';
-                }
-
-                divisionCount += 1;
-                SplaArray = `${SplaArray}${division}${assetState.deviceSpla[arrData]}`;
-            }
-        }
-
-        SplaArray = `${SplaArray}|`;
-
-        // eslint-disable-next-line guard-for-in,no-restricted-syntax
-        for (const arrData in values) {
-            if (arrData.indexOf("rentDate") !== -1) {
-                if (values[arrData].start !== undefined) {
-                    rentDataStart = moment(values[arrData].start).format("YYYYMMDD");
-                    rentDataEnd = `|${moment(values[arrData].end).format("YYYYMMDD")}`;
-                    rentData = `${rentDataStart}${rentDataEnd}`;
-                } else if (values[arrData] !== '' && values[arrData] !== undefined) {
-                    rentData = values[arrData];
-                } else {
-                    rentData = "|";
-                }
-            } else if (arrData.indexOf("warehousingDate") !== -1) {
-                warehousingDate = moment(values[arrData]).format("YYYYMMDD");
-            }
-        }
-
-        warehousingDate = warehousingDate.toString();
-
-        let rackLog;
-
-        if (values.rackLoc !== undefined) {
-            rackLog = values.rackLoc.toString();
-        } else {
-            rackLog = 0;
-        }
-
-        const submitData = ({
-            deviceCode: values.deviceCode,
-            idx: values.idx,
-            outFlag: '',
-            commentCnt: '',
-            commentLastDate: '',
-            registerId: 'lkb',
-            registerDate: '',
-            model: values.model,
-            contents: values.contents,
-            customer: values.customer,
-            manufacture: values.manufacture,
-            deviceType: values.deviceType,
-            ownership: values.ownership,
-            ownershipDiv: values.ownershipDiv,
-            ownerCompany: values.ownerCompany,
-            hwSn: values.hwSn,
-            idc: values.idc,
-            rack: values.rack,
-            cost: values.cost,
-            purpose: values.purpose,
-            size: values.size,
-            cpu: values.cpu,
-            memory: values.memory,
-            hdd: values.hdd,
-            rackTag: values.rackTag,
-            rackLog,
-            ip: IpArray,
-            spla: SplaArray,
-            rentDate: rentData,
-            warehousingDate,
-            monitoringFlag: '',
-            monitoringMethod: '',
-            rackCode: values.rackCode,
-            firmwareVersion: values.firmwareVersion,
-            warranty: values.warranty,
-        });
-
-        console.log("UPDATE 🙊🙊🙊 가공 전 : ", values);
-        console.log("UPDATE 🙊🙊🙊 가공 후 : ", submitData);
-        dispatch(postDevice('update', assetState, submitData));
-        getDeviceEdit(values.deviceCode, assetState.deviceType);
-        //getDeviceEditOri(values.deviceCode, assetState.deviceType);
-    };
-
+    const StyledBreadcrumb = withStyles(theme => ({
+        root: {
+            backgroundColor: theme.palette.grey[100],
+            height: theme.spacing(3),
+            color: theme.palette.grey[800],
+            fontWeight: theme.typography.fontWeightRegular,
+            '&:hover, &:focus': {
+                backgroundColor: theme.palette.grey[300],
+            },
+            '&:active': {
+                boxShadow: theme.shadows[1],
+                backgroundColor: emphasize(theme.palette.grey[300], 0.12),
+            },
+        },
+    }))(Chip); // TypeScript only: need a type cast here because https://github.com/Microsoft/TypeScript/issues/26591
 
     useEffect(() => {
         getTotalCodes();
@@ -163,13 +67,36 @@ const MaterialTable = () => {
     useEffect(() => {
         getDevices();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [assetState.deviceType, assetState.device, assetState.stateVal]);
+    /*}, [assetState.deviceType, assetState.device, assetState.stateVal]);*/
+    }, [assetState.deviceType, assetState.stateVal]);
+
+    useEffect(() => {
+        if (assetState.deviceByDeviceCode !== undefined && assetState.deviceByDeviceCode !== '') {
+            getDeviceEdit(assetState.deviceByDeviceCode, assetState.deviceType);
+            getDeviceEditOri(assetState.deviceByDeviceCode, assetState.deviceType);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [assetState.stateVal]);
 
     return (
         <Container className="dashboard">
             <Row>
                 <Col md={12}>
-                    <h3 className="page-title">{title.title}/{title.subTitle}</h3>
+                    {/*<h3 className="page-title">{title.title}/{title.subTitle}</h3>*/}
+                    <Breadcrumbs aria-label="breadcrumb" style={{paddingBottom: "10px"}}>
+                        <StyledBreadcrumb
+                            component="a"
+                            href="#"
+                            label="home"
+                            icon={<HomeIcon fontSize="small"/>}
+                        />
+                        <StyledBreadcrumb component="a" href="#" label={title.title}/>
+                        <StyledBreadcrumb component="a" href="#" label={title.subTitle}/>
+                        {/*<StyledBreadcrumb
+                            label={title.subTitle}
+                            deleteIcon={<ExpandMoreIcon />}
+                        />*/}
+                    </Breadcrumbs>
                 </Col>
             </Row>
             {assetState.assetsPage === 'list' ? (
@@ -182,10 +109,10 @@ const MaterialTable = () => {
             <Row>
                 {assetState.assetsPage === 'list'
                     ? <AssetsList assetState={assetState} dispatch={dispatch}/> : false}
-                {assetState.assetsPage === 'view'
+                {assetState.assetsPage === 'view' || assetState.assetsPage === 'edit'
                     ? <AssetsView assetState={assetState} dispatch={dispatch}/> : false}
-                {assetState.assetsPage === 'edit'
-                    ? <AssetsEdit assetState={assetState} dispatch={dispatch} onSubmit={handleSubmit}/> : false}
+                {/*{assetState.assetsPage === 'edit'
+                    ? <AssetsEdit assetState={assetState} dispatch={dispatch} onSubmit={handleSubmit}/> : false}*/}
             </Row>
         </Container>
     );

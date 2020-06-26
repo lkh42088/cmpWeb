@@ -1,13 +1,9 @@
 import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {
-    Card, CardBody, Col, Button, ButtonToolbar, Modal,
-} from 'reactstrap';
+import {Button, ButtonToolbar, Modal} from 'reactstrap';
 import classNames from 'classnames';
-import {
-    Field, reduxForm, FieldArray, Form,
-} from "redux-form";
+import {Field, reduxForm, FieldArray} from "redux-form";
 import {findDOMNode} from "react-dom";
 import {List, Map} from "immutable";
 import CalendarBlankIcon from "mdi-react/CalendarBlankIcon";
@@ -18,19 +14,18 @@ import TableBody from "@material-ui/core/TableBody";
 import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import TextField from '@material-ui/core/TextField';
 import {withTranslation} from "react-i18next";
 import {
-    getCompanyByName, setViewModalDivision, setAddEleData,
-    setAssetsPage, setState, getDeviceByIdx,
+    getCompanyByName, setAddEleData, setAssetsPage,
 } from "../../../../redux/actions/assetsAction";
 import renderIntervalDatePickerField from "./IntervalDatePicker";
 import renderDatePickerField from "./DatePicker";
+import {changeField} from "../../../../redux/actions/authActions";
+
+function checkIP(strIP) {
+    const expUrl = /^(1|2)?\d?\d([.](1|2)?\d?\d){3}$/;
+    return expUrl.test(strIP);
+}
 
 function validate(values) {
     const errors = {};
@@ -47,36 +42,15 @@ function validate(values) {
         errors.ownershipDiv = "소유권구분을 선택해주세요.";
     }
 
-    /* // eslint-disable-next-line no-plusplus
-     for (let i = 0; i < elIpName.length; i++) {
-         elIpName[i].style.display = "none";
-     }
-
-     // eslint-disable-next-line guard-for-in,no-restricted-syntax
-     for (const arrData in values) {
-         console.log("arrData : ", arrData, " values : ", values[arrData]);
-         if (arrData.indexOf("ip_") === 0) {
-             IpArray = values[arrData];
-
-             elIp = document.getElementById(`errorTextIp_${arrData}`);
-
-             if (checkIP(IpArray) === false) {
-                 elIp.style.display = "";
-             }
-         }
-     }*/
-
     return errors;
 }
 
 const renderCustomerField = field => (
     <Fragment>
         <div className="modal_form__form-group-field">
-            <input {...field.input}
-                   className={field.className} type={field.type} placeholder={field.placeholder}
+            <input {...field.input} type={field.type} placeholder={field.placeholder}
                    value={field.initialValues} onClick={field.searchToggle} onKeyDown={field.searchToggle}
                    role="button" tabIndex="0"
-                   style={{width: "40%"}}
             />
             <span className="search_btn_span"
                   onClick={field.searchToggle} onKeyDown={field.searchToggle}
@@ -86,11 +60,9 @@ const renderCustomerField = field => (
             && <span className="warringStyle">&nbsp;※ {field.meta.error}</span>}
             &nbsp;&nbsp;
             <b className="text_cor_orange"
-               style={{lineHeight: "30px"}}>{field
+               style={{lineHeight: "20px"}}>{field
                 .label.name} / {field.label.id}</b>
         </div>
-        {/*{field.meta.touched && field.meta.error
-        && <span className="modal_form__form-group-description">※ {field.meta.error}</span>}*/}
     </Fragment>
 );
 
@@ -139,7 +111,7 @@ class AssetsEdit extends PureComponent {
             RackComponent: <span className="cautionStyle">※ IDC를 선택하세요.</span>,
             ModelComponent: <span className="cautionStyle">※ Model을 선택하세요.</span>,
             AddIpComponent: [],
-            AddIpComponentMax: 1,
+            AddIpComponentMax: 0,
             AddSplaComponent: [],
             AddSplaComponentMax: 0,
             RegisterId: '',
@@ -154,56 +126,8 @@ class AssetsEdit extends PureComponent {
             initializeData: ({}),
             ipArrayMap: {},
             splaArrayMap: {},
-
-            modalWarring: false,
-            warringTitle: '',
-            warringContents: '',
-            warringClass: 'modal-dialog--danger',
-            warringType: '',
         };
     }
-
-    static getDerivedStateFromProps = (nextProps, prevState) => {
-        if (nextProps.assetState.stateVal.type === 'device') {
-            switch (nextProps.assetState.stateVal.state) {
-                case 'confirm':
-                    return {
-                        modalWarring: false,
-                        warringTitle: '',
-                        warringContents: '',
-                        warringClass: '',
-                        warringType: '',
-                    };
-                case 'request':
-                    return {
-                        modalWarring: true,
-                        warringTitle: '경고',
-                        warringContents: '수정하시겠습니까?',
-                        warringClass: 'modal-dialog--danger',
-                        warringType: 'danger',
-                    };
-                case 'success':
-                    return {
-                        modalWarring: true,
-                        warringTitle: '확인',
-                        warringContents: '요청하신 작업에 성공하였습니다.',
-                        warringClass: 'modal-dialog--primary',
-                        warringType: 'primary',
-                    };
-                case 'error':
-                    return {
-                        modalWarring: true,
-                        warringTitle: '경고',
-                        warringContents: '요청하신 작업에 실패하였습니다.',
-                        warringClass: 'modal-dialog--danger',
-                        warringType: 'danger',
-                    };
-                default:
-                    break;
-            }
-        }
-        return null; // null 을 리턴하면 따로 업데이트 할 것은 없다라는 의미
-    };
 
     componentDidMount() {
         const {
@@ -390,30 +314,6 @@ class AssetsEdit extends PureComponent {
         dispatch(setAssetsPage('view'));
     };
 
-    onModal = () => {
-        const {dispatch} = this.props;
-        const stateVal = ({
-            type: 'device',
-            division: 'update',
-            state: 'request',
-        });
-
-        dispatch(setState(stateVal));
-    };
-
-    modalClose = () => {
-        const {dispatch, assetState} = this.props;
-        const stateVal = ({
-            type: 'device',
-            division: 'update',
-            state: 'confirm',
-        });
-
-        dispatch(setState(stateVal));
-        dispatch(getDeviceByIdx(assetState.deviceByDeviceCode, assetState.deviceType));
-        dispatch(setAssetsPage('view'));
-    };
-
     showPassword = (e) => {
         e.preventDefault();
         this.setState(prevState => ({showPassword: !prevState.showPassword}));
@@ -440,7 +340,6 @@ class AssetsEdit extends PureComponent {
             }
         }
 
-        //setIpArrayTemp = setIpArrayTemp.sort((a, b) => a - b);
         setIpArrayTemp = JSON.parse(JSON.stringify(setIpArrayTemp));
 
         this.setState({
@@ -614,7 +513,9 @@ class AssetsEdit extends PureComponent {
         }
     };
 
+
     render() {
+        //console.log("👉👉👉👉👉👉👉👉 render start edit");
         const {
             title, message,
             assetState, dispatch, handleSubmit,
@@ -625,12 +526,9 @@ class AssetsEdit extends PureComponent {
             RegisterId, IpArray, SplaArray, warehousingDateError,
             searchCompanyName, searchCustomerId, searchOwnerCompanyId, searchToggleDivision,
             manufacture, idc,
-            modalWarring, warringTitle, warringContents, warringClass, warringType,
         } = this.state;
         const {showPassword} = this.state;
         let deviceRawValue = new Map([]);
-        let viewModalContentLeft;
-        let viewModalContentRight;
 
         const deviceStyle = {
             textDecoration: '#ffdd67 underline',
@@ -645,82 +543,44 @@ class AssetsEdit extends PureComponent {
             'assets_write__modal-dialog--header': false,
         });
 
-        const classNameMap = {
-            formDivClass: "form__form-group",
-            formSpanClass: "form__form-group-label",
-            formDivSubClass: "form__form-group-field",
-        };
+        let viewContent;
 
         const deviceValue = assetState.device[0];
         deviceRawValue = assetState.deviceOri;
         const setIpArray = [];
         const setSplaArray = [];
 
-        /*        for (int i = 0; i < sixsu.length; i++) {
-                    for (int j = i + 1; j < sixsu.length; j++) {
-                        if (sixsu[i] > sixsu[j]) {
-                            int tmep = sixsu[i];
-                            sixsu[i] = sixsu[j];
-                            sixsu[j] = tmep;
-                        }
-                    }
-                }*/
-
-     /*   let tempArray;
+        //console.log("★★★★ ipArrayMap : ", ipArrayMap, "redux : ", assetState.deviceIp);
+        //console.log("★★★★ splaArrayMap : ", splaArrayMap, "redux : ", assetState.deviceSpla);
 
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
         for (const arrData in ipArrayMap) {
-            console.log("00render arrData : ", arrData, ", value : ", ipArrayMap[arrData]);
-            //const arrDataTemp = arrData + 1;
-            // eslint-disable-next-line guard-for-in,no-restricted-syntax
-            for (const arrDataTemp in ipArrayMap) {
-                console.log("render arrData : ", arrDataTemp, ", value : ", ipArrayMap[arrDataTemp]);
-                console.log("00 : ", ipArrayMap[arrData], ", 11 : ", ipArrayMap[arrDataTemp + 1]);
-                if (ipArrayMap[arrData] > ipArrayMap[arrDataTemp + 1]) {
-                    tempArray = ipArrayMap[arrData];
-                    ipArrayMap[arrData] = ipArrayMap[arrDataTemp + 1];
-                    ipArrayMap[arrDataTemp + 1] = tempArray;
-                }
-            }
-        }*/
-
-       /* console.log("render ipArrayMap : ", ipArrayMap);
-        // eslint-disable-next-line guard-for-in,no-restricted-syntax
-        for (const arrData in ipArrayMap) {
-            console.log("render arrData : ", arrData, ", value : ", ipArrayMap[arrData]);
-        }*/
-
-        // eslint-disable-next-line guard-for-in,no-restricted-syntax
-        for (const arrData in ipArrayMap) {
-            //console.log("render arrData : ", arrData, ", value : ", ipArrayMap[arrData]);
+            //console.log("arrData : ", arrData, ", value : ", ipArrayMap[arrData]);
             if (arrData.indexOf("ip", 0) === 0) {
                 setIpArray.push(
                     <Fragment key={arrData}>
                         {
                             arrData !== undefined && arrData !== "" && arrData !== "ip"
                             && (
-                                <div className={classNameMap.formDivClass}>
-                                    <span className={classNameMap.formSpanClass}>&nbsp;</span>
-                                    <div className={classNameMap.formDivSubClass}>
-                                        <input
-                                            name={`${arrData}`}
-                                            type="text"
-                                            onBlur={this.handleChangeIp}
-                                            className="input_col_5"
-                                            defaultValue={ipArrayMap[arrData]}
-                                        />
-                                        <svg className="mdi-icon " width="24" height="24"
-                                             fill="currentColor"
-                                             viewBox="0 0 24 24"
-                                             onClick={event => this.setHtmlMinus(`${arrData}`, 'ip', this)}
-                                             onKeyDown={event => this.setHtmlMinus(`${arrData}`, 'ip', this)}
-                                             role="button" tabIndex="0">
-                                            <MinusIcon/>
-                                        </svg>
-                                        <span id={`errorTextIp_${arrData}`} name="errorTextIp"
-                                              style={{display: "none"}}>
+                                <div className="modal_form__form-group-field">
+                                    <input
+                                        name={`${arrData}`}
+                                        type="text"
+                                        onBlur={this.handleChangeIp}
+                                        className="input_col_5"
+                                        defaultValue={ipArrayMap[arrData]}
+                                    />
+                                    <svg className="mdi-icon " width="24" height="24"
+                                         fill="currentColor"
+                                         viewBox="0 0 24 24"
+                                         onClick={event => this.setHtmlMinus(`${arrData}`, 'ip', this)}
+                                         onKeyDown={event => this.setHtmlMinus(`${arrData}`, 'ip', this)}
+                                         role="button" tabIndex="0">
+                                        <MinusIcon/>
+                                    </svg>
+                                    <span id={`errorTextIp_${arrData}`} name="errorTextIp"
+                                          style={{display: "none"}}>
                                     ※ IP를 정확히 입력해 주세요.</span>
-                                    </div>
                                 </div>
                             )
                         }
@@ -739,31 +599,28 @@ class AssetsEdit extends PureComponent {
                         {
                             arrData !== undefined && arrData !== "" && arrData !== "spla"
                             && (
-                                <div className={classNameMap.formDivClass}>
-                                    <span className={classNameMap.formSpanClass}>&nbsp;</span>
-                                    <div className={classNameMap.formDivSubClass}>
-                                        <select
-                                            name={`${arrData}`}
-                                            defaultValue={splaArrayMap[arrData]}
-                                            onChange={this.handleChangeSpla}
-                                        >
-                                            <option value="0">선택하세요.</option>
-                                            {assetState.codes.codeSpla
-                                                .map(c => (
-                                                    <option key={c.codeId.toString()}
-                                                            value={c.codeId}
-                                                    >{c.name}</option>
-                                                ))}
-                                        </select>
-                                        <svg className="mdi-icon " width="24" height="24"
-                                             fill="currentColor"
-                                             viewBox="0 0 24 24"
-                                             onClick={event => this.setHtmlMinus(`${arrData}`, 'spla', this)}
-                                             onKeyDown={event => this.setHtmlMinus(`${arrData}`, 'spla', this)}
-                                             role="button" tabIndex="0">
-                                            <MinusIcon/>
-                                        </svg>
-                                    </div>
+                                <div className="modal_form__form-group-field">
+                                    <select
+                                        name={`${arrData}`}
+                                        defaultValue={splaArrayMap[arrData]}
+                                        onChange={this.handleChangeSpla}
+                                    >
+                                        <option value="0">선택하세요.</option>
+                                        {assetState.codes.codeSpla
+                                            .map(c => (
+                                                <option key={c.codeId.toString()}
+                                                        value={c.codeId}
+                                                >{c.name}</option>
+                                            ))}
+                                    </select>
+                                    <svg className="mdi-icon " width="24" height="24"
+                                         fill="currentColor"
+                                         viewBox="0 0 24 24"
+                                         onClick={event => this.setHtmlMinus(`${arrData}`, 'spla', this)}
+                                         onKeyDown={event => this.setHtmlMinus(`${arrData}`, 'spla', this)}
+                                         role="button" tabIndex="0">
+                                        <MinusIcon/>
+                                    </svg>
                                 </div>
                             )
                         }
@@ -774,11 +631,12 @@ class AssetsEdit extends PureComponent {
 
         switch (assetState.deviceType) {
             case 'server':
-                viewModalContentLeft = (
+                viewContent = (
                     <Fragment>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>CPU</span>
-                            <div className={classNameMap.formDivSubClass}>
+                        <div className="modal_form__form-group">
+                                <span
+                                    className="modal_form__form-group-label">CPU</span>
+                            <div className="modal_form__form-group-field">
                                 <Field
                                     name="cpu"
                                     component="input"
@@ -788,10 +646,10 @@ class AssetsEdit extends PureComponent {
                                 />
                             </div>
                         </div>
-                        <div className={classNameMap.formDivClass}>
+                        <div className="modal_form__form-group">
                                 <span
-                                    className={classNameMap.formSpanClass}>MEMORY</span>
-                            <div className={classNameMap.formDivSubClass}>
+                                    className="modal_form__form-group-label">MEMORY</span>
+                            <div className="modal_form__form-group-field">
                                 <Field
                                     name="memory"
                                     component="input"
@@ -801,10 +659,10 @@ class AssetsEdit extends PureComponent {
                                 />
                             </div>
                         </div>
-                        <div className={classNameMap.formDivClass}>
+                        <div className="modal_form__form-group">
                                 <span
-                                    className={classNameMap.formSpanClass}>HDD</span>
-                            <div className={classNameMap.formDivSubClass}>
+                                    className="modal_form__form-group-label">HDD</span>
+                            <div className="modal_form__form-group-field">
                                 <Field
                                     name="hdd"
                                     component="input"
@@ -814,9 +672,9 @@ class AssetsEdit extends PureComponent {
                                 />
                             </div>
                         </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>Size</span>
-                            <div className={classNameMap.formDivSubClass}>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">Size</span>
+                            <div className="modal_form__form-group-field">
                                 <Field
                                     name="size"
                                     component="select"
@@ -830,14 +688,9 @@ class AssetsEdit extends PureComponent {
                                 </Field>
                             </div>
                         </div>
-                    </Fragment>
-                );
-
-                viewModalContentRight = (
-                    <Fragment>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>IP</span>
-                            <div className={classNameMap.formDivSubClass}>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">IP</span>
+                            <div className="modal_form__form-group-field">
                                 <svg className="mdi-icon" width="24" height="24" fill="currentColor"
                                      viewBox="0 0 24 24"
                                      onClick={event => this.setHtmlPlus('ip')}
@@ -849,9 +702,9 @@ class AssetsEdit extends PureComponent {
                             </div>
                             {setIpArray}
                         </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>SPLA</span>
-                            <div className={classNameMap.formDivSubClass}>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">SPLA</span>
+                            <div className="modal_form__form-group-field">
                                 <svg className="mdi-icon" width="24" height="24" fill="currentColor"
                                      viewBox="0 0 24 24"
                                      onClick={event => this.setHtmlPlus('spla')}
@@ -863,9 +716,9 @@ class AssetsEdit extends PureComponent {
                             </div>
                             {setSplaArray}
                         </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>Rack Tag</span>
-                            <div className={classNameMap.formDivSubClass}>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">Rack Tag</span>
+                            <div className="modal_form__form-group-field">
                                 <Field
                                     name="rackTag"
                                     component="input"
@@ -875,9 +728,9 @@ class AssetsEdit extends PureComponent {
                                 />
                             </div>
                         </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>Rack Location</span>
-                            <div className={classNameMap.formDivSubClass}>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">Rack Location</span>
+                            <div className="modal_form__form-group-field">
                                 <Field
                                     name="rackLoc"
                                     component="input"
@@ -891,41 +744,11 @@ class AssetsEdit extends PureComponent {
                 );
                 break;
             case 'network':
-                viewModalContentLeft = (
+                viewContent = (
                     <Fragment>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>FIRMWARE VERSION</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                <Field
-                                    name="firmwareVersion"
-                                    component="input"
-                                    className="input_col_5"
-                                    type="text"
-                                    placeholder="FIRMWARE VERSION"
-                                />
-                            </div>
-                        </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>Rack Tag</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                <Field
-                                    name="rackTag"
-                                    component="input"
-                                    className="input_col_5"
-                                    type="text"
-                                    placeholder="Rack Tag"
-                                />
-                            </div>
-                        </div>
-                    </Fragment>
-                );
-
-
-                viewModalContentRight = (
-                    <Fragment>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>IP</span>
-                            <div className={classNameMap.formDivSubClass}>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">IP</span>
+                            <div className="modal_form__form-group-field">
                                 <svg className="mdi-icon" width="24" height="24" fill="currentColor"
                                      viewBox="0 0 24 24"
                                      onClick={event => this.setHtmlPlus('ip')}
@@ -937,9 +760,33 @@ class AssetsEdit extends PureComponent {
                             </div>
                             {setIpArray}
                         </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>Rack Location</span>
-                            <div className={classNameMap.formDivSubClass}>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">FIRMWARE VERSION</span>
+                            <div className="modal_form__form-group-field">
+                                <Field
+                                    name="firmwareVersion"
+                                    component="input"
+                                    className="input_col_5"
+                                    type="text"
+                                    placeholder="FIRMWARE VERSION"
+                                />
+                            </div>
+                        </div>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">Rack Tag</span>
+                            <div className="modal_form__form-group-field">
+                                <Field
+                                    name="rackTag"
+                                    component="input"
+                                    className="input_col_5"
+                                    type="text"
+                                    placeholder="Rack Tag"
+                                />
+                            </div>
+                        </div>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">Rack Location</span>
+                            <div className="modal_form__form-group-field">
                                 <Field
                                     name="rackLoc"
                                     component="input"
@@ -953,11 +800,11 @@ class AssetsEdit extends PureComponent {
                 );
                 break;
             case 'part':
-                viewModalContentLeft = (
+                viewContent = (
                     <Fragment>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>WARRANTY</span>
-                            <div className={classNameMap.formDivSubClass}>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">WARRANTY</span>
+                            <div className="modal_form__form-group-field">
                                 <Field
                                     name="warranty"
                                     component="input"
@@ -967,9 +814,9 @@ class AssetsEdit extends PureComponent {
                                 />
                             </div>
                         </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>Rack Size</span>
-                            <div className={classNameMap.formDivSubClass}>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">Rack Size</span>
+                            <div className="modal_form__form-group-field">
                                 <Field
                                     name="rackCode"
                                     component="select"
@@ -1026,288 +873,253 @@ class AssetsEdit extends PureComponent {
         );
 
         return (
-            <Col md={12} lg={12}>
-                <Card>
-                    <CardBody>
-                        <div className="card__title">
-                            <h5 className="bold-text">{title}</h5>
-                            <h5 className="subhead">{message}</h5>
+            <div>
+                <div className="assets_write__modal__header">
+                    <p className="text-modal assets_write__modal__title">{title}
+                        &nbsp;&nbsp;
+                        <span className="assets_write__modal__title_sub">{message}</span></p>
+                    <button className="lnr lnr-cross assets_write__modal__close-btn" type="button"
+                            onClick={this.onClose}/>
+                </div>
+                <div className="assets_write__modal__body assets_write__modal__tableLine">
+                    <form className="modal_form modal_form--horizontal"
+                          onSubmit={handleSubmit}>
+                        {/*                        onSubmit={this.handleSubmit}>*/}
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label text_cor_green">장비코드</span>
+                            <div className="modal_form__form-group-field">
+                                <b><h6 style={deviceStyle}>{deviceValue.deviceCode}</h6></b>
+                            </div>
                         </div>
-                        <Form className="form form--horizontal"
-                               onSubmit={handleSubmit} name="assetsEdit_form">
-                            <div className="form__half">
-                                <div className={classNameMap.formDivClass}>
-                                    <span className={classNameMap.formSpanClass}>장비코드</span>
-                                    <div className={classNameMap.formDivSubClass}>
-                                        {deviceValue.deviceCode}
-                                    </div>
-                                </div>
-                                <div className={classNameMap.formDivClass}>
-                                    <span className={classNameMap.formSpanClass}>장비구분</span>
-                                    <div className={classNameMap.formDivSubClass}>
-                                        <Field
-                                            name="deviceType"
-                                            component={renderSelectCustomField}
-                                            codeDivision={{
-                                                code: assetState.codes.codeDeviceType,
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                                <div className={classNameMap.formDivClass}>
-                                    <span className={classNameMap.formSpanClass}>고객사</span>
-                                    <div className={classNameMap.formDivSubClass}>
-                                        <Field
-                                            name="customer"
-                                            type="text"
-                                            className="input_col_5"
-                                            placeholder="고객사"
-                                            label={{name: deviceValue.customerName, id: deviceValue.customer}}
-                                            initialValues={searchCustomerId}
-                                            component={renderCustomerField}
-                                            /*ref={(ref) => { this.input = ref; }}*/
-                                            searchToggle={event => this.searchToggle('customer')}
-                                            ref={(ref) => {
-                                                // eslint-disable-next-line react/no-find-dom-node
-                                                const node = findDOMNode(ref);
-                                                if (node) {
-                                                    // Material UI wraps input element,
-                                                    // use querySelector() to obtain reference to it
-                                                    // if not using MUI, querySelector() likely not needed
-                                                    this.customerField = node.querySelector("input");
-                                                }
-                                            }}
-                                            withRef
-                                        />
-                                        {/* eslint-disable-next-line no-return-assign */}
-                                        {/*<input ref={(ref => this.input = ref)}/>*/}
-                                    </div>
-                                </div>
-                                <div className={classNameMap.formDivClass}>
-                                    <span className={classNameMap.formSpanClass}>소유업체명</span>
-                                    <div className={classNameMap.formDivSubClass}>
-                                        <Field
-                                            name="ownerCompany"
-                                            type="text"
-                                            className="input_col_5"
-                                            placeholder="소유업체명"
-                                            initialValues={searchOwnerCompanyId}
-                                            label={{
-                                                name: deviceValue.ownerCompanyName,
-                                                id: deviceValue.ownerCompany,
-                                            }}
-                                            component={renderCustomerField}
-                                            searchToggle={event => this.searchToggle('ownerCompany')}
-                                            ref={(ref) => {
-                                                // eslint-disable-next-line react/no-find-dom-node
-                                                const node = findDOMNode(ref);
-                                                if (node) {
-                                                    // Material UI wraps input element,
-                                                    // use querySelector() to obtain reference to it
-                                                    // if not using MUI, querySelector() likely not needed
-                                                    this.ownerCompanyField = node.querySelector("input");
-                                                }
-                                            }}
-                                            withRef
-                                        />
-                                    </div>
-                                </div>
-                                <div className={classNameMap.formDivClass}>
-                                    <span className={classNameMap.formSpanClass}>HW S/N</span>
-                                    <div className={classNameMap.formDivSubClass}>
-                                        <Field
-                                            name="hwSn"
-                                            component="input"
-                                            type="text"
-                                            className="input_col_10"
-                                        />
-                                    </div>
-                                </div>
-                                <div className={classNameMap.formDivClass}>
-                                    <span className={classNameMap.formSpanClass}>원가</span>
-                                    <div className={classNameMap.formDivSubClass}>
-                                        <Field
-                                            name="cost"
-                                            component="input"
-                                            className="input_col_5"
-                                            type="number"
-                                            placeholder="원가"
-                                        />
-                                    </div>
-                                </div>
-                                <div className={classNameMap.formDivClass}>
-                                    <span className={classNameMap.formSpanClass}>용도</span>
-                                    <div className={classNameMap.formDivSubClass}>
-                                        <Field
-                                            name="purpose"
-                                            component="input"
-                                            className="input_col_10"
-                                            type="text"
-                                            placeholder="용도"
-                                        />
-                                    </div>
-                                </div>
-                                {viewModalContentLeft}
-                            </div>
-                            <div className="form__half">
-                                <div className={classNameMap.formDivClass}>
-                                    <span className={classNameMap.formSpanClass}>IDC / 랙번호</span>
-                                    <div className={classNameMap.formDivSubClass}>
-                                        <Field
-                                            name="idc"
-                                            component="select"
-                                            onChange={this.handleChange}>
-                                            <option value="0">선택하세요.</option>
-                                            {assetState.codes.codeIdc
-                                                .map((d, index) => (
-                                                    <option key={d.codeId.toString()}
-                                                            value={d.codeId}>{d.name}</option>
-                                                ))}
-                                        </Field>
-                                        &nbsp;&nbsp;
-                                        {idc ? (
-                                            RackComponent
-                                        ) : (
-                                            <Field
-                                                name="rack"
-                                                component="select">
-                                                <option value="0">선택하세요.</option>
-                                                {assetState.subCodes.data
-                                                    .map(d => (Number(d.codeId) === Number(deviceRawValue.idc)
-                                                        && <option key={d.id} value={d.id}>{d.name}</option>))
-                                                }
-                                            </Field>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className={classNameMap.formDivClass}>
-                                    <span className={classNameMap.formSpanClass}>제조사 / 모델명</span>
-                                    <div className={classNameMap.formDivSubClass}>
-                                        <Field
-                                            name="manufacture"
-                                            component="select"
-                                            onChange={this.handleChange}>
-                                            <option value="0">선택하세요.</option>
-                                            {assetState.codes.codeManufacture
-                                                .map((d, index) => (
-                                                    <option key={d.codeId.toString()}
-                                                            value={d.codeId}>{d.name}</option>
-                                                ))}
-                                        </Field>
-                                        &nbsp;&nbsp;
-                                        {manufacture ? (
-                                            ModelComponent
-                                        ) : (
-                                            <Field
-                                                name="model"
-                                                component="select">
-                                                <option value="0">선택하세요.</option>
-                                                {assetState.subCodes.data
-                                                    .map(d => (Number(d.codeId) === Number(deviceRawValue.manufacture)
-                                                        && <option key={d.id} value={d.id}>{d.name}</option>))
-                                                }
-                                            </Field>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className={classNameMap.formDivClass}>
-                                    <span className={classNameMap.formSpanClass}>소유권/소유권구분</span>
-                                    <div className={classNameMap.formDivSubClass}>
-                                        <Field
-                                            name="ownership"
-                                            component={renderSelectCustomField}
-                                            codeDivision={{
-                                                code: assetState.codes.codeOwnership,
-                                            }}
-                                        />
-                                        <Field
-                                            name="ownershipDiv"
-                                            component={renderSelectCustomField}
-                                            codeDivision={{
-                                                code: assetState.codes.codeOwnershipDiv,
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                                <div className={classNameMap.formDivClass}>
-                                    <span className={classNameMap.formSpanClass}>임대기간</span>
-                                    <div className={classNameMap.formDivSubClass}>
-                                        <Field
-                                            name="rentDate"
-                                            className="input_col_5"
-                                            value={deviceRawValue.rentDate}
-                                            component={renderIntervalDatePickerField}
-                                        />
-                                    </div>
-                                </div>
-                                <div className={classNameMap.formDivClass}>
-                                    <span className={classNameMap.formSpanClass}>입고일</span>
-                                    <div className={classNameMap.formDivSubClass}>
-                                        <Field
-                                            name="warehousingDate"
-                                            className="input_col_5"
-                                            value={deviceRawValue.warehousingDate}
-                                            component={renderDatePickerField}
-                                        />
-                                        <div className="modal_form__form-group-icon">
-                                            <CalendarBlankIcon/>
-                                        </div>
-                                    </div>
-                                </div>
-                                {viewModalContentRight}
-                            </div>
-                            <div className={classNameMap.formDivClass}>
-                                <span className={classNameMap.formSpanClass}>기타사항</span>
-                                <div className={classNameMap.formDivSubClass}>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">IDC / 랙번호</span>
+                            <div className="modal_form__form-group-field">
+                                <Field
+                                    name="idc"
+                                    component="select"
+                                    onChange={this.handleChange}>
+                                    <option value="0">선택하세요.</option>
+                                    {assetState.codes.codeIdc
+                                        .map((d, index) => (
+                                            <option key={d.codeId.toString()}
+                                                    value={d.codeId}>{d.name}</option>
+                                        ))}
+                                </Field>
+                                &nbsp;&nbsp;
+                                {idc ? (
+                                    RackComponent
+                                ) : (
                                     <Field
-                                        name="contents"
-                                        component="textarea"
-                                    />
+                                        name="rack"
+                                        component="select">
+                                        <option value="0">선택하세요.</option>
+                                        {assetState.subCodes.data
+                                            .map(d => (Number(d.codeId) === Number(deviceRawValue.idc)
+                                                && <option key={d.id} value={d.id}>{d.name}</option>))
+                                        }
+                                    </Field>
+                                )}
+                            </div>
+                        </div>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">제조사 / 모델명</span>
+                            <div className="modal_form__form-group-field">
+                                <Field
+                                    name="manufacture"
+                                    component="select"
+                                    onChange={this.handleChange}>
+                                    <option value="0">선택하세요.</option>
+                                    {assetState.codes.codeManufacture
+                                        .map((d, index) => (
+                                            <option key={d.codeId.toString()}
+                                                    value={d.codeId}>{d.name}</option>
+                                        ))}
+                                </Field>
+                                {/*                                <select name="manufacture"
+                                        onChange={this.handleChange}>
+                                    <option value="0">선택하세요.</option>
+                                    {assetState.codes.codeManufacture
+                                        .map((d, index) => (
+                                            <option key={d.codeId.toString()}
+                                                    value={d.codeId.toString()}>{d.codeId}/{d.name}</option>
+                                        ))}
+                                </select>*/}
+                                &nbsp;&nbsp;
+                                {manufacture ? (
+                                    ModelComponent
+                                ) : (
+                                    <Field
+                                        name="model"
+                                        component="select">
+                                        <option value="0">선택하세요.</option>
+                                        {assetState.subCodes.data
+                                            .map(d => (Number(d.codeId) === Number(deviceRawValue.manufacture)
+                                                && <option key={d.id} value={d.id}>{d.name}</option>))
+                                        }
+                                    </Field>
+                                )}
+                            </div>
+                        </div>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">장비구분</span>
+                            <Field
+                                name="deviceType"
+                                component={renderSelectCustomField}
+                                codeDivision={{
+                                    code: assetState.codes.codeDeviceType,
+                                }}
+                            />
+                        </div>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">소유권/소유권구분</span>
+                            <Field
+                                name="ownership"
+                                component={renderSelectCustomField}
+                                codeDivision={{
+                                    code: assetState.codes.codeOwnership,
+                                }}
+                            />
+                            <Field
+                                name="ownershipDiv"
+                                component={renderSelectCustomField}
+                                codeDivision={{
+                                    code: assetState.codes.codeOwnershipDiv,
+                                }}
+                            />
+                        </div>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">고객사</span>
+                            <Field
+                                name="customer"
+                                type="text"
+                                className="input_col_7"
+                                placeholder="고객사"
+                                label={{name: deviceValue.customerName, id: deviceValue.customer}}
+                                initialValues={searchCustomerId}
+                                component={renderCustomerField}
+                                /*ref={(ref) => { this.input = ref; }}*/
+                                searchToggle={event => this.searchToggle('customer')}
+                                ref={(ref) => {
+                                    // eslint-disable-next-line react/no-find-dom-node
+                                    const node = findDOMNode(ref);
+                                    if (node) {
+                                        // Material UI wraps input element,
+                                        // use querySelector() to obtain reference to it
+                                        // if not using MUI, querySelector() likely not needed
+                                        this.customerField = node.querySelector("input");
+                                    }
+                                }}
+                                withRef
+                            />
+                            {/* eslint-disable-next-line no-return-assign */}
+                            {/*<input ref={(ref => this.input = ref)}/>*/}
+                        </div>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">소유업체명</span>
+                            <Field
+                                name="ownerCompany"
+                                type="text"
+                                className="input_col_7"
+                                placeholder="소유업체명"
+                                initialValues={searchOwnerCompanyId}
+                                label={{name: deviceValue.ownerCompanyName, id: deviceValue.ownerCompany}}
+                                component={renderCustomerField}
+                                searchToggle={event => this.searchToggle('ownerCompany')}
+                                ref={(ref) => {
+                                    // eslint-disable-next-line react/no-find-dom-node
+                                    const node = findDOMNode(ref);
+                                    if (node) {
+                                        // Material UI wraps input element,
+                                        // use querySelector() to obtain reference to it
+                                        // if not using MUI, querySelector() likely not needed
+                                        this.ownerCompanyField = node.querySelector("input");
+                                    }
+                                }}
+                                withRef
+                            />
+                        </div>
+                        <div className="modal_form__form-group">
+                                <span
+                                    className="modal_form__form-group-label">HW S/N</span>
+                            <div className="modal_form__form-group-field">
+                                <Field
+                                    name="hwSn"
+                                    component="input"
+                                    type="text"
+                                    className="input_col_10"
+                                />
+                            </div>
+                        </div>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">임대기간</span>
+                            <div className="modal_form__form-group-field">
+                                <Field
+                                    name="rentDate"
+                                    className="input_col_5"
+                                    value={deviceRawValue.rentDate}
+                                    component={renderIntervalDatePickerField}
+                                />
+                            </div>
+                        </div>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">입고일</span>
+                            <div className="modal_form__form-group-field">
+                                <Field
+                                    name="warehousingDate"
+                                    className="input_col_5"
+                                    value={deviceRawValue.warehousingDate}
+                                    component={renderDatePickerField}
+                                />
+                                <div className="modal_form__form-group-icon">
+                                    <CalendarBlankIcon/>
                                 </div>
                             </div>
-                            <ButtonToolbar className="modal__footer">
-                                <Button className="modal_ok" color="primary" type="submit">수정</Button>
-                                <Button className="modal_cancel"
-                                        onClick={this.onClose}>이전</Button>
+                        </div>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">원가</span>
+                            <div className="modal_form__form-group-field">
+                                <Field
+                                    name="cost"
+                                    component="input"
+                                    className="input_col_5"
+                                    type="number"
+                                    placeholder="원가"
+                                />
+                            </div>
+                        </div>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">용도</span>
+                            <div className="modal_form__form-group-field">
+                                <Field
+                                    name="purpose"
+                                    component="input"
+                                    className="input_col_10"
+                                    type="text"
+                                    placeholder="용도"
+                                />
+                            </div>
+                        </div>
+                        {/*---------------------------------------------------------------------------------*/}
+                        {viewContent}
+                        {/*---------------------------------------------------------------------------------*/}
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">기타사항</span>
+                            <div className="modal_form__form-group-field">
+                                <Field
+                                    name="contents"
+                                    component="textarea"
+                                />
+                            </div>
+                        </div>
+                        <div className="modal_btn">
+                            <ButtonToolbar className="assets_write__modal__footer">
+                                <Button className="assets_write__modal_ok" color="primary"
+                                        type="submit">수정</Button>
+                                <Button className="assets_write__modal_cancel"
+                                        onClick={this.onClose}>닫기</Button>
                             </ButtonToolbar>
-
-                            <Modal
-                                isOpen={modalWarring}
-                                toggle={this.warringToggle}
-                                modalClassName="ltr-support"
-                                className={`modal-dialog-dialog ${warringClass}`}
-                            >
-                                <div className="modal__header">
-                                    <button className="lnr lnr-cross modal__close-btn" type="button"
-                                            onClick={this.warringToggle}/>
-                                    <span className="lnr lnr-cross-circle modal__title-icon"/>
-                                    <h4 className="text-modal  modal__title">{warringTitle}</h4>
-                                </div>
-                                <div className="modal__body">
-                                    {warringContents}
-                                    <br/>
-                                    <span className="modal_form__form-group-description">
-                                  수정 후 상세페이지로 이동합니다.
-                                </span>
-                                </div>
-                                <ButtonToolbar className="modal__footer">
-                                    {
-                                        assetState.stateVal.state === 'request' ? (
-                                            <Button className="modal_ok"
-                                                    outline={warringType} color={warringType}
-                                                    type="submit">Ok</Button>/*submit 안되서 보류...*/
-                                        ) : (
-                                            <Fragment>
-                                                &nbsp;
-                                            </Fragment>
-                                        )
-                                    }
-                                    <Button className="modal_ok" outline={warringType} color={warringType}
-                                            onClick={this.modalClose}>Close</Button>
-                                </ButtonToolbar>
-                            </Modal>
-                        </Form>
-                    </CardBody>
+                        </div>
+                    </form>
                     <Modal
                         isOpen={modal}
                         toggle={this.searchToggle}
@@ -1316,8 +1128,7 @@ class AssetsEdit extends PureComponent {
                         <div className="search_card_body">
                             <div className="assets_write__modal__header">
                                 &nbsp;&nbsp;
-                                <button className="lnr lnr-cross assets_write__modal__close__notitle-btn"
-                                        type="button"
+                                <button className="lnr lnr-cross assets_write__modal__close__notitle-btn" type="button"
                                         onClick={this.searchToggle}/>
                             </div>
                             <div className="assets_write__modal__body assets_write__modal__tableLine">
@@ -1344,12 +1155,13 @@ class AssetsEdit extends PureComponent {
                             </div>
                         </div>
                     </Modal>
-                </Card>
-            </Col>
+                </div>
+            </div>
         );
     }
 }
 
 export default reduxForm({
-    form: 'assetsEdit_form', // a unique identifier for this form
+    form: 'AssetsEditForm', // a unique identifier for this form
+    validate,
 })(withTranslation('common')(AssetsEdit));

@@ -29,7 +29,7 @@ import {
     fetchPosts,
     fetchPostsCheckCount,
     getDeviceOriByIdx,
-    setViewModalDivision, postDevice,
+    postDevice,
     setDeviceSelected, setAssetsPage, setApiPage,
 } from '../../../../redux/actions/assetsAction';
 
@@ -383,8 +383,8 @@ export default class AssetsList extends PureComponent {
         this.setState({
             viewModalContentDivision: 'update',
         });
-        this.setComponents('update');
-        dispatch(setViewModalDivision('update'));
+        //this.setComponents('update');
+       // dispatch(setViewModalDivision('update'));
     };
 
     setDeviceIdx = (event, deviceCode) => {
@@ -393,8 +393,9 @@ export default class AssetsList extends PureComponent {
         dispatch(getDeviceByIdx(deviceCode, assetState.deviceType));
         dispatch(getDeviceOriByIdx(deviceCode, assetState.deviceType));
 
-        this.setComponents('read', deviceCode);
+        //this.setComponents('read', deviceCode);
     };
+/*
 
     setComponents = (division, deviceCode) => {
         const {dispatch, assetState} = this.props;
@@ -446,6 +447,7 @@ export default class AssetsList extends PureComponent {
             this.setComponents(assetState.viewModalDivison);
         }
     };
+*/
 
     render() {
         //console.log("👉👉👉👉👉👉👉👉 render start list");
@@ -457,17 +459,9 @@ export default class AssetsList extends PureComponent {
 
         const tableCellClassName = 'material-table__cell material-table__cell-right';
 
-        const modalClass = classNames({
-            'assets_write__modal-dialog': true,
-            'assets_write__modal-dialog--colored': false,
-            'assets_write__modal-dialog--header': false,
-        });
-
-        //console.log("------> : ", assetState.devices);
-
         //TODO length 값 0 일때도 처리해야함
 
-        const deviceServer = (
+        const deviceComponent = (
             <Fragment>
                 <TableBody>
                     {assetState.devices
@@ -547,7 +541,11 @@ export default class AssetsList extends PureComponent {
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                    >{/*IDC/위치*/}{d.idc}/{d.rack}
+                                    >{/*IDC*/}{d.idc}
+                                    </TableCell>
+                                    <TableCell
+                                        className={tableCellClassName}
+                                    >{/*위치*/}{d.rack}
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
@@ -632,7 +630,7 @@ export default class AssetsList extends PureComponent {
                                         assetState={assetState}
                                         dispatch={dispatch}
                                     />
-                                    {deviceServer}
+                                    {deviceComponent}
                                 </Table>
                             </TableContainer>
                             <TablePagination

@@ -21,8 +21,9 @@ const rows = [
     {id: 'ownership', disablePadding: false, label: '소유권'},
     {id: 'ownerCompany', disablePadding: false, label: '소유권 구분'},
     {id: 'customer', disablePadding: false, label: '고객사'},
-    {id: 'idc', disablePadding: false, label: 'IDC/위치'},
-    {id: 'purpos', disablePadding: false, label: '용도'},
+    {id: 'idc', disablePadding: false, label: 'IDC'},
+    {id: 'rack', disablePadding: false, label: '위치'},
+    {id: 'purpose', disablePadding: false, label: '용도'},
 ];
 
 class AssetsHead extends PureComponent {
@@ -37,8 +38,9 @@ class AssetsHead extends PureComponent {
             {id: 'ownership', disablePadding: false, label: '소유권'},
             {id: 'ownerCompany', disablePadding: false, label: '소유권 구분'},
             {id: 'customer', disablePadding: false, label: '고객사'},
-            {id: 'idc', disablePadding: false, label: 'IDC/위치'},
-            {id: 'purpos', disablePadding: false, label: '용도'},
+            {id: 'idc', disablePadding: false, label: 'IDC'},
+            {id: 'rack', disablePadding: false, label: '위치'},
+            {id: 'purpose', disablePadding: false, label: '용도'},
         ],
     };
 
