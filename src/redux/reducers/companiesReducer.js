@@ -14,6 +14,7 @@ import {
     GET_COMPANIES_BY_NAME_SUCCESS,
     GET_COMPANIES_BY_NAME_FAILURE,
     GET_COMPANIES_SUCCESS,
+    GET_COMPANIES_FAILURE,
     CLEAR_COMPANY_SEARCH,
 } from "../actions/companiesActions";
 
@@ -28,6 +29,7 @@ const initialState = {
     },
     register: {
         cpName: "",
+        cpIdx: 0,
         cpZip: "",
         cpAddr: "",
         cpAddrDetail: "",
@@ -40,6 +42,7 @@ const initialState = {
     },
     isError: {
         cpName: false,
+        cpIdx: false,
         cpZip: false,
         cpAddr: false,
         cpAddrDetail: false,
@@ -52,6 +55,7 @@ const initialState = {
     },
     required: {
         cpName: true,
+        cpIdx: false,
         cpZip: true,
         cpAddr: true,
         cpAddrDetail: true,
@@ -64,6 +68,7 @@ const initialState = {
     },
     disabled: {
         cpName: false,
+        cpIdx: false,
         cpZip: true,
         cpAddr: true,
         cpAddrDetail: false,
@@ -76,6 +81,7 @@ const initialState = {
     },
     helperText: {
         cpName: "* 사용 가능한 이름인지 확인하십시오.",
+        cpIdx: "",
         cpZip: "* 우편번호를 검색하십시오.",
         cpAddr: "",
         cpAddrDetail: "",
@@ -86,12 +92,20 @@ const initialState = {
         cpMemo: "",
         cpTerminationDate: "",
     },
+    search: {
+        data: null,
+        msg: null,
+        msgError: null,
+    },
+    allList: {
+        data: null,
+        msg: null,
+        msgError: null,
+    },
     msg: null,
     msgError: null,
     checkCompany: false,
     confirmCompany: false,
-    searchMsg: null,
-    searchMsgError: null,
 };
 
 const companiesReducer = handleActions(
@@ -100,6 +114,7 @@ const companiesReducer = handleActions(
             ...state,
             register: {
                 cpName: "",
+                cpIdx: 0,
                 cpZip: "",
                 cpAddr: "",
                 cpAddrDetail: "",
@@ -112,6 +127,7 @@ const companiesReducer = handleActions(
             },
             isError: {
                 cpName: false,
+                cpIdx: false,
                 cpZip: false,
                 cpAddr: false,
                 cpAddrDetail: false,
@@ -124,6 +140,7 @@ const companiesReducer = handleActions(
             },
             required: {
                 cpName: true,
+                cpIdx: true,
                 cpZip: true,
                 cpAddr: true,
                 cpAddrDetail: true,
@@ -136,6 +153,7 @@ const companiesReducer = handleActions(
             },
             disabled: {
                 cpName: false,
+                cpIdx: false,
                 cpZip: true,
                 cpAddr: true,
                 cpAddrDetail: false,
@@ -148,6 +166,7 @@ const companiesReducer = handleActions(
             },
             helperText: {
                 cpName: "* 사용 가능한 고객사명인지 확인하십시오.",
+                cpIdx: "",
                 cpZip: "* 우편번호를 검색하십시오.",
                 cpAddr: "",
                 cpAddrDetail: "",
@@ -158,6 +177,11 @@ const companiesReducer = handleActions(
                 cpMemo: "",
                 cpTerminationDate: "",
             },
+            search: {
+                data: null,
+                searchMsg: null,
+                searchMsgError: null,
+            },
             msg: null,
             msgError: null,
             checkCompany: false,
@@ -165,8 +189,11 @@ const companiesReducer = handleActions(
         }),
         [CLEAR_COMPANY_SEARCH]: state => ({
             ...state,
-            searchMsg: null,
-            searchMsgError: null,
+            search: {
+                data: null,
+                msg: null,
+                msgError: null,
+            },
         }),
         /** get companies List */
         [GET_COMPANY_LIST_SUCCESS]: (state, action) => ({
@@ -177,16 +204,32 @@ const companiesReducer = handleActions(
         /** get companies by name */
         [GET_COMPANIES_BY_NAME_SUCCESS]: (state, action) => ({
             ...state,
-            searchMsg: action.payload,
+            search: {
+                ...state,
+                msg: action.payload,
+            },
         }),
         [GET_COMPANIES_BY_NAME_FAILURE]: (state, action) => ({
             ...state,
-            searchMsg: action.payload,
+            search: {
+                ...state,
+                msgError: action.payload,
+            },
         }),
         /** get all companies */
         [GET_COMPANIES_SUCCESS]: (state, action) => ({
             ...state,
-            searchMsg: action.payload.data,
+            allList: {
+                ...state,
+                msg: action.payload,
+            },
+        }),
+        [GET_COMPANIES_FAILURE]: (state, action) => ({
+            ...state,
+            allList: {
+                ...state,
+                msgError: action.payload,
+            },
         }),
         [COMPANY_CHANGE_REGISTER_FIELD]: (state, { payload: { key, value }}) => produce(state, (draft) => {
             draft.register[key] = value;
@@ -248,6 +291,7 @@ const companiesReducer = handleActions(
                 ...state,
                 isError: {
                     ...state,
+                    cpIdx: state.register.cpIdx > 0,
                     cpName: state.register.cpName === "" ? true : (
                         !(state.checkCompany && state.confirmCompany)),
                     cpZip: state.register.cpZip === "",
@@ -259,6 +303,8 @@ const companiesReducer = handleActions(
                 },
                 helperText: {
                     ...state,
+                    // eslint-disable-next-line no-nested-ternary
+                    cpIdx: state.register.cpIdx > 0 ? "" : errorMsg,
                     // eslint-disable-next-line no-nested-ternary
                     cpName: state.register.cpName === "" ? errorMsg : (
                         state.checkCompany && state.confirmCompany ? "* 사용 가능한 고객사명 입니다." : nameErrorMsg),

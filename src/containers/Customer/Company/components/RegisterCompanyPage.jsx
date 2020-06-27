@@ -21,6 +21,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import SearchIcon from '@material-ui/icons/Search';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
+import BusinessIcon from '@material-ui/icons/Business';
 import {
     addCompany,
     changeCompanyRegisterField,
@@ -371,8 +372,15 @@ const RegisterCompanyPage = (props) => {
                 <Card>
                     <CardBody>
                         <div className="card__title">
-                            <h3 className="bold-text">고객사 등록</h3>
-                        </div>
+                            <Grid container spacing={1}>
+                                <Grid item>
+                                    <BusinessIcon/>
+                                </Grid>
+                                <Grid item>
+                                    <h3 className="bold-text">고객사 등록</h3>
+                                </Grid>
+                        </Grid>
+                    </div>
                         <form className={formClassName}>
                             <Grid container spacing={1}>
                                 <Grid item xs={6}>
@@ -415,7 +423,7 @@ const RegisterCompanyPage = (props) => {
                                         <span className={labelClassName}>* 전화번호</span>
                                         <TextField
                                             className={fieldClassName}
-                                            isError={isError.cpTel}
+                                            error={isError.cpTel}
                                             required={required.cpTel}
                                             helperText={helperText.cpTel}
                                             disabled={disabled.cpTel}
@@ -433,7 +441,7 @@ const RegisterCompanyPage = (props) => {
                                         <span className={labelClassName}>* 이메일</span>
                                         <TextField
                                             className={fieldClassName}
-                                            isError={isError.cpEmail}
+                                            error={isError.cpEmail}
                                             required={required.cpEmail}
                                             helperText={helperText.cpEmail}
                                             disabled={disabled.cpEmail}
@@ -451,7 +459,7 @@ const RegisterCompanyPage = (props) => {
                                         <span className={labelClassName}>홈페이지</span>
                                         <TextField
                                             className={fieldClassName}
-                                            isError={isError.cpHomepage}
+                                            error={isError.cpHomepage}
                                             required={required.cpHomepage}
                                             helperText={helperText.cpHomepage}
                                             disabled={disabled.cpHomepage}
@@ -470,13 +478,13 @@ const RegisterCompanyPage = (props) => {
                                         <FormControl
                                             size={fieldSize}
                                             className={fieldClassName}
+                                            error={userIsError.userId}
                                         >
                                             {/*<InputLabel*/}
                                             {/*    // className={fieldClassName}*/}
                                             {/*    htmlFor="standard-adornment-password"*/}
                                             {/*>계정 ID</InputLabel>*/}
                                             <FilledInput
-                                                isError={userIsError.userId}
                                                 required={userRequired.userId}
                                                 disabled={userDisabled.userId}
                                                 helperText={userHelperText.userId}
@@ -506,13 +514,13 @@ const RegisterCompanyPage = (props) => {
                                         <FormControl
                                             size={fieldSize}
                                             className={fieldClassName}
+                                            error={userIsError.password}
                                         >
                                             {/*<InputLabel*/}
                                             {/*    // className={fieldClassName}*/}
                                             {/*    htmlFor="standard-adornment-password"*/}
                                             {/*>Password</InputLabel>*/}
                                             <FilledInput
-                                                isError={userIsError.password}
                                                 required={userRequired.password}
                                                 disabled={userDisabled.password}
                                                 helperText={userHelperText.password}
@@ -543,10 +551,10 @@ const RegisterCompanyPage = (props) => {
                                         <FormControl
                                             size={fieldSize}
                                             className={fieldClassName}
+                                            error={isError.cpZip}
                                         >
                                             {/*<InputLabel>우편 번호</InputLabel>*/}
                                             <FilledInput
-                                                isError={isError.cpZip}
                                                 required={required.cpZip}
                                                 helperText={helperText.cpZip}
                                                 disabled={disabled.cpZip}
@@ -579,7 +587,7 @@ const RegisterCompanyPage = (props) => {
                                         <span className={labelClassName}>* 주소</span>
                                         <TextField
                                             className={fieldClassName}
-                                            isError={isError.cpAddr}
+                                            error={isError.cpAddr}
                                             required={required.cpAddr}
                                             helperText={helperText.cpAddr}
                                             disabled={disabled.cpAddr}
@@ -597,7 +605,7 @@ const RegisterCompanyPage = (props) => {
                                         <span className={labelClassName}>* 상세주소</span>
                                         <TextField
                                             className={fieldClassName}
-                                            isError={isError.cpAddrDetail}
+                                            error={isError.cpAddrDetail}
                                             required={required.cpAddrDetail}
                                             helperText={helperText.cpAddrDetail}
                                             disabled={disabled.cpAddrDetail}

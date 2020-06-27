@@ -17,6 +17,9 @@ import SearchIcon from "@material-ui/icons/Search";
 import {Button} from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import {makeStyles} from "@material-ui/core/styles";
+import Select from "@material-ui/core/Select";
+import MenuItem from '@material-ui/core/MenuItem';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {
     changeUserField,
     checkDupUser,
@@ -26,7 +29,24 @@ import {
 import SearchZip from "../../Company/components/SearchZip";
 import {checkPasswordPattern} from "../../../../lib/utils/utils";
 import SearchCompany from "./SearchCompany";
-import {clearCompanySearch} from "../../../../redux/actions/companiesActions";
+import {clearCompanySearch, getCompanies} from "../../../../redux/actions/companiesActions";
+
+const options = [
+    'None',
+    'Atria',
+    'Callisto',
+    'Dione',
+    'Ganymede',
+    'Hangouts Call',
+    'Luna',
+    'Oberon',
+    'Phobos',
+    'Pyxis',
+    'Sedna',
+    'Titania',
+    'Triton',
+    'Umbriel',
+];
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -44,15 +64,24 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
+
 const RegisterUserPage = (props) => {
     /************************************************************************************
      * Variable
      ************************************************************************************/
     const classes = useStyles();
     const {open, handleClose, handleStrictlyClose } = props;
-
     const dispatch = useDispatch();
-
     const {
         user,
         checkUser,
@@ -63,10 +92,13 @@ const RegisterUserPage = (props) => {
         userHelperText,
         /** register */
         cpName,
+        cpIdx,
         userId,
         userPassword,
-        /** message */
-    } = useSelector(({ usersRd }) => ({
+        /** company menu */
+        companyList,
+        companyMsgError,
+    } = useSelector(({ usersRd, companiesRd}) => ({
         user: usersRd.register,
         checkUser: usersRd.checkUser,
         confirmUser: usersRd.confirmUser,
@@ -76,10 +108,12 @@ const RegisterUserPage = (props) => {
         userHelperText: usersRd.helperText,
         /** register */
         cpName: usersRd.register.cpName,
+        cpIdx: usersRd.register.cpIdx,
         userId: usersRd.register.userId,
         userPassword: usersRd.register.password,
+        companyList: companiesRd.allList.msg,
+        companyMsgError: companiesRd.allList.msgError,
     }));
-
     const [openZip, setOpenZip] = useState(false);
     const [openSearchCompany, setOpenSearchCompany] = useState(false);
     const [values, setValues] = useState({
@@ -89,6 +123,28 @@ const RegisterUserPage = (props) => {
         weightRange: '',
         showPassword: false,
     });
+
+    const [openMenu, setOpenMenu] = React.useState(false);
+    const anchorRef = React.useRef(null);
+
+    const handleClickCompanyMenu = () => {
+        setOpenMenu(prevOpen => !prevOpen);
+    };
+
+    const handleCloseCompanyMenu = (event) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target)) {
+            return;
+        }
+
+        setOpenMenu(false);
+    };
+
+    function handleCompanyMenuKeyDown(event) {
+        if (event.key === 'Tab') {
+            event.preventDefault();
+            setOpenMenu(false);
+        }
+    }
 
     const handlePassChange = prop => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -105,12 +161,17 @@ const RegisterUserPage = (props) => {
     /************************************************************************************
      * Functions
      ************************************************************************************/
+    const handleDialogClose = () => {
+        handleClose();
+    };
+
     const handleChangeUserTextField = ({name, value}) => {
         console.log("[handleChange] name: ", name, ", value: ", value);
         dispatch(changeUserField({key: name, value}));
     };
 
     const handleOpenSearchCompany = () => {
+        setOpenMenu(false);
         dispatch(clearCompanySearch());
         setOpenSearchCompany(true);
     };
@@ -119,8 +180,9 @@ const RegisterUserPage = (props) => {
         setOpenSearchCompany(false);
     };
 
-    const handleCompleteSearchCompany = () => {
-        console.log("handleCompleteSearchCompany");
+    const handleCompleteSearchCompany = ({idx, name}) => {
+        handleChangeUserTextField({name: "cpIdx", value: idx});
+        console.log("handleCompleteSearchCompany: name ", name, ", idx ", idx);
     };
 
     const handleOpenSearchZip = () => {
@@ -145,7 +207,7 @@ const RegisterUserPage = (props) => {
     const handleCancel = () => {
         console.log("handleCancel: ");
         dispatch(initRegisterUser());
-        handleClose();
+        handleDialogClose();
     };
 
     const isReadyRegisterUser = () => {
@@ -154,6 +216,7 @@ const RegisterUserPage = (props) => {
             && user.email !== ""
             && user.username !== ""
             && user.cellPhone !== ""
+            && (cpIdx > 0)
             && checkUser
             && confirmUser
             && checkPasswordPattern(user.password)
@@ -169,6 +232,7 @@ const RegisterUserPage = (props) => {
         if (isReadyRegisterUser()) {
             console.log("send add company");
             dispatch(registerUser({
+                cpIdx,
                 userId: user.userId,
                 password: user.password,
                 username: user.username,
@@ -177,12 +241,26 @@ const RegisterUserPage = (props) => {
                 emailAuthGroupFlag: user.emailAuthGroupFlag,
                 emailAuthGroupList: user.emailAuthGroupList,
             }));
-            handleClose();
+            handleDialogClose();
         }
     };
+
+
     /************************************************************************************
      * useEffect
      ************************************************************************************/
+    useEffect(() => {
+        if (companyList === null) {
+            console.log("useEffect[]: getCompanyMsg()");
+           dispatch(getCompanies());
+        }
+    }, []);
+
+    useEffect(() => {
+        if (companyList) {
+           console.log("useEffect[companyList]: companyList: ", companyList);
+        }
+    }, [companyList]);
 
     /************************************************************************************
      * JSX Template
@@ -197,14 +275,21 @@ const RegisterUserPage = (props) => {
 
     return (
         <Dialog
-            onClose={handleClose}
+            onClose={handleDialogClose}
             open={open}
         >
             <Col xs={8} md={12} lg={12}>
                 <Card>
                     <CardBody>
                         <div className="card__title">
-                            <h3 className="bold-text">계정 등록</h3>
+                                <Grid container spacing={1}>
+                                    <Grid item>
+                                        <AccountCircleIcon/>
+                                    </Grid>
+                                    <Grid item>
+                                        <h3 className="bold-text">계정 등록</h3>
+                                    </Grid>
+                                </Grid>
                         </div>
                         <form className={formClassName}>
                             <Grid container spacing={1}>
@@ -215,28 +300,26 @@ const RegisterUserPage = (props) => {
                                         <FormControl
                                             size={fieldSize}
                                             className={fieldClassName}
+                                            variant="filled"
+                                            error={userIsError.cpIdx}
                                         >
-                                            <FilledInput
-                                                isError={userIsError.cpName}
-                                                required={userRequired.cpName}
-                                                disabled={userDisabled.cpName}
-                                                name="cpName"
-                                                value={cpName}
-                                                onChange={(e) => { handleChangeUserTextField({name: "cpName", value: e.target.value}); }}
-                                                endAdornment={(
-                                                    <InputAdornment position="end">
-                                                        <IconButton
-                                                            aria-label="toggle password visibility"
-                                                            onClick={handleOpenSearchCompany}
-                                                            onMouseDown={handleMouseDownPassword}
-                                                            edge="end"
-                                                        >
-                                                            <SearchIcon/>
-                                                        </IconButton>
-                                                    </InputAdornment>
-                                                )}
-                                            />
-                                            <FormHelperText id="component-helper-text">{userHelperText.cpName}</FormHelperText>
+                                            <Select
+                                                required={userRequired.cpIdx}
+                                                disabled={userDisabled.cpIdx}
+                                                name="cpIdx"
+                                                value={cpIdx}
+                                                onChange={(e) => { handleChangeUserTextField({name: "cpIdx", value: e.target.value}); }}
+                                                onClick={handleClickCompanyMenu}
+                                                MenuProps={MenuProps}
+                                            >
+                                                <MenuItem value="">
+                                                    <em>None</em>
+                                                </MenuItem>
+                                                {companyList && companyList.map(item => (
+                                                    <MenuItem value={item.idx}>{item.name}</MenuItem>
+                                                ))}
+                                            </Select>
+                                            <FormHelperText>{userHelperText.cpIdx}</FormHelperText>
                                             <SearchCompany
                                                 open={openSearchCompany}
                                                 handleClose={handleCloseSearchCompany}
@@ -245,6 +328,29 @@ const RegisterUserPage = (props) => {
                                         </FormControl>
                                     </div>
                                 </Grid>
+                                <Grid item xs={2}>
+                                    <span className={labelClassName}/>
+                                    <Button
+                                        className={classes.margin}
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={handleOpenSearchCompany}
+                                        size={buttonSize}
+                                        endIcon={<SearchIcon/>}
+                                        style={{
+                                            maxWidth: '100px',
+                                            maxHeight: '45px',
+                                            minWidth: '100px',
+                                            minHeight: '45px',
+                                            margin: '20px 0px 0px 0px',
+                                        }}
+                                    >
+                                        검색
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <div/>
+                                </Grid>
                                 <Grid item xs={6}>
                                     <div>
                                          {/*1. 아이디*/}
@@ -252,9 +358,9 @@ const RegisterUserPage = (props) => {
                                         <FormControl
                                             size={fieldSize}
                                             className={fieldClassName}
+                                            error={userIsError.userId}
                                         >
                                             <FilledInput
-                                                isError={userIsError.userId}
                                                 required={userRequired.userId}
                                                 disabled={userDisabled.userId}
                                                 name="userId"
@@ -273,7 +379,7 @@ const RegisterUserPage = (props) => {
                                                     </InputAdornment>
                                                 )}
                                             />
-                                            <FormHelperText id="component-helper-text">{userHelperText.userId}</FormHelperText>
+                                            <FormHelperText>{userHelperText.userId}</FormHelperText>
                                         </FormControl>
                                     </div>
                                 </Grid>
@@ -284,9 +390,9 @@ const RegisterUserPage = (props) => {
                                         <FormControl
                                             size={fieldSize}
                                             className={fieldClassName}
+                                            error={userIsError.password}
                                         >
                                             <FilledInput
-                                                isError={userIsError.password}
                                                 required={userRequired.password}
                                                 disabled={userDisabled.password}
                                                 name="password"
@@ -306,7 +412,7 @@ const RegisterUserPage = (props) => {
                                                     </InputAdornment>
                                                 )}
                                             />
-                                            <FormHelperText id="component-helper-text">{userHelperText.password}</FormHelperText>
+                                            <FormHelperText>{userHelperText.password}</FormHelperText>
                                         </FormControl>
                                     </div>
                                 </Grid>
@@ -316,7 +422,7 @@ const RegisterUserPage = (props) => {
                                         <span className={labelClassName}>* 이름</span>
                                         <TextField
                                             className={fieldClassName}
-                                            isError={userIsError.username}
+                                            error={userIsError.username}
                                             required={userRequired.username}
                                             disabled={userDisabled.username}
                                             helperText={userHelperText.username}
@@ -335,7 +441,7 @@ const RegisterUserPage = (props) => {
                                         <span className={labelClassName}>* 이메일</span>
                                         <TextField
                                             className={fieldClassName}
-                                            isError={userIsError.email}
+                                            error={userIsError.email}
                                             required={userRequired.email}
                                             disabled={userDisabled.email}
                                             helperText={userHelperText.email}
@@ -354,7 +460,7 @@ const RegisterUserPage = (props) => {
                                         <span className={labelClassName}>* 전화번호</span>
                                         <TextField
                                             className={fieldClassName}
-                                            isError={userIsError.cellPhone}
+                                            error={userIsError.cellPhone}
                                             required={userRequired.cellPhone}
                                             disabled={userDisabled.cellPhone}
                                             helperText={userHelperText.cellPhone}
@@ -373,7 +479,7 @@ const RegisterUserPage = (props) => {
                                         <span className={labelClassName}>* 권한</span>
                                         <TextField
                                             className={fieldClassName}
-                                            isError={userIsError.level}
+                                            error={userIsError.level}
                                             required={userRequired.level}
                                             disabled={userDisabled.level}
                                             helperText={userHelperText.level}
@@ -391,18 +497,17 @@ const RegisterUserPage = (props) => {
                                         {/*// 7. 우편번호*/}
                                         <span className={labelClassName}>우편 번호</span>
                                         <FormControl
-                                            isError={userIsError.userZip}
+                                            error={userIsError.userZip}
                                             required={userRequired.userZip}
                                             disabled={userDisabled.userZip}
-                                            name="userZip"
-                                            value={user.userZip}
-                                            onChange={(e) => { handleChangeUserTextField({name: "userZip", value: e.target.value}); }}
                                             size={fieldSize}
                                             className={fieldClassName}
                                         >
                                             {/*<InputLabel>우편 번호</InputLabel>*/}
                                             <FilledInput
-
+                                                name="userZip"
+                                                value={user.userZip}
+                                                onChange={(e) => { handleChangeUserTextField({name: "userZip", value: e.target.value}); }}
                                                 endAdornment={(
                                                     <InputAdornment position="end">
                                                         <IconButton
@@ -415,7 +520,7 @@ const RegisterUserPage = (props) => {
                                                     </InputAdornment>
                                                 )}
                                             />
-                                            <FormHelperText id="component-helper-text">{userHelperText.cpZip}</FormHelperText>
+                                            <FormHelperText>{userHelperText.cpZip}</FormHelperText>
                                         </FormControl>
                                         <SearchZip
                                             open={openZip}
@@ -430,7 +535,7 @@ const RegisterUserPage = (props) => {
                                         <span className={labelClassName}>주소</span>
                                         <TextField
                                             className={fieldClassName}
-                                            isError={userIsError.userAddr}
+                                            error={userIsError.userAddr}
                                             required={userRequired.userAddr}
                                             disabled={userDisabled.userAddr}
                                             helperText={userHelperText.userAddr}
@@ -449,7 +554,7 @@ const RegisterUserPage = (props) => {
                                         <span className={labelClassName}>상세주소</span>
                                         <TextField
                                             className={fieldClassName}
-                                            isError={userIsError.userAddrDetail}
+                                            error={userIsError.userAddrDetail}
                                             required={userRequired.userAddrDetail}
                                             disabled={userDisabled.userAddrDetail}
                                             helperText={userHelperText.userAddrDetail}

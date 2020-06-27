@@ -104,6 +104,21 @@ const initialState = {
         userAddr: "",
         userAddrDetail: "",
     },
+    helperTextInit: {
+        userId: "* 사용 가능한 ID 인지 확인하십시오.",
+        password: "* 영어 소문자, 숫자, 특수문자 포함 8~16 문자",
+        username: "",
+        cellPhone: "",
+        email: "",
+        level: "",
+        emailAuthValue: "",
+        emailAuthFlag: "",
+        emailAuthGroupFlag: "",
+        emailAuthGroupList: "",
+        userZip: "",
+        userAddr: "",
+        userAddrDetail: "",
+    },
     checkUser: false,
     confirmUser: false,
     msg: null,
@@ -202,7 +217,9 @@ const usersReducer = handleActions(
             page: msg.page,
         }),
         [CHANGE_FIELD]: (state, { payload: { key, value } }) => produce(state, (draft) => {
-                    draft.register[key] = value;
+            draft.register[key] = value;
+            draft.isError[key] = false;
+            draft.helperText[key] = draft.helperTextInit[key];
         }),
         [ADD_EMAIL_GROUP]: (state, {payload: emailAuthGroupList}) => ({
             ...state,

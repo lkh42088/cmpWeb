@@ -261,6 +261,7 @@ const UserList = () => {
         if (msg) {
             handleTriggerSuccess();
             dispatch(initRegisterUser());
+            getPageData();
         }
     }, [msg]);
 
