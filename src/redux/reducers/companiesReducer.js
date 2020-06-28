@@ -16,6 +16,8 @@ import {
     GET_COMPANIES_SUCCESS,
     GET_COMPANIES_FAILURE,
     CLEAR_COMPANY_SEARCH,
+    GET_USERS_BY_COMPANY_SUCCESS,
+    GET_USERS_BY_COMPANY_FAILURE,
 } from "../actions/companiesActions";
 
 const initialState = {
@@ -98,6 +100,11 @@ const initialState = {
         msgError: null,
     },
     allList: {
+        data: null,
+        msg: null,
+        msgError: null,
+    },
+    userList: {
         data: null,
         msg: null,
         msgError: null,
@@ -207,12 +214,31 @@ const companiesReducer = handleActions(
             search: {
                 ...state,
                 msg: action.payload,
+                msgError: null,
             },
         }),
         [GET_COMPANIES_BY_NAME_FAILURE]: (state, action) => ({
             ...state,
             search: {
                 ...state,
+                msg: null,
+                msgError: action.payload,
+            },
+        }),
+        /** get users by cpIdx */
+        [GET_USERS_BY_COMPANY_SUCCESS]: (state, action) => ({
+            ...state,
+            userList: {
+                ...state,
+                msg: action.payload,
+                msgError: null,
+            },
+        }),
+        [GET_USERS_BY_COMPANY_FAILURE]: (state, action) => ({
+            ...state,
+            userList: {
+                ...state,
+                msg: null,
                 msgError: action.payload,
             },
         }),
@@ -222,12 +248,14 @@ const companiesReducer = handleActions(
             allList: {
                 ...state,
                 msg: action.payload,
+                msgError: null,
             },
         }),
         [GET_COMPANIES_FAILURE]: (state, action) => ({
             ...state,
             allList: {
                 ...state,
+                msg: null,
                 msgError: action.payload,
             },
         }),

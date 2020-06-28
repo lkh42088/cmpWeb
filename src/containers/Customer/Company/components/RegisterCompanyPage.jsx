@@ -30,7 +30,7 @@ import {
 } from "../../../../redux/actions/companiesActions";
 import SearchZip from "./SearchZip";
 import {
-    changeUserField,
+    changeUserRegisterField,
     checkDupUser,
     checkUserRegisterField, initRegisterUser,
     registerUser,
@@ -223,7 +223,7 @@ const RegisterCompanyPage = (props) => {
 
     const handleChangeUserTextField = ({name, value}) => {
         console.log("[handleChange] name: ", name, ", value: ", value);
-        dispatch(changeUserField({key: name, value}));
+        dispatch(changeUserRegisterField({key: name, value}));
     };
 
     const handleChangeTextField = ({name, value}) => {
@@ -389,14 +389,13 @@ const RegisterCompanyPage = (props) => {
                                         <FormControl
                                             className={fieldClassName}
                                             size={fieldSize}
-                                            // error={isError.cpName}
+                                            error={isError.cpName}
                                         >
                                             {/*<InputLabel*/}
                                             {/*    htmlFor="standard-adornment-password"*/}
                                             {/*>고객사 이름</InputLabel>*/}
                                             <FilledInput
                                                 required={required.cpName}
-                                                helperText={helperText.cpName}
                                                 disabled={disabled.cpName}
                                                 name="cpName"
                                                 value={cpName}
@@ -487,7 +486,6 @@ const RegisterCompanyPage = (props) => {
                                             <FilledInput
                                                 required={userRequired.userId}
                                                 disabled={userDisabled.userId}
-                                                helperText={userHelperText.userId}
                                                 name="userId"
                                                 value={userId}
                                                 onChange={(e) => { handleChangeUserTextField({name: "userId", value: e.target.value}); }}
@@ -523,7 +521,6 @@ const RegisterCompanyPage = (props) => {
                                             <FilledInput
                                                 required={userRequired.password}
                                                 disabled={userDisabled.password}
-                                                helperText={userHelperText.password}
                                                 name="password"
                                                 type={values.showPassword ? 'text' : 'password'}
                                                 value={userPassword}
@@ -556,7 +553,6 @@ const RegisterCompanyPage = (props) => {
                                             {/*<InputLabel>우편 번호</InputLabel>*/}
                                             <FilledInput
                                                 required={required.cpZip}
-                                                helperText={helperText.cpZip}
                                                 disabled={disabled.cpZip}
                                                 name="cpZip"
                                                 value={cpZip}

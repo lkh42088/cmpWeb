@@ -4,7 +4,8 @@ import {handleActions} from 'redux-actions';
 import {
     INITIALIZE_REGISTER_USER,
     GET_USER_LIST_SUCCESS,
-    CHANGE_FIELD,
+    CHANGE_USER_REGISTER_FIELD,
+    CHANGE_USER_FIELD,
     ADD_EMAIL_GROUP,
     DELETE_EMAIL_GROUP,
     REGISTER_USER_SUCCESS,
@@ -216,7 +217,10 @@ const usersReducer = handleActions(
             data: msg.data,
             page: msg.page,
         }),
-        [CHANGE_FIELD]: (state, { payload: { key, value } }) => produce(state, (draft) => {
+        [CHANGE_USER_FIELD]: (state, { payload: { type, key, value } }) => produce(state, (draft) => {
+            draft[type][key] = value;
+        }),
+        [CHANGE_USER_REGISTER_FIELD]: (state, { payload: { key, value } }) => produce(state, (draft) => {
             draft.register[key] = value;
             draft.isError[key] = false;
             draft.helperText[key] = draft.helperTextInit[key];

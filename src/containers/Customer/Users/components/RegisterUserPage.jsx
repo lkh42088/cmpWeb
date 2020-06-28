@@ -1,7 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
+import ReactAvatar from "react-avatar";
 import Dialog from "@material-ui/core/Dialog";
-import {Card, CardBody, Col} from "reactstrap";
+import {
+    Card, CardBody, Col, Container, Row,
+} from "reactstrap";
 import Grid from "@material-ui/core/Grid";
 import FormControl from "@material-ui/core/FormControl";
 import FilledInput from "@material-ui/core/FilledInput";
@@ -20,8 +23,22 @@ import {makeStyles} from "@material-ui/core/styles";
 import Select from "@material-ui/core/Select";
 import MenuItem from '@material-ui/core/MenuItem';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+import Chip from '@material-ui/core/Chip';
+import FaceIcon from '@material-ui/icons/Face';
+import DoneIcon from '@material-ui/icons/Done';
+import Paper from '@material-ui/core/Paper';
+import Divider from '@material-ui/core/Divider';
+import ImageIcon from '@material-ui/icons/Image';
+import WorkIcon from '@material-ui/icons/Work';
+import BeachAccessIcon from '@material-ui/icons/BeachAccess';
 import {
     changeUserField,
+    changeUserRegisterField,
     checkDupUser,
     checkUserRegisterField,
     initRegisterUser, registerUser,
@@ -29,7 +46,12 @@ import {
 import SearchZip from "../../Company/components/SearchZip";
 import {checkPasswordPattern} from "../../../../lib/utils/utils";
 import SearchCompany from "./SearchCompany";
-import {clearCompanySearch, getCompanies} from "../../../../redux/actions/companiesActions";
+import {
+    changeCompanyField,
+    clearCompanySearch,
+    getCompanies,
+    getUsersByCpIdx,
+} from "../../../../redux/actions/companiesActions";
 
 const options = [
     'None',
@@ -62,6 +84,31 @@ const useStyles = makeStyles(theme => ({
     textField: {
         width: '25ch',
     },
+    list: {
+        width: '100%',
+        maxWidth: 360,
+        backgroundColor: theme.palette.background.paper,
+    },
+    chip: {
+        display: 'flex',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        '& > *': {
+            margin: theme.spacing(0.5),
+        },
+        // height: 100,
+        // maxHeight: 100,
+    },
+    paper: {
+        display: 'flex',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
+        '& > *': {
+            margin: theme.spacing(0.5),
+        },
+        // height: 100,
+        // maxHeight: 100,
+    },
 }));
 
 const ITEM_HEIGHT = 48;
@@ -74,6 +121,16 @@ const MenuProps = {
         },
     },
 };
+
+function cloneObject(obj) {
+    const clone = {};
+    // eslint-disable-next-line no-restricted-syntax
+    for (const i in obj) {
+        if (typeof (obj[i]) === "object" && obj[i] != null) clone[i] = cloneObject(obj[i]);
+        else clone[i] = obj[i];
+    }
+    return clone;
+}
 
 const RegisterUserPage = (props) => {
     /************************************************************************************
@@ -95,9 +152,11 @@ const RegisterUserPage = (props) => {
         cpIdx,
         userId,
         userPassword,
+        emailAuthGroupList,
         /** company menu */
         companyList,
-        companyMsgError,
+        userMsg,
+        userList,
     } = useSelector(({ usersRd, companiesRd}) => ({
         user: usersRd.register,
         checkUser: usersRd.checkUser,
@@ -111,8 +170,11 @@ const RegisterUserPage = (props) => {
         cpIdx: usersRd.register.cpIdx,
         userId: usersRd.register.userId,
         userPassword: usersRd.register.password,
+        emailAuthGroupList: usersRd.register.emailAuthGroupList,
+        /** */
+        userMsg: companiesRd.userList.msg,
+        userList: companiesRd.userList.data,
         companyList: companiesRd.allList.msg,
-        companyMsgError: companiesRd.allList.msgError,
     }));
     const [openZip, setOpenZip] = useState(false);
     const [openSearchCompany, setOpenSearchCompany] = useState(false);
@@ -158,6 +220,20 @@ const RegisterUserPage = (props) => {
         event.preventDefault();
     };
 
+    // eslint-disable-next-line no-shadow
+    const handleClickEmailAuthUser = ({user}) => {
+        console.log("handleClickEmailAuthUser: ", user);
+        dispatch(changeUserRegisterField({
+            key: "emailAuthGroupList",
+            value: emailAuthGroupList.concat(user),
+        }));
+        dispatch(changeCompanyField({
+            type: "userList",
+            key: "data",
+            value: userList.filter(item => item.idx !== user.idx),
+        }));
+    };
+
     /************************************************************************************
      * Functions
      ************************************************************************************/
@@ -167,7 +243,7 @@ const RegisterUserPage = (props) => {
 
     const handleChangeUserTextField = ({name, value}) => {
         console.log("[handleChange] name: ", name, ", value: ", value);
-        dispatch(changeUserField({key: name, value}));
+        dispatch(changeUserRegisterField({key: name, value}));
     };
 
     const handleOpenSearchCompany = () => {
@@ -194,8 +270,8 @@ const RegisterUserPage = (props) => {
     };
 
     const handleCompleteZip = ({zip, address}) => {
-        dispatch(changeUserField({ key: "userZip", value: zip }));
-        dispatch(changeUserField({ key: "userAddr", value: address }));
+        dispatch(changeUserRegisterField({ key: "userZip", value: zip }));
+        dispatch(changeUserRegisterField({ key: "userAddr", value: address }));
     };
 
     const handleCheckDupUser = () => {
@@ -245,6 +321,22 @@ const RegisterUserPage = (props) => {
         }
     };
 
+    const handleDeleteEmailAuthGroupItem = ({item}) => {
+        console.info('You clicked the delete icon : ', item);
+        dispatch(changeUserRegisterField({
+            key: "emailAuthGroupList",
+            value: emailAuthGroupList.filter(entry => entry.idx !== item.idx),
+        }));
+        dispatch(changeCompanyField({
+            type: "userList",
+            key: "data",
+            value: userList.concat(item),
+        }));
+    };
+
+    const handleClick = () => {
+        console.info('You clicked the Chip.');
+    };
 
     /************************************************************************************
      * useEffect
@@ -261,6 +353,45 @@ const RegisterUserPage = (props) => {
            console.log("useEffect[companyList]: companyList: ", companyList);
         }
     }, [companyList]);
+
+    useEffect(() => {
+        if (cpIdx > 0) {
+            console.log("useEffect: getUsersByCpIdx ", cpIdx);
+            dispatch(getUsersByCpIdx({cpIdx: cpIdx.toString()}));
+            return;
+        }
+        dispatch(changeCompanyField({
+            type: "userList",
+            key: "msg",
+            value: null,
+        }));
+        dispatch(changeCompanyField({
+            type: "userList",
+            key: "msgError",
+            value: null,
+        }));
+    }, [cpIdx]);
+
+    useEffect(() => {
+        if (emailAuthGroupList) {
+            console.log("useEffect: emailAuthGroupList ", emailAuthGroupList);
+        }
+    }, [emailAuthGroupList]);
+
+    useEffect(() => {
+        if (userMsg) {
+            console.log("useEffect: userMsg", userMsg);
+            const newUserMsg = JSON.parse(JSON.stringify(userMsg));
+            dispatch(changeCompanyField({type: "userList", key: "data", value: newUserMsg}));
+            dispatch(changeUserRegisterField({key: "emailAuthGroupList", value: []}));
+        }
+    }, [userMsg]);
+
+    useEffect(() => {
+        if (userList) {
+            console.log("useEffect: userList", userList);
+        }
+    }, [userList]);
 
     /************************************************************************************
      * JSX Template
@@ -570,7 +701,78 @@ const RegisterUserPage = (props) => {
                                 <Grid item xs={6}>
                                     <div>
                                         {/*// 10. 이메일 인증*/}
+                                        <span className={labelClassName}>이메일 인증</span>
+                                        <FormControl
+                                            size={fieldSize}
+                                            className={fieldClassName}
+                                            variant="filled"
+                                            error={userIsError.emailAuthValue}
+                                        >
+                                            <Select
+                                                required={userRequired.emailAuthValue}
+                                                disabled={userDisabled.emailAuthValue}
+                                                name="emailAuthValue"
+                                                value={user.emailAuthValue}
+                                                onChange={(e) => { handleChangeUserTextField({name: "emailAuthValue", value: e.target.value}); }}
+                                                onClick={handleClickCompanyMenu}
+                                                MenuProps={MenuProps}
+                                            >
+                                                <MenuItem value="">
+                                                    <em>None</em>
+                                                </MenuItem>
+                                                    <MenuItem value={1}>개인 이메일 인증</MenuItem>
+                                                    <MenuItem value={2}>그룹 이메일 인증</MenuItem>
+                                            </Select>
+                                            <FormHelperText>{userHelperText.emailAuthValue}</FormHelperText>
+                                        </FormControl>
                                     </div>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <div>
+                                        {/*// 10. 그룹 이메일 인증*/}
+                                        <span className={labelClassName}>그룹 이메일 인증: 사용자 선택</span>
+                                        <FormControl
+                                            size={fieldSize}
+                                            className={fieldClassName}
+                                            variant="filled"
+                                            // error={userIsError.emailAuthValue}
+                                        >
+                                            <Select
+                                                // required={userRequired.emailAuthValue}
+                                                // disabled={userDisabled.emailAuthValue}
+                                                // name="emailAuthValue"
+                                                // value={user.emailAuthValue}
+                                                onChange={(e) => { handleChangeUserTextField({name: "emailAuthValue", value: e.target.value}); }}
+                                                onClick={handleClickCompanyMenu}
+                                                // MenuProps={MenuProps}
+                                            >
+                                                <List className={classes.list}>
+                                                    {userList && userList.map(item => (
+                                                        <ListItem button onClick={() => { handleClickEmailAuthUser({user: item}); }}>
+                                                            <ListItemAvatar>
+                                                                <ReactAvatar className="topbar__avatar-img-list" name={item.userId} size={40} />
+                                                            </ListItemAvatar>
+                                                            <ListItemText primary={item.name} secondary={item.email} />
+                                                        </ListItem>
+                                                    ))}
+                                                </List>
+                                            </Select>
+                                            <FormHelperText>{userHelperText.emailAuthValue}</FormHelperText>
+                                        </FormControl>
+                                    </div>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Paper className={classes.paper} variant="outlined" />
+                                    { emailAuthGroupList && emailAuthGroupList.map(item => (
+                                        <Chip
+                                            variant="outlined"
+                                            size="small"
+                                            avatar={<Avatar alt={item.userId} src="/static/images/avatar/1.jpg" />}
+                                            label={item.email}
+                                            onDelete={() => { handleDeleteEmailAuthGroupItem({item}); }}
+                                        />
+                                    ))}
+                                    <Paper variant="outlined" square />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <div>
