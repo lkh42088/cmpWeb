@@ -401,28 +401,6 @@
     }
   }
 
-  .cb_dashboard__health-chart-info {
-    position: absolute;
-    width: 100%;
-    top: calc(50% - 15px);
-    left: calc(50% - 45px);
-    animation: label 2.5s ease-in;
-    color:
-
-    p {
-      margin: 0;
-    }
-  }
-
-  .cb_dashboard__health-chart-number {
-    font-size: 35px;
-    line-height: 60px;
-
-    @include themify($themes) {
-      color: themed('colorFitness');
-    }
-  }
-
   .dashboard__health-chart-number {
     font-size: 56px;
     line-height: 60px;
@@ -616,25 +594,26 @@
       }
 
       .dashboard__stat-label {
-        font-size: 36px;
+        font-size: 3vmin;     // 36px->3vmin [28June2020,khlee]
       }
 
       .dashboard__stat-main {
         width: 100%;
 
         hr {
-          margin-bottom: 30px;
-          margin-top: 40px;
+          margin-bottom: 20px;  // 30->20 [28June2020,khlee]
+          margin-top: 20px;     // 40->20 [28June2020,khlee]
         }
       }
 
       .dashboard__stat-main-title {
+        font-size: 2vmin;       // Add [28June2020,khlee]
         color: $color-additional;
       }
 
       .dashboard__stat-main-number {
         color: $color-red;
-        font-size: 48px;
+        font-size: 3vmin;        // 48px->3vmin [28June2020,khlee]
         line-height: 34px;
         margin-top: 15px;
       }
@@ -651,7 +630,7 @@
       }
 
       .dashboard__stat-data-number {
-        font-size: 18px;
+        font-size: 2vmin;        // 18px->2vmin [28June2020,khlee]
         line-height: 34px;
         font-weight: 500;
       }

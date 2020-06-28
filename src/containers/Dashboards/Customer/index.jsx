@@ -68,6 +68,16 @@ const dataPing = [
     { name: 'Ping J', amt: 2200 },
 ];
 
+const billingData = [
+    { value: 50, fill: '#4ce1b6' },
+    { value: 50, fill: '#eeeeee' },
+];
+
+const billingBarData = [
+    { name: 'Prev Month', amt: 2400 },
+    { name: 'Current Month', amt: 1210 },
+];
+
 const useStyles = makeStyles(theme => ({
     container: {
         display: 'grid',
@@ -91,10 +101,6 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const billingData = [
-    { value: 50, fill: '#4ce1b6' },
-    { value: 50, fill: '#eeeeee' },
-];
 
 const DashboardCustomor = (
     t, cryptoTable, theme,
@@ -133,9 +139,10 @@ const DashboardCustomor = (
                     <TotalViews cardTitle="PING" data={dataPing} color="#f6da6e"/>
                 </Col>
             </Row>
+            <Row style={{padding: 10}} />
             <Row className="classes.row">
                 <Col md={6} lg={6} xs={12} sm={12} xl={6}>
-                    <CustomerBilling t={t} data={billingData} />
+                    <CustomerBilling t={t} numData={billingData} barData={billingBarData}/>
                 </Col>
 
                 {/*<Col md={4} lg={4} xs={12} sm={6} xl={4}>*/}
@@ -148,6 +155,7 @@ const DashboardCustomor = (
                 {/*    <CircleGraphCard dir={direction} />*/}
                 {/*</Col>*/}
             </Row>
+            <Row style={{padding: 10}} />
         </Container>
     );
 };

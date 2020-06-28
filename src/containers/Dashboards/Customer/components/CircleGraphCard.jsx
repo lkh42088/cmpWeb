@@ -84,8 +84,8 @@ const CircleGraphCard = (dir, data) => {
                                 content={renderLegend}/>
                     </PieChart>
                 </ResponsiveContainer>
-                <div className="cb_dashboard__health-chart-info">
-                    <p className="cb_dashboard__health-chart-number">4200</p>
+                <div className="dashboard__health-chart-info">
+                    <p className="dashboard__health-chart-number">4200</p>
                 </div>
             </div>
         </Panel>
