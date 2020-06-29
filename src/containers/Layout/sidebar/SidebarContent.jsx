@@ -20,7 +20,6 @@ const SidebarContent = ({
 
     let link = "/dashboards/customer";
     const getDashBoardLink = () => {
-        console.log(user);
         if (user) {
             const {level} = user;
             if (level === 1 || level === 2) {

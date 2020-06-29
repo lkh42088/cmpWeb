@@ -23,12 +23,13 @@
       text-align: directed('right');
       #{directed('padding-right')}: 10px;
     }
-    font-size: 9px;
+    font-size: 5px;
     line-height: 13px;
   }
 
   p {
     margin-bottom: 5px;
+    font-size: 1vmin;   // Add [29June2020,khlee]
   }
 
   .progress__label {
@@ -53,6 +54,19 @@
     .progress-bar {
       height: 12px;
     }
+
+    // Start [29June2020.khlee]
+    .progress-wrap--pink {
+
+      .progress-bar {
+        background-color: $color-red;
+      }
+
+      .progress__label {
+        color: $color-red;
+      }
+    }
+    // End
   }
 
   &.progress-wrap--big {

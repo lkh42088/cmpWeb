@@ -2,43 +2,25 @@ import React from 'react';
 import {Card, CardBody, Progress} from 'reactstrap';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import Panel from '../../../../shared/components/Panel';
 
 const CpuUsage = ({ t, data }) => (
     <Card className="cb-card" >
         <CardBody className="cb-card-body dashboard">
-            <p>CPU USAGE</p>
+            <p style={{fontSize: "1vmin", paddingBottom: 20}}>CPU USAGE AVERAGE</p>
             {
                 data.map((entry, index) => (
-                    <div className="progress-wrap progress-wrap--small">
+                    <div className="progress-wrap progress-wrap--middle">
                         <p>{entry.name}</p>
-                        <progress value={entry.use}>{entry.use}%</progress>
+                        <Progress
+                            animated="progress-bar-animated"
+                            className={(entry.use >= 80) ? "progress-wrap--pink" : null}
+                            value={entry.use}>
+                            {entry.use}%
+                        </Progress>
                     </div>
                 ))
             }
-            <div className="progress-wrap progress-wrap--small">
-                <p>Completed Purchase</p>
-                <Progress value={46}>46%</Progress>
-            </div>
-            <div className="progress-wrap progress-wrap--small">
-                <p>New clients</p>
-                <Progress value={67}>67%</Progress>
-            </div>
-            <div className="progress-wrap progress-wrap--small">
-                <p>New subscribers</p>
-                <Progress value={87}>87%</Progress>
-            </div>
-            <div className="progress-wrap progress-wrap--small">
-                <p>Site visits from ADS banners</p>
-                <Progress value={24}>24%</Progress>
-            </div>
-            <div className="progress-wrap progress-wrap--small">
-                <p>Total page views</p>
-                <Progress value={56}>56%</Progress>
-            </div>
-            <div className="progress-wrap progress-wrap--small">
-                <p>Positive feedback</p>
-                <Progress value={46}>46%</Progress>
-            </div>
         </CardBody>
     </Card>
 );
