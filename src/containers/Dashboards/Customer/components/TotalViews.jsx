@@ -32,12 +32,6 @@ const TotalViews = (props) => {
         tmpColor = color;
     }
 
-    // useEffect(() => {
-    //     if (data) {
-    //         setSelect(data[0].amt);
-    //     }
-    // });
-
     useEffect(() => {
         if (data) {
             setSelect({
@@ -61,25 +55,25 @@ const TotalViews = (props) => {
                             {data[0].amt}
                         </p>
                     </div>
-                <div>
-                    <div className="dashboard__chart-container">
-                        <ResponsiveContainer height={90}>
-                            <BarChart data={data}>
-                                <Bar dataKey="amt" onClick={handleClick}>
-                                    {
-                                        data.map((entry, index) => (
-                                            <Cell
-                                                cursor="pointer"
-                                                fill={index === activeIndex ? '#4ce1b6' : tmpColor}
-                                                key={`cell-${index}`}
-                                            />
-                                        ))
-                                    }
-                                </Bar>
-                            </BarChart>
-                        </ResponsiveContainer>
+                    <div>
+                        <div className="dashboard__chart-container">
+                            <ResponsiveContainer height={90}>
+                                <BarChart data={data}>
+                                    <Bar dataKey="amt" onClick={handleClick}>
+                                        {
+                                            data.map((entry, index) => (
+                                                <Cell
+                                                    cursor="pointer"
+                                                    fill={index === activeIndex ? '#4ce1b6' : tmpColor}
+                                                    key={`cell-${index}`}
+                                                />
+                                            ))
+                                        }
+                                    </Bar>
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
                     </div>
-                </div>
                 </div>
             </CardBody>
         </Card>
