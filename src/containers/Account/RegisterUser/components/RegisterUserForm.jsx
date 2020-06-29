@@ -15,7 +15,7 @@ import {
   addEmailGroup,
   changeEmailAuthFlag,
   changeEmailAuthGroupFlag,
-  changeUserField, deleteEmailGroup, registerUser,
+  changeUserRegisterField, deleteEmailGroup, registerUser,
 } from "../../../../redux/actions/usersActions";
 
 const renderTextField = ({
@@ -154,7 +154,7 @@ const RegisterUser = ({ reset, t }) => {
   const onChange = (e) => {
     const { name, value } = e.target;
     console.log("key:", name, ", value:", value);
-    dispatch(changeUserField({ key: name, value }));
+    dispatch(changeUserRegisterField({ key: name, value }));
   };
 
   const onSubmit = async (e) => {

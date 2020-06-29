@@ -7,7 +7,8 @@ import * as users from "../../lib/api/users";
  * 1. Action Type
  *****************************************************************************/
 export const INITIALIZE_REGISTER_USER = 'user/INITIALIZE';
-export const CHANGE_FIELD = 'user/CHANGE_FIELD';
+export const CHANGE_USER_REGISTER_FIELD = 'user/CHANGE_USER_REGISTER_FIELD';
+export const CHANGE_USER_FIELD = 'user/CHANGE_USER_FIELD';
 export const ADD_EMAIL_GROUP = 'user/ADD_EMAIL_GROUP';
 export const DELETE_EMAIL_GROUP = 'user/ADD_EMAIL_GROUP';
 export const CHANGE_EMAIL_AUTH_FLAG = 'user/CHANGE_EMAIL_AUTH_FLAG';
@@ -25,9 +26,13 @@ export const [GET_USER_LIST, GET_USER_LIST_SUCCESS, GET_USER_LIST_FAILURE] = cre
  *****************************************************************************/
 export const initRegisterUser = createAction(INITIALIZE_REGISTER_USER);
 export const checkUserRegisterField = createAction(CHECK_USER_REGISTER_FIELD);
-export const changeUserField = createAction(
-    CHANGE_FIELD,
+export const changeUserRegisterField = createAction(
+    CHANGE_USER_REGISTER_FIELD,
     ({ key, value }) => ({ key, value }),
+);
+export const changeUserField = createAction(
+    CHANGE_USER_FIELD,
+    ({ type, key, value }) => ({ type, key, value }),
 );
 export const addEmailGroup = createAction(
     ADD_EMAIL_GROUP,

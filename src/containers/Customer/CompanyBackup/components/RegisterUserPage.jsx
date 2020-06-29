@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {changeUserField, checkDupUser} from "../../../../redux/actions/usersActions";
+import {changeUserRegisterField, checkDupUser} from "../../../../redux/actions/usersActions";
 import CbTextField from "./CbTextField";
 import CbSelectField from "./CbSelectField";
 import {NubesButtonSecondary} from "./NubesButton";
@@ -68,7 +68,7 @@ const RegisterUserPage = () => {
      ************************************************************************************/
     const onChangeField = ({name, value}) => {
         console.log("onChangeField: name - ", name, ", value - ", value);
-        dispatch(changeUserField({key: name, value}));
+        dispatch(changeUserRegisterField({key: name, value}));
     };
 
     const handleCheckDupUser = () => {

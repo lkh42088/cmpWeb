@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     },
     list: {
         width: '90%',
-        height: 300,
+        // height: 300,
         maxWidth: 300,
         backgroundColor: theme.palette.background.paper,
     },
@@ -36,11 +36,9 @@ const useStyles = makeStyles(theme => ({
 
 function renderRow(props) {
     const { index, style, data } = props;
-
-    const {name} = data[index];
-    console.log("randerRow: company ", name);
+    const {idx, name} = data.cpList[index];
     return (
-        <ListItem button style={style} key={index}>
+        <ListItem button style={style} key={index} onClick={() => { data.handleSelect({idx, name}); }}>
             <ListItemText primary={`${name}`} />
         </ListItem>
     );
@@ -53,13 +51,14 @@ const SearchCompany = (props) => {
     const classes = useStyles();
     const { open, handleClose, handleComplete } = props;
     const [cpName, setCpName] = useState("");
+    const [listHeight, setListHeight] = useState(10);
     const dispatch = useDispatch();
     const {
         searchMsg,
         searchMsgError,
     } = useSelector(({companiesRd}) => ({
-       searchMsg: companiesRd.searchMsg,
-       searchMsgError: companiesRd.searchMsgError,
+       searchMsg: companiesRd.search.msg,
+       searchMsgError: companiesRd.search.msgError,
     }));
 
     const variant = "filled";
@@ -74,6 +73,13 @@ const SearchCompany = (props) => {
         setCpName(value);
     };
 
+    const handleSelect = ({idx, name}) => {
+        console.log("select name: ", name, ", idx: ", idx);
+        handleComplete({idx, name});
+        setListHeight(10);
+        setCpName("");
+        handleClose();
+    };
     /************************************************************************************
      * Function
      ************************************************************************************/
@@ -82,16 +88,30 @@ const SearchCompany = (props) => {
         dispatch(getCompaniesByName({cpName}));
     };
 
+    const handleCloseDialog = () => {
+        setListHeight(10);
+        setCpName("");
+        handleClose();
+    };
+
     /************************************************************************************
      * useEffect
      ************************************************************************************/
     useEffect(() => {
+        setListHeight(10);
     }, []);
 
     useEffect(() => {
         console.log("searchMsg");
         if (searchMsg) {
            console.log("search Message: ", searchMsg, ", len ", searchMsg.length);
+            if (searchMsg.length < 1) {
+                setListHeight(10);
+            } else if (searchMsg.length < 10) {
+                setListHeight(30 * searchMsg.length);
+            } else {
+                setListHeight(300);
+            }
         }
     }, [searchMsg]);
 
@@ -99,6 +119,7 @@ const SearchCompany = (props) => {
         console.log("searchMsgError");
         if (searchMsgError) {
             console.log("search Message Error: ", searchMsgError);
+            setListHeight(10);
         }
     }, [searchMsgError]);
 
@@ -108,7 +129,7 @@ const SearchCompany = (props) => {
     console.log("SearchCompany...");
     return (
         <Dialog
-            onClose={handleClose}
+            onClose={handleCloseDialog}
             open={open}
         >
             <Card>
@@ -149,12 +170,12 @@ const SearchCompany = (props) => {
                                 </Button>
                             </Grid>
                             <Grid item xs={12}>
-                                <div className={classes.list}>
+                                <div className={classes.list} >
                                     <FixedSizeList
-                                        height={300}
+                                        height={listHeight}
                                         itemSize={30}
                                         itemCount={searchMsg && searchMsg.length ? searchMsg.length : 0}
-                                        itemData={searchMsg}
+                                        itemData={{ cpList: searchMsg, handleSelect}}
                                     >
                                         {renderRow}
                                     </FixedSizeList>
