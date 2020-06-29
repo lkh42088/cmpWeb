@@ -16,6 +16,8 @@ import CircleGraphCard from "./components/CircleGraphCard";
 import ServerKtCloud from "../Manager/components/ServerKtCloud";
 import TotalViews from "./components/TotalViews";
 import CustomerBilling from "./components/CustomerBilling";
+import InternetStatistics from "./components/InternetStatistics";
+import CpuUsage from "./components/CpuUsage";
 
 const dataServer = [
     { name: 'Server A', amt: 1500 },
@@ -27,8 +29,8 @@ const dataServer = [
     { name: 'Server G', amt: 2100 },
     { name: 'Server H', amt: 2290 },
     { name: 'Server I', amt: 1200 },
-    { name: 'Server J', amt: 2000 },
-];
+    { name: 'Server J', amt: 2000 }];
+
 const dataNetwork = [
     { name: 'Network A', amt: 2400 },
     { name: 'Network B', amt: 2210 },
@@ -39,8 +41,8 @@ const dataNetwork = [
     { name: 'Network G', amt: 2100 },
     { name: 'Network H', amt: 2290 },
     { name: 'Network I', amt: 2000 },
-    { name: 'Network J', amt: 2181 },
-];
+    { name: 'Network J', amt: 2181 }];
+
 const dataAlarm = [
     { name: 'Alarm A', amt: 3 },
     { name: 'Alarm B', amt: 2 },
@@ -50,33 +52,58 @@ const dataAlarm = [
     { name: 'Alarm F', amt: 1 },
     { name: 'Alarm G', amt: 5 },
     { name: 'Alarm H', amt: 5 },
-    { name: 'Alarm I', amt: 4 },
-];
+    { name: 'Alarm I', amt: 4 }];
+
 const dataPing = [
-    { name: 'Ping A', amt: 2400 },
-    { name: 'Ping B', amt: 2210 },
-    { name: 'Ping C', amt: 2290 },
-    { name: 'Ping D', amt: 2000 },
-    { name: 'Ping E', amt: 2181 },
-    { name: 'Ping F', amt: 2500 },
-    { name: 'Ping G', amt: 2100 },
-    { name: 'Ping H', amt: 2290 },
-    { name: 'Ping I', amt: 2000 },
-    { name: 'Ping J', amt: 2181 },
-    { name: 'Ping J', amt: 2600 },
-    { name: 'Ping J', amt: 2500 },
-    { name: 'Ping J', amt: 2200 },
-];
+    { name: 'Ping A', amt: 240 },
+    { name: 'Ping B', amt: 200 },
+    { name: 'Ping C', amt: 290 },
+    { name: 'Ping D', amt: 200 },
+    { name: 'Ping E', amt: 180 },
+    { name: 'Ping F', amt: 250 },
+    { name: 'Ping G', amt: 210 },
+    { name: 'Ping H', amt: 229 },
+    { name: 'Ping I', amt: 200 },
+    { name: 'Ping J', amt: 218 },
+    { name: 'Ping J', amt: 260 },
+    { name: 'Ping J', amt: 250 },
+    { name: 'Ping J', amt: 220 }];
+
+const internetData = [
+    { name: 'Mon', a: 590, b: 1400 },
+    { name: 'Tue', a: 868, b: 1506 },
+    { name: 'Wed', a: 1397, b: 989 },
+    { name: 'Thu', a: 1480, b: 1228 },
+    { name: 'Fri', a: 1520, b: 1100 },
+    { name: 'Sat', a: 1520, b: 1100 },
+    { name: 'Sun', a: 1400, b: 1700 }];
 
 const billingData = [
-    { value: 50, fill: '#4ce1b6' },
-    { value: 50, fill: '#eeeeee' },
-];
+    { value: 45, fill: '#4ce1b6' },
+    { value: 55, fill: '#eeeeee' }];
 
 const billingBarData = [
-    { name: 'Prev Month', amt: 2400 },
-    { name: 'Current Month', amt: 1210 },
-];
+    {
+        name: '지난달',
+        server: 240000,
+        kt: 20000,
+        aws: 10000,
+    }, {
+        name: '이번달',
+        server: 121000,
+        kt: 20000,
+        aws: 150000,
+}];
+
+const cpuData = [
+    { name: '강남 KT-IDC', use: 70 },
+    { name: 'HCN', use: 62 },
+    { name: '구로 본사', use: 55 },
+    { name: '서초 SK-IDC', use: 80 },
+    { name: '세종 IDC', use: 90 },
+    { name: '분당 KT-IDC', use: 70 },
+    { name: 'KT CLOUD M1', use: 50 },
+    { name: 'KT CLOUD M2', use: 55 }];
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -126,36 +153,32 @@ const DashboardCustomor = (
                 </Col>
             </Row>
             <Row>
-                <Col md={6} lg={6} xs={12} sm={12} xl={3}>
-                    <TotalViews cardTitle="SERVER" data={dataServer} color="#c88ffa" />
+                <Col md={6} lg={6} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <TotalViews cardTitle="SERVER DATA" data={dataServer} color="#c88ffa" />
                 </Col>
-                <Col md={6} lg={6} xs={12} sm={12} xl={3}>
-                    <TotalViews cardTitle="NETWORK" data={dataNetwork} />
+                <Col md={6} lg={6} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <TotalViews cardTitle="NETWORK DATA" data={dataNetwork} />
                 </Col>
-                <Col md={6} lg={6} xs={12} sm={12} xl={3}>
-                    <TotalViews cardTitle="ALARM" data={dataAlarm} color="#b71c1c" />
+                <Col md={6} lg={6} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <TotalViews cardTitle="ALARM COUNT" data={dataAlarm} color="#b71c1c" />
                 </Col>
-                <Col md={6} lg={6} xs={12} sm={12} xl={3}>
-                    <TotalViews cardTitle="PING" data={dataPing} color="#f6da6e"/>
+                <Col md={6} lg={6} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <TotalViews cardTitle="PING FAIL" data={dataPing} color="#f6da6e"/>
                 </Col>
             </Row>
-            <Row style={{padding: 10}} />
             <Row className="classes.row">
-                <Col md={6} lg={6} xs={12} sm={12} xl={6}>
+                <Col md={12} lg={12} xs={12} sm={12} xl={12} style={{padding: 10}}>
+                    <InternetStatistics data={internetData} dir={direction} />
+                </Col>
+            </Row>
+            <Row className="classes.row">
+                <Col md={12} lg={6} xs={12} sm={12} xl={6} style={{padding: 10}}>
                     <CustomerBilling t={t} numData={billingData} barData={billingBarData}/>
                 </Col>
-
-                {/*<Col md={4} lg={4} xs={12} sm={6} xl={4}>*/}
-                {/*    <CircleGraphCard dir={direction} />*/}
-                {/*</Col>*/}
-                {/*<Col md={4} lg={4} xs={12} sm={6} xl={4}>*/}
-                {/*    <CircleGraphCard dir={direction} />*/}
-                {/*</Col>*/}
-                {/*<Col md={4} lg={4} xs={12} sm={6} xl={4}>*/}
-                {/*    <CircleGraphCard dir={direction} />*/}
-                {/*</Col>*/}
+                <Col md={12} lg={6} xs={12} sm={12} xl={6} style={{padding: 10}}>
+                    <CpuUsage data={cpuData} />
+                </Col>
             </Row>
-            <Row style={{padding: 10}} />
         </Container>
     );
 };
