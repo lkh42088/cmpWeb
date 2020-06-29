@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import {
     Card, CardBody, Col, Row,
 } from "reactstrap";
-import TableBody from "@material-ui/core/TableBody";
 
 const tmpData = [
     {
@@ -73,8 +72,8 @@ const CustomerBilling = ({ t, numData, barData }) => {
     };
 
     const tempComponent = (
-            barData && barData.map(entry => (
-                <BarChart data={entry}>
+            // barData && barData.map(entry => (
+                <BarChart >
                     <XAxis dataKey="name" />
                     <YAxis unit="원"/>
                     <CartesianGrid strokeDasharray="3 3"/>
@@ -89,7 +88,8 @@ const CustomerBilling = ({ t, numData, barData }) => {
                         <LabelList dataKey="aws" styles={{fill: "#FFFFFF"}}/>
                     </Bar>
                 </BarChart>
-            )));
+            );
+// );
 
     useEffect(() => {
         if (barData) {
