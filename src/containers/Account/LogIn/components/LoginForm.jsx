@@ -79,7 +79,12 @@ const LoginForm = ({ history }) => {
              ********************************************************************/
             console.log('check API 성공');
             // eslint-disable-next-line react/prop-types
-            history.push('/dashboards/manager');
+            /** level 1,2 : manager */
+            if (user.level === 1 || user.level === 2) {
+                history.push('/dashboards/manager');
+            } else {
+                history.push('/dashboards/customer');
+            }
             try {
                 /** Insert 'user' to Local Storage */
                 localStorage.setItem('user', JSON.stringify(user));

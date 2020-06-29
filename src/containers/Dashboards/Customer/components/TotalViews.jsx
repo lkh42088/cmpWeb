@@ -42,7 +42,6 @@ const TotalViews = (props) => {
 
     return (
         <Card className="cb-card">
-            {/*<CardBody className="dashboard__card-widget">*/}
             <CardBody className="cb-card-body" >
                 <div className="cb-card__title">
                     <div style={{float: "left"}}>

@@ -6,7 +6,7 @@ import DashboardCustomer from '../../../Dashboards/Customer/index';
 
 export default () => (
     <Switch>
-        <Route path="/dashboards/manager" component={DashboardManager} />
         <Route path="/dashboards/customer" component={DashboardCustomer} />
+        <Route path="/dashboards/manager" component={DashboardManager} />
     </Switch>
 );
