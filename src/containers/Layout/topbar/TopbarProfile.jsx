@@ -95,7 +95,7 @@ const TopbarProfile = (props) => {
                     <TopbarMenuLink
                         title="Log Out"
                         icon="exit"
-                        path="/log_in"
+                        path="/login"
                         onClick={logout}
                     />
                 </div>
