@@ -9,12 +9,12 @@ import {
 } from "reactstrap";
 import TableBody from "@material-ui/core/TableBody";
 
-const billingBarData = [
+const tmpData = [
     {
-        name: '지난달', server: 240000, kt: 20000, aws: 10000,
+        name: '지난달', server: 0, kt: 0, aws: 0,
     },
     {
-        name: '이번달', server: 121000, kt: 20000, aws: 150000,
+        name: '이번달', server: 0, kt: 0, aws: 0,
     }];
             // {/*<ResponsiveContainer height={400}>*/}
             // {/*    <BarChart data={Object.entries(data)}>*/}
@@ -72,32 +72,24 @@ const CustomerBilling = ({ t, numData, barData }) => {
         aws: "aqua",
     };
 
-    const tempComponent = () => (
-        <div style={{width: "50%"}} >
-            <div className="dashboard__chart-container">
-                <ResponsiveContainer height={400}>
-                    { billingBarData && billingBarData.map((entry, index) => (
-                        <BarChart data={entry}>
-                            <XAxis dataKey="name"/>
-                            <YAxis unit="원"/>
-                            <CartesianGrid strokeDasharray="3 3"/>
-                            <Tooltip/>
-                            <Legend/>
-                            <Bar dataKey="server" stackId="x" fill="#4ce1b6">
-                                <LabelList dataKey="server" styles={{fill: "#FFFFFF"}}/>
-                            </Bar>
-                            <Bar dataKey="kt" stackId="x" fill="red">
-                                <LabelList dataKey="kt" styles={{fill: "#FFFFFF"}}/>
-                            </Bar>
-                            <Bar dataKey="aws" stackId="x" fill="blue">
-                                <LabelList dataKey="aws" styles={{fill: "#FFFFFF"}}/>
-                            </Bar>
-                        </BarChart>
-                    ))}
-                </ResponsiveContainer>
-            </div>
-        </div>
-    );
+    const tempComponent = (
+            barData && barData.map(entry => (
+                <BarChart data={entry}>
+                    <XAxis dataKey="name" />
+                    <YAxis unit="원"/>
+                    <CartesianGrid strokeDasharray="3 3"/>
+                    <Legend/>
+                    <Bar dataKey="server" stackId="x" fill="#4ce1b6">
+                        <LabelList dataKey="server" styles={{fill: "#FFFFFF"}}/>
+                    </Bar>
+                    <Bar dataKey="kt" stackId="x" fill="red">
+                        <LabelList dataKey="kt" styles={{fill: "#FFFFFF"}}/>
+                    </Bar>
+                    <Bar dataKey="aws" stackId="x" fill="blue">
+                        <LabelList dataKey="aws" styles={{fill: "#FFFFFF"}}/>
+                    </Bar>
+                </BarChart>
+            )));
 
     useEffect(() => {
         if (barData) {
@@ -138,7 +130,13 @@ const CustomerBilling = ({ t, numData, barData }) => {
                         </div>
                     </div>
                 </div>
-                {tempComponent}
+                <div style={{width: "50%"}} >
+                    <div className="dashboard__chart-container">
+                        <ResponsiveContainer height={400} >
+                            {tempComponent}
+                        </ResponsiveContainer>
+                    </div>
+                </div>
             </CardBody>
         </Card>
     );
