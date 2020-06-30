@@ -21,7 +21,7 @@ const SidebarCategory = ({
     });
 
     let linkStyle;
-    if (hover) {
+    if (!hover || hover === true) {
         linkStyle = {
             position: "absolute",
             display: "none",
