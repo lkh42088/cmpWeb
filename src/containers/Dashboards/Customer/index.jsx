@@ -6,35 +6,13 @@ import { withTranslation } from 'react-i18next';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {makeStyles} from "@material-ui/core/styles";
 import PropTypes from 'prop-types';
+import {Link} from "react-router-dom";
 import SubnetHeader from "../../Management/Subnet/CreateSubnet/components/SubnetHeader";
 import TotalViews from "./components/TotalViews";
 import CustomerBilling from "./components/CustomerBilling";
 import InternetStatistics from "./components/InternetStatistics";
 import CpuUsage from "./components/CpuUsage";
-
-const dataServer = [
-    { name: 'Server A', amt: 1500 },
-    { name: 'Server B', amt: 2000 },
-    { name: 'Server C', amt: 2290 },
-    { name: 'Server D', amt: 2000 },
-    { name: 'Server E', amt: 2181 },
-    { name: 'Server F', amt: 1900 },
-    { name: 'Server G', amt: 2100 },
-    { name: 'Server H', amt: 2290 },
-    { name: 'Server I', amt: 1200 },
-    { name: 'Server J', amt: 2000 }];
-
-const dataNetwork = [
-    { name: 'Network A', amt: 2400 },
-    { name: 'Network B', amt: 2210 },
-    { name: 'Network C', amt: 1200 },
-    { name: 'Network D', amt: 2000 },
-    { name: 'Network E', amt: 2180 },
-    { name: 'Network F', amt: 2500 },
-    { name: 'Network G', amt: 2100 },
-    { name: 'Network H', amt: 2290 },
-    { name: 'Network I', amt: 2000 },
-    { name: 'Network J', amt: 2181 }];
+import DeviceTotal from "./components/DeviceTotal";
 
 const dataAlarm = [
     { name: 'Alarm A', amt: 3 },
@@ -138,16 +116,20 @@ const DashboardCustomer = ({t}) => {
             </Row>
             <Row>
                 <Col md={6} lg={6} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <TotalViews cardTitle="SERVER DATA" data={dataServer} color="#c88ffa" />
+                    <Link to="/assets/server" >
+                        <DeviceTotal total="431" description="SERVER DEVICE OPERATING" progress="85" />
+                    </Link>
                 </Col>
                 <Col md={6} lg={6} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <TotalViews cardTitle="NETWORK DATA" data={dataNetwork} />
+                    <Link to="/assets/network" >
+                        <DeviceTotal total="4402" description="NETWORK DEVICE OPERATING" progress="72" />
+                    </Link>
                 </Col>
                 <Col md={6} lg={6} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <TotalViews cardTitle="ALARM COUNT" data={dataAlarm} color="#b71c1c" />
+                    <TotalViews cardTitle="ALARM COUNT" data={dataAlarm} color="#f6da6e" />
                 </Col>
                 <Col md={6} lg={6} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <TotalViews cardTitle="PING FAIL" data={dataPing} color="#f6da6e"/>
+                    <TotalViews cardTitle="PING FAIL" data={dataPing} />
                 </Col>
             </Row>
             <Row className="classes.row">

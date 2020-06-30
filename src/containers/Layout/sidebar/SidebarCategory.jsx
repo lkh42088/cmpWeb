@@ -14,33 +14,6 @@ const SidebarCategory = ({
     const [show, setShow] = useState('false');
     const [hover, setHover] = useState('false');
 
-    const toggle = (e, titleTmp) => {
-        const collapseId = document.getElementById(`collapseId_${titleTmp}`);
-        const collapseName = document.getElementsByName("collapseName");
-
-        for (let i = 0; i < collapseName.length; i += 1) {
-            if (collapseName[i].id !== `collapseId_${titleTmp}`) {
-                collapseName[i].style.display = 'none';
-            }
-        }
-
-        if (collapseId.style.display === "none" || collapseId.style.display === "") {
-            collapseId.style.display = "block";
-        } else {
-            collapseId.style.display = "none";
-        }
-    };
-
-    const toggleHover = () => {
-        setHover(!hover);
-    };
-
-    const hideSidebar = (e) => {
-        setShow(!show);
-        toggle(e, title);
-        console.log("[TEST] show = ", show);
-    };
-
     const categoryClass = classNames({
         'cb_sidebar__category-wrap': true,
         'cb_sidebar__category-wrap--open': !show,
@@ -59,8 +32,39 @@ const SidebarCategory = ({
         };
     }
 
-    const handleClick = async (e) => {
-        await hideSidebar(e);
+    useEffect(() => {
+        console.log("===== Start =====");
+    }, []);
+
+    const toggleHover = () => {
+        setHover(!hover);
+    };
+
+    const toggle = (e, titleTmp) => {
+        const collapseId = document.getElementById(`collapseId_${titleTmp}`);
+        const collapseName = document.getElementsByName("collapseName");
+
+        for (let i = 0; i < collapseName.length; i += 1) {
+            if (collapseName[i].id !== `collapseId_${titleTmp}`) {
+                collapseName[i].style.display = 'none';
+            }
+        }
+
+        if (collapseId.style.display === "none" || collapseId.style.display === "") {
+            collapseId.style.display = "block";
+        } else {
+            collapseId.style.display = "none";
+        }
+    };
+
+    const hideSidebar = (e) => {
+        setShow(!show);
+        toggle(e, title);
+        console.log("[TEST] show = ", show, "title = ", title);
+    };
+
+    const handleClick = (e) => {
+        hideSidebar(e);
     };
 
     return (
