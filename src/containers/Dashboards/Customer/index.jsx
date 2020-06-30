@@ -1,19 +1,12 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import {
-  Col, Container, Row, CardBody, Card,
+  Col, Container, Row,
 } from 'reactstrap';
 import { withTranslation } from 'react-i18next';
 import {connect, useDispatch, useSelector} from 'react-redux';
-import PropTypes from 'prop-types';
-import Grid from '@material-ui/core/Grid';
 import {makeStyles} from "@material-ui/core/styles";
-import { deleteCryptoTableData } from '../../../redux/actions/cryptoTableActions';
-import { CryptoTableProps } from '../../../shared/prop-types/TablesProps';
-import { ThemeProps, RTLProps } from '../../../shared/prop-types/ReducerProps';
-import CartCard from "../../ECommerce/Cart/components/CartCard";
+import PropTypes from 'prop-types';
 import SubnetHeader from "../../Management/Subnet/CreateSubnet/components/SubnetHeader";
-import CircleGraphCard from "./components/CircleGraphCard";
-import ServerKtCloud from "../Manager/components/ServerKtCloud";
 import TotalViews from "./components/TotalViews";
 import CustomerBilling from "./components/CustomerBilling";
 import InternetStatistics from "./components/InternetStatistics";
@@ -86,13 +79,13 @@ const billingBarData = [
     {
         name: '지난달',
         server: 240000,
-        kt: 20000,
-        aws: 10000,
+        kt: 120000,
+        aws: 101000,
     }, {
         name: '이번달',
-        server: 121000,
-        kt: 20000,
-        aws: 150000,
+        server: 220000,
+        kt: 55000,
+        aws: 80000,
 }];
 
 const cpuData = [
@@ -129,21 +122,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const DashboardCustomor = (
-    t, cryptoTable, theme,
-) => {
+const DashboardCustomer = ({t}) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const {direction} = useSelector(({rtl}) => ({
         direction: rtl.direction,
     }));
-
-    const onDeleteCryptoTableData = (index, e) => {
-        e.preventDefault();
-        const arrayCopy = [...cryptoTable];
-        arrayCopy.splice(index, 1);
-        dispatch(deleteCryptoTableData(arrayCopy));
-    };
 
     return (
         <Container fluid="true">
@@ -183,16 +167,11 @@ const DashboardCustomor = (
     );
 };
 
-DashboardCustomor.propTypes = {
-  // t: PropTypes.func.isRequired,
-  //cryptoTable: CryptoTableProps.isRequired,
-  // dispatch: PropTypes.func.isRequired,
-  // rtl: RTLProps.isRequired,
-  // theme: ThemeProps.isRequired,
+DashboardCustomer.propTypes = {
+  t: PropTypes.func.isRequired,
 };
 
 export default connect(state => ({
-  cryptoTable: state.cryptoTable.items,
   rtl: state.rtl,
   theme: state.theme,
-}))(withTranslation('common')(DashboardCustomor));
+}))(withTranslation('common')(DashboardCustomer));

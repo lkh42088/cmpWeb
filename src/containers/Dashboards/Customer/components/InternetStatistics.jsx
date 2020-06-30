@@ -6,7 +6,6 @@ import {
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import {Card, CardBody} from "reactstrap";
-import Panel from '../../../../shared/components/Panel';
 
 import getTooltipStyles from '../../../../shared/helpers';
 

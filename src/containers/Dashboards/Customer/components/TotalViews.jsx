@@ -8,22 +8,16 @@ import TrendingUpIcon from 'mdi-react/TrendingUpIcon';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
-// Data structure
-// const data = [
-//     { name: 'Page A', amt: 2400 },
-//     { name: 'Page B', amt: 2210 },
-// ];
-
 const TotalViews = (props) => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [select, setSelect] = useState(0);
-    const {cardTitle, color, data} = props;
+    const {
+        t, cardTitle, color, data,
+    } = props;
 
-    const handleClick = (e, index) => {
-        // const index = data.indexOf(item.payload);
-        setActiveIndex({
-            activeIndex: index,
-        });
+    const handleClick = (e) => {
+        const index = data.indexOf(e.payload);
+        setActiveIndex(index);
     };
 
     // Bar color
@@ -34,11 +28,11 @@ const TotalViews = (props) => {
 
     useEffect(() => {
         if (data) {
-            setSelect({
-                select: data[activeIndex].amt,
-            });
+            setSelect(data[0].amt);
         }
-    }, [activeIndex]);
+    }, []);
+
+    const activeItem = data[activeIndex];
 
     return (
         <Card className="cb-card">
@@ -50,8 +44,7 @@ const TotalViews = (props) => {
                     <div className="dashboard__total" style={{float: "right"}}>
                         <TrendingUpIcon className="dashboard__trend-icon" />
                         <p className="dashboard__total-stat">
-                            {/*{select}*/}
-                            {data[0].amt}
+                            {activeItem.amt}
                         </p>
                     </div>
                     <div>
@@ -80,7 +73,6 @@ const TotalViews = (props) => {
 };
 
 TotalViews.propTypes = {
-    // eslint-disable-next-line react/no-unused-prop-types
     t: PropTypes.func.isRequired,
 };
 
