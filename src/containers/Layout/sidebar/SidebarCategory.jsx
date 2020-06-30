@@ -20,25 +20,24 @@ const SidebarCategory = ({
         'cb_sidebar__link cb_sidebar__category': true,
     });
 
+    const handleMouseEnter = () => {
+        setHover(true);
+    };
+    const handleMouseLeave = () => {
+        setHover(false);
+    };
+
     let linkStyle;
-    if (!hover || hover === true) {
+    if (hover === true) {
         linkStyle = {
             position: "absolute",
-            display: "none",
         };
     } else {
         linkStyle = {
             position: "absolute",
+            display: "none",
         };
     }
-
-    useEffect(() => {
-        console.log("===== Start =====");
-    }, []);
-
-    const toggleHover = () => {
-        setHover(!hover);
-    };
 
     const toggle = (e, titleTmp) => {
         const collapseId = document.getElementById(`collapseId_${titleTmp}`);
@@ -57,18 +56,14 @@ const SidebarCategory = ({
         }
     };
 
-    const hideSidebar = (e) => {
+    const handleClick = (e) => {
         setShow(!show);
         toggle(e, title);
         console.log("[TEST] show = ", show, "title = ", title);
     };
 
-    const handleClick = (e) => {
-        hideSidebar(e);
-    };
-
     return (
-        <div style={{display: "flex"}} onMouseEnter={toggleHover} onMouseLeave={toggleHover} >
+        <div style={{display: "flex"}} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
             <button className={categoryClass} type="button" onClick={handleClick} style={{zIndex: "120"}}>
                 {icon ? <span className="cb_sidebar__link-icon"><Icon icon={icon}/></span> : ''}
                 <p className="cb_sidebar__link-title">
@@ -77,7 +72,7 @@ const SidebarCategory = ({
                 </p>
                 {/*<span className="cb_sidebar__category-icon lnr lnr-chevron-right"/>*/}
             </button>
-            <Collapse isOpen="false" id={`collapseId_${title}`} name="collapseName"
+            <Collapse isOpen={show} id={`collapseId_${title}`} name="collapseName"
                       className="cb_sidebar__submenu-wrap"
                       style={{position: "absolute", zIndex: "110", display: "none"}}>
                 {/** Collapse Sidebar hover window * */}
@@ -93,7 +88,7 @@ const SidebarCategory = ({
                     </div>
                 </ul>
             </Collapse>
-            <Collapse isOpen={!hover} className="cb_sidebar__submenu-wrap" style={linkStyle}>
+            <Collapse isOpen={hover} className="cb_sidebar__submenu-wrap" style={linkStyle}>
                 {/** Sidebar hover window * */}
                 <ul className="cb_sidebar__submenu">
                     <div className="cb_sidebar__submenu-wrap-border">
