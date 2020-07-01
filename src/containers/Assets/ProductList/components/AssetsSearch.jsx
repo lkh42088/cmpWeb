@@ -11,7 +11,7 @@ import {
     fetchPostSearchDevice, setDeviceSelected, setState,
 } from "../../../../redux/actions/assetsAction";
 
-const AssetsSearch = ({assetState}) => {
+const AssetsSearch = ({assetState, user}) => {
     const dispatch = useDispatch();
 
     const [device, setDevice] = React.useState({

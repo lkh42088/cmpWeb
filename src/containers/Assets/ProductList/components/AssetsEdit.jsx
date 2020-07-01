@@ -1,7 +1,9 @@
 import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Button, ButtonToolbar, Modal} from 'reactstrap';
+import {
+    Button, ButtonToolbar, Card, Modal,
+} from 'reactstrap';
 import classNames from 'classnames';
 import {Field, reduxForm, FieldArray} from "redux-form";
 import {findDOMNode} from "react-dom";
@@ -13,10 +15,13 @@ import MinusIcon from "mdi-react/MinusIcon";
 import TableBody from "@material-ui/core/TableBody";
 import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import TableCell from "@material-ui/core/TableCell";
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from "@material-ui/core/SnackbarContent";
 import {withTranslation} from "react-i18next";
 import {
-    getCompanyByName, setAddEleData, setAssetsPage,
+    getCompanyByName, setAddEleData, setAssetsPage, setState,
 } from "../../../../redux/actions/assetsAction";
 import renderIntervalDatePickerField from "./IntervalDatePicker";
 import renderDatePickerField from "./DatePicker";
@@ -209,7 +214,7 @@ class AssetsEdit extends PureComponent {
 
     searchCompany = () => {
         const {
-            assetState, dispatch,
+            dispatch,
         } = this.props;
         const {
             searchCompanyName,
@@ -219,11 +224,7 @@ class AssetsEdit extends PureComponent {
     };
 
     setSearchCompany = (val) => {
-        const {
-            assetState, dispatch, handleSubmit,
-        } = this.props;
         const {searchToggleDivision} = this.state;
-        //console.log("searchToggleDivision : ", searchToggleDivision);
 
         if (searchToggleDivision === 'customer') {
             this.setState({
@@ -309,8 +310,7 @@ class AssetsEdit extends PureComponent {
     };
 
     onClose = () => {
-        //dispatch(setViewModalDivision('read'));
-        const {assetState, dispatch} = this.props;
+        const {dispatch} = this.props;
         dispatch(setAssetsPage('view'));
     };
 
@@ -512,7 +512,6 @@ class AssetsEdit extends PureComponent {
             dispatch(setAddEleData('spla', setSplaArrayTemp));
         }
     };
-
 
     render() {
         //console.log("👉👉👉👉👉👉👉👉 render start edit");

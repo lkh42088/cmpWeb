@@ -131,7 +131,7 @@ export const getCodes = dispatchVal => async (dispatch) => {
 export const fetchPosts = assetState => async (dispatch) => {
     try {
         // first get device
-        console.log("💎 fetchPosts start : ", assetState.apiPageRd.order);
+        console.log("💎 fetchPosts start : ", assetState.apiPageRd.offsetPage);
         //console.log("assetState : ", assetState.apiPageRd);
 
         const deviceTypeData = assetState.deviceType;
@@ -140,6 +140,8 @@ export const fetchPosts = assetState => async (dispatch) => {
 
         // v1/search/devices/:type/:outFlag/:row/:page/:order/:dir/:offsetPage
         const url = `${API_ROUTE}/search/devices/${assetState.deviceType}/${assetState.apiPageRd.rowsPerPage}/${assetState.apiPageRd.showPage}/${assetState.apiPageRd.orderBy}/${order}/${assetState.apiPageRd.offsetPage}`;
+
+        //console.log("😅😅 url : ", url);
 
         const postJsonData = JSON.stringify(assetState.searchRd);
 
@@ -187,7 +189,7 @@ export const fetchPosts = assetState => async (dispatch) => {
 
 export const fetchPostsCheckCount = (assetState, dispatchVal) => async (dispatch) => {
     try {
-        console.log("💎 fetchPostsCheckCount start");
+        console.log("💎 fetchPostsCheckCount start : ", dispatchVal.offsetPage);
         const order = checkOrder(dispatchVal.order);
         //const offsetPage = (dispatchVal.rowsPerPage * (dispatchVal.showPage - 1));
         const url = `${API_ROUTE}/search/devices/${dispatchVal.deviceType}/${dispatchVal.rowsPerPage}/${dispatchVal.showPage}/${dispatchVal.orderBy}/${order}/${dispatchVal.offsetPage}`;
@@ -643,7 +645,7 @@ export const postDeviceComment = (division, assetState, submitData) => async (di
                 break;
         }
 
-        console.log("장비 댓글 cud submitData : ", submitData);
+        //console.log("장비 댓글 cud submitData : ", submitData);
 
         const postJsonData = JSON.stringify(submitData);
         axios({

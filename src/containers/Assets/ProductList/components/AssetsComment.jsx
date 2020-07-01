@@ -4,6 +4,12 @@ import {connect} from 'react-redux';
 import {
     Button, ButtonToolbar, Card, Col, Modal,
 } from 'reactstrap';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from "@material-ui/core/SnackbarContent";
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import MatButton from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import classNames from 'classnames';
 import Collapse from "../../../../shared/components/Collapse";
 import {
@@ -36,6 +42,10 @@ class AssetsComment extends PureComponent {
             warringContents: '',
             warringClass: 'modal-dialog--danger',
             warringType: '',
+            warringStyle: {
+                backgroundColor: "",
+            },
+            warringIcon: '',
         };
     }
 
@@ -53,6 +63,10 @@ class AssetsComment extends PureComponent {
                         warringContents: '',
                         warringClass: '',
                         warringType: '',
+                        warringStyle: {
+                            backgroundColor: "",
+                        },
+                        warringIcon: '',
                     };
                 case 'request':
                     return {
@@ -60,7 +74,11 @@ class AssetsComment extends PureComponent {
                         warringTitle: '경고',
                         warringContents: '삭제하시겠습니까?',
                         warringClass: 'modal-dialog--danger',
-                        warringType: 'danger',
+                        warringType: 'request',
+                        warringStyle: {
+                            backgroundColor: "",
+                        },
+                        warringIcon: '',
                     };
                 case 'success':
                     return {
@@ -68,7 +86,11 @@ class AssetsComment extends PureComponent {
                         warringTitle: '확인',
                         warringContents: '요청하신 작업에 성공하였습니다.',
                         warringClass: 'modal-dialog--primary',
-                        warringType: 'primary',
+                        warringType: 'success',
+                        warringStyle: {
+                            backgroundColor: "#43a047",
+                        },
+                        warringIcon: <CheckCircleIcon/>,
                     };
                 case 'error':
                     return {
@@ -77,6 +99,10 @@ class AssetsComment extends PureComponent {
                         warringContents: '요청하신 작업에 실패하였습니다.',
                         warringClass: 'modal-dialog--danger',
                         warringType: 'danger',
+                        warringStyle: {
+                            backgroundColor: "",
+                        },
+                        warringIcon: '',
                     };
                 default:
                     break;
@@ -93,7 +119,7 @@ class AssetsComment extends PureComponent {
         // 상태값을 onCreate 를 통하여 부모에게 전달
         // eslint-disable-next-line react/prop-types,react/destructuring-assignment
         // this.props.setTotalManager(this.state);
-        const {assetState, dispatch} = this.props;
+        const {assetState, dispatch, user} = this.props;
         const {
             commentIdx, comment, registerId,
         } = this.state;
@@ -101,7 +127,7 @@ class AssetsComment extends PureComponent {
         const submitData = ({
             idx: commentIdx,
             /*registerId: data.registerId,*/ //TODO 로그인한 ID
-            registerId: 'lkb',
+            registerId: user.id,
             contents: comment,
             deviceCode: assetState.deviceByDeviceCode,
         });
@@ -126,7 +152,7 @@ class AssetsComment extends PureComponent {
     };
 
     commentDelete = () => {
-        const {assetState, dispatch} = this.props;
+        const {assetState, dispatch, user} = this.props;
 
         //setTotalManager(this.state);
         const {
@@ -136,7 +162,7 @@ class AssetsComment extends PureComponent {
         const submitData = ({
             idx: commentIdx,
             /*registerId: data.registerId,*/ //TODO 로그인한 ID
-            registerId: 'lkb',
+            registerId: user.id,
             contents: comment,
             deviceCode,
         });
@@ -204,10 +230,11 @@ class AssetsComment extends PureComponent {
     };
 
     setCommentVal = (division, val) => {
+        const {user} = this.props;
         this.setState({
             comment: val.contents,
             commentIdx: val.idx,
-            registerId: val.registerId, //TODO 로그인한 ID로 변경 필요~
+            registerId: user.id, //TODO 로그인한 ID로 변경 필요~
             registerName: val.registerName,
             registerDate: val.registerDate,
         });
@@ -231,7 +258,8 @@ class AssetsComment extends PureComponent {
         const {assetState, dispatch} = this.props;
         const {
             modal, comment, registerId, registerName, registerDate,
-            modalWarring, warringTitle, warringContents, warringClass, warringType,
+            modalWarring, warringTitle, warringIcon,
+            warringContents, warringClass, warringType, warringStyle,
         } = this.state;
 
         let deviceComments;
@@ -315,7 +343,7 @@ class AssetsComment extends PureComponent {
                             </ButtonToolbar>
                         </form>
                     </Modal>
-                    <Modal
+                    {/*<Modal
                         isOpen={modalWarring}
                         toggle={this.modalClose}
                         modalClassName="ltr-support"
@@ -348,7 +376,104 @@ class AssetsComment extends PureComponent {
                             <Button className="modal_ok" outline={warringType} color={warringType}
                                     onClick={this.modalClose}>Close</Button>
                         </ButtonToolbar>
-                    </Modal>
+                    </Modal>*/}
+                    {/*<Snackbar
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        }}
+                        open={modalWarring}
+                    >
+                        <SnackbarContent
+                            style={warringStyle}
+                            message={(
+                                <span id="client-snackbar" style={{lineHeight: "2"}}>
+                                    {warringIcon}&nbsp;{warringContents}
+                                 </span>
+                            )}
+                            action={(
+                                <Fragment>
+                                    {
+                                        assetState.stateVal.state === 'request' ? (
+                                            <Fragment>
+                                                <MatButton className="modal_ok" color="secondary" size="small"
+                                                    onClick={this.commentDelete}>Ok</MatButton>
+                                                <MatButton className="modal_ok" color="secondary" size="small"
+                                                           onClick={this.modalClose}>Close</MatButton>
+                                            </Fragment>
+                                        ) : (
+                                            <Fragment>
+                                                &nbsp;
+                                            </Fragment>
+                                        )
+                                    }
+                                    <IconButton size="small" aria-label="close" color="inherit"
+                                                onClick={this.modalClose}>
+                                        <CloseIcon fontSize="small"/>
+                                    </IconButton>
+                                </Fragment>
+                            )}
+                        />
+                    </Snackbar>*/}
+                    {
+                        warringType === 'request' ? (
+                            <Snackbar
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                                open={modalWarring}
+                            >
+                                <SnackbarContent
+                                    /*message={`${warringIcon} ${warringContents}`}*/
+                                    style={warringStyle}
+                                    message={(
+                                        <span id="client-snackbar" style={{lineHeight: "2"}}>
+                                    {warringIcon}&nbsp;{warringContents}
+                                 </span>
+                                    )}
+                                    action={(
+                                        <Fragment>
+                                            {
+                                                assetState.stateVal.state === 'request' ? (
+                                                    <Fragment>
+                                                        <MatButton className="modal_ok" color="secondary" size="small"
+                                                                   onClick={this.commentDelete}>Ok</MatButton>
+                                                        <MatButton className="modal_ok" color="secondary" size="small"
+                                                                   onClick={this.modalClose}>Close</MatButton>
+                                                    </Fragment>
+                                                ) : (
+                                                    <Fragment>
+                                                        &nbsp;
+                                                    </Fragment>
+                                                )
+                                            }
+                                        </Fragment>
+                                    )}
+                                />
+                            </Snackbar>
+                        ) : (
+                            <Snackbar
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                                open={modalWarring}
+                                autoHideDuration={3000}
+                                onClose={this.modalClose}
+                            >
+                                <SnackbarContent
+                                    /*message={`${warringIcon} ${warringContents}`}*/
+                                    style={warringStyle}
+                                    message={(
+                                        <span id="client-snackbar" style={{lineHeight: "2"}}>
+                                    {warringIcon}&nbsp;{warringContents}
+                                 </span>
+                                    )}
+                                />
+                            </Snackbar>
+                        )
+                    }
                 </Fragment>
             </div>
         );

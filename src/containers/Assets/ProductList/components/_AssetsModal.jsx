@@ -14,7 +14,7 @@ import renderDatePickerField from "../../../../shared/components/form/DatePicker
 import AssetsWrite from "./AssetsWrite";
 import _AssetsView from "./AssetsView";
 
-class AssetsModal extends PureComponent {
+class _AssetsModal extends PureComponent {
     static propTypes = {
         title: PropTypes.string,
         message: PropTypes.string,
@@ -95,4 +95,4 @@ class AssetsModal extends PureComponent {
 export default connect(state => ({
     rtl: state.rtl,
     modal: state.modal,
-}))(AssetsModal);
+}))(_AssetsModal);

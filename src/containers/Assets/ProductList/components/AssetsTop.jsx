@@ -1,41 +1,35 @@
 /* eslint-disable react/prop-types */
 import React, {PureComponent, Fragment} from 'react';
 import {
-    Badge, Button, Card, CardBody, Col, Collapse, Modal, Table, ButtonToolbar,
+    Card, Col, Modal, ButtonToolbar,
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 import classNames from "classnames";
 import moment from 'moment';
-import DoneOutlineIcon from "@material-ui/icons/DoneOutline";
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from "@material-ui/core/SnackbarContent";
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CreateIcon from "@material-ui/icons/Create";
 import InputIcon from "@material-ui/icons/Input";
 import LaunchIcon from "@material-ui/icons/Launch";
 import AutorenewIcon from "@material-ui/icons/Autorenew";
-import Select from 'react-select';
 import {withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 
-import AssetsModal from "./AssetsModal";
 import AssetsWrite from "./AssetsWrite";
 import {
     fetchPosts,
     postDevice,
     postDeviceOutFlag, setState,
 } from "../../../../redux/actions/assetsAction";
-import {UserProps, MenuTitleProps} from '../../../../shared/prop-types/ReducerProps';
-import API_ROUTE from "../../../../shared/apiRoute";
+import {MenuTitleProps} from '../../../../shared/prop-types/ReducerProps';
 
-function replacer(key, value) {
-    console.log("key : ", key);
-    console.log("value : ", value);
-}
-
-class AssetsTop extends PureComponent {
+// eslint-disable-next-line react/no-redundant-should-component-update
+export default class AssetsTop extends PureComponent {
     static propTypes = {
         // eslint-disable-next-line react/forbid-prop-types
         assetState: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
-        menuTitle: MenuTitleProps.isRequired,
     };
 
     constructor() {
@@ -47,6 +41,10 @@ class AssetsTop extends PureComponent {
             warringContents: '',
             warringClass: 'modal-dialog--danger',
             warringType: '',
+            warringStyle: {
+                backgroundColor: "",
+            },
+            warringIcon: '',
         };
     }
 
@@ -65,6 +63,10 @@ class AssetsTop extends PureComponent {
                         warringContents: '요청하신 작업에 실패하였습니다.',
                         warringClass: 'modal-dialog--danger',
                         warringType: 'danger',
+                        warringStyle: {
+                            backgroundColor: "",
+                        },
+                        warringIcon: "",
                     };
                 case 'success':
                     return {
@@ -72,7 +74,11 @@ class AssetsTop extends PureComponent {
                         warringTitle: '확인',
                         warringContents: '요청하신 작업에 성공하였습니다.',
                         warringClass: 'modal-dialog--primary',
-                        warringType: 'primary',
+                        warringType: 'success',
+                        warringStyle: {
+                            backgroundColor: "#43a047",
+                        },
+                        warringIcon: <CheckCircleIcon/>,
                     };
                 case 'empty':
                     return {
@@ -81,6 +87,22 @@ class AssetsTop extends PureComponent {
                         warringContents: '선택된 장비가 없습니다.',
                         warringClass: 'modal-dialog--danger',
                         warringType: 'danger',
+                        warringStyle: {
+                            backgroundColor: "",
+                        },
+                        warringIcon: "",
+                    };
+                case 'confirm':
+                    return {
+                        modalWarring: false,
+                        warringTitle: '',
+                        warringContents: '',
+                        warringClass: 'modal-dialog--danger',
+                        warringType: 'danger',
+                        warringStyle: {
+                            backgroundColor: "",
+                        },
+                        warringIcon: "",
                     };
                 default:
                     break;
@@ -95,7 +117,7 @@ class AssetsTop extends PureComponent {
 
     warringToggle = (e) => {
         const {assetState, dispatch} = this.props;
-        this.setState(prevState => ({modalWarring: !prevState.modalWarring}));
+        //this.setState(prevState => ({modalWarring: !prevState.modalWarring}));
 
         const stateVal = ({
             type: 'device',
@@ -111,7 +133,7 @@ class AssetsTop extends PureComponent {
         let divisionCount = 0;
         let deviceCodeData = '';
 
-        const {assetState, dispatch} = this.props;
+        const {assetState, dispatch, user} = this.props;
 
         if (assetState.deviceSelected.size === undefined) {
             const stateVal = ({
@@ -138,7 +160,7 @@ class AssetsTop extends PureComponent {
 
             //todo user setting
             const submitData = ({
-                userId: 'lkb',
+                userId: user.id,
                 outFlag: val,
                 deviceCode: deviceCodeData,
             });
@@ -151,7 +173,7 @@ class AssetsTop extends PureComponent {
     };
 
     handleSubmit = (values) => {
-        const {assetState, dispatch} = this.props;
+        const {assetState, dispatch, user} = this.props;
 
         let division = '|';
         let divisionCount = 0;
@@ -231,7 +253,7 @@ class AssetsTop extends PureComponent {
             outFlag: '',
             commentCnt: '',
             commentLastDate: '',
-            registerId: 'lkb',
+            registerId: user.id,
             registerDate: '',
             model: values.model,
             manufacture: values.manufacture,
@@ -270,10 +292,11 @@ class AssetsTop extends PureComponent {
     };
 
     render() {
-        const {assetState, dispatch, menuTitle} = this.props;
+        const {assetState, dispatch, user} = this.props;
 
         const {
-            modalOpenFlag, modalWarring, warringTitle, warringContents, warringClass, warringType,
+            modalOpenFlag, modalWarring, warringTitle, warringIcon,
+            warringContents, warringClass, warringType, warringStyle,
         } = this.state;
 
         const modalClass = classNames({
@@ -336,7 +359,7 @@ class AssetsTop extends PureComponent {
         return (
             <Col md={12} lg={12}>
                 <Card>
-                    <div className="search_panel_topbtn">
+                    <div className="top_btn_area">
                         <div className="float-left">
                             <ButtonToolbar>
                                 {/*className="top_btn_black_dep3"*/}
@@ -361,7 +384,7 @@ class AssetsTop extends PureComponent {
                     </Modal>
                     {/*1 : true , 0 : false */}
                     {/*0 : 반입, 1 : 반출*/}
-                    <Modal
+                    {/*<Modal
                         isOpen={modalWarring}
                         toggle={this.warringToggle}
                         modalClassName="ltr-support"
@@ -380,14 +403,46 @@ class AssetsTop extends PureComponent {
                             <Button className="modal_ok" outline={warringType} color={warringType}
                                     onClick={this.warringToggle}>Ok</Button>
                         </ButtonToolbar>
-                    </Modal>
+                    </Modal>*/}
+                    <Snackbar
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        }}
+                        open={modalWarring}
+                        autoHideDuration={3000}
+                        onClose={this.warringToggle}
+                    >
+                        <SnackbarContent
+                            /*message={`${warringIcon} ${warringContents}`}*/
+                            style={warringStyle}
+                            message={(
+                                <span id="client-snackbar" style={{lineHeight: "2"}}>
+                                    {warringIcon}&nbsp;{warringContents}
+                                 </span>
+                            )}
+                            /*action={(
+                                <Fragment>
+                                    <MatButton color="secondary" size="small" onClick={this.warringToggle}>
+                                        Ok
+                                    </MatButton>
+                                    <IconButton size="small" aria-label="close" color="inherit"
+                                                onClick={this.warringToggle}>
+                                        <CloseIcon fontSize="small"/>
+                                    </IconButton>
+                                </Fragment>
+                            )}*/
+                        />
+                    </Snackbar>
                 </Card>
             </Col>
         );
     }
 }
 
-export default withRouter(connect(state => ({
+//export default withSnackbar(AssetsTop);
+
+/*export default withRouter(connect(state => ({
     user: state.user,
     menuTitle: state.menuTitle,
-}))(AssetsTop));
+}))(AssetsTop));*/

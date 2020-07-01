@@ -5,7 +5,7 @@ import {
 } from 'reactstrap';
 import PropTypes from 'prop-types';
 
-import AssetsModal from "./AssetsModal";
+/*import AssetsModal from "./AssetsModal";*/
 
 export default class AlertComponent extends PureComponent {
     static propTypes = {
@@ -87,14 +87,14 @@ export default class AlertComponent extends PureComponent {
                                     {/*<div className="float-left" onClick={this.onConsole}
                                          onKeyDown={onToggleClick}
                                          role="button" tabIndex="0">*/}
-                                    <div className="float-left" role="button" tabIndex="0">
+                                    {/*<div className="float-left" role="button" tabIndex="0">
                                         <AssetsModal
                                             title="장비 등록"
                                             message="자산관리 > 서버 장비 등록 페이지 입니다."
                                             modalType="write"
                                             toggleTitle="장비 등록"
                                         />
-                                    </div>
+                                    </div>*/}
                                 </div>
                             </div>
                         </CardBody>

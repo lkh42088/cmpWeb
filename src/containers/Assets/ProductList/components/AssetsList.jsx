@@ -1,6 +1,4 @@
 import React, {PureComponent, Fragment} from 'react';
-import {Link} from 'react-router-dom';
-import {connect} from "react-redux";
 import {
     ButtonToolbar,
     Card,
@@ -8,7 +6,6 @@ import {
     Col, Modal, Row,
 } from 'reactstrap';
 
-import {makeStyles} from "@material-ui/core/styles";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -21,7 +18,6 @@ import Switch from "@material-ui/core/Switch";
 
 import PropTypes, {string} from 'prop-types';
 import moment from "moment";
-import classNames from "classnames";
 
 import {
     getDeviceByIdx,
@@ -63,23 +59,6 @@ function getSorting(order, orderBy) {
 }
 
 export default class AssetsList extends PureComponent {
-    state = {
-        order: 'asc',
-        orderBy: 'deviceCode',
-        selected: new Map([]),
-        page: 0,
-        rowsPerPage: 10,
-        viewModalContent: '',
-        showPage: 1,
-        pageCount: 1,
-        pageSize: 10,
-        pageNoNum: 0,
-        isOpenView: false,
-        isOpenWrite: false,
-        dense: false,
-    };
-
-    //handleSubmit: PropTypes.func.isRequired,
     //assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
     static propTypes = {
         // eslint-disable-next-line react/forbid-prop-types
@@ -87,13 +66,32 @@ export default class AssetsList extends PureComponent {
         dispatch: PropTypes.func.isRequired,
     };
 
+    constructor() {
+        super();
+        this.state = {
+            order: 'asc',
+            orderBy: 'deviceCode',
+            selected: new Map([]),
+            page: 0,
+            rowsPerPage: 10,
+            showPage: 1,
+            pageNoNum: 0,
+            dense: false,
+        };
+    }
+
+    /*const xuser = localStorage.getItem('user');
+    if (xuser != null) {
+    const jsonUser = JSON.parse(xuser);
+    this.setState({user: jsonUser});*/
+
     // form submit dispatch 관리
-    setTotalManager = (data) => {
+    /*setTotalManager = (data) => {
         const {assetState, dispatch} = this.props;
 
         const submitData = ({
             idx: data.commentIdx,
-            /*registerId: data.registerId,*/ //TODO 로그인한 ID
+            /!*registerId: data.registerId,*!/ //TODO 로그인한 ID
             registerId: 'lkb',
             contents: data.comment,
             deviceCode: data.deviceCode,
@@ -113,10 +111,10 @@ export default class AssetsList extends PureComponent {
             default:
                 break;
         }
-    };
+    };*/
 
     handleSubmit = (values) => {
-        const {assetState, dispatch} = this.props;
+        const {assetState, dispatch, user} = this.props;
 
         let division = '|';
         let divisionCount = 0;
@@ -196,7 +194,7 @@ export default class AssetsList extends PureComponent {
             outFlag: '',
             commentCnt: '',
             commentLastDate: '',
-            registerId: 'lkb',
+            registerId: user.id,
             registerDate: '',
             model: values.model,
             contents: values.contents,
@@ -255,20 +253,28 @@ export default class AssetsList extends PureComponent {
             return;
         }
 
-        dispatch(setDeviceSelected(''));
+        dispatch(setDeviceSelected({}));
         this.setState({selected: new Map([])});
     };
 
     handleClick = (event, id) => {
-        const {dispatch} = this.props;
+        const {dispatch, assetState} = this.props;
         const {selected} = this.state;
-        const newSelected = new Map(selected);
+
+        let newSelected;
+        if (assetState.deviceSelected.size === undefined) {
+            newSelected = new Map();
+        } else {
+            newSelected = new Map(selected);
+        }
+
         const value = newSelected.get(id);
         let isActive = true;
         if (value) {
             isActive = false;
         }
         newSelected.set(id, isActive);
+
         this.setState({selected: newSelected});
         dispatch(setDeviceSelected(newSelected));
     };
@@ -287,7 +293,6 @@ export default class AssetsList extends PureComponent {
 
         if (pageCnt !== 1) {
             this.setState({
-                pageCount: 1,
                 pageNoNum: 0,
                 page: 0,
                 showPage: showPage - 1,
@@ -318,7 +323,6 @@ export default class AssetsList extends PureComponent {
 
         if (pageCount !== assetState.page.count && pageCount < assetState.page.count) {
             this.setState({
-                pageCount: 1,
                 pageNoNum: 0,
                 showPage: showPage + 1,
                 page: 0,
@@ -350,7 +354,6 @@ export default class AssetsList extends PureComponent {
             page: 0,
             showPage: 1,
             rowsPerPage: Number(event.target.value),
-            pageCount: 1,
             pageNoNum: 0,
         });
 
@@ -378,15 +381,6 @@ export default class AssetsList extends PureComponent {
         dispatch(setAssetsPage('view'));
     };
 
-    updateToggle = (deviceCode) => {
-        const {dispatch} = this.props;
-        this.setState({
-            viewModalContentDivision: 'update',
-        });
-        //this.setComponents('update');
-       // dispatch(setViewModalDivision('update'));
-    };
-
     setDeviceIdx = (event, deviceCode) => {
         const {dispatch, assetState} = this.props;
 
@@ -395,70 +389,68 @@ export default class AssetsList extends PureComponent {
 
         //this.setComponents('read', deviceCode);
     };
-/*
 
-    setComponents = (division, deviceCode) => {
-        const {dispatch, assetState} = this.props;
+    /*
 
-        let tempViewModalContent;
-        let checkDivision;
+        setComponents = (division, deviceCode) => {
+            const {dispatch, assetState} = this.props;
 
-        let checkDeviceCode = deviceCode;
+            let tempViewModalContent;
+            let checkDivision;
 
-        if (deviceCode === undefined) {
-            checkDeviceCode = 'temp';
-        }
+            let checkDeviceCode = deviceCode;
 
-        // todo checkDeviceCode 사용 여부 확인 필요
-        switch (division) {
-            case 'read':
-                tempViewModalContent = (
-                    <AssetsView closeToggle={this.toggle}
-                                 updateToggle={this.updateToggle}
-                                 title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다." deviceCode={checkDeviceCode}
-                                 assetState={assetState} dispatch={dispatch}
-                                 setTotalManager={this.setTotalManager}
-                    />
-                );
-                break;
-            case "update":
-                tempViewModalContent = (
-                    <AssetsEdit closeToggle={this.toggle}
-                                title="장비 확인" message="자산관리 > 장비 수정 페이지 입니다."
-                                assetState={assetState} dispatch={dispatch}
-                                setTotalManager={this.setTotalManager}
-                                onSubmit={this.handleSubmit}
-                    />
-                );
-                break;
-            default:
-                tempViewModalContent = 'test';
-                break;
-        }
+            if (deviceCode === undefined) {
+                checkDeviceCode = 'temp';
+            }
 
-        this.setState({
-            viewModalContent: tempViewModalContent,
-        });
-    };
+            // todo checkDeviceCode 사용 여부 확인 필요
+            switch (division) {
+                case 'read':
+                    tempViewModalContent = (
+                        <AssetsView closeToggle={this.toggle}
+                                     updateToggle={this.updateToggle}
+                                     title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다." deviceCode={checkDeviceCode}
+                                     assetState={assetState} dispatch={dispatch}
+                                     setTotalManager={this.setTotalManager}
+                        />
+                    );
+                    break;
+                case "update":
+                    tempViewModalContent = (
+                        <AssetsEdit closeToggle={this.toggle}
+                                    title="장비 확인" message="자산관리 > 장비 수정 페이지 입니다."
+                                    assetState={assetState} dispatch={dispatch}
+                                    setTotalManager={this.setTotalManager}
+                                    onSubmit={this.handleSubmit}
+                        />
+                    );
+                    break;
+                default:
+                    tempViewModalContent = 'test';
+                    break;
+            }
 
-    componentDidUpdate = (prevProps, prevState) => {
-        const {assetState, dispatch} = this.props;
-        if (assetState !== prevProps.assetState) {
-            this.setComponents(assetState.viewModalDivison);
-        }
-    };
-*/
+            this.setState({
+                viewModalContent: tempViewModalContent,
+            });
+        };
+
+        componentDidUpdate = (prevProps, prevState) => {
+            const {assetState, dispatch} = this.props;
+            if (assetState !== prevProps.assetState) {
+                this.setComponents(assetState.viewModalDivison);
+            }
+        };
+    */
 
     render() {
-        //console.log("👉👉👉👉👉👉👉👉 render start list");
         const {
-            order, orderBy, selected, rowsPerPage, page, viewModalContent, modal, showPage, dense,
-            pageCount, pageSize, pageNoNum, isOpenView, isOpenWrite, viewModalContentDivision,
+            order, orderBy, selected, rowsPerPage, page, dense, pageNoNum,
         } = this.state;
-        const {assetState, dispatch} = this.props;
+        const {assetState, dispatch, user} = this.props;
 
         const tableCellClassName = 'material-table__cell material-table__cell-right';
-
         //TODO length 값 0 일때도 처리해야함
 
         const deviceComponent = (
@@ -669,11 +661,11 @@ export default class AssetsList extends PureComponent {
                             />
                         </div>
                         <FormControlLabel
-                            control={<Switch checked={dense} onChange={this.handleChangeDense} />}
+                            control={<Switch checked={dense} onChange={this.handleChangeDense}/>}
                             label="Dense padding"
                         />
                         {/*장비 상세*/}
-                       {/* <Modal
+                        {/* <Modal
                             isOpen={isOpenView}
                             modalClassName="ltr-support"
                             className={`assets_write__modal-dialog 

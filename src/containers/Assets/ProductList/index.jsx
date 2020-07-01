@@ -8,24 +8,16 @@ import {emphasize, withStyles} from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Chip from '@material-ui/core/Chip';
 import HomeIcon from '@material-ui/icons/Home';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { SnackbarProvider } from 'notistack';
 
 import {
     fetchPosts, getCodes, postDevice, getDeviceOriByIdx, getDeviceByIdx, setAssetsPage,
 } from '../../../redux/actions/assetsAction';
-import {MenuTitleProps} from '../../../shared/prop-types/ReducerProps';
 
 import AssetsList from './components/AssetsList';
 import AssetsSearch from './components/AssetsSearch';
 import AssetsTop from './components/AssetsTop';
 import AssetsView from "./components/AssetsView";
-import AssetsEdit from "./components/AssetsEdit";
-import VisitorsSessions from './components/VisitorsSessions';
-
-const paddingCol = {
-    paddingRight: '0px',
-    paddingLeft: '0px',
-};
 
 //TODO DIR ProductList 폴터 제거
 const MaterialTable = () => {
@@ -36,6 +28,9 @@ const MaterialTable = () => {
     } = useSelector(({menuTitle}) => ({
         title: menuTitle,
     }));
+
+    const [user, setUser] = useState(localStorage.getItem('user'));
+
     // TODO Reselect 사용으로 변경하기
     // eslint-disable-next-line no-shadow
     const getTotalCodes = () => dispatch(getCodes(assetState));
@@ -62,6 +57,10 @@ const MaterialTable = () => {
 
     useEffect(() => {
         getTotalCodes();
+        if (user != null) {
+            const jsonUser = JSON.parse(user);
+            setUser(jsonUser);
+        }
     }, []);
 
     useEffect(() => {
@@ -92,27 +91,26 @@ const MaterialTable = () => {
                         />
                         <StyledBreadcrumb component="a" href="#" label={title.title}/>
                         <StyledBreadcrumb component="a" href="#" label={title.subTitle}/>
-                        {/*<StyledBreadcrumb
-                            label={title.subTitle}
-                            deleteIcon={<ExpandMoreIcon />}
-                        />*/}
                     </Breadcrumbs>
                 </Col>
             </Row>
             {assetState.assetsPage === 'list' ? (
                 <Row>
-                    <AssetsTop assetState={assetState} dispatch={dispatch}/>
+                    {/*<SnackbarProvider maxSnack={3}>
+                        <AssetsTop assetState={assetState} dispatch={dispatch} user={user}/>
+                        <AssetsSearch assetState={assetState} user={user}/>
+                    </SnackbarProvider>*/}
+                    <AssetsTop assetState={assetState} dispatch={dispatch} user={user}/>
                     {/*{assetState.codes.codeDeviceType !== undefined ? <AssetsSearch assetState={assetState} /> : false}*/}
-                    <AssetsSearch assetState={assetState}/>
+                    <AssetsSearch assetState={assetState} user={user}/>
                 </Row>
             ) : false}
             <Row>
                 {assetState.assetsPage === 'list'
-                    ? <AssetsList assetState={assetState} dispatch={dispatch}/> : false}
+                    ? <AssetsList assetState={assetState} dispatch={dispatch} user={user}/> : false}
                 {assetState.assetsPage === 'view' || assetState.assetsPage === 'edit'
-                    ? <AssetsView assetState={assetState} dispatch={dispatch}/> : false}
-                {/*{assetState.assetsPage === 'edit'
-                    ? <AssetsEdit assetState={assetState} dispatch={dispatch} onSubmit={handleSubmit}/> : false}*/}
+                    ? <AssetsView assetState={assetState} dispatch={dispatch} user={user}/> : false}
+
             </Row>
         </Container>
     );
