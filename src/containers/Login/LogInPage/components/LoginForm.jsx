@@ -6,8 +6,12 @@ import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
 import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
 import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { changeField, initializeForm, login } from "../../../../redux/actions/authActions";
-import { checkLoginUser } from "../../../../redux/actions/accountActions";
+import {
+    checkLoginUser,
+    changeField,
+    initializeForm,
+    login,
+} from "../../../../redux/actions/accountActions";
 import renderCheckBoxField from '../../../../shared/components/form/CheckBox';
 
 // eslint-disable-next-line react/prop-types
@@ -19,14 +23,19 @@ const LoginForm = ({ history }) => {
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
     const {
-        form, auth, authInputEmail, authSentEmail, authError, user,
+        form,
+        auth,
+        authInputEmail,
+        authSentEmail,
+        authError,
+        user,
         // eslint-disable-next-line no-shadow
-    } = useSelector(({ auth, accountRd }) => ({
-        form: auth.login,
-        auth: auth.auth,
-        authInputEmail: auth.authInputEmail,
-        authSentEmail: auth.authSentEmail,
-        authError: auth.authError,
+    } = useSelector(({ accountRd }) => ({
+        form: accountRd.login,
+        auth: accountRd.auth,
+        authInputEmail: accountRd.authInputEmail,
+        authSentEmail: accountRd.authSentEmail,
+        authError: accountRd.authError,
         user: accountRd.user,
     }));
 
@@ -79,12 +88,7 @@ const LoginForm = ({ history }) => {
              ********************************************************************/
             console.log('check API 성공');
             // eslint-disable-next-line react/prop-types
-            /** level 1,2 : manager */
-            if (user.level === 1 || user.level === 2) {
-                history.push('/dashboards/manager');
-            } else {
-                history.push('/dashboards/customer');
-            }
+            history.push('/dashboards/manager');
             try {
                 /** Insert 'user' to Local Storage */
                 localStorage.setItem('user', JSON.stringify(user));

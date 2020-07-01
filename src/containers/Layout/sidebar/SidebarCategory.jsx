@@ -14,6 +14,31 @@ const SidebarCategory = ({
     const [show, setShow] = useState('false');
     const [hover, setHover] = useState('false');
 
+    const categoryClass = classNames({
+        'cb_sidebar__category-wrap': true,
+        'cb_sidebar__category-wrap--open': !show,
+        'cb_sidebar__link cb_sidebar__category': true,
+    });
+
+    const handleMouseEnter = () => {
+        setHover(true);
+    };
+    const handleMouseLeave = () => {
+        setHover(false);
+    };
+
+    let linkStyle;
+    if (hover === true) {
+        linkStyle = {
+            position: "absolute",
+        };
+    } else {
+        linkStyle = {
+            position: "absolute",
+            display: "none",
+        };
+    }
+
     const toggle = (e, titleTmp) => {
         const collapseId = document.getElementById(`collapseId_${titleTmp}`);
         const collapseName = document.getElementsByName("collapseName");
@@ -31,40 +56,14 @@ const SidebarCategory = ({
         }
     };
 
-    const toggleHover = () => {
-        setHover(!hover);
-    };
-
-    const hideSidebar = (e) => {
+    const handleClick = (e) => {
         setShow(!show);
         toggle(e, title);
-        console.log("[TEST] show = ", show);
-    };
-
-    const categoryClass = classNames({
-        'cb_sidebar__category-wrap': true,
-        'cb_sidebar__category-wrap--open': !show,
-        'cb_sidebar__link cb_sidebar__category': true,
-    });
-
-    let linkStyle;
-    if (hover) {
-        linkStyle = {
-            position: "absolute",
-            display: "none",
-        };
-    } else {
-        linkStyle = {
-            position: "absolute",
-        };
-    }
-
-    const handleClick = async (e) => {
-        await hideSidebar(e);
+        console.log("[TEST] show = ", show, "title = ", title);
     };
 
     return (
-        <div style={{display: "flex"}} onMouseEnter={toggleHover} onMouseLeave={toggleHover} >
+        <div style={{display: "flex"}} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
             <button className={categoryClass} type="button" onClick={handleClick} style={{zIndex: "120"}}>
                 {icon ? <span className="cb_sidebar__link-icon"><Icon icon={icon}/></span> : ''}
                 <p className="cb_sidebar__link-title">
@@ -73,7 +72,7 @@ const SidebarCategory = ({
                 </p>
                 {/*<span className="cb_sidebar__category-icon lnr lnr-chevron-right"/>*/}
             </button>
-            <Collapse isOpen="false" id={`collapseId_${title}`} name="collapseName"
+            <Collapse isOpen={show} id={`collapseId_${title}`} name="collapseName"
                       className="cb_sidebar__submenu-wrap"
                       style={{position: "absolute", zIndex: "110", display: "none"}}>
                 {/** Collapse Sidebar hover window * */}
@@ -89,7 +88,7 @@ const SidebarCategory = ({
                     </div>
                 </ul>
             </Collapse>
-            <Collapse isOpen={!hover} className="cb_sidebar__submenu-wrap" style={linkStyle}>
+            <Collapse isOpen={hover} className="cb_sidebar__submenu-wrap" style={linkStyle}>
                 {/** Sidebar hover window * */}
                 <ul className="cb_sidebar__submenu">
                     <div className="cb_sidebar__submenu-wrap-border">

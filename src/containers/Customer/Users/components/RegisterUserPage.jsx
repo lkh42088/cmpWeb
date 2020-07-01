@@ -313,8 +313,8 @@ const RegisterUserPage = (props) => {
                 password: user.password,
                 username: user.username,
                 email: user.email,
-                emailAuthFlag: user.emailAuthFlag,
-                emailAuthGroupFlag: user.emailAuthGroupFlag,
+                emailAuthFlag: user.emailAuthValue === 1,
+                emailAuthGroupFlag: user.emailAuthValue === 2,
                 emailAuthGroupList: user.emailAuthGroupList,
             }));
             handleDialogClose();
@@ -717,7 +717,7 @@ const RegisterUserPage = (props) => {
                                                 onClick={handleClickCompanyMenu}
                                                 MenuProps={MenuProps}
                                             >
-                                                <MenuItem value="">
+                                                <MenuItem value={0}>
                                                     <em>None</em>
                                                 </MenuItem>
                                                     <MenuItem value={1}>개인 이메일 인증</MenuItem>

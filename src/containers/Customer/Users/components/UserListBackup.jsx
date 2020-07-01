@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import { Card, CardBody, Col } from 'reactstrap';
 import Avatar from "react-avatar";
 
@@ -126,6 +126,7 @@ const UserList = () => {
 
     /** Modal variable */
     const [open, setOpen] = React.useState(false);
+    const [openCollapse, setOpenCollapse] = React.useState(false);
 
     /************************************************************************************
      * Function
@@ -136,6 +137,14 @@ const UserList = () => {
 
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const handleOpenCollapse = () => {
+        setOpenCollapse(true);
+    };
+
+    const handleCloseCollapse = () => {
+        setOpenCollapse(false);
     };
 
     const handleTriggerFailure = () => {
@@ -307,181 +316,94 @@ const UserList = () => {
     /************************************************************************************
      * JSX Template
      ************************************************************************************/
-    const Row = (props) => {
-        const { row } = props;
-        const [openCollapse, setOpenCollapse] = React.useState(false);
-        const isSelected = getSelected(row.idx);
-
-        return (
-            <React.Fragment>
-                <TableRow
-                    hover
-                    // className="cb-material-table__row"
-                    className={classes.row}
-                    role="checkbox"
-                    aria-checked={isSelected}
-                    tabIndex={-1}
-                    key={row.idx}
-                    selected={isSelected}
-                >
-                    <TableCell
-                        className="cb-material-table__cell"
-                        padding="checkbox"
-                        onClick={event => handleClick(event, row.idx)}
-                    >
-                        <Checkbox checked={isSelected}
-                                  className="cb-material-table__checkbox"
-                        />
-                    </TableCell>
-                    <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
-                    >
-                        {row.idx}
-                    </TableCell>
-                    <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
-                    >
-                        <Avatar className="topbar__avatar-img-list" name={row.userId} size="40" />
-                    </TableCell>
-                    <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
-                    >
-                        {row.userId}
-                    </TableCell>
-                    <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
-                    >
-                        {row.name}
-                    </TableCell>
-                    <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
-                    >
-                        {row.email}
-                    </TableCell>
-                    <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
-                    >
-                        {row.hp}
-                    </TableCell>
-                    <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
-                    >
-                        {row.cpName}
-                    </TableCell>
-                    <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
-                    >
-                        {row.authLevel}
-                    </TableCell>
-                    <TableCell>
-                        <IconButton aria-label="expand row" size="small" onClick={() => setOpenCollapse(!openCollapse)}>
-                            {openCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                        </IconButton>
-                    </TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
-                        <Collapse in={openCollapse} timeout="auto" unmountOnExit>
-                            <Box margin={1}>
-                                <Typography variant="h6" gutterBottom component="div">
-                                    History
-                                </Typography>
-                            </Box>
-                        </Collapse>
-                    </TableCell>
-                </TableRow>
-            </React.Fragment>
-        );
-    };
-
-    // const tableRows = (
-    //     <TableBody>
-    //         { data && data.map((row) => {
-    //                 const isSelected = getSelected(row.idx);
-    //             return (
-    //                 <React.Fragment>
-    //                     <TableRow
-    //                         hover
-    //                         // className="cb-material-table__row"
-    //                         className={classes.row}
-    //                         role="checkbox"
-    //                         aria-checked={isSelected}
-    //                         tabIndex={-1}
-    //                         key={row.idx}
-    //                         selected={isSelected}
-    //                     >
-    //                         <TableCell
-    //                             className="cb-material-table__cell"
-    //                             padding="checkbox"
-    //                             onClick={event => handleClick(event, row.idx)}
-    //                         >
-    //                             <Checkbox checked={isSelected}
-    //                                       className="cb-material-table__checkbox"
-    //                             />
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.idx}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             <Avatar className="topbar__avatar-img-list" name={row.userId} size="40" />
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.userId}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.name}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.email}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.hp}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.cpName}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.authLevel}
-    //                         </TableCell>
-    //                         <TableCell>
-    //                             <IconButton aria-label="expand row" size="small" onClick={() => setOpenCollapse(!openCollapse)}>
-    //                                 {openCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-    //                             </IconButton>
-    //                         </TableCell>
-    //                     </TableRow>
-    //                     <TableRow>
-    //                         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
-    //                             <Collapse in={openCollapse} timeout="auto" unmountOnExit>
-    //                                 <Box margin={1}>
-    //                                     <Typography variant="h6" gutterBottom component="div">
-    //                                         History
-    //                                     </Typography>
-    //                                 </Box>
-    //                             </Collapse>
-    //                         </TableCell>
-    //                     </TableRow>
-    //                 </React.Fragment>
-    //             );
-    //             })
-    //         }
-    //     </TableBody>
-    // );
+    const tableRows = (
+        <TableBody>
+            { data && data.map((row) => {
+                    const isSelected = getSelected(row.idx);
+                return (
+                    <React.Fragment>
+                        <TableRow
+                            hover
+                            // className="cb-material-table__row"
+                            classes={classes.row}
+                            role="checkbox"
+                            aria-checked={isSelected}
+                            tabIndex={-1}
+                            key={row.idx}
+                            selected={isSelected}
+                        >
+                            <TableCell
+                                // className="cb-material-table__cell"
+                                padding="checkbox"
+                                onClick={event => handleClick(event, row.idx)}
+                            >
+                                <Checkbox checked={isSelected}
+                                          className="cb-material-table__checkbox"
+                                />
+                            </TableCell>
+                            <TableCell
+                                // className="cb-material-table__cell cb-material-table__cell-right"
+                            >
+                                {row.idx}
+                            </TableCell>
+                            <TableCell
+                                // className="cb-material-table__cell cb-material-table__cell-right"
+                            >
+                                <Avatar className="topbar__avatar-img-list" name={row.userId} size="40" />
+                            </TableCell>
+                            <TableCell
+                                // className="cb-material-table__cell cb-material-table__cell-right"
+                            >
+                                {row.userId}
+                            </TableCell>
+                            <TableCell
+                                //className="cb-material-table__cell cb-material-table__cell-right"
+                            >
+                                {row.name}
+                            </TableCell>
+                            <TableCell
+                                //className="cb-material-table__cell cb-material-table__cell-right"
+                            >
+                                {row.email}
+                            </TableCell>
+                            <TableCell
+                                //className="cb-material-table__cell cb-material-table__cell-right"
+                            >
+                                {row.hp}
+                            </TableCell>
+                            <TableCell
+                                //className="cb-material-table__cell cb-material-table__cell-right"
+                            >
+                                {row.cpName}
+                            </TableCell>
+                            <TableCell
+                                //className="cb-material-table__cell cb-material-table__cell-right"
+                            >
+                                {row.authLevel}
+                            </TableCell>
+                            <TableCell>
+                                <IconButton aria-label="expand row" size="small" onClick={() => setOpenCollapse(!openCollapse)}>
+                                    {openCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                                </IconButton>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
+                                <Collapse in={openCollapse} timeout="auto" unmountOnExit>
+                                    <Box margin={1}>
+                                        <Typography variant="h6" gutterBottom component="div">
+                                            History
+                                        </Typography>
+                                    </Box>
+                                </Collapse>
+                            </TableCell>
+                        </TableRow>
+                    </React.Fragment>
+                );
+                })
+            }
+        </TableBody>
+    );
 
     return (
         <Col md={12} lg={12}>
@@ -497,33 +419,30 @@ const UserList = () => {
                         handleOpen={handleOpen}
                         contents="계정"
                     />
-                    <div className="cb-material-table__wrap">
+                    <div
+                        // className="cb-material-table__wrap"
+                    >
                         <TableContainer component={Paper}>
-                            <Table
+                            <Table aria-label="collapsible table"
                                 // className="cb-material-table"
                                 size={dense ? 'small' : 'medium'}
                             >
-                                <CommonTableHead
-                                    classes={classes}
-                                    numSelected={[...selected].filter(el => el[1]).length}
-                                    order={order}
-                                    orderBy={orderBy}
-                                    onSelectAllClick={handleSelectAllClick}
-                                    onRequestSort={handleRequestSort}
-                                    rowCount={data && data.length ? data.length : 0}
-                                    rows={headRows}
-                                />
-                                <TableBody>
-                                    { data && data.map(row => (
-                                        <Row key={row.idx} row={row} />
-                                    ))}
-                                </TableBody>
-                                {/*// {tableRows}*/}
+                                {/*<CommonTableHead*/}
+                                {/*    classes={classes}*/}
+                                {/*    numSelected={[...selected].filter(el => el[1]).length}*/}
+                                {/*    order={order}*/}
+                                {/*    orderBy={orderBy}*/}
+                                {/*    onSelectAllClick={handleSelectAllClick}*/}
+                                {/*    onRequestSort={handleRequestSort}*/}
+                                {/*    rowCount={data && data.length ? data.length : 0}*/}
+                                {/*    rows={headRows}*/}
+                                {/*/>*/}
+                                {tableRows}
                             </Table>
                         </TableContainer>
                         {paginationBar}
                         <FormControlLabel
-                            className="cb-material-table__padding"
+                            // className="cb-material-table__padding"
                             control={<Switch checked={dense} onChange={handleChangeDense} />}
                             label="Dense padding"
                         />
