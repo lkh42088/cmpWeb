@@ -219,7 +219,6 @@ class AssetsHead extends PureComponent {
                             className="material-table__cell
                             material-table__cell--sort material-table__cell-right"
                             key={row.id}
-                            align={rtl.direction === 'rtl' ? 'right' : 'left'}
                             padding={row.disablePadding ? 'none' : 'default'}
                             sortDirection={orderBy === row.id ? order : false}
                             width="500"
