@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from "react";
-import { Card, CardBody, Col } from 'reactstrap';
+import {
+    Card,
+    CardBody,
+    Col,
+    Container,
+    Row,
+} from 'reactstrap';
 import Avatar from "react-avatar";
 
 import Table from '@material-ui/core/Table';
@@ -21,7 +27,11 @@ import Box from '@material-ui/core/Box';
 import TableHead from '@material-ui/core/TableHead';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import MuiAvatar from '@material-ui/core/Avatar';
+import Grid from '@material-ui/core/Grid';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {useSnackbar} from "notistack";
+import {StickyContainer} from "react-sticky";
 import {
     pagingChangeCurrentPage,
     pagingChangeCurrentPageNext, pagingChangeCurrentPagePrev, pagingChangeDense, pagingChangeOrder, pagingChangeOrderBy,
@@ -43,7 +53,6 @@ const headRows = [
     {id: 'hp', disablePadding: false, label: '전화번호'},
     {id: 'cpName', disablePadding: false, label: '회사명'},
     {id: 'authlevel', disablePadding: false, label: '권한'},
-    {id: 'collapse', disablePadding: false, label: ''},
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -72,6 +81,17 @@ const useStyles = makeStyles(theme => ({
         '& > *': {
             borderBottom: 'unset',
         },
+    },
+    spanSubject: {
+        display: 'inline-block',
+        width: '100px',
+    },
+    spanContents: {
+        display: 'inline-block',
+        width: '300px',
+    },
+    grid: {
+        flexGrow: 1,
     },
 }));
 
@@ -307,7 +327,7 @@ const UserList = () => {
     /************************************************************************************
      * JSX Template
      ************************************************************************************/
-    const Row = (props) => {
+    const ContentsRow = (props) => {
         const { row } = props;
         const [openCollapse, setOpenCollapse] = React.useState(false);
         const isSelected = getSelected(row.idx);
@@ -323,7 +343,8 @@ const UserList = () => {
                     tabIndex={-1}
                     key={row.idx}
                     selected={isSelected}
-                >
+                    onClick={() => setOpenCollapse(!openCollapse)}
+                    >
                     <TableCell
                         className="cb-material-table__cell"
                         padding="checkbox"
@@ -342,6 +363,8 @@ const UserList = () => {
                         className="cb-material-table__cell cb-material-table__cell-right"
                     >
                         <Avatar className="topbar__avatar-img-list" name={row.userId} size="40" />
+                        {/*<Avatar className="topbar__avatar-img-list" alt={row.userId} size="40" />*/}
+                        {/*<Avatar alt={row.userId} size="40" src="/static/images/avatar/1.jpg"/>*/}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
@@ -373,19 +396,99 @@ const UserList = () => {
                     >
                         {row.authLevel}
                     </TableCell>
-                    <TableCell>
-                        <IconButton aria-label="expand row" size="small" onClick={() => setOpenCollapse(!openCollapse)}>
-                            {openCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                        </IconButton>
-                    </TableCell>
+                    {/*<TableCell>*/}
+                    {/*    <IconButton*/}
+                    {/*        aria-label="expand row"*/}
+                    {/*        size="small"*/}
+                    {/*        onClick={() => setOpenCollapse(!openCollapse)}>*/}
+                    {/*        {openCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}*/}
+                    {/*    </IconButton>*/}
+                    {/*</TableCell>*/}
                 </TableRow>
                 <TableRow>
                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
                         <Collapse in={openCollapse} timeout="auto" unmountOnExit>
                             <Box margin={1}>
                                 <Typography variant="h6" gutterBottom component="div">
-                                    History
+                                    <Grid container spacing={1}>
+                                        <Grid item>
+                                            <MuiAvatar alt={row.userId} className={classes.avataSmall}/>
+                                        </Grid>
+                                        <Grid item>
+                                            {row.userId}
+                                        </Grid>
+                                    </Grid>
                                 </Typography>
+                                <div className={classes.grid}>
+                                    <Grid container spacing={1}>
+                                        <Grid item xs={12} sm={6}>
+                                            <ul>
+                                                <li>
+                                        <span className={classes.spanSubject}>
+                                            ID
+                                        </span>
+                                        <span className={classes.spanContents}>
+                                        {row.userId}
+                                        </span>
+                                                </li>
+                                                <li>
+                                        <span className={classes.spanSubject}>
+                                        이름
+                                        </span>
+                                        <span className={classes.spanContents}>
+                                        {row.name}
+                                        </span>
+                                                </li>
+                                                <li>
+                                        <span className={classes.spanSubject}>
+                                        전화번호
+                                        </span>
+                                        <span className={classes.spanContents}>
+                                        {row.hp}
+                                        </span>
+                                                </li>
+                                                <li>
+                                        <span className={classes.spanSubject}>
+                                        이메일
+                                        </span>
+                                        <span className={classes.spanContents}>
+                                        {row.email}
+                                        </span>
+                                                </li>
+                                                <li>
+                                        <span className={classes.spanSubject}>
+                                        주소
+                                        </span>
+                                            </li>
+                                            </ul>
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            <ul>
+                                                <li>
+                                        <span className={classes.spanSubject}>
+                                        등록일
+                                        </span>
+                                                    <span className={classes.spanContents}>
+                                        {row.registerDate}
+                                        </span>
+                                                </li>
+                                                <li>
+                                        <span className={classes.spanSubject}>
+                                        인증
+                                        </span>
+                                                    <span className={classes.spanContents}>
+                                            {row.emailAuthValue}
+                                        </span>
+                                                </li>
+                                                <li>
+                                        <span className={classes.spanSubject}>
+                                        이메일 인증 그룹
+                                        </span>
+                                                </li>
+                                            </ul>
+                                        </Grid>
+                                    </Grid>
+                                </div>
                             </Box>
                         </Collapse>
                     </TableCell>
@@ -393,95 +496,6 @@ const UserList = () => {
             </React.Fragment>
         );
     };
-
-    // const tableRows = (
-    //     <TableBody>
-    //         { data && data.map((row) => {
-    //                 const isSelected = getSelected(row.idx);
-    //             return (
-    //                 <React.Fragment>
-    //                     <TableRow
-    //                         hover
-    //                         // className="cb-material-table__row"
-    //                         className={classes.row}
-    //                         role="checkbox"
-    //                         aria-checked={isSelected}
-    //                         tabIndex={-1}
-    //                         key={row.idx}
-    //                         selected={isSelected}
-    //                     >
-    //                         <TableCell
-    //                             className="cb-material-table__cell"
-    //                             padding="checkbox"
-    //                             onClick={event => handleClick(event, row.idx)}
-    //                         >
-    //                             <Checkbox checked={isSelected}
-    //                                       className="cb-material-table__checkbox"
-    //                             />
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.idx}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             <Avatar className="topbar__avatar-img-list" name={row.userId} size="40" />
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.userId}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.name}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.email}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.hp}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.cpName}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.authLevel}
-    //                         </TableCell>
-    //                         <TableCell>
-    //                             <IconButton aria-label="expand row" size="small" onClick={() => setOpenCollapse(!openCollapse)}>
-    //                                 {openCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-    //                             </IconButton>
-    //                         </TableCell>
-    //                     </TableRow>
-    //                     <TableRow>
-    //                         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
-    //                             <Collapse in={openCollapse} timeout="auto" unmountOnExit>
-    //                                 <Box margin={1}>
-    //                                     <Typography variant="h6" gutterBottom component="div">
-    //                                         History
-    //                                     </Typography>
-    //                                 </Box>
-    //                             </Collapse>
-    //                         </TableCell>
-    //                     </TableRow>
-    //                 </React.Fragment>
-    //             );
-    //             })
-    //         }
-    //     </TableBody>
-    // );
 
     return (
         <Col md={12} lg={12}>
@@ -515,10 +529,9 @@ const UserList = () => {
                                 />
                                 <TableBody>
                                     { data && data.map(row => (
-                                        <Row key={row.idx} row={row} />
+                                        <ContentsRow key={row.idx} row={row} />
                                     ))}
                                 </TableBody>
-                                {/*// {tableRows}*/}
                             </Table>
                         </TableContainer>
                         {paginationBar}

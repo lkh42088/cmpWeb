@@ -14,6 +14,7 @@ export const registerCompany = ({
     isCompany: cpIsCompany,
     memo: cpMemo,
     termDate: cpTerminationDate,
+    cpUserId: userId,
     userId,
     userPassword,
 });

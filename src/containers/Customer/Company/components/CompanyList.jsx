@@ -42,6 +42,7 @@ const headRows = [
     {id: 'name', disablePadding: false, label: '회사명'},
     {id: 'tel', disablePadding: false, label: '전화번호'},
     {id: 'email', disablePadding: false, label: '이메일'},
+    {id: 'cpUserId', disablePadding: false, label: '대표 ID'},
     {id: 'address', disablePadding: false, label: '주소'},
     {id: 'memo', disablePadding: false, label: '메모'},
 ];
@@ -336,6 +337,9 @@ const CompanyList = () => {
                             </TableCell>
                             <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.email}
+                            </TableCell>
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
+                                {row.cpUserId}
                             </TableCell>
                             <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
                                 {row.address}
