@@ -396,8 +396,8 @@ const CompanyList = () => {
 
     return (
         <Col md={12} lg={12}>
-            <Card>
-                <CardBody>
+            <Card className="cb-card">
+                <CardBody className="cb-card-body">
                     <CbAdminTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
                         handleDeleteSelected={handleDeleteSelected}
