@@ -362,7 +362,7 @@ const UserList = () => {
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
-                        style={{width: "5%"}}
+                        style={{width: "10%"}}
                     >
                         <Avatar className="topbar__avatar-img-list" name={row.userId} size="40" />
                         {/*<Avatar className="topbar__avatar-img-list" alt={row.userId} size="40" />*/}
@@ -370,19 +370,19 @@ const UserList = () => {
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
-                        style={{width: "10%"}}
+                        style={{width: "15%"}}
                     >
                         {row.userId}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
-                        style={{width: "20%"}}
+                        style={{width: "15%"}}
                     >
                         {row.name}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
-                        style={{width: "25%"}}
+                        style={{width: "20%"}}
                     >
                         {row.email}
                     </TableCell>
@@ -394,13 +394,13 @@ const UserList = () => {
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
-                        style={{width: "20%"}}
+                        style={{width: "15%"}}
                     >
                         {row.cpName}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
-                        style={{width: "5%"}}
+                        style={{width: "10%"}}
                     >
                         {row.authLevel}
                     </TableCell>

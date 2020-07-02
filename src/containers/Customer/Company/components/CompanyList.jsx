@@ -17,9 +17,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {makeStyles} from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
 import { SnackbarProvider, useSnackbar } from 'notistack';
-// eslint-disable-next-line import/named
+import ReactTooltip from "react-tooltip";
 import { initRegisterCompany, getCompanyList } from "../../../../redux/actions/companiesActions";
-// eslint-disable-next-line import/named
 import {initRegisterUser} from "../../../../redux/actions/usersActions";
 import {
     pagingChangeCurrentPage,
@@ -79,6 +78,14 @@ const useStyles = makeStyles(theme => ({
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
+    },
+    reactTooltip: {
+        fontSize: 7,
+        fontWeight: "revert",
+        fontFamily: "Nanum Gothic Extra Bold",
+        opacity: 0.3,
+        color: '#ff6e00',
+        fontStyle: "italic",
     },
 }));
 
@@ -310,8 +317,8 @@ const CompanyList = () => {
 
     /** 글자수 체크 함수 */
     const checkStringLength = (str) => {
-        if (str && str.length >= 50) {
-            return str.substr(0, 49).concat('......');
+        if (str && str.length >= 35) {
+            return str.substr(0, 34).concat('......');
         }
         return str;
     };
@@ -354,7 +361,7 @@ const CompanyList = () => {
                             </TableCell>
                             <TableCell
                                 className="cb-material-table__cell cb-material-table__cell-right"
-                                style={{width: "10%"}}
+                                style={{width: "15%"}}
                             >
                                 {row.email}
                             </TableCell>
@@ -365,16 +372,25 @@ const CompanyList = () => {
                             </TableCell>
                             <TableCell
                                 className="cb-material-table__cell cb-material-table__cell-right"
-                                style={{width: "20%"}}
+                                style={{width: "25%"}}
+                                data-tip={row.address}
+                                data-for="tooltip"
                             >
                                 {checkStringLength(row.address)}
                             </TableCell>
-                            <TableCell
+                                <TableCell
                                 className="cb-material-table__cell cb-material-table__cell-right"
                                 style={{width: "25%"}}
+                                data-tip={row.memo}
+                                data-for="tooltip"
                             >
                                 {checkStringLength(row.memo)}
                             </TableCell>
+                            {/*Tooltip*/}
+                            <ReactTooltip id="tooltip" place="top" effect="float"
+                                          delayShow={200} delayHide={1000}
+                                          className={classes.reactTooltip}
+                                          getContent={dataTip => `${dataTip}`} />
                         </TableRow>
                     );
                 })
