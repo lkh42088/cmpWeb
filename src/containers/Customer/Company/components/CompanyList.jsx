@@ -307,6 +307,14 @@ const CompanyList = () => {
         />
     );
 
+    /** 글자수 체크 함수 */
+    const checkStringLength = (str) => {
+        if (str && str.length >= 50) {
+            return str.substr(0, 49).concat('......');
+        }
+        return str;
+    };
+
     const tableRows = (
         <TableBody>
             { data && data.map((row) => {
@@ -325,23 +333,41 @@ const CompanyList = () => {
                             <TableCell className="cb-material-table__cell" padding="checkbox" >
                                 <Checkbox checked={isSelected} className="cb-material-table__checkbox" />
                             </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
+                            <TableCell
+                                className="cb-material-table__cell cb-material-table__cell-right"
+                                style={{width: "5%"}}
+                            >
                                 {row.idx}
                             </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
+                            <TableCell
+                                className="cb-material-table__cell cb-material-table__cell-right"
+                                style={{width: "15%"}}
+                            >
                                 {row.name}
                             </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
+                            <TableCell
+                                className="cb-material-table__cell cb-material-table__cell-right"
+                                style={{width: "15%"}}
+                            >
                                 {row.tel}
                             </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
+                            <TableCell
+                                className="cb-material-table__cell cb-material-table__cell-right"
+                                style={{width: "10%"}}
+                            >
                                 {row.email}
                             </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
-                                {row.address}
+                            <TableCell
+                                className="cb-material-table__cell cb-material-table__cell-right"
+                                style={{width: "30%"}}
+                            >
+                                {checkStringLength(row.address)}
                             </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
-                                {row.memo}
+                            <TableCell
+                                className="cb-material-table__cell cb-material-table__cell-right"
+                                style={{width: "30%"}}
+                            >
+                                {checkStringLength(row.memo)}
                             </TableCell>
                         </TableRow>
                     );

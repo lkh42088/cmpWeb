@@ -335,45 +335,55 @@ const UserList = () => {
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "5%"}}
                     >
                         {row.idx}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "5%"}}
                     >
                         <Avatar className="topbar__avatar-img-list" name={row.userId} size="40" />
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "10%"}}
                     >
                         {row.userId}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "20%"}}
                     >
                         {row.name}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "25%"}}
                     >
                         {row.email}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "10%"}}
                     >
                         {row.hp}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "20%"}}
                     >
                         {row.cpName}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "5%"}}
                     >
                         {row.authLevel}
                     </TableCell>
-                    <TableCell>
+                    <TableCell
+                        style={{width: "5%"}}
+                    >
                         <IconButton aria-label="expand row" size="small" onClick={() => setOpenCollapse(!openCollapse)}>
                             {openCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                         </IconButton>
