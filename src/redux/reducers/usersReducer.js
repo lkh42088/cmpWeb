@@ -233,6 +233,7 @@ const usersReducer = handleActions(
             ...state,
             emailAuthGroupList,
         }),
+        /** Register User */
         [REGISTER_USER_SUCCESS]: (state, { payload: msg }) => ({
             ...state,
             msg,

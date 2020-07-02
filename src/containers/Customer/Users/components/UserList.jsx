@@ -29,7 +29,6 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import MuiAvatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {useSnackbar} from "notistack";
 import {StickyContainer} from "react-sticky";
 import {
@@ -88,7 +87,7 @@ const useStyles = makeStyles(theme => ({
     },
     spanContents: {
         display: 'inline-block',
-        width: '300px',
+        // width: '200px',
     },
     grid: {
         flexGrow: 1,
@@ -106,13 +105,17 @@ const UserList = () => {
      * User Data
      */
     const {
+        /** Paging User Data */
         data,
         getPage,
+        /** Register User */
         msg,
         msgError,
     } = useSelector(({ usersRd }) => ({
+        /** Paging User Data */
         data: usersRd.data,
         getPage: usersRd.page,
+        /** Register User */
         msg: usersRd.msg,
         msgError: usersRd.msgError,
     }));
@@ -144,25 +147,27 @@ const UserList = () => {
         order: pagingRd.order,
     }));
 
-    /** Modal variable */
-    const [open, setOpen] = React.useState(false);
+    /** Add User in TableToolbar */
+    const [openAddUser, setOpenAddUser] = React.useState(false);
 
     /************************************************************************************
      * Function
      ************************************************************************************/
-    const handleOpen = () => {
-        setOpen(true);
+    /** Add User in TableToolbar */
+    const handleOpenAddUser = () => {
+        setOpenAddUser(true);
     };
 
-    const handleClose = () => {
-        setOpen(false);
+    /** Add User in TableToolbar */
+    const handleCloseAddUser = () => {
+        setOpenAddUser(false);
     };
 
-    const handleTriggerFailure = () => {
+    const handleSnackbarFailure = () => {
         enqueueSnackbar('계정 등록에 실패했습니다!');
     };
 
-    const handleTriggerSuccess = () => {
+    const handleSnackbarSuccess = () => {
         // variant could be success, error, warning, info, or default
         enqueueSnackbar('계정 등록에 성공했습니다.', { variant: "success" });
     };
@@ -223,6 +228,7 @@ const UserList = () => {
         dispatch(pagingChangeSelected({selected: newSelected}));
     };
 
+    /** Pagination */
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
         const changeOrder = isAsc ? "desc" : "asc";
@@ -232,6 +238,7 @@ const UserList = () => {
         }
     };
 
+    /** Pagination */
     const handleDeleteSelected = () => {
         let copyUser = [...data];
         console.log("deleted Selected:");
@@ -262,6 +269,7 @@ const UserList = () => {
     /** Pagination */
     const getSelected = id => !!selected.get(id);
 
+    /** Pagination */
     const handleRefresh = () => {
         getPageData();
     };
@@ -295,7 +303,7 @@ const UserList = () => {
 
     useEffect(() => {
         if (msg) {
-            handleTriggerSuccess();
+            handleSnackbarSuccess();
             dispatch(initRegisterUser());
             getPageData();
         }
@@ -304,7 +312,7 @@ const UserList = () => {
     useEffect(() => {
         if (msgError) {
             dispatch(initRegisterUser());
-            handleTriggerFailure();
+            handleSnackbarFailure();
         }
     }, [msgError]);
 
@@ -404,96 +412,87 @@ const UserList = () => {
                     >
                         {row.authLevel}
                     </TableCell>
-                    {/*<TableCell>*/}
-                    {/*    <IconButton*/}
-                    {/*        aria-label="expand row"*/}
-                    {/*        size="small"*/}
-                    {/*        onClick={() => setOpenCollapse(!openCollapse)}>*/}
-                    {/*        {openCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}*/}
-                    {/*    </IconButton>*/}
-                    {/*</TableCell>*/}
                 </TableRow>
                 <TableRow>
                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
                         <Collapse in={openCollapse} timeout="auto" unmountOnExit>
                             <Box margin={1}>
                                 <Typography variant="h6" gutterBottom component="div">
-                                    <Grid container spacing={1}>
-                                        <Grid item>
-                                            <MuiAvatar alt={row.userId} className={classes.avataSmall}/>
-                                        </Grid>
-                                        <Grid item>
-                                            {row.userId}
-                                        </Grid>
-                                    </Grid>
+                                    {row.userId}
                                 </Typography>
                                 <div className={classes.grid}>
                                     <Grid container spacing={1}>
                                         <Grid item xs={12} sm={6}>
                                             <ul>
                                                 <li>
-                                        <span className={classes.spanSubject}>
-                                            ID
-                                        </span>
-                                        <span className={classes.spanContents}>
-                                        {row.userId}
-                                        </span>
+                                                    <span className={classes.spanSubject}> 소속회사 </span>
+                                                    <span className={classes.spanContents}> {row.cpName} </span>
                                                 </li>
                                                 <li>
-                                        <span className={classes.spanSubject}>
-                                        이름
-                                        </span>
-                                        <span className={classes.spanContents}>
-                                        {row.name}
-                                        </span>
+                                                    <span className={classes.spanSubject}> ID </span>
+                                                    <span className={classes.spanContents}> {row.userId} </span>
                                                 </li>
                                                 <li>
-                                        <span className={classes.spanSubject}>
-                                        전화번호
-                                        </span>
-                                        <span className={classes.spanContents}>
-                                        {row.hp}
-                                        </span>
+                                                    <span className={classes.spanSubject}> 이름 </span>
+                                                    <span className={classes.spanContents}> {row.name} </span>
                                                 </li>
                                                 <li>
-                                        <span className={classes.spanSubject}>
-                                        이메일
-                                        </span>
-                                        <span className={classes.spanContents}>
-                                        {row.email}
-                                        </span>
+                                                    <span className={classes.spanSubject}> 전화번호 </span>
+                                                    <span className={classes.spanContents}> {row.hp} </span>
                                                 </li>
                                                 <li>
-                                        <span className={classes.spanSubject}>
-                                        주소
-                                        </span>
-                                            </li>
+                                                    <span className={classes.spanSubject}> 이메일 </span>
+                                                    <span className={classes.spanContents}> {row.email} </span>
+                                                </li>
                                             </ul>
                                         </Grid>
                                         <Grid item xs={12} sm={6}>
                                             <ul>
                                                 <li>
-                                        <span className={classes.spanSubject}>
-                                        등록일
-                                        </span>
-                                                    <span className={classes.spanContents}>
-                                        {row.registerDate}
-                                        </span>
+                                                    <span className={classes.spanSubject}> 주소 </span>
                                                 </li>
                                                 <li>
-                                        <span className={classes.spanSubject}>
-                                        인증
-                                        </span>
-                                                    <span className={classes.spanContents}>
-                                            {row.emailAuthValue}
-                                        </span>
+                                                    <span className={classes.spanSubject}> 등록일 </span>
+                                                    <span className={classes.spanContents}> {row.registerDate} </span>
                                                 </li>
                                                 <li>
-                                        <span className={classes.spanSubject}>
-                                        이메일 인증 그룹
-                                        </span>
+                                                    <span className={classes.spanSubject}> 인증 </span>
+                                                    {/* eslint-disable-next-line no-nested-ternary */}
+                                                    <span className={classes.spanContents}> {row.emailAuth === true ? "개인 이메일 인증" : (row.groupEmailAuth === true ? "그룹 이메일 인증" : "사용 안함")} </span>
                                                 </li>
                                             </ul>
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            {
+                                                row.groupEmailAuth && row.groupEmailAuthList ? (
+                                                    <React.Fragment>
+                                                        <span className={classes.spanSubject}> 이메일 인증 그룹 </span>
+                                                        <ul>
+                                                            {row.groupEmailAuthList.map(auth => (
+                                                            <li>
+                                                                <span className={classes.spanContents}> {auth.AuthUserId}:{auth.AuthEmail}</span>
+                                                            </li>
+                                                            ))}
+                                                        </ul>
+                                                    </React.Fragment>
+                                                ) : <React.Fragment/>
+                                            }
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            {
+                                                row.participateInAccountList && row.participateInAccountList.length > 0 ? (
+                                                    <React.Fragment>
+                                                        <span className={classes.spanSubject}> 사용하는 계정 ID </span>
+                                                        <ul>
+                                                            {row.participateInAccountList.map(paccount => (
+                                                            <li>
+                                                                <span className={classes.spanContents}>{paccount.UserId}</span>
+                                                            </li>
+                                                            ))}
+                                                        </ul>
+                                                    </React.Fragment>
+                                                ) : <React.Fragment/>
+                                            }
                                         </Grid>
                                     </Grid>
                                 </div>
@@ -516,7 +515,7 @@ const UserList = () => {
                         onRequestSort={handleRequestSort}
                         rows={headRows}
                         toolbarTitle="계정 리스트"
-                        handleOpen={handleOpen}
+                        handleOpen={handleOpenAddUser}
                         contents="계정"
                     />
                     <div className="cb-material-table__wrap">
@@ -549,7 +548,7 @@ const UserList = () => {
                             label="Dense padding"
                         />
                     </div>
-                    <RegisterUserPage open={open} handleClose={handleClose}/>
+                    <RegisterUserPage open={openAddUser} handleClose={handleCloseAddUser}/>
                 </CardBody>
             </Card>
         </Col>
