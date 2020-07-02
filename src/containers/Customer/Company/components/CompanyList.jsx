@@ -81,11 +81,7 @@ const useStyles = makeStyles(theme => ({
     },
     reactTooltip: {
         fontSize: 7,
-        fontWeight: "revert",
-        fontFamily: "Nanum Gothic Extra Bold",
-        opacity: 0.3,
-        color: '#ff6e00',
-        fontStyle: "italic",
+        fontFamily: "GmarketSansTTFBold",
     },
 }));
 
@@ -387,8 +383,8 @@ const CompanyList = () => {
                                 {checkStringLength(row.memo)}
                             </TableCell>
                             {/*Tooltip*/}
-                            <ReactTooltip id="tooltip" place="top" effect="float"
-                                          delayShow={200} delayHide={1000}
+                            <ReactTooltip id="tooltip" place="top" effect="solid"
+                                          delayHide={500} type="info"
                                           className={classes.reactTooltip}
                                           getContent={dataTip => `${dataTip}`} />
                         </TableRow>
