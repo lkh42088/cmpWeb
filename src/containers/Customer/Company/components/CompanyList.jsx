@@ -360,7 +360,7 @@ const CompanyList = () => {
                             </TableCell>
                             <TableCell className="cb-material-table__cell cb-material-table__cell-right"
                                 style={{width: "10%"}}
-			    >
+                            >
                                 {row.cpUserId}
                             </TableCell>
                             <TableCell
