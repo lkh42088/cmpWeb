@@ -78,9 +78,9 @@ const MaterialTable = () => {
     }, [assetState.stateVal]);
 
     return (
-        <Container className="dashboard">
-            <Row>
-                <Col md={12}>
+        <Container fluid="true">
+            <Col sm={12} md={12} xs={12} xl={12} lg={12}>
+                <Row>
                     {/*<h3 className="page-title">{title.title}/{title.subTitle}</h3>*/}
                     <Breadcrumbs aria-label="breadcrumb" style={{paddingBottom: "10px"}}>
                         <StyledBreadcrumb
@@ -92,26 +92,26 @@ const MaterialTable = () => {
                         <StyledBreadcrumb component="a" href="#" label={title.title}/>
                         <StyledBreadcrumb component="a" href="#" label={title.subTitle}/>
                     </Breadcrumbs>
-                </Col>
-            </Row>
-            {assetState.assetsPage === 'list' ? (
-                <Row>
-                    {/*<SnackbarProvider maxSnack={3}>
+                </Row>
+                {assetState.assetsPage === 'list' ? (
+                    <Row style={{padding: 10}}>
+                        {/*<SnackbarProvider maxSnack={3}>
                         <AssetsTop assetState={assetState} dispatch={dispatch} user={user}/>
                         <AssetsSearch assetState={assetState} user={user}/>
                     </SnackbarProvider>*/}
-                    <AssetsTop assetState={assetState} dispatch={dispatch} user={user}/>
-                    {/*{assetState.codes.codeDeviceType !== undefined ? <AssetsSearch assetState={assetState} /> : false}*/}
-                    <AssetsSearch assetState={assetState} user={user}/>
-                </Row>
-            ) : false}
-            <Row>
-                {assetState.assetsPage === 'list'
-                    ? <AssetsList assetState={assetState} dispatch={dispatch} user={user}/> : false}
-                {assetState.assetsPage === 'view' || assetState.assetsPage === 'edit'
-                    ? <AssetsView assetState={assetState} dispatch={dispatch} user={user}/> : false}
+                        <AssetsTop assetState={assetState} dispatch={dispatch} user={user}/>
+                        {/*{assetState.codes.codeDeviceType !== undefined ? <AssetsSearch assetState={assetState} /> : false}*/}
+                        <AssetsSearch assetState={assetState} user={user}/>
+                    </Row>
+                ) : false}
+                <Row style={{padding: 10}}>
+                    {assetState.assetsPage === 'list'
+                        ? <AssetsList assetState={assetState} dispatch={dispatch} user={user}/> : false}
+                    {assetState.assetsPage === 'view' || assetState.assetsPage === 'edit'
+                        ? <AssetsView assetState={assetState} dispatch={dispatch} user={user}/> : false}
 
-            </Row>
+                </Row>
+            </Col>
         </Container>
     );
 };

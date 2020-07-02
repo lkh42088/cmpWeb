@@ -131,11 +131,11 @@ const AssetsSearch = ({assetState, user}) => {
     }, [assetState.deviceType]);
 
     return (
-        <Col md="12">
-            <Card>
-                <CardBody>
-                    <Row>
-                        <Col md={10} sm={12}>
+            <Card className="cb-card">
+                <CardBody className="cb-card-body">
+                    <Row style={{padding: 10}}>
+                        {/*<Col sm={12} md={12} xs={12} xl={12} lg={12}>*/}
+                        <Col>
                             <form>
                                 <div className="search_card_body" style={{maxWidth: "100%"}}>
                                     <div>
@@ -221,11 +221,12 @@ const AssetsSearch = ({assetState, user}) => {
                                 </div>
                             </form>
                         </Col>
-                        <Col md={2} sm={12}>
+                        {/*<Col sm={12} md={12} xs={12} xl={12} lg={12}>*/}
+                        <Col>
                             {/*1 : true , 0 : false */}
                             {/*0 : 반입, 1 : 반출*/}
-                            <div className="search_card_body" style={{maxWidth: "100%"}}>
-                                <div className="float-left">
+                            <div className="search_card_body" style={{float: "right"}}>
+                                <div>
                                     <span>
                                         <input type="checkbox" name="operatingFlag"
                                                className="search_checkbox"
@@ -279,7 +280,6 @@ const AssetsSearch = ({assetState, user}) => {
                     </Row>
                 </CardBody>
             </Card>
-        </Col>
     );
 };
 

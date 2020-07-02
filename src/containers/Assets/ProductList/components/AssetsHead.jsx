@@ -18,12 +18,12 @@ const rows = [
     {id: 'deviceType', disablePadding: false, label: '구분'},
     {id: 'manufacture', disablePadding: false, label: '제조사'},
     {id: 'model', disablePadding: false, label: '모델명'},
-    {id: 'ownership', disablePadding: false, label: '소유권'},
-    {id: 'ownerCompany', disablePadding: false, label: '소유권 구분'},
     {id: 'customer', disablePadding: false, label: '고객사'},
     {id: 'idc', disablePadding: false, label: 'IDC'},
     {id: 'rack', disablePadding: false, label: '위치'},
-    {id: 'purpose', disablePadding: false, label: '용도'},
+    {id: 'ownership', disablePadding: false, label: '소유권'},
+    {id: 'ownerCompany', disablePadding: false, label: '소유권 구분'},
+    // {id: 'purpose', disablePadding: false, label: '용도'},
 ];
 
 class AssetsHead extends PureComponent {
@@ -35,12 +35,12 @@ class AssetsHead extends PureComponent {
             {id: 'deviceType', disablePadding: false, label: '구분'},
             {id: 'manufacture', disablePadding: false, label: '제조사'},
             {id: 'model', disablePadding: false, label: '모델명'},
-            {id: 'ownership', disablePadding: false, label: '소유권'},
-            {id: 'ownerCompany', disablePadding: false, label: '소유권 구분'},
             {id: 'customer', disablePadding: false, label: '고객사'},
             {id: 'idc', disablePadding: false, label: 'IDC'},
             {id: 'rack', disablePadding: false, label: '위치'},
-            {id: 'purpose', disablePadding: false, label: '용도'},
+            {id: 'ownership', disablePadding: false, label: '소유권'},
+            {id: 'ownerCompany', disablePadding: false, label: '소유권 구분'},
+            // {id: 'purpose', disablePadding: false, label: '용도'},
         ],
     };
 
@@ -205,9 +205,9 @@ class AssetsHead extends PureComponent {
         return (
             <TableHead>
                 <TableRow>
-                    <TableCell padding="checkbox">
+                    <TableCell>
                         <Checkbox
-                            className={`material-table__checkbox ${numSelected === rowCount && 'material-table__checkbox--checked'}`}
+                            className={`${numSelected === rowCount && 'material-table__checkbox--checked'}`}
                             indeterminate={numSelected > 0 && numSelected < rowCount}
                             checked={allCheck}
                             onChange={onSelectAllClick}
@@ -222,12 +222,13 @@ class AssetsHead extends PureComponent {
                             align={rtl.direction === 'rtl' ? 'right' : 'left'}
                             padding={row.disablePadding ? 'none' : 'default'}
                             sortDirection={orderBy === row.id ? order : false}
+                            width="500"
                         >
                             <TableSortLabel
                                 active={orderBy === row.id}
                                 direction={order}
                                 onClick={this.createSortHandler(row.id)}
-                                className="material-table__sort-label"
+                                className="material-table__sort-label material-table__sort-label-padding"
                                 dir="ltr"
                             >
                                 {row.label}

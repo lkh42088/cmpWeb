@@ -18,7 +18,6 @@ import Switch from "@material-ui/core/Switch";
 
 import PropTypes, {string} from 'prop-types';
 import moment from "moment";
-
 import {
     getDeviceByIdx,
     postDeviceComment,
@@ -451,6 +450,7 @@ export default class AssetsList extends PureComponent {
         const {assetState, dispatch, user} = this.props;
 
         const tableCellClassName = 'material-table__cell material-table__cell-right';
+        const tableCellBoldClassName = 'material-table__cell material-table__cell-bold';
         //TODO length 값 0 일때도 처리해야함
 
         const deviceComponent = (
@@ -517,22 +517,14 @@ export default class AssetsList extends PureComponent {
                                     >{/*모델명*/}{d.model}
                                     </TableCell>
                                     <TableCell
-                                        className={tableCellClassName}
-                                    >{/*소유권*/}{d.ownership}
-                                    </TableCell>
-                                    <TableCell
-                                        className={tableCellClassName}
-                                    >{/*소유권구분*/}{d.ownerCompany}
-                                    </TableCell>
-                                    <TableCell
-                                        className={tableCellClassName}
+                                        className={tableCellBoldClassName}
                                     >{/*고객사*/}
                                         {d.customerName}
                                         {/*<b className="text_cor_orange">{d.customerName}</b>*/}
                                         {/*<b className="text_cor_red">{d.customer}</b>*/}
                                     </TableCell>
                                     <TableCell
-                                        className={tableCellClassName}
+                                        className={tableCellBoldClassName}
                                     >{/*IDC*/}{d.idc}
                                     </TableCell>
                                     <TableCell
@@ -541,8 +533,16 @@ export default class AssetsList extends PureComponent {
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                    >{/*용도*/}{d.purpose}
+                                    >{/*소유권*/}{d.ownership}
                                     </TableCell>
+                                    <TableCell
+                                        className={tableCellClassName}
+                                    >{/*소유권구분*/}{d.ownerCompany}
+                                    </TableCell>
+                                    {/*<TableCell*/}
+                                    {/*    className={tableCellClassName}*/}
+                                    {/*>/!*용도*!/{d.purpose}*/}
+                                    {/*</TableCell>*/}
 
                                     {assetState.deviceType === 'server'
                                     && (
@@ -603,12 +603,12 @@ export default class AssetsList extends PureComponent {
         );
 
         return (
-            <Col md={12} lg={12}>
-                <Card>
-                    <CardBody>
-                        <div className="material-table__wrap">
+            // <Col sm={12} md={12} xs={12} xl={12} lg={12}>
+                <Card className="cb-card">
+                    <CardBody className="cb-card-body">
+                        <div>
                             <TableContainer>
-                                <Table className="material-table"
+                                <Table className="material-table material-table__wrap"
                                        size={dense ? 'small' : 'medium'}>
                                     <AssetsHead
                                         numSelected={[...selected].filter(el => el[1]).length}
@@ -625,45 +625,48 @@ export default class AssetsList extends PureComponent {
                                     {deviceComponent}
                                 </Table>
                             </TableContainer>
-                            <TablePagination
-                                component="div"
-                                className="material-table__pagination"
-                                count={Number(assetState.page.count)}
-                                rowsPerPage={rowsPerPage}
-                                page={pageNoNum}
-                                backIconButtonProps={{
-                                    'aria-label': 'Previous Page',
-                                    disabled: false,
-                                    onClick: this.handleChangePageBack,
-                                }}
-                                /*nextIconButtonProps={{'aria-label': 'Next Page'}}*/
-                                nextIconButtonProps={{
-                                    'aria-label': 'Next Page',
-                                    disabled: false,
-                                    onClick: this.handleChangePage,
-                                }}
-                                /*onChangePage={this.handleChangePage}*/
-                                onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                rowsPerPageOptions={[10, 50, 100]}
-                                dir="ltr"
-                                labelDisplayedRows={
-                                    ({to, count}) => (
-                                        <span
-                                            style={{fontSize: 14}}><span>page: {assetState.page.page}</span>
-                                            &nbsp;&nbsp;&nbsp; total : {count}
+                            <div>
+                                <FormControlLabel
+                                    control={<Switch checked={dense} onChange={this.handleChangeDense}/>}
+                                    label="Dense padding"
+                                    style={{padding: 5}}
+                                />
+                                <TablePagination
+                                    component="div"
+                                    className="material-table__pagination"
+                                    count={Number(assetState.page.count)}
+                                    rowsPerPage={rowsPerPage}
+                                    page={pageNoNum}
+                                    backIconButtonProps={{
+                                        'aria-label': 'Previous Page',
+                                        disabled: false,
+                                        onClick: this.handleChangePageBack,
+                                    }}
+                                    /*nextIconButtonProps={{'aria-label': 'Next Page'}}*/
+                                    nextIconButtonProps={{
+                                        'aria-label': 'Next Page',
+                                        disabled: false,
+                                        onClick: this.handleChangePage,
+                                    }}
+                                    /*onChangePage={this.handleChangePage}*/
+                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                    rowsPerPageOptions={[10, 50, 100]}
+                                    dir="ltr"
+                                    labelDisplayedRows={
+                                        ({to, count}) => (
+                                            <span
+                                                style={{fontSize: 14}}><span>page: {assetState.page.page}</span>
+                                                &nbsp;&nbsp;&nbsp; total : {count}
                                     </span>
-                                    )
-                                }
-                                SelectProps={{
-                                    inputProps: {'aria-label': 'rows per page'},
-                                    native: true,
-                                }}
-                            />
+                                        )
+                                    }
+                                    SelectProps={{
+                                        inputProps: {'aria-label': 'rows per page'},
+                                        native: true,
+                                    }}
+                                />
+                            </div>
                         </div>
-                        <FormControlLabel
-                            control={<Switch checked={dense} onChange={this.handleChangeDense}/>}
-                            label="Dense padding"
-                        />
                         {/*장비 상세*/}
                         {/* <Modal
                             isOpen={isOpenView}
@@ -685,7 +688,7 @@ export default class AssetsList extends PureComponent {
                         </Modal>*/}
                     </CardBody>
                 </Card>
-            </Col>
+            // </Col>
         );
     }
 }
