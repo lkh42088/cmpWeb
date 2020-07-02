@@ -1,6 +1,6 @@
 import React, {Fragment, PureComponent} from 'react';
 import {
-    Card, CardBody, Col, Button, ButtonToolbar, Modal,
+    Card, Col, Button, ButtonToolbar, Modal,
 } from 'reactstrap';
 import {Field, reduxForm} from 'redux-form';
 import classNames from "classnames";
@@ -14,16 +14,20 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import SendIcon from "@material-ui/icons/Send";
+import TocIcon from '@material-ui/icons/Toc';
+import EditIcon from '@material-ui/icons/Edit';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 
 import AssetsComment from "./AssetsComment";
 import AssetsLog from "./AssetsLog";
 import {
-    getDeviceByIdx, getDeviceOriByIdx, setDeviceLog, setState,
+    getDeviceOriByIdx, setState,
     postDevice, postDeviceComment, setAssetsPage,
 } from "../../../../redux/actions/assetsAction";
 import AssetsEdit from "./AssetsEdit";
+
 
 class AssetsView extends PureComponent {
     static propTypes = {
@@ -124,15 +128,8 @@ class AssetsView extends PureComponent {
     };
 
     handleSubmit = (e) => {
-        // 페이지 리로딩 방지
         e.preventDefault();
-        //const {setTotalManager} = this.props;
 
-        // eslint-disable-next-line react/destructuring-assignment
-        // 상태값을 onCreate 를 통하여 부모에게 전달
-        // eslint-disable-next-line react/prop-types,react/destructuring-assignment
-
-        //setTotalManager(this.state);
         const {assetState, dispatch, user} = this.props;
         const {
             modal, comment, registerId,
@@ -140,15 +137,13 @@ class AssetsView extends PureComponent {
 
         const submitData = ({
             idx: '',
-            /*registerId: data.registerId,*/ //TODO 로그인한 ID
             registerId: user.id,
             contents: comment,
             deviceCode: assetState.deviceByDeviceCode,
         });
+
         dispatch(postDeviceComment('create', assetState, submitData));
 
-
-        // 상태 초기화
         this.setState({
             comment: '',
             registerId: '',
@@ -312,6 +307,20 @@ class AssetsView extends PureComponent {
         dispatch(setState(stateVal));
     };
 
+    reChange = (props) => {
+        const foo = props;
+        // eslint-disable-next-line array-callback-return,consistent-return
+        const output = [...foo].map((char, index) => {
+            if (char !== "") {
+                return (
+                    <li key={`${char}`}>{char}</li>
+                );
+            }
+        });
+
+        return <React.Fragment>{output}</React.Fragment>;
+    };
+
     render() {
         const {
             assetState, dispatch, user,
@@ -319,20 +328,12 @@ class AssetsView extends PureComponent {
         } = this.props;
 
         const {
-            modal, comment, date, modalOpenFlag,
-            modalWarring, warringTitle, warringContents, warringClass, warringType,
-            warringStyle, warringIcon,
+            modal, comment, date, modalOpenFlag, warringClass, warringType, warringTitle,
+            modalWarring, warringContents, warringStyle, warringIcon,
         } = this.state;
 
-        let viewModalContentLeft;
-        let viewModalContentRight;
         let viewModalContent;
         let deviceValue = new Map([]);
-
-        const deviceStyle = {
-            textDecoration: '#ffdd67 underline',
-            fontWeight: 'bold',
-        };
 
         const modalClass = classNames({
             'assets_write__modal-dialog': true,
@@ -341,12 +342,11 @@ class AssetsView extends PureComponent {
         });
 
         const classNameMap = {
-            formDivClass: "form__form-group",
-            formSpanClass: "form__form-group-label",
             rowFormItem: "row form-infor__item",
             itemContainer: "item-container",
             formInforLabel: "form-infor__label",
             formControlValue: "form-control-value",
+            textareaPreCont: "textarea-prefix form-control",
         };
 
         if (assetState.device.length > 0) {
@@ -363,75 +363,33 @@ class AssetsView extends PureComponent {
             rackLoc, firmwareVersion, warranty, customerName, ownerCompanyName,
         } = deviceValue;
 
-        let ipSliceStr;
-        let splaSliceStr;
         let rentDateSliceStr;
 
-        if (ip !== undefined) {
-            ipSliceStr = ip.replace(/\|/gi, ", ").slice(0, -2);
-        } else {
-            ipSliceStr = "";
+        let ipSliceStrArray;
+        let dpIpSliceStr;
+        let splaSliceStrArray;
+        let dpSplaSliceStr;
+
+        if (ip !== undefined && ip !== "|") {
+            ipSliceStrArray = ip.split("|");
+            dpIpSliceStr = this.reChange(ipSliceStrArray);
         }
 
-        if (spla !== undefined) {
-            splaSliceStr = spla.replace(/\|/gi, ", ").slice(0, -2);
-        } else {
-            splaSliceStr = "";
+        if (spla !== undefined && spla !== "|") {
+            splaSliceStrArray = spla.split("|");
+            dpSplaSliceStr = this.reChange(splaSliceStrArray);
         }
 
-        if (rentDate === "|") {
+        if (rentDate === "|" || rentDate === undefined) {
             rentDateSliceStr = "";
         } else {
-            rentDateSliceStr = rentDate;
+            rentDateSliceStr = rentDate.replace("|", "~");
         }
 
         switch (assetState.deviceType) {
             case 'server':
                 viewModalContent = (
                     <Fragment>
-                        <div className="row wrapper-source-content">
-                            <div className="prefix-content__column">
-                                <div className="row form-infor__item_sub">
-                                    <div className="item-container">
-                                        <div className="form-infor__label">CPU</div>
-                                    </div>
-                                    <div className="col-lg-8 col-md-12">
-                                        <div className="form-control-value">
-                                            {cpu}&nbsp;</div>
-                                    </div>
-                                </div>
-                                <div className="row form-infor__item_sub">
-                                    <div className="item-container">
-                                        <div className="form-infor__label">MEMORY</div>
-                                    </div>
-                                    <div className="col-lg-8 col-md-12">
-                                        <div className="form-control-value">
-                                            {memory}&nbsp;</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="prefix-content__column">
-                                <div className="source__column">
-                                    <div className="form-infor__label item-container">
-                                        IP
-                                    </div>
-                                </div>
-                                <div
-                                    className="source-list__column column-source list-sources">
-                                    <div className="list-checkbox checkboxes-add">
-                                        <span className="custom-control-description">1</span>
-                                        <span className="custom-control-description">2</span>
-                                        <span className="custom-control-description">3</span>
-                                        <span className="custom-control-description">4</span>
-                                        <span className="custom-control-description">5</span>
-                                        <span className="custom-control-description">6</span>
-                                        <span className="custom-control-description">7</span>
-                                        <span className="custom-control-description">8</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <div className="row">
                             <div className="col-md-6">
                                 <div className={classNameMap.rowFormItem}>
@@ -439,8 +397,10 @@ class AssetsView extends PureComponent {
                                         <div className={classNameMap.formInforLabel}>CPU</div>
                                     </div>
                                     <div className="col-lg-8 col-md-12">
-                                        <div className={classNameMap.formControlValue}>
-                                            {cpu}</div>
+                                        <textarea
+                                            className={classNameMap.textareaPreCont}
+                                            value={cpu} rows="1"
+                                            disabled/>
                                     </div>
                                 </div>
                             </div>
@@ -450,8 +410,14 @@ class AssetsView extends PureComponent {
                                         <div className={classNameMap.formInforLabel}>IP</div>
                                     </div>
                                     <div className="col-lg-8 col-md-12">
-                                        <div className={classNameMap.formControlValue}>
-                                            {ipSliceStr}</div>
+                                        <div
+                                            className="source-list__column column-source list-sources">
+                                            <div className="list-checkbox checkboxes-add">
+                                                <ul className="list">
+                                                    {dpIpSliceStr}
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -463,8 +429,10 @@ class AssetsView extends PureComponent {
                                         <div className={classNameMap.formInforLabel}>MEMORY</div>
                                     </div>
                                     <div className="col-lg-8 col-md-12">
-                                        <div className={classNameMap.formControlValue}>
-                                            {memory}</div>
+                                        <textarea
+                                            className={classNameMap.textareaPreCont}
+                                            value={memory} rows="1"
+                                            disabled/>
                                     </div>
                                 </div>
                             </div>
@@ -474,8 +442,14 @@ class AssetsView extends PureComponent {
                                         <div className={classNameMap.formInforLabel}>SPLA</div>
                                     </div>
                                     <div className="col-lg-8 col-md-12">
-                                        <div className={classNameMap.formControlValue}>
-                                            {splaSliceStr}</div>
+                                        <div
+                                            className="source-list__column column-source list-sources">
+                                            <div className="list-checkbox checkboxes-add">
+                                                <ul className="list">
+                                                    {dpSplaSliceStr}
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -487,8 +461,10 @@ class AssetsView extends PureComponent {
                                         <div className={classNameMap.formInforLabel}>HDD</div>
                                     </div>
                                     <div className="col-lg-8 col-md-12">
-                                        <div className={classNameMap.formControlValue}>
-                                            {hdd}</div>
+                                        <textarea
+                                            className={classNameMap.textareaPreCont}
+                                            value={hdd} rows="1"
+                                            disabled/>
                                     </div>
                                 </div>
                             </div>
@@ -498,8 +474,10 @@ class AssetsView extends PureComponent {
                                         <div className={classNameMap.formInforLabel}>Rack Tag</div>
                                     </div>
                                     <div className="col-lg-8 col-md-12">
-                                        <div className={classNameMap.formControlValue}>
-                                            {rackTag}</div>
+                                        <textarea
+                                            className={classNameMap.textareaPreCont}
+                                            value={rackTag} rows="1"
+                                            disabled/>
                                     </div>
                                 </div>
                             </div>
@@ -511,8 +489,10 @@ class AssetsView extends PureComponent {
                                         <div className={classNameMap.formInforLabel}>Size</div>
                                     </div>
                                     <div className="col-lg-8 col-md-12">
-                                        <div className={classNameMap.formControlValue}>
-                                            {size}</div>
+                                        <textarea
+                                            className={classNameMap.textareaPreCont}
+                                            value={size} rows="1"
+                                            disabled/>
                                     </div>
                                 </div>
                             </div>
@@ -522,123 +502,112 @@ class AssetsView extends PureComponent {
                                         <div className={classNameMap.formInforLabel}>Rack Location</div>
                                     </div>
                                     <div className="col-lg-8 col-md-12">
-                                        <div className={classNameMap.formControlValue}>
-                                            {rackLoc}
-                                        </div>
+                                        <textarea
+                                            className={classNameMap.textareaPreCont}
+                                            value={rackLoc} rows="1"
+                                            disabled/>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </Fragment>
                 );
-
-                viewModalContentLeft = (
-                    <Fragment>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>CPU</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {cpu}
-                            </div>
-                        </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>MEMORY</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {memory}
-                            </div>
-                        </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>HDD</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {hdd}
-                            </div>
-                        </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>Size</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {size}
-                            </div>
-                        </div>
-                    </Fragment>
-                );
-
-                viewModalContentRight = (
-                    <Fragment>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>IP</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {ipSliceStr}
-                            </div>
-                        </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>SPLA</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {splaSliceStr}
-                            </div>
-                        </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>Rack Tag</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {rackTag}
-                            </div>
-                        </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>Rack Location</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {rackLoc}
-                            </div>
-                        </div>
-                    </Fragment>
-                );
-
                 break;
             case 'network':
-                viewModalContentLeft = (
+                viewModalContent = (
                     <Fragment>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>FIRMWARE VERSION</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {firmwareVersion}
+                        <div className="row">
+                            <div className="col-md-6">
+                                <div className={classNameMap.rowFormItem}>
+                                    <div className={classNameMap.itemContainer}>
+                                        <div className={classNameMap.formInforLabel}>FIRMWARE VERSION</div>
+                                    </div>
+                                    <div className="col-lg-8 col-md-12">
+                                        <textarea
+                                            className={classNameMap.textareaPreCont}
+                                            value={firmwareVersion} rows="1"
+                                            disabled/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-6">
+                                <div className={classNameMap.rowFormItem}>
+                                    <div className={classNameMap.itemContainer}>
+                                        <div className={classNameMap.formInforLabel}>IP</div>
+                                    </div>
+                                    <div className="col-lg-8 col-md-12">
+                                        <div
+                                            className="source-list__column column-source list-sources">
+                                            <div className="list-checkbox checkboxes-add">
+                                                <ul className="list">
+                                                    {dpIpSliceStr}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>Rack Tag</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {rackTag}
+                        <div className="row">
+                            <div className="col-md-6">
+                                <div className={classNameMap.rowFormItem}>
+                                    <div className={classNameMap.itemContainer}>
+                                        <div className={classNameMap.formInforLabel}>Rack Tag</div>
+                                    </div>
+                                    <div className="col-lg-8 col-md-12">
+                                        <textarea
+                                            className={classNameMap.textareaPreCont}
+                                            value={rackTag} rows="1"
+                                            disabled/>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </Fragment>
-                );
-
-                viewModalContentRight = (
-                    <Fragment>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>IP</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {ipSliceStr}
-                            </div>
-                        </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>Rack Location</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {rackLoc}
+                            <div className="col-md-6">
+                                <div className={classNameMap.rowFormItem}>
+                                    <div className={classNameMap.itemContainer}>
+                                        <div className={classNameMap.formInforLabel}>Rack Location</div>
+                                    </div>
+                                    <div className="col-lg-8 col-md-12">
+                                        <textarea
+                                            className={classNameMap.textareaPreCont}
+                                            value={rackLoc} rows="1"
+                                            disabled/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </Fragment>
                 );
                 break;
             case 'part':
-                viewModalContentLeft = (
+                viewModalContent = (
                     <Fragment>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>Warranty</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {warranty}
+                        <div className="row">
+                            <div className="col-md-6">
+                                <div className={classNameMap.rowFormItem}>
+                                    <div className={classNameMap.itemContainer}>
+                                        <div className={classNameMap.formInforLabel}>Warranty</div>
+                                    </div>
+                                    <div className="col-lg-8 col-md-12">
+                                        <textarea
+                                            className={classNameMap.textareaPreCont}
+                                            value={warranty} rows="1"
+                                            disabled/>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div className={classNameMap.formDivClass}>
-                            <span className={classNameMap.formSpanClass}>Rack Size</span>
-                            <div className={classNameMap.formDivSubClass}>
-                                {rackCode}
+                            <div className="col-md-6">
+                                <div className={classNameMap.rowFormItem}>
+                                    <div className={classNameMap.itemContainer}>
+                                        <div className={classNameMap.formInforLabel}>Rack Size</div>
+                                    </div>
+                                    <div className="col-lg-8 col-md-12">
+                                        <textarea
+                                            className={classNameMap.textareaPreCont}
+                                            value={rackCode} rows="1"
+                                            disabled/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </Fragment>
@@ -654,448 +623,257 @@ class AssetsView extends PureComponent {
                     <div className="top_btn_area assets_top">
                         <div className="float-right">
                             <ButtonToolbar>
-                                <MatButton variant="contained" size="small"
-                                           onClick={this.onList}>목록</MatButton>
+                                <MatButton
+                                    variant="contained"
+                                    onClick={this.onList}
+                                    startIcon={<TocIcon/>}>목록</MatButton>
                             </ButtonToolbar>
                         </div>
                     </div>
                     <div>
-                        <ExpansionPanel>
-                            <ExpansionPanelSummary
-                                expandIcon={<ExpandMoreIcon/>}
-                                aria-controls="panel2a-content"
-                                id="panel2a-header"
-                            >
-                                <Typography>테스트 용 테이블 입니다.</Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                                {/* eslint-disable-next-line jsx-a11y/no-redundant-roles */}
-                                <form className="form-handle-infor container"
-                                      role="form" data-toggle="validator">
-                                    <div className="wrapper-form-infor-add">
-                                        <div className="container-fluid">
-                                            <div className="row">
-                                                <div className="col-md-6">
-                                                    <div className="row form-infor__item">
-                                                        <div className="item-container">
-                                                            <div className="form-infor__label">장비코드</div>
-                                                        </div>
-                                                        <div className="col-lg-8 col-md-12">
-                                                            <div className="form-control-value">
-                                                                {deviceCode}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <div className="row form-infor__item">
-                                                        <div className="item-container">
-                                                            <div className="form-infor__label">IDC / 랙번호</div>
-                                                        </div>
-                                                        <div className="col-lg-8 col-md-12">
-                                                            <div className="form-control-value">
-                                                                {idc}/{rack}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-md-6">
-                                                    <div className="row form-infor__item">
-                                                        <div className="item-container">
-                                                            <div className="form-infor__label">장비구분</div>
-                                                        </div>
-                                                        <div className="col-lg-8 col-md-12">
-                                                            <div className="form-control-value">
-                                                                {deviceType}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <div className="row form-infor__item">
-                                                        <div className="item-container">
-                                                            <div className="form-infor__label">제조사 / 모델명</div>
-                                                        </div>
-                                                        <div className="col-lg-8 col-md-12">
-                                                            <div className="form-control-value">
-                                                                {manufacture}/{model}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-md-6">
-                                                    <div className="row form-infor__item">
-                                                        <div className="item-container">
-                                                            <div className="form-infor__label">고객사</div>
-                                                        </div>
-                                                        <div className="col-lg-8 col-md-12">
-                                                            <div className="form-control-value">
-                                                                {customerName}/{customer}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <div className="row form-infor__item">
-                                                        <div className="item-container">
-                                                            <div className="form-infor__label">소유권/소유권구분</div>
-                                                        </div>
-                                                        <div className="col-lg-8 col-md-12">
-                                                            <div className="form-control-value">
-                                                                {ownership}/{ownershipDiv}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-md-6">
-                                                    <div className="row form-infor__item">
-                                                        <div className="item-container">
-                                                            <div className="form-infor__label">소유업체명</div>
-                                                        </div>
-                                                        <div className="col-lg-8 col-md-12">
-                                                            <div className="form-control-value">
-                                                                {ownerCompanyName}/{ownerCompany}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <div className="row form-infor__item">
-                                                        <div className="item-container">
-                                                            <div className="form-infor__label">임대기간</div>
-                                                        </div>
-                                                        <div className="col-lg-8 col-md-12">
-                                                            <div className="form-control-value">
-                                                                {rentDateSliceStr}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-md-6">
-                                                    <div className="row form-infor__item">
-                                                        <div className="item-container">
-                                                            <div className="form-infor__label">HW S/N</div>
-                                                        </div>
-                                                        <div className="col-lg-8 col-md-12">
-                                                            <div className="form-control-value">
-                                                                {hwSn}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <div className="row form-infor__item">
-                                                        <div className="item-container">
-                                                            <div className="form-infor__label">입고일</div>
-                                                        </div>
-                                                        <div className="col-lg-8 col-md-12">
-                                                            <div className="form-control-value">
-                                                                {warehousingDate}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-md-6">
-                                                    <div className="row form-infor__item">
-                                                        <div className="item-container">
-                                                            <div className="form-infor__label">원가</div>
-                                                        </div>
-                                                        <div className="col-lg-8 col-md-12">
-                                                            <div className="form-control-value">
-                                                                {cost}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <div className="row form-infor__item">
-                                                        <div className="item-container">
-                                                            <div className="form-infor__label">용도</div>
-                                                        </div>
-                                                        <div className="col-lg-8 col-md-12">
-                                                            <div className="form-control-value">
-                                                                {purpose}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {/*<div className="row form-infor__item">
-                                                <div className="item-container">
-                                                    <div className="form-infor__label">Environment</div>
-                                                </div>
-                                                <div className="col-lg-10 col-md-12">
-                                                    <div className="dropdown show"><select
-                                                        className="custom-select"
-                                                        name="environment" required="">
-                                                        <option>Open this select menu</option>
-                                                        <option className="value-option">TST</option>
-                                                        <option className="value-option">PRD</option>
-                                                    </select></div>
-                                                </div>
-                                            </div>
-                                            <div className="row form-infor__item">
-                                                <div className="item-container">
-                                                    <div className="form-infor__label">Date Created</div>
-                                                </div>
-                                                <div>
-                                                    <div
-                                                        className="form-infor__content-detail">09/21/2017
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-md-6">
-                                                    <div className="row form-infor__item">
-                                                        <div className="item-container">
-                                                            <div className="form-infor__label">SKU</div>
-                                                        </div>
-                                                        <div className="col-lg-8 col-md-12"><input
-                                                            className="form-control" type="text"
-                                                            placeholder="SKU" name="sku" minLength="3"
-                                                            maxLength="15"
-                                                            data-error="Sku should be number" required=""
-                                                            disabled/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <div className="row form-infor__item">
-                                                        <div className="item-container">
-                                                            <div className="form-infor__label">License</div>
-                                                        </div>
-                                                        <div className="col-lg-8 col-md-12"><input
-                                                            className="form-control add-license" type="text"
-                                                            placeholder="License" name="license" minLength="3"
-                                                            maxLength="15" data-error="License invalid"
-                                                            required="" disabled/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>*/}
-                                            {/*<div className="row form-infor__item">
-                                                <div className="item-container">
-                                                    <div className="form-infor__label">Subscription</div>
-                                                </div>
-                                                <div className="col-lg-10 col-md-12"><input
-                                                    className="form-control add-subscription" type="text"
-                                                    placeholder="Subscription" name="subscription"
-                                                    minLength="3"
-                                                    maxLength="15" data-error="Subscription invalid"
-                                                    required=""/>
-                                                    <div className="help-block with-errors"/>
-                                                </div>
-                                            </div>
-                                            <div className="row form-infor__item">
-                                                <div className="item-container">
-                                                    <div className="form-infor__label">Features</div>
-                                                </div>
-                                                <div className="col-lg-10 col-md-12"><input
-                                                    className="form-control add-feature" type="text"
-                                                    placeholder="Features" name="features" minLength="3"
-                                                    maxLength="15" required=""/>
-                                                    <div className="help-block with-errors"/>
-                                                </div>
-                                            </div>
-                                            <div className="row wrapper-source-content">
-                                                <div className="source__column">
-                                                    <div className="form-infor__label item-container">Entitle
-                                                        Sources
-                                                    </div>
-                                                </div>
-                                                <div
-                                                    className="source-list__column column-source list-sources">
-                                                    <div className="list-checkbox checkboxes-add">
-                                                        <span className="custom-control-description">1</span>
-                                                        <span className="custom-control-description">2</span>
-                                                        <span className="custom-control-description">3</span>
-                                                        <span className="custom-control-description">4</span>
-                                                        <span className="custom-control-description">5</span>
-                                                        <span className="custom-control-description">6</span>
-                                                        <span className="custom-control-description">7</span>
-                                                        <span className="custom-control-description">8</span>
-                                                    </div>
-                                                </div>
-                                                <div className="prefix-content__column">
-                                                    <div className="form-infor__label entitle-sources__item">
-                                                        <div className="content-prefix">Proprietary content
-                                                            prefix
-                                                        </div>
-                                                        <div className="form-group"><textarea
-                                                            className="textarea-prefix form-control"
-                                                            name="contentPrefix" rows="3" minLength="3"
-                                                            maxLength="15"
-                                                            required=""/>
-                                                            <div className="help-block with-errors"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>*/}
-                                            {viewModalContent}
-                                            <div className="row form-infor__item">
-                                                <div className="item-container">
-                                                    <div className="form-infor__label">기타사항</div>
-                                                </div>
-                                                <div className="col-lg-10 col-md-12">
-                                                    {/*<input
-                                                        className="form-control add-subscription" type="text"
-                                                        placeholder="Subscription" name="subscription"
-                                                        minLength="3"
-                                                        maxLength="15" data-error="Subscription invalid"
-                                                        required=""/>*/}
-                                                    <div dangerouslySetInnerHTML={{__html: contents}}/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="form-group float-right button-handle-form">
-                                            {/* eslint-disable-next-line react/button-has-type */}
-                                            <button className="btn btn-cancel" data-dismiss="modal">Cancel
-                                            </button>
-                                            <button className="btn btn-submit" type="submit">Submit</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
                         <ExpansionPanel defaultExpanded>
                             <ExpansionPanelSummary
                                 expandIcon={<ExpandMoreIcon/>}
-                                aria-controls="panel1a-content"
-                                id="panel1a-header"
-                            >
-                                <Typography style={{
-                                    fontSize: "theme.typography.pxToRem(15)",
-                                    fontWeight: "theme.typography.fontWeightRegular",
-                                }}>장비 상세 정보</Typography>
+                                aria-controls="panel2a-content"
+                                id="panel2a-header">
+                                <Typography>장비 상세 정보</Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
-                                <CardBody>
-                                    <div className="card__title">
-                                        <h5 className="bold-text">{title}</h5>
-                                        <h5 className="subhead">{message}</h5>
-                                        <div className="assets_write__form_comment_confirm float-right"
-                                             onClick={this.commentToggle} onKeyDown={this.commentToggle}
-                                             role="button" tabIndex="0">+ 댓글 입력
+                                <div className="form-infor">
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className={classNameMap.rowFormItem}>
+                                                <div className={classNameMap.itemContainer}>
+                                                    <div className={classNameMap.formInforLabel}>장비코드</div>
+                                                </div>
+                                                <div className="col-lg-8 col-md-12">
+                                                            <textarea
+                                                                className={classNameMap.textareaPreCont}
+                                                                rows="1" value={`${deviceCode}`}
+                                                                disabled/>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <Modal
-                                            isOpen={modal}
-                                            className={`assets_write__modal-dialog 
-                                    assets_write__modal-dialog--success ${modalClass}`}
+                                        <div className="col-md-6">
+                                            <div className={classNameMap.rowFormItem}>
+                                                <div className={classNameMap.itemContainer}>
+                                                    <div className={classNameMap.formInforLabel}>IDC / 랙번호</div>
+                                                </div>
+                                                <div className="col-lg-8 col-md-12">
+                                                            <textarea
+                                                                className={classNameMap.textareaPreCont}
+                                                                rows="1" value={`${idc} / ${rack}`}
+                                                                disabled/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className={classNameMap.rowFormItem}>
+                                                <div className={classNameMap.itemContainer}>
+                                                    <div className={classNameMap.formInforLabel}>장비구분</div>
+                                                </div>
+                                                <div className="col-lg-8 col-md-12">
+                                                            <textarea
+                                                                className={classNameMap.textareaPreCont}
+                                                                rows="1" value={`${deviceType}`}
+                                                                disabled/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className={classNameMap.rowFormItem}>
+                                                <div className={classNameMap.itemContainer}>
+                                                    <div className={classNameMap.formInforLabel}>제조사 / 모델명</div>
+                                                </div>
+                                                <div className="col-lg-8 col-md-12">
+                                                            <textarea
+                                                                className={classNameMap.textareaPreCont}
+                                                                rows="1" value={`${manufacture} / ${model}`}
+                                                                disabled/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className={classNameMap.rowFormItem}>
+                                                <div className={classNameMap.itemContainer}>
+                                                    <div className={classNameMap.formInforLabel}>고객사</div>
+                                                </div>
+                                                <div className="col-lg-8 col-md-12">
+                                                            <textarea
+                                                                className={classNameMap.textareaPreCont}
+                                                                rows="1"
+                                                                value={`${customerName} / ${customer}`}
+                                                                disabled/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className={classNameMap.rowFormItem}>
+                                                <div className={classNameMap.itemContainer}>
+                                                    <div className={classNameMap.formInforLabel}>소유권/소유권구분</div>
+                                                </div>
+                                                <div className="col-lg-8 col-md-12">
+                                                            <textarea
+                                                                className={classNameMap.textareaPreCont}
+                                                                rows="1"
+                                                                value={`${ownership} / ${ownershipDiv}`}
+                                                                disabled/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className={classNameMap.rowFormItem}>
+                                                <div className={classNameMap.itemContainer}>
+                                                    <div className={classNameMap.formInforLabel}>소유업체명</div>
+                                                </div>
+                                                <div className="col-lg-8 col-md-12">
+                                                            <textarea
+                                                                className={classNameMap.textareaPreCont}
+                                                                rows="1"
+                                                                value={`${ownerCompanyName} / ${ownerCompany}`}
+                                                                disabled/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className={classNameMap.rowFormItem}>
+                                                <div className={classNameMap.itemContainer}>
+                                                    <div className={classNameMap.formInforLabel}>임대기간</div>
+                                                </div>
+                                                <div className="col-lg-8 col-md-12">
+                                                            <textarea
+                                                                className={classNameMap.textareaPreCont}
+                                                                rows="1" value={`${rentDateSliceStr}`}
+                                                                disabled/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className={classNameMap.rowFormItem}>
+                                                <div className={classNameMap.itemContainer}>
+                                                    <div className={classNameMap.formInforLabel}>HW S/N</div>
+                                                </div>
+                                                <div className="col-lg-8 col-md-12">
+                                                            <textarea
+                                                                className={classNameMap.textareaPreCont}
+                                                                value={hwSn} rows="1"
+                                                                disabled/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className={classNameMap.rowFormItem}>
+                                                <div className={classNameMap.itemContainer}>
+                                                    <div className={classNameMap.formInforLabel}>입고일</div>
+                                                </div>
+                                                <div className="col-lg-8 col-md-12">
+                                                            <textarea
+                                                                className={classNameMap.textareaPreCont}
+                                                                rows="1" value={`${warehousingDate}`}
+                                                                disabled/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <div className={classNameMap.rowFormItem}>
+                                                <div className={classNameMap.itemContainer}>
+                                                    <div className={classNameMap.formInforLabel}>원가</div>
+                                                </div>
+                                                <div className="col-lg-8 col-md-12">
+                                                            <textarea
+                                                                className={classNameMap.textareaPreCont}
+                                                                rows="1" value={`${cost}`}
+                                                                disabled/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className={classNameMap.rowFormItem}>
+                                                <div className={classNameMap.itemContainer}>
+                                                    <div className={classNameMap.formInforLabel}>용도</div>
+                                                </div>
+                                                <div className="col-lg-8 col-md-12">
+                                                            <textarea
+                                                                className={classNameMap.textareaPreCont}
+                                                                value={purpose} rows="1"
+                                                                disabled/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {viewModalContent}
+                                    <div className="row form-infor__item_etc">
+                                        <div className={classNameMap.itemContainer}>
+                                            <div className={classNameMap.formInforLabel}>기타사항</div>
+                                        </div>
+                                        <div className="col-lg-10 col-md-12">
+                                            {/*<div className="form-control-value"
+                                                     dangerouslySetInnerHTML={{__html: contents}}/>*/}
+                                            <textarea
+                                                className={classNameMap.textareaPreCont}
+                                                value={contents} rows="5"
+                                                disabled/>
+                                        </div>
+                                    </div>
+
+                                    <div className="form-group float-right button-handle-form">
+                                        <MatButton
+                                            variant="contained"
+                                            color="default"
+                                            startIcon={<EditIcon/>}
+                                            onClick={this.commentToggle}
                                         >
-                                            <form onSubmit={this.handleSubmit}>
-                                                <div
-                                                    className="assets_write__modal__body assets_write__modal__tableLine">
-                                                    <div className="modal_form__form-group">
+                                            댓글 작성
+                                        </MatButton>
+                                        <MatButton
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={event => this.onUpdate(deviceCode)}
+                                            endIcon={<SendIcon/>}
+                                        >
+                                            수정
+                                        </MatButton>
+                                    </div>
+                                    <Modal
+                                        isOpen={modal}
+                                        className={`assets_write__modal-dialog 
+                                    assets_write__modal-dialog--success ${modalClass}`}
+                                    >
+                                        <form onSubmit={this.handleSubmit}>
+                                            <div
+                                                className="assets_write__modal__body assets_write__modal__tableLine">
+                                                <div className="modal_form__form-group">
                                             <span className="modal_form__form-group-label text_cor_green">
                                                 {user.id} [{date}]</span>
-                                                        <div className="modal_form__form-group-field">
+                                                    <div className="modal_form__form-group-field">
                                                             <textarea name="comment" value={comment}
                                                                       className="assets_comment"
                                                                       placeholder="댓글 입력 창"
                                                                       onChange={this.handleChange}/>
-                                                        </div>
                                                     </div>
                                                 </div>
-                                                <ButtonToolbar
-                                                    className="assets_write__modal__footer_comment">
-                                                    <Button className="assets_write__modal_ok" color="primary"
-                                                            outline={colored} type="submit">등록</Button>
-                                                    &nbsp;&nbsp;
-                                                    <Button className="assets_write__modal_cancel"
-                                                            onClick={this.commentToggle}>닫기</Button>
-                                                </ButtonToolbar>
-                                            </form>
-                                        </Modal>
-                                    </div>
-                                    <form className="form form--horizontal">
-                                        <div className="form__half">
-                                            <div className={classNameMap.formDivClass}>
-                                                <span className={classNameMap.formSpanClass}>장비코드</span>
-                                                <div className={classNameMap.formDivSubClass}>
-                                                    <b><h6 style={deviceStyle}>{deviceCode}</h6></b>
-                                                </div>
                                             </div>
-                                            <div className={classNameMap.formDivClass}>
-                                                <span className={classNameMap.formSpanClass}>장비구분</span>
-                                                <div className={classNameMap.formDivSubClass}>
-                                                    {deviceType}
-                                                </div>
-                                            </div>
-                                            <div className={classNameMap.formDivClass}>
-                                                <span className={classNameMap.formSpanClass}>고객사</span>
-                                                <div className={classNameMap.formDivSubClass}>
-                                                    {customerName}/{customer}
-                                                </div>
-                                            </div>
-                                            <div className={classNameMap.formDivClass}>
-                                                <span className={classNameMap.formSpanClass}>소유업체명</span>
-                                                <div className={classNameMap.formDivSubClass}>
-                                                    {ownerCompanyName}/{ownerCompany}
-                                                </div>
-                                            </div>
-                                            <div className={classNameMap.formDivClass}>
-                                                <span className={classNameMap.formSpanClass}>HW S/N</span>
-                                                <div className={classNameMap.formDivSubClass}>
-                                                    {hwSn}
-                                                </div>
-                                            </div>
-                                            <div className={classNameMap.formDivClass}>
-                                                <span className={classNameMap.formSpanClass}>원가</span>
-                                                <div className={classNameMap.formDivSubClass}>
-                                                    {cost}
-                                                </div>
-                                            </div>
-                                            <div className={classNameMap.formDivClass}>
-                                                <span className={classNameMap.formSpanClass}>용도</span>
-                                                <div className={classNameMap.formDivSubClass}>
-                                                    {purpose}
-                                                </div>
-                                            </div>
-                                            {viewModalContentLeft}
-                                        </div>
-                                        <div className="form__half">
-                                            <div className={classNameMap.formDivClass}>
-                                                <span className={classNameMap.formSpanClass}>IDC / 랙번호</span>
-                                                <div className={classNameMap.formDivSubClass}>
-                                                    {idc}/{rack}
-                                                </div>
-                                            </div>
-                                            <div className={classNameMap.formDivClass}>
-                                                <span className={classNameMap.formSpanClass}>제조사 / 모델명</span>
-                                                <div className={classNameMap.formDivSubClass}>
-                                                    {manufacture}/{model}
-                                                </div>
-                                            </div>
-                                            <div className={classNameMap.formDivClass}>
-                                                <span className={classNameMap.formSpanClass}>소유권/소유권구분</span>
-                                                <div className={classNameMap.formDivSubClass}>
-                                                    {ownership}/{ownershipDiv}
-                                                </div>
-                                            </div>
-                                            <div className={classNameMap.formDivClass}>
-                                                <span className={classNameMap.formSpanClass}>임대기간</span>
-                                                <div className={classNameMap.formDivSubClass}>
-                                                    {rentDateSliceStr}
-                                                </div>
-                                            </div>
-                                            <div className={classNameMap.formDivClass}>
-                                                <span className={classNameMap.formSpanClass}>입고일</span>
-                                                <div className={classNameMap.formDivSubClass}>
-                                                    {warehousingDate}
-                                                </div>
-                                            </div>
-                                            {viewModalContentRight}
-                                        </div>
-                                        <div className={classNameMap.formDivClass}>
-                                            <span className={classNameMap.formSpanClass}>기타사항</span>
-                                            <div className={classNameMap.formDivSubClass}
-                                                 dangerouslySetInnerHTML={{__html: contents}}/>
-                                        </div>
-                                    </form>
-                                    <ButtonToolbar className="assets_write__modal__footer">
-                                        <Button className="assets_write__modal_ok" outline={colored}
-                                                color="primary"
-                                                onClick={event => this.onUpdate(deviceCode)}>수정</Button>
-                                    </ButtonToolbar>
-                                </CardBody>
+                                            <ButtonToolbar
+                                                className="assets_write__modal__footer_comment">
+                                                <Button className="assets_write__modal_ok" color="primary"
+                                                        outline={colored} type="submit">등록</Button>
+                                                &nbsp;&nbsp;
+                                                <Button className="assets_write__modal_cancel"
+                                                        onClick={this.commentToggle}>닫기</Button>
+                                            </ButtonToolbar>
+                                        </form>
+                                    </Modal>
+                                </div>
                             </ExpansionPanelDetails>
                         </ExpansionPanel>
                         <ExpansionPanel>
@@ -1161,6 +939,17 @@ class AssetsView extends PureComponent {
             </Col>
         );
     }
+
+    /*  // eslint-disable-next-line class-methods-use-this
+      ReChange(props) {
+          const foo = props;
+          const replaceChar = '|';
+          const output = [...foo].map(char => (
+              <li>{char}</li>
+          ));
+
+          return <React.Fragment>{output}</React.Fragment>;
+      }*/
 }
 
 export default reduxForm({
