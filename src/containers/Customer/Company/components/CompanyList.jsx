@@ -17,9 +17,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {makeStyles} from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
 import { SnackbarProvider, useSnackbar } from 'notistack';
-// eslint-disable-next-line import/named
+import ReactTooltip from "react-tooltip";
 import { initRegisterCompany, getCompanyList } from "../../../../redux/actions/companiesActions";
-// eslint-disable-next-line import/named
 import {initRegisterUser} from "../../../../redux/actions/usersActions";
 import {
     pagingChangeCurrentPage,
@@ -42,6 +41,7 @@ const headRows = [
     {id: 'name', disablePadding: false, label: '회사명'},
     {id: 'tel', disablePadding: false, label: '전화번호'},
     {id: 'email', disablePadding: false, label: '이메일'},
+    {id: 'cpUserId', disablePadding: false, label: '대표 ID'},
     {id: 'address', disablePadding: false, label: '주소'},
     {id: 'memo', disablePadding: false, label: '메모'},
 ];
@@ -78,6 +78,10 @@ const useStyles = makeStyles(theme => ({
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
+    },
+    reactTooltip: {
+        fontSize: 7,
+        fontFamily: "GmarketSansTTFBold",
     },
 }));
 
@@ -307,6 +311,14 @@ const CompanyList = () => {
         />
     );
 
+    /** 글자수 체크 함수 */
+    const checkStringLength = (str) => {
+        if (str && str.length >= 35) {
+            return str.substr(0, 34).concat('......');
+        }
+        return str;
+    };
+
     const tableRows = (
         <TableBody>
             { data && data.map((row) => {
@@ -325,24 +337,56 @@ const CompanyList = () => {
                             <TableCell className="cb-material-table__cell" padding="checkbox" >
                                 <Checkbox checked={isSelected} className="cb-material-table__checkbox" />
                             </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
+                            <TableCell
+                                className="cb-material-table__cell cb-material-table__cell-right"
+                                style={{width: "5%"}}
+                            >
                                 {row.idx}
                             </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
+                            <TableCell
+                                className="cb-material-table__cell cb-material-table__cell-right"
+                                style={{width: "15%"}}
+                            >
                                 {row.name}
                             </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
+                            <TableCell
+                                className="cb-material-table__cell cb-material-table__cell-right"
+                                style={{width: "15%"}}
+                            >
                                 {row.tel}
                             </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
+                            <TableCell
+                                className="cb-material-table__cell cb-material-table__cell-right"
+                                style={{width: "15%"}}
+                            >
                                 {row.email}
                             </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
-                                {row.address}
+                            <TableCell className="cb-material-table__cell cb-material-table__cell-right"
+                                style={{width: "10%"}}
+                            >
+                                {row.cpUserId}
                             </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right" >
-                                {row.memo}
+                            <TableCell
+                                className="cb-material-table__cell cb-material-table__cell-right"
+                                style={{width: "25%"}}
+                                data-tip={row.address}
+                                data-for="tooltip"
+                            >
+                                {checkStringLength(row.address)}
                             </TableCell>
+                                <TableCell
+                                className="cb-material-table__cell cb-material-table__cell-right"
+                                style={{width: "25%"}}
+                                data-tip={row.memo}
+                                data-for="tooltip"
+                            >
+                                {checkStringLength(row.memo)}
+                            </TableCell>
+                            {/*Tooltip*/}
+                            <ReactTooltip id="tooltip" place="top" effect="solid"
+                                          delayHide={500} type="info"
+                                          className={classes.reactTooltip}
+                                          getContent={dataTip => `${dataTip}`} />
                         </TableRow>
                     );
                 })
@@ -352,8 +396,8 @@ const CompanyList = () => {
 
     return (
         <Col md={12} lg={12}>
-            <Card>
-                <CardBody>
+            <Card className="cb-card">
+                <CardBody className="cb-card-body">
                     <CbAdminTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
                         handleDeleteSelected={handleDeleteSelected}

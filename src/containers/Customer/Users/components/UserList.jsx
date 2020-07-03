@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from "react";
-import { Card, CardBody, Col } from 'reactstrap';
+import {
+    Card,
+    CardBody,
+    Col,
+    Container,
+    Row,
+} from 'reactstrap';
 import Avatar from "react-avatar";
 
 import Table from '@material-ui/core/Table';
@@ -21,7 +27,10 @@ import Box from '@material-ui/core/Box';
 import TableHead from '@material-ui/core/TableHead';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import MuiAvatar from '@material-ui/core/Avatar';
+import Grid from '@material-ui/core/Grid';
 import {useSnackbar} from "notistack";
+import {StickyContainer} from "react-sticky";
 import {
     pagingChangeCurrentPage,
     pagingChangeCurrentPageNext, pagingChangeCurrentPagePrev, pagingChangeDense, pagingChangeOrder, pagingChangeOrderBy,
@@ -43,7 +52,6 @@ const headRows = [
     {id: 'hp', disablePadding: false, label: '전화번호'},
     {id: 'cpName', disablePadding: false, label: '회사명'},
     {id: 'authlevel', disablePadding: false, label: '권한'},
-    {id: 'collapse', disablePadding: false, label: ''},
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -73,6 +81,17 @@ const useStyles = makeStyles(theme => ({
             borderBottom: 'unset',
         },
     },
+    spanSubject: {
+        display: 'inline-block',
+        width: '100px',
+    },
+    spanContents: {
+        display: 'inline-block',
+        // width: '200px',
+    },
+    grid: {
+        flexGrow: 1,
+    },
 }));
 
 const UserList = () => {
@@ -86,13 +105,17 @@ const UserList = () => {
      * User Data
      */
     const {
+        /** Paging User Data */
         data,
         getPage,
+        /** Register User */
         msg,
         msgError,
     } = useSelector(({ usersRd }) => ({
+        /** Paging User Data */
         data: usersRd.data,
         getPage: usersRd.page,
+        /** Register User */
         msg: usersRd.msg,
         msgError: usersRd.msgError,
     }));
@@ -124,25 +147,27 @@ const UserList = () => {
         order: pagingRd.order,
     }));
 
-    /** Modal variable */
-    const [open, setOpen] = React.useState(false);
+    /** Add User in TableToolbar */
+    const [openAddUser, setOpenAddUser] = React.useState(false);
 
     /************************************************************************************
      * Function
      ************************************************************************************/
-    const handleOpen = () => {
-        setOpen(true);
+    /** Add User in TableToolbar */
+    const handleOpenAddUser = () => {
+        setOpenAddUser(true);
     };
 
-    const handleClose = () => {
-        setOpen(false);
+    /** Add User in TableToolbar */
+    const handleCloseAddUser = () => {
+        setOpenAddUser(false);
     };
 
-    const handleTriggerFailure = () => {
+    const handleSnackbarFailure = () => {
         enqueueSnackbar('계정 등록에 실패했습니다!');
     };
 
-    const handleTriggerSuccess = () => {
+    const handleSnackbarSuccess = () => {
         // variant could be success, error, warning, info, or default
         enqueueSnackbar('계정 등록에 성공했습니다.', { variant: "success" });
     };
@@ -203,6 +228,7 @@ const UserList = () => {
         dispatch(pagingChangeSelected({selected: newSelected}));
     };
 
+    /** Pagination */
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
         const changeOrder = isAsc ? "desc" : "asc";
@@ -212,6 +238,7 @@ const UserList = () => {
         }
     };
 
+    /** Pagination */
     const handleDeleteSelected = () => {
         let copyUser = [...data];
         console.log("deleted Selected:");
@@ -242,6 +269,7 @@ const UserList = () => {
     /** Pagination */
     const getSelected = id => !!selected.get(id);
 
+    /** Pagination */
     const handleRefresh = () => {
         getPageData();
     };
@@ -275,7 +303,7 @@ const UserList = () => {
 
     useEffect(() => {
         if (msg) {
-            handleTriggerSuccess();
+            handleSnackbarSuccess();
             dispatch(initRegisterUser());
             getPageData();
         }
@@ -284,7 +312,7 @@ const UserList = () => {
     useEffect(() => {
         if (msgError) {
             dispatch(initRegisterUser());
-            handleTriggerFailure();
+            handleSnackbarFailure();
         }
     }, [msgError]);
 
@@ -307,7 +335,7 @@ const UserList = () => {
     /************************************************************************************
      * JSX Template
      ************************************************************************************/
-    const Row = (props) => {
+    const ContentsRow = (props) => {
         const { row } = props;
         const [openCollapse, setOpenCollapse] = React.useState(false);
         const isSelected = getSelected(row.idx);
@@ -323,7 +351,8 @@ const UserList = () => {
                     tabIndex={-1}
                     key={row.idx}
                     selected={isSelected}
-                >
+                    onClick={() => setOpenCollapse(!openCollapse)}
+                    >
                     <TableCell
                         className="cb-material-table__cell"
                         padding="checkbox"
@@ -335,48 +364,53 @@ const UserList = () => {
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "5%"}}
                     >
                         {row.idx}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "10%"}}
                     >
                         <Avatar className="topbar__avatar-img-list" name={row.userId} size="40" />
+                        {/*<Avatar className="topbar__avatar-img-list" alt={row.userId} size="40" />*/}
+                        {/*<Avatar alt={row.userId} size="40" src="/static/images/avatar/1.jpg"/>*/}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "15%"}}
                     >
                         {row.userId}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "15%"}}
                     >
                         {row.name}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "20%"}}
                     >
                         {row.email}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "10%"}}
                     >
                         {row.hp}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "15%"}}
                     >
                         {row.cpName}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "10%"}}
                     >
                         {row.authLevel}
-                    </TableCell>
-                    <TableCell>
-                        <IconButton aria-label="expand row" size="small" onClick={() => setOpenCollapse(!openCollapse)}>
-                            {openCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                        </IconButton>
                     </TableCell>
                 </TableRow>
                 <TableRow>
@@ -384,8 +418,84 @@ const UserList = () => {
                         <Collapse in={openCollapse} timeout="auto" unmountOnExit>
                             <Box margin={1}>
                                 <Typography variant="h6" gutterBottom component="div">
-                                    History
+                                    {row.userId}
                                 </Typography>
+                                <div className={classes.grid}>
+                                    <Grid container spacing={1}>
+                                        <Grid item xs={12} sm={6}>
+                                            <ul>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 소속회사 </span>
+                                                    <span className={classes.spanContents}> {row.cpName} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> ID </span>
+                                                    <span className={classes.spanContents}> {row.userId} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 이름 </span>
+                                                    <span className={classes.spanContents}> {row.name} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 전화번호 </span>
+                                                    <span className={classes.spanContents}> {row.hp} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 이메일 </span>
+                                                    <span className={classes.spanContents}> {row.email} </span>
+                                                </li>
+                                            </ul>
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            <ul>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 주소 </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 등록일 </span>
+                                                    <span className={classes.spanContents}> {row.registerDate} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 인증 </span>
+                                                    {/* eslint-disable-next-line no-nested-ternary */}
+                                                    <span className={classes.spanContents}> {row.emailAuth === true ? "개인 이메일 인증" : (row.groupEmailAuth === true ? "그룹 이메일 인증" : "사용 안함")} </span>
+                                                </li>
+                                            </ul>
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            {
+                                                row.groupEmailAuth && row.groupEmailAuthList ? (
+                                                    <React.Fragment>
+                                                        <span className={classes.spanSubject}> 이메일 인증 그룹 </span>
+                                                        <ul>
+                                                            {row.groupEmailAuthList.map(auth => (
+                                                            <li>
+                                                                <span className={classes.spanContents}> {auth.AuthUserId}:{auth.AuthEmail}</span>
+                                                            </li>
+                                                            ))}
+                                                        </ul>
+                                                    </React.Fragment>
+                                                ) : <React.Fragment/>
+                                            }
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            {
+                                                row.participateInAccountList && row.participateInAccountList.length > 0 ? (
+                                                    <React.Fragment>
+                                                        <span className={classes.spanSubject}> 사용하는 계정 ID </span>
+                                                        <ul>
+                                                            {row.participateInAccountList.map(paccount => (
+                                                            <li>
+                                                                <span className={classes.spanContents}>{paccount.UserId}</span>
+                                                            </li>
+                                                            ))}
+                                                        </ul>
+                                                    </React.Fragment>
+                                                ) : <React.Fragment/>
+                                            }
+                                        </Grid>
+                                    </Grid>
+                                </div>
                             </Box>
                         </Collapse>
                     </TableCell>
@@ -394,99 +504,10 @@ const UserList = () => {
         );
     };
 
-    // const tableRows = (
-    //     <TableBody>
-    //         { data && data.map((row) => {
-    //                 const isSelected = getSelected(row.idx);
-    //             return (
-    //                 <React.Fragment>
-    //                     <TableRow
-    //                         hover
-    //                         // className="cb-material-table__row"
-    //                         className={classes.row}
-    //                         role="checkbox"
-    //                         aria-checked={isSelected}
-    //                         tabIndex={-1}
-    //                         key={row.idx}
-    //                         selected={isSelected}
-    //                     >
-    //                         <TableCell
-    //                             className="cb-material-table__cell"
-    //                             padding="checkbox"
-    //                             onClick={event => handleClick(event, row.idx)}
-    //                         >
-    //                             <Checkbox checked={isSelected}
-    //                                       className="cb-material-table__checkbox"
-    //                             />
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.idx}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             <Avatar className="topbar__avatar-img-list" name={row.userId} size="40" />
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.userId}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.name}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.email}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.hp}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.cpName}
-    //                         </TableCell>
-    //                         <TableCell
-    //                             className="cb-material-table__cell cb-material-table__cell-right"
-    //                         >
-    //                             {row.authLevel}
-    //                         </TableCell>
-    //                         <TableCell>
-    //                             <IconButton aria-label="expand row" size="small" onClick={() => setOpenCollapse(!openCollapse)}>
-    //                                 {openCollapse ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-    //                             </IconButton>
-    //                         </TableCell>
-    //                     </TableRow>
-    //                     <TableRow>
-    //                         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
-    //                             <Collapse in={openCollapse} timeout="auto" unmountOnExit>
-    //                                 <Box margin={1}>
-    //                                     <Typography variant="h6" gutterBottom component="div">
-    //                                         History
-    //                                     </Typography>
-    //                                 </Box>
-    //                             </Collapse>
-    //                         </TableCell>
-    //                     </TableRow>
-    //                 </React.Fragment>
-    //             );
-    //             })
-    //         }
-    //     </TableBody>
-    // );
-
     return (
         <Col md={12} lg={12}>
-            <Card>
-                <CardBody>
+            <Card className="cb-card">
+                <CardBody className="cb-card-body">
                     <CbAdminTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
                         handleDeleteSelected={handleDeleteSelected}
@@ -494,7 +515,7 @@ const UserList = () => {
                         onRequestSort={handleRequestSort}
                         rows={headRows}
                         toolbarTitle="계정 리스트"
-                        handleOpen={handleOpen}
+                        handleOpen={handleOpenAddUser}
                         contents="계정"
                     />
                     <div className="cb-material-table__wrap">
@@ -515,10 +536,9 @@ const UserList = () => {
                                 />
                                 <TableBody>
                                     { data && data.map(row => (
-                                        <Row key={row.idx} row={row} />
+                                        <ContentsRow key={row.idx} row={row} />
                                     ))}
                                 </TableBody>
-                                {/*// {tableRows}*/}
                             </Table>
                         </TableContainer>
                         {paginationBar}
@@ -528,7 +548,7 @@ const UserList = () => {
                             label="Dense padding"
                         />
                     </div>
-                    <RegisterUserPage open={open} handleClose={handleClose}/>
+                    <RegisterUserPage open={openAddUser} handleClose={handleCloseAddUser}/>
                 </CardBody>
             </Card>
         </Col>

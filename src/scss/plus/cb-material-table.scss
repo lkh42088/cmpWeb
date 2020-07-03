@@ -88,8 +88,10 @@
 }
 
 .cb-material-table__cell.cb-material-table__cell--sort {
+  text-align: center;   // [01July2020,khlee]
 
   span {
+    padding-left: 20px; // [01July2020,khlee]
     transition: 0.3s;
 
     @include themify($themes) {
@@ -105,6 +107,7 @@
 .cb-material-table__cell, .cb-material-table__sort-label, .cb-material-table__toolbar-button {
 
   @include themify($themes) {
+    text-align: center;   // [01July2020,khlee]
     color: themed('colorText');
     font-size: 10px;
     font-family: "Nanum Square acEB"; // Add for Table Cell [2020.06.10 LKH]

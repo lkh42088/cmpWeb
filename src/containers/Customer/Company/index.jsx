@@ -4,7 +4,7 @@ import { SnackbarProvider } from 'notistack';
 import CompanyList from "./components/CompanyList";
 
 const CompaniesModule = () => (
-    <Container>
+    <Container fluid="true">
         <Row>
             <Col md={12}>
                 {/* eslint-disable-next-line react/no-unescaped-entities */}

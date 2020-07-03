@@ -137,7 +137,7 @@ const RegisterUserPage = (props) => {
      * Variable
      ************************************************************************************/
     const classes = useStyles();
-    const {open, handleClose, handleStrictlyClose } = props;
+    const {open, handleClose } = props;
     const dispatch = useDispatch();
     const {
         user,
@@ -189,6 +189,9 @@ const RegisterUserPage = (props) => {
     const [openMenu, setOpenMenu] = React.useState(false);
     const anchorRef = React.useRef(null);
 
+    /************************************************************************************
+     * Functions
+     ************************************************************************************/
     const handleClickCompanyMenu = () => {
         setOpenMenu(prevOpen => !prevOpen);
     };
@@ -234,9 +237,6 @@ const RegisterUserPage = (props) => {
         }));
     };
 
-    /************************************************************************************
-     * Functions
-     ************************************************************************************/
     const handleDialogClose = () => {
         handleClose();
     };
