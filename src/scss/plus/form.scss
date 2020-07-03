@@ -395,6 +395,7 @@
   margin-top: 2px;
 }
 
+
 .modal_form__button-toolbar {
   margin-top: 10px;
   @include directify($directions) {
@@ -626,7 +627,7 @@
 }
 
 .button-handle-form {
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 5px;
 
   button {

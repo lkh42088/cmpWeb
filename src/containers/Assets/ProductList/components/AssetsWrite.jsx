@@ -185,7 +185,8 @@ class AssetsWrite extends PureComponent {
             assetState, dispatch, handleSubmit,
         } = this.props;
         const {searchToggleDivision} = this.state;
-        console.log("searchToggleDivision : ", searchToggleDivision);
+        console.log("function searchToggleDivision : ", searchToggleDivision);
+        console.log("function val : ", val);
 
         if (searchToggleDivision === 'customer') {
             this.setState({
@@ -502,7 +503,7 @@ class AssetsWrite extends PureComponent {
 
         let viewContent;
 
-        //console.log("render searchCustomerId : ", searchCustomerId);
+        console.log("render searchCustomerId : ", searchCustomerId);
 
         switch (assetState.deviceType) {
             case 'server':
@@ -717,11 +718,11 @@ class AssetsWrite extends PureComponent {
 
         // TODO 디자인은 나중에
         const viewSearchCompany = (
-            <TableBody>
+            <Fragment>
                 {assetState.company.length !== undefined
                     ? (
                         assetState.company.map(d => (
-                            <TableRow key={d.userId.toString()}>
+                            <TableRow key={d.idx}>
                                 <TableCell className="material-table__cell material-table__cell-right"
                                 >{/*회사명*/}
                                     <b className="text_cor_green mouse_over_list">
@@ -729,7 +730,7 @@ class AssetsWrite extends PureComponent {
                                              onClick={event => this.setSearchCompany(d.userId)}
                                              onKeyDown={event => this.setSearchCompany(d.userId)}
                                              role="button" tabIndex="0"><span
-                                            className="circle__ste"/>{d.name}</div>
+                                            className="circle__ste"/>{d.userId}</div>
                                     </b>
                                 </TableCell>
                                 <TableCell className="material-table__cell material-table__cell-right"
@@ -747,7 +748,7 @@ class AssetsWrite extends PureComponent {
                         </TableRow>
                     )
                 }
-            </TableBody>
+            </Fragment>
         );
 
         return (
@@ -988,7 +989,9 @@ class AssetsWrite extends PureComponent {
                                 </span>
                                 <div className="modal_form__form-group-field">
                                     <Table className="material-table" size="small">
-                                        {viewSearchCompany}
+                                        <TableBody>
+                                            {viewSearchCompany}
+                                        </TableBody>
                                     </Table>
                                 </div>
                             </div>

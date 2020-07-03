@@ -251,7 +251,8 @@
 }
 
 .chat__bubble-message-wrap {
-  max-width: 570px;
+  /*max-width: 570px;*/
+  max-width: calc(90% - 10px);
   @include directify($directions) {
     #{directed('padding-right')}: 40px;
     #{directed('padding-left')}: 20px;
@@ -312,6 +313,11 @@
       #{directed('margin-left')}: 5px;
     }
   }
+}
+
+.chat__bubble-btn {
+  padding-top: 8px;
+  font-size: smaller;
 }
 
 .chat__bubble-download {
@@ -509,13 +515,41 @@
   }
 
   @include themify($themes) {
-    background-color: themed('colorBackgroundBody');
-    border: 1px solid themed('colorBackgroundBody');
     color: themed('colorText');
+    background: themed('colorBackgroundBody');
+    border: 1px solid themed('colorFieldsBorder');
   }
 
   &:focus, &:hover, &:active {
     border-color: $color-accent;
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+.chat__field-textarea {
+  width: 100%;
+  border: none;
+  resize: none;
+  line-height: 1.33;
+  transition: 0.3s;
+  padding: 10px;
+  background-color: rgba(234, 238, 255, 0.6);
+
+  @include directify($directions) {
+    #{directed('padding-left')}: 15px;
+    #{directed('padding-right')}: 65px;
+  }
+
+  @include themify($themes) {
+    /*background-color: themed('colorBackgroundBody');*/
+    /*border: 1px solid themed('colorBackgroundBody');*/
+    color: themed('colorText');
+  }
+
+  &:focus, &:hover, &:active {
+    /*border: 1px solid $color-materal-primary;*/
+    /*border-color: $color-materal-primary;*/
     outline: none;
     box-shadow: none;
   }

@@ -7,6 +7,7 @@ import classNames from "classnames";
 import {withTranslation} from 'react-i18next';
 import PropTypes from 'prop-types';
 import moment from "moment";
+import Avatar from "react-avatar";
 import MatButton from '@material-ui/core/Button';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -17,6 +18,8 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import SendIcon from "@material-ui/icons/Send";
 import TocIcon from '@material-ui/icons/Toc';
 import EditIcon from '@material-ui/icons/Edit';
+import PaperclipIcon from 'mdi-react/PaperclipIcon';
+import EmoticonIcon from 'mdi-react/EmoticonIcon';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 
@@ -657,7 +660,8 @@ class AssetsView extends PureComponent {
                                         <div className="col-md-6">
                                             <div className={classNameMap.rowFormItem}>
                                                 <div className={classNameMap.itemContainer}>
-                                                    <div className={classNameMap.formInforLabel}>IDC / 랙번호</div>
+                                                    <div className={classNameMap.formInforLabel}>IDC / 랙번호
+                                                    </div>
                                                 </div>
                                                 <div className="col-lg-8 col-md-12">
                                                             <textarea
@@ -685,7 +689,8 @@ class AssetsView extends PureComponent {
                                         <div className="col-md-6">
                                             <div className={classNameMap.rowFormItem}>
                                                 <div className={classNameMap.itemContainer}>
-                                                    <div className={classNameMap.formInforLabel}>제조사 / 모델명</div>
+                                                    <div className={classNameMap.formInforLabel}>제조사 / 모델명
+                                                    </div>
                                                 </div>
                                                 <div className="col-lg-8 col-md-12">
                                                             <textarea
@@ -714,7 +719,8 @@ class AssetsView extends PureComponent {
                                         <div className="col-md-6">
                                             <div className={classNameMap.rowFormItem}>
                                                 <div className={classNameMap.itemContainer}>
-                                                    <div className={classNameMap.formInforLabel}>소유권/소유권구분</div>
+                                                    <div className={classNameMap.formInforLabel}>소유권/소유권구분
+                                                    </div>
                                                 </div>
                                                 <div className="col-lg-8 col-md-12">
                                                             <textarea
@@ -829,48 +835,51 @@ class AssetsView extends PureComponent {
                                     <div className="form-group float-right button-handle-form">
                                         <MatButton
                                             variant="contained"
-                                            color="default"
-                                            startIcon={<EditIcon/>}
-                                            onClick={this.commentToggle}
-                                        >
-                                            댓글 작성
-                                        </MatButton>
-                                        <MatButton
-                                            variant="contained"
                                             color="primary"
                                             onClick={event => this.onUpdate(deviceCode)}
                                             endIcon={<SendIcon/>}
                                         >
                                             수정
                                         </MatButton>
+                                        <MatButton
+                                            variant="contained"
+                                            color="default"
+                                            startIcon={<EditIcon/>}
+                                            onClick={this.commentToggle}
+                                        >
+                                            댓글 작성
+                                        </MatButton>
                                     </div>
-                                    <Modal
-                                        isOpen={modal}
-                                        className={`assets_write__modal-dialog 
-                                    assets_write__modal-dialog--success ${modalClass}`}
-                                    >
+                                    <Modal isOpen={modal}>
                                         <form onSubmit={this.handleSubmit}>
-                                            <div
-                                                className="assets_write__modal__body assets_write__modal__tableLine">
-                                                <div className="modal_form__form-group">
-                                            <span className="modal_form__form-group-label text_cor_green">
-                                                {user.id} [{date}]</span>
-                                                    <div className="modal_form__form-group-field">
-                                                            <textarea name="comment" value={comment}
-                                                                      className="assets_comment"
-                                                                      placeholder="댓글 입력 창"
-                                                                      onChange={this.handleChange}/>
+                                            <div className="modal-comment-wrap">
+                                                <span className="modal_form__form-group-label text_cor_mat_p">
+                                                    <Avatar className="topbar__avatar-img-list" name={user.id}
+                                                            size="20"/>&nbsp;{user.name}({user.id}) [{date}]
+                                                </span>
+                                                <div className="modal_form__form-group-field">
+                                                    <div className="chat__text-field">
+                                                        <textarea className="chat__field-textarea"
+                                                                  placeholder="Type here…"
+                                                                  rows={8}
+                                                                  name="comment" value={comment}
+                                                                  onChange={this.handleChange}/>
+                                                        <div
+                                                            className="form-group float-right button-handle-form">
+                                                            <MatButton variant="contained" size="small"
+                                                                       color="primary" type="submit"
+                                                                       startIcon={<EditIcon/>}>
+                                                                등록
+                                                            </MatButton>
+                                                            <MatButton variant="contained"
+                                                                       size="small" color="default"
+                                                                       onClick={this.commentToggle}>
+                                                                닫기
+                                                            </MatButton>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <ButtonToolbar
-                                                className="assets_write__modal__footer_comment">
-                                                <Button className="assets_write__modal_ok" color="primary"
-                                                        outline={colored} type="submit">등록</Button>
-                                                &nbsp;&nbsp;
-                                                <Button className="assets_write__modal_cancel"
-                                                        onClick={this.commentToggle}>닫기</Button>
-                                            </ButtonToolbar>
                                         </form>
                                     </Modal>
                                 </div>

@@ -2,12 +2,18 @@ import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {
-    Button, ButtonToolbar, Card, Col, Modal,
+    Button, ButtonToolbar, Card, Col, Modal, Row,
 } from 'reactstrap';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import MatButton from '@material-ui/core/Button';
+import Avatar from "react-avatar";
+import moment from "moment";
+
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import classNames from 'classnames';
@@ -20,6 +26,7 @@ import {
 import ModalSub from '../../../../shared/components/ModalSub';
 
 //assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
+
 class AssetsComment extends PureComponent {
     static propTypes = {
         // eslint-disable-next-line react/forbid-prop-types
@@ -234,7 +241,7 @@ class AssetsComment extends PureComponent {
         this.setState({
             comment: val.contents,
             commentIdx: val.idx,
-            registerId: user.id, //TODO 로그인한 ID로 변경 필요~
+            registerId: val.registerId, //TODO 로그인한 ID로 변경 필요~
             registerName: val.registerName,
             registerDate: val.registerDate,
         });
@@ -264,22 +271,118 @@ class AssetsComment extends PureComponent {
 
         let deviceComments;
 
-        const modalClass = classNames({
-            'assets_write__modal-dialog': true,
-            'assets_write__modal-dialog--colored': true,
-            'assets_write__modal-dialog--header': true,
+        const bubbleClass = classNames({
+            chat__bubble: true,
+            'chat__bubble--active': true,
         });
 
         if (assetState.comments.length > 0) {
             deviceComments = (
                 <Fragment>
-                    {assetState.comments
-                        .sort()
-                        .map(d => (
-                            <div key={d.idx}>
-                                <span>▶ {d.registerName} ({d.registerId}) -  [{d.registerDate}]</span>
-                                <div>
-                                    <span className="modal_comment_del" type="button" role="button" tabIndex="0"
+                    <div className="chat--open">
+                        <div className="chat__dialog-messages">
+                            {assetState.comments.map((d, i) => (
+                                <div className={bubbleClass}>
+                                    <div className="chat__bubble-avatar">
+                                        {/*<img src={comment.avatar} alt="ava" />*/}
+                                        <Avatar className="topbar__avatar-img-list" name={d.registerId}
+                                                size="40"/>
+                                    </div>
+                                    <div className="chat__bubble-message-wrap">
+                                        <p className="chat__bubble-contact-name">
+                                            {d.registerName}
+                                            &nbsp;
+                                            [{moment(d.registerDate).format('YYYY-MM-DD')}]
+                                            <div className="chat__bubble-download-wrap">
+                                                <p className="chat__bubble-btn">
+                                                    <IconButton aria-label="delete" size="small"
+                                                                color="secondary"
+                                                                onClick={() => this.commentToggle('delete', d)}>
+                                                        삭제<DeleteIcon fontSize="inherit"/>
+                                                    </IconButton>
+                                                    <IconButton aria-label="delete" size="small"
+                                                                color="primary"
+                                                                onClick={() => this.commentToggle('update', d)}>
+                                                        수정<EditIcon fontSize="inherit"/>
+                                                    </IconButton>
+                                                </p>
+                                            </div>
+                                            {/* {moment(d.registerDate).format('YYYY-MM-DD')}
+                                            <IconButton aria-label="delete" size="small" color="secondary"
+                                                        onClick={() => this.commentToggle('delete', d)}>
+                                                삭제<DeleteIcon fontSize="inherit"/>
+                                            </IconButton>
+                                            <IconButton aria-label="delete" size="small" color="primary"
+                                                        onClick={() => this.commentToggle('update', d)}>
+                                                수정<EditIcon fontSize="inherit"/>
+                                            </IconButton>*/}
+                                            {/*<MatButton color="secondary"
+                                                       endIcon={<DeleteForeverIcon/>}
+                                                       onClick={() => this.commentToggle('delete', d)}>
+                                                삭제
+                                            </MatButton>
+                                            <MatButton color="primary"
+                                                       endIcon={<EditIcon/>}
+                                                       onClick={() => this.commentToggle('update', d)}>
+                                           yarn     수정
+                                            </MatButton>*/}
+                                            {/*<IconButton aria-label="delete"
+                                                        onClick={() => this.commentToggle('delete', d)}>
+                                                <DeleteIcon fontSize="small" />
+                                            </IconButton>
+                                            <IconButton aria-label="update"
+                                                        onClick={() => this.commentToggle('update', d)}>
+                                                <EditIcon fontSize="small" />
+                                            </IconButton>*/}
+                                        </p>
+                                        <p className="chat__bubble-message">
+                                            <pre>{d.contents}</pre>
+                                        </p>
+                                        {/*<p className="chat__bubble-date">
+                                            {moment(d.registerDate).format('YYYY-MM-DD')}
+                                            <IconButton aria-label="delete"
+                                                        onClick={() => this.commentToggle('delete', d)}>
+                                                <DeleteIcon fontSize="small" />
+                                            </IconButton>
+                                            <IconButton aria-label="update"
+                                                        onClick={() => this.commentToggle('update', d)}>
+                                                <EditIcon fontSize="small" />
+                                            </IconButton>*/}
+                                        {/*<br/>*/}
+                                        {/*<span className="modal_comment_del" type="button" role="button"
+                                                  tabIndex="0"
+                                                  onClick={() => this.commentToggle('delete', d)}
+                                                  onKeyDown={() => this.commentToggle('delete', d)}>
+                                                <DeleteForeverIcon/>삭제
+                                            </span>*/}
+                                        {/*<MatButton color="secondary"
+                                                       endIcon={<DeleteForeverIcon/>}
+                                                       onClick={() => this.commentToggle('delete', d)}>
+                                                삭제
+                                            </MatButton>
+                                            <MatButton color="primary"
+                                                       endIcon={<DeleteForeverIcon/>}
+                                                       onClick={() => this.commentToggle('update', d)}>
+                                                수정
+                                            </MatButton>*/}
+                                        {/*<span className="modal_comment_edit" type="button" role="button"
+                                                  tabIndex="0"
+                                                  onClick={() => this.commentToggle('update', d)}
+                                                  onKeyDown={() => this.commentToggle('update', d)}>
+                                                <EditIcon/>수정
+                                             </span>*/}
+                                        {/*</p>*/}
+                                    </div>
+                                </div>
+                            ))}
+                            {/*{assetState.comments
+                            .sort()
+                            .map(d => (
+                                <div key={d.idx} className="chat__dialog-messages">
+                                    <span>▶ {d.registerName} ({d.registerId}) -  [{d.registerDate}]</span>
+                                    <div>
+                                    <span className="modal_comment_del" type="button" role="button"
+                                          tabIndex="0"
                                           onClick={() => this.commentToggle('delete', d)}
                                           onKeyDown={() => this.commentToggle('delete', d)}>삭제
                                     </span>
@@ -289,38 +392,33 @@ class AssetsComment extends PureComponent {
                                               onKeyDown={() => this.commentToggle('update', d)}
                                         >수정
                                     </span>
+                                    </div>
+                                    <pre>
+                                        {d.contents}
+                                    </pre>
                                 </div>
-                                <pre>
-                                    {d.contents}
-                                </pre>
-                            </div>
-                        ))}
+                            ))}*/}
+                        </div>
+                    </div>
                 </Fragment>
             );
         } else {
             deviceComments = (
                 <Fragment>
-                    <span>▶ 등록된 댓글이 없습니다.</span>
+                    <div className="chat__dialog-messages">
+                        <div className="chat__dialog-messages-empty">
+                            <p>No messages</p>
+                        </div>
+                    </div>
                 </Fragment>
             );
         }
 
         return (
-            <div>
-                {/*<Collapse title="댓글 확인"
-                          className="with-shadow modal_comment_register assets_write__modal__tableLine">
-                </Collapse>*/}
+            <Col md={12}>
                 <Fragment>
-                    <Col md={12} lg={12}>
-                        <Card>
-                            {deviceComments}
-                        </Card>
-                    </Col>
-                    <Modal
-                        isOpen={modal}
-                        className={`assets_write__modal-dialog 
-                                    assets_write__modal-dialog--success ${modalClass}`}
-                    >
+                    {deviceComments}
+                    {/*<Modal isOpen={modal}>
                         <form onSubmit={this.handleSubmit}>
                             <div className="assets_write__modal__body assets_write__modal__tableLine">
                                 <div className="modal_form__form-group">
@@ -342,7 +440,41 @@ class AssetsComment extends PureComponent {
                                 >Cancel</Button>
                             </ButtonToolbar>
                         </form>
+                    </Modal>*/}
+                    <Modal isOpen={modal}>
+                        <form onSubmit={this.handleSubmit}>
+                            <div className="modal-comment-wrap">
+                                <span className="modal_form__form-group-label text_cor_mat_p">
+                                    <Avatar className="topbar__avatar-img-list" name={registerId}
+                                            size="20"/>&nbsp;{registerName}({registerId})
+                                    [{moment(registerDate).format("YYYY-MM-DD")}]
+                                </span>
+                                <div className="modal_form__form-group-field">
+                                    <div className="chat__text-field">
+                                        <textarea className="chat__field-textarea"
+                                                  placeholder="Type here…"
+                                                  rows={8}
+                                                  name="comment" value={comment}
+                                                  onChange={this.handleChange}/>
+                                        <div
+                                            className="form-group float-right button-handle-form">
+                                            <MatButton variant="contained" size="small"
+                                                       color="primary" type="submit"
+                                                       startIcon={<EditIcon/>}>
+                                                수정
+                                            </MatButton>
+                                            <MatButton variant="contained"
+                                                       size="small" color="default"
+                                                       onClick={() => this.commentToggle('close')}>
+                                                닫기
+                                            </MatButton>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </Modal>
+
                     {/*<Modal
                         isOpen={modalWarring}
                         toggle={this.modalClose}
@@ -437,9 +569,11 @@ class AssetsComment extends PureComponent {
                                             {
                                                 assetState.stateVal.state === 'request' ? (
                                                     <Fragment>
-                                                        <MatButton className="modal_ok" color="secondary" size="small"
+                                                        <MatButton className="modal_ok" color="secondary"
+                                                                   size="small"
                                                                    onClick={this.commentDelete}>Ok</MatButton>
-                                                        <MatButton className="modal_ok" color="secondary" size="small"
+                                                        <MatButton className="modal_ok" color="secondary"
+                                                                   size="small"
                                                                    onClick={this.modalClose}>Close</MatButton>
                                                     </Fragment>
                                                 ) : (
@@ -475,7 +609,7 @@ class AssetsComment extends PureComponent {
                         )
                     }
                 </Fragment>
-            </div>
+            </Col>
         );
     }
 }
