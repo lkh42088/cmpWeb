@@ -634,12 +634,12 @@ class AssetsView extends PureComponent {
                         </div>
                     </div>
                     <div>
-                        <ExpansionPanel defaultExpanded>
+                        <ExpansionPanel>
                             <ExpansionPanelSummary
                                 expandIcon={<ExpandMoreIcon/>}
                                 aria-controls="panel2a-content"
                                 id="panel2a-header">
-                                <Typography>장비 상세 정보</Typography>
+                                <Typography><h4 className="bold-text">장비 상세 정보</h4></Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
                                 <div className="form-infor">
@@ -850,7 +850,7 @@ class AssetsView extends PureComponent {
                                             댓글 작성
                                         </MatButton>
                                     </div>
-                                    <Modal isOpen={modal}>
+                                    <Modal isOpen={modal} className="comment-modal-dialog modal-comment-wrap">
                                         <form onSubmit={this.handleSubmit}>
                                             <div className="modal-comment-wrap">
                                                 <span className="modal_form__form-group-label text_cor_mat_p">
@@ -891,25 +891,19 @@ class AssetsView extends PureComponent {
                                 aria-controls="panel2a-content"
                                 id="panel2a-header"
                             >
-                                <Typography style={{
-                                    fontSize: "theme.typography.pxToRem(15)",
-                                    fontWeight: "theme.typography.fontWeightRegular",
-                                }}>장비 댓글</Typography>
+                                <Typography><h4 className="bold-text">장비 댓글</h4></Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
                                 <AssetsComment assetState={assetState} dispatch={dispatch} user={user}/>
                             </ExpansionPanelDetails>
                         </ExpansionPanel>
-                        <ExpansionPanel>
+                        <ExpansionPanel defaultExpanded>
                             <ExpansionPanelSummary
                                 expandIcon={<ExpandMoreIcon/>}
                                 aria-controls="panel2a-content"
                                 id="panel2a-header"
                             >
-                                <Typography style={{
-                                    fontSize: "theme.typography.pxToRem(15)",
-                                    fontWeight: "theme.typography.fontWeightRegular",
-                                }}>장비 로그</Typography>
+                                <Typography><h4 className="bold-text">장비 로그</h4></Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
                                 <AssetsLog assetState={assetState} dispatch={dispatch}/>

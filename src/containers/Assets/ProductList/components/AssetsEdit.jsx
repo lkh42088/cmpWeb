@@ -838,23 +838,23 @@ class AssetsEdit extends PureComponent {
 
         // TODO 디자인은 나중에
         const viewSearchCompany = (
-            <TableBody>
+            <Fragment>
                 {assetState.company.length !== undefined
                     ? (
                         assetState.company.map(d => (
-                            <TableRow key={d.userId.toString()}>
+                            <TableRow key={d.idx}>
                                 <TableCell className="material-table__cell material-table__cell-right"
                                 >{/*회사명*/}
                                     <b className="text_cor_green mouse_over_list">
                                         <div className="assets_add_modal_div"
-                                             onClick={event => this.setSearchCompany(d.userId)}
-                                             onKeyDown={event => this.setSearchCompany(d.userId)}
+                                             onClick={event => this.setSearchCompany(d.cpUserId)}
+                                             onKeyDown={event => this.setSearchCompany(d.cpUserId)}
                                              role="button" tabIndex="0"><span
                                             className="circle__ste"/>{d.name}</div>
                                     </b>
                                 </TableCell>
                                 <TableCell className="material-table__cell material-table__cell-right"
-                                >{/*회사 대표 ID*/}{d.userId}
+                                >{/*회사 대표 ID*/}{d.cpUserId}
                                 </TableCell>
                                 <TableCell className="material-table__cell material-table__cell-right"
                                 >{/*회사 email*/}{d.email}
@@ -868,7 +868,7 @@ class AssetsEdit extends PureComponent {
                         </TableRow>
                     )
                 }
-            </TableBody>
+            </Fragment>
         );
 
         return (
@@ -1147,7 +1147,9 @@ class AssetsEdit extends PureComponent {
                                 </span>
                                     <div className="modal_form__form-group-field">
                                         <Table className="material-table" size="small">
-                                            {viewSearchCompany}
+                                            <TableBody>
+                                                {viewSearchCompany}
+                                            </TableBody>
                                         </Table>
                                     </div>
                                 </div>

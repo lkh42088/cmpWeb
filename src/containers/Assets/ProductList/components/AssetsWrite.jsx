@@ -727,14 +727,14 @@ class AssetsWrite extends PureComponent {
                                 >{/*회사명*/}
                                     <b className="text_cor_green mouse_over_list">
                                         <div className="assets_add_modal_div"
-                                             onClick={event => this.setSearchCompany(d.userId)}
-                                             onKeyDown={event => this.setSearchCompany(d.userId)}
+                                             onClick={event => this.setSearchCompany(d.cpUserId)}
+                                             onKeyDown={event => this.setSearchCompany(d.cpUserId)}
                                              role="button" tabIndex="0"><span
-                                            className="circle__ste"/>{d.userId}</div>
+                                            className="circle__ste"/>{d.name}</div>
                                     </b>
                                 </TableCell>
                                 <TableCell className="material-table__cell material-table__cell-right"
-                                >{/*회사 대표 ID*/}{d.userId}
+                                >{/*회사 대표 ID*/}{d.cpUserId}
                                 </TableCell>
                                 <TableCell className="material-table__cell material-table__cell-right"
                                 >{/*회사 email*/}{d.email}
