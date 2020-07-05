@@ -4,7 +4,7 @@ import SubnetHeader from "../CreateSubnet/components/SubnetHeader";
 import SubnetList from "./components/SubnetList";
 
 const SubnetListCard = () => (
-    <Container>
+    <Container fluid="true">
         <Row>
             <Col md={12} >
                 <SubnetHeader head="SUBNET Management > " subhead="SUBNET 목록" />

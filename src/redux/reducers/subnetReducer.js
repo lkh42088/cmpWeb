@@ -38,10 +38,13 @@ const subnetReducer = handleActions(
         [READ_SUBNET]: () => ({
 
         }),
-        [READ_SUBNET_SUCCESS]: (state, action) => ({
+        [READ_SUBNET_SUCCESS]: (state, {payload}) => ({
             ...state,
-            data: action.payload.data,
-            page: action.payload.page,
+            data: payload.data.map((value) => {
+                value.subnetStart = value.subnetStart.concat(' ~ ') + value.subnetEnd;
+                return value;
+            }),
+            page: payload.page,
         }),
         [UPDATE_SUBNET]: () => ({
 
