@@ -561,7 +561,7 @@ const UserList = () => {
                                                         <span className={classes.spanSubject}> 이메일 인증 그룹 </span>
                                                         <ul>
                                                             {row.groupEmailAuthList.map(auth => (
-                                                            <li>
+                                                            <li key={auth.idx}>
                                                                 <span className={classes.spanContents}> {auth.AuthUserId}:{auth.AuthEmail}</span>
                                                             </li>
                                                             ))}
@@ -577,7 +577,7 @@ const UserList = () => {
                                                         <span className={classes.spanSubject}> 사용하는 계정 ID </span>
                                                         <ul>
                                                             {row.participateInAccountList.map(paccount => (
-                                                            <li>
+                                                            <li key={paccount.idx}>
                                                                 <span className={classes.spanContents}>{paccount.UserId}</span>
                                                             </li>
                                                             ))}
