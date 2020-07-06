@@ -121,7 +121,7 @@ class AssetsLog extends PureComponent {
             case '5':
                 return <Badge color="primary">Debug</Badge>;
             default:
-                return 'error';
+                return '';
         }
     };
 
@@ -145,130 +145,130 @@ class AssetsLog extends PureComponent {
         return (
             /*<Collapse title="로그 확인"
                       className="assets_write__modal__tableLine">*/
-                <Col md={12} lg={12}>
-                    <Card>
-                        <CardBody>
-                            <div className="card__title">
-                                <h5 className="bold-text">title</h5>
-                                <h5 className="subhead">Use default table with property <span
-                                    className="red-text">responsive</span></h5>
-                            </div>
-                            <div className="material-table__wrap">
-                                <Table className="material-table" style={{overFlowX: "scroll"}}>
-                                    <thead>
-                                    <tr>
-                                        <th>Level</th>
-                                        <th>Code</th>
-                                        <th>작성자(ID)</th>
-                                        <th>등록일</th>
+            <Col md={12} lg={12}>
+                <Card>
+                    <CardBody>
+                        {/*<div className="card__title">
+                            <h5 className="bold-text">title</h5>
+                            <h5 className="subhead">Use default table with property <span
+                                className="red-text">responsive</span></h5>
+                        </div>*/}
+                        <div className="material-table__wrap">
+                            <Table className="material-table" style={{overFlowX: "scroll"}}>
+                                <thead>
+                                <TableRow>
+                                    <TableCell
+                                        className="material-table__cell material-table__cell--sort material-table__cell-right">Level</TableCell>
+                                    <TableCell
+                                        className="material-table__cell material-table__cell--sort material-table__cell-right">Code</TableCell>
+                                    <TableCell
+                                        className="material-table__cell material-table__cell--sort material-table__cell-right">작성자(ID)</TableCell>
+                                    <TableCell
+                                        className="material-table__cell material-table__cell--sort material-table__cell-right">등록일</TableCell>
 
-                                        <th>구분</th>
-                                        <th>내용</th>
-                                    </tr>
-                                    </thead>
-                                    {
-                                        assetState.deviceLog.length > 0 ? (
-                                            <TableBody>
-                                                {assetState.deviceLog
-                                                    .sort((a, b) => b.idx - a.idx)
-                                                    .slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)
-                                                    .map(d => (
-                                                        <TableRow
-                                                            className="material-table__row"
-                                                            tabIndex={-1}
-                                                            key={d.idx}
-                                                            width="100%"
+                                    <TableCell
+                                        className="material-table__cell material-table__cell--sort material-table__cell-right">구분</TableCell>
+                                    <TableCell
+                                        className="material-table__cell material-table__cell--sort material-table__cell-right">내용</TableCell>
+                                </TableRow>
+                                </thead>
+                                {
+                                    assetState.deviceLog.length > 0 ? (
+                                        <TableBody>
+                                            {assetState.deviceLog
+                                                .sort((a, b) => b.idx - a.idx)
+                                                .slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)
+                                                .map(d => (
+                                                    <TableRow
+                                                        className="material-table__row"
+                                                        tabIndex={-1}
+                                                        key={d.idx}
+                                                    >
+                                                        <TableCell
+                                                            className="material-table__cell material-table__cell-right"
+                                                            component="th"
+                                                            scope="row"
+                                                            padding="none"
                                                         >
-                                                            <TableCell
-                                                                className="material-table__cell material-table__cell-right"
-                                                                component="th"
-                                                                scope="row"
-                                                                padding="none"
-                                                                width="8%"
-                                                            >
-                                                                {this.renderLogLevelSwitch(d.logLevel.toString())}
-                                                            </TableCell>
-                                                            <TableCell
-                                                                className="material-table__cell material-table__cell-right"
-                                                                width="10%"
-                                                            >{this.renderSwitch(d.workCode.toString())}
-                                                            </TableCell>
-                                                            <TableCell
-                                                                className="material-table__cell material-table__cell-right"
-                                                                width="10%"
-                                                            >{d.registerName} ({d.registerId})
-                                                            </TableCell>
-                                                            <TableCell
-                                                                className="material-table__cell material-table__cell-right"
-                                                                width="10%"
-                                                            >{moment(d.registerDate).format("YYYY-MM-DD")}
-                                                            </TableCell>
-                                                            <TableCell
-                                                                className="material-table__cell material-table__cell-right"
-                                                                width="10%"
-                                                            >{d.field}
-                                                            </TableCell>
-                                                            <TableCell
-                                                                className="material-table__cell material-table__cell-right"
-                                                                width="*"
-                                                            >{
-                                                                d.workCode.toString() === '2' ? (
-                                                                    <Fragment>
-                                                                        변경 전 : <span
-                                                                        title={d.oldStatus}>{textLengthOverCut(d.oldStatus, 80)}</span>
-                                                                        <br/>
-                                                                        변경 후 : <span
-                                                                        title={d.newStatus}>{textLengthOverCut(d.newStatus, 80)}</span>
-                                                                    </Fragment>
-                                                                ) : (
-                                                                    <Fragment>
-                                                                        &nbsp;
-                                                                    </Fragment>
-                                                                )
-                                                            }
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                                {emptyRows > 0 && (
-                                                    <TableRow style={{height: 49 * emptyRows}}>
-                                                        <TableCell colSpan={6}/>
+                                                            {this.renderLogLevelSwitch(d.logLevel.toString())}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            className="material-table__cell material-table__cell-right"
+                                                        >{this.renderSwitch(d.workCode.toString())}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            className="material-table__cell material-table__cell-right"
+                                                        >{d.registerName} ({d.registerId})
+                                                        </TableCell>
+                                                        <TableCell
+                                                            className="material-table__cell material-table__cell-right"
+                                                        >{moment(d.registerDate).format("YYYY-MM-DD")}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            className="material-table__cell material-table__cell-right"
+                                                        >{d.field}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            className="material-table__cell material-table__cell-right
+                                                            text-left"
+                                                        >{
+                                                            d.workCode.toString() === '2' ? (
+                                                                <Fragment>
+                                                                    변경 전 : <span
+                                                                    title={d.oldStatus}>{textLengthOverCut(d.oldStatus, 80)}</span>
+                                                                    <br/>
+                                                                    변경 후 : <span
+                                                                    title={d.newStatus}>{textLengthOverCut(d.newStatus, 80)}</span>
+                                                                </Fragment>
+                                                            ) : (
+                                                                <Fragment>
+                                                                    &nbsp;
+                                                                </Fragment>
+                                                            )
+                                                        }
+                                                        </TableCell>
                                                     </TableRow>
-                                                )}
-                                            </TableBody>
-                                        ) : (
-                                            <Fragment>
-                                                <TableBody>
-                                                    <TableRow>
+                                                ))}
+                                            {emptyRows > 0 && (
+                                                <TableRow style={{height: 49 * emptyRows}}>
+                                                    <TableCell colSpan={6}/>
+                                                </TableRow>
+                                            )}
+                                        </TableBody>
+                                    ) : (
+                                        <Fragment>
+                                            <TableBody>
+                                                <TableRow>
                                                     <TableCell collspan="6">
                                                         등록된 로그가 없습니다.
                                                     </TableCell>
-                                                    </TableRow>
-                                                </TableBody>
-                                            </Fragment>
-                                        )
-                                    }
-                                </Table>
-                            </div>
-                            <TablePagination
-                                component="div"
-                                className="material-table__pagination"
-                                count={count}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                backIconButtonProps={{'aria-label': 'Previous Page'}}
-                                nextIconButtonProps={{'aria-label': 'Next Page'}}
-                                onChangePage={this.handleChangePage}
-                                onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                rowsPerPageOptions={[5]}
-                                dir="ltr"
-                                SelectProps={{
-                                    inputProps: {'aria-label': 'rows per page'},
-                                    native: true,
-                                }}
-                            />
-                        </CardBody>
-                    </Card>
-                </Col>
+                                                </TableRow>
+                                            </TableBody>
+                                        </Fragment>
+                                    )
+                                }
+                            </Table>
+                        </div>
+                        <TablePagination
+                            component="div"
+                            className="material-table__pagination"
+                            count={count}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            backIconButtonProps={{'aria-label': 'Previous Page'}}
+                            nextIconButtonProps={{'aria-label': 'Next Page'}}
+                            onChangePage={this.handleChangePage}
+                            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                            rowsPerPageOptions={[5]}
+                            dir="ltr"
+                            SelectProps={{
+                                inputProps: {'aria-label': 'rows per page'},
+                                native: true,
+                            }}
+                        />
+                    </CardBody>
+                </Card>
+            </Col>
             /*</Collapse>*/
         );
     }

@@ -296,6 +296,24 @@
   }
 }
 
+// (03july2020,ebjee)
+.chat__bubble-download-comment-wrap {
+  max-width: 215px;
+  margin-top: 10px;
+  font-size: 10px;
+
+  @media screen and (min-width: 1366px) {
+    position: absolute;
+    top: 0;
+    @include directify($directions) {
+      #{directed('right')}: 20px;
+    }
+    max-width: calc(100% - 100px);
+    width: 100px;
+    margin-top: 0;
+  }
+}
+
 .chat__bubble-file-name {
   white-space: nowrap;
   display: flex;
@@ -315,9 +333,22 @@
   }
 }
 
+// (03july2020,ebjee)
 .chat__bubble-btn {
   padding-top: 8px;
   font-size: smaller;
+
+  &.del {
+    @include themify($themes) {
+      color: themed('colorMateralSecondaryText');
+    }
+  }
+
+  &.edit {
+    @include themify($themes) {
+      color: themed('colorMateralPrimaryText');
+    }
+  }
 }
 
 .chat__bubble-download {
@@ -369,6 +400,11 @@
     color: themed('colorText');
   }
 
+  pre {
+    @include themify($themes) {
+      color: themed('colorText');
+    }
+  }
 }
 
 .chat__bubble-date {

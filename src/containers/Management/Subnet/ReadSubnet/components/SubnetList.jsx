@@ -42,11 +42,12 @@ import SpringModal from "../../../../Common/SpringModal";
 /** Custom CSS **/
 const useStyles = makeStyles(theme => ({
     root: {
-        fontFamily: 'Nanum Square acEB',
+        fontFamily: "Nanum Square acEB",
         fontSize: 8,
         fontWeight: "revert",
-        backgroundColor: theme.backgroundColor,
-        color: theme.color,
+        // '&:hover': {
+        //     color: "#063263",
+        // },
     },
     tab: {
         fontSize: 12,
@@ -89,6 +90,7 @@ const SubnetList = () => {
         data: subnetRd.data,
         page: subnetRd.page,
     }));
+
     /**
      * Pagination state
      **/
@@ -120,11 +122,11 @@ const SubnetList = () => {
     /** Initial data **/
     const [state, setState] = React.useState({
         columns: [
-            { title: 'IDX', field: 'idx' },
-            { title: 'SUBNET 태그', field: 'subnetTag' },
-            { title: 'SUBNET', field: 'subnetStart' },
-            { title: 'SUBNET 마스크', field: 'subnetMask' },
-            { title: '게이트웨이', field: 'gateway' },
+            {title: 'IDX', field: 'idx', width: "5%" },
+            {title: 'SUBNET 태그', field: 'subnetTag', width: "20%"},
+            {title: 'SUBNET', field: 'subnetStart', width: "30%"},
+            {title: 'SUBNET 마스크', field: 'subnetMask', width: "20%"},
+            {title: '게이트웨이', field: 'gateway', width: "20%"},
         ],
         data: [],
     });
@@ -156,23 +158,23 @@ const SubnetList = () => {
 
     /** Init pagination **/
     useEffect(() => {
-        dispatch(readSubnet({
-            rows: 15,
-            offset: 0,
-            orderBy: "sub_idx",
-            order: "desc",
-        }));
+        // dispatch(readSubnet({
+        //     rows: 15,
+        //     offset: 0,
+        //     orderBy: "sub_idx",
+        //     order: "desc",
+        // }));
         dispatch(pagingChangeOrderBy({orderBy: "sub_idx"}));
         dispatch(pagingChangeOrder({order: "desc"}));
-        if (page) {
-            const {count} = page;
-            dispatch(pagingSetup({
-                rowsPerPage: rows,
-                currentPage: 1,
-                totalPage: Math.ceil(count / rows) - 1,
-                totalCount: count,
-            }));
-        }
+        // if (page) {
+        //     const {count} = page;
+        //     dispatch(pagingSetup({
+        //         rowsPerPage: rows,
+        //         currentPage: 1,
+        //         totalPage: Math.ceil(count / rows) - 1,
+        //         totalCount: count,
+        //     }));
+        // }
         // dispatch(pagingDump());
     }, []);
 
@@ -186,16 +188,19 @@ const SubnetList = () => {
             orderByData = "sub_idx";
         }
         if (rowsPerPage) {
-            rowData = 15;
+            rowData = 5;
         }
         if (currentPage > 0) {
             offset = Number(rowsPerPage * currentPage);
         }
-        console.log("[PAGE DATA]: rows ", rowsPerPage, ", offset ", offset,
-            ", orderBy ", orderBy, ", order ", order);
+        // console.log("[PAGE DATA]: rows ", rowsPerPage, ", offset ", offset,
+        //     ", orderBy ", orderBy, ", order ", order);
         dispatch(readSubnet({
             rows: rowData, offset, orderBy: orderByData, order,
         }));
+        if (page && page.count !== 0) {
+            dispatch(pagingChangeTotalCount({totalCount: page.count}));
+        }
     }, [rowsPerPage, currentPage, orderBy, order]);
 
     const handleChangePage = useCallback(
@@ -321,7 +326,7 @@ const SubnetList = () => {
     };
 
     return (
-        <Col md={12} lg={12} >
+        <Col xs={12} sm={12} md={12} lg={12} xl={12}>
             <Card className="card cb-card">
                 <MaterialTable
                     title=""

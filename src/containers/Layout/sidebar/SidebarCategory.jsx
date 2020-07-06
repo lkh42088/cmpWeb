@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {Icon, InlineIcon} from '@iconify/react';
 import {useDispatch, useSelector} from "react-redux";
+import {clearSidebarWindows} from "../../../redux/actions/sidebarActions";
 
 const SidebarCategory = ({
     title, icon, isNew, children,
@@ -13,7 +14,9 @@ const SidebarCategory = ({
     const dispatch = useDispatch();
     const [show, setShow] = useState('false');
     const [hover, setHover] = useState('false');
-
+    const {clearWindow} = useSelector(({sidebar}) => ({
+       clearWindow: sidebar.clearWindow,
+    }));
     const categoryClass = classNames({
         'cb_sidebar__category-wrap': true,
         'cb_sidebar__category-wrap--open': !show,
@@ -59,8 +62,18 @@ const SidebarCategory = ({
     const handleClick = (e) => {
         setShow(!show);
         toggle(e, title);
-        console.log("[TEST] show = ", show, "title = ", title);
     };
+
+    // 사이드바 window 항목 클릭 시 window 닫힘
+    useEffect(() => {
+        if (clearWindow && clearWindow === true) {
+            dispatch(clearSidebarWindows({value: false}));
+            const collapseName = document.getElementsByName("collapseName");
+            for (let i = 0; i < collapseName.length; i += 1) {
+                collapseName[i].style.display = 'none';
+            }
+        }
+    }, [clearWindow]);
 
     return (
         <div style={{display: "flex"}} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
