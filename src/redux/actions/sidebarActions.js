@@ -1,5 +1,4 @@
 import {createAction} from "redux-actions";
-import {GET_USERS_BY_COMPANY} from "./companiesActions";
 
 export const CHANGE_SIDEBAR_VISIBILITY = 'CHANGE_SIDEBAR_VISIBILITY';
 export const CHANGE_MOBILE_SIDEBAR_VISIBILITY = 'CHANGE_MOBILE_SIDEBAR_VISIBILITY';
