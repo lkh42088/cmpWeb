@@ -1,9 +1,24 @@
 import client from "./client";
 
 export const registerUser = ({
-    cpIdx, cpName, id, password, name, email, emailAuthFlag, emailAuthGroupFlag, emailAuthGroupList,
+    cpIdx, cpName, id, password, name,
+    email, authLevel, hp, zipCode, address,
+    addressDetail, emailAuthFlag, emailAuthGroupFlag, emailAuthGroupList,
 }) => client.post('/v1/users/register', {
-    cpIdx, cpName, id, password, name, email, emailAuthFlag, emailAuthGroupFlag, emailAuthGroupList,
+    cpIdx,
+    cpName,
+    id,
+    password,
+    name,
+    email,
+    authLevel,
+    hp,
+    zipCode,
+    address,
+    addressDetail,
+    emailAuthFlag,
+    emailAuthGroupFlag,
+    emailAuthGroupList,
 });
 
 export const unregiserUser = ({

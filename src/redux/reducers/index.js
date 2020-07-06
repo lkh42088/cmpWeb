@@ -11,6 +11,7 @@ import authReducer from "./authReducer";
 import accountReducer from "./accountReducer";
 import loadingReducer from "./loadingReducer";
 import usersReducer from "./usersReducer";
+import userRegisterReducer from "./userRegisterReducer";
 import pagingReducer from "./pagingReducer";
 import companiesReducer from "./companiesReducer";
 import subnetReducer from "./subnetReducer";
@@ -29,6 +30,7 @@ export {
     accountReducer,
     loadingReducer,
     usersReducer,
+    userRegisterReducer,
     pagingReducer,
     companiesReducer,
     subnetReducer,

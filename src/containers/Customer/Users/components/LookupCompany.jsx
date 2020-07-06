@@ -1,16 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
+import {makeStyles} from "@material-ui/core/styles";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 import Dialog from "@material-ui/core/Dialog";
-import {Card, CardBody, Col} from "reactstrap";
+import {Card, CardBody} from "reactstrap";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import {Button} from "@material-ui/core";
-import {makeStyles} from "@material-ui/core/styles";
-import SearchIcon from '@material-ui/icons/Search';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import { FixedSizeList } from 'react-window';
-import {useDispatch, useSelector} from "react-redux";
-import {clearCompanySearch, getCompaniesByName} from "../../../../redux/actions/companiesActions";
+import SearchIcon from "@material-ui/icons/Search";
+import {FixedSizeList} from "react-window";
+import {getCompaniesByName} from "../../../../lib/api/company";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -38,29 +37,64 @@ function renderRow(props) {
     const { index, style, data } = props;
     const {idx, name} = data.cpList[index];
     return (
-        <ListItem button style={style} key={index} onClick={() => { data.handleSelect({idx, name}); }}>
+        <ListItem button style={style} key={index} onClick={() => { data.handleSelect(idx, name); }}>
             <ListItemText primary={`${name}`} />
         </ListItem>
     );
 }
 
-const SearchCompany = (props) => {
+const LookupCompany = (props) => {
+    /************************************************************************************
+     * Props
+     ************************************************************************************/
+    const { open, handleClose, handleComplete } = props;
+
     /************************************************************************************
      * Variable
      ************************************************************************************/
     const classes = useStyles();
-    const { open, handleClose, handleComplete } = props;
     const [cpName, setCpName] = useState("");
     const [listHeight, setListHeight] = useState(10);
-    const dispatch = useDispatch();
-    const {
-        searchMsg,
-        searchMsgError,
-    } = useSelector(({companiesRd}) => ({
-       searchMsg: companiesRd.search.msg,
-       searchMsgError: companiesRd.search.msgError,
-    }));
 
+    const [searchMsg, setSearchMsg] = useState([]);
+
+    /************************************************************************************
+     * Function
+     ************************************************************************************/
+    const getCompanyByCpName = async () => {
+        console.log("getCompanyByCpName() ");
+        try {
+            const response = await getCompaniesByName({cpName});
+            setSearchMsg(response.data);
+            console.log("getCompanyByCpName() data ", response.data);
+            if (response.data.length < 1) {
+                setListHeight(10);
+            } else if (response.data.length < 10) {
+                setListHeight(30 * response.data.length);
+            } else {
+                setListHeight(300);
+            }
+        } catch (error) {
+            setSearchMsg([]);
+        }
+    };
+
+    const handleChange = (value) => {
+        setCpName(value);
+    };
+
+    const handleSend = () => {
+        getCompanyByCpName();
+    };
+
+    const handleSelect = (idx, name) => {
+        handleComplete(idx, name);
+        handleClose();
+    };
+
+    /************************************************************************************
+     * JSX Template
+     ************************************************************************************/
     const variant = "filled";
     const fieldSize = "small";
     // const fieldSize = "medium";
@@ -68,68 +102,8 @@ const SearchCompany = (props) => {
     const formClassName = "cb-material-form";
     const labelClassName = "cb-material-form__label";
     const fieldClassName = "cb-material-form__field";
-
-    const handleChange = ({value}) => {
-        setCpName(value);
-    };
-
-    const handleSelect = ({idx, name}) => {
-        console.log("select name: ", name, ", idx: ", idx);
-        handleComplete({idx, name});
-        setListHeight(10);
-        setCpName("");
-        handleClose();
-    };
-    /************************************************************************************
-     * Function
-     ************************************************************************************/
-    const handleSend = () => {
-        console.log("handle send: ");
-        dispatch(getCompaniesByName({cpName}));
-    };
-
-    const handleCloseDialog = () => {
-        setListHeight(10);
-        setCpName("");
-        handleClose();
-    };
-
-    /************************************************************************************
-     * useEffect
-     ************************************************************************************/
-    useEffect(() => {
-        setListHeight(10);
-    }, []);
-
-    useEffect(() => {
-        console.log("searchMsg");
-        if (searchMsg) {
-           console.log("search Message: ", searchMsg, ", len ", searchMsg.length);
-            if (searchMsg.length < 1) {
-                setListHeight(10);
-            } else if (searchMsg.length < 10) {
-                setListHeight(30 * searchMsg.length);
-            } else {
-                setListHeight(300);
-            }
-        }
-    }, [searchMsg]);
-
-    useEffect(() => {
-        console.log("searchMsgError");
-        if (searchMsgError) {
-            console.log("search Message Error: ", searchMsgError);
-            setListHeight(10);
-        }
-    }, [searchMsgError]);
-
-    /************************************************************************************
-     * JSX Template
-     ************************************************************************************/
-    console.log("SearchCompany...");
     return (
         <Dialog
-            onClose={handleCloseDialog}
             open={open}
         >
             <Card>
@@ -141,14 +115,14 @@ const SearchCompany = (props) => {
                         <Grid container spacing={1}>
                             <Grid item xs={7}>
                                 <TextField
-                                // className={fieldClassName}
-                                name="cpName"
-                                value={cpName}
-                                onChange={(e) => { handleChange({value: e.target.value}); }}
-                                // label="이름"
-                                variant={variant}
-                                size={fieldSize}
-                            />
+                                    // className={fieldClassName}
+                                    name="cpName"
+                                    value={cpName}
+                                    onChange={(e) => { handleChange(e.target.value); }}
+                                    // label="이름"
+                                    variant={variant}
+                                    size={fieldSize}
+                                />
                             </Grid>
                             <Grid item xs={4}>
                                 <Button
@@ -189,4 +163,4 @@ const SearchCompany = (props) => {
     );
 };
 
-export default SearchCompany;
+export default LookupCompany;

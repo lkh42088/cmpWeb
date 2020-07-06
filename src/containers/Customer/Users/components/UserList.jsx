@@ -3,11 +3,10 @@ import {
     Card,
     CardBody,
     Col,
-    Container,
-    Row,
 } from 'reactstrap';
 import Avatar from "react-avatar";
 
+import moment from "moment";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TablePagination from '@material-ui/core/TablePagination';
@@ -19,18 +18,13 @@ import TableContainer from "@material-ui/core/TableContainer";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import {makeStyles} from "@material-ui/core/styles";
 import Box from '@material-ui/core/Box';
-import TableHead from '@material-ui/core/TableHead';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import MuiAvatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
+import Button from "@material-ui/core/Button";
 import {useSnackbar} from "notistack";
-import {StickyContainer} from "react-sticky";
 import {
     pagingChangeCurrentPage,
     pagingChangeCurrentPageNext, pagingChangeCurrentPagePrev, pagingChangeDense, pagingChangeOrder, pagingChangeOrderBy,
@@ -40,8 +34,8 @@ import {
 import {getUserList, initRegisterUser} from "../../../../redux/actions/usersActions";
 import CommonTableHead from "../../../Common/CommonTableHead";
 import CbAdminTableToolbar from "../../../Common/CbAdminTableToolbar";
-import {initRegisterCompany} from "../../../../redux/actions/companiesActions";
-import RegisterUserPage from "./RegisterUserPage";
+import UserRegisterDialog from "./UserRegisterDialog";
+import {registerUser} from "../../../../lib/api/users";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -128,7 +122,6 @@ const UserList = () => {
         pageBeginRow,
         rowsPerPage,
         currentPage,
-        totalPage,
         totalCount,
         displayRowsList,
         dense,
@@ -153,6 +146,7 @@ const UserList = () => {
     /************************************************************************************
      * Function
      ************************************************************************************/
+
     /** Add User in TableToolbar */
     const handleOpenAddUser = () => {
         setOpenAddUser(true);
@@ -172,6 +166,9 @@ const UserList = () => {
         enqueueSnackbar('계정 등록에 성공했습니다.', { variant: "success" });
     };
 
+    /*******************
+     * Pagination
+     *******************/
     /** Pagination */
     const updatePagingTotalCount = ({count}) => {
         if (count !== totalCount) {
@@ -274,6 +271,48 @@ const UserList = () => {
         getPageData();
     };
 
+    /*******************
+     * Axios
+     *******************/
+    const addUser = async (user) => {
+        const {
+            cpIdx, cpName, id, password, name, email,
+            cellPhone, level, userZip, userAddr, userAddrDetail,
+            emailAuthValue, emailAuthGroupList,
+        } = user;
+        try {
+            const response = await registerUser({
+                cpIdx,
+                cpName,
+                id,
+                password,
+                name,
+                email,
+                authLevel: Number(level),
+                hp: cellPhone,
+                zipCode: userZip,
+                address: userAddr,
+                addressDetail: userAddrDetail,
+                emailAuthFlag: emailAuthValue === "1",
+                emailAuthGroupFlag: emailAuthValue === "2",
+                emailAuthGroupList,
+            });
+            handleSnackbarSuccess();
+            getPageData();
+        } catch {
+            handleSnackbarFailure();
+        }
+    };
+
+    /*******************
+     * Event
+     *******************/
+    const handleSubmitAddUser = (user) => {
+        console.log("handleSubmit() : user ", user);
+        addUser(user);
+        handleCloseAddUser();
+    };
+
     /************************************************************************************
      * useEffect
      ************************************************************************************/
@@ -335,17 +374,38 @@ const UserList = () => {
     /************************************************************************************
      * JSX Template
      ************************************************************************************/
+    const getAddress = (row) => {
+        let address = "";
+        if (row.zipcode) {
+            address = row.zipcode;
+            address = address.concat(', ');
+        }
+        if (row.address) {
+            address = address.concat(row.address);
+        }
+        if (row.addressDetail) {
+            if (row.address) {
+                address = address.concat(', ');
+                address = address.concat(row.addressDetail);
+            } else {
+                address = address.concat(row.addressDetail);
+            }
+        }
+        return address;
+    };
+
     const ContentsRow = (props) => {
         const { row } = props;
         const [openCollapse, setOpenCollapse] = React.useState(false);
         const isSelected = getSelected(row.idx);
+        const address = getAddress(row);
 
         return (
             <React.Fragment>
                 <TableRow
                     hover
-                    // className="cb-material-table__row"
-                    className={classes.row}
+                    className="cb-material-table__row"
+                    // className={classes.row}
                     role="checkbox"
                     aria-checked={isSelected}
                     tabIndex={-1}
@@ -450,10 +510,12 @@ const UserList = () => {
                                             <ul>
                                                 <li>
                                                     <span className={classes.spanSubject}> 주소 </span>
+                                                    {/*<span className={classes.spanContents}> {row.zipcode},&nbsp;{row.address},&nbsp;{row.addressDetail} </span>*/}
+                                                    <span className={classes.spanContents}> {address} </span>
                                                 </li>
                                                 <li>
                                                     <span className={classes.spanSubject}> 등록일 </span>
-                                                    <span className={classes.spanContents}> {row.registerDate} </span>
+                                                    <span className={classes.spanContents}> {moment(row.registerDate).format('YYYY-MM-DD')} </span>
                                                 </li>
                                                 <li>
                                                     <span className={classes.spanSubject}> 인증 </span>
@@ -504,6 +566,7 @@ const UserList = () => {
         );
     };
 
+    console.log("UserList");
     return (
         <Col md={12} lg={12}>
             <Card className="cb-card">
@@ -548,7 +611,11 @@ const UserList = () => {
                             label="Dense padding"
                         />
                     </div>
-                    <RegisterUserPage open={openAddUser} handleClose={handleCloseAddUser}/>
+                    <UserRegisterDialog
+                        open={openAddUser}
+                        handleClose={handleCloseAddUser}
+                        handleSubmit={handleSubmitAddUser}
+                    />
                 </CardBody>
             </Card>
         </Col>

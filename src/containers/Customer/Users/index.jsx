@@ -8,17 +8,20 @@ const paddingCol = {
     paddingLeft: '0px',
 };
 
-const MaterialTable = () => (
-    <Container fluid="true">
-        <Row>
-            <Col md={12}>
-                <h3 className="page-title">MANAGER &gt; 계정 관리</h3>
-            </Col>
-            <SnackbarProvider maxSnack={3}>
-                <UserList/>
-            </SnackbarProvider>
-        </Row>
-    </Container>
-);
+const MaterialTable = () => {
+    console.log("User Index");
+    return (
+        <Container fluid="true">
+            <Row>
+                <Col md={12}>
+                    <h3 className="page-title">MANAGER &gt; 계정 관리</h3>
+                </Col>
+                <SnackbarProvider maxSnack={3}>
+                    <UserList/>
+                </SnackbarProvider>
+            </Row>
+        </Container>
+    );
+};
 
 export default MaterialTable;

@@ -12,7 +12,6 @@ import PropTypes from "prop-types";
 import {Button} from "@material-ui/core";
 import IconButton from '@material-ui/core/IconButton';
 import FilledInput from '@material-ui/core/FilledInput';
-import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
@@ -35,7 +34,6 @@ import {
     checkUserRegisterField, initRegisterUser,
     registerUser,
 } from "../../../../redux/actions/usersActions";
-import CbTextField from "./CbTextField";
 import {checkPasswordPattern} from "../../../../lib/utils/utils";
 
 const useStyles = makeStyles(theme => ({
@@ -164,17 +162,17 @@ const RegisterCompanyPage = (props) => {
         /** register */
         userId, userPassword,
         /** message */
-    } = useSelector(({ usersRd }) => ({
-        user: usersRd.register,
-        checkUser: usersRd.checkUser,
-        confirmUser: usersRd.confirmUser,
-        userIsError: usersRd.isError,
-        userRequired: usersRd.required,
-        userDisabled: usersRd.disabled,
-        userHelperText: usersRd.helperText,
+    } = useSelector(({ usersRd, userRegisterRd }) => ({
+        user: userRegisterRd.register,
+        checkUser: userRegisterRd.checkUser,
+        confirmUser: userRegisterRd.confirmUser,
+        userIsError: userRegisterRd.isError,
+        userRequired: userRegisterRd.required,
+        userDisabled: userRegisterRd.disabled,
+        userHelperText: userRegisterRd.helperText,
         /** register */
-        userId: usersRd.register.userId,
-        userPassword: usersRd.register.password,
+        userId: userRegisterRd.register.userId,
+        userPassword: userRegisterRd.register.password,
     }));
 
     const {open, handleClose, refreshPage } = props;
