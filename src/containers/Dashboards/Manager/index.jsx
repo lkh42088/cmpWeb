@@ -13,6 +13,7 @@ import RandomAnimatedBars from './components/RandomAnimatedBars';
 import { deleteCryptoTableData } from '../../../redux/actions/cryptoTableActions';
 import { CryptoTableProps } from '../../../shared/prop-types/TablesProps';
 import { ThemeProps, RTLProps } from '../../../shared/prop-types/ReducerProps';
+import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
 
 class CryptoDashboard extends PureComponent {
   static propTypes = {
@@ -39,9 +40,10 @@ class CryptoDashboard extends PureComponent {
     return (
       <Container className="dashboard">
         <Row>
-          <Col md={12}>
-            <h3 className="page-title">DASHBOARD</h3>
-          </Col>
+          <RouterBreadcrumbs url={window.location.href}/>
+          {/*<Col md={12}>*/}
+          {/*  <h3 className="page-title">DASHBOARD</h3>*/}
+          {/*</Col>*/}
         </Row>
         <Row>
           <ServerKtCloud dir={rtl.direction} />
