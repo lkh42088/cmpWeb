@@ -27,11 +27,11 @@ export default () => (
     <div>
         <Layout />
         <div className="container__wrap">
+            <Route exact path="/org/dashboard_mobile_app" component={MobileAppDashboard} />
             <Route path="/org/dashboard_default" component={DefaultDashboard} />
             <Route path="/org/dashboard_e_commerce" component={Commerce} />
             <Route path="/org/dashboard_fitness" component={FitnessDashboard} />
             <Route path="/org/dashboard_crypto" component={Crypto} />
-            <Route exact path="/org/dashboard_mobile_app" component={MobileAppDashboard} />
             <Route path="/org/dashboard_booking" component={BookingDashboard} />
             <Route path="/org/ui" component={UI} />
             <Route path="/org/mail" component={Mail} />

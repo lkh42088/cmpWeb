@@ -9,6 +9,12 @@
 .assets_write__modal-dialog {
   max-width: 785px;
 }
+
+// (03july2020,ebjee)
+.modal.show .comment-modal-dialog {
+  transform: translate(0px, calc(100% - 50%));
+}
+
 /*
 .modal-content {
   border-radius: 0.3rem;

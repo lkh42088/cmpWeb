@@ -34,7 +34,7 @@ class Topbar extends PureComponent {
                             changeMobileSidebarVisibility={changeMobileSidebarVisibility}
                             changeSidebarVisibility={changeSidebarVisibility}
                         />
-                        <Link className="topbar__logo" to="/assets/list" />
+                        <Link className="topbar__logo" to="/assets/server" />
                         {/*<div style={{paddingLeft: '10px'}}>
                             <span className="text-danger">-</span>
                             <h3 className="topbar__title">

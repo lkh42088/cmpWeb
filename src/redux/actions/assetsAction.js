@@ -496,7 +496,7 @@ export const getCompanyByName = dispatchVal => async (dispatch) => {
 
         const res = await axios.get(`${API_ROUTE}/companies/${dispatchVal}`);
 
-        console.log("---> : ", res.data);
+        //console.log("---> : ", res.data);
 
         dispatch({
             type: GET_COMPANIES,

@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import NotificationSystem from 'rc-notification';
 
 import {
-    fetchPosts, setDeviceType, setApiPage, setSearch, setDeviceSelected,
+    fetchPosts, setDeviceType, setApiPage, setSearch, setDeviceSelected, setAssetsPage,
 } from '../../redux/actions/assetsAction';
 
 import Topbar from './topbar/Topbar';
@@ -136,6 +136,7 @@ class Layout extends Component {
 
             dispatch(setDeviceType(val));
             //자산관리 메뉴 이동 시 초기화
+            dispatch(setAssetsPage('list'));
             dispatch(setDeviceSelected(''));
             dispatch(setApiPage(submitDataPage));
             dispatch(setSearch(submitDataSearch));
