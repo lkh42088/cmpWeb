@@ -23,7 +23,6 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Button from "@material-ui/core/Button";
 import {useSnackbar} from "notistack";
 import {
     pagingChangeCurrentPage,
@@ -31,11 +30,11 @@ import {
     pagingChangeRowsPerPage, pagingChangeSelected,
     pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
-import {getUserList, initRegisterUser} from "../../../../redux/actions/usersActions";
+import {getUserList, getUserListWithSearchParam, initRegisterUser} from "../../../../redux/actions/usersActions";
 import CommonTableHead from "../../../Common/CommonTableHead";
-import CbAdminTableToolbar from "../../../Common/CbAdminTableToolbar";
 import UserRegisterDialog from "./UserRegisterDialog";
 import {registerUser} from "../../../../lib/api/users";
+import UserTableToolbar from "./UserTableToolbar";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -142,6 +141,7 @@ const UserList = () => {
 
     /** Add User in TableToolbar */
     const [openAddUser, setOpenAddUser] = React.useState(false);
+    const [searchParam, setSearchParam] = useState(null);
 
     /************************************************************************************
      * Function
@@ -169,6 +169,7 @@ const UserList = () => {
     /*******************
      * Pagination
      *******************/
+
     /** Pagination */
     const updatePagingTotalCount = ({count}) => {
         if (count !== totalCount) {
@@ -257,10 +258,34 @@ const UserList = () => {
             offset = rowsPerPage * currentPage;
         }
         console.log("get Page Data: rows ", rowsPerPage, ", offset ", offset,
-            ", orderBy ", orderBy, ", order ", order);
-        dispatch(getUserList({
-            rows: rowsPerPage, offset, orderBy, order,
-        }));
+            ", orderBy ", orderBy, ", order ", order, ", searchParam ", searchParam);
+        if (searchParam !== null) {
+            dispatch(getUserListWithSearchParam({
+                rows: rowsPerPage, offset, orderBy, order, searchParam,
+            }));
+        } else {
+            dispatch(getUserList({
+                rows: rowsPerPage, offset, orderBy, order,
+            }));
+        }
+    };
+
+    // const getPageDataWithSearchParam = (param) => {
+    //     let offset = 0;
+    //     if (currentPage > 0) {
+    //         offset = rowsPerPage * currentPage;
+    //     }
+    //     console.log("get Page Data: rows ", rowsPerPage, ", offset ", offset,
+    //         ", orderBy ", orderBy, ", order ", order, ", searchParam ", param);
+    //     dispatch(getUserListWithSearchParam({
+    //         rows: rowsPerPage, offset, orderBy, order, searchParam: param,
+    //     }));
+    // };
+
+    const handleSubmitSearch = (params) => {
+        console.log("handleSubmitSearch() params ", params);
+        setSearchParam(params);
+        // getPageDataWithSearchParam(params);
     };
 
     /** Pagination */
@@ -355,6 +380,11 @@ const UserList = () => {
         }
     }, [msgError]);
 
+    useEffect(() => {
+        console.log("useEffect: searchParam ", searchParam);
+        getPageData();
+    }, [searchParam]);
+
     /************************************************************************************
      * Component
      ************************************************************************************/
@@ -404,8 +434,8 @@ const UserList = () => {
             <React.Fragment>
                 <TableRow
                     hover
-                    className="cb-material-table__row"
-                    // className={classes.row}
+                    // className="cb-material-table__row"
+                    className={classes.row}
                     role="checkbox"
                     aria-checked={isSelected}
                     tabIndex={-1}
@@ -571,7 +601,7 @@ const UserList = () => {
         <Col md={12} lg={12}>
             <Card className="cb-card">
                 <CardBody className="cb-card-body">
-                    <CbAdminTableToolbar
+                    <UserTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
                         handleDeleteSelected={handleDeleteSelected}
                         handleRefresh={handleRefresh}
@@ -579,12 +609,13 @@ const UserList = () => {
                         rows={headRows}
                         toolbarTitle="계정 리스트"
                         handleOpen={handleOpenAddUser}
+                        handleSubmitSearch={handleSubmitSearch}
                         contents="계정"
                     />
                     <div className="cb-material-table__wrap">
-                        <TableContainer component={Paper}>
+                        <TableContainer>
                             <Table
-                                // className="cb-material-table"
+                                className="cb-material-table"
                                 size={dense ? 'small' : 'medium'}
                             >
                                 <CommonTableHead

@@ -36,3 +36,9 @@ export const checkDupUser = ({
 export const getUserList = ({
     rows, offset, orderBy, order,
 }) => client.get(`/v1/users/${rows}/${offset}/${orderBy}/${order}`);
+
+export const getUserListWithSearchParam = ({
+    rows, offset, orderBy, order, searchParam,
+}) => client.post(`/v1/users/page-with-search-param`, {
+    rows, offset, orderBy, order, searchParam,
+});

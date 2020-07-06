@@ -4,6 +4,9 @@ import {handleActions} from 'redux-actions';
 import {
     INITIALIZE_REGISTER_USER,
     GET_USER_LIST_SUCCESS,
+    GET_USER_LIST_FAILURE,
+    GET_USER_LIST_WITH_SEARCH_PARAM_SUCCESS,
+    GET_USER_LIST_WITH_SEARCH_PARAM_FAILURE,
     CHANGE_USER_FIELD,
 } from "../actions/usersActions";
 
@@ -28,6 +31,11 @@ const usersReducer = handleActions(
             msgError: null,
         }),
         [GET_USER_LIST_SUCCESS]: (state, {payload: msg}) => ({
+            ...state,
+            data: msg.data,
+            page: msg.page,
+        }),
+        [GET_USER_LIST_WITH_SEARCH_PARAM_SUCCESS]: (state, {payload: msg}) => ({
             ...state,
             data: msg.data,
             page: msg.page,

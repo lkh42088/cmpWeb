@@ -3,7 +3,7 @@ import IconButton from "@material-ui/core/IconButton";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import {lighten, makeStyles} from "@material-ui/core/styles";
+import {lighten, fade, makeStyles} from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import clsx from "clsx";
 import Typography from "@material-ui/core/Typography";
@@ -98,7 +98,50 @@ const useToolbarStyles = makeStyles(theme => ({
         fontSize: 15,
         fontFamily: "Nanum BarunGothic Bold",
     },
-
+    search: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade(theme.palette.common.black, 0.15),
+        '&:hover': {
+            backgroundColor: fade(theme.palette.common.black, 0.25),
+        },
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: theme.spacing(1),
+            width: 'auto',
+        },
+    },
+    searchIcon: {
+        padding: theme.spacing(0, 2),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    inputRoot: {
+        color: 'inherit',
+    },
+    inputInput: {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            width: '50ch',
+            // '&:focus': {
+            //     width: '40ch',
+            // },
+        },
+    },
+    paper: {
+        width: '60ch',
+        color: 'inherit',
+        backgroundClip: theme.palette.common.white,
+    },
 }));
 
 const CbAdminTableToolbar = (props) => {
@@ -134,7 +177,8 @@ const CbAdminTableToolbar = (props) => {
                         <Grid container justify="center">
                             <Grid item container xs={12} alignItems="flex-end" direction="column">
                                 <Grid item>
-                                    <Tooltip title={addComment} aria-label="add">
+                                    <div>
+                                   <Tooltip title={addComment} aria-label="add">
                                         <IconButton type="button" onClick={handleOpen}>
                                             <AddIcon/>
                                         </IconButton>
@@ -158,6 +202,7 @@ const CbAdminTableToolbar = (props) => {
                                             <TableFilterButton rows={rows} onRequestSort={onRequestSort}/>
                                         </Tooltip>
                                     )}
+                                    </div>
                                 </Grid>
                             </Grid>
                         </Grid>
