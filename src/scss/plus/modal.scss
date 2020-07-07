@@ -4,6 +4,7 @@
 
 .assets_write__modal {
   border-radius: 0.3rem;
+  border: 2px solid red;
 }
 
 .assets_write__modal-dialog {
@@ -103,8 +104,8 @@
 
 .assets_write__modal__tableLine {
   /*margin-top: 10px;*/
-  border-bottom: 1px solid #274c5e;
-  border-style: solid none solid none;
+  /*border-bottom: 1px solid #274c5e;
+  border-style: solid none solid none;*/
 }
 
 .assets_write__modal__footer {
@@ -382,14 +383,95 @@
 }
 
 // (02july2020,ebjee)
-
 .modal-content {
+  font-size: smaller;
   /*background-color: rgba( 255, 255, 255, 0.5 );*/
   border-radius: 5px;
   /*padding: 30px 40px 30px 40px;*/
-  width: 600px;
+  /*width: 600px;*/
   .modal-comment-wrap {
-    height: 200px;
+    height: 250px;
+  }
+}
+
+// (07july2020,ebjee)
+.modal-comment-form {
+  height: 250px;
+}
+
+.modal-list {
+  padding-top: 20px;
+  border-bottom: 1px solid #f2f4f7;
+  font-size: smaller;
+
+  th {
+    font-size: smaller;
+  }
+
+  @include themify($themes) {
+    color: themed('colorText');
+    background: themed('colorBackgroundBody');
+    border: 1px solid themed('colorFieldsBorder');
+  }
+}
+
+.modal-class_dark {
+  .modal-content {
+    background-color: #2a2a31;
+    border: 1px solid #33333a;
+    color: #dddddd;
+
+    .modal_form.modal_form--horizontal {
+      border: 1px solid #33333a;
+
+      input, select, textarea {
+        background-color: #333246;
+        color: #dddddd;
+      }
+
+      .modal_form__form-group {
+        border: 1px solid #33333a;
+      }
+    }
+
+    .text_cor_mat_p{
+      color: #6db0ff;
+    }
+
+    .chat__field-textarea {
+      color: #dddddd;
+      background-color: #333246;
+    }
+  }
+
+  .modal_form__form-group-icon {
+    padding: 4px;
+    height: 32px;
+    background-color: #333246;
+    border: 1px solid #333246;
+
+    svg {
+      fill: $color-additional;
+      width: 18px;
+      height: 18px;
+      transition: all 0.3s;
+    }
+  }
+
+  .assets_write__modal__close-btn {
+    color: #ffffff;
+  }
+
+  .assets_write__modal__close__notitle-btn {
+    color: #ffffff;
+  }
+}
+
+.modal-class_light {
+  border: none;
+  .modal-content {
+    border: 1px solid #f2f4f7;
+    color: #646777;
   }
 }
 

@@ -9,10 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     checkLoginUser,
     changeField,
-    initializeForm,
-    login,
+    initializeForm, changeLoginPage,
 } from "../../../../redux/actions/accountActions";
 import renderCheckBoxField from '../../../../shared/components/form/CheckBox';
+import {login} from "../../../../lib/api/auth";
+import {GV_LOGIN_PAGE_CONFIRM_EMAIL, GV_LOGIN_PAGE_INPUT_EMAIL} from "../../../../lib/globalVariable";
 
 // eslint-disable-next-line react/prop-types
 const LoginForm = ({ history }) => {
@@ -52,13 +53,39 @@ const LoginForm = ({ history }) => {
         );
     };
 
+    const doLogin = async (username, password) => {
+        try {
+            const response = await login({username, password});
+            console.log("response: ", response);
+            if (response.data !== null) {
+                console.log("success: ", response.data.success);
+                console.log("result ", response.data.msg.result);
+            }
+            if (response.data.success) {
+                history.push('/dashboards/manager');
+            } else if (response.data.msg.result === 251) {
+                console.log("changeLoginPage ", GV_LOGIN_PAGE_CONFIRM_EMAIL);
+                dispatch(changeLoginPage({value: GV_LOGIN_PAGE_CONFIRM_EMAIL}));
+            } else if (response.data.msg.result === 252) {
+                console.log("changeLoginPage ", GV_LOGIN_PAGE_INPUT_EMAIL);
+                dispatch(changeLoginPage({value: GV_LOGIN_PAGE_INPUT_EMAIL}));
+            } else {
+                console.log("doLogin: XXXX");
+            }
+        } catch (e) {
+            console.log("doLogin: error! ", e);
+        }
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('>>>>>> onSubmit');
         const { username, password } = form;
+
+        console.log('>>>>>> onSubmit');
         console.log('username:', username);
         console.log('password:', password);
-        dispatch(login({ username, password }));
+        doLogin(username, password);
+        // dispatch(login({ username, password }));
     };
 
     useEffect(() => {
@@ -101,16 +128,16 @@ const LoginForm = ({ history }) => {
     useEffect(() => {
         console.log("[useEffect] authSentEmail: ", authSentEmail);
         if (authSentEmail === true) {
-            console.log("[useEffect] --> /log_in/confirm: ", authSentEmail);
+            console.log("[useEffect] --> /login/confirm: ", authSentEmail);
             console.log("[user] form:", form);
-            history.push('/log_in/confirm');
+            history.push('/login/confirm');
         }
     }, [authSentEmail]);
 
     useEffect(() => {
         console.log("[useEffect] authInputEmail: ", authInputEmail);
         if (authInputEmail === true) {
-            history.push('/log_in/input_email');
+            history.push('/login/input_email');
         }
     }, [authInputEmail]);
 

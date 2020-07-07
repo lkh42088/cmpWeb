@@ -39,13 +39,11 @@
     }
 
     &[disabled] {
-
       @include themify($themes) {
         background: themed('colorBackgroundBody');
       }
 
       &:focus, &:active {
-
         @include themify($themes) {
           border-color: themed('colorBorder');
         }
@@ -64,24 +62,68 @@
   }
 
   &.modal_form--horizontal {
-    border: 1px solid rgba(224, 224, 224, 1);
+    //border: 1px solid rgba(224, 224, 224, 1);
+    border: 1px solid #f2f4f7;
     /*padding: 5px;*/
 
+    textarea {
+      padding: 5px;
+      border: none;
+      background-color: #f2f4f7;
+      @include themify($themes) {
+        color: themed('colorText');
+        background: themed('colorBackgroundBody');
+        border: 1px solid themed('colorFieldsBorder');
+      }
+
+      &:focus, &:active {
+        outline: none;
+        border-color: $color-accent;
+        //background-color: rgb(232, 240, 254) !important;
+      }
+    }
+
     select {
-      border: 1px solid rgba(224, 224, 224, 1);
       /*width: calc(100% - 10px);*/
-      background: #f6f7fc;
+      /*background: #f6f7fc;
+      border: 1px solid rgba(224, 224, 224, 1);*/
+      // (07july2020,ebjee)
+      padding: 5px;
+      height: 32px;
+      border: none;
+      background-color: #f2f4f7;
+      @include themify($themes) {
+        color: themed('colorText');
+        background: themed('colorBackgroundBody');
+        border: 1px solid themed('colorFieldsBorder');
+      }
+
+      &:focus, &:active {
+        outline: none;
+        border-color: $color-accent;
+        //background-color: rgb(232, 240, 254) !important;
+      }
     }
 
     input {
       /*width: 100%;*/
       padding: 5px 10px;
       font-size: 11px;
-      height: 25px;
+      // (07july2020,ebjee)
+      height: 32px;
+      border: none;
+      /*border: 1px solid rgba(224, 224, 224, 1);*/
       /*height: 39px;*/
       transition: border 0.3s;
-      background: #f6f7fc;
-      border: 1px solid rgba(224, 224, 224, 1);
+      /*@include themify($themes) {
+        background: themed('colorBackgroundBody');
+      }*/
+      background-color: #f2f4f7;
+      @include themify($themes) {
+        color: themed('colorText');
+        background: themed('colorBackgroundBody');
+        border: 1px solid themed('colorFieldsBorder');
+      }
 
 
       &::-webkit-input-placeholder {
@@ -105,13 +147,11 @@
       }
 
       &[disabled] {
-
         @include themify($themes) {
           background: themed('colorBackgroundBody');
         }
 
         &:focus, &:active {
-
           @include themify($themes) {
             border-color: themed('colorBorder');
           }
@@ -121,13 +161,14 @@
       &:focus, &:active {
         outline: none;
         border-color: $color-accent;
+        //background-color: rgb(232, 240, 254) !important;
       }
     }
 
     .modal_form__form-group {
       display: flex;
       flex-wrap: wrap;
-      border-bottom: 1px solid rgba(224, 224, 224, 1);
+      border-bottom: 1px solid #f2f4f7;
     }
 
     .modal_form__form-group-field {
@@ -182,13 +223,13 @@
 
       .modal_form__form-group-label {
         font-weight: bold;
-        width: 130px;
+        width: 150px;
       }
 
       .modal_form__form-group-field {
-        width: calc(100% - 130px);
+        width: calc(100% - 150px);
         @include directify($directions) {
-          #{directed('margin-left')}: 130px;
+          #{directed('margin-left')}: 150px;
           #{directed('padding-left')}: 20px;
           /*#{directed('padding')}: 3px 0 3px 20px;*/
         }
@@ -200,6 +241,16 @@
         }
       }
     }
+
+
+    /*
+    @include themify($themes) {
+      color: themed('colorText');
+      background: themed('colorBackgroundBody');
+      border: 1px solid themed('colorFieldsBorder');
+    }
+    */
+
   }
 
   &.modal_form--preview {
@@ -261,7 +312,7 @@
 
 .modal_form__form-group {
   /*margin-bottom: 10px;*/
-  padding: 7px;
+  padding: 5px;
   width: 100%;
   position: relative;
 }
@@ -286,7 +337,7 @@
 }
 
 .modal_form__form-group-label {
-  margin-bottom: 4px;
+  /*margin-bottom: 4px;*/
   display: inline-block;
   font-weight: bold;
 
@@ -372,13 +423,15 @@
 }
 
 .modal_form__form-group-icon {
-  /*padding: 6px;
-  height: 32px;*/
+  padding: 4px;
+  height: 32px;
+  background-color: #f2f4f7;
+  border: 1px solid #f2f4f7;
 
-  @include themify($themes) {
+  /*@include themify($themes) {
     background: themed('colorFieldsBorder');
     border: 1px solid themed('colorFieldsBorder');
-  }
+  }*/
 
   svg {
     fill: $color-additional;
@@ -548,25 +601,31 @@
   min-width: 100px;
   /*margin-top: 20px;
   margin-bottom: 20px;*/
+  font-size: smaller;
   border-radius: 8px;
   @include themify($themes) {
     border: 1px solid themed('colorFieldsBorder');
   }
+
+  .row {
+    font-size: smaller;
+  }
 }
 
 .form-infor__item {
-  height: 67px;
+  /*height: 67px;*/
   display: flex;
   align-items: center;
   margin-left: 0px;
   margin-right: 0px;
+  height: 45px;
   @include themify($themes) {
     border-bottom: 1px solid themed('colorFieldsBorder');
   }
 }
 
 .form-infor__item_etc {
-  height: 150px;
+  height: 100px;
   display: flex;
   align-items: center;
   margin-left: 0px;
@@ -595,14 +654,19 @@
 
 .list-sources {
   overflow-y: auto;
-  height: 50px;
+  height: 40px;
   padding-left: 15px;
 }
 
 .list-checkbox {
-  margin-top: 10px;
+  /*margin-top: 10px;*/
   display: flex;
   flex-direction: column;
+
+  ul {
+    padding-left: 5px;
+    list-style-image: none;
+  }
 }
 
 .source__column {
@@ -637,6 +701,7 @@
 
 .textarea-prefix {
   resize: none;
+  font-size: smaller;
 }
 
 .form-control {
@@ -662,6 +727,13 @@
     color: themed('colorText');
     background: themed('colorBackgroundBody');
     border: 1px solid themed('colorFieldsBorder');
+  }
+}
+
+// (07july2020,ebjee)
+.list-dense-padding {
+  @include themify($themes) {
+    color: themed('colorText');
   }
 }
 

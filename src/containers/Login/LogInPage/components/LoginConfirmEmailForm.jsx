@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import axios from "axios";
 import { Button, ButtonToolbar } from 'reactstrap';
 import {Field, Form, reduxForm} from 'redux-form';
 import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import {
+    changeLoginPage,
     checkLoginUser,
-    setLoginUser,
-    loginConfirm,
 } from "../../../../redux/actions/accountActions";
+import {GV_LOGIN_PAGE_FIRST, GV_LOGIN_PAGE_INPUT_EMAIL} from "../../../../lib/globalVariable";
+import {loginConfirm} from "../../../../lib/api/auth";
 
 // eslint-disable-next-line react/prop-types
 const LoginConfirmEmailForm = ({ history }) => {
@@ -26,36 +26,50 @@ const LoginConfirmEmailForm = ({ history }) => {
         user: accountRd.user,
     }));
 
+    const doLoginConfirm = async (username, password, email) => {
+        try {
+            const response = await loginConfirm({username, password, email});
+            console.log("doLoginConfirm: response.. ", response);
+            if (response.data.success === true) {
+                console.log("doLoginConfirm: user...", response.data.user);
+                dispatch(checkLoginUser());
+                // if (response.data.user) {
+                //     console.log("doLoginConfirm: user..", response.data.user);
+                //     if (response.data.success === true) {
+                //         console.log("doLoginConfirm: localstorage.");
+                //         localStorage.setItem('user', JSON.stringify(response.data.user));
+                //         history.push('/dashboards/manager');
+                //     }
+                // }
+            }
+        } catch (e) {
+            console.log("doLoginConfirm: error ");
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('LoginConfirmEmail: onSubmit');
         const { username, password, email } = form;
+        console.log('LoginConfirmEmail: onSubmit...');
         console.log('username:', {username});
-        console.log('pw:', {username});
-        console.log('email:', {username});
-        dispatch(loginConfirm({username, password, email}));
+        console.log('pw:', {password});
+        console.log('email:', {email});
+        doLoginConfirm(username, password, email);
+        // dispatch(loginConfirm({username, password, email}));
     };
 
     useEffect(() => {
-        console.log('>>>LoginConfirmEmailForm: init');
-        console.log('id:', form.username);
-        console.log('password:', form.password);
-        console.log('email:', form.email);
         if (form.username === "" || form.password === "") {
-            console.log('^^^^^^^---> /log_in');
-            history.push('/log_in');
+            console.log('id/password is empty!');
+            dispatch(changeLoginPage({value: GV_LOGIN_PAGE_FIRST}));
         }
-        // else if (form.email === "") {
-        //     console.log('^^^^^^^---> /log_in/input_email');
-        //     history.push('/log_in/input_email');
-        // }
-    }, [dispatch]);
+    }, []);
 
     useEffect(() => {
         console.log("auth..");
         if (auth) {
             console.log("auth:", user, " --> user");
-            dispatch(checkLoginUser());
+            // dispatch(checkLoginUser());
         }
     }, [auth]);
 
@@ -63,7 +77,8 @@ const LoginConfirmEmailForm = ({ history }) => {
         console.log("user..");
         if (user) {
             console.log("user:", user, " --> history");
-            history.push('/');
+            // history.push('/');
+            history.push('/dashboards/manager');
             try {
                 localStorage.setItem('user', JSON.stringify(user));
             } catch (e) {

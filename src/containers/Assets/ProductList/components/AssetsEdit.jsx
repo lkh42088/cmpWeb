@@ -10,8 +10,10 @@ import {findDOMNode} from "react-dom";
 import {List, Map} from "immutable";
 import CalendarBlankIcon from "mdi-react/CalendarBlankIcon";
 import AccountSearchIcon from "mdi-react/AccountSearchIcon";
+import CurrencyUsdIcon from "mdi-react/CurrencyUsdIcon";
 import PlusIcon from "mdi-react/PlusIcon";
 import MinusIcon from "mdi-react/MinusIcon";
+
 import TableBody from "@material-ui/core/TableBody";
 import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
@@ -19,6 +21,9 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import TableCell from "@material-ui/core/TableCell";
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from "@material-ui/core/SnackbarContent";
+import MatButton from "@material-ui/core/Button";
+import SendIcon from "@material-ui/icons/Send";
+import EditIcon from "@material-ui/icons/Edit";
 import {withTranslation} from "react-i18next";
 import {
     getCompanyByName, setAddEleData, setAssetsPage, setState,
@@ -57,15 +62,20 @@ const renderCustomerField = field => (
                    value={field.initialValues} onClick={field.searchToggle} onKeyDown={field.searchToggle}
                    role="button" tabIndex="0"
             />
-            <span className="search_btn_span"
+            {/*<span className="search_btn_span"
                   onClick={field.searchToggle} onKeyDown={field.searchToggle}
                   role="button" tabIndex="0"
-            ><AccountSearchIcon/></span>
+            ><AccountSearchIcon/></span>*/}
+            <div className="modal_form__form-group-icon"
+                 onClick={field.searchToggle} onKeyDown={field.searchToggle}
+                 role="button" tabIndex="0">
+                <AccountSearchIcon/>
+            </div>
             {field.meta.touched && field.meta.error
             && <span className="warringStyle">&nbsp;※ {field.meta.error}</span>}
             &nbsp;&nbsp;
             <b className="text_cor_orange"
-               style={{lineHeight: "20px"}}>{field
+               style={{lineHeight: "32px"}}>{field
                 .label.name} / {field.label.id}</b>
         </div>
     </Fragment>
@@ -98,13 +108,8 @@ class AssetsEdit extends PureComponent {
         // eslint-disable-next-line react/forbid-prop-types
         assetState: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
-        title: PropTypes.string,
-        message: PropTypes.string,
-    };
-
-    static defaultProps = {
-        title: '',
-        message: '',
+        // eslint-disable-next-line react/forbid-prop-types
+        theme: PropTypes.object.isRequired,
     };
 
     constructor() {
@@ -516,7 +521,7 @@ class AssetsEdit extends PureComponent {
     render() {
         //console.log("👉👉👉👉👉👉👉👉 render start edit");
         const {
-            title, message,
+            theme,
             assetState, dispatch, handleSubmit,
         } = this.props;
         const {
@@ -528,6 +533,13 @@ class AssetsEdit extends PureComponent {
         } = this.state;
         const {showPassword} = this.state;
         let deviceRawValue = new Map([]);
+        let emptyRows;
+
+        if (assetState.company.length > 0) {
+            emptyRows = assetState.company.length;
+        } else {
+            emptyRows = 0;
+        }
 
         const deviceStyle = {
             textDecoration: '#ffdd67 underline',
@@ -561,7 +573,8 @@ class AssetsEdit extends PureComponent {
                         {
                             arrData !== undefined && arrData !== "" && arrData !== "ip"
                             && (
-                                <div className="modal_form__form-group-field">
+                                <div className="modal_form__form-group-field"
+                                     style={{paddingBottom: "5px"}}>
                                     <input
                                         name={`${arrData}`}
                                         type="text"
@@ -598,7 +611,8 @@ class AssetsEdit extends PureComponent {
                         {
                             arrData !== undefined && arrData !== "" && arrData !== "spla"
                             && (
-                                <div className="modal_form__form-group-field">
+                                <div className="modal_form__form-group-field"
+                                     style={{paddingBottom: "5px"}}>
                                     <select
                                         name={`${arrData}`}
                                         defaultValue={splaArrayMap[arrData]}
@@ -697,7 +711,7 @@ class AssetsEdit extends PureComponent {
                                      role="button" tabIndex="0">
                                     <PlusIcon/>
                                 </svg>
-                                <span className="cautionStyle">※ 최대 등록 개수는 10개 입니다.</span>
+                                <span className="cautionStyle-add">※ 최대 등록 개수는 10개 입니다.</span>
                             </div>
                             {setIpArray}
                         </div>
@@ -711,7 +725,7 @@ class AssetsEdit extends PureComponent {
                                      role="button" tabIndex="0">
                                     <PlusIcon/>
                                 </svg>
-                                <span className="cautionStyle">※ 최대 등록 개수는 10개 입니다.</span>
+                                <span className="cautionStyle-add">※ 최대 등록 개수는 10개 입니다.</span>
                             </div>
                             {setSplaArray}
                         </div>
@@ -755,7 +769,7 @@ class AssetsEdit extends PureComponent {
                                      role="button" tabIndex="0">
                                     <PlusIcon/>
                                 </svg>
-                                <span className="cautionStyle">※ 최대 등록 개수는 10개 입니다.</span>
+                                <span className="cautionStyle-add">※ 최대 등록 개수는 10개 입니다.</span>
                             </div>
                             {setIpArray}
                         </div>
@@ -841,30 +855,40 @@ class AssetsEdit extends PureComponent {
             <Fragment>
                 {assetState.company.length !== undefined
                     ? (
-                        assetState.company.map(d => (
-                            <TableRow key={d.idx}>
-                                <TableCell className="material-table__cell material-table__cell-right"
-                                >{/*회사명*/}
-                                    <b className="text_cor_green mouse_over_list">
-                                        <div className="assets_add_modal_div"
-                                             onClick={event => this.setSearchCompany(d.cpUserId)}
-                                             onKeyDown={event => this.setSearchCompany(d.cpUserId)}
-                                             role="button" tabIndex="0"><span
-                                            className="circle__ste"/>{d.name}</div>
-                                    </b>
-                                </TableCell>
-                                <TableCell className="material-table__cell material-table__cell-right"
-                                >{/*회사 대표 ID*/}{d.cpUserId}
-                                </TableCell>
-                                <TableCell className="material-table__cell material-table__cell-right"
-                                >{/*회사 email*/}{d.email}
-                                </TableCell>
-                            </TableRow>
-                        ))
+                        <Fragment>
+                            {assetState.company.map(d => (
+                                <TableRow key={d.idx}>
+                                    <TableCell className="material-table__cell material-table__cell-right"
+                                    >{/*회사명*/}
+                                        <b className="text_cor_green mouse_over_list">
+                                            <div className="assets_add_modal_div"
+                                                 onClick={event => this.setSearchCompany(d.cpUserId)}
+                                                 onKeyDown={event => this.setSearchCompany(d.cpUserId)}
+                                                 role="button" tabIndex="0"><span
+                                                className="circle__ste"/>{d.name}</div>
+                                        </b>
+                                    </TableCell>
+                                    <TableCell className="material-table__cell material-table__cell-right"
+                                    >{/*회사 대표 ID*/}{d.cpUserId}
+                                    </TableCell>
+                                    <TableCell className="material-table__cell material-table__cell-right"
+                                    >{/*회사 email*/}{d.email}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                            {emptyRows <= 0 && (
+                                <TableRow style={{height: 49 * emptyRows}}>
+                                    <TableCell colSpan={3} style={{textAlign: "center"}}>검색된 내용이
+                                        없습니다.</TableCell>
+                                </TableRow>
+                            )}
+                        </Fragment>
                     )
                     : (
                         <TableRow>
-                            <TableCell>검색 하세요.</TableCell>
+                            <TableCell colSpan={3} style={{textAlign: "center"}}>
+                                검색된 내용이 없습니다.
+                            </TableCell>
                         </TableRow>
                     )
                 }
@@ -874,9 +898,9 @@ class AssetsEdit extends PureComponent {
         return (
             <div>
                 <div className="assets_write__modal__header">
-                    <p className="text-modal assets_write__modal__title">{title}
+                    <p className="text-modal assets_write__modal__title">장비 수정
                         &nbsp;&nbsp;
-                        <span className="assets_write__modal__title_sub">{message}</span></p>
+                        <span className="assets_write__modal__title_sub">자산관리 장비 수정</span></p>
                     <button className="lnr lnr-cross assets_write__modal__close-btn" type="button"
                             onClick={this.onClose}/>
                 </div>
@@ -970,7 +994,7 @@ class AssetsEdit extends PureComponent {
                             />
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">소유권/소유권구분</span>
+                            <span className="modal_form__form-group-label">소유권</span>
                             <Field
                                 name="ownership"
                                 component={renderSelectCustomField}
@@ -978,6 +1002,9 @@ class AssetsEdit extends PureComponent {
                                     code: assetState.codes.codeOwnership,
                                 }}
                             />
+                        </div>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">소유권구분</span>
                             <Field
                                 name="ownershipDiv"
                                 component={renderSelectCustomField}
@@ -1077,6 +1104,9 @@ class AssetsEdit extends PureComponent {
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">원가</span>
                             <div className="modal_form__form-group-field">
+                                <div className="modal_form__form-group-icon">
+                                    <CurrencyUsdIcon/>
+                                </div>
                                 <Field
                                     name="cost"
                                     component="input"
@@ -1110,24 +1140,49 @@ class AssetsEdit extends PureComponent {
                                 />
                             </div>
                         </div>
-                        <div className="modal_btn">
+                        {/*<div className="modal_btn">
                             <ButtonToolbar className="assets_write__modal__footer">
                                 <Button className="assets_write__modal_ok" color="primary"
                                         type="submit">수정</Button>
                                 <Button className="assets_write__modal_cancel"
                                         onClick={this.onClose}>닫기</Button>
                             </ButtonToolbar>
+                        </div>*/}
+                        <div className="modal_btn">
+                            <div className="float-right button-handle-form">
+                                <MatButton
+                                    variant="contained"
+                                    color="primary"
+                                    type="submit"
+                                    endIcon={<SendIcon/>}
+                                >
+                                    수정
+                                </MatButton>
+                                <MatButton
+                                    variant="contained"
+                                    color="default"
+                                    onClick={this.onClose}
+                                >
+                                    닫기
+                                </MatButton>
+                            </div>
                         </div>
                     </form>
                     <Modal
                         isOpen={modal}
                         toggle={this.searchToggle}
+                        modalClassName={theme.className === 'theme-dark' ? (
+                            "ltr-support modal-class_dark"
+                        ) : (
+                            "ltr-support modal-class_light"
+                        )}
                         className={`assets_write__modal-dialog assets_write__modal-dialog--success ${modalClass}`}
                     >
                         <div className="search_card_body">
                             <div className="assets_write__modal__header">
                                 &nbsp;&nbsp;
-                                <button className="lnr lnr-cross assets_write__modal__close__notitle-btn" type="button"
+                                <button className="lnr lnr-cross assets_write__modal__close__notitle-btn"
+                                        type="button"
                                         onClick={this.searchToggle}/>
                             </div>
                             <div className="assets_write__modal__body assets_write__modal__tableLine">
@@ -1145,8 +1200,13 @@ class AssetsEdit extends PureComponent {
                                     <span className="modal_form__form-group-label text_cor_blue">
                                     ※ 업체명으로 검색하세요.
                                 </span>
-                                    <div className="modal_form__form-group-field">
+                                    <div className="modal_form__form-group-field modal-list">
                                         <Table className="material-table" size="small">
+                                            <thead>
+                                            <th>회사명</th>
+                                            <th>회사 대표 ID</th>
+                                            <th>E-MAIL</th>
+                                            </thead>
                                             <TableBody>
                                                 {viewSearchCompany}
                                             </TableBody>

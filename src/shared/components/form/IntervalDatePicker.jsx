@@ -1,86 +1,90 @@
 /* eslint-disable no-param-reassign */
-import React, { PureComponent } from 'react';
+import React, {PureComponent, Fragment} from 'react';
 import DatePicker from 'react-datepicker';
-import { isMobileOnly } from 'react-device-detect';
+import {isMobileOnly} from 'react-device-detect';
 import MinusIcon from 'mdi-react/MinusIcon';
 import PropTypes from 'prop-types';
+import {Field} from "redux-form";
+import CalendarBlankIcon from "mdi-react/CalendarBlankIcon";
 
 class IntervalDatePickerField extends PureComponent {
-  static propTypes = {
-    onChange: PropTypes.func.isRequired,
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      startDate: null,
-      endDate: null,
+    static propTypes = {
+        onChange: PropTypes.func.isRequired,
     };
-    this.handleChange = this.handleChange.bind(this);
-  }
 
-  handleChangeStart = startDate => this.handleChange({ startDate });
+    constructor(props) {
+        super(props);
+        this.state = {
+            startDate: null,
+            endDate: null,
+        };
+        this.handleChange = this.handleChange.bind(this);
+    }
 
-  handleChangeEnd = endDate => this.handleChange({ endDate });
+    handleChangeStart = startDate => this.handleChange({startDate});
 
-  handleChange({ startDate, endDate }) {
-    const { startDate: stateStartDate, endDate: stateEndDate } = this.state;
+    handleChangeEnd = endDate => this.handleChange({endDate});
 
-    const { onChange } = this.props;
+    handleChange({startDate, endDate}) {
+        const {startDate: stateStartDate, endDate: stateEndDate} = this.state;
 
-    startDate = startDate || stateStartDate;
-    endDate = endDate || stateEndDate;
+        const {onChange} = this.props;
 
-    this.setState({ startDate, endDate });
-    onChange({ start: startDate, end: endDate });
-  }
+        startDate = startDate || stateStartDate;
+        endDate = endDate || stateEndDate;
 
-  render() {
-    const { startDate, endDate } = this.state;
+        this.setState({startDate, endDate});
+        onChange({start: startDate, end: endDate});
+    }
 
-    return (
-      <div className="date-picker date-picker--interval">
-        <DatePicker
-          selected={startDate}
-          selectsStart
-          startDate={startDate}
-          endDate={endDate}
-          onChange={this.handleChangeStart}
-          dateFormat="yyyy/MM/dd"
-          placeholderText="From"
-          dropDownMode="select"
-          withPortal={isMobileOnly}
-        />
-        <MinusIcon className="date-picker__svg" />
-        <DatePicker
-          selected={endDate}
-          selectsEnd
-          startDate={startDate}
-          endDate={endDate}
-          onChange={this.handleChangeEnd}
-          dateFormat="yyyy/MM/dd"
-          placeholderText="To"
-          dropDownMode="select"
-          withPortal={isMobileOnly}
-        />
-      </div>
-    );
-  }
+    render() {
+        const {startDate, endDate} = this.state;
+
+        return (
+            <div className="date-picker date-picker--interval">
+                <DatePicker
+                    selected={startDate}
+                    selectsStart
+                    startDate={startDate}
+                    endDate={endDate}
+                    onChange={this.handleChangeStart}
+                    dateFormat="yyyy/MM/dd"
+                    placeholderText="From"
+                    dropDownMode="select"
+                    withPortal={isMobileOnly}
+                />
+                <MinusIcon className="date-picker__svg"/>
+                <DatePicker
+                    selected={endDate}
+                    selectsEnd
+                    startDate={startDate}
+                    endDate={endDate}
+                    onChange={this.handleChangeEnd}
+                    dateFormat="yyyy/MM/dd"
+                    placeholderText="To"
+                    dropDownMode="select"
+                    withPortal={isMobileOnly}
+                />
+            </div>
+        );
+    }
 }
 
 const renderIntervalDatePickerField = (props) => {
-  const { input } = props;
-  return (
-    <IntervalDatePickerField
-      {...input}
-    />
-  );
+    const {input} = props;
+    return (
+        <Fragment>
+            <IntervalDatePickerField
+                {...input}
+            />
+        </Fragment>
+    );
 };
 
 renderIntervalDatePickerField.propTypes = {
-  input: PropTypes.shape({
-    onChange: PropTypes.func,
-  }).isRequired,
+    input: PropTypes.shape({
+        onChange: PropTypes.func,
+    }).isRequired,
 };
 
 export default renderIntervalDatePickerField;

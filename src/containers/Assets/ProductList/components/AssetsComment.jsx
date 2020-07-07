@@ -32,6 +32,8 @@ class AssetsComment extends PureComponent {
         // eslint-disable-next-line react/forbid-prop-types
         assetState: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
+        // eslint-disable-next-line react/forbid-prop-types
+        theme: PropTypes.object.isRequired,
     };
 
     constructor() {
@@ -262,7 +264,7 @@ class AssetsComment extends PureComponent {
     };
 
     render() {
-        const {assetState, dispatch} = this.props;
+        const {assetState, theme} = this.props;
         const {
             modal, comment, registerId, registerName, registerDate,
             modalWarring, warringTitle, warringIcon,
@@ -308,17 +310,6 @@ class AssetsComment extends PureComponent {
                                                 role="button" tabIndex="0">
                                                 수정<EditIcon color="primary"/>
                                             </div>
-                                            {/*<IconButton aria-label="delete" size="small"
-                                                                color="secondary"
-                                                                onClick={() => this.commentToggle('delete', d)}>
-                                                        <DeleteIcon fontSize="inherit"/>
-                                                    </IconButton>
-                                                    수정
-                                                    <IconButton aria-label="delete" size="small"
-                                                                color="primary"
-                                                                onClick={() => this.commentToggle('update', d)}>
-                                                        <EditIcon fontSize="inherit"/>
-                                                    </IconButton>*/}
                                         </div>
                                     </div>
                                 </p>
@@ -326,6 +317,9 @@ class AssetsComment extends PureComponent {
                                     <pre>{d.contents}</pre>
                                 </p>
                             </div>
+                            {/*<div className="chat__bubble-message-wrap">
+                                <p className="chat__bubble-date">22</p>
+                            </div>*/}
                         </div>
                     ))}
                     {/*{assetState.comments
@@ -369,30 +363,13 @@ class AssetsComment extends PureComponent {
             <Col md={12}>
                 <Fragment>
                     {deviceComments}
-                    {/*<Modal isOpen={modal}>
-                        <form onSubmit={this.handleSubmit}>
-                            <div className="assets_write__modal__body assets_write__modal__tableLine">
-                                <div className="modal_form__form-group">
-                                            <span className="modal_form__form-group-label text_cor_green">
-                                                {registerName} ({registerId}) -  [{registerDate}]</span>
-                                    <div className="modal_form__form-group-field">
-                                                    <textarea name="comment" value={comment}
-                                                              className="assets_comment"
-                                                              placeholder="댓글 입력 창"
-                                                              onChange={this.handleChange}/>
-                                    </div>
-                                </div>
-                            </div>
-                            <ButtonToolbar className="assets_write__modal__footer_comment">
-                                <Button className="assets_write__modal_ok"
-                                        type="submit" color="success">수정</Button>&nbsp;
-                                <Button className="assets_write__modal_cancel"
-                                        onClick={() => this.commentToggle('close')}
-                                >Cancel</Button>
-                            </ButtonToolbar>
-                        </form>
-                    </Modal>*/}
-                    <Modal isOpen={modal} className="comment-modal-dialog modal-comment-wrap">
+                    <Modal isOpen={modal}
+                           modalClassName={theme.className === 'theme-dark' ? (
+                               "ltr-support modal-class_dark"
+                           ) : (
+                               "ltr-support modal-class_light"
+                           )}
+                           className="comment-modal-dialog modal-comment-wrap">
                         <form onSubmit={this.handleSubmit}>
                             <div className="modal-comment-wrap">
                                 <span className="modal_form__form-group-label text_cor_mat_p">
@@ -400,11 +377,13 @@ class AssetsComment extends PureComponent {
                                             size="20"/>&nbsp;{registerName}({registerId})
                                     [{moment(registerDate).format("YYYY-MM-DD")}]
                                 </span>
-                                <div className="modal_form__form-group-field">
+                                <div className="modal_form__form-group-field"
+                                     style={{paddingTop: "5px"}}>
                                     <div className="chat__text-field">
                                         <textarea className="chat__field-textarea"
                                                   placeholder="Type here…"
                                                   rows={8}
+                                                  cols={12}
                                                   name="comment" value={comment}
                                                   onChange={this.handleChange}/>
                                         <div

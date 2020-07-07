@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from "axios";
 import { Button, ButtonToolbar } from 'reactstrap';
 import {Field, Form, reduxForm} from 'redux-form';
 import { withRouter} from 'react-router-dom';
@@ -47,14 +46,14 @@ const LoginInputEmailForm = ({ history, secret }) => {
     useEffect(() => {
         console.log('[LoginForm 1]');
         if (form.username === "" || form.password === "") {
-            history.push('/log_in');
+            history.push('/login');
         }
     }, [dispatch]);
 
     useEffect(() => {
         if (authSentEmail) {
-            console.log("isSentEmail: TRUE --> history push /log_in/confirm");
-            history.push('/log_in/confirm');
+            console.log("isSentEmail: TRUE --> history push /login/confirm");
+            history.push('/login/confirm');
         }
     }, [history, authSentEmail]);
 

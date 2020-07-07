@@ -17,7 +17,7 @@ import {
     SET_LOGIN_USER,
     CHECK_LOGIN_USER_SUCCESS,
     CHECK_LOGIN_USER_FAILURE,
-    LOGOUT,
+    LOGOUT, CHANGE_LOGIN_PAGE,
 } from "../actions/accountActions";
 import {GV_LOGIN_PAGE_FIRST} from "../../lib/globalVariable";
 
@@ -49,6 +49,10 @@ export default handleActions(
     {
         [CHANGE_ACCOUNT_FIELD]: (state, { payload: { form, key, value } }) => produce(state, (draft) => {
             draft[form][key] = value; // state.register.username
+        }),
+        [CHANGE_LOGIN_PAGE]: (state, { payload: { value } }) => ({
+            ...state,
+            pageNum: value,
         }),
         [INITIALIZE_FORM]: (state, { payload: form }) => ({
             ...state,

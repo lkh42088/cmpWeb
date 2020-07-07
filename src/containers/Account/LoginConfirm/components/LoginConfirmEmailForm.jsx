@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import axios from "axios";
+import React, { useEffect } from 'react';
 import { Button, ButtonToolbar } from 'reactstrap';
-import {Field, Form, reduxForm} from 'redux-form';
+import { Form, reduxForm} from 'redux-form';
 import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import {checkLoginUser, setLoginUser} from "../../../../redux/actions/accountActions";
+import {checkLoginUser} from "../../../../redux/actions/accountActions";
 import {loginConfirm} from "../../../../redux/actions/authActions";
 
 // eslint-disable-next-line react/prop-types
@@ -36,13 +35,9 @@ const LoginConfirmEmailForm = ({ history }) => {
         console.log('password:', form.password);
         console.log('email:', form.email);
         if (form.username === "" || form.password === "") {
-            console.log('^^^^^^^---> /log_in');
-            history.push('/log_in');
+            console.log('^^^^^^^---> /login');
+            history.push('/login');
         }
-        // else if (form.email === "") {
-        //     console.log('^^^^^^^---> /log_in/input_email');
-        //     history.push('/log_in/input_email');
-        // }
     }, [dispatch]);
 
     useEffect(() => {
