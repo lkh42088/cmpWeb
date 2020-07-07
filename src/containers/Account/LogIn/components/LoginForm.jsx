@@ -45,8 +45,9 @@ const LoginForm = ({ history }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('>>>>>> onSubmit');
         const { username, password } = form;
+
+        console.log('>>>>>> onSubmit');
         console.log('username:', username);
         console.log('password:', password);
         dispatch(login({ username, password }));
@@ -97,16 +98,16 @@ const LoginForm = ({ history }) => {
     useEffect(() => {
         console.log("[useEffect] authSentEmail: ", authSentEmail);
         if (authSentEmail === true) {
-            console.log("[useEffect] --> /log_in/confirm: ", authSentEmail);
+            console.log("[useEffect] --> /login/confirm: ", authSentEmail);
             console.log("[user] form:", form);
-            history.push('/log_in/confirm');
+            history.push('/login/confirm');
         }
     }, [authSentEmail]);
 
     useEffect(() => {
         console.log("[useEffect] authInputEmail: ", authInputEmail);
         if (authInputEmail === true) {
-            history.push('/log_in/input_email');
+            history.push('/login/input_email');
         }
     }, [authInputEmail]);
 

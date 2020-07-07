@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useSelector} from "react-redux";
 import LoginFormWrap from "./LoginForm";
 import LoginInputEmailFormWrap from "./LoginInputEmailForm";
@@ -8,13 +8,22 @@ import {
     GV_LOGIN_PAGE_CONFIRM_EMAIL,
 } from "../../../../lib/globalVariable";
 
-const LoginCard = () => {
+const LoginPage = () => {
     const {
         pageNum,
     } = useSelector(({accountRd}) => ({
         pageNum: accountRd.pageNum,
     }));
 
+    useEffect(() => {
+        console.log("LoginPage: init pageNum ", pageNum);
+    }, []);
+
+    useEffect(() => {
+        console.log("LoginPage: change pageNum ", pageNum);
+    }, [pageNum]);
+
+    console.log("LoginPage: current pageNum ", pageNum);
     return (
         <div className="account__wrapper">
             <div className="account__card">
@@ -36,4 +45,4 @@ const LoginCard = () => {
     );
 };
 
-export default LoginCard;
+export default LoginPage;

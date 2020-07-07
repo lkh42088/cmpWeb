@@ -7,6 +7,7 @@ import createRequestSaga, {createRequestActionTypes} from "../../lib/createReque
  * 1. Action Type
  *****************************************************************************/
 export const CHANGE_ACCOUNT_FIELD = 'account/CHANGE_ACCOUNT_FIELD';
+export const CHANGE_LOGIN_PAGE = 'account/CHANGE_LOGIN_PAGE';
 export const INITIALIZE_FORM = 'account/INITIALIZE_FORM';
 export const LOGIN_SENT_EMAIL = 'account/LOGIN_SENT_EMAIL';
 export const LOGIN_INPUT_EMAIL = 'account/LOGIN_INPUT_EMAIL';
@@ -30,6 +31,7 @@ export const LOGOUT = 'user/LOGOUT';
  * 2. Action Function
  *****************************************************************************/
 export const changeField = createAction(CHANGE_ACCOUNT_FIELD, ({ form, key, value }) => ({ form, key, value }));
+export const changeLoginPage = createAction(CHANGE_LOGIN_PAGE, ({ value }) => ({ value }));
 export const initializeForm = createAction(INITIALIZE_FORM, form => form);
 
 /** SAGA Action Function */

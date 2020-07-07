@@ -3,12 +3,11 @@ import { Route, Switch } from 'react-router-dom';
 import MainWrapper from '../MainWrapper';
 import WrappedRoutes from './WrappedRoutes';
 import CbWrappedRoutes from './CbWrappedRoutes';
-// import LogIn from "../../Account/LogIn";
 import LogInPage from "../../Login/LogInPage";
-import Register from "../../Account/Register";
-import RegisterUser from "../../Account/RegisterUser";
-import LogInInputEmail from "../../Account/LoginInputEmail";
-import LogInConfirmEmail from "../../Account/LoginConfirm";
+// import Register from "../../Account/Register";
+// import RegisterUser from "../../Account/RegisterUser";
+// import LogInInputEmail from "../../Account/LoginInputEmail";
+// import LogInConfirmEmail from "../../Account/LoginConfirm";
 import LogInEmailAuth from "../../Account/LoginEmailAuth";
 
 const Router = () => (
@@ -16,14 +15,14 @@ const Router = () => (
     <main>
         <Switch>
             <Route exact path="/" component={LogInPage} />
-            <Route path="/log_in/confirm" component={LogInConfirmEmail} />
-            <Route path="/log_in/input_email" component={LogInInputEmail} />
-            {/*<Route path="/log_in/email/:id/:secret" component={EmailConfirmation} />*/}
-            <Route path="/log_in/email/:id/:secret" component={LogInEmailAuth} />
-            {/*<Route path="/log_in" component={LogIn} />*/}
+
+            {/*<Route path="/login/confirm" component={LogInConfirmEmail} />*/}
+            {/*<Route path="/login/input_email" component={LogInInputEmail} />*/}
+            <Route path="/login/email/:id/:target/:secret" component={LogInEmailAuth} />
             <Route path="/login" component={LogInPage} />
-            <Route path="/register" component={Register} />
-            <Route path="/registeruser" component={RegisterUser} />
+
+            {/*<Route path="/register" component={Register} />*/}
+            {/*<Route path="/registeruser" component={RegisterUser} />*/}
             <Route path="/org" component={WrappedRoutes} />
             <Route path="/" component={CbWrappedRoutes} />
         </Switch>

@@ -1,9 +1,9 @@
 import React from 'react';
-import LoginCard from './components/LoginCard';
+import LoginPage from './components/LoginPage';
 
 const LogIn = () => (
         <div className="account account--not-photo">
-            <LoginCard/>
+            <LoginPage/>
         </div>
     );
 
