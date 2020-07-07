@@ -340,10 +340,17 @@ const CompanyList = () => {
         return str;
     };
 
+    const tooltip = (
+        <ReactTooltip id="tooltip" place="top" effect="solid"
+                      delayHide={500} type="info"
+                      className={classes.reactTooltip}
+                      getContent={dataTip => `${dataTip}`} />
+    );
+
     const tableRows = (
         <TableBody>
             { data && data.map((row) => {
-                    const isSelected = getSelected(row.idx);
+                const isSelected = getSelected(row.idx);
                     return (
                         <TableRow
                             hover
@@ -354,6 +361,7 @@ const CompanyList = () => {
                             tabIndex={-1}
                             key={row.idx}
                             selected={isSelected}
+
                         >
                             <TableCell className="cb-material-table__cell" padding="checkbox" >
                                 <Checkbox checked={isSelected} className="cb-material-table__checkbox" />
@@ -402,11 +410,8 @@ const CompanyList = () => {
                                 data-for="tooltip"
                             >
                                 {checkStringLength(row.memo)}
+                                {tooltip}
                             </TableCell>
-                            <ReactTooltip id="tooltip" place="top" effect="solid"
-                                          delayHide={500} type="info"
-                                          className={classes.reactTooltip}
-                                          getContent={dataTip => `${dataTip}`} />
                         </TableRow>
                     );
                 })
