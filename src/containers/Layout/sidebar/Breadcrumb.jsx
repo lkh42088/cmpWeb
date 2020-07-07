@@ -76,22 +76,39 @@ export default function RouterBreadcrumbs(props) {
     //     setOpen(prevOpen => !prevOpen);
     // };
 
-    const getTitle = (tmpUrl) => {
-       const tmp = tmpUrl.replace(DEFAULT_URL, "");
-       const pageTitle = PAGE_URL[tmp].title;
-       return pageTitle;
-    };
-    
-    const getSubTitle = (tmpUrl) => {
+    const seperateUrl = (tmpUrl) => {
         const tmp = tmpUrl.replace(DEFAULT_URL, "");
-        const pageSubTitle = PAGE_URL[tmp].subTitle;
-        return pageSubTitle;
+        if (tmp && tmp.length > 1 && PAGE_URL[tmp]) {
+            return tmp;
+        }
+        return null;
+    };
+
+    const getTitle = (tmpUrl) => {
+        const tmp = seperateUrl(tmpUrl);
+        if (tmp) {
+            const pageTitle = PAGE_URL[tmp].title;
+            return pageTitle;
+        }
+        return null;
+    };
+
+    const getSubTitle = (tmpUrl) => {
+        const tmp = seperateUrl(tmpUrl);
+        if (tmp) {
+            const pageSubTitle = PAGE_URL[tmp].subTitle;
+            return pageSubTitle;
+        }
+        return null;
     };
 
     const getIcon = (tmpUrl) => {
-        const tmp = tmpUrl.replace(DEFAULT_URL, "");
-        const iconSet = PAGE_URL[tmp].icon;
-        return iconSet;
+        const tmp = seperateUrl(tmpUrl);
+        if (tmp) {
+            const iconSet = PAGE_URL[tmp].icon;
+            return iconSet;
+        }
+        return null;
     };
 
     useEffect(() => {
@@ -108,11 +125,11 @@ export default function RouterBreadcrumbs(props) {
                         // const pathnames = location.pathname.split('/').filter(x => x);
                         <Breadcrumbs aria-label="breadcrumb">
                             <StyledBreadcrumb href="/" label="HOME" icon={<HomeIcon fontSize="small"/>}/>
-                            {(url && getTitle(url).length !== 0)
+                            {(url && getTitle(url) !== null)
                                 ? (<StyledBreadcrumb icon={<Icon icon={getIcon(url)}/>} label={getTitle(url)} />)
                                 : null
                             }
-                            {(url && getSubTitle(url).length !== 0)
+                            {(url && getSubTitle(url) !== null)
                                 ? (<StyledBreadcrumb label={getSubTitle(url)} />)
                                 : null
                             }
