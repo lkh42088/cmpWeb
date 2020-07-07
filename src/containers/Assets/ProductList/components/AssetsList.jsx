@@ -630,6 +630,7 @@ export default class AssetsList extends PureComponent {
                                     control={<Switch checked={dense} onChange={this.handleChangeDense}/>}
                                     label="Dense padding"
                                     style={{padding: 5}}
+                                    className="list-dense-padding"
                                 />
                                 <TablePagination
                                     component="div"

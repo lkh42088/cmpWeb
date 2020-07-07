@@ -13,11 +13,19 @@ import {Button, TextField} from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import {fade, lighten, makeStyles} from "@material-ui/core/styles";
 import Select from "@material-ui/core/Select";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControl from "@material-ui/core/FormControl";
+import MenuItem from "@material-ui/core/MenuItem";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Portal from "@material-ui/core/Portal";
+import Container from "@material-ui/core/Container";
 
 const useStyles = makeStyles(theme => ({
     root: {
         paddingLeft: theme.spacing(2),
         paddingRight: theme.spacing(1),
+
     },
     highlight:
         theme.palette.type === 'light'
@@ -71,15 +79,30 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    span: {
-        padding: theme.spacing(1, 2),
-        height: 'auto',
-        display: 'flex',
-        justifyContent: 'left',
-    },
-    inputRoot: {
-        color: 'inherit',
-    },
+    span:
+        theme.palette.type === 'light'
+            ? {
+                color: '#646777',
+                padding: theme.spacing(1, 2),
+                height: 'auto',
+                display: 'flex',
+                justifyContent: 'left',
+            }
+            : {
+                color: '#dddddd',
+                padding: theme.spacing(1, 2),
+                height: 'auto',
+                display: 'flex',
+                justifyContent: 'left',
+            },
+    inputRoot:
+        theme.palette.type === 'light'
+            ? {
+                color: 'inherit',
+            }
+            : {
+                color: '#AAAAAA',
+            },
     inputInput: {
         padding: theme.spacing(1, 1, 1, 0),
         // vertical padding + font size from searchIcon
@@ -99,6 +122,36 @@ const useStyles = makeStyles(theme => ({
         backgroundClip: theme.palette.common.white,
     },
 }));
+
+// 권한 레벨 INPUT
+const BootstrapInput = withStyles(theme => ({
+    input: {
+        borderRadius: 4,
+        position: 'relative',
+        backgroundColor: theme.palette.background.paper,
+        border: '1px solid #ced4da',
+        fontSize: 12,
+        padding: '5px 26px 10px 12px',
+        transition: theme.transitions.create(['border-color', 'box-shadow']),
+        '&:focus': {
+            borderRadius: 4,
+            borderColor: '#80bdff',
+            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+        },
+    },
+}))(InputBase);
+
+// 권한 레벨 Menu
+const ITEM_HEIGHT = 36;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 100,
+        },
+    },
+};
 
 const UserSearchBar = (props) => {
     /************************************************************************************
@@ -144,6 +197,14 @@ const UserSearchBar = (props) => {
         handleSubmit(fields);
     };
 
+    const handleCheckEmail = () => {
+        console.log("handleCheckEmail");
+    };
+
+    const handleCheckGroupEmail = () => {
+        console.log("handleCheckGroupEmail");
+    };
+
     /************************************************************************************
      * useEffect
      ************************************************************************************/
@@ -164,7 +225,7 @@ const UserSearchBar = (props) => {
 
     console.log("SearchBar...");
     return (
-        <Fragment>
+        <Container>
             <Grid
                 container
                 justify="space-between"
@@ -255,22 +316,54 @@ const UserSearchBar = (props) => {
                                                         <Grid item xs={3} spacing={1}>
                                                             <span className={classes.span}>회사명</span>
                                                         </Grid>
-                                                        <Grid item xs={9} spacing={1}>
+                                                        <Grid item xs={4} spacing={1}>
                                                             <TextField
                                                                 variant={variant}
                                                                 size={fieldSize}
                                                                 fullWidth />
                                                         </Grid>
-                                                        <Grid item xs={3} spacing={1}>
+                                                        <Grid item xs={2} spacing={1}>
                                                             <span className={classes.span}>권한</span>
                                                         </Grid>
-                                                        <Grid item xs={9} spacing={1}>
-                                                            <TextField
-                                                                variant={variant}
-                                                                size={fieldSize}
-                                                                name="level"
-                                                                onChange={(e) => { handleChangeField("level", e.target.value); }}
-                                                                fullWidth />
+                                                        <Grid item xs={3} spacing={1}>
+                                                            <FormControl>
+                                                                <Select
+                                                                    // value={}
+                                                                    // onChange={handleChange}
+                                                                    input={<BootstrapInput />}
+                                                                    MenuProps={MenuProps}
+                                                                >
+                                                                    <MenuItem value="">선택안함</MenuItem>
+                                                                    <MenuItem value={1}>1</MenuItem>
+                                                                    <MenuItem value={2}>2</MenuItem>
+                                                                    <MenuItem value={3}>3</MenuItem>
+                                                                    <MenuItem value={4}>4</MenuItem>
+                                                                    <MenuItem value={5}>5</MenuItem>
+                                                                    <MenuItem value={6}>6</MenuItem>
+                                                                    <MenuItem value={7}>7</MenuItem>
+                                                                    <MenuItem value={8}>8</MenuItem>
+                                                                    <MenuItem value={9}>9</MenuItem>
+                                                                    <MenuItem value={10}>10</MenuItem>
+                                                                </Select>
+                                                            </FormControl>
+                                                            {/*<TextField*/}
+                                                            {/*    variant={variant}*/}
+                                                            {/*    size={fieldSize}*/}
+                                                            {/*    name="level"*/}
+                                                            {/*    onChange={(e) => { handleChangeField("level", e.target.value); }}*/}
+                                                            {/*    fullWidth />*/}
+                                                        </Grid>
+                                                        <Grid item spacing={1}>
+                                                            <span className={classes.span}>
+                                                                <FormControlLabel
+                                                                    control={<Checkbox onChange={handleCheckEmail} name="email" color="primary" />}
+                                                                    label="이메일 인증"
+                                                                />
+                                                                <FormControlLabel
+                                                                    control={<Checkbox onChange={handleCheckGroupEmail} name="groupEmail" color="primary" />}
+                                                                    label="그룹 이메일 인증"
+                                                                />
+                                                            </span>
                                                         </Grid>
                                                         <Grid item xs={12} spacing={1}>
                                                             <div style={{
@@ -298,7 +391,7 @@ const UserSearchBar = (props) => {
                     </Grid>
                 </Grid>
             </Grid>
-        </Fragment>
+        </Container>
     );
 };
 
