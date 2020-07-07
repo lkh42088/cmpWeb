@@ -11,7 +11,6 @@
   }
 
   @media screen and (max-width: 1023px) {
-
     &:before {
       content: '';
       width: 100%;
@@ -252,7 +251,8 @@
 
 .chat__bubble-message-wrap {
   /*max-width: 570px;*/
-  max-width: calc(90% - 10px);
+  max-width: calc(80% - 10px);
+  font-size: small;
   @include directify($directions) {
     #{directed('padding-right')}: 40px;
     #{directed('padding-left')}: 20px;
@@ -394,7 +394,9 @@
 
 .chat__bubble-message {
   margin: 0;
-  font-size: 12px;
+  // (07july2020,ebjee)
+  /*font-size: 12px;*/
+  font-size: smaller;
 
   @include themify($themes) {
     color: themed('colorText');

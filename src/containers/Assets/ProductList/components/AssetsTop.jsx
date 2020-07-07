@@ -22,7 +22,6 @@ import {
     postDevice,
     postDeviceOutFlag, setState,
 } from "../../../../redux/actions/assetsAction";
-import {MenuTitleProps} from '../../../../shared/prop-types/ReducerProps';
 
 // eslint-disable-next-line react/no-redundant-should-component-update
 export default class AssetsTop extends PureComponent {
@@ -30,6 +29,8 @@ export default class AssetsTop extends PureComponent {
         // eslint-disable-next-line react/forbid-prop-types
         assetState: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
+        // eslint-disable-next-line react/forbid-prop-types
+        theme: PropTypes.object.isRequired,
     };
 
     constructor() {
@@ -292,7 +293,9 @@ export default class AssetsTop extends PureComponent {
     };
 
     render() {
-        const {assetState, dispatch, user} = this.props;
+        const {
+            assetState, dispatch, user, theme,
+        } = this.props;
 
         const {
             modalOpenFlag, modalWarring, warringTitle, warringIcon,
@@ -357,34 +360,36 @@ export default class AssetsTop extends PureComponent {
         }
 
         return (
-            <Col md={12} lg={12}>
-                <Card>
-                    <div className="top_btn_area">
-                        <div className="float-left">
-                            <ButtonToolbar>
-                                {/*className="top_btn_black_dep3"*/}
-                                <span role="button" tabIndex="0"
-                                      onClick={this.toggle} onKeyDown={this.toggle}>
-                                <CreateIcon/>&nbsp;
-                                    장비 등록</span>
-                                {viewComponentOutFlag}
-                            </ButtonToolbar>
-                        </div>
+            <Card>
+                <div className="top_btn_area">
+                    <div className="float-left">
+                        <ButtonToolbar>
+                            {/*className="top_btn_black_dep3"*/}
+                            <span role="button" tabIndex="0"
+                                  onClick={this.toggle} onKeyDown={this.toggle}>
+                                    <CreateIcon/>&nbsp;장비 등록</span>
+                            {viewComponentOutFlag}
+                        </ButtonToolbar>
                     </div>
-                    <Modal
-                        isOpen={modalOpenFlag}
-                        modalClassName="ltr-support"
-                        className={`assets_write__modal-dialog 
-                            assets_write__modal-dialog ${modalClass}`}
-                    >
-                        <AssetsWrite closeToggle={this.toggle} assetState={assetState} dispatch={dispatch}
-                                     title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다."
-                                     onSubmit={this.handleSubmit}
-                        />
-                    </Modal>
-                    {/*1 : true , 0 : false */}
-                    {/*0 : 반입, 1 : 반출*/}
-                    {/*<Modal
+                </div>
+                <Modal
+                    isOpen={modalOpenFlag}
+                    /*modalClassName="ltr-support modal-class"*/
+                    modalClassName={theme.className === 'theme-dark' ? (
+                        "ltr-support modal-class_dark"
+                        ) : (
+                        "ltr-support modal-class_light"
+                        )}
+                    className={`${modalClass}`}
+                >
+                    <AssetsWrite closeToggle={this.toggle} assetState={assetState} dispatch={dispatch}
+                                 onSubmit={this.handleSubmit}
+                                 theme={theme}
+                    />
+                </Modal>
+                {/*1 : true , 0 : false */}
+                {/*0 : 반입, 1 : 반출*/}
+                {/*<Modal
                         isOpen={modalWarring}
                         toggle={this.warringToggle}
                         modalClassName="ltr-support"
@@ -404,38 +409,37 @@ export default class AssetsTop extends PureComponent {
                                     onClick={this.warringToggle}>Ok</Button>
                         </ButtonToolbar>
                     </Modal>*/}
-                    <Snackbar
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        }}
-                        open={modalWarring}
-                        autoHideDuration={3000}
-                        onClose={this.warringToggle}
-                    >
-                        <SnackbarContent
-                            /*message={`${warringIcon} ${warringContents}`}*/
-                            style={warringStyle}
-                            message={(
-                                <span id="client-snackbar" style={{lineHeight: "2"}}>
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
+                    open={modalWarring}
+                    autoHideDuration={3000}
+                    onClose={this.warringToggle}
+                >
+                    <SnackbarContent
+                        /*message={`${warringIcon} ${warringContents}`}*/
+                        style={warringStyle}
+                        message={(
+                            <span id="client-snackbar" style={{lineHeight: "2"}}>
                                     {warringIcon}&nbsp;{warringContents}
                                  </span>
-                            )}
-                            /*action={(
-                                <Fragment>
-                                    <MatButton color="secondary" size="small" onClick={this.warringToggle}>
-                                        Ok
-                                    </MatButton>
-                                    <IconButton size="small" aria-label="close" color="inherit"
-                                                onClick={this.warringToggle}>
-                                        <CloseIcon fontSize="small"/>
-                                    </IconButton>
-                                </Fragment>
-                            )}*/
-                        />
-                    </Snackbar>
-                </Card>
-            </Col>
+                        )}
+                        /*action={(
+                            <Fragment>
+                                <MatButton color="secondary" size="small" onClick={this.warringToggle}>
+                                    Ok
+                                </MatButton>
+                                <IconButton size="small" aria-label="close" color="inherit"
+                                            onClick={this.warringToggle}>
+                                    <CloseIcon fontSize="small"/>
+                                </IconButton>
+                            </Fragment>
+                        )}*/
+                    />
+                </Snackbar>
+            </Card>
         );
     }
 }

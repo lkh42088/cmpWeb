@@ -1,6 +1,3 @@
-.modal {
-
-}
 
 .login-modal-form {
   .modal-content {
@@ -12,7 +9,8 @@
 }
 
 .modal-dialog {
-  max-width: 385px;
+  // (06july2020,ebjee)
+  /*max-width: 385px;*/
 }
 
 .modal-content {
@@ -20,7 +18,9 @@
   border: none;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
   position: relative;
-  padding: 50px 40px 60px 40px;
+  // (07july2020,ebjee)
+  //  padding: 50px 40px 60px 40px;
+  padding: 20px 40px 10px 40px;
   text-align: center;
 
   @include themify($themes) {

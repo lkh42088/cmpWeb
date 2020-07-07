@@ -8,7 +8,7 @@ import {emphasize, withStyles} from '@material-ui/core/styles';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Chip from '@material-ui/core/Chip';
 import HomeIcon from '@material-ui/icons/Home';
-import { SnackbarProvider } from 'notistack';
+import {SnackbarProvider} from 'notistack';
 
 import {
     fetchPosts, getCodes, postDevice, getDeviceOriByIdx, getDeviceByIdx, setAssetsPage,
@@ -18,10 +18,12 @@ import AssetsList from './components/AssetsList';
 import AssetsSearch from './components/AssetsSearch';
 import AssetsTop from './components/AssetsTop';
 import AssetsView from "./components/AssetsView";
+import Customizer from "../../Layout/customizer/Customizer";
 
 //TODO DIR ProductList 폴터 제거
 const MaterialTable = () => {
     const assetState = useSelector(state => state.assets);
+    const themeRd = useSelector(state => state.theme);
     const dispatch = useDispatch();
     const {
         title, getTitle,
@@ -66,7 +68,7 @@ const MaterialTable = () => {
     useEffect(() => {
         getDevices();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    /*}, [assetState.deviceType, assetState.device, assetState.stateVal]);*/
+        /*}, [assetState.deviceType, assetState.device, assetState.stateVal]);*/
     }, [assetState.deviceType, assetState.stateVal]);
 
     useEffect(() => {
@@ -94,21 +96,22 @@ const MaterialTable = () => {
                     </Breadcrumbs>
                 </Row>
                 {assetState.assetsPage === 'list' ? (
-                    <Row style={{padding: 10}}>
+                    <Row style={{paddingBottom: 10}}>
                         {/*<SnackbarProvider maxSnack={3}>
                         <AssetsTop assetState={assetState} dispatch={dispatch} user={user}/>
                         <AssetsSearch assetState={assetState} user={user}/>
                     </SnackbarProvider>*/}
-                        <AssetsTop assetState={assetState} dispatch={dispatch} user={user}/>
+                        <AssetsTop assetState={assetState} dispatch={dispatch} user={user}
+                                   theme={themeRd}/>
                         {/*{assetState.codes.codeDeviceType !== undefined ? <AssetsSearch assetState={assetState} /> : false}*/}
                         <AssetsSearch assetState={assetState} user={user}/>
                     </Row>
                 ) : false}
-                <Row style={{padding: 10}}>
+                <Row>
                     {assetState.assetsPage === 'list'
                         ? <AssetsList assetState={assetState} dispatch={dispatch} user={user}/> : false}
                     {assetState.assetsPage === 'view' || assetState.assetsPage === 'edit'
-                        ? <AssetsView assetState={assetState} dispatch={dispatch} user={user}/> : false}
+                        ? <AssetsView assetState={assetState} dispatch={dispatch} user={user} theme={themeRd}/> : false}
 
                 </Row>
             </Col>
