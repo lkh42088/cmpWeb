@@ -3,7 +3,7 @@ import IconButton from "@material-ui/core/IconButton";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import {lighten, makeStyles} from "@material-ui/core/styles";
+import {fade, lighten, makeStyles} from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import clsx from "clsx";
 import Typography from "@material-ui/core/Typography";
@@ -12,8 +12,45 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
 import RefreshIcon from '@material-ui/icons/Refresh';
+import UserSearchBar from "./UserSearchBar";
 
-export const TableFilterButton = (props) => {
+const useToolbarStyles = makeStyles(theme => ({
+    root: {
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(1),
+    },
+    highlight:
+        theme.palette.type === 'light'
+            ? {
+                color: theme.palette.secondary.main,
+                backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+            }
+            : {
+                color: theme.palette.text.primary,
+                backgroundColor: theme.palette.secondary.dark,
+            },
+    title:
+        theme.palette.type === 'light'
+            ? {
+                flex: '1 1 100%',
+                color: '#646777',
+                fontSize: 18,
+                fontFamily: "Nanum BarunGothic",
+            }
+            : {
+                flex: '1 1 100%',
+                color: '#dddddd',
+                fontSize: 18,
+                fontFamily: "Nanum BarunGothic",
+            },
+    selected: {
+        flex: '1 1 100%',
+        fontSize: 15,
+        fontFamily: "Nanum BarunGothic Bold",
+    },
+}));
+
+const TableFilterButton = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const { rows, onRequestSort } = props;
 
@@ -64,51 +101,18 @@ export const TableFilterButton = (props) => {
     );
 };
 
-const useToolbarStyles = makeStyles(theme => ({
-    root: {
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(1),
-    },
-    highlight:
-        theme.palette.type === 'light'
-            ? {
-                color: theme.palette.secondary.main,
-                backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-            }
-            : {
-                color: theme.palette.text.primary,
-                backgroundColor: theme.palette.secondary.dark,
-            },
-    title:
-        theme.palette.type === 'light'
-            ? {
-                flex: '1 1 100%',
-                color: '#646777',
-                fontSize: 18,
-                fontFamily: "Nanum BarunGothic",
-            }
-            : {
-                flex: '1 1 100%',
-                color: '#dddddd',
-                fontSize: 18,
-                fontFamily: "Nanum BarunGothic",
-            },
-    selected: {
-        flex: '1 1 100%',
-        fontSize: 15,
-        fontFamily: "Nanum BarunGothic Bold",
-    },
-
-}));
-
-const CbAdminTableToolbar = (props) => {
+const UserTableToolbar = (props) => {
     const classes = useToolbarStyles();
     const {
         toolbarTitle, rows, numSelected, handleDeleteSelected, onRequestSort,
-        handleOpen, contents, handleRefresh,
+        handleOpen, contents, handleRefresh, handleSubmitSearch,
     } = props;
     const addComment = contents.concat(" 추가");
     const deleteComment = `선택한 ${contents} 삭제`;
+
+    const handleDelete = () => {
+        console.log("handleDelete...");
+    };
 
     return (
         <div>
@@ -120,8 +124,11 @@ const CbAdminTableToolbar = (props) => {
                         <Typography className={classes.selected} color="inherit" variant="subtitle1" component="div">
                             {numSelected} selected
                         </Typography>
-                        <Tooltip title="Delete">
-                            <IconButton aria-label="delete">
+                        <Tooltip title="선택한 계정 삭제">
+                            <IconButton
+                                aria-label="delete"
+                                onClick={handleDeleteSelected}
+                            >
                                 <DeleteIcon color="secondary" />
                             </IconButton>
                         </Tooltip>
@@ -131,6 +138,12 @@ const CbAdminTableToolbar = (props) => {
                         <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
                             {toolbarTitle}
                         </Typography>
+                        {/*********************************************************************
+                         * Table Search bar
+                         **********************************************************************/}
+                        <UserSearchBar
+                            handleSubmit={handleSubmitSearch}
+                        />
                         <Grid container justify="center">
                             <Grid item container xs={12} alignItems="flex-end" direction="column">
                                 <Grid item>
@@ -140,14 +153,17 @@ const CbAdminTableToolbar = (props) => {
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Refresh" aria-label="refresh">
-                                            <IconButton type="button" onClick={handleRefresh}>
+                                            <IconButton
+                                                type="button"
+                                                onClick={handleRefresh}
+                                            >
                                                 <RefreshIcon/>
                                             </IconButton>
                                     </Tooltip>
                                     {numSelected > 0 ? (
                                         <Tooltip title={deleteComment} aria-label="delete">
                                             <IconButton
-                                                aria-label="delete"
+                                                type="button"
                                                 onClick={handleDeleteSelected}
                                             >
                                                 <DeleteIcon/>
@@ -168,4 +184,4 @@ const CbAdminTableToolbar = (props) => {
     );
 };
 
-export default CbAdminTableToolbar;
+export default UserTableToolbar;

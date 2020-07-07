@@ -42,11 +42,12 @@ import SpringModal from "../../../../Common/SpringModal";
 /** Custom CSS **/
 const useStyles = makeStyles(theme => ({
     root: {
-        fontFamily: 'Nanum Square acEB',
+        fontFamily: "Nanum Square acEB",
         fontSize: 8,
         fontWeight: "revert",
-        backgroundColor: theme.backgroundColor,
-        color: theme.color,
+        // '&:hover': {
+        //     color: "#063263",
+        // },
     },
     tab: {
         fontSize: 12,
@@ -121,11 +122,11 @@ const SubnetList = () => {
     /** Initial data **/
     const [state, setState] = React.useState({
         columns: [
-            { title: 'IDX', field: 'idx' },
-            { title: 'SUBNET 태그', field: 'subnetTag' },
-            { title: 'SUBNET', field: 'subnetStart'},
-            { title: 'SUBNET 마스크', field: 'subnetMask' },
-            { title: '게이트웨이', field: 'gateway' },
+            {title: 'IDX', field: 'idx', width: "5%" },
+            {title: 'SUBNET 태그', field: 'subnetTag', width: "20%"},
+            {title: 'SUBNET', field: 'subnetStart', width: "30%"},
+            {title: 'SUBNET 마스크', field: 'subnetMask', width: "20%"},
+            {title: '게이트웨이', field: 'gateway', width: "20%"},
         ],
         data: [],
     });

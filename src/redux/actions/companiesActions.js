@@ -18,6 +18,7 @@ export const [GET_COMPANIES, GET_COMPANIES_SUCCESS, GET_COMPANIES_FAILURE] = cre
 export const [GET_COMPANY_LIST, GET_COMPANY_LIST_SUCCESS, GET_COMPANY_LIST_FAILURE] = createRequestActionTypes('company/COMPANYLIST');
 export const [GET_COMPANIES_BY_NAME, GET_COMPANIES_BY_NAME_SUCCESS, GET_COMPANIES_BY_NAME_FAILURE] = createRequestActionTypes('company/GET_COMPANIES_BY_NAME');
 export const [ADD_COMPANY, ADD_COMPANY_SUCCESS, ADD_COMPANY_FAILURE] = createRequestActionTypes('company/ADD_COMPANY');
+export const [DELETE_COMPANY, DELETE_COMPANY_SUCCESS, DELETE_COMPANY_FAILURE] = createRequestActionTypes('company/DELETE_COMPANY');
 export const [GET_USERS_BY_COMPANY, GET_USERS_BY_COMPANY_SUCCESS, GET_USERS_BY_COMPANY_FAILURE] = createRequestActionTypes('company/GET_USERS_BY_COMPANY');
 
 /******************************************************************************
@@ -57,11 +58,18 @@ export const addCompany = createAction(ADD_COMPANY, ({
     userPassword,
 }));
 
+export const deleteCompany = createAction(DELETE_COMPANY, ({
+    idx,
+}) => ({
+    idx,
+}));
+
 /******************************************************************************
  * 3. Saga
  *****************************************************************************/
 const getCompanyListSaga = createRequestSaga(GET_COMPANY_LIST, companies.getCompanyList);
 const addCompanySaga = createRequestSaga(ADD_COMPANY, companies.registerCompany);
+const deleteCompanySaga = createRequestSaga(DELETE_COMPANY, companies.unregisterCompany);
 const checkDuplicatedCompanySaga = createRequestSaga(CHECK_DUP_COMPANY, companies.checkDupCompany);
 const getCompaniesByNameSaga = createRequestSaga(GET_COMPANIES_BY_NAME, companies.getCompaniesByName);
 const getUsersByCpIdxSaga = createRequestSaga(GET_USERS_BY_COMPANY, companies.getUsersByCpIdx);
@@ -76,5 +84,6 @@ export function* companiesSaga() {
     yield takeLatest(GET_COMPANIES_BY_NAME, getCompaniesByNameSaga);
     yield takeLatest(GET_USERS_BY_COMPANY, getUsersByCpIdxSaga);
     yield takeLatest(ADD_COMPANY, addCompanySaga);
+    yield takeLatest(DELETE_COMPANY, deleteCompanySaga);
     yield takeLatest(CHECK_DUP_COMPANY, checkDuplicatedCompanySaga);
 }

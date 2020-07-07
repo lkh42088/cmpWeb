@@ -52,8 +52,7 @@ const showNotification = (rtl) => {
 
 class Layout extends Component {
     static propTypes = {
-        // eslint-disable-next-line react/forbid-prop-types
-        assetState: PropTypes.object.isRequired,
+        //assetState: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired,
         sidebar: SidebarProps.isRequired,
         customizer: CustomizerProps.isRequired,

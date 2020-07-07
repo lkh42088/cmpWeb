@@ -18,7 +18,8 @@ import AssetsList from './components/AssetsList';
 import AssetsSearch from './components/AssetsSearch';
 import AssetsTop from './components/AssetsTop';
 import AssetsView from "./components/AssetsView";
-import Customizer from "../../Layout/customizer/Customizer";
+
+import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
 
 //TODO DIR ProductList 폴터 제거
 const MaterialTable = () => {
@@ -80,20 +81,21 @@ const MaterialTable = () => {
     }, [assetState.stateVal]);
 
     return (
-        <Container fluid="true">
+        <Container fluid>
             <Col sm={12} md={12} xs={12} xl={12} lg={12}>
                 <Row>
                     {/*<h3 className="page-title">{title.title}/{title.subTitle}</h3>*/}
-                    <Breadcrumbs aria-label="breadcrumb" style={{paddingBottom: "10px"}}>
-                        <StyledBreadcrumb
-                            component="a"
-                            href="#"
-                            label="home"
-                            icon={<HomeIcon fontSize="small"/>}
-                        />
-                        <StyledBreadcrumb component="a" href="#" label={title.title}/>
-                        <StyledBreadcrumb component="a" href="#" label={title.subTitle}/>
-                    </Breadcrumbs>
+                    <RouterBreadcrumbs url={window.location.href}/>
+                    {/*<Breadcrumbs aria-label="breadcrumb" style={{paddingBottom: "10px"}}>*/}
+                    {/*    <StyledBreadcrumb*/}
+                    {/*        component="a"*/}
+                    {/*        href="#"*/}
+                    {/*        label="HOME"*/}
+                    {/*        icon={<HomeIcon fontSize="small"/>}*/}
+                    {/*    />*/}
+                    {/*    <StyledBreadcrumb component="a" href="#" label={title.title}/>*/}
+                    {/*    <StyledBreadcrumb component="a" href="#" label={title.subTitle}/>*/}
+                    {/*</Breadcrumbs>*/}
                 </Row>
                 {assetState.assetsPage === 'list' ? (
                     <Row style={{paddingBottom: 10}}>

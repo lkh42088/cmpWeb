@@ -13,6 +13,7 @@ import CustomerBilling from "./components/CustomerBilling";
 import InternetStatistics from "./components/InternetStatistics";
 import CpuUsage from "./components/CpuUsage";
 import DeviceTotal from "./components/DeviceTotal";
+import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
 
 const dataAlarm = [
     { name: 'Alarm A', amt: 3 },
@@ -108,11 +109,12 @@ const DashboardCustomer = ({t}) => {
     }));
 
     return (
-        <Container fluid="true">
+        <Container fluid>
             <Row className={classes.row}>
-                <Col md={12}>
-                    <SubnetHeader head="DASHBOARD" />
-                </Col>
+                <RouterBreadcrumbs url={window.location.href}/>
+                {/*<Col md={12}>*/}
+                {/*    <SubnetHeader head="DASHBOARD" />*/}
+                {/*</Col>*/}
             </Row>
             <Row>
                 <Col md={6} lg={6} xs={12} sm={12} xl={3} style={{padding: 10}}>

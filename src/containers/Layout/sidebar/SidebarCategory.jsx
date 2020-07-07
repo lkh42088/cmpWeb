@@ -12,8 +12,8 @@ const SidebarCategory = ({
     title, icon, isNew, children,
 }) => {
     const dispatch = useDispatch();
-    const [show, setShow] = useState('false');
-    const [hover, setHover] = useState('false');
+    const [show, setShow] = useState(false);
+    const [hover, setHover] = useState(false);
     const {clearWindow} = useSelector(({sidebar}) => ({
        clearWindow: sidebar.clearWindow,
     }));
@@ -121,13 +121,10 @@ const SidebarCategory = ({
 
 SidebarCategory.propTypes = {
     title: PropTypes.string.isRequired,
-    icon: PropTypes.string,
     isNew: PropTypes.bool,
-    children: PropTypes.arrayOf(PropTypes.element).isRequired,
 };
 
 SidebarCategory.defaultProps = {
-    icon: '',
     isNew: false,
 };
 

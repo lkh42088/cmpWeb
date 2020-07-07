@@ -19,6 +19,12 @@ export const registerCompany = ({
     userPassword,
 });
 
+export const unregisterCompany = ({
+    idx,
+}) => client.post('/v1/customers/unregister', {
+    idx,
+});
+
 export const checkDupCompany = ({
     cpName,
 }) => client.post('/v1/customers/check-company', {

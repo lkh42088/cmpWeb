@@ -18,7 +18,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
 import { SnackbarProvider, useSnackbar } from 'notistack';
 import ReactTooltip from "react-tooltip";
-import { initRegisterCompany, getCompanyList } from "../../../../redux/actions/companiesActions";
+import {initRegisterCompany, getCompanyList } from "../../../../redux/actions/companiesActions";
 import {initRegisterUser} from "../../../../redux/actions/usersActions";
 import {
     pagingChangeCurrentPage,
@@ -35,6 +35,7 @@ import CbAdminTableToolbar from "../../../Common/CbAdminTableToolbar";
 import CommonTableHead from "../../../Common/CommonTableHead";
 // import AddCompany from "./AddCompany";
 import RegisterCompanyPage from "./RegisterCompanyPage";
+import {unregisterCompany} from "../../../../lib/api/company";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -224,20 +225,6 @@ const CompanyList = () => {
         dispatch(pagingChangeOrderBy({orderBy: property}));
     };
 
-    const handleDeleteSelected = () => {
-        let copyUser = [...data];
-        console.log("deleted Selected:");
-        for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
-            copyUser = copyUser.filter(obj => obj.id !== selected[i]);
-        }
-        console.log("copyUser:", copyUser);
-    };
-
-    /** Pagination */
-    const handleChangeDense = (event) => {
-        dispatch(pagingChangeDense({checked: event.target.checked}));
-    };
-
     /** Pagination */
     const getPageData = () => {
         let offset = 0;
@@ -249,6 +236,40 @@ const CompanyList = () => {
         dispatch(getCompanyList({
             rows: rowsPerPage, offset, orderBy, order,
         }));
+    };
+
+    const deleteCompanies = async (companies) => {
+        try {
+            const response = await unregisterCompany({idx: companies});
+            getPageData();
+        } catch (error) {
+            getPageData();
+        }
+    };
+
+    const handleDeleteSelected = () => {
+        let copyUser = [...data];
+        console.log("deleted Selected:");
+        const delList = [];
+        if (selected !== null) {
+            selected.forEach((value, key, mapObject) => {
+                console.log("selected: key ", key, ", value ", value);
+                if (value) {
+                    delList.push(key);
+                }
+            });
+        }
+        console.log("delList: ", delList);
+        deleteCompanies(delList);
+        for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
+            copyUser = copyUser.filter(obj => obj.id !== selected[i]);
+        }
+        console.log("copyUser:", copyUser);
+    };
+
+    /** Pagination */
+    const handleChangeDense = (event) => {
+        dispatch(pagingChangeDense({checked: event.target.checked}));
     };
 
     /** Pagination */
@@ -382,7 +403,6 @@ const CompanyList = () => {
                             >
                                 {checkStringLength(row.memo)}
                             </TableCell>
-                            {/*Tooltip*/}
                             <ReactTooltip id="tooltip" place="top" effect="solid"
                                           delayHide={500} type="info"
                                           className={classes.reactTooltip}
