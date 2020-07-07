@@ -110,6 +110,10 @@ const UserTableToolbar = (props) => {
     const addComment = contents.concat(" 추가");
     const deleteComment = `선택한 ${contents} 삭제`;
 
+    const handleDelete = () => {
+        console.log("handleDelete...");
+    };
+
     return (
         <div>
             <Toolbar
@@ -120,8 +124,11 @@ const UserTableToolbar = (props) => {
                         <Typography className={classes.selected} color="inherit" variant="subtitle1" component="div">
                             {numSelected} selected
                         </Typography>
-                        <Tooltip title="Delete">
-                            <IconButton aria-label="delete">
+                        <Tooltip title="선택한 계정 삭제">
+                            <IconButton
+                                aria-label="delete"
+                                onClick={handleDeleteSelected}
+                            >
                                 <DeleteIcon color="secondary" />
                             </IconButton>
                         </Tooltip>
@@ -146,14 +153,17 @@ const UserTableToolbar = (props) => {
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Refresh" aria-label="refresh">
-                                            <IconButton type="button" onClick={handleRefresh}>
+                                            <IconButton
+                                                type="button"
+                                                onClick={handleRefresh}
+                                            >
                                                 <RefreshIcon/>
                                             </IconButton>
                                     </Tooltip>
                                     {numSelected > 0 ? (
                                         <Tooltip title={deleteComment} aria-label="delete">
                                             <IconButton
-                                                aria-label="delete"
+                                                type="button"
                                                 onClick={handleDeleteSelected}
                                             >
                                                 <DeleteIcon/>

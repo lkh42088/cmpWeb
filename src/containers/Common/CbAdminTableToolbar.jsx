@@ -163,8 +163,11 @@ const CbAdminTableToolbar = (props) => {
                         <Typography className={classes.selected} color="inherit" variant="subtitle1" component="div">
                             {numSelected} selected
                         </Typography>
-                        <Tooltip title="Delete">
-                            <IconButton aria-label="delete">
+                        <Tooltip title="선택한 항목 삭제">
+                            <IconButton
+                                onClick={handleDeleteSelected}
+                                aria-label="delete"
+                            >
                                 <DeleteIcon color="secondary" />
                             </IconButton>
                         </Tooltip>
@@ -192,7 +195,6 @@ const CbAdminTableToolbar = (props) => {
                                         <Tooltip title={deleteComment} aria-label="delete">
                                             <IconButton
                                                 aria-label="delete"
-                                                onClick={handleDeleteSelected}
                                             >
                                                 <DeleteIcon/>
                                             </IconButton>

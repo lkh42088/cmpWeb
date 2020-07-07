@@ -33,8 +33,9 @@ import {
 import {getUserList, getUserListWithSearchParam, initRegisterUser} from "../../../../redux/actions/usersActions";
 import CommonTableHead from "../../../Common/CommonTableHead";
 import UserRegisterDialog from "./UserRegisterDialog";
-import {registerUser} from "../../../../lib/api/users";
+import {registerUser, unregisterUser} from "../../../../lib/api/users";
 import UserTableToolbar from "./UserTableToolbar";
+import {unregister} from "../../../../serviceWorker";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -237,21 +238,6 @@ const UserList = () => {
     };
 
     /** Pagination */
-    const handleDeleteSelected = () => {
-        let copyUser = [...data];
-        console.log("deleted Selected:");
-        for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
-            copyUser = copyUser.filter(obj => obj.id !== selected[i]);
-        }
-        console.log("copyUser:", copyUser);
-    };
-
-    /** Pagination */
-    const handleChangeDense = (event) => {
-        dispatch(pagingChangeDense({checked: event.target.checked}));
-    };
-
-    /** Pagination */
     const getPageData = () => {
         let offset = 0;
         if (currentPage > 0) {
@@ -269,6 +255,46 @@ const UserList = () => {
             }));
         }
     };
+
+    const deleteUsers = async (users) => {
+        try {
+            const response = await unregisterUser({idx: users});
+            getPageData();
+        } catch (error) {
+            getPageData();
+        }
+    };
+
+    /** Pagination */
+    const handleDeleteSelected = () => {
+        let copyUser = [...data];
+        console.log("deleted Selected:");
+        console.log("copyUser:", copyUser);
+        console.log("SELECTED:", selected);
+        // console.log("selected:", selected);
+        const delList = [];
+        if (selected !== null) {
+            selected.forEach((value, key, mapObject) => {
+                console.log("selected: key ", key, ", value ", value);
+                if (value) {
+                    delList.push(key);
+                }
+            });
+        }
+        console.log("delList: ", delList);
+        deleteUsers(delList);
+
+        for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
+            copyUser = copyUser.filter(obj => obj.id !== selected[i]);
+        }
+        console.log("after copyUser:", copyUser);
+    };
+
+    /** Pagination */
+    const handleChangeDense = (event) => {
+        dispatch(pagingChangeDense({checked: event.target.checked}));
+    };
+
 
     // const getPageDataWithSearchParam = (param) => {
     //     let offset = 0;
@@ -327,6 +353,10 @@ const UserList = () => {
         } catch {
             handleSnackbarFailure();
         }
+    };
+
+    const deleteUser = async () => {
+        console.log("deleteUser");
     };
 
     /*******************

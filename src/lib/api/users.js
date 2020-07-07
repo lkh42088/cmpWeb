@@ -21,10 +21,10 @@ export const registerUser = ({
     emailAuthGroupList,
 });
 
-export const unregiserUser = ({
-    id,
+export const unregisterUser = ({
+    idx,
 }) => client.post('/v1/users/unregister', {
-    id,
+    idx,
 });
 
 export const checkDupUser = ({
