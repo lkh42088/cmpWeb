@@ -5,7 +5,7 @@ import SubnetList from "./components/SubnetList";
 import RouterBreadcrumbs from "../../../Layout/sidebar/Breadcrumb";
 
 const SubnetListCard = () => (
-    <Container fluid="true">
+    <Container fluid>
         <Row>
             <Col>
                 <Row>

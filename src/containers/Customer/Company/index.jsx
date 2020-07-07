@@ -5,7 +5,7 @@ import CompanyList from "./components/CompanyList";
 import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
 
 const CompaniesModule = () => (
-    <Container fluid="true">
+    <Container fluid>
         <Row>
             <RouterBreadcrumbs url={window.location.href}/>
         </Row>

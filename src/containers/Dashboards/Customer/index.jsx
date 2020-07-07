@@ -109,7 +109,7 @@ const DashboardCustomer = ({t}) => {
     }));
 
     return (
-        <Container fluid="true">
+        <Container fluid>
             <Row className={classes.row}>
                 <RouterBreadcrumbs url={window.location.href}/>
                 {/*<Col md={12}>*/}

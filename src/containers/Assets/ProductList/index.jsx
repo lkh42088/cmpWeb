@@ -79,7 +79,7 @@ const MaterialTable = () => {
     }, [assetState.stateVal]);
 
     return (
-        <Container fluid="true">
+        <Container fluid>
             <Col sm={12} md={12} xs={12} xl={12} lg={12}>
                 <Row>
                     {/*<h3 className="page-title">{title.title}/{title.subTitle}</h3>*/}

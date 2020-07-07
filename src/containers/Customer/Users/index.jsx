@@ -12,7 +12,7 @@ const paddingCol = {
 const MaterialTable = () => {
     console.log("User Index");
     return (
-        <Container fluid="true">
+        <Container fluid>
             <Row>
                 <RouterBreadcrumbs url={window.location.href}/>
             </Row>
