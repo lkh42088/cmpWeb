@@ -26,7 +26,7 @@ import {
     pagingChangeCurrentPagePrev,
     pagingChangeDense,
     pagingChangeOrder,
-    pagingChangeOrderBy,
+    pagingChangeOrderBy, pagingChangeOrderByWithReset,
     pagingChangeRowsPerPage,
     pagingChangeSelected,
     pagingChangeTotalCount,
@@ -282,7 +282,7 @@ const CompanyList = () => {
     useEffect(() => {
         const changeOrderBy = "idx";
         console.log("[] orderBy: ", changeOrderBy);
-        dispatch(pagingChangeOrderBy({orderBy: changeOrderBy}));
+        dispatch(pagingChangeOrderByWithReset({orderBy: changeOrderBy}));
     }, []);
 
     useEffect(() => {

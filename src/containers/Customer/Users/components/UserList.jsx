@@ -28,9 +28,16 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {useSnackbar} from "notistack";
 import {
     pagingChangeCurrentPage,
-    pagingChangeCurrentPageNext, pagingChangeCurrentPagePrev, pagingChangeDense, pagingChangeOrder, pagingChangeOrderBy,
-    pagingChangeRowsPerPage, pagingChangeSelected,
-    pagingChangeTotalCount, pagingDump,
+    pagingChangeCurrentPageNext,
+    pagingChangeCurrentPagePrev,
+    pagingChangeDense,
+    pagingChangeOrder,
+    pagingChangeOrderBy,
+    pagingChangeOrderByWithReset,
+    pagingChangeRowsPerPage,
+    pagingChangeSelected,
+    pagingChangeTotalCount,
+    pagingDump,
 } from "../../../../redux/actions/pagingActions";
 import {getUserList, getUserListWithSearchParam, initRegisterUser} from "../../../../redux/actions/usersActions";
 import CommonTableHead from "../../../Common/CommonTableHead";
@@ -160,13 +167,13 @@ const UserList = () => {
         setOpenAddUser(false);
     };
 
-    const handleSnackbarFailure = () => {
-        enqueueSnackbar('계정 등록에 실패했습니다!');
+    const handleSnackbarFailure = (snackMsg) => {
+        enqueueSnackbar(snackMsg);
     };
 
-    const handleSnackbarSuccess = () => {
+    const handleSnackbarSuccess = (snackMsg) => {
         // variant could be success, error, warning, info, or default
-        enqueueSnackbar('계정 등록에 성공했습니다.', { variant: "success" });
+        enqueueSnackbar(snackMsg, { variant: "success" });
     };
 
     /*******************
@@ -262,8 +269,10 @@ const UserList = () => {
         try {
             const response = await unregisterUser({idx: users});
             getPageData();
+            handleSnackbarSuccess("계정 삭제에 성공하였습니다.");
         } catch (error) {
             getPageData();
+            handleSnackbarFailure("계정 삭제에 실패하였습니다.");
         }
     };
 
@@ -350,10 +359,10 @@ const UserList = () => {
                 emailAuthGroupFlag: emailAuthValue === "2",
                 emailAuthGroupList,
             });
-            handleSnackbarSuccess();
+            handleSnackbarSuccess("계정 등록에 성공하였습니다.");
             getPageData();
         } catch {
-            handleSnackbarFailure();
+            handleSnackbarFailure("계정 등록에 실패하였습니다.");
         }
     };
 
@@ -376,7 +385,7 @@ const UserList = () => {
     useEffect(() => {
         const changeOrderBy = "idx";
         console.log("[] orderBy: ", changeOrderBy);
-        dispatch(pagingChangeOrderBy({orderBy: changeOrderBy}));
+        dispatch(pagingChangeOrderByWithReset({orderBy: changeOrderBy}));
     }, []);
 
     useEffect(() => {
@@ -399,7 +408,7 @@ const UserList = () => {
 
     useEffect(() => {
         if (msg) {
-            handleSnackbarSuccess();
+            handleSnackbarSuccess("계정 등록에 성공하였습니다.");
             dispatch(initRegisterUser());
             getPageData();
         }
@@ -408,7 +417,7 @@ const UserList = () => {
     useEffect(() => {
         if (msgError) {
             dispatch(initRegisterUser());
-            handleSnackbarFailure();
+            handleSnackbarFailure("계정 등록에 실패하였습니다.");
         }
     }, [msgError]);
 

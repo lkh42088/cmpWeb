@@ -201,6 +201,37 @@ const UserRegisterDialog = (props) => {
         console.log("confirmUser: ", confirmUser);
     };
 
+    const checkId = (id) => {
+        // eslint-disable-next-line no-useless-escape
+        const specialCheck = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+        let helperUserId = "";
+        if (id.length < 1) {
+            helperUserId = "* 필수 입력사항입니다.";
+        } else if (id.length < 4 || id.length > 15) {
+            helperUserId = "* 4자 이상 15이하로 입력하십시오.";
+        } else if (specialCheck.test(id)) {
+            helperUserId = "* 특수문자는 포함 될수 없습니다.";
+        } else if (id.search(/\s/) !== -1) {
+            helperUserId = "* ID에 빈 칸은 포함 될 수 없습니다.";
+        }
+
+        return helperUserId;
+    };
+
+    const checkValidateId = (id) => {
+        // eslint-disable-next-line no-useless-escape
+        let helperUserId = "";
+        helperUserId = checkId(id);
+        if (helperUserId !== "") {
+            return helperUserId;
+        }
+        if (!confirmUser) {
+            helperUserId = "* 사용 가능한 ID 인지 확인하십시오.";
+        }
+
+        return helperUserId;
+    };
+
     /*******************
      * Validation
      *******************/
@@ -215,19 +246,16 @@ const UserRegisterDialog = (props) => {
 
         /** id */
         let errorUserId = false;
-        let helperUserId = '';
-        if (fields.id.length < 1) {
+        let helperUserId = "";
+        helperUserId = checkValidateId(fields.id);
+        if (helperUserId !== "") {
             errorUserId = true;
-            helperUserId = "* 필수 입력사항입니다.";
-        } else if (!confirmUser) {
-            errorUserId = true;
-            helperUserId = "* 사용 가능한 ID 인지 확인하십시오.";
         }
 
         /** password */
         let errorPassword = false;
         let helperPassword = "* 영어 소문자, 숫자, 특수문자 포함 8~16 문자";
-        if (fields.password.length < 0) {
+        if (fields.password.length < 1) {
             errorPassword = true;
             helperPassword = "* 영어 소문자, 숫자, 특수문자 포함 8~16 문자";
         } else if (!checkPasswordPattern(fields.password)) {
@@ -252,17 +280,22 @@ const UserRegisterDialog = (props) => {
         }
 
         /** email */
+        // eslint-disable-next-line no-useless-escape
+        const checkEmail = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
         let errorEmail = false;
         let helperEmail = '';
-        if (fields.cellPhone.length < 1) {
+        if (fields.email.length < 1) {
             errorEmail = true;
             helperEmail = "* 필수 입력사항입니다.";
+        } else if (!checkEmail.test(fields.email)) {
+            errorEmail = true;
+            helperEmail = "* 이메일을 올바르게 입력하십시오.";
         }
 
         /** level */
         let errorLevel = false;
         let helperLevel = '';
-        if (fields.level === '') {
+        if (fields.level.length < 1) {
             errorLevel = true;
             helperLevel = "* 필수 입력사항입니다.";
         }
@@ -289,7 +322,8 @@ const UserRegisterDialog = (props) => {
             level: helperLevel,
         });
 
-        return !(errorCpIdx || errorUserId || errorPassword);
+        return !(errorCpIdx || errorUserId || errorPassword
+            || errorUsername || errorCellPhone || errorEmail || errorLevel);
     };
 
     /*******************
@@ -414,6 +448,18 @@ const UserRegisterDialog = (props) => {
 
     const handleCheckUser = () => {
         console.log("handleCheckUser: ");
+        const res = checkId(fields.id);
+        if (res !== "") {
+           setErrors({
+               ...errors,
+               id: true,
+           });
+           setHelpers({
+               ...helpers,
+               id: res,
+           });
+           return;
+        }
         checkUser();
     };
 
