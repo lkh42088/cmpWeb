@@ -73,15 +73,15 @@ export default class Customizer extends PureComponent {
               <CloseIcon />
             </button>
           </div>
-          <p className="customizer__caption">This customizer allows you to see the different variations of the EasyDev.
-            Create your own visual style for every project you do!
-          </p>
-          <ToggleCollapsedMenu changeSidebarVisibility={changeSidebarVisibility} sidebar={sidebar} />
-          <ToggleTopMenu toggleTopNavigation={toggleTopNavigation} customizer={customizer} />
+          {/*<p className="customizer__caption">This customizer allows you to see the different variations of the EasyDev.*/}
+          {/*  Create your own visual style for every project you do!*/}
+          {/*</p>*/}
+          {/*<ToggleCollapsedMenu changeSidebarVisibility={changeSidebarVisibility} sidebar={sidebar} />*/}
+          {/*<ToggleTopMenu toggleTopNavigation={toggleTopNavigation} customizer={customizer} />*/}
           <ToggleTheme changeToDark={changeToDark} changeToLight={changeToLight} theme={theme} />
-          <ToggleSquared customizer={customizer} changeBorderRadius={changeBorderRadius} />
-          <ToggleShadow customizer={customizer} toggleBoxShadow={toggleBoxShadow} />
-          <ToggleRTL customizer={customizer} changeToRTL={changeToRTL} changeToLTR={changeToLTR} rtl={rtl} />
+          {/*<ToggleSquared customizer={customizer} changeBorderRadius={changeBorderRadius} />*/}
+          {/*<ToggleShadow customizer={customizer} toggleBoxShadow={toggleBoxShadow} />*/}
+          {/*<ToggleRTL customizer={customizer} changeToRTL={changeToRTL} changeToLTR={changeToLTR} rtl={rtl} />*/}
         </div>
       </div>
     );
