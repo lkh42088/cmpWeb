@@ -62,7 +62,7 @@ const LoginForm = ({ history }) => {
                 console.log("result ", response.data.msg.result);
             }
             if (response.data.success) {
-                history.push('/dashboards/manager');
+                dispatch(checkLoginUser());
             } else if (response.data.msg.result === 251) {
                 console.log("changeLoginPage ", GV_LOGIN_PAGE_CONFIRM_EMAIL);
                 dispatch(changeLoginPage({value: GV_LOGIN_PAGE_CONFIRM_EMAIL}));

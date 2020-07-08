@@ -7,7 +7,7 @@ import {
     changeLoginPage,
     checkLoginUser,
 } from "../../../../redux/actions/accountActions";
-import {GV_LOGIN_PAGE_FIRST, GV_LOGIN_PAGE_INPUT_EMAIL} from "../../../../lib/globalVariable";
+import {GV_LOGIN_PAGE_FIRST} from "../../../../lib/globalVariable";
 import {loginConfirm} from "../../../../lib/api/auth";
 
 // eslint-disable-next-line react/prop-types
@@ -76,7 +76,7 @@ const LoginConfirmEmailForm = ({ history }) => {
     useEffect(() => {
         console.log("user..");
         if (user) {
-            console.log("user:", user, " --> history");
+            console.log("user.. ", user, " --> history");
             // history.push('/');
             history.push('/dashboards/manager');
             try {
@@ -85,7 +85,7 @@ const LoginConfirmEmailForm = ({ history }) => {
                 console.log('localStorage is not working');
             }
         }
-    }, [user]);
+    }, [history, user]);
 
     return (
         <Form className="form login-form" onSubmit={handleSubmit}>
