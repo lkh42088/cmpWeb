@@ -293,10 +293,15 @@ const SubnetList = () => {
             fontFamily: "Roboto",
             textAlign: "center",
         },
+        rowStyle: {
+            "&:hover": {
+                boxShadow: "2px 0 5px 0 darkgray",
+            },
+        },
         exportButton: true,
-        // paginationType: "stepped",
         pageSize: 5,
         actionsColumnIndex: -1,
+        thirdSortClick: false,
     };
 
     const actions = {
@@ -330,6 +335,7 @@ const SubnetList = () => {
                     onOrderChange={handleOrderChange}
                     onChangeRowsPerPage={handleRowsPerPage}
                     onChangePage={handleChangePage}
+                    onRowClick={() => null}
                     options={options}
                     // actions={actions}
                     localization={localization}
