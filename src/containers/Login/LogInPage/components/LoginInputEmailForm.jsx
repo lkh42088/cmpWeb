@@ -4,20 +4,23 @@ import {Field, Form, reduxForm} from 'redux-form';
 import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import MailRuIcon from "mdi-react/MailRuIcon";
-import {changeField, login, loginEmail} from "../../../../redux/actions/accountActions";
+import {changeField, changeLoginPage, login} from "../../../../redux/actions/accountActions";
+import {loginEmail} from "../../../../lib/api/auth";
+import {GV_LOGIN_PAGE_CONFIRM_EMAIL} from "../../../../lib/globalVariable";
 
 // eslint-disable-next-line react/prop-types
 const LoginInputEmailForm = ({ history, secret }) => {
     const [error, setError] = useState(null);
     const dispatch = useDispatch();
     const {
-        form, authError, user, authSentEmail,
+        form,
+        // authError, user, authSentEmail,
         // eslint-disable-next-line no-shadow
     } = useSelector(({ accountRd }) => ({
         form: accountRd.login,
-        authError: accountRd.authError,
-        user: accountRd.user,
-        authSentEmail: accountRd.authSentEmail,
+        // authError: accountRd.authError,
+        // user: accountRd.user,
+        // authSentEmail: accountRd.authSentEmail,
     }));
 
     const onChange = (e) => {
@@ -33,6 +36,22 @@ const LoginInputEmailForm = ({ history, secret }) => {
         );
     };
 
+    const doLoginEmail = async (username, password, email) => {
+        try {
+            const response = await loginEmail({username, password, email});
+            if (response.data.msg) {
+                if (response.data.msg.result === 251) {
+                    console.log("changeLoginPage ", GV_LOGIN_PAGE_CONFIRM_EMAIL);
+                    dispatch(changeLoginPage({value: GV_LOGIN_PAGE_CONFIRM_EMAIL}));
+                } else {
+                    console.log("changeLoginPage XXX", response.data.msg.result);
+                }
+            }
+        } catch (e) {
+            console.log("loginEmail error!");
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log('LoginInputEmail: onSubmit');
@@ -40,7 +59,8 @@ const LoginInputEmailForm = ({ history, secret }) => {
         console.log('password:', form.password);
         console.log('email:', form.email);
         const { username, password, email } = form;
-        dispatch(loginEmail({ username, password, email }));
+        doLoginEmail(username, password, email);
+        // dispatch(loginEmail({ username, password, email }));
     };
 
     useEffect(() => {
@@ -50,44 +70,44 @@ const LoginInputEmailForm = ({ history, secret }) => {
         }
     }, [dispatch]);
 
-    useEffect(() => {
-        if (authSentEmail) {
-            console.log("isSentEmail: TRUE --> history push /login/confirm");
-            history.push('/login/confirm');
-        }
-    }, [history, authSentEmail]);
-
-    useEffect(() => {
-        console.log('[LoginForm 2] secret:', secret);
-        if (authError) {
-            console.log('오류 발생');
-            console.log(authError);
-            setError('Error!!');
-            return;
-        }
-        console.log('[LoginForm 2] end');
-    }, [authError, dispatch]);
-
-    useEffect(() => {
-        console.log('[LoginForm 3] secret:', secret);
-        if (user) {
-            console.log('check API 성공');
-            if (secret === undefined) {
-                console.log('secret is undefined');
-            } else {
-                console.log('secret is ', secret);
-            }
-            console.log(user);
-            // eslint-disable-next-line react/prop-types
-            history.push('/');
-            try {
-                localStorage.setItem('user', JSON.stringify(user));
-            } catch (e) {
-                console.log('localStorage is not working');
-            }
-        }
-        console.log('[LoginForm 3] end');
-    }, [history, user]);
+    // useEffect(() => {
+    //     if (authSentEmail) {
+    //         console.log("isSentEmail: TRUE --> history push /login/confirm");
+    //         history.push('/login/confirm');
+    //     }
+    // }, [history, authSentEmail]);
+    //
+    // useEffect(() => {
+    //     console.log('[LoginForm 2] secret:', secret);
+    //     if (authError) {
+    //         console.log('오류 발생');
+    //         console.log(authError);
+    //         setError('Error!!');
+    //         return;
+    //     }
+    //     console.log('[LoginForm 2] end');
+    // }, [authError, dispatch]);
+    //
+    // useEffect(() => {
+    //     console.log('[LoginForm 3] secret:', secret);
+    //     if (user) {
+    //         console.log('check API 성공');
+    //         if (secret === undefined) {
+    //             console.log('secret is undefined');
+    //         } else {
+    //             console.log('secret is ', secret);
+    //         }
+    //         console.log(user);
+    //         // eslint-disable-next-line react/prop-types
+    //         history.push('/');
+    //         try {
+    //             localStorage.setItem('user', JSON.stringify(user));
+    //         } catch (e) {
+    //             console.log('localStorage is not working');
+    //         }
+    //     }
+    //     console.log('[LoginForm 3] end');
+    // }, [history, user]);
 
     return (
         <Form className="form login-form" onSubmit={handleSubmit}>

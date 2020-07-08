@@ -118,6 +118,16 @@ export default handleActions(
         }),
         [LOGOUT]: state => ({
             ...state,
+            login: {
+                username: '',
+                password: '',
+                email: '',
+            },
+            auth: null,
+            authError: null,
+            authSentEmail: false,
+            authInputEmail: false,
+            checkError: null,
             user: null,
         }),
     },

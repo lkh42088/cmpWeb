@@ -1,9 +1,9 @@
 import React from 'react';
-import LoginPage from './components/LoginPage';
+import LoginBase from "./components/LoginBase";
 
-const LogIn = () => (
+const LogIn = ({history}) => (
         <div className="account account--not-photo">
-            <LoginPage/>
+            <LoginBase history={history} />
         </div>
     );
 
