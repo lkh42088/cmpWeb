@@ -21,21 +21,16 @@ const LoginForm = ({ history }) => {
     const typeFieldUser = 'text';
     const [showPassword, setShowPassword] = useState(false);
 
-    const [error, setError] = useState(null);
     const dispatch = useDispatch();
     const {
         form,
-        auth,
-        authInputEmail,
-        authSentEmail,
-        authError,
-        user,
-        // eslint-disable-next-line no-shadow
+        // authInputEmail,
+        // authSentEmail,
     } = useSelector(({ accountRd }) => ({
         form: accountRd.login,
         auth: accountRd.auth,
-        authInputEmail: accountRd.authInputEmail,
-        authSentEmail: accountRd.authSentEmail,
+        // authInputEmail: accountRd.authInputEmail,
+        // authSentEmail: accountRd.authSentEmail,
         authError: accountRd.authError,
         user: accountRd.user,
     }));
@@ -93,53 +88,22 @@ const LoginForm = ({ history }) => {
         dispatch(initializeForm("login"));
     }, [dispatch]);
 
-    useEffect(() => {
-        console.log('[LoginForm 2]');
-        if (authError) {
-            console.log('오류 발생');
-            console.log(authError);
-            setError('Error!!');
-            return;
-        }
-        if (auth) {
-            console.log('로그인 성공');
-            dispatch(checkLoginUser());
-        }
-    }, [auth, authError, dispatch]);
-
-    useEffect(() => {
-        console.log('[LoginForm 3] ');
-        if (user) {
-            /********************************************************************
-             * 로그인 성공!
-             ********************************************************************/
-            console.log('check API 성공');
-            // eslint-disable-next-line react/prop-types
-            history.push('/dashboards/manager');
-            try {
-                /** Insert 'user' to Local Storage */
-                localStorage.setItem('user', JSON.stringify(user));
-            } catch (e) {
-                console.log('localStorage is not working');
-            }
-        }
-    }, [history, user]);
-
-    useEffect(() => {
-        console.log("[useEffect] authSentEmail: ", authSentEmail);
-        if (authSentEmail === true) {
-            console.log("[useEffect] --> /login/confirm: ", authSentEmail);
-            console.log("[user] form:", form);
-            history.push('/login/confirm');
-        }
-    }, [authSentEmail]);
-
-    useEffect(() => {
-        console.log("[useEffect] authInputEmail: ", authInputEmail);
-        if (authInputEmail === true) {
-            history.push('/login/input_email');
-        }
-    }, [authInputEmail]);
+    //
+    // useEffect(() => {
+    //     console.log("[useEffect] authSentEmail: ", authSentEmail);
+    //     if (authSentEmail === true) {
+    //         console.log("[useEffect] --> /login/confirm: ", authSentEmail);
+    //         console.log("[user] form:", form);
+    //         history.push('/login/confirm');
+    //     }
+    // }, [authSentEmail]);
+    //
+    // useEffect(() => {
+    //     console.log("[useEffect] authInputEmail: ", authInputEmail);
+    //     if (authInputEmail === true) {
+    //         history.push('/login/input_email');
+    //     }
+    // }, [authInputEmail]);
 
     const changeShowPassword = (e) => {
         e.preventDefault();
@@ -184,18 +148,18 @@ const LoginForm = ({ history }) => {
                         onClick={e => changeShowPassword(e)}
                     ><EyeIcon/>
                     </button>
-                    <div className="account__forgot-password">
-                        <a href="/">Forgot a password?</a>
-                    </div>
+                    {/*<div className="account__forgot-password">*/}
+                    {/*    <a href="/">Forgot a password?</a>*/}
+                    {/*</div>*/}
                 </div>
             </div>
             <div className="form__form-group">
                 <div className="form__form-group form__form-group-field">
-                    <Field
-                        name={`remember_me-${rememberForm}`}
-                        component={renderCheckBoxField}
-                        label="Remember me"
-                    />
+                    {/*<Field*/}
+                    {/*    name={`remember_me-${rememberForm}`}*/}
+                    {/*    component={renderCheckBoxField}*/}
+                    {/*    label="Remember me"*/}
+                    {/*/>*/}
                 </div>
             </div>
 

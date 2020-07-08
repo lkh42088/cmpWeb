@@ -23,6 +23,8 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import GroupIcon from '@material-ui/icons/Group';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {useSnackbar} from "notistack";
 import {
     pagingChangeCurrentPage,
@@ -435,7 +437,7 @@ const UserList = () => {
      * JSX Template
      ************************************************************************************/
     const getAddress = (row) => {
-        let address = "";
+        let address = "-";
         if (row.zipcode) {
             address = row.zipcode;
             address = address.concat(', ');
@@ -558,16 +560,21 @@ const UserList = () => {
                                                 </li>
                                                 <li>
                                                     <span className={classes.spanSubject}> 전화번호 </span>
-                                                    <span className={classes.spanContents}> {row.hp} </span>
+                                                    <span className={classes.spanContents}> {row.hp === "" ? "-" : row.hp} </span>
                                                 </li>
                                                 <li>
                                                     <span className={classes.spanSubject}> 이메일 </span>
-                                                    <span className={classes.spanContents}> {row.email} </span>
+                                                    <span className={classes.spanContents}> {row.email === "" ? "-" : row.email} </span>
                                                 </li>
                                             </ul>
                                         </Grid>
                                         <Grid item xs={12} sm={6}>
                                             <ul>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 권한 </span>
+                                                    {/*<span className={classes.spanContents}> {row.zipcode},&nbsp;{row.address},&nbsp;{row.addressDetail} </span>*/}
+                                                    <span className={classes.spanContents}> {row.authLevel} </span>
+                                                </li>
                                                 <li>
                                                     <span className={classes.spanSubject}> 주소 </span>
                                                     {/*<span className={classes.spanContents}> {row.zipcode},&nbsp;{row.address},&nbsp;{row.addressDetail} </span>*/}
@@ -579,8 +586,10 @@ const UserList = () => {
                                                 </li>
                                                 <li>
                                                     <span className={classes.spanSubject}> 인증 </span>
-                                                    {/* eslint-disable-next-line no-nested-ternary */}
-                                                    <span className={classes.spanContents}> {row.emailAuth === true ? "개인 이메일 인증" : (row.groupEmailAuth === true ? "그룹 이메일 인증" : "사용 안함")} </span>
+                                                    <span className={classes.spanContents}>
+                                                        {/* eslint-disable-next-line no-nested-ternary */}
+                                                        {row.emailAuth === true ? "개인 이메일 인증" : (row.groupEmailAuth === true ? "그룹 이메일 인증" : "사용 안함")}
+                                                    </span>
                                                 </li>
                                             </ul>
                                         </Grid>
@@ -588,11 +597,13 @@ const UserList = () => {
                                             {
                                                 row.groupEmailAuth && row.groupEmailAuthList ? (
                                                     <React.Fragment>
-                                                        <span className={classes.spanSubject}> 이메일 인증 그룹 </span>
+                                                        <span className={classes.spanContents}>
+                                                            <GroupIcon/> 이메일 인증 그룹 </span>
                                                         <ul>
                                                             {row.groupEmailAuthList.map(auth => (
                                                             <li key={auth.idx}>
-                                                                <span className={classes.spanContents}> {auth.AuthUserId}:{auth.AuthEmail}</span>
+                                                                <span className={classes.spanContents}>
+                                                                    {auth.AuthUserId}/{auth.AuthEmail}</span>
                                                             </li>
                                                             ))}
                                                         </ul>
@@ -604,7 +615,8 @@ const UserList = () => {
                                             {
                                                 row.participateInAccountList && row.participateInAccountList.length > 0 ? (
                                                     <React.Fragment>
-                                                        <span className={classes.spanSubject}> 사용하는 계정 ID </span>
+                                                        <span className={classes.spanContents}>
+                                                            <AccountCircleIcon/> 사용하는 이메일 인증 계정 </span>
                                                         <ul>
                                                             {row.participateInAccountList.map(paccount => (
                                                             <li key={paccount.idx}>

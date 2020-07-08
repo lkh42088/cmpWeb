@@ -844,7 +844,7 @@ const UserRegisterDialog = (props) => {
                                 </div>
                             </Grid>
                             {
-                                fields.emailAuthValue === 2 ? (
+                                fields.emailAuthValue === "2" ? (
                                     <React.Fragment>
                                         <Grid item xs={6}>
                                             <div>

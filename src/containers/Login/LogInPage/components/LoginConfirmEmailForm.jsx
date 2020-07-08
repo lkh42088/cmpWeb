@@ -15,15 +15,8 @@ const LoginConfirmEmailForm = ({ history }) => {
     const dispatch = useDispatch();
     const {
         form,
-        authError,
-        user,
-        auth,
-        // eslint-disable-next-line no-shadow
     } = useSelector(({ accountRd }) => ({
         form: accountRd.login,
-        auth: accountRd.auth,
-        authError: accountRd.authError,
-        user: accountRd.user,
     }));
 
     const doLoginConfirm = async (username, password, email) => {
@@ -33,14 +26,6 @@ const LoginConfirmEmailForm = ({ history }) => {
             if (response.data.success === true) {
                 console.log("doLoginConfirm: user...", response.data.user);
                 dispatch(checkLoginUser());
-                // if (response.data.user) {
-                //     console.log("doLoginConfirm: user..", response.data.user);
-                //     if (response.data.success === true) {
-                //         console.log("doLoginConfirm: localstorage.");
-                //         localStorage.setItem('user', JSON.stringify(response.data.user));
-                //         history.push('/dashboards/manager');
-                //     }
-                // }
             }
         } catch (e) {
             console.log("doLoginConfirm: error ");
@@ -65,41 +50,52 @@ const LoginConfirmEmailForm = ({ history }) => {
         }
     }, []);
 
-    useEffect(() => {
-        console.log("auth..");
-        if (auth) {
-            console.log("auth:", user, " --> user");
-            // dispatch(checkLoginUser());
-        }
-    }, [auth]);
-
-    useEffect(() => {
-        console.log("user..");
-        if (user) {
-            console.log("user.. ", user, " --> history");
-            // history.push('/');
-            history.push('/dashboards/manager');
-            try {
-                localStorage.setItem('user', JSON.stringify(user));
-            } catch (e) {
-                console.log('localStorage is not working');
-            }
-        }
-    }, [history, user]);
+    // useEffect(() => {
+    //     console.log("auth..");
+    //     if (auth) {
+    //         console.log("auth:", user, " --> user");
+    //         // dispatch(checkLoginUser());
+    //     }
+    // }, [auth]);
+    //
+    // useEffect(() => {
+    //     console.log("user..");
+    //     if (user) {
+    //         console.log("user.. ", user, " --> history");
+    //         // history.push('/');
+    //         history.push('/dashboards/manager');
+    //         try {
+    //             localStorage.setItem('user', JSON.stringify(user));
+    //         } catch (e) {
+    //             console.log('localStorage is not working');
+    //         }
+    //     }
+    // }, [history, user]);
 
     return (
         <Form className="form login-form" onSubmit={handleSubmit}>
             <div className="form__form-group">
-                <span className="form__form-group-label">Email에서 인증을 한 후, 확인을 클릭하세요.</span>
+                <span
+                    className="form__form-group-label"
+                >
+                    Email에서 인증을 한 후, 확인을 클릭하세요.
+                </span>
             </div>
             <div className="form__form-group">
                 <ButtonToolbar>
-                    <Button className="account__btn btn btn-primary" color="white">확인</Button>
+                    <Button
+                        className="account__btn btn btn-primary"
+                        color="white"
+                    >
+                        확인
+                    </Button>
                 </ButtonToolbar>
             </div>
         </Form>
     );
 };
 
-const LoginConfirmEmailFormWrap = withRouter(reduxForm()(LoginConfirmEmailForm));
-export default LoginConfirmEmailFormWrap;
+// const LoginConfirmEmailFormWrap = withRouter(reduxForm()(LoginConfirmEmailForm));
+// export default LoginConfirmEmailFormWrap;
+
+export default reduxForm()(LoginConfirmEmailForm);

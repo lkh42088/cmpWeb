@@ -10,7 +10,7 @@ export const login = ({
 
 export const loginEmail = ({
     username, password, email,
-}) => client.post('/v1/auth/login', {
+}) => client.post('/v1/auth/login-send-email', {
     id: username, password, email,
 });
 
