@@ -74,7 +74,8 @@ class AssetsView extends PureComponent {
     }
 
     static getDerivedStateFromProps = (nextProps, prevState) => {
-        if (nextProps.assetState.stateVal.type === 'device') {
+        //console.log("💍💍💍💍💍💍 --> : ", nextProps.assetState.stateVal);
+        if (nextProps.assetState.stateVal.page === 'view') {
             switch (nextProps.assetState.stateVal.state) {
                 case 'confirm':
                     return {
@@ -88,7 +89,7 @@ class AssetsView extends PureComponent {
                         },
                         warringIcon: "",
                     };
-                case 'request':
+                /*case 'request':
                     return {
                         modalWarring: true,
                         warringTitle: '경고',
@@ -99,7 +100,7 @@ class AssetsView extends PureComponent {
                             backgroundColor: "",
                         },
                         warringIcon: "",
-                    };
+                    };*/
                 case 'success':
                     return {
                         modalWarring: true,
@@ -146,7 +147,7 @@ class AssetsView extends PureComponent {
             deviceCode: assetState.deviceByDeviceCode,
         });
 
-        dispatch(postDeviceComment('create', assetState, submitData));
+        dispatch(postDeviceComment('create', assetState, submitData, 'view'));
 
         this.setState({
             comment: '',
@@ -221,12 +222,12 @@ class AssetsView extends PureComponent {
 
         warehousingDate = warehousingDate.toString();
 
-        let rackLog;
+        let rackLoc;
 
         if (values.rackLoc !== undefined) {
-            rackLog = values.rackLoc.toString();
+            rackLoc = values.rackLoc.toString();
         } else {
-            rackLog = 0;
+            rackLoc = "0";
         }
 
         const submitData = ({
@@ -255,7 +256,7 @@ class AssetsView extends PureComponent {
             memory: values.memory,
             hdd: values.hdd,
             rackTag: values.rackTag,
-            rackLog,
+            rackLoc,
             ip: IpArray,
             spla: SplaArray,
             rentDate: rentData,
@@ -269,7 +270,7 @@ class AssetsView extends PureComponent {
 
         console.log("UPDATE 🙊🙊🙊 가공 전 : ", values);
         console.log("UPDATE 🙊🙊🙊 가공 후 : ", submitData);
-        dispatch(postDevice('update', assetState, submitData));
+        dispatch(postDevice('update', assetState, submitData, 'view'));
     };
 
     handleChange = (e) => {
@@ -303,6 +304,7 @@ class AssetsView extends PureComponent {
         const {dispatch} = this.props;
 
         const stateVal = ({
+            page: 'view',
             type: 'device',
             division: 'outFlag',
             state: 'confirm',
@@ -870,7 +872,7 @@ class AssetsView extends PureComponent {
                                                             size="20"/>&nbsp;{user.name}({user.id}) [{date}]
                                                 </span>
                                             <div className="modal_form__form-group-field"
-                                                style={{paddingTop: "5px"}}>
+                                                 style={{paddingTop: "5px"}}>
                                                 <div className="chat__text-field">
                                                         <textarea className="chat__field-textarea"
                                                                   placeholder="Type here…"
@@ -907,7 +909,8 @@ class AssetsView extends PureComponent {
                             <Typography><h6 className="bold-text">장비 댓글</h6></Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                            <AssetsComment assetState={assetState} dispatch={dispatch} user={user} theme={theme}/>
+                            <AssetsComment assetState={assetState} dispatch={dispatch} user={user}
+                                           theme={theme}/>
                         </ExpansionPanelDetails>
                     </ExpansionPanel>
                     <ExpansionPanel>

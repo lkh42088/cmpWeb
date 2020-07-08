@@ -60,7 +60,7 @@ const renderCustomerField = field => (
         <div className="modal_form__form-group-field">
             <input {...field.input} type={field.type} placeholder={field.placeholder}
                    value={field.initialValues} onClick={field.searchToggle} onKeyDown={field.searchToggle}
-                   role="button" tabIndex="0"
+                   role="button" tabIndex="0" className={field.className}
             />
             {/*<span className="search_btn_span"
                   onClick={field.searchToggle} onKeyDown={field.searchToggle}
@@ -82,7 +82,7 @@ const renderCustomerField = field => (
 );
 
 const renderSelectCustomField = ({
-                                     input, placeholder, codeDivision,
+                                     input, placeholder, codeDivision, className,
                                      meta: {touched, error},
                                  }) => (
     <Fragment>
@@ -90,6 +90,7 @@ const renderSelectCustomField = ({
             <select
                 {...input}
                 placeholder={placeholder}
+                className={className}
             >
                 <option value="0">선택하세요.</option>
                 {
@@ -269,7 +270,8 @@ class AssetsEdit extends PureComponent {
                     tempContent = (
                         <Field
                             name="rack"
-                            component="select">
+                            component="select"
+                            className="select_col_4">
                             <option value="none">렉없음</option>
                             {assetState.subCodes.data
                                 .map(d => (Number(d.codeId) === Number(e.target.value)
@@ -295,7 +297,8 @@ class AssetsEdit extends PureComponent {
                     tempContent = (
                         <Field
                             name="model"
-                            component="select">
+                            component="select"
+                            className="select_col_4">
                             {assetState.subCodes.data
                                 .map(d => (Number(d.codeId) === Number(e.target.value)
                                     && <option key={d.id} value={d.id}>{d.name}</option>))
@@ -617,7 +620,7 @@ class AssetsEdit extends PureComponent {
                                         name={`${arrData}`}
                                         defaultValue={splaArrayMap[arrData]}
                                         onChange={this.handleChangeSpla}
-                                    >
+                                        className="select_col_4">
                                         <option value="0">선택하세요.</option>
                                         {assetState.codes.codeSpla
                                             .map(c => (
@@ -691,7 +694,7 @@ class AssetsEdit extends PureComponent {
                                 <Field
                                     name="size"
                                     component="select"
-                                >
+                                    className="select_col_4">
                                     <option value="0">선택하세요.</option>
                                     {assetState.codes.codeSize
                                         .map((d, index) => (
@@ -735,7 +738,7 @@ class AssetsEdit extends PureComponent {
                                 <Field
                                     name="rackTag"
                                     component="input"
-                                    className="input_col_5"
+                                    className="input_col_10"
                                     type="text"
                                     placeholder="Rack Tag"
                                 />
@@ -747,7 +750,7 @@ class AssetsEdit extends PureComponent {
                                 <Field
                                     name="rackLoc"
                                     component="input"
-                                    className="input_col_5"
+                                    className="input_col_10"
                                     type="number"
                                     placeholder="Rack Location"
                                 />
@@ -779,7 +782,7 @@ class AssetsEdit extends PureComponent {
                                 <Field
                                     name="firmwareVersion"
                                     component="input"
-                                    className="input_col_5"
+                                    className="input_col_10"
                                     type="text"
                                     placeholder="FIRMWARE VERSION"
                                 />
@@ -791,7 +794,7 @@ class AssetsEdit extends PureComponent {
                                 <Field
                                     name="rackTag"
                                     component="input"
-                                    className="input_col_5"
+                                    className="input_col_10"
                                     type="text"
                                     placeholder="Rack Tag"
                                 />
@@ -803,7 +806,7 @@ class AssetsEdit extends PureComponent {
                                 <Field
                                     name="rackLoc"
                                     component="input"
-                                    className="input_col_5"
+                                    className="input_col_10"
                                     type="number"
                                     placeholder="Rack Location"
                                 />
@@ -821,7 +824,7 @@ class AssetsEdit extends PureComponent {
                                 <Field
                                     name="warranty"
                                     component="input"
-                                    className="input_col_5"
+                                    className="input_col_10"
                                     type="text"
                                     placeholder="WARRANTY"
                                 />
@@ -833,7 +836,7 @@ class AssetsEdit extends PureComponent {
                                 <Field
                                     name="rackCode"
                                     component="select"
-                                >
+                                    className="select_col_4">
                                     <option value="0">선택하세요.</option>
                                     {assetState.codes.codeRackCode
                                         .map((d, index) => (
@@ -920,6 +923,7 @@ class AssetsEdit extends PureComponent {
                                 <Field
                                     name="idc"
                                     component="select"
+                                    className="select_col_4"
                                     onChange={this.handleChange}>
                                     <option value="0">선택하세요.</option>
                                     {assetState.codes.codeIdc
@@ -934,7 +938,8 @@ class AssetsEdit extends PureComponent {
                                 ) : (
                                     <Field
                                         name="rack"
-                                        component="select">
+                                        component="select"
+                                        className="select_col_4">
                                         <option value="0">선택하세요.</option>
                                         {assetState.subCodes.data
                                             .map(d => (Number(d.codeId) === Number(deviceRawValue.idc)
@@ -950,6 +955,7 @@ class AssetsEdit extends PureComponent {
                                 <Field
                                     name="manufacture"
                                     component="select"
+                                    className="select_col_4"
                                     onChange={this.handleChange}>
                                     <option value="0">선택하세요.</option>
                                     {assetState.codes.codeManufacture
@@ -973,7 +979,8 @@ class AssetsEdit extends PureComponent {
                                 ) : (
                                     <Field
                                         name="model"
-                                        component="select">
+                                        component="select"
+                                        className="select_col_4">
                                         <option value="0">선택하세요.</option>
                                         {assetState.subCodes.data
                                             .map(d => (Number(d.codeId) === Number(deviceRawValue.manufacture)
@@ -988,6 +995,7 @@ class AssetsEdit extends PureComponent {
                             <Field
                                 name="deviceType"
                                 component={renderSelectCustomField}
+                                className="select_col_4"
                                 codeDivision={{
                                     code: assetState.codes.codeDeviceType,
                                 }}
@@ -998,6 +1006,7 @@ class AssetsEdit extends PureComponent {
                             <Field
                                 name="ownership"
                                 component={renderSelectCustomField}
+                                className="select_col_4"
                                 codeDivision={{
                                     code: assetState.codes.codeOwnership,
                                 }}
@@ -1008,6 +1017,7 @@ class AssetsEdit extends PureComponent {
                             <Field
                                 name="ownershipDiv"
                                 component={renderSelectCustomField}
+                                className="select_col_4"
                                 codeDivision={{
                                     code: assetState.codes.codeOwnershipDiv,
                                 }}
@@ -1018,7 +1028,7 @@ class AssetsEdit extends PureComponent {
                             <Field
                                 name="customer"
                                 type="text"
-                                className="input_col_7"
+                                className="input_col_4"
                                 placeholder="고객사"
                                 label={{name: deviceValue.customerName, id: deviceValue.customer}}
                                 initialValues={searchCustomerId}
@@ -1045,7 +1055,7 @@ class AssetsEdit extends PureComponent {
                             <Field
                                 name="ownerCompany"
                                 type="text"
-                                className="input_col_7"
+                                className="input_col_4"
                                 placeholder="소유업체명"
                                 initialValues={searchOwnerCompanyId}
                                 label={{name: deviceValue.ownerCompanyName, id: deviceValue.ownerCompany}}
@@ -1065,29 +1075,6 @@ class AssetsEdit extends PureComponent {
                             />
                         </div>
                         <div className="modal_form__form-group">
-                                <span
-                                    className="modal_form__form-group-label">HW S/N</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="hwSn"
-                                    component="input"
-                                    type="text"
-                                    className="input_col_10"
-                                />
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">임대기간</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="rentDate"
-                                    className="input_col_5"
-                                    value={deviceRawValue.rentDate}
-                                    component={renderIntervalDatePickerField}
-                                />
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">입고일</span>
                             <div className="modal_form__form-group-field">
                                 <Field
@@ -1096,9 +1083,21 @@ class AssetsEdit extends PureComponent {
                                     value={deviceRawValue.warehousingDate}
                                     component={renderDatePickerField}
                                 />
-                                <div className="modal_form__form-group-icon">
+                                {/*<div className="modal_form__form-group-icon">
                                     <CalendarBlankIcon/>
-                                </div>
+                                </div>*/}
+                            </div>
+
+                        </div>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">임대기간</span>
+                            <div className="modal_form__form-group-field">
+                                <Field
+                                    name="rentDate"
+                                    className="input_col_7"
+                                    value={deviceRawValue.rentDate}
+                                    component={renderIntervalDatePickerField}
+                                />
                             </div>
                         </div>
                         <div className="modal_form__form-group">
@@ -1110,7 +1109,7 @@ class AssetsEdit extends PureComponent {
                                 <Field
                                     name="cost"
                                     component="input"
-                                    className="input_col_5"
+                                    className="input_col_10"
                                     type="number"
                                     placeholder="원가"
                                 />
@@ -1125,6 +1124,18 @@ class AssetsEdit extends PureComponent {
                                     className="input_col_10"
                                     type="text"
                                     placeholder="용도"
+                                />
+                            </div>
+                        </div>
+                        <div className="modal_form__form-group">
+                                <span
+                                    className="modal_form__form-group-label">HW S/N</span>
+                            <div className="modal_form__form-group-field">
+                                <Field
+                                    name="hwSn"
+                                    component="input"
+                                    type="text"
+                                    className="input_col_10"
                                 />
                             </div>
                         </div>

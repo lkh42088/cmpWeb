@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import NotificationSystem from 'rc-notification';
 
 import {
-    fetchPosts, setDeviceType, setApiPage, setSearch, setDeviceSelected, setAssetsPage,
+    fetchPosts, setDeviceType, setApiPage, setSearch, setDeviceSelected, setAssetsPage, setState,
 } from '../../redux/actions/assetsAction';
 
 import Topbar from './topbar/Topbar';
@@ -133,6 +133,14 @@ class Layout extends Component {
                 carryingFlag: true,
             });
 
+            const stateVal = ({
+                page: 'list',
+                type: 'device',
+                division: 'outFlag',
+                state: 'empty',
+            });
+
+            dispatch(setState(stateVal));
             dispatch(setDeviceType(val));
             //자산관리 메뉴 이동 시 초기화
             dispatch(setAssetsPage('list'));

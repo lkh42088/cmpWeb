@@ -63,6 +63,8 @@ class AssetsComment extends PureComponent {
         console.log("type : ", nextProps.assetState.stateVal.type);
         console.log("state : ", nextProps.assetState.stateVal.state);*/
 
+        //console.log("nextProps.assetState.stateVal : ", nextProps.assetState.stateVal);
+
         if (nextProps.assetState.stateVal.type === 'comment') {
             switch (nextProps.assetState.stateVal.state) {
                 case 'confirm':
@@ -141,7 +143,7 @@ class AssetsComment extends PureComponent {
             deviceCode: assetState.deviceByDeviceCode,
         });
 
-        dispatch(postDeviceComment('update', assetState, submitData));
+        dispatch(postDeviceComment('update', assetState, submitData, 'view'));
 
         // 상태 초기화
         this.setState({
@@ -177,6 +179,7 @@ class AssetsComment extends PureComponent {
         });
 
         const stateVal = ({
+            page: 'view',
             type: 'comment',
             division: 'delete',
             state: 'confirm',
@@ -188,7 +191,7 @@ class AssetsComment extends PureComponent {
             modalWarring: false,
         });
 
-        dispatch(postDeviceComment('delete', assetState, submitData));
+        dispatch(postDeviceComment('delete', assetState, submitData, 'view'));
 
         // 상태 초기화
         this.setState({
@@ -207,6 +210,7 @@ class AssetsComment extends PureComponent {
             this.setState(prevState => ({modalOpenFlag: !prevState.modalOpenFlag}));
 
             const stateVal = ({
+                page: 'view',
                 type: 'comment',
                 division: 'delete',
                 state: 'confirm',
@@ -227,6 +231,7 @@ class AssetsComment extends PureComponent {
         } else if (division === 'delete') {
             this.setCommentVal(division, val);
             const stateVal = ({
+                page: 'view',
                 type: 'comment',
                 division: 'delete',
                 state: 'request',
@@ -300,7 +305,7 @@ class AssetsComment extends PureComponent {
                                                 onClick={event => this.commentToggle('delete', d)}
                                                 onKeyDown={event => this.commentToggle('delete', d)}
                                                 role="button" tabIndex="0">
-                                                삭제<DeleteIcon color="secondary"/>
+                                                삭제<DeleteIcon/>
                                             </div>
                                             &nbsp;&nbsp;
                                             <div
@@ -308,7 +313,7 @@ class AssetsComment extends PureComponent {
                                                 onClick={event => this.commentToggle('update', d)}
                                                 onKeyDown={event => this.commentToggle('update', d)}
                                                 role="button" tabIndex="0">
-                                                수정<EditIcon color="primary"/>
+                                                수정<EditIcon/>
                                             </div>
                                         </div>
                                     </div>

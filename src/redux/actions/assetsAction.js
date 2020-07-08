@@ -517,6 +517,7 @@ export const getDeviceCommentByDeviceCode = assetState => async (dispatch) => {
         //console.log(assetState.deviceByDeviceCode, " -> comments : ", comments.data);
 
         const stateVal = ({
+            page: 'view',
             type: 'comment',
             division: assetState.stateVal.division,
             state: 'finish',
@@ -539,7 +540,7 @@ export const getDeviceCommentByDeviceCode = assetState => async (dispatch) => {
 };
 
 // 장비 cud
-export const postDevice = (division, assetState, submitData) => async (dispatch) => {
+export const postDevice = (division, assetState, submitData, pageType) => async (dispatch) => {
     try {
         console.log("💎 postDevice start");
         let method = '';
@@ -569,10 +570,12 @@ export const postDevice = (division, assetState, submitData) => async (dispatch)
         })
             .then((responseDevice) => {
                 const stateVal = ({
+                    page: pageType,
                     type: 'device',
                     division,
                     state: 'success',
                 });
+
                 dispatch({
                     type: SET_STATUS,
                     payload: stateVal,
@@ -608,6 +611,7 @@ export const postDevice = (division, assetState, submitData) => async (dispatch)
             .catch((error) => {
                 console.log('error : ', error.response);
                 const stateVal = ({
+                    page: pageType,
                     type: 'device',
                     division,
                     state: 'error',
@@ -625,7 +629,7 @@ export const postDevice = (division, assetState, submitData) => async (dispatch)
 
 
 // 장비 댓글 cud
-export const postDeviceComment = (division, assetState, submitData) => async (dispatch) => {
+export const postDeviceComment = (division, assetState, submitData, pageType) => async (dispatch) => {
     try {
         console.log("💎 postDeviceComment start");
         let method = '';
@@ -655,6 +659,7 @@ export const postDeviceComment = (division, assetState, submitData) => async (di
         })
             .then((response) => {
                 const stateVal = ({
+                    page: pageType,
                     type: 'comment',
                     division,
                     state: 'success',
@@ -667,6 +672,7 @@ export const postDeviceComment = (division, assetState, submitData) => async (di
             .catch((error) => {
                 console.log('error : ', error.response);
                 const stateVal = ({
+                    page: pageType,
                     type: 'comment',
                     division,
                     state: 'error',
@@ -679,6 +685,7 @@ export const postDeviceComment = (division, assetState, submitData) => async (di
             });
     } catch (error) {
         const stateVal = ({
+            page: pageType,
             type: 'comment',
             division,
             state: 'error',
@@ -693,7 +700,7 @@ export const postDeviceComment = (division, assetState, submitData) => async (di
 };
 
 // 장비 반입/반출 update
-export const postDeviceOutFlag = (assetState, dispatchVal) => async (dispatch) => {
+export const postDeviceOutFlag = (assetState, dispatchVal, pageType) => async (dispatch) => {
     try {
         const method = 'put';
         const url = `${API_ROUTE}/devices/update/${assetState.deviceType}`;
@@ -705,9 +712,8 @@ export const postDeviceOutFlag = (assetState, dispatchVal) => async (dispatch) =
             data: postJsonData,
         })
             .then((response) => {
-                console.log("success");
-
                 const stateVal = ({
+                    page: pageType,
                     type: 'device',
                     division: 'outFlag',
                     state: 'success',
@@ -719,8 +725,8 @@ export const postDeviceOutFlag = (assetState, dispatchVal) => async (dispatch) =
             })
             .catch((error) => {
                 console.log('error : ', error.response);
-                console.log("error");
                 const stateVal = ({
+                    page: pageType,
                     type: 'device',
                     division: 'outFlag',
                     state: 'error',
@@ -762,8 +768,6 @@ export const setAddEleData = (type, value) => async (dispatch) => {
 export const setDeviceSelected = dispatchVal => async (dispatch) => {
     try {
         console.log("💎 setDeviceSelected start"); //SET_DEVICE_SELECTED
-
-        console.log("dispatchVal : ", dispatchVal);
 
         dispatch({
             type: SET_DEVICE_SELECTED,

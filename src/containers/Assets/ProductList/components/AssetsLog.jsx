@@ -146,8 +146,6 @@ class AssetsLog extends PureComponent {
             /*<Collapse title="로그 확인"
                       className="assets_write__modal__tableLine">*/
             <Col md={12} lg={12}>
-                <Card>
-                    <CardBody>
                         {/*<div className="card__title">
                             <h5 className="bold-text">title</h5>
                             <h5 className="subhead">Use default table with property <span
@@ -266,8 +264,6 @@ class AssetsLog extends PureComponent {
                                 native: true,
                             }}
                         />
-                    </CardBody>
-                </Card>
             </Col>
             /*</Collapse>*/
         );
