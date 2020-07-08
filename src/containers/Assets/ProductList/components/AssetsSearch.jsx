@@ -3,19 +3,27 @@ import {
     Card, CardBody, Col, Row, Container, ButtonToolbar, Button, Modal,
 } from 'reactstrap';
 import {useDispatch, useSelector} from "react-redux";
-import MagnifyIcon from "mdi-react/MagnifyIcon";
-import {Field, reduxForm} from 'redux-form';
 
+import MagnifyIcon from "mdi-react/MagnifyIcon";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import InputIcon from "@material-ui/icons/Input";
+import LaunchIcon from "@material-ui/icons/Launch";
+import CreateIcon from "@material-ui/icons/Create";
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 
+import {Field, reduxForm} from 'redux-form';
+import classNames from "classnames";
+import moment from "moment";
+
 import {withTranslation} from 'react-i18next';
 import {
-    fetchPostsCheckCount,
-    fetchPostSearchDevice, setDeviceSelected, setState,
+    fetchPostsCheckCount, fetchPosts,
+    fetchPostSearchDevice, postDevice, postDeviceOutFlag, setDeviceSelected, setState,
 } from "../../../../redux/actions/assetsAction";
+import AssetsWrite from "./AssetsWrite";
 
-const AssetsSearch = ({assetState, user}) => {
+const AssetsSearch = ({assetState, user, theme}) => {
     const dispatch = useDispatch();
 
     const [device, setDevice] = React.useState({
@@ -26,6 +34,7 @@ const AssetsSearch = ({assetState, user}) => {
     });
 
     const [modal, setModal] = React.useState({
+        modalOpenFlag: false,
         modalWarring: false,
         warringTitle: '',
         warringContents: '',
@@ -37,6 +46,12 @@ const AssetsSearch = ({assetState, user}) => {
         warringIcon: '',
     });
 
+    const modalClass = classNames({
+        'assets_write__modal-dialog': true,
+        'assets_write__modal-dialog--colored': false,
+        'assets_write__modal-dialog--header': false,
+    });
+
     //console.log("assetState .... : ", assetState.searchRd);
 
     const modalClose = (division) => {
@@ -44,6 +59,293 @@ const AssetsSearch = ({assetState, user}) => {
             ...modal,
             modalWarring: !modal.modalWarring,
         });
+    };
+
+    const toggle = (e) => {
+        //this.setState(prevState => ({modalOpenFlag: !prevState.modalOpenFlag}));
+        setModal({
+            ...modal,
+            modalOpenFlag: !modal.modalOpenFlag,
+        });
+    };
+
+    const warringToggle = (e) => {
+        const stateVal = ({
+            page: 'list',
+            type: 'device',
+            division: 'outFlag',
+            state: 'confirm',
+        });
+
+        dispatch(setState(stateVal));
+    };
+
+    const toggleOutFlag = (val) => {
+        let division = ',';
+        let divisionCount = 0;
+        let deviceCodeData = '';
+
+        if (assetState.deviceSelected.size === undefined || assetState.deviceSelected.size === 0) {
+            setModal({
+                ...modal,
+                modalWarring: !modal.modalWarring,
+                warringTitle: '경고',
+                warringContents: '선택된 장비가 없습니다.',
+                warringType: 'danger',
+                warringStyle: {
+                    backgroundColor: "",
+                },
+                warringIcon: '',
+            });
+
+            /*const stateVal = ({
+                type: 'device',
+                division: 'outFlag',
+                state: 'empty',
+            });
+
+            dispatch(setState(stateVal));*/
+        } else {
+            let finCheck = false;
+
+            // eslint-disable-next-line no-shadow
+            assetState.deviceSelected.forEach((value, key, map) => {
+                console.log("key : ", key, ", value : ", value);
+                if (value) {
+                    finCheck = true;
+                }
+            });
+
+            if (finCheck) {
+                // eslint-disable-next-line no-shadow
+                assetState.deviceSelected.forEach((value, key, map) => {
+                    if (value === true) {
+                        if (divisionCount <= 0) {
+                            division = '';
+                        } else {
+                            division = ',';
+                        }
+                        divisionCount += 1;
+                        deviceCodeData = `${deviceCodeData}${division}${key}`;
+                    }
+                });
+
+                //todo user setting
+                const submitData = ({
+                    userId: user.id,
+                    outFlag: val,
+                    deviceCode: deviceCodeData,
+                });
+
+                dispatch(postDeviceOutFlag(assetState, submitData, 'list'));
+            } else {
+                setModal({
+                    ...modal,
+                    modalWarring: !modal.modalWarring,
+                    warringTitle: '경고',
+                    warringContents: '선택된 장비가 없습니다.',
+                    warringType: 'danger',
+                    warringStyle: {
+                        backgroundColor: "",
+                    },
+                    warringIcon: '',
+                });
+            }
+        }
+    };
+
+    const componentOperatinng = (
+        <span role="button" tabIndex="0"
+              onClick={event => toggleOutFlag("1")}
+              onKeyDown={event => toggleOutFlag("1")}>
+                    <InputIcon/>&nbsp;
+            반출
+            </span>
+    );
+
+    const componentCarrying = (
+        <span role="button" tabIndex="0"
+              onClick={event => toggleOutFlag("0")}
+              onKeyDown={event => toggleOutFlag("0")}>
+                <LaunchIcon/>&nbsp;
+            반입
+            </span>
+    );
+
+    const renderSwitch = () => {
+        let viewComponentOutFlag;
+        let finCheck = false;
+
+        if (assetState.deviceSelected.size !== undefined || assetState.deviceSelected.size > 0) {
+            // eslint-disable-next-line no-shadow
+            assetState.deviceSelected.forEach((value, key, map) => {
+                if (value) {
+                    finCheck = true;
+                }
+            });
+        }
+
+        if (assetState.searchRd.operatingFlag === true && assetState.searchRd.carryingFlag === true) {
+            viewComponentOutFlag = (
+                <Fragment>
+                    &nbsp;
+                </Fragment>
+            );
+        } else if (assetState.searchRd.operatingFlag === true && assetState.searchRd.carryingFlag === false) {
+            if (finCheck) {
+                viewComponentOutFlag = (
+                    <Fragment>
+                        {componentOperatinng}
+                    </Fragment>
+                );
+            }
+            /*viewComponentOutFlag = (
+                <Fragment>
+                    {componentOperatinng}
+                </Fragment>
+            );*/
+        } else if (assetState.searchRd.operatingFlag === false && assetState.searchRd.carryingFlag === true) {
+            /*viewComponentOutFlag = (
+                <Fragment>
+                    {componentCarrying}
+                </Fragment>
+            );*/
+            if (finCheck) {
+                viewComponentOutFlag = (
+                    <Fragment>
+                        {componentCarrying}
+                    </Fragment>
+                );
+            }
+            /*if (assetState.deviceSelected.size !== undefined || assetState.deviceSelected.size > 0) {
+                viewComponentOutFlag = (
+                    <Fragment>
+                        {componentCarrying}
+                    </Fragment>
+                );
+            }*/
+        } else if (assetState.searchRd.operatingFlag === false && assetState.searchRd.carryingFlag === false) {
+            viewComponentOutFlag = "";
+        }
+
+        return viewComponentOutFlag;
+    };
+
+    const handleSubmit = (values) => {
+        let division = '|';
+        let divisionCount = 0;
+        let IpArray = '';
+        let SplaArray = '';
+        let rentDataStart;
+        let rentDataEnd;
+        let rentData = '|';
+        let warehousingDate = '';
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in assetState.deviceIp) {
+            if (assetState.deviceIp[arrData] !== '') {
+                if (divisionCount <= 0) {
+                    division = '';
+                } else {
+                    division = '|';
+                }
+
+                divisionCount += 1;
+                IpArray = `${IpArray}${division}${assetState.deviceIp[arrData]}`;
+            }
+        }
+
+        divisionCount = 0;
+        IpArray = `${IpArray}|`;
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in assetState.deviceSpla) {
+            if (assetState.deviceSpla[arrData] !== '') {
+                if (divisionCount <= 0) {
+                    division = '';
+                } else {
+                    division = '|';
+                }
+
+                divisionCount += 1;
+                SplaArray = `${SplaArray}${division}${assetState.deviceSpla[arrData]}`;
+            }
+        }
+
+        SplaArray = `${SplaArray}|`;
+
+        // eslint-disable-next-line guard-for-in,no-restricted-syntax
+        for (const arrData in values) {
+            if (arrData.indexOf("rentDate") !== -1) {
+                if (values[arrData].start !== null && values[arrData].start !== undefined) {
+                    rentDataStart = moment(values[arrData].start).format("YYYYMMDD");
+                } else {
+                    rentDataStart = null;
+                }
+
+                if (rentDataStart !== null) {
+                    if (values[arrData].end !== null) {
+                        rentDataEnd = `|${moment(values[arrData].end).format("YYYYMMDD")}`;
+                    } else {
+                        rentDataEnd = "|";
+                    }
+                    rentData = `${rentDataStart}${rentDataEnd}`;
+                } else {
+                    rentData = "|";
+                }
+            } else if (arrData.indexOf("warehousingDate") !== -1) {
+                warehousingDate = moment(values[arrData]).format("YYYYMMDD");
+            }
+        }
+
+        let rackLoc;
+
+        if (values.rackLoc !== undefined) {
+            rackLoc = values.rackLoc.toString();
+        } else {
+            rackLoc = "0";
+        }
+
+        const submitData = ({
+            outFlag: '',
+            commentCnt: '',
+            commentLastDate: '',
+            registerId: user.id,
+            registerDate: '',
+            model: values.model,
+            manufacture: values.manufacture,
+            contents: values.contents,
+            customer: values.customer,
+            deviceType: values.deviceType,
+            ownership: values.ownership,
+            ownershipDiv: values.ownershipDiv,
+            ownerCompany: values.ownerCompany,
+            hwSn: values.hwSn,
+            idc: values.idc,
+            rack: values.rack,
+            cost: values.cost,
+            purpose: values.purpose,
+            size: values.size,
+            cpu: values.cpu,
+            memory: values.memory,
+            hdd: values.hdd,
+            rackTag: values.rackTag,
+            rackLoc,
+            ip: IpArray,
+            spla: SplaArray,
+            rentDate: rentData,
+            warehousingDate,
+            monitoringFlag: '',
+            monitoringMethod: '',
+            rackCode: values.rackCode,
+            firmwareVersion: values.firmwareVersion,
+            warranty: values.warranty,
+        });
+
+        console.log("TOP 🙊🙊🙊 가공 전 : ", values);
+        console.log("TOP 🙊🙊🙊 가공 후: ", submitData);
+        dispatch(postDevice('create', assetState, submitData, 'list'));
+        toggle(); // modal close
     };
 
     const onChangeCode = (e) => {
@@ -142,12 +444,61 @@ const AssetsSearch = ({assetState, user}) => {
         document.getElementsByName("schText")[0].value = '';
     }, [assetState.deviceType]);
 
+    useEffect(() => {
+        renderSwitch();
+    }, [assetState.deviceSelected]);
+
+    useEffect(() => {
+        if (assetState.stateVal.division === 'outFlag') {
+            if (assetState.stateVal.state === "error") {
+                setModal({
+                    ...modal,
+                    modalWarring: !modal.modalWarring,
+                    warringTitle: '경고',
+                    warringContents: '요청하신 작업에 실패하였습니다.',
+                    warringType: 'danger',
+                    warringStyle: {
+                        backgroundColor: "",
+                    },
+                    warringIcon: '',
+                });
+            } else if (assetState.stateVal.state === "success") {
+                setModal({
+                    ...modal,
+                    modalWarring: !modal.modalWarring,
+                    warringTitle: '경고',
+                    warringContents: '요청하신 작업에 성공하였습니다.',
+                    warringType: 'modal-dialog--primary',
+                    warringStyle: {
+                        backgroundColor: "#43a047",
+                    },
+                    warringIcon: <CheckCircleIcon/>,
+                });
+
+                dispatch(setDeviceSelected(''));
+                dispatch(fetchPostSearchDevice(assetState, device));
+            } else {
+                setModal({
+                    ...modal,
+                    modalWarring: false,
+                    warringTitle: '경고',
+                    warringContents: '',
+                    warringType: 'danger',
+                    warringStyle: {
+                        backgroundColor: "",
+                    },
+                    warringIcon: '',
+                });
+            }
+        }
+    }, [assetState.stateVal]);
+
     return (
         <Card className="cb-card">
             <CardBody className="cb-card-body">
                 <Row style={{padding: 10}}>
-                    {/*<Col sm={12} md={12} xs={12} xl={12} lg={12}>*/}
-                    <Col>
+                    <Col sm={8} md={8} xs={8} xl={8} lg={8}>
+                    {/*<Col mb={8}>*/}
                         <form>
                             <div className="search_card_body" style={{maxWidth: "100%"}}>
                                 <div>
@@ -163,8 +514,7 @@ const AssetsSearch = ({assetState, user}) => {
                                     <MagnifyIcon className="search_icon" role="button" tabIndex="0"
                                                  onClick={onSearch}
                                                  onKeyDown={onSearch}/>
-                                </div>
-                                <div style={{paddingTop: "5px"}}>
+                                    &nbsp;&nbsp;
                                     {
                                         assetState.codes.codeDeviceType !== undefined ? (
                                             <Fragment>
@@ -234,7 +584,7 @@ const AssetsSearch = ({assetState, user}) => {
                         </form>
                     </Col>
                     {/*<Col sm={12} md={12} xs={12} xl={12} lg={12}>*/}
-                    <Col>
+                    <Col sm={4} md={4} xs={4} xl={4} lg={4}>
                         {/*1 : true , 0 : false */}
                         {/*0 : 반입, 1 : 반출*/}
                         <div className="search_card_body"
@@ -257,6 +607,25 @@ const AssetsSearch = ({assetState, user}) => {
                             <label htmlFor="carryingFlag" className="search_checkboxText">
                                 반출장비&nbsp;
                             </label>
+                            <ButtonToolbar>
+                            <span role="button" tabIndex="0"
+                                  onClick={toggle} onKeyDown={toggle}>
+                                    <CreateIcon/>&nbsp;장비 등록</span>
+                                {renderSwitch()}
+                            </ButtonToolbar>
+                            <Modal
+                                isOpen={modal.modalOpenFlag}
+                                modalClassName={theme.className === 'theme-dark' ? (
+                                    "ltr-support modal-class_dark"
+                                ) : (
+                                    "ltr-support modal-class_light"
+                                )}
+                                className={`${modalClass}`}>
+                                <AssetsWrite closeToggle={toggle} assetState={assetState} dispatch={dispatch}
+                                             onSubmit={handleSubmit}
+                                             theme={theme}
+                                />
+                            </Modal>
                         </div>
                     </Col>
                     {/*<Modal
