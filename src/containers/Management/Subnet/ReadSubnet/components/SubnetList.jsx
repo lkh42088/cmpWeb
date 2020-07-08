@@ -40,7 +40,7 @@ import {readSubnet} from "../../../../../redux/actions/subnetActions";
 /** Subnet Add Modal **/
 import SubnetWriteForm from "../../CreateSubnet/components/SubnetWriteForm";
 import SpringModal from "../../../../Common/SpringModal";
-import {DEFAULT_REST_URL} from "../../../../../lib/globalVariable";
+import API_ROUTE from "../../../../../shared/apiRoute";
 
 /** Custom CSS **/
 const useStyles = makeStyles(theme => ({
@@ -125,37 +125,42 @@ const SubnetList = () => {
     /** Initial data **/
     const [state, setState] = useState({
         columns: [
-            {title: 'IDX', field: 'idx', width: "5%" },
-            {title: 'SUBNET 태그', field: 'subnetTag', width: "15%"},
+            {title: 'IDX', field: 'idx'},
+            {title: 'SUBNET 태그', field: 'subnetTag', width: "20%"},
             {title: 'SUBNET', field: 'subnet', width: "40%"},
-            {title: 'SUBNET 마스크', field: 'subnetMask', width: "20%"},
-            {title: '게이트웨이', field: 'gateway', width: "20%"},
+            {title: 'SUBNET 마스크', field: 'subnetMask', width: "25%"},
+            {title: '게이트웨이', field: 'gateway', width: "25%"},
         ],
         data: [],
     });
+
+    const orderByName = [
+        "idx",
+        "subnetTag",
+        "subnetStart",
+        "subnetMask",
+        "subnetGateway",
+    ];
+
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
     const [orderBy, setOrderBy] = useState("sub_idx");
     const [order, setOrder] = useState("desc");
 
-    const handleOrderChange = (event, direction) => {
+    const handleOrderChange = (orderByStr, direction) => {
         const isAsc = order === direction && order === "asc";
         const changeOrder = isAsc ? "desc" : "asc";
         setOrder(changeOrder);
-    };
-
-    const handleFilterChange = (event, filter) => {
-        setOrderBy(filter);
+        setOrderBy(orderByName[orderByStr]);
     };
 
     const handleRowsPerPage = (size) => {
         setRowsPerPage(size);
     };
 
-    const handleChangePage = (event, page, a) => {
-        console.log(event, page, a);
-        setCurrentPage(currentPage + page);
+    const handleChangePage = (page, pageSize) => {
+        setCurrentPage(page);
     };
 
     /** Init pagination **/
@@ -203,7 +208,7 @@ const SubnetList = () => {
     });
 
     const getData = query => new Promise((resolve, reject) => {
-        let url = DEFAULT_REST_URL;
+        let url = API_ROUTE;
         url = url.concat("/subnet/").concat(rowsPerPage);
         url = url.concat("/").concat(String(rowsPerPage * (currentPage - 1)));
         url = url.concat("/").concat(orderBy);
@@ -289,9 +294,14 @@ const SubnetList = () => {
             textAlign: "center",
         },
         exportButton: true,
-        paginationType: "stepped",
-        pageSize: 10,
-        thirdSortClick: false,
+        // paginationType: "stepped",
+        pageSize: 5,
+        actionsColumnIndex: -1,
+    };
+
+    const actions = {
+        // tooltip: "수정 및 삭제",
+        // hidden: true,
     };
 
     /** Material-Table localization **/
@@ -313,14 +323,15 @@ const SubnetList = () => {
                     columns={state.columns}
                     className={classes.root}
                     editable={{
+                        onRowAdd: RowAdd,
                         onRowUpdate: RowUpdate,
                         onRowDelete: RowDelete,
                     }}
                     onOrderChange={handleOrderChange}
-                    onFilterChange={handleFilterChange}
                     onChangeRowsPerPage={handleRowsPerPage}
                     onChangePage={handleChangePage}
                     options={options}
+                    // actions={actions}
                     localization={localization}
                     data={getData}
                     // data={dataSet}
