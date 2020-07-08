@@ -9,7 +9,7 @@ const initialState = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
   datasets: [
     {
-      label: 'My First dataset',
+      label: '기간별 누적 알람 갯수',
       backgroundColor: '#70bbfd',
       borderColor: '#70bbfd',
       borderWidth: 1,
@@ -108,7 +108,7 @@ class RandomAnimatedBars extends PureComponent {
         <Card>
           <CardBody>
             <div className="card__title">
-              <h5 className="bold-text">{t('charts.react_chartjs.random_animated_bars')}</h5>
+              <h5 className="bold-text">{t('ALARM')}</h5>
             </div>
             <Bar data={data} options={options} />
           </CardBody>

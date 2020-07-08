@@ -78,8 +78,10 @@ class NetworkOnPremise extends PureComponent {
 
         return (
             <Panel
-                lg={12}
                 xl={4}
+                lg={6}
+                md={6}
+                sm={12}
                 xs={12}
                 title="네트워크 기기 온프레미스"
             >
@@ -106,8 +108,8 @@ class NetworkOnPremise extends PureComponent {
                                     content={renderLegend}/>
                         </PieChart>
                     </ResponsiveContainer>
-                    <div className="cb_dashboard__health-chart-info">
-                        <p className="cb_dashboard__health-chart-number">1750</p>
+                    <div className="dashboard__health-chart-info">
+                        <div className="dashboard__health-chart-number">1750</div>
                     </div>
                 </div>
             </Panel>

@@ -117,8 +117,7 @@ export default class AssetsTop extends PureComponent {
     };
 
     warringToggle = (e) => {
-        const {assetState, dispatch} = this.props;
-        //this.setState(prevState => ({modalWarring: !prevState.modalWarring}));
+        const {dispatch} = this.props;
 
         const stateVal = ({
             type: 'device',
@@ -147,7 +146,6 @@ export default class AssetsTop extends PureComponent {
         } else {
             // eslint-disable-next-line no-shadow
             assetState.deviceSelected.forEach((value, key, map) => {
-                //console.log(`14--->${key}$${value}`);
                 if (value === true) {
                     if (divisionCount <= 0) {
                         division = '';
@@ -166,9 +164,6 @@ export default class AssetsTop extends PureComponent {
                 deviceCode: deviceCodeData,
             });
 
-            //postDeviceOutFlag
-            // 반출 요청을 할거다....(1)
-            // 반입은 (0)....
             dispatch(postDeviceOutFlag(assetState, submitData));
         }
     };
@@ -326,15 +321,6 @@ export default class AssetsTop extends PureComponent {
             </span>
         );
 
-        const componentOutFlagAll = (
-            <span role="button" tabIndex="0"
-                  onClick={event => this.toggleOutFlag("1")}
-                  onKeyDown={event => this.toggleOutFlag("1")}>
-                <AutorenewIcon/>&nbsp;
-                반입/반출 자동 {/*없는 기능 ...*/}
-            </span>
-        );
-
         let viewComponentOutFlag;
 
         if (assetState.searchRd.operatingFlag === true && assetState.searchRd.carryingFlag === true) {
@@ -364,7 +350,6 @@ export default class AssetsTop extends PureComponent {
                 <div className="top_btn_area">
                     <div className="float-left">
                         <ButtonToolbar>
-                            {/*className="top_btn_black_dep3"*/}
                             <span role="button" tabIndex="0"
                                   onClick={this.toggle} onKeyDown={this.toggle}>
                                     <CreateIcon/>&nbsp;장비 등록</span>
@@ -374,14 +359,12 @@ export default class AssetsTop extends PureComponent {
                 </div>
                 <Modal
                     isOpen={modalOpenFlag}
-                    /*modalClassName="ltr-support modal-class"*/
                     modalClassName={theme.className === 'theme-dark' ? (
                         "ltr-support modal-class_dark"
                         ) : (
                         "ltr-support modal-class_light"
                         )}
-                    className={`${modalClass}`}
-                >
+                    className={`${modalClass}`}>
                     <AssetsWrite closeToggle={this.toggle} assetState={assetState} dispatch={dispatch}
                                  onSubmit={this.handleSubmit}
                                  theme={theme}
@@ -419,24 +402,12 @@ export default class AssetsTop extends PureComponent {
                     onClose={this.warringToggle}
                 >
                     <SnackbarContent
-                        /*message={`${warringIcon} ${warringContents}`}*/
                         style={warringStyle}
                         message={(
                             <span id="client-snackbar" style={{lineHeight: "2"}}>
                                     {warringIcon}&nbsp;{warringContents}
                                  </span>
                         )}
-                        /*action={(
-                            <Fragment>
-                                <MatButton color="secondary" size="small" onClick={this.warringToggle}>
-                                    Ok
-                                </MatButton>
-                                <IconButton size="small" aria-label="close" color="inherit"
-                                            onClick={this.warringToggle}>
-                                    <CloseIcon fontSize="small"/>
-                                </IconButton>
-                            </Fragment>
-                        )}*/
                     />
                 </Snackbar>
             </Card>

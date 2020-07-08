@@ -42,9 +42,13 @@ const LoginBase = ({history}) => {
             /********************************************************************
              * 로그인 성공!
              ********************************************************************/
-            console.log('check API 성공');
+            console.log('check API 성공 Level : ', user.level);
             // eslint-disable-next-line react/prop-types
-            history.push('/dashboards/manager');
+            if (user.level >= 1 && user.level <= 5) {
+                history.push('/dashboards/manager');
+            } else {
+                history.push('/dashboards/customer');
+            }
             try {
                 /** Insert 'user' to Local Storage */
                 localStorage.setItem('user', JSON.stringify(user));

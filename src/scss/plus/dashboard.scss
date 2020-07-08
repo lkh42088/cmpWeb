@@ -392,6 +392,8 @@
 
   .dashboard__health-chart-info {
     position: absolute;
+    // Add [08July2020,khlee]
+    text-align: center;
     width: 100%;
     top: calc(50% - 55px);
     animation: label 1.5s ease-in;
@@ -402,8 +404,11 @@
   }
 
   .dashboard__health-chart-number {
-    font-size: 56px;
+    font-size: 4vmin; // 56px->4min
     line-height: 60px;
+    // Add [08July2020,khlee]
+    margin-right: 13%;
+    margin-top: 8%;
 
     @include themify($themes) {
       color: themed('colorFitness');

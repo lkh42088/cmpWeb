@@ -80,8 +80,9 @@ const LoginForm = ({ history }) => {
              ********************************************************************/
             console.log('check API 성공');
             // eslint-disable-next-line react/prop-types
-            /** level 1,2 : manager */
-            if (user.level === 1 || user.level === 2) {
+            /** level 1~5 : manager */
+            console.log("level : ", user.level);
+            if (user.level >= 1 && user.level <= 5) {
                 history.push('/dashboards/manager');
             } else {
                 history.push('/dashboards/customer');

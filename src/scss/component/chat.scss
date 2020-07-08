@@ -340,13 +340,13 @@
 
   &.del {
     @include themify($themes) {
-      color: themed('colorMateralSecondaryText');
+      color: themed('colorText');
     }
   }
 
   &.edit {
     @include themify($themes) {
-      color: themed('colorMateralPrimaryText');
+      color: themed('colorText');
     }
   }
 }

@@ -103,10 +103,10 @@ const MaterialTable = () => {
                         <AssetsTop assetState={assetState} dispatch={dispatch} user={user}/>
                         <AssetsSearch assetState={assetState} user={user}/>
                     </SnackbarProvider>*/}
-                        <AssetsTop assetState={assetState} dispatch={dispatch} user={user}
-                                   theme={themeRd}/>
+                        {/*<AssetsTop assetState={assetState} dispatch={dispatch} user={user}
+                                   theme={themeRd}/>*/}
                         {/*{assetState.codes.codeDeviceType !== undefined ? <AssetsSearch assetState={assetState} /> : false}*/}
-                        <AssetsSearch assetState={assetState} user={user}/>
+                        <AssetsSearch assetState={assetState} user={user} theme={themeRd}/>
                     </Row>
                 ) : false}
                 <Row>

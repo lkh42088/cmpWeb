@@ -75,6 +75,7 @@ export const initialState = {
         offsetPage: 0,
     },
     stateVal: {
+        page: '',
         type: '',
         division: '',
         state: '',

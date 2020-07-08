@@ -29,6 +29,7 @@ import {RTLProps} from '../../../../shared/prop-types/ReducerProps';
 import TextEditor from "../../../../shared/components/text-editor/TextEditor";
 import renderIntervalDatePickerField from "../../../../shared/components/form/IntervalDatePicker";
 import renderDatePickerField from "../../../../shared/components/form/DatePicker";
+/*import renderDatePickerField from "./DatePicker";*/
 import renderSelectField from "../../../../shared/components/form/Select";
 import AssetsEdit from "./AssetsEdit";
 
@@ -65,7 +66,7 @@ const renderCustomerField = field => (
         <div className="modal_form__form-group-field">
             <input {...field.input} type={field.type} placeholder={field.placeholder}
                    value={field.initialValues} onClick={field.searchToggle} onKeyDown={field.searchToggle}
-                   role="button" tabIndex="0"
+                   role="button" tabIndex="0" className={field.className}
             />
             {/*<span className="search_btn_span"
                   onClick={field.searchToggle} onKeyDown={field.searchToggle}
@@ -83,7 +84,7 @@ const renderCustomerField = field => (
 );
 
 const renderSelectCustomField = ({
-                                     input, placeholder, codeDivision,
+                                     input, placeholder, codeDivision, className,
                                      meta: {touched, error},
                                  }) => (
     <Fragment>
@@ -91,6 +92,7 @@ const renderSelectCustomField = ({
             <select
                 {...input}
                 placeholder={placeholder}
+                className={className}
             >
                 <option value="0">:: SELECT ::.</option>
                 {
@@ -232,7 +234,8 @@ class AssetsWrite extends PureComponent {
                     tempContent = (
                         <Field
                             name="rack"
-                            component="select">
+                            component="select"
+                            className="select_col_4">
                             <option value="0">:: SELECT ::</option>
                             <option value="none">렉없음</option>
                             {assetState.subCodes.data
@@ -259,7 +262,8 @@ class AssetsWrite extends PureComponent {
                     tempContent = (
                         <Field
                             name="model"
-                            component="select">
+                            component="select"
+                            className="select_col_4">
                             <option value="0">:: SELECT ::</option>
                             {assetState.subCodes.data
                                 .map(d => (Number(d.codeId) === Number(e.target.value)
@@ -569,6 +573,7 @@ class AssetsWrite extends PureComponent {
                                 <Field
                                     name="size"
                                     component="select"
+                                    className="select_col_4"
                                 >
                                     <option value="0">:: SELECT ::</option>
                                     {assetState.codes.codeSize
@@ -615,7 +620,7 @@ class AssetsWrite extends PureComponent {
                                 <Field
                                     name="rackTag"
                                     component="input"
-                                    className="input_col_5"
+                                    className="input_col_10"
                                     type="text"
                                     placeholder="Rack Tag"
                                 />
@@ -627,7 +632,7 @@ class AssetsWrite extends PureComponent {
                                 <Field
                                     name="rackLoc"
                                     component="input"
-                                    className="input_col_5"
+                                    className="input_col_10"
                                     type="number"
                                     placeholder="Rack Location"
                                 />
@@ -660,7 +665,7 @@ class AssetsWrite extends PureComponent {
                                 <Field
                                     name="firmwareVersion"
                                     component="input"
-                                    className="input_col_5"
+                                    className="input_col_10"
                                     type="text"
                                     placeholder="FIRMWARE VERSION"
                                 />
@@ -672,7 +677,7 @@ class AssetsWrite extends PureComponent {
                                 <Field
                                     name="rackTag"
                                     component="input"
-                                    className="input_col_5"
+                                    className="input_col_10"
                                     type="text"
                                     placeholder="Rack Tag"
                                 />
@@ -684,7 +689,7 @@ class AssetsWrite extends PureComponent {
                                 <Field
                                     name="rackLoc"
                                     component="input"
-                                    className="input_col_5"
+                                    className="input_col_10"
                                     type="number"
                                     placeholder="Rack Location"
                                 />
@@ -702,7 +707,7 @@ class AssetsWrite extends PureComponent {
                                 <Field
                                     name="warranty"
                                     component="input"
-                                    className="input_col_5"
+                                    className="input_col_10"
                                     type="text"
                                     placeholder="WARRANTY"
                                 />
@@ -714,6 +719,7 @@ class AssetsWrite extends PureComponent {
                                 <Field
                                     name="rackCode"
                                     component="select"
+                                    className="select_col_4"
                                 >
                                     <option value="0">:: SELECT ::</option>
                                     {assetState.codes.codeRackCode
@@ -806,6 +812,7 @@ class AssetsWrite extends PureComponent {
                                 <Field
                                     name="idc"
                                     component="select"
+                                    className="select_col_4"
                                     onChange={this.handleChange}>
                                     <option value="0">:: SELECT ::</option>
                                     {assetState.codes.codeIdc
@@ -824,6 +831,7 @@ class AssetsWrite extends PureComponent {
                                 <Field
                                     name="manufacture"
                                     component="select"
+                                    className="select_col_4"
                                     onChange={this.handleChange}>
                                     <option value="0">:: SELECT ::</option>
                                     {assetState.codes.codeManufacture
@@ -840,6 +848,7 @@ class AssetsWrite extends PureComponent {
                             <span className="modal_form__form-group-label">장비구분</span>
                             <Field
                                 name="deviceType"
+                                className="select_col_4"
                                 component={renderSelectCustomField}
                                 codeDivision={{
                                     code: assetState.codes.codeDeviceType,
@@ -850,6 +859,7 @@ class AssetsWrite extends PureComponent {
                             <span className="modal_form__form-group-label">소유권</span>
                             <Field
                                 name="ownership"
+                                className="select_col_4"
                                 component={renderSelectCustomField}
                                 codeDivision={{
                                     code: assetState.codes.codeOwnership,
@@ -860,6 +870,7 @@ class AssetsWrite extends PureComponent {
                             <span className="modal_form__form-group-label">소유권구분</span>
                             <Field
                                 name="ownershipDiv"
+                                className="select_col_4"
                                 component={renderSelectCustomField}
                                 codeDivision={{
                                     code: assetState.codes.codeOwnershipDiv,
@@ -871,7 +882,7 @@ class AssetsWrite extends PureComponent {
                             <Field
                                 name="customer"
                                 type="text"
-                                className="input_col_7"
+                                className="input_col_4"
                                 placeholder="고객사"
                                 initialValues={searchCustomerId}
                                 component={renderCustomerField}
@@ -894,7 +905,7 @@ class AssetsWrite extends PureComponent {
                             <Field
                                 name="ownerCompany"
                                 type="text"
-                                className="input_col_7"
+                                className="input_col_4"
                                 placeholder="소유업체명"
                                 initialValues={searchOwnerCompanyId}
                                 component={renderCustomerField}
@@ -913,29 +924,6 @@ class AssetsWrite extends PureComponent {
                             />
                         </div>
                         <div className="modal_form__form-group">
-                                <span
-                                    className="modal_form__form-group-label">HW S/N</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="hwSn"
-                                    component="input"
-                                    type="text"
-                                    className="input_col_10"
-                                    placeholder="HW S/N"
-                                />
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">임대기간</span>
-                            <div className="modal_form__form-group-field">
-                                <Field
-                                    name="rentDate"
-                                    className="input_col_5"
-                                    component={renderIntervalDatePickerField}
-                                />
-                            </div>
-                        </div>
-                        <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">입고일</span>
                             <div className="modal_form__form-group-field">
                                 <Field
@@ -943,9 +931,19 @@ class AssetsWrite extends PureComponent {
                                     className="input_col_5"
                                     component={renderDatePickerField}
                                 />
-                                <div className="modal_form__form-group-icon">
+                                {/*<div className="modal_form__form-group-icon">
                                     <CalendarBlankIcon/>
-                                </div>
+                                </div>*/}
+                            </div>
+                        </div>
+                        <div className="modal_form__form-group">
+                            <span className="modal_form__form-group-label">임대기간</span>
+                            <div className="modal_form__form-group-field">
+                                <Field
+                                    name="rentDate"
+                                    className="input_col_7"
+                                    component={renderIntervalDatePickerField}
+                                />
                             </div>
                         </div>
                         <div className="modal_form__form-group">
@@ -957,7 +955,7 @@ class AssetsWrite extends PureComponent {
                                 <Field
                                     name="cost"
                                     component="input"
-                                    className="input_col_5"
+                                    className="input_col_10"
                                     type="number"
                                     label="5000"
                                     placeholder="원가"
@@ -973,6 +971,19 @@ class AssetsWrite extends PureComponent {
                                     className="input_col_10"
                                     type="text"
                                     placeholder="용도"
+                                />
+                            </div>
+                        </div>
+                        <div className="modal_form__form-group">
+                                <span
+                                    className="modal_form__form-group-label">HW S/N</span>
+                            <div className="modal_form__form-group-field">
+                                <Field
+                                    name="hwSn"
+                                    component="input"
+                                    type="text"
+                                    className="input_col_10"
+                                    placeholder="HW S/N"
                                 />
                             </div>
                         </div>

@@ -1,72 +1,85 @@
-import React, { PureComponent } from 'react';
+import React, {PureComponent} from 'react';
 import DatePicker from 'react-datepicker';
-import { isMobileOnly } from 'react-device-detect';
+import {isMobileOnly} from 'react-device-detect';
 import PropTypes from 'prop-types';
-import moment from "moment";
+import {Field} from "redux-form";
+import CalendarBlankIcon from "mdi-react/CalendarBlankIcon";
+import EditIcon from "@material-ui/icons/Edit";
+import Grid from '@material-ui/core/Grid';
+import {
+    MuiPickersUtilsProvider,
+    KeyboardTimePicker,
+    KeyboardDatePicker,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 class DatePickerField extends PureComponent {
-  static propTypes = {
-    onChange: PropTypes.func.isRequired,
-  };
-
-  constructor() {
-    super();
-    this.state = {
-      startDate: null,
+    static propTypes = {
+        onChange: PropTypes.func.isRequired,
     };
-    this.handleChange = this.handleChange.bind(this);
-  }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    //console.log("😱 😱 DatePicker -> nextProps.value : ", nextProps.value);
-
-    if (nextProps.value !== prevState.value) {
-      if (nextProps.value !== undefined && nextProps.value !== "") {
-        const date = new Date(moment(nextProps.value).format("YYYY/MM/DD"));
-        //console.log("😡 startArr : ", date);
-        return { startDate: date };
-      }
+    constructor() {
+        super();
+        this.state = {
+            startDate: new Date(),
+        };
+        this.handleChange = this.handleChange.bind(this);
     }
-    return null; // null 을 리턴하면 따로 업데이트 할 것은 없다라는 의미
-  }
 
-  handleChange(date) {
-    const { onChange } = this.props;
-    this.setState({
-      startDate: date,
-    });
-    onChange(date);
-  }
+    handleChange(date) {
+        const {onChange} = this.props;
+        this.setState({
+            startDate: date,
+        });
+        onChange(date);
+    }
 
-  render() {
-    const { startDate } = this.state;
+    render() {
+        const {startDate} = this.state;
 
-    return (
-      <div className="date-picker">
-        <DatePicker
-          className="form__form-group-datepicker"
-          selected={startDate}
-          onChange={this.handleChange}
-          dateFormat="yyyy/MM/dd"
-          dropDownMode="select"
-          popperPlacement="center"
-          withPortal={isMobileOnly}
-        />
-      </div>
-    );
-  }
+        return (
+            <div className="date-picker">
+                <DatePicker
+                    className="form__form-group-datepicker"
+                    selected={startDate}
+                    onChange={this.handleChange}
+                    dateFormat="yyyy/MM/dd"
+                    dropDownMode="select"
+                    popperPlacement="center"
+                    withPortal={isMobileOnly}
+                />
+                {/*                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Grid container justify="space-around">
+                        <KeyboardDatePicker
+                            disableToolbar
+                            variant="inline"
+                            format="yyyy/MM/dd"
+                            margin="normal"
+                            id="date-picker-inline"
+                            label="Date picker inline"
+                            value={startDate}
+                            onChange={this.handleChange}
+                            KeyboardButtonProps={{
+                                'aria-label': 'change date',
+                            }}
+                        />
+                    </Grid>
+                </MuiPickersUtilsProvider>*/}
+            </div>
+        );
+    }
 }
 
 const renderDatePickerField = (props) => {
-  const { input } = props;
-  return <DatePickerField {...input} />;
+    const {input} = props;
+    return <DatePickerField {...input} />;
 };
 
 renderDatePickerField.propTypes = {
-  input: PropTypes.shape({
-    onChange: PropTypes.func,
-    name: PropTypes.string,
-  }).isRequired,
+    input: PropTypes.shape({
+        onChange: PropTypes.func,
+        name: PropTypes.string,
+    }).isRequired,
 };
 
 export default renderDatePickerField;

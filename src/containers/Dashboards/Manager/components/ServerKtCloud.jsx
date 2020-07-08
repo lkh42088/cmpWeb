@@ -78,8 +78,10 @@ class ServerKtCloud extends PureComponent {
 
         return (
             <Panel
-                lg={12}
                 xl={4}
+                lg={6}
+                md={6}
+                sm={12}
                 xs={12}
                 title="서버(Server) Kt Cloud (xxx)"
             >
@@ -106,8 +108,8 @@ class ServerKtCloud extends PureComponent {
                                     content={renderLegend}/>
                         </PieChart>
                     </ResponsiveContainer>
-                    <div className="cb_dashboard__health-chart-info">
-                        <p className="cb_dashboard__health-chart-number">4200</p>
+                    <div className="dashboard__health-chart-info">
+                        <div className="dashboard__health-chart-number">4200</div>
                     </div>
                 </div>
             </Panel>
