@@ -11,7 +11,9 @@ import {
     PAGING_CHANGE_CURRENT_PAGE_NEXT,
     PAGING_CHANGE_CURRENT_PAGE_PREV,
     PAGING_CHANGE_DENSE,
-    PAGING_CHANGE_ORDER, PAGING_CHANGE_ORDER_BY,
+    PAGING_CHANGE_ORDER,
+    PAGING_CHANGE_ORDER_BY,
+    PAGING_CHANGE_ORDER_BY_WITH_RESET,
     PAGING_CHANGE_ROWS_PER_PAGE,
     PAGING_CHANGE_SELECTED,
     PAGING_CHANGE_TOTAL_COUNT,
@@ -145,6 +147,19 @@ const pagingReducer = handleActions(
         [PAGING_CHANGE_DENSE]: (state, action) => ({
             ...state,
             dense: action.payload.checked,
+        }),
+        [PAGING_CHANGE_ORDER_BY_WITH_RESET]: (state, action) => ({
+            rowsPerPage: 10,
+            currentPage: 0,
+            totalPage: 1,
+            totalCount: 1,
+            pageBeginRow: 0,
+            pageEndRow: 10,
+            displayRowsList: [10, 20, 30, 50, 100],
+            selected: new Map([]),
+            dense: false,
+            order: 'desc', // asc, desc
+            orderBy: action.payload.orderBy,
         }),
         [PAGING_CHANGE_ORDER_BY]: (state, action) => ({
             ...state,

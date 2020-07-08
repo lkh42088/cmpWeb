@@ -8,6 +8,8 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import {Button} from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from "@material-ui/core/IconButton";
 import {FixedSizeList} from "react-window";
 import {getCompaniesByName} from "../../../../lib/api/company";
 
@@ -109,9 +111,25 @@ const LookupCompany = (props) => {
             <Card>
                 <CardBody>
                     <div className="card__title">
-                        <h3 className="bold-text">고객사 검색</h3>
+                        <Grid container justify="space-between" spacing={1}>
+                            <Grid item>
+                                <h3 className="bold-text">고객사 검색</h3>
+                            </Grid>
+                            <Grid item>
+                                <IconButton
+                                    onClick={handleClose}
+                                    edge="end"
+                                    style={{
+                                        margin: "0px",
+                                        padding: "0px",
+                                    }}
+                                >
+                                    <CloseIcon/>
+                                </IconButton>
+                            </Grid>
+                        </Grid>
                     </div>
-                    <form className={formClassName}>
+                    <div>
                         <Grid container spacing={1}>
                             <Grid item xs={7}>
                                 <TextField
@@ -122,6 +140,12 @@ const LookupCompany = (props) => {
                                     // label="이름"
                                     variant={variant}
                                     size={fieldSize}
+                                    onKeyDown={(event) => {
+                                        console.log("key: ", event.keyCode);
+                                        if (event.keyCode === 13) {
+                                            handleSend();
+                                        }
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={4}>
@@ -156,7 +180,7 @@ const LookupCompany = (props) => {
                                 </div>
                             </Grid>
                         </Grid>
-                    </form>
+                    </div>
                 </CardBody>
             </Card>
         </Dialog>
