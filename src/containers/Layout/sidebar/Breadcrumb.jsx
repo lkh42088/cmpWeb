@@ -52,10 +52,13 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const DEFAULT_URL = "http://localhost:4000";
+const DEFAULT_URL = [
+    "http://localhost:4000",
+    "http://121.156.65.139:4000",
+];
 const PAGE_URL = {
-    "/dashboards/manager": {title: "관리자 대시보드", subTitle: "", icon: outlineDashboard},
-    "/dashboards/customer": {title: "사용자 대시보드", subTitle: "", icon: outlineDashboard},
+    "/dashboards/manager": {title: "관리자 대시보드", subTitle: null, icon: outlineDashboard},
+    "/dashboards/customer": {title: "사용자 대시보드", subTitle: null, icon: outlineDashboard},
     "/assets/server": {title: "SERVER", subTitle: "온프레미스", icon: serverOutlineBadged},
     "/assets/network": {title: "NETWORK", subTitle: "네트워크", icon: routerNetwork},
     "/assets/part": {title: "NETWORK", subTitle: "파트 & 기타", icon: routerNetwork},
@@ -77,7 +80,10 @@ export default function RouterBreadcrumbs(props) {
     // };
 
     const seperateUrl = (tmpUrl) => {
-        const tmp = tmpUrl.replace(DEFAULT_URL, "");
+        let tmp = tmpUrl;
+        for (let i = 0; i < DEFAULT_URL.length; i += 1) {
+            tmp = tmp.replace(DEFAULT_URL[i], "");
+        }
         if (tmp && tmp.length > 1 && PAGE_URL[tmp]) {
             return tmp;
         }
