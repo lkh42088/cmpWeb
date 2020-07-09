@@ -134,7 +134,7 @@ export const getCodes = dispatchVal => async (dispatch) => {
 export const fetchPosts = assetState => async (dispatch) => {
     try {
         // first get device
-        console.log("💎 fetchPosts start : ", assetState.apiPageRd.offsetPage);
+        console.log("💎 fetchPosts start : ", assetState.apiPageRd);
         //console.log("assetState : ", assetState.apiPageRd);
 
         const deviceTypeData = assetState.deviceType;
@@ -163,6 +163,8 @@ export const fetchPosts = assetState => async (dispatch) => {
                     outFlag: assetState.deviceOutFlag,
                     offsetPage: assetState.apiPageRd.offsetPage,
                 });
+
+                console.log("response : ", response.data);
 
                 dispatch({
                     type: GET_DEVICES,
@@ -233,7 +235,7 @@ export const fetchPostsCheckCount = (assetState, dispatchVal) => async (dispatch
 // 리스트에서 검색
 export const fetchPostSearchDevice = (assetState, dispatchVal) => async (dispatch) => {
     try {
-        console.log("💎 fetchPostSearchDevice start");
+        console.log("💎 fetchPostSearchDevice start : ", dispatchVal);
         const tempCustomer = [];
         let postJsonData = JSON.stringify(dispatchVal);
         const orderBy = 'DeviceCode';

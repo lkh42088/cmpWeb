@@ -287,7 +287,7 @@ class AssetsComment extends PureComponent {
             deviceComments = (
                 <Fragment>
                     {assetState.comments.map((d, i) => (
-                        <div className={bubbleClass} key={d}>
+                        <div className={bubbleClass} key={d.idx}>
                             <div className="chat__bubble-avatar">
                                 {/*<img src={comment.avatar} alt="ava" />*/}
                                 <Avatar className="topbar__avatar-img-list" name={d.registerId}

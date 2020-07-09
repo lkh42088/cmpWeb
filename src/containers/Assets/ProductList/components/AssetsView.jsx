@@ -182,7 +182,6 @@ class AssetsView extends PureComponent {
 
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
         for (const arrData in assetState.deviceIp) {
-            console.log("👋👋 assetState.deviceIp[arrData] : ", assetState.deviceIp[arrData]);
             if (assetState.deviceIp[arrData] !== '') {
                 if (divisionCount <= 0) {
                     division = '';
@@ -227,7 +226,15 @@ class AssetsView extends PureComponent {
                     rentData = "|";
                 }
             } else if (arrData.indexOf("warehousingDate") !== -1) {
-                warehousingDate = moment(values[arrData]).format("YYYYMMDD");
+                let reWarehousingDate;
+
+                if (values[arrData] === "0") {
+                    reWarehousingDate = new Date();
+                } else {
+                    reWarehousingDate = values[arrData];
+                }
+
+                warehousingDate = moment(reWarehousingDate).format("YYYYMMDD");
             }
         }
 
