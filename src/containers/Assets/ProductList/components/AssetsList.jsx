@@ -553,7 +553,7 @@ export default class AssetsList extends PureComponent {
                                     </TableCell>
                                     <TableCell
                                         className={tableCellClassName}
-                                    >{/*소유권구분*/}{d.ownerCompany}
+                                    >{/*소유권구분*/}{d.ownershipDiv}
                                     </TableCell>
                                     {/*<TableCell*/}
                                     {/*    className={tableCellClassName}*/}

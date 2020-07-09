@@ -39,16 +39,12 @@ class IntervalDatePickerField extends PureComponent {
         // 여기서는 setState 를 하는 것이 아니라
         // 특정 props 가 바뀔 때 설정하고 설정하고 싶은 state 값을 리턴하는 형태로
         // 사용됩니다.
-        //console.log("😱 😱 IntervalDatePickerField -> nextProps.value : ", nextProps.value.value);
         if (nextProps.value !== prevState.value && prevState.earlyFlag === true) {
             if (nextProps.value !== undefined && nextProps.value !== "|"
                 && nextProps.value !== "" && typeof nextProps.value === "string") {
-                //console.log("응?? : ", nextProps.value);
                 if (nextProps.value.indexOf("|") !== -1) {
                     const startArr = new Date(moment(nextProps.value.split("|")[0]).format("YYYY/MM/DD"));
                     const endArr = new Date(moment(nextProps.value.split("|")[1]).format("YYYY/MM/DD"));
-                    //console.log("😡 startArr : ", startArr);
-                    //console.log("😡 endArr : ", endArr);
                     return {startDate: startArr, endDate: endArr, earlyFlag: false};
                 }
             }
