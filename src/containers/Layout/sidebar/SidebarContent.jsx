@@ -22,7 +22,7 @@ const SidebarContent = ({
     const getDashBoardLink = () => {
         if (user) {
             const {level} = user;
-            if (level === 1 || level === 2) {
+            if (level >= 1 && level <= 5) {
                 link = "/dashboards/manager";
             } else {
                 link = "/dashboards/customer";
