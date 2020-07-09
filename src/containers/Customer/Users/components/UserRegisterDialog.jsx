@@ -376,6 +376,8 @@ const UserRegisterDialog = (props) => {
             emailAuthValue: false,
             emailAuthGroupList: false,
         });
+        setShowPassword(false);
+        setConfirmUser(false);
     };
 
     const handleCancel = () => {
@@ -392,6 +394,7 @@ const UserRegisterDialog = (props) => {
         }
         console.log("handleSubmitInternal() success");
         handleSubmit(fields);
+        reset();
     };
 
     /*******************

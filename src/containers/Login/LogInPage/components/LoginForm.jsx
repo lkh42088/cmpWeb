@@ -20,6 +20,7 @@ const LoginForm = ({ history }) => {
     const rememberForm = 'log_in_form';
     const typeFieldUser = 'text';
     const [showPassword, setShowPassword] = useState(false);
+    const [resultError, setResultError] = useState(false);
 
     const dispatch = useDispatch();
     const {
@@ -59,16 +60,28 @@ const LoginForm = ({ history }) => {
             if (response.data.success) {
                 dispatch(checkLoginUser());
             } else if (response.data.msg.result === 251) {
+                console.log("email: ", response.data.msg.email);
                 console.log("changeLoginPage ", GV_LOGIN_PAGE_CONFIRM_EMAIL);
                 dispatch(changeLoginPage({value: GV_LOGIN_PAGE_CONFIRM_EMAIL}));
+                dispatch(
+                    changeField({
+                        form: 'login',
+                        key: "email",
+                        value: response.data.msg.email,
+                    }),
+                );
             } else if (response.data.msg.result === 252) {
                 console.log("changeLoginPage ", GV_LOGIN_PAGE_INPUT_EMAIL);
                 dispatch(changeLoginPage({value: GV_LOGIN_PAGE_INPUT_EMAIL}));
             } else {
                 console.log("doLogin: XXXX");
             }
+            if (resultError) {
+                setResultError(false);
+            }
         } catch (e) {
             console.log("doLogin: error! ", e);
+            setResultError(true);
         }
     };
 
@@ -168,6 +181,13 @@ const LoginForm = ({ history }) => {
                     <Button className="account__btn btn btn-primary" color="white">로그인</Button>
                 </ButtonToolbar>
             </div>
+            { resultError ? (
+                <div>
+                    <span style={{
+                        color: "red",
+                    }} >* ID 또는 Password가 잘못 됐습니다!</span>
+                </div>
+            ) : <div/>}
         </Form>
     );
 };

@@ -19,6 +19,8 @@ const LoginConfirmEmailForm = ({ history }) => {
         form: accountRd.login,
     }));
 
+    const [resultError, setResultError] = useState(false);
+
     const doLoginConfirm = async (username, password, email) => {
         try {
             const response = await loginConfirm({username, password, email});
@@ -26,9 +28,13 @@ const LoginConfirmEmailForm = ({ history }) => {
             if (response.data.success === true) {
                 console.log("doLoginConfirm: user...", response.data.user);
                 dispatch(checkLoginUser());
+                if (resultError === true) {
+                    setResultError(false);
+                }
             }
         } catch (e) {
             console.log("doLoginConfirm: error ");
+            setResultError(true);
         }
     };
 
@@ -91,6 +97,13 @@ const LoginConfirmEmailForm = ({ history }) => {
                     </Button>
                 </ButtonToolbar>
             </div>
+            { resultError ? (
+                <div>
+                    <span style={{
+                        color: "red",
+                    }} >* 인증되지 않았습니다!</span>
+                </div>
+            ) : <div/>}
         </Form>
     );
 };

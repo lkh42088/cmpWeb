@@ -144,13 +144,13 @@ const CompanyList = () => {
         setOpen(false);
     };
 
-    const handleTriggerFailure = () => {
-        enqueueSnackbar('고객사 등록에 실패했습니다!');
+    const handleTriggerFailure = (snackMsg) => {
+        enqueueSnackbar(snackMsg);
     };
 
-    const handleTriggerSuccess = () => {
+    const handleTriggerSuccess = (snackMsg) => {
         // variant could be success, error, warning, info, or default
-        enqueueSnackbar('고객사 등록에 성공했습니다.', { variant: "success" });
+        enqueueSnackbar(snackMsg, { variant: "success" });
     };
 
     /**
@@ -241,8 +241,10 @@ const CompanyList = () => {
     const deleteCompanies = async (companies) => {
         try {
             const response = await unregisterCompany({idx: companies});
+            handleTriggerSuccess("고객사 삭제에 성공하였습니다.");
             getPageData();
         } catch (error) {
+            handleTriggerFailure("고객사 삭제에 ");
             getPageData();
         }
     };
@@ -306,7 +308,7 @@ const CompanyList = () => {
     useEffect(() => {
         if (cpMsg) {
             console.log("cpMsg: success!");
-            handleTriggerSuccess();
+            handleTriggerSuccess("고객사 등록에 성공하였습니다.");
             getPageData();
         }
     }, [cpMsg]);
@@ -314,7 +316,7 @@ const CompanyList = () => {
     useEffect(() => {
         if (cpMsgError) {
             console.log("cpMsg: failure!");
-            handleTriggerFailure();
+            handleTriggerFailure("고객사 등록에 실패하였습니다.");
         }
     }, [cpMsgError]);
 
