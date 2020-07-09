@@ -185,7 +185,7 @@ const LoginForm = ({ history }) => {
                 <div>
                     <span style={{
                         color: "red",
-                    }} >* ID 또는 Password가 잘못 됐습니다!</span>
+                    }} >* ID 또는 Password가 일치하지 않습니다!</span>
                 </div>
             ) : <div/>}
         </Form>

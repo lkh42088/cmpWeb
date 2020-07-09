@@ -175,7 +175,7 @@ const RegisterCompanyPage = (props) => {
         userPassword: userRegisterRd.register.password,
     }));
 
-    const {open, handleClose, refreshPage } = props;
+    const {open, handleClose, handleSubmit } = props;
 
     /** cpName */
     const [nameButtonDisable, setNameButtonDisable] = useState(true);
@@ -296,7 +296,21 @@ const RegisterCompanyPage = (props) => {
         dispatch(checkUserRegisterField());
         if (isReadyRegisterCompany() && isReadyRegisterUser()) {
             console.log("send add company");
-            dispatch(addCompany({
+            // dispatch(addCompany({
+            //     cpName: company.cpName,
+            //     cpZip: company.cpZip,
+            //     cpAddr: company.cpAddr,
+            //     cpAddrDetail: company.cpAddrDetail,
+            //     cpHomepage: company.cpHomepage,
+            //     cpTel: company.cpTel,
+            //     cpEmail: company.cpEmail,
+            //     cpIsCompany: company.cpIsCompany,
+            //     cpMemo: company.cpMemo,
+            //     cpTerminationDate: company.cpTerminationDate,
+            //     userId,
+            //     userPassword,
+            // }));
+            handleSubmit({
                 cpName: company.cpName,
                 cpZip: company.cpZip,
                 cpAddr: company.cpAddr,
@@ -309,7 +323,7 @@ const RegisterCompanyPage = (props) => {
                 cpTerminationDate: company.cpTerminationDate,
                 userId,
                 userPassword,
-            }));
+            });
             handleClose();
         }
     };
