@@ -18,7 +18,11 @@ import {makeStyles} from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
 import { SnackbarProvider, useSnackbar } from 'notistack';
 import ReactTooltip from "react-tooltip";
-import {initRegisterCompany, getCompanyList, changeCompanyMsgField} from "../../../../redux/actions/companiesActions";
+import {
+    initRegisterCompany,
+    getCompanyList,
+    changeCompanyMsgField,
+} from "../../../../redux/actions/companiesActions";
 import {initRegisterUser} from "../../../../redux/actions/usersActions";
 import {
     pagingChangeCurrentPage,
@@ -35,7 +39,7 @@ import CbAdminTableToolbar from "../../../Common/CbAdminTableToolbar";
 import CommonTableHead from "../../../Common/CommonTableHead";
 // import AddCompany from "./AddCompany";
 import RegisterCompanyPage from "./RegisterCompanyPage";
-import {unregisterCompany} from "../../../../lib/api/company";
+import {registerCompany, unregisterCompany} from "../../../../lib/api/company";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -244,7 +248,7 @@ const CompanyList = () => {
             handleTriggerSuccess("고객사 삭제에 성공하였습니다.");
             getPageData();
         } catch (error) {
-            handleTriggerFailure("고객사 삭제에 ");
+            handleTriggerFailure("고객사 삭제에 실패하였습니다.");
             getPageData();
         }
     };
@@ -281,6 +285,35 @@ const CompanyList = () => {
         getPageData();
     };
 
+    const handleRegisterCompany = async ({
+        cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage,
+        cpTel, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
+        userId, userPassword,
+    }) => {
+        try {
+            const response = await registerCompany({
+                cpName,
+                cpZip,
+                cpAddr,
+                cpAddrDetail,
+                cpHomepage,
+                cpTel,
+                cpEmail,
+                cpIsCompany,
+                cpMemo,
+                cpTerminationDate,
+                userId,
+                userPassword,
+            });
+            handleTriggerSuccess("고객사 등록에 성공하였습니다.");
+            getPageData();
+        } catch (error) {
+            handleTriggerFailure("고객사 등록에 실패하였습니다.");
+            getPageData();
+            console.log("handleRegisterCompany error!");
+        }
+    };
+
     useEffect(() => {
         const changeOrderBy = "idx";
         console.log("[] orderBy: ", changeOrderBy);
@@ -307,22 +340,20 @@ const CompanyList = () => {
         // dispatch(pagingDump());
     }, [rowsPerPage, pageBeginRow, orderBy, order]);
 
-    useEffect(() => {
-        if (cpMsg) {
-            console.log("cpMsg: success!");
-            handleTriggerSuccess("고객사 등록에 성공하였습니다.");
-            getPageData();
-            dispatch(changeCompanyMsgField({key: "msg", value: null}));
-        }
-    }, [cpMsg]);
-
-    useEffect(() => {
-        if (cpMsgError) {
-            console.log("cpMsg: failure!");
-            handleTriggerFailure("고객사 등록에 실패하였습니다.");
-            dispatch(changeCompanyMsgField({key: "msgError", value: null}));
-        }
-    }, [cpMsgError]);
+    // useEffect(() => {
+    //     if (cpMsg) {
+    //         console.log("cpMsg: success!");
+    //         getPageData();
+    //         dispatch(changeCompanyMsgField({key: "msg", value: null}));
+    //     }
+    // }, [cpMsg]);
+    //
+    // useEffect(() => {
+    //     if (cpMsgError) {
+    //         console.log("cpMsg: failure!");
+    //         dispatch(changeCompanyMsgField({key: "msgError", value: null}));
+    //     }
+    // }, [cpMsgError]);
 
     /** Pagination */
     const paginationBar = (
@@ -466,7 +497,12 @@ const CompanyList = () => {
                         />
                     </div>
                     {/*<AddCompany open={open} handleClose={handleClose} refreshPage={getPageData}/>*/}
-                    <RegisterCompanyPage open={open} handleClose={handleClose} refreshPage={getPageData}/>
+                    <RegisterCompanyPage
+                        open={open}
+                        handleClose={handleClose}
+                        handleSubmit={handleRegisterCompany}
+                        refreshPage={getPageData}
+                    />
                 </CardBody>
             </Card>
         </Col>
