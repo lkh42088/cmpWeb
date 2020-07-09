@@ -5,6 +5,7 @@ import {
     ADD_COMPANY_SUCCESS,
     ADD_COMPANY_FAILURE,
     COMPANY_CHANGE_FIELD,
+    COMPANY_CHANGE_MSG_FIELD,
     COMPANY_CHANGE_REGISTER_FIELD,
     GET_COMPANY_LIST_SUCCESS,
     INITIALIZE_REGISTER_COMPANY,
@@ -266,6 +267,10 @@ const companiesReducer = handleActions(
         }),
         [COMPANY_CHANGE_FIELD]: (state, { payload: { type, key, value }}) => produce(state, (draft) => {
             draft[type][key] = value;
+        }),
+        [COMPANY_CHANGE_MSG_FIELD]: (state, { payload: { key, value }}) => ({
+            ...state,
+            key: value,
         }),
         [ADD_COMPANY_SUCCESS]: (state, action) => ({
             ...state,

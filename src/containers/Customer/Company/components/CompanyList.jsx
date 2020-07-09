@@ -18,7 +18,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
 import { SnackbarProvider, useSnackbar } from 'notistack';
 import ReactTooltip from "react-tooltip";
-import {initRegisterCompany, getCompanyList } from "../../../../redux/actions/companiesActions";
+import {initRegisterCompany, getCompanyList, changeCompanyMsgField} from "../../../../redux/actions/companiesActions";
 import {initRegisterUser} from "../../../../redux/actions/usersActions";
 import {
     pagingChangeCurrentPage,
@@ -285,6 +285,8 @@ const CompanyList = () => {
         const changeOrderBy = "idx";
         console.log("[] orderBy: ", changeOrderBy);
         dispatch(pagingChangeOrderByWithReset({orderBy: changeOrderBy}));
+        dispatch(changeCompanyMsgField({key: "msg", value: null}));
+        dispatch(changeCompanyMsgField({key: "msgError", value: null}));
     }, []);
 
     useEffect(() => {
@@ -310,6 +312,7 @@ const CompanyList = () => {
             console.log("cpMsg: success!");
             handleTriggerSuccess("고객사 등록에 성공하였습니다.");
             getPageData();
+            dispatch(changeCompanyMsgField({key: "msg", value: null}));
         }
     }, [cpMsg]);
 
@@ -317,6 +320,7 @@ const CompanyList = () => {
         if (cpMsgError) {
             console.log("cpMsg: failure!");
             handleTriggerFailure("고객사 등록에 실패하였습니다.");
+            dispatch(changeCompanyMsgField({key: "msgError", value: null}));
         }
     }, [cpMsgError]);
 
