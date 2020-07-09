@@ -546,7 +546,10 @@
 }
 
 .text_cor_mat_p {
-  color: $color-materal-primary;
+  /*color: $color-materal-primary;*/
+  @include themify($themes) {
+    color: themed('colorMateralPrimaryText');
+  }
 }
 
 .mouse_over_list {

@@ -991,7 +991,7 @@ class AssetsEdit extends PureComponent {
                             </div>
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">장비구분</span>
+                            <span className="modal_form__form-group-label">*&nbsp;장비구분</span>
                             <Field
                                 name="deviceType"
                                 component={renderSelectCustomField}
@@ -1002,7 +1002,7 @@ class AssetsEdit extends PureComponent {
                             />
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">소유권</span>
+                            <span className="modal_form__form-group-label">*&nbsp;소유권</span>
                             <Field
                                 name="ownership"
                                 component={renderSelectCustomField}
@@ -1013,7 +1013,7 @@ class AssetsEdit extends PureComponent {
                             />
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">소유권구분</span>
+                            <span className="modal_form__form-group-label">*&nbsp;소유권구분</span>
                             <Field
                                 name="ownershipDiv"
                                 component={renderSelectCustomField}
@@ -1024,7 +1024,7 @@ class AssetsEdit extends PureComponent {
                             />
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">고객사</span>
+                            <span className="modal_form__form-group-label">*&nbsp;고객사</span>
                             <Field
                                 name="customer"
                                 type="text"
@@ -1051,7 +1051,7 @@ class AssetsEdit extends PureComponent {
                             {/*<input ref={(ref => this.input = ref)}/>*/}
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">소유업체명</span>
+                            <span className="modal_form__form-group-label">*&nbsp;소유업체명</span>
                             <Field
                                 name="ownerCompany"
                                 type="text"

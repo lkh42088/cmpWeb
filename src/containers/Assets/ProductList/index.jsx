@@ -59,12 +59,18 @@ const MaterialTable = () => {
     }))(Chip); // TypeScript only: need a type cast here because https://github.com/Microsoft/TypeScript/issues/26591
 
     useEffect(() => {
-        getTotalCodes();
         if (user != null) {
             const jsonUser = JSON.parse(user);
             setUser(jsonUser);
         }
     }, []);
+
+
+    useEffect(() => {
+        getTotalCodes();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        /*}, [assetState.deviceType, assetState.device, assetState.stateVal]);*/
+    }, [assetState.deviceType]);
 
     useEffect(() => {
         getDevices();

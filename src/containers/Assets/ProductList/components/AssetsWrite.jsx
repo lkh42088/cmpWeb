@@ -845,7 +845,7 @@ class AssetsWrite extends PureComponent {
                             </div>
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">장비구분</span>
+                            <span className="modal_form__form-group-label">*&nbsp;장비구분</span>
                             <Field
                                 name="deviceType"
                                 className="select_col_4"
@@ -856,7 +856,7 @@ class AssetsWrite extends PureComponent {
                             />
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">소유권</span>
+                            <span className="modal_form__form-group-label">*&nbsp;소유권</span>
                             <Field
                                 name="ownership"
                                 className="select_col_4"
@@ -867,7 +867,7 @@ class AssetsWrite extends PureComponent {
                             />
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label">소유권구분</span>
+                            <span className="modal_form__form-group-label">*&nbsp;소유권구분</span>
                             <Field
                                 name="ownershipDiv"
                                 className="select_col_4"
@@ -878,7 +878,7 @@ class AssetsWrite extends PureComponent {
                             />
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label text_cor_orange">고객사</span>
+                            <span className="modal_form__form-group-label text_cor_orange">*&nbsp;고객사</span>
                             <Field
                                 name="customer"
                                 type="text"
@@ -901,7 +901,7 @@ class AssetsWrite extends PureComponent {
                             />
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label text_cor_orange">소유업체명</span>
+                            <span className="modal_form__form-group-label text_cor_orange">*&nbsp;소유업체명</span>
                             <Field
                                 name="ownerCompany"
                                 type="text"

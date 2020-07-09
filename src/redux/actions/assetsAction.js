@@ -96,8 +96,11 @@ export const getCodes = dispatchVal => async (dispatch) => {
         console.log("💎 getCodes start");
         const Codes = await axios.get(`${API_ROUTE}/codes`);
         const SubCodes = await axios.get(`${API_ROUTE}/subcodes`);
-
         const codeType = `device_${dispatchVal.deviceType}`;
+        
+/*        console.log("Codes : ", Codes);
+        console.log("SubCodes : ", SubCodes);
+        console.log("codeType : ", codeType);*/
 
         const DeviceType = setCodeMap(Codes.data, codeType, 'device_type_cd');
         const Manufacture = setCodeMap(Codes.data, codeType, 'manufacture_cd');

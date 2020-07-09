@@ -23,6 +23,10 @@ import EmoticonIcon from 'mdi-react/EmoticonIcon';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionActions';
+
 import AssetsComment from "./AssetsComment";
 import AssetsLog from "./AssetsLog";
 import {
@@ -30,7 +34,7 @@ import {
     postDevice, postDeviceComment, setAssetsPage,
 } from "../../../../redux/actions/assetsAction";
 import AssetsEdit from "./AssetsEdit";
-
+//material-table__cell
 class AssetsView extends PureComponent {
     static propTypes = {
         // eslint-disable-next-line react/forbid-prop-types
@@ -642,14 +646,14 @@ class AssetsView extends PureComponent {
                     </div>
                 </div>
                 <div>
-                    <ExpansionPanel defaultExpanded>
-                        <ExpansionPanelSummary
+                    <Accordion defaultExpanded>
+                        <AccordionSummary
                             expandIcon={<ExpandMoreIcon/>}
                             aria-controls="panel2a-content"
                             id="panel2a-header">
-                            <Typography><h6 className="bold-text">장비 상세 정보</h6></Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
+                            <Typography>장비 상세 정보</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
                             <div className="form-infor">
                                 <div className="row">
                                     <div className="col-md-6">
@@ -898,33 +902,32 @@ class AssetsView extends PureComponent {
                                     </form>
                                 </Modal>
                             </div>
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                    <ExpansionPanel>
-                        <ExpansionPanelSummary
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary
                             expandIcon={<ExpandMoreIcon/>}
                             aria-controls="panel2a-content"
-                            id="panel2a-header"
-                        >
-                            <Typography><h6 className="bold-text">장비 댓글</h6></Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
+                            id="panel2a-header">
+                            <Typography>장비 댓글</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
                             <AssetsComment assetState={assetState} dispatch={dispatch} user={user}
                                            theme={theme}/>
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                    <ExpansionPanel>
-                        <ExpansionPanelSummary
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary
                             expandIcon={<ExpandMoreIcon/>}
                             aria-controls="panel2a-content"
                             id="panel2a-header"
                         >
-                            <Typography><h6 className="bold-text">장비 로그</h6></Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
+                            <Typography>장비 로그</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
                             <AssetsLog assetState={assetState} dispatch={dispatch}/>
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
+                        </AccordionDetails>
+                    </Accordion>
                 </div>
                 <Modal
                     isOpen={assetState.assetsPage === 'edit'}

@@ -57,6 +57,20 @@ function getSorting(order, orderBy) {
     };
 }
 
+
+function textLengthOverCut(txt, len, lastTxt) {
+    if (len === "" || len === undefined) { // 기본값
+        len = 20;
+    }
+    if (lastTxt === "" || lastTxt === undefined) { // 기본값
+        lastTxt = "...";
+    }
+    if (txt.length > len) {
+        txt = txt.substr(0, len) + lastTxt;
+    }
+    return txt;
+}
+
 export default class AssetsList extends PureComponent {
     //assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
     static propTypes = {
@@ -389,6 +403,7 @@ export default class AssetsList extends PureComponent {
         //this.setComponents('read', deviceCode);
     };
 
+
     /*
 
         setComponents = (division, deviceCode) => {
@@ -516,15 +531,16 @@ export default class AssetsList extends PureComponent {
                                         className={tableCellClassName}
                                     >{/*모델명*/}{d.model}
                                     </TableCell>
+                                    {/*tableCellBoldClassName*/}
                                     <TableCell
-                                        className={tableCellBoldClassName}
+                                        className={tableCellClassName}
                                     >{/*고객사*/}
                                         {d.customerName}
                                         {/*<b className="text_cor_orange">{d.customerName}</b>*/}
                                         {/*<b className="text_cor_red">{d.customer}</b>*/}
                                     </TableCell>
                                     <TableCell
-                                        className={tableCellBoldClassName}
+                                        className={tableCellClassName}
                                     >{/*IDC*/}{d.idc}
                                     </TableCell>
                                     <TableCell
@@ -548,8 +564,9 @@ export default class AssetsList extends PureComponent {
                                     && (
                                         <Fragment>
                                             <TableCell
-                                                className={tableCellClassName}
-                                            >{/*IP*/}{ipSliceStr}
+                                                className={tableCellClassName} title={ipSliceStr}
+                                            >{/*IP*/}
+                                                {textLengthOverCut(ipSliceStr, 50)}
                                             </TableCell>
                                             <TableCell
                                                 className={tableCellClassName}
@@ -561,8 +578,9 @@ export default class AssetsList extends PureComponent {
                                     && (
                                         <Fragment>
                                             <TableCell
-                                                className={tableCellClassName}
-                                            >{/*IP*/}{ipSliceStr}
+                                                className={tableCellClassName} title={ipSliceStr}
+                                            >{/*IP*/}
+                                                {textLengthOverCut(ipSliceStr, 50)}
                                             </TableCell>
                                             <TableCell
                                                 className={tableCellClassName}

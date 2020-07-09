@@ -76,7 +76,7 @@ class AssetsHead extends PureComponent {
                     {id: 'ip', disablePadding: false, label: 'IP'},
                     {id: 'hwSn', disablePadding: false, label: 'HwSn'},
                     {id: 'firmwareVersion', disablePadding: false, label: 'FirmwareVersion'},
-                    {id: 'warehousingDate', disablePadding: false, label: 'WarehousingDate'},
+                    {id: 'warehousingDate', disablePadding: false, label: '입고일'},
                 ),
             };
         }
@@ -86,7 +86,7 @@ class AssetsHead extends PureComponent {
                 rows: rows.concat(
                     {id: 'hwSn', disablePadding: false, label: 'HwSn'},
                     {id: 'warranty', disablePadding: false, label: 'Warranty'},
-                    {id: 'warehousingDate', disablePadding: false, label: 'WarehousingDate'},
+                    {id: 'warehousingDate', disablePadding: false, label: '입고일'},
                 ),
             };
         }

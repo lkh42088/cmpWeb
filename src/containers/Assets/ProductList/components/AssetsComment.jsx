@@ -287,17 +287,19 @@ class AssetsComment extends PureComponent {
             deviceComments = (
                 <Fragment>
                     {assetState.comments.map((d, i) => (
-                        <div className={bubbleClass}>
+                        <div className={bubbleClass} key={d}>
                             <div className="chat__bubble-avatar">
                                 {/*<img src={comment.avatar} alt="ava" />*/}
                                 <Avatar className="topbar__avatar-img-list" name={d.registerId}
                                         size="40"/>
                             </div>
                             <div className="chat__bubble-message-wrap">
-                                <p className="chat__bubble-contact-name">
-                                    {d.registerName}
-                                    &nbsp;
-                                    [{moment(d.registerDate).format('YYYY-MM-DD')}]
+                                <div className="chat__bubble-contact-name">
+                                    <span className="text_cor_mat_p">
+                                        {d.registerName}
+                                        &nbsp;
+                                        [{moment(d.registerDate).format('YYYY-MM-DD')}]
+                                    </span>
                                     <div className="chat__bubble-download-comment-wrap">
                                         <div className="chat__bubble-file-name">
                                             <div
@@ -317,10 +319,10 @@ class AssetsComment extends PureComponent {
                                             </div>
                                         </div>
                                     </div>
-                                </p>
-                                <p className="chat__bubble-message">
+                                </div>
+                                <div className="chat__bubble-message">
                                     <pre>{d.contents}</pre>
-                                </p>
+                                </div>
                             </div>
                             {/*<div className="chat__bubble-message-wrap">
                                 <p className="chat__bubble-date">22</p>
@@ -357,7 +359,7 @@ class AssetsComment extends PureComponent {
                 <Fragment>
                     <div className="chat__dialog-messages">
                         <div className="chat__dialog-messages-empty">
-                            <p>No messages</p>
+                            <p>등록된 댓글이 없습니다.</p>
                         </div>
                     </div>
                 </Fragment>
