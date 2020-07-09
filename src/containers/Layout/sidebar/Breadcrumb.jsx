@@ -16,6 +16,7 @@ import monitorDashboard from '@iconify/icons-mdi/monitor-dashboard';
 import usersIcon from '@iconify/icons-fa-solid/users';
 import listAlt from '@iconify/icons-el/list-alt';
 import {themes} from "../../../shared/helpers";
+import {WEB_SERVER_ADDR} from "../../../shared/apiRoute";
 
 const StyledBreadcrumb = withStyles(theme => ({
     root: {
@@ -52,10 +53,6 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const DEFAULT_URL = [
-    "http://localhost:4000",
-    "http://121.156.65.139:4000",
-];
 const PAGE_URL = {
     "/dashboards/manager": {title: "관리자 대시보드", subTitle: null, icon: outlineDashboard},
     "/dashboards/customer": {title: "사용자 대시보드", subTitle: null, icon: outlineDashboard},
@@ -81,9 +78,7 @@ export default function RouterBreadcrumbs(props) {
 
     const seperateUrl = (tmpUrl) => {
         let tmp = tmpUrl;
-        for (let i = 0; i < DEFAULT_URL.length; i += 1) {
-            tmp = tmp.replace(DEFAULT_URL[i], "");
-        }
+        tmp = tmp.replace(WEB_SERVER_ADDR, "");
         if (tmp && tmp.length > 1 && PAGE_URL[tmp]) {
             return tmp;
         }
