@@ -467,6 +467,13 @@ export default class AssetsList extends PureComponent {
         const tableCellClassName = 'material-table__cell material-table__cell-right';
         const tableCellBoldClassName = 'material-table__cell material-table__cell-bold';
         //TODO length 값 0 일때도 처리해야함
+        let denseChkboxClassNmae;
+
+        if (dense === true) {
+            denseChkboxClassNmae = {paddingLeft: "10px"};
+        } else {
+            denseChkboxClassNmae = {};
+        }
 
         const deviceComponent = (
             <Fragment>
@@ -499,6 +506,7 @@ export default class AssetsList extends PureComponent {
                                 >
                                     <TableCell className="material-table__cell"
                                                padding="checkbox"
+                                               style={denseChkboxClassNmae}
                                                onClick={event => this.handleClick(event, d.deviceCode)}>
                                         <Checkbox checked={isSelected}
                                                   className="material-table__checkbox"/>
