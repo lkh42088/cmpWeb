@@ -40,7 +40,7 @@ let notification = null;
 const showNotification = (rtl) => {
     notification.notice({
         content: <BasicNotification
-            title="👋 Welcome to the Nubes-Bridge!"
+            title="👋 Welcome to the Contents-Bridge!"
             message="I wish you success. Enjoy!"
         />,
         duration: 5,
@@ -85,7 +85,8 @@ class Layout extends Component {
         const { rtl } = this.props;
         const { dispatch } = this.props;
         NotificationSystem.newInstance({ style: { top: 65 } }, n => notification = n);
-        setTimeout(() => showNotification(rtl.direction), 700);
+        // [09July2020, khlee]
+        //setTimeout(() => showNotification(rtl.direction), 700);
     }
 
     componentWillUnmount() {
