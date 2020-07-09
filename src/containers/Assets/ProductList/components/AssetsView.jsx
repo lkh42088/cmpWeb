@@ -34,7 +34,14 @@ import {
     postDevice, postDeviceComment, setAssetsPage,
 } from "../../../../redux/actions/assetsAction";
 import AssetsEdit from "./AssetsEdit";
-//material-table__cell
+
+function textValueCut(val, compareTxt) {
+    if (val === compareTxt) {
+        val = '';
+    }
+    return val;
+}
+
 class AssetsView extends PureComponent {
     static propTypes = {
         // eslint-disable-next-line react/forbid-prop-types
@@ -409,7 +416,7 @@ class AssetsView extends PureComponent {
                                     <div className="col-lg-8 col-md-12">
                                         <textarea
                                             className={classNameMap.textareaPreCont}
-                                            value={cpu} rows="1"
+                                            value={textValueCut(cpu, undefined)} rows="1"
                                             disabled/>
                                     </div>
                                 </div>
@@ -441,7 +448,7 @@ class AssetsView extends PureComponent {
                                     <div className="col-lg-8 col-md-12">
                                         <textarea
                                             className={classNameMap.textareaPreCont}
-                                            value={memory} rows="1"
+                                            value={textValueCut(memory, undefined)} rows="1"
                                             disabled/>
                                     </div>
                                 </div>
@@ -473,7 +480,7 @@ class AssetsView extends PureComponent {
                                     <div className="col-lg-8 col-md-12">
                                         <textarea
                                             className={classNameMap.textareaPreCont}
-                                            value={hdd} rows="1"
+                                            value={textValueCut(hdd, undefined)} rows="1"
                                             disabled/>
                                     </div>
                                 </div>
@@ -664,7 +671,7 @@ class AssetsView extends PureComponent {
                                             <div className="col-lg-8 col-md-12">
                                                             <textarea
                                                                 className={classNameMap.textareaPreCont}
-                                                                rows="1" value={`${deviceCode}`}
+                                                                rows="1" value={textValueCut(deviceCode, undefined)}
                                                                 disabled/>
                                             </div>
                                         </div>

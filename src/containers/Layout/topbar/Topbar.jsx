@@ -54,7 +54,7 @@ class Topbar extends PureComponent {
                         </div>*/}
                     </div>
                     <div className="topbar__right">
-                        <TopbarSearch/>
+                        {/*<TopbarSearch/>*/}
                         {/*<TopbarNotification/>*/}
                         {/*<TopbarMail new/>*/}
                         <TopbarProfile user={user} logout={logout}/>
