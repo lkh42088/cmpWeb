@@ -9,6 +9,7 @@ import * as companies from "../../lib/api/company";
 export const COMPANY_CHANGE_REGISTER_FIELD = 'company/CHANGE_REGISTER_FIELD';
 export const CHECK_COMPANY_REGISTER_FIELD = 'company/COMPANY_REGISTER_CHECK_FIELD';
 export const COMPANY_CHANGE_FIELD = 'company/CHANGE_FIELD';
+export const COMPANY_CHANGE_MSG_FIELD = 'company/CHANGE_MSG_FIELD';
 export const INITIALIZE_REGISTER_COMPANY = 'company/INITIALIZE_COMPANY';
 export const CLEAR_COMPANY_SEARCH = 'company/CLEAR_COMPANY_SEARCH';
 
@@ -29,6 +30,7 @@ export const clearCompanySearch = createAction(CLEAR_COMPANY_SEARCH);
 export const checkCompanyRegisterField = createAction(CHECK_COMPANY_REGISTER_FIELD);
 export const changeCompanyRegisterField = createAction(COMPANY_CHANGE_REGISTER_FIELD, ({ key, value }) => ({ key, value }));
 export const changeCompanyField = createAction(COMPANY_CHANGE_FIELD, ({ type, key, value }) => ({ type, key, value }));
+export const changeCompanyMsgField = createAction(COMPANY_CHANGE_MSG_FIELD, ({ type, key, value }) => ({ type, key, value }));
 
 /** Saga Action Function */
 export const checkDupCompany = createAction(CHECK_DUP_COMPANY, ({ cpName }) => ({ cpName }));

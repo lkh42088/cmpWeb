@@ -1,6 +1,6 @@
  
 const API_PREFIX = '/v1';
-const API_PREFIX_COMPANY = `${API_PREFIX}/customers/companies`;
+export const WEB_SERVER_ADDR = `http://127.0.0.1:4000`;
 const API_ROUTE = `http://127.0.0.1:8081${API_PREFIX}`;
 /*
 

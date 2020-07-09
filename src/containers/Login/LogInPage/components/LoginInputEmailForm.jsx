@@ -23,6 +23,8 @@ const LoginInputEmailForm = ({ history, secret }) => {
         // authSentEmail: accountRd.authSentEmail,
     }));
 
+    const [resultError, setResultError] = useState(false);
+
     const onChange = (e) => {
         const { value, name } = e.target;
         console.log('name', name);
@@ -47,8 +49,12 @@ const LoginInputEmailForm = ({ history, secret }) => {
                     console.log("changeLoginPage XXX", response.data.msg.result);
                 }
             }
+            if (resultError) {
+                setResultError(false);
+            }
         } catch (e) {
             console.log("loginEmail error!");
+            setResultError(true);
         }
     };
 
@@ -112,7 +118,7 @@ const LoginInputEmailForm = ({ history, secret }) => {
     return (
         <Form className="form login-form" onSubmit={handleSubmit}>
             <div className="form__form-group">
-                <span className="form__form-group-label">Login 인증을 위한 E-mail을 입력하시요.</span>
+                <span className="form__form-group-label">Login 인증을 위한 Email을 입력하시요.</span>
                 <div className="form__form-group-field">
                     <div className="form__form-group-icon">
                         <MailRuIcon />
@@ -133,6 +139,13 @@ const LoginInputEmailForm = ({ history, secret }) => {
                     <Button className="account__btn btn btn-primary" color="white">전송</Button>
                 </ButtonToolbar>
             </div>
+            { resultError ? (
+                <div>
+                    <span style={{
+                        color: "red",
+                    }} >* 등록된 Email이 아닙니다!</span>
+                </div>
+            ) : <div/>}
         </Form>
     );
 };

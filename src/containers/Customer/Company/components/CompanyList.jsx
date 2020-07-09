@@ -18,7 +18,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
 import { SnackbarProvider, useSnackbar } from 'notistack';
 import ReactTooltip from "react-tooltip";
-import {initRegisterCompany, getCompanyList } from "../../../../redux/actions/companiesActions";
+import {initRegisterCompany, getCompanyList, changeCompanyMsgField} from "../../../../redux/actions/companiesActions";
 import {initRegisterUser} from "../../../../redux/actions/usersActions";
 import {
     pagingChangeCurrentPage,
@@ -144,13 +144,13 @@ const CompanyList = () => {
         setOpen(false);
     };
 
-    const handleTriggerFailure = () => {
-        enqueueSnackbar('고객사 등록에 실패했습니다!');
+    const handleTriggerFailure = (snackMsg) => {
+        enqueueSnackbar(snackMsg);
     };
 
-    const handleTriggerSuccess = () => {
+    const handleTriggerSuccess = (snackMsg) => {
         // variant could be success, error, warning, info, or default
-        enqueueSnackbar('고객사 등록에 성공했습니다.', { variant: "success" });
+        enqueueSnackbar(snackMsg, { variant: "success" });
     };
 
     /**
@@ -241,8 +241,10 @@ const CompanyList = () => {
     const deleteCompanies = async (companies) => {
         try {
             const response = await unregisterCompany({idx: companies});
+            handleTriggerSuccess("고객사 삭제에 성공하였습니다.");
             getPageData();
         } catch (error) {
+            handleTriggerFailure("고객사 삭제에 ");
             getPageData();
         }
     };
@@ -283,6 +285,8 @@ const CompanyList = () => {
         const changeOrderBy = "idx";
         console.log("[] orderBy: ", changeOrderBy);
         dispatch(pagingChangeOrderByWithReset({orderBy: changeOrderBy}));
+        dispatch(changeCompanyMsgField({key: "msg", value: null}));
+        dispatch(changeCompanyMsgField({key: "msgError", value: null}));
     }, []);
 
     useEffect(() => {
@@ -306,15 +310,17 @@ const CompanyList = () => {
     useEffect(() => {
         if (cpMsg) {
             console.log("cpMsg: success!");
-            handleTriggerSuccess();
+            handleTriggerSuccess("고객사 등록에 성공하였습니다.");
             getPageData();
+            dispatch(changeCompanyMsgField({key: "msg", value: null}));
         }
     }, [cpMsg]);
 
     useEffect(() => {
         if (cpMsgError) {
             console.log("cpMsg: failure!");
-            handleTriggerFailure();
+            handleTriggerFailure("고객사 등록에 실패하였습니다.");
+            dispatch(changeCompanyMsgField({key: "msgError", value: null}));
         }
     }, [cpMsgError]);
 
