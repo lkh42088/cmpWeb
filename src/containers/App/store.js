@@ -23,13 +23,12 @@ import {
     userRegisterReducer,
     pagingReducer,
     companiesReducer,
-    subnetReducer,
 } from '../../redux/reducers/index';
 import {authSaga} from "../../redux/actions/authActions";
 import {setLoginUser, checkLoginUser, userSaga} from "../../redux/actions/accountActions";
 import {usersSaga} from "../../redux/actions/usersActions";
 import {companiesSaga} from "../../redux/actions/companiesActions";
-import {createSubnetSaga, readSubnetSaga} from "../../redux/actions/subnetActions";
+import {createSubnetSaga} from "../../redux/actions/subnetActions";
 
 const rootReducer = combineReducers({
     form: reduxFormReducer, // mounted under "form",
@@ -49,7 +48,6 @@ const rootReducer = combineReducers({
     userRegisterRd: userRegisterReducer,
     pagingRd: pagingReducer,
     companiesRd: companiesReducer,
-    subnetRd: subnetReducer,
 });
 
 export function* rootSaga() {
@@ -59,7 +57,6 @@ export function* rootSaga() {
         usersSaga(),
         companiesSaga(),
         createSubnetSaga(),
-        readSubnetSaga(),
     ]);
 }
 

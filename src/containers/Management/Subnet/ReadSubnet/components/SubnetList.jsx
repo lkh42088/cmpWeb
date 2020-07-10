@@ -36,11 +36,12 @@ import PaginationCustomization from "../../../../Common/PaginationBar";
 import {
     pagingChangeCurrentPage, pagingChangeOrder, pagingChangeOrderBy, pagingChangeTotalCount, pagingDump, pagingSetup,
 } from "../../../../../redux/actions/pagingActions";
-import {readSubnet} from "../../../../../redux/actions/subnetActions";
+// import {readSubnet} from "../../../../../redux/actions/subnetActions";
 /** Subnet Add Modal **/
 import SubnetWriteForm from "../../CreateSubnet/components/SubnetWriteForm";
 import SpringModal from "../../../../Common/SpringModal";
 import API_ROUTE from "../../../../../shared/apiRoute";
+import {readSubnet} from "../../../../../lib/api/subnet";
 
 /** Custom CSS **/
 const useStyles = makeStyles(theme => ({
@@ -132,6 +133,24 @@ const SubnetList = () => {
             {title: '게이트웨이', field: 'gateway', width: "25%"},
         ],
         data: [],
+        page: [],
+        // data: [{
+        //     idx: null,
+        //     deviceCode: '',
+        //     subnetTag: '',
+        //     subnetStart: '',
+        //     subnetEnd: '',
+        //     subnetMask: '',
+        //     gateway: '',
+        //     subnet: '',
+        // }],
+        // page: [{
+        //     count: 0,
+        //     offset: 0,
+        //     order: 'desc',
+        //     orderBy: 'sub_idx',
+        //     rows: 5,
+        // }],
     });
 
     const orderByName = [
@@ -142,31 +161,41 @@ const SubnetList = () => {
         "subnetGateway",
     ];
 
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    // const [rowsPerPage, setRowsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalCount, setTotalCount] = useState(0);
-    const [orderBy, setOrderBy] = useState("sub_idx");
-    const [order, setOrder] = useState("desc");
+    // const [totalCount, setTotalCount] = useState(0);
+    // const [orderBy, setOrderBy] = useState("sub_idx");
+    // const [order, setOrder] = useState("desc");
+    const {
+        rows, offset, count, orderBy, order,
+    } = state.page;
 
     const handleOrderChange = (orderByStr, direction) => {
         const isAsc = order === direction && order === "asc";
         const changeOrder = isAsc ? "desc" : "asc";
-        setOrder(changeOrder);
-        setOrderBy(orderByName[orderByStr]);
+        setState({
+            ...state,
+            page: {
+                ...state,
+                order: changeOrder,
+                orderBy: orderByName[orderByStr],
+            },
+        });
     };
 
     const handleRowsPerPage = (size) => {
-        setRowsPerPage(size);
+        setState({
+            ...state,
+            page: {
+                ...state,
+                rows: size,
+            },
+        });
     };
 
-    const handleChangePage = (page, pageSize) => {
-        setCurrentPage(page);
+    const handleChangePage = (pageValue, pageSize) => {
+        setCurrentPage(pageValue);
     };
-
-    /** Init pagination **/
-    useEffect(() => {
-        setOrderBy("sub_idx");
-    }, []);
 
     /** Get subnet data **/
     // useEffect(() => {
@@ -198,40 +227,65 @@ const SubnetList = () => {
     // );
 
     /** Update & Register Device **/
-    const RowAdd = (newData) => {
+    const RowAdd = newData => null;
+
+    const RowUpdate = (newData, oldData) => new Promise(resolve => null);
+
+    const RowDelete = oldData => new Promise(resolve => null);
+
+    const getData = async () => {
+        try {
+            const response = await readSubnet({
+                rows: state.page.rows,
+                offset: state.page.offset,
+                orderBy: state.page.orderBy,
+                order: state.page.order,
+            });
+            console.log("subnet: ", response.data.data);
+            setState({
+                ...state,
+                data: (
+                    response.data.data.map(val => ({
+                        ...val,
+                        subnet: val.subnetStart.concat(' ~ ') + val.subnetEnd,
+                    }))),
+                page: response.data.page,
+
+            });
+            console.log("state data: ", state.data);
+        } catch {
+            setState({
+                ...state,
+                data: [],
+            });
+        }
     };
 
-    const RowUpdate = (newData, oldData) => new Promise((resolve) => {
-    });
-
-    const RowDelete = oldData => new Promise((resolve) => {
-    });
-
-    const getData = query => new Promise((resolve, reject) => {
-        let url = API_ROUTE;
-        url = url.concat("/subnet/").concat(rowsPerPage);
-        url = url.concat("/").concat(String(rowsPerPage * (currentPage - 1)));
-        url = url.concat("/").concat(orderBy);
-        url = url.concat("/").concat(order);
-        console.log(url);
-        fetch(url)
-            .then(response => response.json())
-            .then((result) => {
-                resolve({
-                    data: (
-                        result.data.map(val => ({
-                            ...val,
-                            subnet: val.subnetStart.concat(' ~ ') + val.subnetEnd,
-                        }))),
-                    page: result.page,
-                    totalCount: result.page.count,
-                });
-            });
-    });
+    useEffect(() => {
+        if (state && state.page.order !== undefined) {
+            getData();
+        }
+    }, [rows, currentPage, count, orderBy, order]);
 
     useEffect(() => {
-        getData();
-    }, [rowsPerPage, currentPage, totalCount, orderBy, order]);
+        if (state && state.page.order !== undefined) {
+            getData();
+        } else {
+            setState({
+                ...state,
+                page: {
+                    rows: 5,
+                    count: 0,
+                    offset: 0,
+                    orderBy: 'sub_idx',
+                    order: 'desc',
+                },
+            });
+        }
+        // dispatch(readSubnet({
+        //     rows: page.rowsPerPage, offset: page.offset, orderBy, order,
+        // }));
+    }, []);
 
     /** Customizing Pagination Bar **/
     // const paginationBar = () => (
@@ -320,17 +374,17 @@ const SubnetList = () => {
     };
 
     return (
-        <Col xs={12} sm={12} md={12} lg={12} xl={12}>
-            <Card className="card cb-card">
+        <Col>
+            <Card className="cb-card">
                 <MaterialTable
                     title="SUBNET LIST"
                     icons={tableIcons}
                     columns={state.columns}
                     className={classes.root}
                     editable={{
-                        onRowAdd: RowAdd,
-                        onRowUpdate: RowUpdate,
-                        onRowDelete: RowDelete,
+                        // onRowAdd: RowAdd,
+                        // onRowUpdate: RowUpdate,
+                        // onRowDelete: RowDelete,
                     }}
                     onOrderChange={handleOrderChange}
                     onChangeRowsPerPage={handleRowsPerPage}
@@ -339,7 +393,7 @@ const SubnetList = () => {
                     options={options}
                     // actions={actions}
                     localization={localization}
-                    data={getData}
+                    data={state.data}
                     // data={dataSet}
                     // components={customComponents}
                 />

@@ -38,14 +38,14 @@ const subnetReducer = handleActions(
         [READ_SUBNET]: () => ({
 
         }),
-        [READ_SUBNET_SUCCESS]: (state, {payload}) => ({
-            ...state,
-            data: payload.data.map((value) => {
-                value.subnetStart = value.subnetStart.concat(' ~ ') + value.subnetEnd;
-                return value;
-            }),
-            page: payload.page,
-        }),
+        // [READ_SUBNET_SUCCESS]: (state, {payload}) => ({
+        //     ...state,
+        //     data: payload.data.map((value) => {
+        //         value.subnetStart = value.subnetStart.concat(' ~ ') + value.subnetEnd;
+        //         return value;
+        //     }),
+        //     page: payload.page,
+        // }),
         [UPDATE_SUBNET]: () => ({
 
         }),
