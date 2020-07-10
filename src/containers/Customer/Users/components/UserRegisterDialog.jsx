@@ -169,7 +169,7 @@ const UserRegisterDialog = (props) => {
         name: false,
         email: false,
         cellPhone: false,
-        level: true,
+        level: false,
         userZip: false,
         userAddr: false,
         userAddrDetail: false,
