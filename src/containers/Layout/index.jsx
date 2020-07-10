@@ -50,6 +50,7 @@ const showNotification = (rtl) => {
     });
 };
 
+
 class Layout extends Component {
     static propTypes = {
         //assetState: PropTypes.object.isRequired,
@@ -67,26 +68,53 @@ class Layout extends Component {
         user: null,
     };
 
-    componentWillMount() {
-        const { dispatch } = this.props;
 
-        // ebjee
-        dispatch(changeMenuTitle('SERVER', '온프레미스'));
-
-        // (23jun2020,bhjung)
+    // (10july2020,ebjee)
+    // eslint-disable-next-line consistent-return
+    static getDerivedStateFromProps = (nextProps, prevState) => {
         const xuser = localStorage.getItem('user');
+        if (xuser !== null) {
+            let initVal;
+
+            if (typeof xuser === "string") {
+                initVal = JSON.parse(xuser);
+            } else {
+                initVal = xuser;
+            }
+
+            return {
+                user: initVal,
+            };
+        }
+        return {
+            user: '',
+        };
+    };
+
+    /* componentWillMount() {
+
+         // (23jun2020,bhjung)
+         // 여기서는 setState를 사용해선 안됩니다. (ebjee)
+         /!*const xuser = localStorage.getItem('user');
+         if (xuser != null) {
+             const jsonUser = JSON.parse(xuser);
+             this.setState({user: jsonUser});
+         }*!/
+     }*/
+
+    componentDidMount() {
+        //const {rtl} = this.props;
+        NotificationSystem.newInstance({style: {top: 65}}, n => notification = n);
+        //dispatch(changeMenuTitle('SERVER', '온프레미스'));
+        // [09July2020, khlee]
+        //setTimeout(() => showNotification(rtl.direction), 700);
+
+        /*const xuser = localStorage.getItem('user');
+        console.log("😡😡😡😡 xuser : ", xuser);
         if (xuser != null) {
             const jsonUser = JSON.parse(xuser);
             this.setState({user: jsonUser});
-        }
-    }
-
-    componentDidMount() {
-        const { rtl } = this.props;
-        const { dispatch } = this.props;
-        NotificationSystem.newInstance({ style: { top: 65 } }, n => notification = n);
-        // [09July2020, khlee]
-        //setTimeout(() => showNotification(rtl.direction), 700);
+        }*/
     }
 
     componentWillUnmount() {
@@ -94,12 +122,12 @@ class Layout extends Component {
     }
 
     changeSidebarVisibility = () => {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         dispatch(changeSidebarVisibility());
     };
 
     changeMobileSidebarVisibility = () => {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         dispatch(changeMobileSidebarVisibility());
     };
 
@@ -152,56 +180,64 @@ class Layout extends Component {
     };
 
     changeToDark = () => {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         dispatch(changeThemeToDark());
     };
 
     changeToLight = () => {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         dispatch(changeThemeToLight());
     };
 
     changeToRTL = () => {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         dispatch(changeDirectionToRTL());
     };
 
     changeToLTR = () => {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         dispatch(changeDirectionToLTR());
     };
 
     toggleTopNavigation = () => {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         dispatch(toggleTopNavigation());
     };
 
     changeBorderRadius = () => {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         dispatch(changeBorderRadius());
     };
 
     toggleBoxShadow = () => {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         dispatch(toggleBoxShadow());
     };
 
     logout = () => {
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         dispatch(logout());
         localStorage.removeItem('user');
-    }
+    };
 
     render() {
         const {
             customizer, sidebar, theme, rtl, menuTitle,
         } = this.props;
-        const { user } = this.state;
+        const {user} = this.state;
         const layoutClass = classNames({
             layout: true,
             'layout--collapse': sidebar.collapse,
             'layout--top-navigation': customizer.topNavigation,
         });
+
+        console.log("😢😢😢 user : ", user);
+/*
+        const {history} = this.props;
+        if (user === null) {
+            console.log("😡😡😡😡 bbb");
+            history.push('/');
+        }*/
 
         return (
             <div className={layoutClass}>

@@ -47,6 +47,7 @@ class App extends Component {
         this.state = {
             loading: true,
             loaded: false,
+            user: localStorage.getItem('user'),
         };
     }
 
@@ -58,28 +59,29 @@ class App extends Component {
     }
 
     render() {
-        const {loaded, loading} = this.state;
+        const {loaded, loading, user} = this.state;
+        //console.log("👑👑👑 App : ", user);
         return (
             <Provider store={store}>
                 {/*<CbAuthProvider>*/}
-                    <BrowserRouter>
-                        <I18nextProvider i18n={i18next}>
-                            <ScrollToTop>
-                                <Fragment>
-                                    {!loaded
-                                    && (
-                                        <Loading loading={loading}/>
-                                    )
-                                    }
-                                    <ConnectedThemeComponent>
-                                        <div>
-                                            <Router/>
-                                        </div>
-                                    </ConnectedThemeComponent>
-                                </Fragment>
-                            </ScrollToTop>
-                        </I18nextProvider>
-                    </BrowserRouter>
+                <BrowserRouter>
+                    <I18nextProvider i18n={i18next}>
+                        <ScrollToTop>
+                            <Fragment>
+                                {!loaded
+                                && (
+                                    <Loading loading={loading}/>
+                                )
+                                }
+                                <ConnectedThemeComponent>
+                                    <div>
+                                        <Router/>
+                                    </div>
+                                </ConnectedThemeComponent>
+                            </Fragment>
+                        </ScrollToTop>
+                    </I18nextProvider>
+                </BrowserRouter>
                 {/*</CbAuthProvider>*/}
             </Provider>
         );

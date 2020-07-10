@@ -51,7 +51,18 @@ const LoginBase = ({history}) => {
             }
             try {
                 /** Insert 'user' to Local Storage */
-                localStorage.setItem('user', JSON.stringify(user));
+                // (10july2020,ebjee)
+                /*localStorage.setItem('user', JSON.stringify(user));*/
+                let initVal;
+                console.log("check?");
+                localStorage.removeItem('user');
+
+                if (typeof user === "string") {
+                    initVal = user;
+                } else {
+                    initVal = JSON.stringify(user);
+                }
+                localStorage.setItem('user', initVal);
             } catch (e) {
                 console.log('localStorage is not working');
             }

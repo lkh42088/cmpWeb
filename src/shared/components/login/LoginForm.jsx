@@ -51,6 +51,7 @@ const LoginForm = ({ history, secret }) => {
     };
 
     useEffect(() => {
+        console.log("???");
         console.log('[LoginForm 1] secret:', secret);
         dispatch(initializeForm("login"));
         console.log('[LoginForm 1] end');

@@ -38,8 +38,8 @@ const LoginForm = ({ history }) => {
 
     const onChange = (e) => {
         const { value, name } = e.target;
-        console.log('name', name);
-        console.log('value', value);
+       /* console.log('name', name);
+        console.log('value', value);*/
         dispatch(
             changeField({
                 form: 'login',

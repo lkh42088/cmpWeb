@@ -1,6 +1,7 @@
 import React from 'react';
 import {Route} from 'react-router-dom';
 import Layout from '../../../Layout/index';
+import AuthRoute from '../AuthRoute';
 
 import Assets from './Assets';
 import Customer from './Customer';
