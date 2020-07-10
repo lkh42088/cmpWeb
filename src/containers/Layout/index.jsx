@@ -232,12 +232,6 @@ class Layout extends Component {
         });
 
         console.log("😢😢😢 user : ", user);
-/*
-        const {history} = this.props;
-        if (user === null) {
-            console.log("😡😡😡😡 bbb");
-            history.push('/');
-        }*/
 
         return (
             <div className={layoutClass}>

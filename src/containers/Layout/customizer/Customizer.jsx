@@ -44,8 +44,9 @@ export default class Customizer extends PureComponent {
     const {history} = this.props;
     console.log("In : ", localStorage.getItem('user'));
     localStorage.removeItem('user');
+    // eslint-disable-next-line no-undef
+    console.log("---> document.cookie : ", document.cookie);
     console.log("Out : ", localStorage.getItem('user'));
-    //history.push("/");
     localStorage.removeItem('user');
     console.log("removeStorage : end");
   };

@@ -6,7 +6,7 @@ import {
     GV_LOGIN_PAGE_INPUT_EMAIL,
     GV_LOGIN_PAGE_CONFIRM_EMAIL,
 } from "../../../../lib/globalVariable";
-import {checkLoginUser} from "../../../../redux/actions/accountActions";
+import {checkLoginUser, logout} from "../../../../redux/actions/accountActions";
 import LoginConfirmEmailForm from "./LoginConfirmEmailForm";
 
 const LoginBase = ({history}) => {
@@ -55,7 +55,6 @@ const LoginBase = ({history}) => {
                 /*localStorage.setItem('user', JSON.stringify(user));*/
                 let initVal;
                 console.log("check?");
-                localStorage.removeItem('user');
 
                 if (typeof user === "string") {
                     initVal = user;
