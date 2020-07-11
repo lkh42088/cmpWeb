@@ -24,57 +24,38 @@ const LoginBase = ({history}) => {
     }));
 
     useEffect(() => {
-        console.log('[LoginForm 2]');
         if (authError) {
-            console.log('오류 발생');
+            console.log('useEffect: 오류 발생');
             console.log(authError);
             return;
         }
         if (auth) {
-            console.log('로그인 성공');
+            console.log('useEffect: 로그인 성공');
             dispatch(checkLoginUser());
         }
     }, [auth, authError, dispatch]);
 
     useEffect(() => {
-        console.log('[LoginForm 3] ');
         if (user) {
             /********************************************************************
              * 로그인 성공!
              ********************************************************************/
-            console.log('check API 성공 Level : ', user.level);
-            // eslint-disable-next-line react/prop-types
+            console.log('useEffect: user', user);
+            console.log('useEffect: user type ', typeof user);
+            console.log('useEffect: check API 성공 Level : ', user.level);
             if (user.level >= 1 && user.level <= 5) {
                 history.push('/dashboards/manager');
             } else {
                 history.push('/dashboards/customer');
             }
-            try {
-                /** Insert 'user' to Local Storage */
-                // (10july2020,ebjee)
-                /*localStorage.setItem('user', JSON.stringify(user));*/
-                let initVal;
-                console.log("check?");
-
-                if (typeof user === "string") {
-                    initVal = user;
-                } else {
-                    initVal = JSON.stringify(user);
-                }
-                localStorage.setItem('user', initVal);
-            } catch (e) {
-                console.log('localStorage is not working');
-            }
+            /** Insert 'user' to Local Storage */
+            localStorage.setItem('user', JSON.stringify(user));
         }
     }, [history, user]);
 
     useEffect(() => {
         console.log("LoginBase: init pageNum ", pageNum);
     }, []);
-
-    useEffect(() => {
-        console.log("LoginBase: change pageNum ", pageNum);
-    }, [pageNum]);
 
     console.log("LoginBase: current pageNum ", pageNum);
     return (

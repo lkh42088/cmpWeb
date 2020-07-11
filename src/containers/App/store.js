@@ -16,7 +16,6 @@ import {
     todoReducer,
     assetsReducer,
     titleReducer,
-    authReducer,
     accountReducer,
     loadingReducer,
     usersReducer,
@@ -24,7 +23,6 @@ import {
     pagingReducer,
     companiesReducer,
 } from '../../redux/reducers/index';
-import {authSaga} from "../../redux/actions/authActions";
 import {setLoginUser, checkLoginUser, userSaga} from "../../redux/actions/accountActions";
 import {usersSaga} from "../../redux/actions/usersActions";
 import {companiesSaga} from "../../redux/actions/companiesActions";
@@ -41,7 +39,6 @@ const rootReducer = combineReducers({
     todos: todoReducer,
     assets: assetsReducer,
     menuTitle: titleReducer,
-    auth: authReducer,
     loading: loadingReducer,
     accountRd: accountReducer,
     usersRd: usersReducer,
@@ -52,7 +49,6 @@ const rootReducer = combineReducers({
 
 export function* rootSaga() {
     yield all([
-        authSaga(),
         userSaga(),
         usersSaga(),
         companiesSaga(),
@@ -73,7 +69,6 @@ export function loadUser() {
         if (!user) {
             return;
         }
-        store.dispatch(setLoginUser(user));
         store.dispatch(checkLoginUser());
     } catch (e) {
         console.log('localStorage is not working');

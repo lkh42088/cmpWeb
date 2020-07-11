@@ -16,9 +16,6 @@ export const LOGIN_EMAIL_INPUT_EMAIL = 'account/LOGIN_EMAIL_INPUT_EMAIL';
 
 /** SAGA Action Type */
 export const [REGISTER, REGISTER_SUCCESS, REGISTER_FAILURE] = createRequestActionTypes('account/REGISTER');
-export const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] = createRequestActionTypes('account/LOGIN');
-export const [LOGIN_EMAIL, LOGIN_EMAIL_SUCCESS, LOGIN_EMAIL_FAILURE] = createRequestActionTypes('account/LOGIN_EMAIL');
-export const [LOGIN_CONFIRM, LOGIN_CONFIRM_SUCCESS, LOGIN_CONFIRM_FAILURE] = createRequestActionTypes('account/LOGIN_CONFIRM');
 
 /** Account */
 export const SET_LOGIN_USER = 'user/TEMP_SET_USER';
@@ -35,9 +32,6 @@ export const changeLoginPage = createAction(CHANGE_LOGIN_PAGE, ({ value }) => ({
 export const initializeForm = createAction(INITIALIZE_FORM, form => form);
 
 /** SAGA Action Function */
-export const login = createAction(LOGIN, ({ username, password }) => ({ username, password }));
-export const loginEmail = createAction(LOGIN_EMAIL, ({ username, password, email }) => ({ username, password, email }));
-export const loginConfirm = createAction(LOGIN_CONFIRM, ({ username, password, email }) => ({ username, password, email }));
 export const register = createAction(REGISTER, ({
     name, email, username, password,
 }) => ({
@@ -53,9 +47,6 @@ export const logout = createAction(LOGOUT);
  * 3. Saga
  *****************************************************************************/
 const registerSaga = createRequestSaga(REGISTER, authAPI.register);
-const loginSaga = createRequestSaga(LOGIN, authAPI.login);
-const loginEmailSaga = createRequestSaga(LOGIN_EMAIL, authAPI.loginEmail);
-const loginConfirmSaga = createRequestSaga(LOGIN_CONFIRM, authAPI.loginConfirm);
 
 /** Account */
 const checkSaga = createRequestSaga(CHECK_LOGIN_USER, authAPI.check);
@@ -81,9 +72,6 @@ function checkFailureSaga() {
  *****************************************************************************/
 export function* userSaga() {
     yield takeLatest(REGISTER, registerSaga);
-    yield takeLatest(LOGIN, loginSaga);
-    yield takeLatest(LOGIN_EMAIL, loginEmailSaga);
-    yield takeLatest(LOGIN_CONFIRM, loginConfirmSaga);
     /** Account */
     yield takeLatest(CHECK_LOGIN_USER, checkSaga);
     yield takeLatest(CHECK_LOGIN_USER_FAILURE, checkFailureSaga);

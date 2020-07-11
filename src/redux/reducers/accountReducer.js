@@ -1,17 +1,12 @@
 import {handleActions} from "redux-actions";
 import produce from "immer";
 import {
-    // eslint-disable-next-line import/named
     CHANGE_ACCOUNT_FIELD,
     INITIALIZE_FORM,
-    LOGIN_CONFIRM_FAILURE,
-    LOGIN_CONFIRM_SUCCESS,
     LOGIN_EMAIL_INPUT_EMAIL,
     LOGIN_EMAIL_SENT_EMAIL,
-    LOGIN_FAILURE,
     LOGIN_INPUT_EMAIL,
     LOGIN_SENT_EMAIL,
-    LOGIN_SUCCESS,
     REGISTER_FAILURE,
     REGISTER_SUCCESS,
     SET_LOGIN_USER,
@@ -22,7 +17,6 @@ import {
 import {GV_LOGIN_PAGE_FIRST} from "../../lib/globalVariable";
 
 const initialState = {
-    /** Auth */
     pageNum: GV_LOGIN_PAGE_FIRST,
     register: {
         name: '',
@@ -47,6 +41,21 @@ const initialState = {
 
 export default handleActions(
     {
+        [INITIALIZE_FORM]: state => ({
+            ...state,
+            pageNum: GV_LOGIN_PAGE_FIRST,
+            login: {
+                username: '',
+                password: '',
+                email: '',
+            },
+            auth: null,
+            authError: null,
+            authSentEmail: false,
+            authInputEmail: false,
+            user: null,
+            checkError: null,
+        }),
         [CHANGE_ACCOUNT_FIELD]: (state, { payload: { form, key, value } }) => produce(state, (draft) => {
             draft[form][key] = value; // state.register.username
         }),
@@ -54,25 +63,12 @@ export default handleActions(
             ...state,
             pageNum: value,
         }),
-        [INITIALIZE_FORM]: (state, { payload: form }) => ({
-            ...state,
-            [form]: initialState[form],
-        }),
         [REGISTER_SUCCESS]: (state, { payload: auth }) => ({
             ...state,
             authError: null,
             auth,
         }),
         [REGISTER_FAILURE]: (state, { payload: error }) => ({
-            ...state,
-            authError: error,
-        }),
-        [LOGIN_SUCCESS]: (state, { payload: auth }) => ({
-            ...state,
-            authError: null,
-            auth,
-        }),
-        [LOGIN_FAILURE]: (state, { payload: error }) => ({
             ...state,
             authError: error,
         }),
@@ -91,15 +87,6 @@ export default handleActions(
         [LOGIN_EMAIL_INPUT_EMAIL]: (state, { payload: error }) => ({
             ...state,
             authInputEmail: true,
-        }),
-        [LOGIN_CONFIRM_SUCCESS]: (state, { payload: auth }) => ({
-            ...state,
-            authError: null,
-            auth,
-        }),
-        [LOGIN_CONFIRM_FAILURE]: (state, { payload: error }) => ({
-            ...state,
-            authError: error,
         }),
         /** Account */
         [SET_LOGIN_USER]: (state, { payload: user }) => ({

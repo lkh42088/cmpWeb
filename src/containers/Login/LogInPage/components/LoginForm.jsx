@@ -11,35 +11,21 @@ import {
     changeField,
     initializeForm, changeLoginPage,
 } from "../../../../redux/actions/accountActions";
-import renderCheckBoxField from '../../../../shared/components/form/CheckBox';
 import {login} from "../../../../lib/api/auth";
 import {GV_LOGIN_PAGE_CONFIRM_EMAIL, GV_LOGIN_PAGE_INPUT_EMAIL} from "../../../../lib/globalVariable";
 
-// eslint-disable-next-line react/prop-types
-const LoginForm = ({ history }) => {
-    const rememberForm = 'log_in_form';
+const LoginForm = () => {
     const typeFieldUser = 'text';
     const [showPassword, setShowPassword] = useState(false);
     const [resultError, setResultError] = useState(false);
 
     const dispatch = useDispatch();
-    const {
-        form,
-        // authInputEmail,
-        // authSentEmail,
-    } = useSelector(({ accountRd }) => ({
+    const { form } = useSelector(({ accountRd }) => ({
         form: accountRd.login,
-        auth: accountRd.auth,
-        // authInputEmail: accountRd.authInputEmail,
-        // authSentEmail: accountRd.authSentEmail,
-        authError: accountRd.authError,
-        user: accountRd.user,
     }));
 
     const onChange = (e) => {
         const { value, name } = e.target;
-       /* console.log('name', name);
-        console.log('value', value);*/
         dispatch(
             changeField({
                 form: 'login',
@@ -50,13 +36,14 @@ const LoginForm = ({ history }) => {
     };
 
     const doLogin = async (username, password) => {
+        console.log("doLogin: username: ", username, ", password ", password);
         try {
             const response = await login({username, password});
+            /**
+             * response.data.success : {false, true}
+             * response.data.msg : {id, password, email, result}
+             * */
             console.log("response: ", response);
-            if (response.data !== null) {
-                console.log("success: ", response.data.success);
-                console.log("result ", response.data.msg.result);
-            }
             if (response.data.success) {
                 dispatch(checkLoginUser());
             } else if (response.data.msg.result === 251) {
@@ -73,8 +60,6 @@ const LoginForm = ({ history }) => {
             } else if (response.data.msg.result === 252) {
                 console.log("changeLoginPage ", GV_LOGIN_PAGE_INPUT_EMAIL);
                 dispatch(changeLoginPage({value: GV_LOGIN_PAGE_INPUT_EMAIL}));
-            } else {
-                console.log("doLogin: XXXX");
             }
             if (resultError) {
                 setResultError(false);
@@ -88,35 +73,14 @@ const LoginForm = ({ history }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const { username, password } = form;
-
-        console.log('>>>>>> onSubmit');
-        console.log('username:', username);
-        console.log('password:', password);
+        console.log('>>>>>> onSubmit: username ', username, ", password ", password);
         doLogin(username, password);
-        // dispatch(login({ username, password }));
     };
 
     useEffect(() => {
         console.log('[LoginForm 1] ');
         dispatch(initializeForm("login"));
-    }, [dispatch]);
-
-    //
-    // useEffect(() => {
-    //     console.log("[useEffect] authSentEmail: ", authSentEmail);
-    //     if (authSentEmail === true) {
-    //         console.log("[useEffect] --> /login/confirm: ", authSentEmail);
-    //         console.log("[user] form:", form);
-    //         history.push('/login/confirm');
-    //     }
-    // }, [authSentEmail]);
-    //
-    // useEffect(() => {
-    //     console.log("[useEffect] authInputEmail: ", authInputEmail);
-    //     if (authInputEmail === true) {
-    //         history.push('/login/input_email');
-    //     }
-    // }, [authInputEmail]);
+    }, []);
 
     const changeShowPassword = (e) => {
         e.preventDefault();
@@ -161,21 +125,8 @@ const LoginForm = ({ history }) => {
                         onClick={e => changeShowPassword(e)}
                     ><EyeIcon/>
                     </button>
-                    {/*<div className="account__forgot-password">*/}
-                    {/*    <a href="/">Forgot a password?</a>*/}
-                    {/*</div>*/}
                 </div>
             </div>
-            <div className="form__form-group">
-                <div className="form__form-group form__form-group-field">
-                    {/*<Field*/}
-                    {/*    name={`remember_me-${rememberForm}`}*/}
-                    {/*    component={renderCheckBoxField}*/}
-                    {/*    label="Remember me"*/}
-                    {/*/>*/}
-                </div>
-            </div>
-
             <div className="form__form-group">
                 <ButtonToolbar>
                     <Button className="account__btn btn btn-primary" color="white">로그인</Button>

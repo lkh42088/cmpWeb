@@ -1,6 +1,5 @@
 import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
 import {
     Button, ButtonToolbar, Card, Modal,
 } from 'reactstrap';
@@ -8,7 +7,6 @@ import classNames from 'classnames';
 import {Field, reduxForm, FieldArray} from "redux-form";
 import {findDOMNode} from "react-dom";
 import {List, Map} from "immutable";
-import CalendarBlankIcon from "mdi-react/CalendarBlankIcon";
 import AccountSearchIcon from "mdi-react/AccountSearchIcon";
 import CurrencyUsdIcon from "mdi-react/CurrencyUsdIcon";
 import PlusIcon from "mdi-react/PlusIcon";
@@ -17,20 +15,15 @@ import MinusIcon from "mdi-react/MinusIcon";
 import TableBody from "@material-ui/core/TableBody";
 import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import TableCell from "@material-ui/core/TableCell";
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from "@material-ui/core/SnackbarContent";
 import MatButton from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
-import EditIcon from "@material-ui/icons/Edit";
 import {withTranslation} from "react-i18next";
 import {
     getCompanyByName, setAddEleData, setAssetsPage, setState,
 } from "../../../../redux/actions/assetsAction";
 import renderIntervalDatePickerField from "./IntervalDatePicker";
 import renderDatePickerField from "./DatePicker";
-import {changeField} from "../../../../redux/actions/authActions";
 
 function checkIP(strIP) {
     const expUrl = /^(1|2)?\d?\d([.](1|2)?\d?\d){3}$/;

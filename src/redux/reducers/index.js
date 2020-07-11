@@ -7,7 +7,6 @@ import customizerReducer from './customizerReducer';
 import todoReducer from './todoReducer';
 import assetsReducer from './assetsReducer';
 import titleReducer from './titleReducer';
-import authReducer from "./authReducer";
 import accountReducer from "./accountReducer";
 import loadingReducer from "./loadingReducer";
 import usersReducer from "./usersReducer";
@@ -26,7 +25,6 @@ export {
     todoReducer,
     assetsReducer,
     titleReducer,
-    authReducer,
     accountReducer,
     loadingReducer,
     usersReducer,
