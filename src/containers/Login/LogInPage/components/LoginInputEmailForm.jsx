@@ -4,8 +4,8 @@ import {Field, Form, reduxForm} from 'redux-form';
 import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import MailRuIcon from "mdi-react/MailRuIcon";
-import {changeLoginField, changeLoginPage } from "../../../../redux/actions/accountActions";
-import {loginEmail} from "../../../../lib/api/auth";
+import {changeLoginField, changeLoginPage } from "../../../../redux/actions/loginActions";
+import {loginEmail} from "../../../../lib/api/login";
 import {GV_LOGIN_PAGE_CONFIRM_EMAIL} from "../../../../lib/globalVariable";
 
 // eslint-disable-next-line react/prop-types

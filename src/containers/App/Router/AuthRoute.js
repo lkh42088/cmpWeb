@@ -1,27 +1,22 @@
 import React, {useEffect} from "react";
-import {Route, Redirect} from "react-router-dom";
-import {check} from "../../../lib/api/auth";
+import {Route} from "react-router-dom";
+import {checkLogin} from "../../../lib/api/login";
 
 function AuthRoute({
-                       history, authenticated, component: Component, render, ...rest
-                   }) {
+    history, authenticated, component: Component, render, ...rest
+}) {
     console.log("😡😡😡authenticated : ", authenticated);
-
     const loginCheck = async () => {
         try {
-            const response = await check();
+            const response = await checkLogin();
             localStorage.setItem('user', JSON.stringify(response.data.user));
-            console.log("2");
         } catch (error) {
             history.push('/login');
-            console.log("3");
         }
     };
 
     useEffect(() => {
-        console.log("1");
         if (authenticated === null) {
-            console.log("4");
             loginCheck();
         }
     }, []);
@@ -42,9 +37,6 @@ function AuthRoute({
                 )
             ) : (
                 <div/>
-                // <Redirect
-                //     to={{pathname: "/login", state: {from: props.location}}}
-                // />
             ))
             }
         />

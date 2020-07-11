@@ -33,7 +33,7 @@ import {
 import {
     CustomizerProps, SidebarProps, ThemeProps, RTLProps, UserProps, MenuTitleProps,
 } from '../../shared/prop-types/ReducerProps';
-import {logout} from "../../redux/actions/accountActions";
+import {logout} from "../../redux/actions/loginActions";
 
 let notification = null;
 

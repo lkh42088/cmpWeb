@@ -1,19 +1,19 @@
 import { createAction } from 'redux-actions';
 import { takeLatest, call } from 'redux-saga/effects';
-import * as authAPI from '../../lib/api/auth';
+import * as authAPI from '../../lib/api/login';
 import createRequestSaga, {createRequestActionTypes} from "../../lib/createRequestSaga";
 
 /******************************************************************************
  * 1. Action Type
  *****************************************************************************/
-export const CHANGE_ACCOUNT_FIELD = 'account/CHANGE_ACCOUNT_FIELD';
-export const CHANGE_LOGIN_PAGE = 'account/CHANGE_LOGIN_PAGE';
-export const INITIALIZE_FORM = 'account/INITIALIZE_FORM';
+export const CHANGE_ACCOUNT_FIELD = 'login/CHANGE_ACCOUNT_FIELD';
+export const CHANGE_LOGIN_PAGE = 'login/CHANGE_LOGIN_PAGE';
+export const INITIALIZE_FORM = 'login/INITIALIZE_FORM';
 
 export const [CHECK_USER, CHECK_USER_SUCCESS, CHECK_USER_FAILURE] = createRequestActionTypes(
-    'user/CHECK',
+    'login/CHECK',
 );
-export const LOGOUT = 'user/LOGOUT';
+export const LOGOUT = 'login/LOGOUT';
 
 /******************************************************************************
  * 2. Action Function
@@ -28,7 +28,7 @@ export const logout = createAction(LOGOUT);
 /******************************************************************************
  * 3. Saga
  *****************************************************************************/
-const checkSaga = createRequestSaga(CHECK_USER, authAPI.check);
+const checkSaga = createRequestSaga(CHECK_USER, authAPI.checkLogin);
 function* logoutSaga() {
     try {
         yield call(authAPI.logout);

@@ -7,7 +7,7 @@ import customizerReducer from './customizerReducer';
 import todoReducer from './todoReducer';
 import assetsReducer from './assetsReducer';
 import titleReducer from './titleReducer';
-import accountReducer from "./accountReducer";
+import accountReducer from "./loginReducer";
 import loadingReducer from "./loadingReducer";
 import usersReducer from "./usersReducer";
 import userRegisterReducer from "./userRegisterReducer";
