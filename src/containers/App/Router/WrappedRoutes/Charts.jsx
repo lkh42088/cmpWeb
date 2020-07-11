@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import ChartsJS from '../../../Charts/ChartJs/index';
-import ReactVis from '../../../Charts/ReactVis/index';
-import Recharts from '../../../Charts/Recharts/index';
+import ChartsJS from '../../../EasyDev/Charts/ChartJs/index';
+import ReactVis from '../../../EasyDev/Charts/ReactVis/index';
+import Recharts from '../../../EasyDev/Charts/Recharts/index';
 
 export default () => (
   <Switch>

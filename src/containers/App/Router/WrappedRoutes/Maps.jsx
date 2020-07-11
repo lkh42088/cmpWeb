@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import GoogleMap from '../../../Maps/GoogleMap/index';
-import VectorMap from '../../../Maps/VectorMap/index';
+import GoogleMap from '../../../EasyDev/Maps/GoogleMap/index';
+import VectorMap from '../../../EasyDev/Maps/VectorMap/index';
 
 export default () => (
   <Switch>

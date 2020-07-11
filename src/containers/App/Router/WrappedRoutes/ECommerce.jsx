@@ -1,13 +1,13 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import Cart from '../../../ECommerce/Cart/index';
-import OrdersList from '../../../ECommerce/OrdersList/index';
-import Payment from '../../../ECommerce/Payment/index';
-import ProductEdit from '../../../ECommerce/ProductEdit/index';
-import ProductsList from '../../../ECommerce/ProductsList/index';
-import Catalog from '../../../ECommerce/Catalog/index';
-import ProductPage from '../../../ECommerce/ProductPage/index';
+import Cart from '../../../EasyDev/ECommerce/Cart/index';
+import OrdersList from '../../../EasyDev/ECommerce/OrdersList/index';
+import Payment from '../../../EasyDev/ECommerce/Payment/index';
+import ProductEdit from '../../../EasyDev/ECommerce/ProductEdit/index';
+import ProductsList from '../../../EasyDev/ECommerce/ProductsList/index';
+import Catalog from '../../../EasyDev/ECommerce/Catalog/index';
+import ProductPage from '../../../EasyDev/ECommerce/ProductPage/index';
 
 export default () => (
   <Switch>

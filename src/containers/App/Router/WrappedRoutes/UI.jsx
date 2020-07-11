@@ -1,20 +1,20 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import Alerts from '../../../UI/Alerts/index';
-import Buttons from '../../../UI/Buttons/index';
-import Carousel from '../../../UI/Carousel/index';
-import Collapse from '../../../UI/Collapse/index';
-import Grids from '../../../UI/Grids';
-import Modals from '../../../UI/Modals/index';
-import Notifications from '../../../UI/Notification/index';
-import Panels from '../../../UI/Panels/index';
-import ProgressBars from '../../../UI/ProgressBars/index';
-import RangeSliders from '../../../UI/RangeSliders/index';
-import Tabs from '../../../UI/Tabs/index';
-import Timeline from '../../../UI/Timeline/index';
-import Tooltips from '../../../UI/Tooltips/index';
-import Typography from '../../../UI/Typography/index';
+import Alerts from '../../../EasyDev/UI/Alerts/index';
+import Buttons from '../../../EasyDev/UI/Buttons/index';
+import Carousel from '../../../EasyDev/UI/Carousel/index';
+import Collapse from '../../../EasyDev/UI/Collapse/index';
+import Grids from '../../../EasyDev/UI/Grids';
+import Modals from '../../../EasyDev/UI/Modals/index';
+import Notifications from '../../../EasyDev/UI/Notification/index';
+import Panels from '../../../EasyDev/UI/Panels/index';
+import ProgressBars from '../../../EasyDev/UI/ProgressBars/index';
+import RangeSliders from '../../../EasyDev/UI/RangeSliders/index';
+import Tabs from '../../../EasyDev/UI/Tabs/index';
+import Timeline from '../../../EasyDev/UI/Timeline/index';
+import Tooltips from '../../../EasyDev/UI/Tooltips/index';
+import Typography from '../../../EasyDev/UI/Typography/index';
 
 export default () => (
   <Switch>

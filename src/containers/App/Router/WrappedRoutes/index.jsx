@@ -13,15 +13,15 @@ import Tables from './Tables';
 import Forms from './Forms';
 import UI from './UI';
 
-import Chat from '../../../Chat/index';
-import Todo from '../../../Todo/index';
+import Chat from '../../../EasyDev/Chat/index';
+import Todo from '../../../EasyDev/Todo/index';
 
 import FitnessDashboard from '../../../Dashboards/Fitness/index';
 import DefaultDashboard from '../../../Dashboards/Default/index';
 import MobileAppDashboard from '../../../Dashboards/MobileApp/index';
 import BookingDashboard from '../../../Dashboards/Booking/index';
 
-import Mail from '../../../Mail/index';
+import Mail from '../../../EasyDev/Mail/index';
 
 export default () => (
     <div>

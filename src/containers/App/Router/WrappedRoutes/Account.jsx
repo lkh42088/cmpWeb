@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import Profile from '../../../Account/Profile/index';
-import EmailConfirmation from '../../../Account/EmailConfimation/index';
+import Profile from '../../../EasyDev/Account/Profile/index';
+import EmailConfirmation from '../../../EasyDev/Account/EmailConfimation/index';
 
 export default () => (
   <Switch>

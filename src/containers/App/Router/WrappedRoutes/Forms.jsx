@@ -1,17 +1,17 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import BasicForm from '../../../Form/BasicForm/index';
-import CheckFormControls from '../../../Form/CheckFormControls/index';
-import FileUpload from '../../../Form/FileUpload/index';
-import FloatingLabelsForm from '../../../Form/FloatingLabelsForm/index';
-import FormDropzone from '../../../Form/FormDropzone/index';
-import FormLayouts from '../../../Form/FormLayouts/index';
-import FormPicker from '../../../Form/FormPicker/index';
-import FormValidation from '../../../Form/FormValidation/index';
-import MaskForm from '../../../Form/MaskForm/index';
-import MaterialForm from '../../../Form/MaterialForm/index';
-import WizardForm from '../../../Form/WizardForm/index';
+import BasicForm from '../../../EasyDev/Form/BasicForm/index';
+import CheckFormControls from '../../../EasyDev/Form/CheckFormControls/index';
+import FileUpload from '../../../EasyDev/Form/FileUpload/index';
+import FloatingLabelsForm from '../../../EasyDev/Form/FloatingLabelsForm/index';
+import FormDropzone from '../../../EasyDev/Form/FormDropzone/index';
+import FormLayouts from '../../../EasyDev/Form/FormLayouts/index';
+import FormPicker from '../../../EasyDev/Form/FormPicker/index';
+import FormValidation from '../../../EasyDev/Form/FormValidation/index';
+import MaskForm from '../../../EasyDev/Form/MaskForm/index';
+import MaterialForm from '../../../EasyDev/Form/MaterialForm/index';
+import WizardForm from '../../../EasyDev/Form/WizardForm/index';
 
 export default () => (
   <Switch>

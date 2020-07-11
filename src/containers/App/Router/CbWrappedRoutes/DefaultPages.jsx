@@ -1,15 +1,15 @@
 import React from 'react';
 import {Route, Switch} from 'react-router-dom';
 
-import NotFound404 from "../../../DefaultPage/404";
-import Calendar from '../../../DefaultPage/Calendar/index';
-import FAQ from '../../../DefaultPage/Faq/index';
-import Gallery from '../../../DefaultPage/Gallery/index';
-import PricingCards from '../../../DefaultPage/PricingCards/index';
-import TextEditor from '../../../DefaultPage/TextEditor/index';
-import InvoiceTemplate from '../../../DefaultPage/InvoiceTemplate/index';
-import SearchResults from '../../../DefaultPage/SearchResults/index';
-import ProjectSummary from '../../../DefaultPage/ProjectSummary/index';
+import NotFound404 from "../../../EasyDev/DefaultPage/404";
+import Calendar from '../../../EasyDev/DefaultPage/Calendar/index';
+import FAQ from '../../../EasyDev/DefaultPage/Faq/index';
+import Gallery from '../../../EasyDev/DefaultPage/Gallery/index';
+import PricingCards from '../../../EasyDev/DefaultPage/PricingCards/index';
+import TextEditor from '../../../EasyDev/DefaultPage/TextEditor/index';
+import InvoiceTemplate from '../../../EasyDev/DefaultPage/InvoiceTemplate/index';
+import SearchResults from '../../../EasyDev/DefaultPage/SearchResults/index';
+import ProjectSummary from '../../../EasyDev/DefaultPage/ProjectSummary/index';
 
 export default () => (
     <Switch>

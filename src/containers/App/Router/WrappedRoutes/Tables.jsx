@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import BasicTables from '../../../Tables/BasicTables/index';
-import DataTable from '../../../Tables/DataTable/index';
-import EditableTable from '../../../Tables/EditableTable/index';
-import MaterialTable from '../../../Tables/MaterialTable/index';
+import BasicTables from '../../../EasyDev/Tables/BasicTables/index';
+import DataTable from '../../../EasyDev/Tables/DataTable/index';
+import EditableTable from '../../../EasyDev/Tables/EditableTable/index';
+import MaterialTable from '../../../EasyDev/Tables/MaterialTable/index';
 
 export default () => (
   <Switch>
