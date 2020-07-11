@@ -4,7 +4,7 @@ import {Field, Form, reduxForm} from 'redux-form';
 import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import MailRuIcon from "mdi-react/MailRuIcon";
-import {changeField, changeLoginPage } from "../../../../redux/actions/accountActions";
+import {changeLoginField, changeLoginPage } from "../../../../redux/actions/accountActions";
 import {loginEmail} from "../../../../lib/api/auth";
 import {GV_LOGIN_PAGE_CONFIRM_EMAIL} from "../../../../lib/globalVariable";
 
@@ -24,8 +24,7 @@ const LoginInputEmailForm = ({ history, secret }) => {
         console.log('name', name);
         console.log('value', value);
         dispatch(
-            changeField({
-                form: 'login',
+            changeLoginField({
                 key: name,
                 value,
             }),

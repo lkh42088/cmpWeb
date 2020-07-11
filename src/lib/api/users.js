@@ -27,7 +27,7 @@ export const unregisterUser = ({
     idx,
 });
 
-export const checkDupUser = ({
+export const checkDuplicateUser = ({
     userId,
 }) => client.post('/v1/users/check-user', {
     id: userId,

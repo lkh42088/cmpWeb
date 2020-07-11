@@ -90,7 +90,7 @@ const unregisterUserSaga = createRequestSaga(UNREGISTER_USER, users.unregisterUs
 const getUserListSaga = createRequestSaga(GET_USER_LIST, users.getUserList);
 const getUserListWithSearchParamSaga = createRequestSaga(GET_USER_LIST_WITH_SEARCH_PARAM,
     users.getUserListWithSearchParam);
-const checkDupUserSaga = createRequestSaga(CHECK_DUP_USER, users.checkDupUser);
+const checkDupUserSaga = createRequestSaga(CHECK_DUP_USER, users.checkDuplicateUser);
 
 /******************************************************************************
  * 4. Saga Generation Function

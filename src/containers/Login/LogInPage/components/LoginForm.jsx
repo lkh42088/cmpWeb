@@ -4,12 +4,12 @@ import {Field, Form, reduxForm} from 'redux-form';
 import EyeIcon from 'mdi-react/EyeIcon';
 import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
 import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
-import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import {
     checkLoginUser,
-    changeField,
-    initializeForm, changeLoginPage,
+    changeLoginField,
+    initLoginForm,
+    changeLoginPage,
 } from "../../../../redux/actions/accountActions";
 import {login} from "../../../../lib/api/auth";
 import {GV_LOGIN_PAGE_CONFIRM_EMAIL, GV_LOGIN_PAGE_INPUT_EMAIL} from "../../../../lib/globalVariable";
@@ -27,8 +27,7 @@ const LoginForm = () => {
     const onChange = (e) => {
         const { value, name } = e.target;
         dispatch(
-            changeField({
-                form: 'login',
+            changeLoginField({
                 key: name,
                 value,
             }),
@@ -51,8 +50,7 @@ const LoginForm = () => {
                 console.log("changeLoginPage ", GV_LOGIN_PAGE_CONFIRM_EMAIL);
                 dispatch(changeLoginPage({value: GV_LOGIN_PAGE_CONFIRM_EMAIL}));
                 dispatch(
-                    changeField({
-                        form: 'login',
+                    changeLoginField({
                         key: "email",
                         value: response.data.msg.email,
                     }),
@@ -79,7 +77,7 @@ const LoginForm = () => {
 
     useEffect(() => {
         console.log('[LoginForm 1] ');
-        dispatch(initializeForm("login"));
+        dispatch(initLoginForm());
     }, []);
 
     const changeShowPassword = (e) => {
@@ -143,5 +141,4 @@ const LoginForm = () => {
     );
 };
 
-const LoginFormWrap = withRouter(reduxForm()(LoginForm));
-export default LoginFormWrap;
+export default reduxForm()(LoginForm);

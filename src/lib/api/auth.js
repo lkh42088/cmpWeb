@@ -26,11 +26,5 @@ export const loginEmailConfirm = ({
  id, target, secret,
 });
 
-export const register = ({
- name, email, username, password,
-}) => client.post('/v1/auth/grouplogin', {
- name, email, username, password,
-});
-
 export const check = () => client.get('/v1/auth/check');
 export const logout = () => client.post('/v1/auth/logout');

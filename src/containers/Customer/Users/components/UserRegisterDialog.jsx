@@ -31,7 +31,7 @@ import Chip from "@material-ui/core/Chip";
 import Avatar from "@material-ui/core/Avatar";
 import {checkPasswordPattern} from "../../../../lib/utils/utils";
 import {getCompanies, getUsersByCpIdx} from "../../../../lib/api/company";
-import {checkDupUser} from "../../../../lib/api/users";
+import {checkDuplicateUser} from "../../../../lib/api/users";
 import LookupCompany from "./LookupCompany";
 import LookupZipcode from "./LookupZipcode";
 
@@ -402,7 +402,7 @@ const UserRegisterDialog = (props) => {
      *******************/
     const checkUser = async () => {
         try {
-            const response = await checkDupUser({userId: fields.id});
+            const response = await checkDuplicateUser({userId: fields.id});
             setConfirmUser(true);
             setErrors({
                 ...errors,

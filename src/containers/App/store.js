@@ -23,7 +23,7 @@ import {
     pagingReducer,
     companiesReducer,
 } from '../../redux/reducers/index';
-import {setLoginUser, checkLoginUser, userSaga} from "../../redux/actions/accountActions";
+import {checkLoginUser, userSaga} from "../../redux/actions/accountActions";
 import {usersSaga} from "../../redux/actions/usersActions";
 import {companiesSaga} from "../../redux/actions/companiesActions";
 import {createSubnetSaga} from "../../redux/actions/subnetActions";

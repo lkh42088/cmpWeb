@@ -15,7 +15,6 @@ import store from './store';
 import ScrollToTop from './ScrollToTop';
 import {config as i18nextConfig} from '../../translations';
 import Loading from '../../shared/components/Loading';
-import CbAuthProvider from "../Auth/CbAuthProvider";
 
 i18next.init(i18nextConfig);
 
@@ -32,7 +31,6 @@ const ThemeComponent = ({children, themeName}) => {
     );
 };
 
-//children: PropTypes.arrayOf(PropTypes.element).isRequired,
 ThemeComponent.propTypes = {
     // eslint-disable-next-line react/forbid-prop-types
     children: PropTypes.object.isRequired,
@@ -47,7 +45,6 @@ class App extends Component {
         this.state = {
             loading: true,
             loaded: false,
-            user: localStorage.getItem('user'),
         };
     }
 
@@ -59,11 +56,9 @@ class App extends Component {
     }
 
     render() {
-        const {loaded, loading, user} = this.state;
-        //console.log("👑👑👑 App : ", user);
+        const {loaded, loading} = this.state;
         return (
             <Provider store={store}>
-                {/*<CbAuthProvider>*/}
                 <BrowserRouter>
                     <I18nextProvider i18n={i18next}>
                         <ScrollToTop>
@@ -82,7 +77,6 @@ class App extends Component {
                         </ScrollToTop>
                     </I18nextProvider>
                 </BrowserRouter>
-                {/*</CbAuthProvider>*/}
             </Provider>
         );
     }
