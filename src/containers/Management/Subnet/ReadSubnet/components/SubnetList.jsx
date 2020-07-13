@@ -133,24 +133,13 @@ const SubnetList = () => {
             {title: '게이트웨이', field: 'gateway', width: "25%"},
         ],
         data: [],
-        page: [],
-        // data: [{
-        //     idx: null,
-        //     deviceCode: '',
-        //     subnetTag: '',
-        //     subnetStart: '',
-        //     subnetEnd: '',
-        //     subnetMask: '',
-        //     gateway: '',
-        //     subnet: '',
-        // }],
-        // page: [{
-        //     count: 0,
-        //     offset: 0,
-        //     order: 'desc',
-        //     orderBy: 'sub_idx',
-        //     rows: 5,
-        // }],
+        page: {
+            count: 0,
+            offset: 0,
+            order: 'desc',
+            orderBy: 'sub_idx',
+            rows: 5,
+        },
     });
 
     const orderByName = [
@@ -176,7 +165,7 @@ const SubnetList = () => {
         setState({
             ...state,
             page: {
-                ...state,
+                ...state.page,
                 order: changeOrder,
                 orderBy: orderByName[orderByStr],
             },
@@ -187,44 +176,17 @@ const SubnetList = () => {
         setState({
             ...state,
             page: {
-                ...state,
+                ...state.page,
                 rows: size,
             },
         });
+        console.log("rows: ", state.page.rows, size);
     };
 
     const handleChangePage = (pageValue, pageSize) => {
         setCurrentPage(pageValue);
     };
 
-    /** Get subnet data **/
-    // useEffect(() => {
-    //     //getPageData();
-    //     let offset = 0;
-    //     let orderByData;
-    //     let rowData;
-    //     if (orderBy) {
-    //         orderByData = "sub_idx";
-    //     }
-    //     if (rowsPerPage) {
-    //         rowData = 5;
-    //     }
-    //     if (currentPage > 0) {
-    //         offset = Number(rowsPerPage * currentPage);
-    //     }
-    //     dispatch(readSubnet({
-    //         rows: rowData, offset, orderBy: orderByData, order,
-    //     }));
-    //     if (page && page.count !== 0) {
-    //         dispatch(pagingChangeTotalCount({totalCount: page.count}));
-    //     }
-    // }, [rowsPerPage, currentPage, orderBy, order]);
-
-    // const handleChangePage = useCallback(
-    //     (event, pageData) => dispatch(pagingChangeCurrentPage({
-    //         currentPage: pageData.activePage,
-    //     })), [dispatch],
-    // );
 
     /** Update & Register Device **/
     const RowAdd = newData => null;
@@ -233,6 +195,7 @@ const SubnetList = () => {
 
     const RowDelete = oldData => new Promise(resolve => null);
 
+    /** Get subnet data **/
     const getData = async () => {
         try {
             const response = await readSubnet({
@@ -241,7 +204,6 @@ const SubnetList = () => {
                 orderBy: state.page.orderBy,
                 order: state.page.order,
             });
-            console.log("subnet: ", response.data.data);
             setState({
                 ...state,
                 data: (
@@ -249,10 +211,8 @@ const SubnetList = () => {
                         ...val,
                         subnet: val.subnetStart.concat(' ~ ') + val.subnetEnd,
                     }))),
-                page: response.data.page,
-
+            //page: response.data.page,
             });
-            console.log("state data: ", state.data);
         } catch {
             setState({
                 ...state,
@@ -262,29 +222,13 @@ const SubnetList = () => {
     };
 
     useEffect(() => {
+        console.log(state.page);
         if (state && state.page.order !== undefined) {
             getData();
         }
-    }, [rows, currentPage, count, orderBy, order]);
+    }, [currentPage, orderBy, order]);
 
     useEffect(() => {
-        if (state && state.page.order !== undefined) {
-            getData();
-        } else {
-            setState({
-                ...state,
-                page: {
-                    rows: 5,
-                    count: 0,
-                    offset: 0,
-                    orderBy: 'sub_idx',
-                    order: 'desc',
-                },
-            });
-        }
-        // dispatch(readSubnet({
-        //     rows: page.rowsPerPage, offset: page.offset, orderBy, order,
-        // }));
     }, []);
 
     /** Customizing Pagination Bar **/
@@ -353,7 +297,7 @@ const SubnetList = () => {
             },
         },
         exportButton: true,
-        pageSize: 5,
+        // pageSize: 5,
         actionsColumnIndex: -1,
         thirdSortClick: false,
     };
@@ -370,6 +314,13 @@ const SubnetList = () => {
         },
         body: {
             emptyDataSourceMessage: "",
+        },
+        pagination: {
+            labelDisplayedRows: "{from} - {to} of {count}",
+            firstTooltip: "첫 페이지",
+            lastTooltip: "마지막 페이지",
+            previousTooltip: "이전 페이지",
+            nextTooltip: "다음 페이지",
         },
     };
 
