@@ -168,13 +168,14 @@ const UserSearchBar = (props) => {
         username: "",
         email: "",
         cpName: "",
-        level: "",
+        level: 0,
     });
 
     /************************************************************************************
      * Function
      ************************************************************************************/
-    const handleChangeField = (name, value) => {
+    const handleChangeField = (e) => {
+        const {name, value} = e.target;
         setFields({
             ...fields,
             [name]: value,
@@ -288,7 +289,7 @@ const UserSearchBar = (props) => {
                                                                 variant={variant}
                                                                 size={fieldSize}
                                                                 name="userId"
-                                                                onChange={(e) => { handleChangeField("userId", e.target.value); }}
+                                                                onChange={(e) => { handleChangeField(e); }}
                                                                 fullWidth />
                                                         </Grid>
                                                         <Grid item xs={3} spacing={1}>
@@ -299,7 +300,7 @@ const UserSearchBar = (props) => {
                                                                 variant={variant}
                                                                 size={fieldSize}
                                                                 name="username"
-                                                                onChange={(e) => { handleChangeField("username", e.target.value); }}
+                                                                onChange={(e) => { handleChangeField(e); }}
                                                                 fullWidth />
                                                         </Grid>
                                                         <Grid item xs={3} spacing={1}>
@@ -310,7 +311,7 @@ const UserSearchBar = (props) => {
                                                                 variant={variant}
                                                                 size={fieldSize}
                                                                 name="email"
-                                                                onChange={(e) => { handleChangeField("email", e.target.value); }}
+                                                                onChange={(e) => { handleChangeField(e); }}
                                                                 fullWidth />
                                                         </Grid>
                                                         <Grid item xs={3} spacing={1}>
@@ -328,12 +329,13 @@ const UserSearchBar = (props) => {
                                                         <Grid item xs={3} spacing={1}>
                                                             <FormControl>
                                                                 <Select
-                                                                    // value={}
-                                                                    // onChange={handleChange}
+                                                                    value={fields.level}
+                                                                    onChange={(e) => { handleChangeField(e); }}
                                                                     input={<BootstrapInput />}
                                                                     MenuProps={MenuProps}
+                                                                    autoWidth
                                                                 >
-                                                                    <MenuItem value="">선택안함</MenuItem>
+                                                                    <MenuItem value={0}>선택안함</MenuItem>
                                                                     <MenuItem value={1}>1</MenuItem>
                                                                     <MenuItem value={2}>2</MenuItem>
                                                                     <MenuItem value={3}>3</MenuItem>
@@ -346,12 +348,6 @@ const UserSearchBar = (props) => {
                                                                     <MenuItem value={10}>10</MenuItem>
                                                                 </Select>
                                                             </FormControl>
-                                                            {/*<TextField*/}
-                                                            {/*    variant={variant}*/}
-                                                            {/*    size={fieldSize}*/}
-                                                            {/*    name="level"*/}
-                                                            {/*    onChange={(e) => { handleChangeField("level", e.target.value); }}*/}
-                                                            {/*    fullWidth />*/}
                                                         </Grid>
                                                         <Grid item spacing={1}>
                                                             <span className={classes.span}>

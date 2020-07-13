@@ -473,6 +473,7 @@ const UserList = () => {
                         onClick={event => handleClick(event, row.idx)}
                     >
                         <Checkbox checked={isSelected}
+                                  // className="cb-material-table__checkbox"
                                   className="cb-material-table__checkbox"
                         />
                     </TableCell>
@@ -486,13 +487,20 @@ const UserList = () => {
                         className="cb-material-table__cell cb-material-table__cell-right"
                         style={{width: "10%"}}
                     >
-                        <Avatar className="topbar__avatar-img-list" name={row.userId} size="40" />
+                        <Avatar
+                            className="topbar__avatar-img-list"
+                            name={row.userId}
+                            size="40"
+                        />
                         {/*<Avatar className="topbar__avatar-img-list" alt={row.userId} size="40" />*/}
                         {/*<Avatar alt={row.userId} size="40" src="/static/images/avatar/1.jpg"/>*/}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
                         style={{width: "15%"}}
+                        onFocus={() => { setOpenCollapse(true); }}
+                        onMouseOver={() => { setOpenCollapse(true); }}
+                        onMouseLeave={() => { setOpenCollapse(false); }}
                     >
                         {row.userId}
                     </TableCell>

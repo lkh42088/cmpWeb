@@ -104,6 +104,7 @@ const LookupCompany = (props) => {
     const formClassName = "cb-material-form";
     const labelClassName = "cb-material-form__label";
     const fieldClassName = "cb-material-form__field";
+    console.log("LookupCompany...");
     return (
         <Dialog
             open={open}

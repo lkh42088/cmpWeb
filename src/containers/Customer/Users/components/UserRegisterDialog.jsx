@@ -556,6 +556,7 @@ const UserRegisterDialog = (props) => {
     const formClassName = "cb-material-form";
     const labelClassName = "cb-material-form__label";
     const fieldClassName = "cb-material-form__field";
+    console.log("UserRegisterDialog...");
     return (
         <Dialog
             open={open}
