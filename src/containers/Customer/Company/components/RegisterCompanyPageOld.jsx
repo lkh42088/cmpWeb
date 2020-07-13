@@ -32,7 +32,6 @@ import {
     changeUserRegisterField,
     checkDupUser,
     checkUserRegisterField, initRegisterUser,
-    registerUser,
 } from "../../../../redux/actions/usersActions";
 import {checkPasswordPattern} from "../../../../lib/utils/utils";
 

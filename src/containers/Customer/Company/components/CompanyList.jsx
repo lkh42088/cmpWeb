@@ -285,25 +285,26 @@ const CompanyList = () => {
         getPageData();
     };
 
-    const handleRegisterCompany = async ({
-        cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage,
-        cpTel, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
-        userId, userPassword,
-    }) => {
+    const doRegisterCompany = async (props) => {
+        const {
+          cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage,
+          cpTel, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
+          userId, userPassword,
+        } = props;
         try {
             const response = await registerCompany({
                 cpName,
+                cpTel,
                 cpZip,
+                cpEmail,
+                cpHomepage,
                 cpAddr,
                 cpAddrDetail,
-                cpHomepage,
-                cpTel,
-                cpEmail,
+                userId,
+                userPassword,
                 cpIsCompany,
                 cpMemo,
                 cpTerminationDate,
-                userId,
-                userPassword,
             });
             handleTriggerSuccess("고객사 등록에 성공하였습니다.");
             getPageData();
@@ -312,6 +313,12 @@ const CompanyList = () => {
             getPageData();
             console.log("handleRegisterCompany error!");
         }
+    };
+
+    const handleRegisterCompany = (props) => {
+        console.log("handleRegisterCompany: ", props);
+        doRegisterCompany(props);
+        setOpen(false);
     };
 
     useEffect(() => {
@@ -496,14 +503,13 @@ const CompanyList = () => {
                             label="Dense padding"
                         />
                     </div>
-                    {/*<AddCompany open={open} handleClose={handleClose} refreshPage={getPageData}/>*/}
                     <RegisterCompanyPage
                         open={open}
                         handleClose={handleClose}
                         handleSubmit={handleRegisterCompany}
                         refreshPage={getPageData}
                     />
-                </CardBody>
+               </CardBody>
             </Card>
         </Col>
     );

@@ -29,7 +29,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
 import Chip from "@material-ui/core/Chip";
 import Avatar from "@material-ui/core/Avatar";
-import {checkPasswordPattern} from "../../../../lib/utils/utils";
+import {checkId, checkPasswordPattern} from "../../../../lib/utils/utils";
 import {getCompanies, getUsersByCpIdx} from "../../../../lib/api/company";
 import {checkDuplicateUser} from "../../../../lib/api/users";
 import LookupCompany from "./LookupCompany";
@@ -201,23 +201,6 @@ const UserRegisterDialog = (props) => {
         console.log("confirmUser: ", confirmUser);
     };
 
-    const checkId = (id) => {
-        // eslint-disable-next-line no-useless-escape
-        const specialCheck = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
-        let helperUserId = "";
-        if (id.length < 1) {
-            helperUserId = "* 필수 입력사항입니다.";
-        } else if (id.length < 4 || id.length > 15) {
-            helperUserId = "* 4자 이상 15이하로 입력하십시오.";
-        } else if (specialCheck.test(id)) {
-            helperUserId = "* 특수문자는 포함 될수 없습니다.";
-        } else if (id.search(/\s/) !== -1) {
-            helperUserId = "* ID에 빈 칸은 포함 될 수 없습니다.";
-        }
-
-        return helperUserId;
-    };
-
     const checkValidateId = (id) => {
         // eslint-disable-next-line no-useless-escape
         let helperUserId = "";
@@ -254,13 +237,9 @@ const UserRegisterDialog = (props) => {
 
         /** password */
         let errorPassword = false;
-        let helperPassword = "* 영어 소문자, 숫자, 특수문자 포함 8~16 문자";
-        if (fields.password.length < 1) {
+        const helperPassword = checkPasswordPattern(fields.password);
+        if (helperPassword !== "") {
             errorPassword = true;
-            helperPassword = "* 영어 소문자, 숫자, 특수문자 포함 8~16 문자";
-        } else if (!checkPasswordPattern(fields.password)) {
-            errorPassword = true;
-            helperPassword = "* 영어 소문자, 숫자, 특수문자 포함 8~16 문자";
         }
 
         /** name */

@@ -24,6 +24,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import GroupIcon from '@material-ui/icons/Group';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import {Button} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import {
     pagingChangeCurrentPage,
@@ -676,6 +677,7 @@ const UserList = () => {
                             label="Dense padding"
                         />
                     </div>
+
                     <UserRegisterDialog
                         open={openAddUser}
                         handleClose={handleCloseAddUser}

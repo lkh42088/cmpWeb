@@ -19,7 +19,6 @@ import {
     accountReducer,
     loadingReducer,
     usersReducer,
-    userRegisterReducer,
     pagingReducer,
     companiesReducer,
 } from '../../redux/reducers/index';
@@ -42,7 +41,6 @@ const rootReducer = combineReducers({
     loading: loadingReducer,
     accountRd: accountReducer,
     usersRd: usersReducer,
-    userRegisterRd: userRegisterReducer,
     pagingRd: pagingReducer,
     companiesRd: companiesReducer,
 });
