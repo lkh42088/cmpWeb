@@ -11,7 +11,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from "@material-ui/core/IconButton";
 import {FixedSizeList} from "react-window";
-import {getCompaniesByName} from "../../../../lib/api/company";
+import {getCompaniesByName} from "../../lib/api/company";
 
 const useStyles = makeStyles(theme => ({
     root: {

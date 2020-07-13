@@ -32,8 +32,8 @@ import Avatar from "@material-ui/core/Avatar";
 import {checkId, checkPasswordPattern} from "../../../../lib/utils/utils";
 import {getCompanies, getUsersByCpIdx} from "../../../../lib/api/company";
 import {checkDuplicateUser} from "../../../../lib/api/users";
-import LookupCompany from "./LookupCompany";
-import LookupZipcode from "./LookupZipcode";
+import LookupCompany from "../../../Common/LookupCompany";
+import LookupZipcode from "../../../Common/LookupZipcode";
 
 const useStyles = makeStyles(theme => ({
     root: {

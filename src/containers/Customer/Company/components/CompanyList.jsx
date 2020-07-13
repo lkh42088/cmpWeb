@@ -16,7 +16,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {makeStyles} from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
 import ReactTooltip from "react-tooltip";
 import {
     initRegisterCompany,
@@ -35,11 +35,10 @@ import {
     pagingChangeSelected,
     pagingChangeTotalCount,
 } from "../../../../redux/actions/pagingActions";
-import CbAdminTableToolbar from "../../../Common/CbAdminTableToolbar";
 import CommonTableHead from "../../../Common/CommonTableHead";
-// import AddCompany from "./AddCompany";
 import RegisterCompanyPage from "./RegisterCompanyPage";
 import {registerCompany, unregisterCompany} from "../../../../lib/api/company";
+import CompanyTableToolbar from "./CompanyTableToolbar";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -393,72 +392,72 @@ const CompanyList = () => {
 
     const tableRows = (
         <TableBody>
-            { data && data.map((row) => {
+            { data && data.map((row, index) => {
                 const isSelected = getSelected(row.idx);
-                    return (
-                        <TableRow
-                            hover
-                            className="cb-material-table__row"
-                            role="checkbox"
-                            onClick={event => handleClick(event, row.idx)}
-                            aria-checked={isSelected}
-                            tabIndex={-1}
-                            key={row.idx}
-                            selected={isSelected}
-
+                const keyId = index;
+                return (
+                    <TableRow
+                        key={keyId}
+                        hover
+                        className="cb-material-table__row"
+                        role="checkbox"
+                        onClick={event => handleClick(event, row.idx)}
+                        aria-checked={isSelected}
+                        // tabIndex={-1}
+                        selected={isSelected}
+                    >
+                        <TableCell className="cb-material-table__cell" padding="checkbox" >
+                            <Checkbox checked={isSelected} className="cb-material-table__checkbox" />
+                        </TableCell>
+                        <TableCell
+                            className="cb-material-table__cell cb-material-table__cell-right"
+                            style={{width: "5%"}}
                         >
-                            <TableCell className="cb-material-table__cell" padding="checkbox" >
-                                <Checkbox checked={isSelected} className="cb-material-table__checkbox" />
-                            </TableCell>
-                            <TableCell
-                                className="cb-material-table__cell cb-material-table__cell-right"
-                                style={{width: "5%"}}
-                            >
-                                {row.idx}
-                            </TableCell>
-                            <TableCell
-                                className="cb-material-table__cell cb-material-table__cell-right"
-                                style={{width: "15%"}}
-                            >
-                                {row.name}
-                            </TableCell>
-                            <TableCell
-                                className="cb-material-table__cell cb-material-table__cell-right"
-                                style={{width: "15%"}}
-                            >
-                                {row.tel}
-                            </TableCell>
-                            <TableCell
-                                className="cb-material-table__cell cb-material-table__cell-right"
-                                style={{width: "15%"}}
-                            >
-                                {row.email}
-                            </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right"
-                                style={{width: "10%"}}
-                            >
-                                {row.cpUserId}
-                            </TableCell>
-                            <TableCell
-                                className="cb-material-table__cell cb-material-table__cell-right"
-                                style={{width: "25%"}}
-                                data-tip={row.address}
-                                data-for="tooltip"
-                            >
-                                {checkStringLength(row.address)}
-                            </TableCell>
-                                <TableCell
-                                className="cb-material-table__cell cb-material-table__cell-right"
-                                style={{width: "25%"}}
-                                data-tip={row.memo}
-                                data-for="tooltip"
-                            >
-                                {checkStringLength(row.memo)}
-                                {tooltip}
-                            </TableCell>
-                        </TableRow>
-                    );
-                })
+                            {row.idx}
+                        </TableCell>
+                        <TableCell
+                            className="cb-material-table__cell cb-material-table__cell-right"
+                            style={{width: "15%"}}
+                        >
+                            {row.name}
+                        </TableCell>
+                        <TableCell
+                            className="cb-material-table__cell cb-material-table__cell-right"
+                            style={{width: "15%"}}
+                        >
+                            {row.tel}
+                        </TableCell>
+                        <TableCell
+                            className="cb-material-table__cell cb-material-table__cell-right"
+                            style={{width: "15%"}}
+                        >
+                            {row.email}
+                        </TableCell>
+                        <TableCell className="cb-material-table__cell cb-material-table__cell-right"
+                                   style={{width: "10%"}}
+                        >
+                            {row.cpUserId}
+                        </TableCell>
+                        <TableCell
+                            className="cb-material-table__cell cb-material-table__cell-right"
+                            style={{width: "25%"}}
+                            data-tip={row.address}
+                            data-for="tooltip"
+                        >
+                            {checkStringLength(row.address)}
+                        </TableCell>
+                        <TableCell
+                            className="cb-material-table__cell cb-material-table__cell-right"
+                            style={{width: "25%"}}
+                            data-tip={row.memo}
+                            data-for="tooltip"
+                        >
+                            {checkStringLength(row.memo)}
+                            {tooltip}
+                        </TableCell>
+                    </TableRow>
+                );
+            })
             }
         </TableBody>
     );
@@ -467,7 +466,7 @@ const CompanyList = () => {
         <Col md={12} lg={12}>
             <Card className="cb-card">
                 <CardBody className="cb-card-body">
-                    <CbAdminTableToolbar
+                    <CompanyTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
                         handleDeleteSelected={handleDeleteSelected}
                         onRequestSort={handleRequestSort}

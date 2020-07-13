@@ -26,7 +26,7 @@ import {
     checkAddress,
     checkCompanyName, checkEmail, checkId, checkPasswordPattern, checkTelephone, checkZipCode,
 } from "../../../../lib/utils/utils";
-import LookupZipcode from "../../Users/components/LookupZipcode";
+import LookupZipcode from "../../../Common/LookupZipcode";
 
 const useStyles = makeStyles(theme => ({
     root: {

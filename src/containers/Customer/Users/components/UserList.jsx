@@ -454,7 +454,6 @@ const UserList = () => {
         const [openCollapse, setOpenCollapse] = React.useState(false);
         const isSelected = getSelected(row.idx);
         const address = getAddress(row);
-
         return (
             <React.Fragment>
                 <TableRow
@@ -467,7 +466,7 @@ const UserList = () => {
                     key={row.idx}
                     selected={isSelected}
                     onClick={() => setOpenCollapse(!openCollapse)}
-                    >
+                >
                     <TableCell
                         className="cb-material-table__cell"
                         padding="checkbox"
@@ -594,10 +593,10 @@ const UserList = () => {
                                                             <GroupIcon/> 이메일 인증 그룹 </span>
                                                         <ul>
                                                             {row.groupEmailAuthList.map(auth => (
-                                                            <li key={auth.idx}>
+                                                                <li key={auth.idx}>
                                                                 <span className={classes.spanContents}>
                                                                     {auth.AuthUserId}/{auth.AuthEmail}</span>
-                                                            </li>
+                                                                </li>
                                                             ))}
                                                         </ul>
                                                     </React.Fragment>
@@ -612,9 +611,9 @@ const UserList = () => {
                                                             <AccountCircleIcon/> 사용하는 이메일 인증 계정 </span>
                                                         <ul>
                                                             {row.participateInAccountList.map(paccount => (
-                                                            <li key={paccount.idx}>
-                                                                <span className={classes.spanContents}>{paccount.UserId}</span>
-                                                            </li>
+                                                                <li key={paccount.idx}>
+                                                                    <span className={classes.spanContents}>{paccount.UserId}</span>
+                                                                </li>
                                                             ))}
                                                         </ul>
                                                     </React.Fragment>
@@ -664,9 +663,12 @@ const UserList = () => {
                                     rows={headRows}
                                 />
                                 <TableBody>
-                                    { data && data.map(row => (
-                                        <ContentsRow key={row.idx} row={row} />
-                                    ))}
+                                    { data && data.map((row, index) => {
+                                        const keyId = index;
+                                        return (
+                                            <ContentsRow key={keyId} row={row} />
+                                        );
+                                    })}
                                 </TableBody>
                             </Table>
                         </TableContainer>
