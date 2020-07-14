@@ -378,6 +378,8 @@ export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) =>
 
         const jsonData = res.data[0];
 
+        console.log("♡ !!!! ----------> : ", jsonData);
+
         let IpArray = '';
         let SplaArray = '';
         let ipCheckCount = 0;
