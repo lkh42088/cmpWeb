@@ -80,11 +80,10 @@
   //color: $color-accent;
 }
 
-.cb-material-table__cell-right{
+.cb-material-table__cell-left{
   @include directify($directions) {
     text-align: directed('left');
   }
-
 }
 
 .cb-material-table__cell.cb-material-table__cell--sort {
@@ -101,6 +100,16 @@
     &:hover {
       color: $color-accent;
     }
+  }
+}
+
+.cb-material-table__cell-right {
+
+  @include themify($themes) {
+    text-align: right;
+    color: themed('colorText');
+    font-size: 10px;
+    font-family: "Nanum Square acEB"; // Add for Table Cell [2020.06.10 LKH]
   }
 }
 

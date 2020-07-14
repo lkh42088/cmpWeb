@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {
-    Card, CardBody, Col, Container, Row,
+    Card, CardBody,
 } from "reactstrap";
 import Dialog from "@material-ui/core/Dialog";
 import Grid from "@material-ui/core/Grid";
@@ -61,8 +61,6 @@ const useStyles = makeStyles(theme => ({
         '& > *': {
             margin: theme.spacing(0.5),
         },
-        // height: 100,
-        // maxHeight: 100,
     },
     paper: {
         display: 'flex',
@@ -71,8 +69,6 @@ const useStyles = makeStyles(theme => ({
         '& > *': {
             margin: theme.spacing(0.5),
         },
-        // height: 100,
-        // maxHeight: 100,
     },
 }));
 
@@ -112,12 +108,14 @@ const UserRegisterDialog = (props) => {
         name: '',
         email: '',
         cellPhone: '',
+        tel: '',
         level: '',
         userZip: '',
         userAddr: '',
         userAddrDetail: '',
         emailAuthValue: "0",
         emailAuthGroupList: [],
+        memo: '',
     });
 
     /*******************
@@ -131,12 +129,14 @@ const UserRegisterDialog = (props) => {
         name: true,
         email: true,
         cellPhone: true,
+        tel: false,
         level: true,
         userZip: false,
         userAddr: false,
         userAddrDetail: false,
         emailAuthValue: false,
         emailAuthGroupList: false,
+        memo: false,
     });
 
     /*******************
@@ -150,12 +150,14 @@ const UserRegisterDialog = (props) => {
         name: '',
         email: '',
         cellPhone: '',
+        tel: '',
         level: '',
         userZip: '',
         userAddr: '',
         userAddrDetail: '',
         emailAuthValue: '',
         emailAuthGroupList: '',
+        memo: '',
     });
 
     /*******************
@@ -169,12 +171,14 @@ const UserRegisterDialog = (props) => {
         name: false,
         email: false,
         cellPhone: false,
+        tel: false,
         level: false,
         userZip: false,
         userAddr: false,
         userAddrDetail: false,
         emailAuthValue: false,
         emailAuthGroupList: false,
+        memo: false,
     });
 
     /*******************
@@ -318,12 +322,14 @@ const UserRegisterDialog = (props) => {
             name: '',
             email: '',
             cellPhone: '',
+            tel: '',
             level: '',
             userZip: '',
             userAddr: '',
             userAddrDetail: '',
             emailAuthValue: "0",
             emailAuthGroupList: [],
+            memo: '',
         });
         setHelpers({
             cpName: '',
@@ -333,12 +339,14 @@ const UserRegisterDialog = (props) => {
             name: '',
             email: '',
             cellPhone: '',
+            tel: '',
             level: '',
             userZip: '',
             userAddr: '',
             userAddrDetail: '',
             emailAuthValue: '',
             emailAuthGroupList: '',
+            memo: '',
         });
         setErrors({
             cpName: false,
@@ -348,12 +356,14 @@ const UserRegisterDialog = (props) => {
             name: false,
             email: false,
             cellPhone: false,
-            level: true,
+            tel: false,
+            level: false,
             userZip: false,
             userAddr: false,
             userAddrDetail: false,
             emailAuthValue: false,
             emailAuthGroupList: false,
+            memo: false,
         });
         setShowPassword(false);
         setConfirmUser(false);
@@ -557,6 +567,7 @@ const UserRegisterDialog = (props) => {
     const labelClassName = "cb-material-form__label";
     const fieldClassName = "cb-material-form__field";
     console.log("UserRegisterDialog...");
+
     return (
         <Dialog
             open={open}
@@ -577,7 +588,6 @@ const UserRegisterDialog = (props) => {
                         <Grid container spacing={1}>
                             <Grid item xs={6}>
                                 <div>
-                                    {/*1. 회사 */}
                                     <span className={labelClassName}>* 회사</span>
                                     <FormControl
                                         size={fieldSize}
@@ -597,9 +607,12 @@ const UserRegisterDialog = (props) => {
                                             <MenuItem key={0} value={0}>
                                                 <em>None</em>
                                             </MenuItem>
-                                            {companyList && companyList.map(item => (
-                                                <MenuItem key={item.idx} value={item.idx}>{item.name}</MenuItem>
-                                            ))}
+                                            {companyList && companyList.map((item, index) => {
+                                                const key = index;
+                                                return (
+                                                    <MenuItem key={key} value={item.idx}>{item.name}</MenuItem>
+                                                );
+                                            })}
                                         </Select>
                                         <FormHelperText>{helpers.cpIdx}</FormHelperText>
                                         <LookupCompany
@@ -635,7 +648,6 @@ const UserRegisterDialog = (props) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <div>
-                                    {/* 2. 아이디 */}
                                     <span className={labelClassName}>* 계정 ID</span>
                                     <FormControl
                                         size={fieldSize}
@@ -667,7 +679,6 @@ const UserRegisterDialog = (props) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <div>
-                                    {/* 3. 패스워드 */}
                                     <span className={labelClassName}>* 계정 암호</span>
                                     <FormControl
                                         size={fieldSize}
@@ -699,7 +710,6 @@ const UserRegisterDialog = (props) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <div>
-                                    {/* 4. 이름*/}
                                     <span className={labelClassName}>* 이름</span>
                                     <TextField
                                         className={fieldClassName}
@@ -709,7 +719,6 @@ const UserRegisterDialog = (props) => {
                                         name="name"
                                         value={fields.name}
                                         onChange={(e) => { handleChangeField("name", e.target.value); }}
-                                        // label="이름"
                                         variant={variant}
                                         size={fieldSize}
                                     />
@@ -717,7 +726,6 @@ const UserRegisterDialog = (props) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <div>
-                                    {/* 5. 이메일*/}
                                     <span className={labelClassName}>* 이메일</span>
                                     <TextField
                                         className={fieldClassName}
@@ -727,7 +735,6 @@ const UserRegisterDialog = (props) => {
                                         name="email"
                                         value={fields.email}
                                         onChange={(e) => { handleChangeField("email", e.target.value); }}
-                                        // label="이메일"
                                         variant={variant}
                                         size={fieldSize}
                                     />
@@ -735,8 +742,7 @@ const UserRegisterDialog = (props) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <div>
-                                    {/*// 5. 전화번호*/}
-                                    <span className={labelClassName}>* 전화번호</span>
+                                    <span className={labelClassName}>* 휴대폰번호</span>
                                     <TextField
                                         className={fieldClassName}
                                         error={errors.cellPhone}
@@ -745,7 +751,6 @@ const UserRegisterDialog = (props) => {
                                         name="cellPhone"
                                         value={fields.cellPhone}
                                         onChange={(e) => { handleChangeField("cellPhone", e.target.value); }}
-                                        // label="전화번호"
                                         variant={variant}
                                         size={fieldSize}
                                     />
@@ -753,17 +758,31 @@ const UserRegisterDialog = (props) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <div>
-                                    {/*// 6. 권한*/}
+                                    <span className={labelClassName}>전화번호</span>
+                                    <TextField
+                                        className={fieldClassName}
+                                        error={errors.tel}
+                                        required={requires.tel}
+                                        helperText={helpers.tel}
+                                        name="tel"
+                                        value={fields.tel}
+                                        onChange={(e) => { handleChangeField("tel", e.target.value); }}
+                                        variant={variant}
+                                        size={fieldSize}
+                                    />
+                                </div>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <div>
                                     <span className={labelClassName}>* 권한</span>
                                     <TextField
                                         className={fieldClassName}
                                         error={errors.level}
-                                        // required={requires.level}
+                                        required={requires.level}
                                         helperText={helpers.level}
                                         name="level"
                                         value={fields.level}
                                         onChange={(e) => { handleChangeField("level", e.target.value); }}
-                                        // label="권한"
                                         variant={variant}
                                         size={fieldSize}
                                     />
@@ -771,15 +790,13 @@ const UserRegisterDialog = (props) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <div>
-                                    {/*// 7. 우편번호*/}
-                                    <span className={labelClassName}>우편 번호</span>
+                                    <span className={labelClassName}>우편번호</span>
                                     <FormControl
                                         error={errors.userZip}
                                         required={requires.userZip}
                                         size={fieldSize}
                                         className={fieldClassName}
                                     >
-                                        {/*<InputLabel>우편 번호</InputLabel>*/}
                                         <FilledInput
                                             name="userZip"
                                             value={fields.userZip}
@@ -808,7 +825,6 @@ const UserRegisterDialog = (props) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <div>
-                                    {/*// 8. 주소*/}
                                     <span className={labelClassName}>주소</span>
                                     <TextField
                                         className={fieldClassName}
@@ -819,7 +835,6 @@ const UserRegisterDialog = (props) => {
                                         name="userAddr"
                                         value={fields.userAddr}
                                         onChange={(e) => { handleChangeField("userAddr", e.target.value); }}
-                                        // label="주소"
                                         variant={variant}
                                         size={fieldSize}
                                     />
@@ -827,7 +842,6 @@ const UserRegisterDialog = (props) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <div>
-                                    {/*// 9. 상세주소*/}
                                     <span className={labelClassName}>상세주소</span>
                                     <TextField
                                         className={fieldClassName}
@@ -837,7 +851,6 @@ const UserRegisterDialog = (props) => {
                                         name="userAddrDetail"
                                         value={fields.userAddrDetail}
                                         onChange={(e) => { handleChangeField("userAddrDetail", e.target.value); }}
-                                        // label="상세주소"
                                         variant={variant}
                                         size={fieldSize}
                                     />
@@ -845,7 +858,6 @@ const UserRegisterDialog = (props) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <div>
-                                    {/*// 10. 이메일 인증*/}
                                     <span className={labelClassName}>이메일 인증</span>
                                     <FormControl
                                         size={fieldSize}
@@ -859,7 +871,6 @@ const UserRegisterDialog = (props) => {
                                             name="emailAuthValue"
                                             value={fields.emailAuthValue}
                                             onChange={(e) => { handleChangeField("emailAuthValue", e.target.value); }}
-                                            // onClick={handleClickCompanyMenu}
                                             MenuProps={MenuProps}
                                         >
                                             <MenuItem key={0} value="0">
@@ -877,7 +888,6 @@ const UserRegisterDialog = (props) => {
                                     <React.Fragment>
                                         <Grid item xs={6}>
                                             <div>
-                                                {/*// 10. 그룹 이메일 인증*/}
                                                 <span className={labelClassName}>그룹 이메일 인증: 사용자 선택</span>
                                                 <FormControl
                                                     size={fieldSize}
@@ -886,14 +896,17 @@ const UserRegisterDialog = (props) => {
                                                 >
                                                     <Select>
                                                         <List className={classes.list}>
-                                                            {userList && userList.map(item => (
-                                                                <ListItem button onClick={() => { handleClickEmailAuthUser(item); }}>
-                                                                    <ListItemAvatar>
-                                                                        <ReactAvatar className="topbar__avatar-img-list" name={item.id} size={40} />
-                                                                    </ListItemAvatar>
-                                                                    <ListItemText primary={item.name} secondary={item.email} />
-                                                                </ListItem>
-                                                            ))}
+                                                            {userList && userList.map((item, index) => {
+                                                                const key = index;
+                                                                return (
+                                                                    <ListItem key={key} button onClick={() => { handleClickEmailAuthUser(item); }}>
+                                                                        <ListItemAvatar>
+                                                                            <ReactAvatar className="topbar__avatar-img-list" name={item.id} size={40} />
+                                                                        </ListItemAvatar>
+                                                                        <ListItemText primary={item.name} secondary={item.email} />
+                                                                    </ListItem>
+                                                                );
+                                                            })}
                                                         </List>
                                                     </Select>
                                                 </FormControl>
@@ -904,15 +917,19 @@ const UserRegisterDialog = (props) => {
                                                 <React.Fragment>
                                                     <Grid item xs={12}>
                                                         <Paper className={classes.paper} variant="outlined" />
-                                                        { fields.emailAuthGroupList && fields.emailAuthGroupList.map(item => (
-                                                            <Chip
-                                                                variant="outlined"
-                                                                size="small"
-                                                                avatar={<Avatar alt={item.id} src="/static/images/avatar/1.jpg" />}
-                                                                label={item.email}
-                                                                onDelete={() => { handleDeleteEmailAuthGroupItem(item); }}
-                                                            />
-                                                        ))}
+                                                        { fields.emailAuthGroupList && fields.emailAuthGroupList.map((item, index) => {
+                                                            const key = index;
+                                                            return (
+                                                                <Chip
+                                                                    key={key}
+                                                                    variant="outlined"
+                                                                    size="small"
+                                                                    avatar={<Avatar alt={item.id} src="/static/images/avatar/1.jpg" />}
+                                                                    label={item.email}
+                                                                    onDelete={() => { handleDeleteEmailAuthGroupItem(item); }}
+                                                                />
+                                                            );
+                                                        })}
                                                         <Paper variant="outlined" square />
                                                     </Grid>
                                                 </React.Fragment>
@@ -921,6 +938,22 @@ const UserRegisterDialog = (props) => {
                                     </React.Fragment>
                                 ) : (<React.Fragment/>)
                             }
+                            <Grid item xs={12}>
+                                <span className={labelClassName}>메모</span>
+                                <TextField
+                                    className={fieldClassName}
+                                    error={errors.memo}
+                                    required={requires.memo}
+                                    helperText={helpers.memo}
+                                    name="memo"
+                                    value={fields.memo}
+                                    onChange={(e) => { handleChangeField("memo", e.target.value); }}
+                                    variant={variant}
+                                    size={fieldSize}
+                                    multiline
+                                    rows={4}
+                                />
+                            </Grid>
                             <Grid item xs={12}>
                                 <div>
                                     <Button
