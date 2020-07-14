@@ -2,12 +2,14 @@ import {
   CHANGE_BORDER_RADIUS,
   TOGGLE_BOX_SHADOW,
   TOGGLE_TOP_NAVIGATION,
+  TOGGLE_SIDEBAR_DROPDOWN,
 } from '../actions/customizerActions';
 
 const initialState = {
   squaredCorners: false,
   withBoxShadow: false,
   topNavigation: false,
+  sidebarDropdown: false,
 };
 
 export default function (state = initialState, action) {
@@ -18,6 +20,8 @@ export default function (state = initialState, action) {
       return { ...state, withBoxShadow: !state.withBoxShadow };
     case TOGGLE_TOP_NAVIGATION:
       return { ...state, topNavigation: !state.topNavigation };
+    case TOGGLE_SIDEBAR_DROPDOWN:
+      return { ...state, sidebarDropdown: !state.sidebarDropdown };
     default:
       return state;
   }

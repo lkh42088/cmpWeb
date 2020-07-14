@@ -5,7 +5,7 @@ import {
     GV_LOGIN_PAGE_INPUT_EMAIL,
     GV_LOGIN_PAGE_CONFIRM_EMAIL,
 } from "../../../../lib/globalVariable";
-import {checkLoginUser, logout} from "../../../../redux/actions/accountActions";
+import {checkLoginUser, logout} from "../../../../redux/actions/loginActions";
 import LoginConfirmEmailForm from "./LoginConfirmEmailForm";
 import LoginForm from "./LoginForm";
 

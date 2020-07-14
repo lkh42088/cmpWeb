@@ -2,9 +2,10 @@ import React, {useEffect, useState} from "react";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
-import DaumPostcode from "react-daum-postcode";
 import DialogActions from "@material-ui/core/DialogActions";
 import {Button} from "@material-ui/core";
+import DaumPostcode from "react-daum-postcode";
+
 
 const LookupZipcode = (props) => {
     /************************************************************************************
@@ -40,20 +41,23 @@ const LookupZipcode = (props) => {
     /************************************************************************************
      * JSX Template
      ************************************************************************************/
-    console.log("SearchZip...");
+    console.log("LookupZip...");
     return (
         <Dialog
             onClose={handleClose}
             open={open}
         >
             <DialogTitle id="simple-dialog-title">
-                <h3 className="bold-text">우편번호 검색</h3>
+                <div>
+                    <h3 className="bold-text">우편번호 검색</h3>
+                </div>
             </DialogTitle>
             <DialogContent>
                 <div>
                     <DaumPostcode
                         onComplete={onComplete}
-                        autoResize={autoResizeVal}
+                        width="300px"
+                        height="470px"
                     />
                 </div>
             </DialogContent>

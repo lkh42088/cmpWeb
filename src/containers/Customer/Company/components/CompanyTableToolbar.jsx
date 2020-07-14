@@ -3,7 +3,7 @@ import IconButton from "@material-ui/core/IconButton";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import {fade, lighten, makeStyles} from "@material-ui/core/styles";
+import {lighten, fade, makeStyles} from "@material-ui/core/styles";
 import Toolbar from "@material-ui/core/Toolbar";
 import clsx from "clsx";
 import Typography from "@material-ui/core/Typography";
@@ -12,45 +12,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
 import RefreshIcon from '@material-ui/icons/Refresh';
-import UserSearchBar from "./UserSearchBar";
 
-const useToolbarStyles = makeStyles(theme => ({
-    root: {
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(1),
-    },
-    highlight:
-        theme.palette.type === 'light'
-            ? {
-                color: theme.palette.secondary.main,
-                backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-            }
-            : {
-                color: theme.palette.text.primary,
-                backgroundColor: theme.palette.secondary.dark,
-            },
-    title:
-        theme.palette.type === 'light'
-            ? {
-                flex: '1 1 100%',
-                color: '#646777',
-                fontSize: 18,
-                fontFamily: "Nanum BarunGothic",
-            }
-            : {
-                flex: '1 1 100%',
-                color: '#dddddd',
-                fontSize: 18,
-                fontFamily: "Nanum BarunGothic",
-            },
-    selected: {
-        flex: '1 1 100%',
-        fontSize: 15,
-        fontFamily: "Nanum BarunGothic Bold",
-    },
-}));
-
-const TableFilterButton = (props) => {
+export const TableFilterButton = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const { rows, onRequestSort } = props;
 
@@ -104,18 +67,94 @@ const TableFilterButton = (props) => {
     );
 };
 
-const UserTableToolbar = (props) => {
+const useToolbarStyles = makeStyles(theme => ({
+    root: {
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(1),
+    },
+    highlight:
+        theme.palette.type === 'light'
+            ? {
+                color: theme.palette.secondary.main,
+                backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+            }
+            : {
+                color: theme.palette.text.primary,
+                backgroundColor: theme.palette.secondary.dark,
+            },
+    title:
+        theme.palette.type === 'light'
+            ? {
+                flex: '1 1 100%',
+                color: '#646777',
+                fontSize: 18,
+                fontFamily: "Nanum BarunGothic",
+            }
+            : {
+                flex: '1 1 100%',
+                color: '#dddddd',
+                fontSize: 18,
+                fontFamily: "Nanum BarunGothic",
+            },
+    selected: {
+        flex: '1 1 100%',
+        fontSize: 15,
+        fontFamily: "Nanum BarunGothic Bold",
+    },
+    search: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade(theme.palette.common.black, 0.15),
+        '&:hover': {
+            backgroundColor: fade(theme.palette.common.black, 0.25),
+        },
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: theme.spacing(1),
+            width: 'auto',
+        },
+    },
+    searchIcon: {
+        padding: theme.spacing(0, 2),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    inputRoot: {
+        color: 'inherit',
+    },
+    inputInput: {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            width: '50ch',
+            // '&:focus': {
+            //     width: '40ch',
+            // },
+        },
+    },
+    paper: {
+        width: '60ch',
+        color: 'inherit',
+        backgroundClip: theme.palette.common.white,
+    },
+}));
+
+const CompanyTableToolbar = (props) => {
     const classes = useToolbarStyles();
     const {
         toolbarTitle, rows, numSelected, handleDeleteSelected, onRequestSort,
-        handleOpen, contents, handleRefresh, handleSubmitSearch,
+        handleOpen, contents, handleRefresh,
     } = props;
     const addComment = contents.concat(" 추가");
     const deleteComment = `선택한 ${contents} 삭제`;
-
-    const handleDelete = () => {
-        console.log("handleDelete...");
-    };
 
     return (
         <div>
@@ -127,10 +166,10 @@ const UserTableToolbar = (props) => {
                         <Typography className={classes.selected} color="inherit" variant="subtitle1" component="div">
                             {numSelected} selected
                         </Typography>
-                        <Tooltip title="선택한 계정 삭제">
+                        <Tooltip title="선택한 항목 삭제">
                             <IconButton
-                                aria-label="delete"
                                 onClick={handleDeleteSelected}
+                                aria-label="delete"
                             >
                                 <DeleteIcon color="secondary" />
                             </IconButton>
@@ -141,40 +180,32 @@ const UserTableToolbar = (props) => {
                         <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
                             {toolbarTitle}
                         </Typography>
-                        {/*********************************************************************
-                         * Table Search bar
-                         **********************************************************************/}
-                        <UserSearchBar
-                            handleSubmit={handleSubmitSearch}
-                        />
                         <Grid container justify="center">
                             <Grid item container xs={12} alignItems="flex-end" direction="column">
                                 <Grid item>
-                                    <Tooltip title={addComment} aria-label="add">
+                                    <div>
+                                   <Tooltip title={addComment} aria-label="add">
                                         <IconButton type="button" onClick={handleOpen}>
                                             <AddIcon/>
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Refresh" aria-label="refresh">
-                                            <IconButton
-                                                type="button"
-                                                onClick={handleRefresh}
-                                            >
+                                            <IconButton type="button" onClick={handleRefresh}>
                                                 <RefreshIcon/>
                                             </IconButton>
                                     </Tooltip>
                                     {numSelected > 0 ? (
                                         <Tooltip title={deleteComment} aria-label="delete">
                                             <IconButton
-                                                type="button"
-                                                onClick={handleDeleteSelected}
+                                                aria-label="delete"
                                             >
                                                 <DeleteIcon/>
                                             </IconButton>
                                         </Tooltip>
                                     ) : (
-                                        <TableFilterButton rows={rows} onRequestSort={onRequestSort}/>
+                                            <TableFilterButton rows={rows} onRequestSort={onRequestSort}/>
                                     )}
+                                    </div>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -185,4 +216,4 @@ const UserTableToolbar = (props) => {
     );
 };
 
-export default UserTableToolbar;
+export default CompanyTableToolbar;

@@ -34,14 +34,16 @@ export const TableFilterButton = (props) => {
 
     return (
         <Fragment>
-            <IconButton
-                className="cb-material-table__tooltip-button"
-                aria-owns={anchorEl ? 'simple-menu' : null}
-                aria-haspopup="true"
-                onClick={handleClick}
-            >
-                <FilterListIcon />
-            </IconButton>
+            <Tooltip title="정렬목록" aria-label="sort">
+                <IconButton
+                    className="cb-material-table__tooltip-button"
+                    aria-owns={anchorEl ? 'simple-menu' : null}
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                >
+                    <FilterListIcon />
+                </IconButton>
+            </Tooltip>
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
@@ -52,8 +54,9 @@ export const TableFilterButton = (props) => {
                 {
                     rows.map(row => (
                         <MenuItem
-                            onClick={handleSort(rows.id)}
+                            onClick={handleSort(row.id)}
                             className="cb-material-table__filter-menu-item"
+                            key={row.id}
                         >
                             {row.label}
                         </MenuItem>
@@ -200,9 +203,7 @@ const CbAdminTableToolbar = (props) => {
                                             </IconButton>
                                         </Tooltip>
                                     ) : (
-                                        <Tooltip title="정렬목록" aria-label="sort">
-                                            <TableFilterButton rows={rows} onRequestSort={onRequestSort}/>
-                                        </Tooltip>
+                                        <TableFilterButton rows={rows} onRequestSort={onRequestSort}/>
                                     )}
                                     </div>
                                 </Grid>

@@ -6,7 +6,7 @@ import {
     CHECK_USER_SUCCESS,
     CHECK_USER_FAILURE,
     LOGOUT, CHANGE_LOGIN_PAGE,
-} from "../actions/accountActions";
+} from "../actions/loginActions";
 import {GV_LOGIN_PAGE_FIRST} from "../../lib/globalVariable";
 
 const initialState = {

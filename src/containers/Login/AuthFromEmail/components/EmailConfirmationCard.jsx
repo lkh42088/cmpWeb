@@ -5,7 +5,7 @@ import {
 import EmailIcon from 'mdi-react/EmailIcon';
 import CheckboxMarkedCircleIcon from 'mdi-react/CheckboxMarkedCircleIcon';
 import { Link } from 'react-router-dom';
-import {loginEmailConfirm} from "../../../../lib/api/auth";
+import {loginEmailConfirm} from "../../../../lib/api/login";
 
 const EmailConfirmationCard = (props) => {
   const {id, target, secret} = props;

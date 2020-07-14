@@ -27,13 +27,14 @@ import {
 } from '../../redux/actions/rtlActions';
 import {
     changeBorderRadius,
+    changeToSidebarDropdown,
     toggleBoxShadow,
     toggleTopNavigation,
 } from '../../redux/actions/customizerActions';
 import {
     CustomizerProps, SidebarProps, ThemeProps, RTLProps, UserProps, MenuTitleProps,
 } from '../../shared/prop-types/ReducerProps';
-import {logout} from "../../redux/actions/accountActions";
+import {logout} from "../../redux/actions/loginActions";
 
 let notification = null;
 
@@ -214,6 +215,11 @@ class Layout extends Component {
         dispatch(toggleBoxShadow());
     };
 
+    changeToSidebarDropdown = () => {
+        const {dispatch} = this.props;
+        dispatch(changeToSidebarDropdown());
+    };
+
     logout = () => {
         const {dispatch} = this.props;
         dispatch(logout());
@@ -248,6 +254,7 @@ class Layout extends Component {
                     changeToLTR={this.changeToLTR}
                     changeBorderRadius={this.changeBorderRadius}
                     toggleBoxShadow={this.toggleBoxShadow}
+                    changeToSidebarDropdown={this.changeToSidebarDropdown}
                 />
                 {customizer.topNavigation
                     ? (

@@ -11,6 +11,7 @@ import ToggleSquared from './ToggleSquared';
 import ToggleShadow from './ToggleShadow';
 import ToggleTopMenu from './ToggleTopMenu';
 import ToggleRTL from './ToggleRTL';
+import ToggleSidebar from "./ToggleSidebar";
 
 const settings = `${process.env.PUBLIC_URL}/img/settings.svg`;
 
@@ -29,6 +30,7 @@ export default class Customizer extends PureComponent {
     changeToLTR: PropTypes.func.isRequired,
     changeBorderRadius: PropTypes.func.isRequired,
     toggleBoxShadow: PropTypes.func.isRequired,
+    changeToSidebarDropdown: PropTypes.func.isRequired,
   };
 
   state = {
@@ -67,11 +69,13 @@ export default class Customizer extends PureComponent {
       toggleTopNavigation,
       changeToDark,
       changeToLight,
+      changeToSidebarDropdown,
       changeToRTL,
       changeToLTR,
       changeBorderRadius,
       toggleBoxShadow,
     } = this.props;
+    const {show, collapse} = sidebar;
 
     return (
       <div className="customizer">
@@ -95,6 +99,10 @@ export default class Customizer extends PureComponent {
           {/*<ToggleSquared customizer={customizer} changeBorderRadius={changeBorderRadius} />*/}
           {/*<ToggleShadow customizer={customizer} toggleBoxShadow={toggleBoxShadow} />*/}
           {/*<ToggleRTL customizer={customizer} changeToRTL={changeToRTL} changeToLTR={changeToLTR} rtl={rtl} />*/}
+          {(!show && !collapse)
+              ? (<ToggleSidebar changeToSidebar={changeToSidebarDropdown} customizer={customizer}/>)
+              : null
+          }
         </div>
       </div>
     );

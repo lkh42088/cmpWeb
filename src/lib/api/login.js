@@ -26,5 +26,5 @@ export const loginEmailConfirm = ({
  id, target, secret,
 });
 
-export const check = () => client.get('/v1/auth/check');
+export const checkLogin = () => client.get('/v1/auth/check');
 export const logout = () => client.post('/v1/auth/logout');

@@ -10,8 +10,8 @@ import {
     changeLoginField,
     initLoginForm,
     changeLoginPage,
-} from "../../../../redux/actions/accountActions";
-import {login} from "../../../../lib/api/auth";
+} from "../../../../redux/actions/loginActions";
+import {login} from "../../../../lib/api/login";
 import {GV_LOGIN_PAGE_CONFIRM_EMAIL, GV_LOGIN_PAGE_INPUT_EMAIL} from "../../../../lib/globalVariable";
 
 const LoginForm = () => {

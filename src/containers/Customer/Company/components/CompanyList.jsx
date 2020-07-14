@@ -16,7 +16,11 @@ import TableContainer from "@material-ui/core/TableContainer";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {makeStyles} from "@material-ui/core/styles";
 import Switch from "@material-ui/core/Switch";
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import Collapse from "@material-ui/core/Collapse";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import { useSnackbar } from 'notistack';
 import ReactTooltip from "react-tooltip";
 import {
     initRegisterCompany,
@@ -35,11 +39,10 @@ import {
     pagingChangeSelected,
     pagingChangeTotalCount,
 } from "../../../../redux/actions/pagingActions";
-import CbAdminTableToolbar from "../../../Common/CbAdminTableToolbar";
 import CommonTableHead from "../../../Common/CommonTableHead";
-// import AddCompany from "./AddCompany";
 import RegisterCompanyPage from "./RegisterCompanyPage";
 import {registerCompany, unregisterCompany} from "../../../../lib/api/company";
+import CompanyTableToolbar from "./CompanyTableToolbar";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -87,6 +90,22 @@ const useStyles = makeStyles(theme => ({
     reactTooltip: {
         fontSize: 7,
         fontFamily: "GmarketSansTTFBold",
+    },
+    spanSubject: {
+        display: 'inline-block',
+        width: '100px',
+    },
+    spanContents: {
+        display: 'inline-block',
+        // width: '200px',
+    },
+    grid: {
+        flexGrow: 1,
+    },
+    row: {
+        '& > *': {
+            borderBottom: 'unset',
+        },
     },
 }));
 
@@ -285,25 +304,26 @@ const CompanyList = () => {
         getPageData();
     };
 
-    const handleRegisterCompany = async ({
-        cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage,
-        cpTel, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
-        userId, userPassword,
-    }) => {
+    const doRegisterCompany = async (props) => {
+        const {
+          cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage,
+          cpTel, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
+          userId, userPassword,
+        } = props;
         try {
             const response = await registerCompany({
                 cpName,
+                cpTel,
                 cpZip,
+                cpEmail,
+                cpHomepage,
                 cpAddr,
                 cpAddrDetail,
-                cpHomepage,
-                cpTel,
-                cpEmail,
+                userId,
+                userPassword,
                 cpIsCompany,
                 cpMemo,
                 cpTerminationDate,
-                userId,
-                userPassword,
             });
             handleTriggerSuccess("고객사 등록에 성공하였습니다.");
             getPageData();
@@ -312,6 +332,12 @@ const CompanyList = () => {
             getPageData();
             console.log("handleRegisterCompany error!");
         }
+    };
+
+    const handleRegisterCompany = (props) => {
+        console.log("handleRegisterCompany: ", props);
+        doRegisterCompany(props);
+        setOpen(false);
     };
 
     useEffect(() => {
@@ -384,83 +410,168 @@ const CompanyList = () => {
                       getContent={dataTip => `${dataTip}`} />
     );
 
-    const tableRows = (
-        <TableBody>
-            { data && data.map((row) => {
-                const isSelected = getSelected(row.idx);
-                    return (
-                        <TableRow
-                            hover
-                            className="cb-material-table__row"
-                            role="checkbox"
-                            onClick={event => handleClick(event, row.idx)}
-                            aria-checked={isSelected}
-                            tabIndex={-1}
-                            key={row.idx}
-                            selected={isSelected}
 
-                        >
-                            <TableCell className="cb-material-table__cell" padding="checkbox" >
-                                <Checkbox checked={isSelected} className="cb-material-table__checkbox" />
-                            </TableCell>
-                            <TableCell
-                                className="cb-material-table__cell cb-material-table__cell-right"
-                                style={{width: "5%"}}
-                            >
-                                {row.idx}
-                            </TableCell>
-                            <TableCell
-                                className="cb-material-table__cell cb-material-table__cell-right"
-                                style={{width: "15%"}}
-                            >
-                                {row.name}
-                            </TableCell>
-                            <TableCell
-                                className="cb-material-table__cell cb-material-table__cell-right"
-                                style={{width: "15%"}}
-                            >
-                                {row.tel}
-                            </TableCell>
-                            <TableCell
-                                className="cb-material-table__cell cb-material-table__cell-right"
-                                style={{width: "15%"}}
-                            >
-                                {row.email}
-                            </TableCell>
-                            <TableCell className="cb-material-table__cell cb-material-table__cell-right"
-                                style={{width: "10%"}}
-                            >
-                                {row.cpUserId}
-                            </TableCell>
-                            <TableCell
-                                className="cb-material-table__cell cb-material-table__cell-right"
-                                style={{width: "25%"}}
-                                data-tip={row.address}
-                                data-for="tooltip"
-                            >
-                                {checkStringLength(row.address)}
-                            </TableCell>
-                                <TableCell
-                                className="cb-material-table__cell cb-material-table__cell-right"
-                                style={{width: "25%"}}
-                                data-tip={row.memo}
-                                data-for="tooltip"
-                            >
-                                {checkStringLength(row.memo)}
-                                {tooltip}
-                            </TableCell>
-                        </TableRow>
-                    );
-                })
+    const getAddress = (row) => {
+        let address = "-";
+        if (row.zipcode) {
+            address = row.zipcode;
+            address = address.concat(', ');
+        }
+        if (row.address) {
+            address = address.concat(row.address);
+        }
+        if (row.addressDetail) {
+            if (row.address) {
+                address = address.concat(', ');
+                address = address.concat(row.addressDetail);
+            } else {
+                address = address.concat(row.addressDetail);
             }
-        </TableBody>
-    );
+        }
+        return address;
+    };
+
+    const DumpRow = (props) => {
+        const { row } = props;
+        const [openCollapse, setOpenCollapse] = React.useState(false);
+        const isSelected = getSelected(row.idx);
+        const address = getAddress(row);
+        return (
+            <React.Fragment>
+                <TableRow
+                    hover
+                    // className="cb-material-table__row"
+                    className={classes.row}
+                    role="checkbox"
+                    onClick={() => setOpenCollapse(!openCollapse)}
+                    aria-checked={isSelected}
+                    selected={isSelected}
+                >
+                    <TableCell
+                        className="cb-material-table__cell"
+                        padding="checkbox"
+                        onClick={event => handleClick(event, row.idx)}
+                    >
+                        <Checkbox checked={isSelected} className="cb-material-table__checkbox" />
+                    </TableCell>
+                    <TableCell
+                        className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "5%"}}
+                    >
+                        {row.idx}
+                    </TableCell>
+                    <TableCell
+                        className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "15%"}}
+                        onFocus={() => { setOpenCollapse(true); }}
+                        onMouseOver={() => { setOpenCollapse(true); }}
+                        onMouseLeave={() => { setOpenCollapse(false); }}
+                    >
+                        {row.name}
+                    </TableCell>
+                    <TableCell
+                        className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "15%"}}
+                    >
+                        {row.tel}
+                    </TableCell>
+                    <TableCell
+                        className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "15%"}}
+                    >
+                        {row.email}
+                    </TableCell>
+                    <TableCell className="cb-material-table__cell cb-material-table__cell-right"
+                               style={{width: "10%"}}
+                    >
+                        {row.cpUserId}
+                    </TableCell>
+                    <TableCell
+                        className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "25%"}}
+                        data-tip={row.address}
+                        data-for="tooltip"
+                    >
+                        {checkStringLength(row.address)}
+                    </TableCell>
+                    <TableCell
+                        className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "25%"}}
+                        data-tip={row.memo}
+                        data-for="tooltip"
+                    >
+                        {checkStringLength(row.memo)}
+                        {tooltip}
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
+                        <Collapse in={openCollapse} timeout="auto" unmountOnExit>
+                            <Box margin={1}>
+                                <Typography variant="h6" gutterBottom component="div">
+                                    {row.name}
+                                </Typography>
+                                <div className={classes.grid}>
+                                    <Grid container spacing={1}>
+                                        <Grid item xs={12} sm={6}>
+                                            <ul>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 회사명 </span>
+                                                    <span className={classes.spanContents}> {row.name} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> Idx </span>
+                                                    <span className={classes.spanContents}> {row.idx} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 이메일 </span>
+                                                    <span className={classes.spanContents}> {row.email} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 대표 계정 </span>
+                                                    <span className={classes.spanContents}> {row.cpUserId} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 전화번호</span>
+                                                    <span className={classes.spanContents}> {row.tel} </span>
+                                                </li>
+                                            </ul>
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            <ul>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 주소 </span>
+                                                    <span className={classes.spanContents}> {address} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 등록일 </span>
+                                                    {/*<span className={classes.spanContents}> {row.} </span>*/}
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 홈페이지 </span>
+                                                    <span className={classes.spanContents}> {row.homepage} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 메모 </span>
+                                                    <span className={classes.spanContents}> {row.memo} </span>
+                                                </li>
+                                            </ul>
+                                        </Grid>
+                                    </Grid>
+                                </div>
+                            </Box>
+                        </Collapse>
+                    </TableCell>
+                </TableRow>
+            </React.Fragment>
+        );
+    };
 
     return (
         <Col md={12} lg={12}>
             <Card className="cb-card">
                 <CardBody className="cb-card-body">
-                    <CbAdminTableToolbar
+                    <CompanyTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
                         handleDeleteSelected={handleDeleteSelected}
                         onRequestSort={handleRequestSort}
@@ -486,7 +597,15 @@ const CompanyList = () => {
                                     rowCount={data && data.length ? data.length : 0}
                                     rows={headRows}
                                 />
-                                {tableRows}
+                                <TableBody>
+                                    { data && data.map((row, index) => {
+                                        const keyId = index;
+                                        return (
+                                            <DumpRow key={keyId} row={row}/>
+                                        );
+                                    })
+                                    }
+                                </TableBody>
                             </Table>
                         </TableContainer>
                         {paginationBar}
@@ -496,14 +615,13 @@ const CompanyList = () => {
                             label="Dense padding"
                         />
                     </div>
-                    {/*<AddCompany open={open} handleClose={handleClose} refreshPage={getPageData}/>*/}
                     <RegisterCompanyPage
                         open={open}
                         handleClose={handleClose}
                         handleSubmit={handleRegisterCompany}
                         refreshPage={getPageData}
                     />
-                </CardBody>
+               </CardBody>
             </Card>
         </Col>
     );

@@ -19,11 +19,10 @@ import {
     accountReducer,
     loadingReducer,
     usersReducer,
-    userRegisterReducer,
     pagingReducer,
     companiesReducer,
 } from '../../redux/reducers/index';
-import {checkLoginUser, userSaga} from "../../redux/actions/accountActions";
+import {checkLoginUser, userSaga} from "../../redux/actions/loginActions";
 import {usersSaga} from "../../redux/actions/usersActions";
 import {companiesSaga} from "../../redux/actions/companiesActions";
 import {createSubnetSaga} from "../../redux/actions/subnetActions";
@@ -42,7 +41,6 @@ const rootReducer = combineReducers({
     loading: loadingReducer,
     accountRd: accountReducer,
     usersRd: usersReducer,
-    userRegisterRd: userRegisterReducer,
     pagingRd: pagingReducer,
     companiesRd: companiesReducer,
 });

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
 import {
     Card, CardBody, Col,
 } from "reactstrap";
@@ -19,22 +18,15 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import SearchIcon from '@material-ui/icons/Search';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxOutlinedIcon from '@material-ui/icons/CheckBoxOutlined';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import BusinessIcon from '@material-ui/icons/Business';
+import {checkDupCompany} from "../../../../lib/api/company";
+import {checkDuplicateUser} from "../../../../lib/api/users";
 import {
-    addCompany,
-    changeCompanyRegisterField,
-    checkCompanyRegisterField,
-    checkDupCompany, initRegisterCompany,
-} from "../../../../redux/actions/companiesActions";
-import SearchZip from "./SearchZip";
-import {
-    changeUserRegisterField,
-    checkDupUser,
-    checkUserRegisterField, initRegisterUser,
-    registerUser,
-} from "../../../../redux/actions/usersActions";
-import {checkPasswordPattern} from "../../../../lib/utils/utils";
+    checkAddress,
+    checkCompanyName, checkEmail, checkId, checkPasswordPattern, checkTelephone, checkZipCode,
+} from "../../../../lib/utils/utils";
+import LookupZipcode from "../../../Common/LookupZipcode";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -107,228 +99,140 @@ const RegisterCompanyPage = (props) => {
      * Variable
      ************************************************************************************/
     const classes = useStyles();
-    const dispatch = useDispatch();
-    const {
-        isError,
-        required,
-        helperText,
-        disabled,
-        /** message */
-        checkCompany,
-        confirmCompany,
-        cpMsg,
-        cpMsgError,
-        /** register */
-        company,
-        cpName,
-        cpZip,
-        cpAddr,
-        cpAddrDetail,
-        cpHomepage,
-        cpEmail,
-        cpTel,
-        cpMemo,
-    } = useSelector(({ companiesRd }) => ({
-        /** message */
-        checkCompany: companiesRd.checkCompany,
-        confirmCompany: companiesRd.confirmCompany,
-        cpMsg: companiesRd.msg,
-        cpMsgError: companiesRd.msgError,
-        isError: companiesRd.isError,
-        helperText: companiesRd.helperText,
-        required: companiesRd.required,
-        register: companiesRd.register,
-        disabled: companiesRd.disabled,
-        /** register */
-        company: companiesRd.register,
-        cpName: companiesRd.register.cpName,
-        cpZip: companiesRd.register.cpZip,
-        cpAddr: companiesRd.register.cpAddr,
-        cpAddrDetail: companiesRd.register.cpAddrDetail,
-        cpHomepage: companiesRd.register.cpHomepage,
-        cpEmail: companiesRd.register.cpEmail,
-        cpTel: companiesRd.register.cpTel,
-        cpMemo: companiesRd.register.cpMemo,
-    }));
-
-    const {
-        user,
-        checkUser,
-        confirmUser,
-        userIsError,
-        userRequired,
-        userDisabled,
-        userHelperText,
-        /** register */
-        userId, userPassword,
-        /** message */
-    } = useSelector(({ usersRd, userRegisterRd }) => ({
-        user: userRegisterRd.register,
-        checkUser: userRegisterRd.checkUser,
-        confirmUser: userRegisterRd.confirmUser,
-        userIsError: userRegisterRd.isError,
-        userRequired: userRegisterRd.required,
-        userDisabled: userRegisterRd.disabled,
-        userHelperText: userRegisterRd.helperText,
-        /** register */
-        userId: userRegisterRd.register.userId,
-        userPassword: userRegisterRd.register.password,
-    }));
-
+    /** props */
     const {open, handleClose, handleSubmit } = props;
-
-    /** cpName */
-    const [nameButtonDisable, setNameButtonDisable] = useState(true);
-    const [openZip, setOpenZip] = useState(false);
-
-    const [values, setValues] = React.useState({
+    /** Fields */
+    const [fields, setFields] = useState({
+        cpName: "",
+        cpIdx: 0,
+        cpZip: "",
+        cpAddr: "",
+        cpAddrDetail: "",
+        cpHomepage: "",
+        cpTel: "",
+        cpEmail: "",
+        cpIsCompany: false,
+        cpMemo: "",
+        cpTerminationDate: new Date(),
+        userId: "",
+        userPassword: "",
+    });
+    /** Requires */
+    const [requires, setRequires] = useState({
+        cpName: true,
+        cpIdx: false,
+        cpZip: true,
+        cpAddr: true,
+        cpAddrDetail: false,
+        cpHomepage: false,
+        cpTel: true,
+        cpEmail: true,
+        cpIsCompany: false,
+        cpMemo: false,
+        cpTerminationDate: false,
+        userId: true,
+        userPassword: true,
+    });
+    /** HelperText */
+    const [helpers, setHelpers] = useState({
+        cpName: "",
+        cpIdx: "",
+        cpZip: "",
+        cpAddr: "",
+        cpAddrDetail: "",
+        cpHomepage: "",
+        cpTel: "",
+        cpEmail: "",
+        cpIsCompany: "",
+        cpMemo: "",
+        cpTerminationDate: "",
+        userId: "",
+        userPassword: "",
+    });
+    /** Error */
+    const [errors, setErrors] = useState({
+        cpName: false,
+        cpIdx: false,
+        cpZip: false,
+        cpAddr: false,
+        cpAddrDetail: false,
+        cpHomepage: false,
+        cpTel: false,
+        cpEmail: false,
+        cpIsCompany: false,
+        cpMemo: false,
+        cpTerminationDate: false,
+        userId: false,
+        userPassword: false,
+    });
+    const [confirmCompany, setConfirmCompany] = useState(false);
+    const [confirmUser, setConfirmUser] = useState(false);
+    const [values, setValues] = useState({
         amount: '',
-        password: '',
+        userPassword: '',
         weight: '',
         weightRange: '',
         showPassword: false,
     });
+    const [openZip, setOpenZip] = useState(false);
+
+    /************************************************************************************
+     * Function
+     ************************************************************************************/
+    const reset = () => {
+        setFields({
+            cpName: "",
+            cpIdx: 0,
+            cpZip: "",
+            cpAddr: "",
+            cpAddrDetail: "",
+            cpHomepage: "",
+            cpTel: "",
+            cpEmail: "",
+            cpIsCompany: false,
+            cpMemo: "",
+            cpTerminationDate: new Date(),
+            userId: "",
+            userPassword: "",
+        });
+        setHelpers({
+            cpName: "* 동일한 고객사가 있는지 중복 check를 해주세요.",
+            cpIdx: "",
+            cpZip: "",
+            cpAddr: "",
+            cpAddrDetail: "",
+            cpHomepage: "",
+            cpTel: "",
+            cpEmail: "",
+            cpIsCompany: "",
+            cpMemo: "",
+            cpTerminationDate: "",
+            userId: "",
+            userPassword: "",
+        });
+        setErrors({
+            cpName: false,
+            cpIdx: false,
+            cpZip: false,
+            cpAddr: false,
+            cpAddrDetail: false,
+            cpHomepage: false,
+            cpTel: false,
+            cpEmail: false,
+            cpIsCompany: false,
+            cpMemo: false,
+            cpTerminationDate: false,
+            userId: false,
+            userPassword: false,
+        });
+        setConfirmCompany(false);
+        setConfirmUser(false);
+    };
 
     const handlePassChange = prop => (event) => {
         setValues({ ...values, [prop]: event.target.value });
     };
 
-    const handleClickShowPassword = () => {
-        setValues({ ...values, showPassword: !values.showPassword });
-    };
-
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
-
-    /************************************************************************************
-     * Function
-     ************************************************************************************/
-    const handleNameChange = (value) => {
-        if (checkCompany === true) {
-            dispatch(changeCompanyRegisterField({key: "checkCompany", value: false}));
-            if (confirmCompany === true) {
-                dispatch(changeCompanyRegisterField({key: "confirmCompany", value: false}));
-            }
-        }
-
-        if (value.length === 0 && nameButtonDisable === false) {
-            setNameButtonDisable(true);
-        } else if (value.length !== 0 && nameButtonDisable === true) {
-            setNameButtonDisable(false);
-        }
-    };
-
-    const handleChangeUserTextField = ({name, value}) => {
-        console.log("[handleChange] name: ", name, ", value: ", value);
-        dispatch(changeUserRegisterField({key: name, value}));
-    };
-
-    const handleChangeTextField = ({name, value}) => {
-        console.log("[handleChange] name: ", name, ", value: ", value);
-        // dispatch(changeCompanyRegField({ key: name, value }));
-        dispatch(changeCompanyRegisterField({ key: name, value }));
-        if (name === "cpName") {
-            handleNameChange(value);
-        }
-    };
-
-    const handleChangeDateField = (date) => {
-        console.log("[handleChange Date] date: ", date, ", type: ", typeof (date));
-        console.log("date: ", date.getFullYear(),
-            date.getMonth(),
-            date.getDate(),
-            date.getDay());
-        dispatch(changeCompanyRegisterField({ key: "cpTerminationDate", value: date}));
-    };
-
-    const handleCheckDupCompany = () => {
-        console.log("handleCheckDupCompany: ", cpName);
-        if (cpName !== "") {
-            dispatch(checkDupCompany({cpName}));
-        }
-    };
-
-    const handleCancel = () => {
-        console.log("handleCancel: ");
-        dispatch(initRegisterCompany());
-        dispatch(initRegisterUser());
-        handleClose();
-    };
-
-    const isReadyRegisterCompany = () => {
-        // eslint-disable-next-line no-useless-escape
-        const checkEmail = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
-        if (company.cpName !== ""
-            && company.cpZip !== ""
-            && company.cpAddr !== ""
-            && company.cpAddrDetail !== ""
-            && company.cpTel !== ""
-            && company.cpEmail !== ""
-            && checkEmail.test(company.cpEmail)
-            && checkCompany
-            && confirmCompany
-        ) {
-            console.log("read company: success");
-            return true;
-        }
-        console.log("read company: fail");
-        return false;
-    };
-
-    const isReadyRegisterUser = () => {
-        if (user.userId !== ""
-            && user.password !== ""
-            && checkUser
-            && confirmUser
-            && checkPasswordPattern(user.password)
-        ) {
-            console.log("read user: success");
-            return true;
-        }
-        console.log("read user: fail");
-        return false;
-    };
-
-    const handleFinish = () => {
-        console.log("handleFinish: ");
-        dispatch(checkCompanyRegisterField());
-        dispatch(checkUserRegisterField());
-        if (isReadyRegisterCompany() && isReadyRegisterUser()) {
-            console.log("send add company");
-            // dispatch(addCompany({
-            //     cpName: company.cpName,
-            //     cpZip: company.cpZip,
-            //     cpAddr: company.cpAddr,
-            //     cpAddrDetail: company.cpAddrDetail,
-            //     cpHomepage: company.cpHomepage,
-            //     cpTel: company.cpTel,
-            //     cpEmail: company.cpEmail,
-            //     cpIsCompany: company.cpIsCompany,
-            //     cpMemo: company.cpMemo,
-            //     cpTerminationDate: company.cpTerminationDate,
-            //     userId,
-            //     userPassword,
-            // }));
-            handleSubmit({
-                cpName: company.cpName,
-                cpZip: company.cpZip,
-                cpAddr: company.cpAddr,
-                cpAddrDetail: company.cpAddrDetail,
-                cpHomepage: company.cpHomepage,
-                cpTel: company.cpTel,
-                cpEmail: company.cpEmail,
-                cpIsCompany: company.cpIsCompany,
-                cpMemo: company.cpMemo,
-                cpTerminationDate: company.cpTerminationDate,
-                userId,
-                userPassword,
-            });
-            handleClose();
-        }
-    };
-
-    /** Address ZIP */
     const handleOpenSearchZip = () => {
         setOpenZip(true);
     };
@@ -337,47 +241,245 @@ const RegisterCompanyPage = (props) => {
         setOpenZip(false);
     };
 
-    const handleCompleteZip = ({zip, address}) => {
-        dispatch(changeCompanyRegisterField({ key: "cpZip", value: zip }));
-        dispatch(changeCompanyRegisterField({ key: "cpAddr", value: address }));
+    const handleCompleteZip = (zip, address) => {
+        console.log("handleCompleteZip() ", zip, address);
+        setFields({
+            ...fields,
+            cpZip: zip,
+            cpAddr: address,
+        });
     };
 
-    const handleCheckDupUser = () => {
-        if (userId !== "") {
-            dispatch(checkDupUser({userId}));
+    const handleClickShowPassword = () => {
+        setValues({ ...values, showPassword: !values.showPassword });
+    };
+
+    const handleCancel = () => {
+        handleClose();
+        reset();
+    };
+
+    const checkCompanyValidation = () => {
+        /** company name */
+        let errorCpName = false;
+        let helperCpName = checkCompanyName(fields.cpName);
+        if (helperCpName !== "") {
+            errorCpName = true;
+        } else if (confirmCompany === false) {
+            helperCpName = "* 고객사명을 중복확인 하십시오!";
+            errorCpName = true;
+        }
+
+        /** tel */
+        let errorTel = false;
+        const helperTel = checkTelephone(fields.cpTel);
+        if (helperTel !== "") {
+            errorTel = true;
+        }
+
+        /** email */
+        let errorEmail = false;
+        const helperEmail = checkEmail(fields.cpEmail);
+        if (helperEmail !== "") {
+            errorEmail = true;
+        }
+
+        /** id */
+        let errorId = false;
+        let helperId = checkId(fields.userId);
+        if (helperId !== "") {
+            errorId = true;
+        } else if (confirmUser === false) {
+            helperId = "* ID를 중복확인 하십시오!";
+            errorId = true;
+        }
+
+        /** password */
+        let errorPassword = false;
+        const helperPassword = checkPasswordPattern(fields.userPassword);
+        if (helperPassword !== "") {
+            errorPassword = true;
+        }
+
+        /** zip */
+        let errorZip = false;
+        const helperZip = checkZipCode(fields.cpZip);
+        if (helperZip !== "") {
+            errorZip = true;
+        }
+
+        /** address */
+        let errorAddress = false;
+        const helperAddress = checkAddress(fields.cpAddr);
+        if (helperAddress !== "") {
+            console.log("error");
+            errorAddress = true;
+        }
+
+        setErrors({
+            ...errors,
+            cpName: errorCpName,
+            cpTel: errorTel,
+            cpEmail: errorEmail,
+            cpZip: errorZip,
+            cpAddr: errorAddress,
+            userId: errorId,
+            userPassword: errorPassword,
+        });
+
+        setHelpers({
+            ...helpers,
+            cpName: helperCpName,
+            cpTel: helperTel,
+            cpEmail: helperEmail,
+            cpZip: helperZip,
+            cpAddr: helperAddress,
+            userId: helperId,
+            userPassword: helperPassword,
+        });
+
+        if (errorCpName
+            || errorTel
+            || errorEmail
+            || errorId
+            || errorPassword
+            || errorZip
+            || errorAddress) {
+            return false;
+        }
+        return true;
+    };
+
+    const handleSubmitWrap = () => {
+        console.log("handleSubmitWrap...");
+        if (!checkCompanyValidation()) {
+            console.log("fail!");
+            return;
+        }
+        console.log("success!");
+        handleSubmit(fields);
+        reset();
+    };
+
+    const handleChangeFields = (e) => {
+        const { name, value } = e.target;
+        console.log("change: name ", name, ", value: ", value);
+        setFields({
+            ...fields,
+            [name]: value,
+        });
+        setErrors({
+            ...errors,
+            [name]: false,
+        });
+        setHelpers({
+            ...helpers,
+            [name]: "",
+        });
+        if (name === "cpName" && confirmCompany) {
+            setConfirmCompany(false);
+        }
+        if (name === "userId" && confirmUser) {
+            setConfirmUser(false);
         }
     };
 
-    /************************************************************************************
-     * useEffect
-     ************************************************************************************/
-    useEffect(() => {
-        console.log("[useEffect] INIT");
-    }, []);
+    const checkCompany = async (name) => {
+        try {
+            const response = await checkDupCompany({cpName: name});
+            console.log("checkCompany... true");
+            setConfirmCompany(true);
+        } catch (e) {
+            console.log("checkCompany... false");
+            setConfirmCompany(false);
+            setErrors({
+                ...errors,
+                cpName: true,
+            });
+            setHelpers({
+                ...helpers,
+                cpName: "* 존재하는 고객사명입니다!",
+            });
+        }
+    };
 
-    useEffect(() => {
-    }, [cpMsg]);
+    const handleCheckDuplicateCompany = () => {
+        console.log("check dup company ", fields.cpName);
+        const helperCpName = checkCompanyName(fields.cpName);
+        if (helperCpName !== "") {
+            setErrors({
+                ...errors,
+            });
+            setHelpers({
+                ...helpers,
+                cpName: helperCpName,
+            });
+            return;
+        }
+        checkCompany(fields.cpName);
+    };
 
-    useEffect(() => {
-        // handleClose();
-    }, [cpMsgError]);
+    const handleMouseDownPassword = () => {
+    };
 
-    console.log("Company Page..");
+    const checkUser = async () => {
+        try {
+            const response = await checkDuplicateUser({userId: fields.userId});
+            setConfirmUser(true);
+            setErrors({
+                ...errors,
+                userId: false,
+            });
+            console.log("checkUser: success", response.data);
+            setHelpers({
+                ...helpers,
+                userId: "* 사용 가능한 ID 입니다.",
+            });
+        } catch (error) {
+            console.log("checkUser: error ", error);
+            setConfirmUser(false);
+            setErrors({
+                ...errors,
+                userId: true,
+            });
+            setHelpers({
+                ...helpers,
+                userId: "* 이미 존재하는 ID 입니다.",
+            });
+        }
+    };
+
+    const handleCheckUser = () => {
+        console.log("handleCheckUser: ");
+        const res = checkId(fields.userId);
+        if (res !== "") {
+            setErrors({
+                ...errors,
+                userId: true,
+            });
+            setHelpers({
+                ...helpers,
+                userId: res,
+            });
+            return;
+        }
+        checkUser();
+    };
 
     /************************************************************************************
      * JSX Template
      ************************************************************************************/
     const variant = "filled";
     const fieldSize = "small";
-    // const fieldSize = "medium";
     const buttonSize = "large";
     const formClassName = "cb-material-form";
     const labelClassName = "cb-material-form__label";
     const fieldClassName = "cb-material-form__field";
 
+    console.log("Register Company Page..");
+
     return (
         <Dialog
-            onClose={handleClose}
             open={open}
         >
             <Col xs={8} md={12} lg={12}>
@@ -401,31 +503,27 @@ const RegisterCompanyPage = (props) => {
                                         <FormControl
                                             className={fieldClassName}
                                             size={fieldSize}
-                                            error={isError.cpName}
+                                            error={errors.cpName}
                                         >
-                                            {/*<InputLabel*/}
-                                            {/*    htmlFor="standard-adornment-password"*/}
-                                            {/*>고객사 이름</InputLabel>*/}
                                             <FilledInput
-                                                required={required.cpName}
-                                                disabled={disabled.cpName}
+                                                required={requires.cpName}
                                                 name="cpName"
-                                                value={cpName}
-                                                onChange={(e) => { handleChangeTextField({name: "cpName", value: e.target.value}); }}
+                                                value={fields.cpName}
+                                                onChange={(e) => { handleChangeFields(e); }}
                                                 endAdornment={(
                                                     <InputAdornment position="end">
                                                         <IconButton
                                                             aria-label="toggle password visibility"
-                                                            onClick={handleCheckDupCompany}
+                                                            onClick={handleCheckDuplicateCompany}
                                                             onMouseDown={handleMouseDownPassword}
                                                             edge="end"
                                                         >
-                                                            {confirmCompany ? <CheckBoxOutlinedIcon/> : <CheckBoxOutlineBlankIcon/>}
+                                                            {confirmCompany ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
                                                         </IconButton>
                                                     </InputAdornment>
                                                 )}
                                             />
-                                            <FormHelperText id="component-helper-text">{helperText.cpName}</FormHelperText>
+                                            <FormHelperText id="component-helper-text">{helpers.cpName}</FormHelperText>
                                         </FormControl>
                                     </div>
                                 </Grid>
@@ -434,14 +532,12 @@ const RegisterCompanyPage = (props) => {
                                         <span className={labelClassName}>* 전화번호</span>
                                         <TextField
                                             className={fieldClassName}
-                                            error={isError.cpTel}
-                                            required={required.cpTel}
-                                            helperText={helperText.cpTel}
-                                            disabled={disabled.cpTel}
-                                            // label="전화번호"
+                                            error={errors.cpTel}
+                                            required={requires.cpTel}
+                                            helperText={helpers.cpTel}
                                             name="cpTel"
-                                            value={cpTel}
-                                            onChange={(e) => { handleChangeTextField({name: "cpTel", value: e.target.value}); }}
+                                            value={fields.cpTel}
+                                            onChange={(e) => { handleChangeFields(e); }}
                                             variant={variant}
                                             size={fieldSize}
                                         />
@@ -452,14 +548,12 @@ const RegisterCompanyPage = (props) => {
                                         <span className={labelClassName}>* 이메일</span>
                                         <TextField
                                             className={fieldClassName}
-                                            error={isError.cpEmail}
-                                            required={required.cpEmail}
-                                            helperText={helperText.cpEmail}
-                                            disabled={disabled.cpEmail}
-                                            // label="이메일"
+                                            error={errors.cpEmail}
+                                            required={requires.cpEmail}
+                                            helperText={helpers.cpEmail}
                                             name="cpEmail"
-                                            value={cpEmail}
-                                            onChange={(e) => { handleChangeTextField({name: "cpEmail", value: e.target.value}); }}
+                                            value={fields.cpEmail}
+                                            onChange={(e) => { handleChangeFields(e); }}
                                             variant={variant}
                                             size={fieldSize}
                                         />
@@ -470,14 +564,12 @@ const RegisterCompanyPage = (props) => {
                                         <span className={labelClassName}>홈페이지</span>
                                         <TextField
                                             className={fieldClassName}
-                                            error={isError.cpHomepage}
-                                            required={required.cpHomepage}
-                                            helperText={helperText.cpHomepage}
-                                            disabled={disabled.cpHomepage}
-                                            // label="홈페이지"
+                                            error={errors.cpHomepage}
+                                            required={requires.cpHomepage}
+                                            helperText={helpers.cpHomepage}
                                             name="cpHomepage"
-                                            value={cpHomepage}
-                                            onChange={(e) => { handleChangeTextField({name: "cpHomepage", value: e.target.value}); }}
+                                            value={fields.cpHomepage}
+                                            onChange={(e) => { handleChangeFields(e); }}
                                             variant={variant}
                                             size={fieldSize}
                                         />
@@ -489,32 +581,27 @@ const RegisterCompanyPage = (props) => {
                                         <FormControl
                                             size={fieldSize}
                                             className={fieldClassName}
-                                            error={userIsError.userId}
+                                            error={errors.userId}
                                         >
-                                            {/*<InputLabel*/}
-                                            {/*    // className={fieldClassName}*/}
-                                            {/*    htmlFor="standard-adornment-password"*/}
-                                            {/*>계정 ID</InputLabel>*/}
                                             <FilledInput
-                                                required={userRequired.userId}
-                                                disabled={userDisabled.userId}
+                                                required={requires.userId}
                                                 name="userId"
-                                                value={userId}
-                                                onChange={(e) => { handleChangeUserTextField({name: "userId", value: e.target.value}); }}
+                                                value={fields.userId}
+                                                onChange={(e) => { handleChangeFields(e); }}
                                                 endAdornment={(
                                                     <InputAdornment position="end">
                                                         <IconButton
                                                             aria-label="toggle password visibility"
-                                                            onClick={handleCheckDupUser}
+                                                            onClick={handleCheckUser}
                                                             onMouseDown={handleMouseDownPassword}
                                                             edge="end"
                                                         >
-                                                            {confirmUser ? <CheckBoxOutlinedIcon/> : <CheckBoxOutlineBlankIcon/>}
+                                                            {confirmUser ? <CheckBoxIcon/> : <CheckBoxOutlineBlankIcon/>}
                                                         </IconButton>
                                                     </InputAdornment>
                                                 )}
                                             />
-                                            <FormHelperText id="component-helper-text">{userHelperText.userId}</FormHelperText>
+                                            <FormHelperText id="component-helper-text">{helpers.userId}</FormHelperText>
                                         </FormControl>
                                     </div>
                                 </Grid>
@@ -524,19 +611,14 @@ const RegisterCompanyPage = (props) => {
                                         <FormControl
                                             size={fieldSize}
                                             className={fieldClassName}
-                                            error={userIsError.password}
+                                            error={errors.userPassword}
                                         >
-                                            {/*<InputLabel*/}
-                                            {/*    // className={fieldClassName}*/}
-                                            {/*    htmlFor="standard-adornment-password"*/}
-                                            {/*>Password</InputLabel>*/}
                                             <FilledInput
-                                                required={userRequired.password}
-                                                disabled={userDisabled.password}
-                                                name="password"
-                                                type={values.showPassword ? 'text' : 'password'}
-                                                value={userPassword}
-                                                onChange={(e) => { handleChangeUserTextField({name: "password", value: e.target.value}); }}
+                                                required={requires.userPassword}
+                                                name="userPassword"
+                                                type={values.showPassword ? 'text' : 'userPassword'}
+                                                value={fields.userPassword}
+                                                onChange={(e) => { handleChangeFields(e); }}
                                                 endAdornment={(
                                                     <InputAdornment position="end">
                                                         <IconButton
@@ -550,7 +632,7 @@ const RegisterCompanyPage = (props) => {
                                                     </InputAdornment>
                                                 )}
                                             />
-                                            <FormHelperText id="component-helper-text">{userHelperText.password}</FormHelperText>
+                                            <FormHelperText id="component-helper-text">{helpers.userPassword}</FormHelperText>
                                         </FormControl>
                                     </div>
                                 </Grid>
@@ -560,15 +642,14 @@ const RegisterCompanyPage = (props) => {
                                         <FormControl
                                             size={fieldSize}
                                             className={fieldClassName}
-                                            error={isError.cpZip}
+                                            error={errors.cpZip}
+                                            disabled
                                         >
-                                            {/*<InputLabel>우편 번호</InputLabel>*/}
                                             <FilledInput
-                                                required={required.cpZip}
-                                                disabled={disabled.cpZip}
+                                                required={requires.cpZip}
                                                 name="cpZip"
-                                                value={cpZip}
-                                                onChange={(e) => { handleChangeTextField({name: "cpZip", value: e.target.value}); }}
+                                                value={fields.cpZip}
+                                                onChange={(e) => { handleChangeFields(e); }}
                                                 endAdornment={(
                                                     <InputAdornment position="end">
                                                         <IconButton
@@ -581,9 +662,9 @@ const RegisterCompanyPage = (props) => {
                                                     </InputAdornment>
                                                 )}
                                             />
-                                            <FormHelperText id="component-helper-text">{helperText.cpZip}</FormHelperText>
+                                            <FormHelperText id="component-helper-text">{helpers.cpZip}</FormHelperText>
                                         </FormControl>
-                                        <SearchZip
+                                        <LookupZipcode
                                             open={openZip}
                                             handleClose={handleCloseSearchZip}
                                             handleComplete={handleCompleteZip}
@@ -595,14 +676,13 @@ const RegisterCompanyPage = (props) => {
                                         <span className={labelClassName}>* 주소</span>
                                         <TextField
                                             className={fieldClassName}
-                                            error={isError.cpAddr}
-                                            required={required.cpAddr}
-                                            helperText={helperText.cpAddr}
-                                            disabled={disabled.cpAddr}
-                                            // label="주소"
+                                            error={errors.cpAddr}
+                                            required={requires.cpAddr}
+                                            disabled
+                                            helperText={helpers.cpAddr}
                                             name="cpAddr"
-                                            value={cpAddr}
-                                            onChange={(e) => { handleChangeTextField({name: "cpAddr", value: e.target.value}); }}
+                                            value={fields.cpAddr}
+                                            onChange={(e) => { handleChangeFields(e); }}
                                             variant={variant}
                                             size={fieldSize}
                                         />
@@ -610,17 +690,15 @@ const RegisterCompanyPage = (props) => {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <div>
-                                        <span className={labelClassName}>* 상세주소</span>
+                                        <span className={labelClassName}>상세주소</span>
                                         <TextField
                                             className={fieldClassName}
-                                            error={isError.cpAddrDetail}
-                                            required={required.cpAddrDetail}
-                                            helperText={helperText.cpAddrDetail}
-                                            disabled={disabled.cpAddrDetail}
-                                            // label="상세주소"
+                                            error={errors.cpAddrDetail}
+                                            required={requires.cpAddrDetail}
+                                            helperText={helpers.cpAddrDetail}
                                             name="cpAddrDetail"
-                                            value={cpAddrDetail}
-                                            onChange={(e) => { handleChangeTextField({name: "cpAddrDetail", value: e.target.value}); }}
+                                            value={fields.cpAddrDetail}
+                                            onChange={(e) => { handleChangeFields(e); }}
                                             variant={variant}
                                             size={fieldSize}
                                         />
@@ -635,7 +713,6 @@ const RegisterCompanyPage = (props) => {
                                             variant="contained"
                                             size={buttonSize}
                                             onClick={handleCancel}
-                                            // startIcon={<ClearIcon/>}
                                         >
                                            취소
                                         </Button>
@@ -643,7 +720,7 @@ const RegisterCompanyPage = (props) => {
                                             className={classes.margin}
                                             variant="contained"
                                             color="primary"
-                                            onClick={handleFinish}
+                                            onClick={handleSubmitWrap}
                                             size={buttonSize}
                                             endIcon={<SendIcon/>}
                                         >
