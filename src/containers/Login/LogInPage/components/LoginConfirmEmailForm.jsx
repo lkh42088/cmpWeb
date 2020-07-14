@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     changeLoginPage,
     checkLoginUser,
-} from "../../../../redux/actions/accountActions";
+} from "../../../../redux/actions/loginActions";
 import {GV_LOGIN_PAGE_FIRST} from "../../../../lib/globalVariable";
-import {loginConfirm} from "../../../../lib/api/auth";
+import {loginConfirm} from "../../../../lib/api/login";
 
 const LoginConfirmEmailForm = () => {
     const dispatch = useDispatch();

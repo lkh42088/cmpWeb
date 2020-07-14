@@ -7,7 +7,7 @@ import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
 import { withRouter} from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { changeField, initializeForm, login } from "../../../redux/actions/authActions";
-import { checkLoginUser } from "../../../redux/actions/accountActions";
+import { checkLoginUser } from "../../../redux/actions/loginActions";
 import renderCheckBoxField from '../form/CheckBox';
 
 // eslint-disable-next-line react/prop-types

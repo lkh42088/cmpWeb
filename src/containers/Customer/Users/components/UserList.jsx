@@ -21,10 +21,10 @@ import Collapse from '@material-ui/core/Collapse';
 import {makeStyles} from "@material-ui/core/styles";
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import GroupIcon from '@material-ui/icons/Group';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import {Button} from "@material-ui/core";
 import {useSnackbar} from "notistack";
 import {
     pagingChangeCurrentPage,
@@ -44,7 +44,6 @@ import CommonTableHead from "../../../Common/CommonTableHead";
 import UserRegisterDialog from "./UserRegisterDialog";
 import {registerUser, unregisterUser} from "../../../../lib/api/users";
 import UserTableToolbar from "./UserTableToolbar";
-import {unregister} from "../../../../serviceWorker";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -172,7 +171,6 @@ const UserList = () => {
     };
 
     const handleSnackbarSuccess = (snackMsg) => {
-        // variant could be success, error, warning, info, or default
         enqueueSnackbar(snackMsg, { variant: "success" });
     };
 
@@ -282,7 +280,6 @@ const UserList = () => {
         console.log("deleted Selected:");
         console.log("copyUser:", copyUser);
         console.log("SELECTED:", selected);
-        // console.log("selected:", selected);
         const delList = [];
         if (selected !== null) {
             selected.forEach((value, key, mapObject) => {
@@ -305,19 +302,6 @@ const UserList = () => {
     const handleChangeDense = (event) => {
         dispatch(pagingChangeDense({checked: event.target.checked}));
     };
-
-
-    // const getPageDataWithSearchParam = (param) => {
-    //     let offset = 0;
-    //     if (currentPage > 0) {
-    //         offset = rowsPerPage * currentPage;
-    //     }
-    //     console.log("get Page Data: rows ", rowsPerPage, ", offset ", offset,
-    //         ", orderBy ", orderBy, ", order ", order, ", searchParam ", param);
-    //     dispatch(getUserListWithSearchParam({
-    //         rows: rowsPerPage, offset, orderBy, order, searchParam: param,
-    //     }));
-    // };
 
     const handleSubmitSearch = (params) => {
         console.log("handleSubmitSearch() params ", params);
@@ -470,7 +454,6 @@ const UserList = () => {
         const [openCollapse, setOpenCollapse] = React.useState(false);
         const isSelected = getSelected(row.idx);
         const address = getAddress(row);
-
         return (
             <React.Fragment>
                 <TableRow
@@ -483,13 +466,14 @@ const UserList = () => {
                     key={row.idx}
                     selected={isSelected}
                     onClick={() => setOpenCollapse(!openCollapse)}
-                    >
+                >
                     <TableCell
                         className="cb-material-table__cell"
                         padding="checkbox"
                         onClick={event => handleClick(event, row.idx)}
                     >
                         <Checkbox checked={isSelected}
+                                  // className="cb-material-table__checkbox"
                                   className="cb-material-table__checkbox"
                         />
                     </TableCell>
@@ -503,13 +487,20 @@ const UserList = () => {
                         className="cb-material-table__cell cb-material-table__cell-right"
                         style={{width: "10%"}}
                     >
-                        <Avatar className="topbar__avatar-img-list" name={row.userId} size="40" />
+                        <Avatar
+                            className="topbar__avatar-img-list"
+                            name={row.userId}
+                            size="40"
+                        />
                         {/*<Avatar className="topbar__avatar-img-list" alt={row.userId} size="40" />*/}
                         {/*<Avatar alt={row.userId} size="40" src="/static/images/avatar/1.jpg"/>*/}
                     </TableCell>
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell-right"
                         style={{width: "15%"}}
+                        onFocus={() => { setOpenCollapse(true); }}
+                        onMouseOver={() => { setOpenCollapse(true); }}
+                        onMouseLeave={() => { setOpenCollapse(false); }}
                     >
                         {row.userId}
                     </TableCell>
@@ -610,10 +601,10 @@ const UserList = () => {
                                                             <GroupIcon/> 이메일 인증 그룹 </span>
                                                         <ul>
                                                             {row.groupEmailAuthList.map(auth => (
-                                                            <li key={auth.idx}>
+                                                                <li key={auth.idx}>
                                                                 <span className={classes.spanContents}>
                                                                     {auth.AuthUserId}/{auth.AuthEmail}</span>
-                                                            </li>
+                                                                </li>
                                                             ))}
                                                         </ul>
                                                     </React.Fragment>
@@ -628,9 +619,9 @@ const UserList = () => {
                                                             <AccountCircleIcon/> 사용하는 이메일 인증 계정 </span>
                                                         <ul>
                                                             {row.participateInAccountList.map(paccount => (
-                                                            <li key={paccount.idx}>
-                                                                <span className={classes.spanContents}>{paccount.UserId}</span>
-                                                            </li>
+                                                                <li key={paccount.idx}>
+                                                                    <span className={classes.spanContents}>{paccount.UserId}</span>
+                                                                </li>
                                                             ))}
                                                         </ul>
                                                     </React.Fragment>
@@ -680,9 +671,12 @@ const UserList = () => {
                                     rows={headRows}
                                 />
                                 <TableBody>
-                                    { data && data.map(row => (
-                                        <ContentsRow key={row.idx} row={row} />
-                                    ))}
+                                    { data && data.map((row, index) => {
+                                        const keyId = index;
+                                        return (
+                                            <ContentsRow key={keyId} row={row} />
+                                        );
+                                    })}
                                 </TableBody>
                             </Table>
                         </TableContainer>
@@ -693,6 +687,7 @@ const UserList = () => {
                             label="Dense padding"
                         />
                     </div>
+
                     <UserRegisterDialog
                         open={openAddUser}
                         handleClose={handleCloseAddUser}
