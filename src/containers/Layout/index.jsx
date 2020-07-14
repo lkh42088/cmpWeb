@@ -231,7 +231,7 @@ class Layout extends Component {
             'layout--top-navigation': customizer.topNavigation,
         });
 
-        console.log("😢😢😢 user : ", user);
+        //console.log("😢😢😢 user : ", user);
 
         return (
             <div className={layoutClass}>

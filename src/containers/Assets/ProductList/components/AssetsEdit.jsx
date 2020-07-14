@@ -265,7 +265,7 @@ class AssetsEdit extends PureComponent {
                             name="rack"
                             component="select"
                             className="select_col_4">
-                            <option value="none">렉없음</option>
+                            <option value="0">렉없음</option>
                             {assetState.subCodes.data
                                 .map(d => (Number(d.codeId) === Number(e.target.value)
                                     && <option key={d.id} value={d.id}>{d.name}</option>))

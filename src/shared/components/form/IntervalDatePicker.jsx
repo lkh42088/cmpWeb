@@ -48,7 +48,7 @@ class IntervalDatePickerField extends PureComponent {
                     startDate={startDate}
                     endDate={endDate}
                     onChange={this.handleChangeStart}
-                    dateFormat="yyyy/MM/dd"
+                    dateFormat="yyyy년MM월dd일"
                     placeholderText="From"
                     dropDownMode="select"
                     withPortal={isMobileOnly}
@@ -60,7 +60,7 @@ class IntervalDatePickerField extends PureComponent {
                     startDate={startDate}
                     endDate={endDate}
                     onChange={this.handleChangeEnd}
-                    dateFormat="yyyy/MM/dd"
+                    dateFormat="yyyy년MM월dd일"
                     placeholderText="To"
                     dropDownMode="select"
                     withPortal={isMobileOnly}

@@ -28,6 +28,21 @@ function textLengthOverCut(txt, len, lastTxt) {
     return txt;
 }
 
+function textSplitOverCut(txt, com) {
+    const splaArray = txt.split(com);
+
+    // eslint-disable-next-line array-callback-return,consistent-return
+    const output = [...splaArray].map((char, index) => {
+        if (char !== "") {
+            return (
+                <ol key={`${char}`}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{char}</ol>
+            );
+        }
+    });
+
+    return <React.Fragment>{output}</React.Fragment>;
+}
+
 //assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
 class AssetsLog extends PureComponent {
     static propTypes = {
@@ -47,7 +62,6 @@ class AssetsLog extends PureComponent {
         };
         //this.handleSubmit = this.handleSubmit.bind(this);
     }
-
 
     handleRequestSort = (event, property) => {
         const orderBy = property;
@@ -210,14 +224,33 @@ class AssetsLog extends PureComponent {
                                                     className="material-table__cell material-table__cell-right
                                                             text-left"
                                                 >{
+                                                    // eslint-disable-next-line no-nested-ternary
                                                     d.workCode.toString() === '2' ? (
-                                                        <Fragment>
-                                                            변경 전 : <span
-                                                            title={d.oldStatus}>{textLengthOverCut(d.oldStatus, 80)}</span>
-                                                            <br/>
-                                                            변경 후 : <span
-                                                            title={d.newStatus}>{textLengthOverCut(d.newStatus, 80)}</span>
-                                                        </Fragment>
+                                                        d.field === "SPLA" ? (
+                                                            <Fragment>
+                                                                변경 전 :
+                                                                <span title={d.oldStatus}>
+                                                                    {textSplitOverCut(d.oldStatus, ",")}
+                                                                </span>
+                                                                <br/>
+                                                                변경 후 :
+                                                                <span title={d.newStatus}>
+                                                                    {textSplitOverCut(d.newStatus, ",")}
+                                                                </span>
+                                                            </Fragment>
+                                                        ) : (
+                                                            <Fragment>
+                                                                변경 전 :
+                                                                <span title={d.oldStatus}>
+                                                                    {textLengthOverCut(d.oldStatus, 80)}
+                                                                </span>
+                                                                <br/>
+                                                                변경 후 :
+                                                                <span title={d.newStatus}>
+                                                                    {textLengthOverCut(d.newStatus, 80)}
+                                                                </span>
+                                                            </Fragment>
+                                                        )
                                                     ) : (
                                                         <Fragment>
                                                             &nbsp;
