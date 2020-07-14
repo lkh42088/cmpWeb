@@ -1,208 +1,375 @@
-import React, {
-    forwardRef, Component, useEffect, useState, useCallback,
-} from 'react';
+import React, {useEffect, useState} from "react";
 import {
     Card,
     CardBody,
     Col,
 } from 'reactstrap';
+import Avatar from "react-avatar";
+
+import moment from "moment";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TablePagination from '@material-ui/core/TablePagination';
 import {useDispatch, useSelector} from "react-redux";
-import MaterialTable, {MTableToolbar} from 'material-table';
-import {makeStyles, withStyles} from "@material-ui/core/styles";
-import TableCell from "@material-ui/core/TableCell";
-/** Tooltip **/
-import Tooltip from '@material-ui/core/Tooltip';
-import AddIcon from '@material-ui/icons/Add';
-import Fab from '@material-ui/core/Fab';
-/** Material Icon **/
-import AddBox from '@material-ui/icons/AddBox';
-import ArrowDownward from '@material-ui/icons/ArrowDownward';
-import Check from '@material-ui/icons/Check';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import Clear from '@material-ui/icons/Clear';
-import DeleteOutline from '@material-ui/icons/DeleteOutline';
-import Edit from '@material-ui/icons/Edit';
-import FilterList from '@material-ui/icons/FilterList';
-import FirstPage from '@material-ui/icons/FirstPage';
-import LastPage from '@material-ui/icons/LastPage';
-import Remove from '@material-ui/icons/Remove';
-import SaveAlt from '@material-ui/icons/SaveAlt';
-import Search from '@material-ui/icons/Search';
-import ViewColumn from '@material-ui/icons/ViewColumn';
 import TableRow from "@material-ui/core/TableRow";
-import Table from "@material-ui/core/Table";
-import PaginationCustomization from "../../../../Common/PaginationBar";
+import TableCell from "@material-ui/core/TableCell";
+import Checkbox from "@material-ui/core/Checkbox";
+import TableContainer from "@material-ui/core/TableContainer";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+import Collapse from '@material-ui/core/Collapse';
+import {makeStyles, withStyles} from "@material-ui/core/styles";
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import GroupIcon from '@material-ui/icons/Group';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import {useSnackbar} from "notistack";
+import Pagination from '@material-ui/lab/Pagination';
+import {InputBase, Select} from "@material-ui/core";
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 import {
-    pagingChangeCurrentPage, pagingChangeOrder, pagingChangeOrderBy, pagingChangeTotalCount, pagingDump, pagingSetup,
+    pagingChangeCurrentPage,
+    pagingChangeCurrentPageNext,
+    pagingChangeCurrentPagePrev,
+    pagingChangeDense,
+    pagingChangeOrder,
+    pagingChangeOrderBy,
+    pagingChangeOrderByWithReset,
+    pagingChangeRowsPerPage,
+    pagingChangeSelected,
+    pagingChangeTotalCount,
+    pagingDump,
 } from "../../../../../redux/actions/pagingActions";
-// import {readSubnet} from "../../../../../redux/actions/subnetActions";
-/** Subnet Add Modal **/
-import SubnetWriteForm from "../../CreateSubnet/components/SubnetWriteForm";
-import SpringModal from "../../../../Common/SpringModal";
-import API_ROUTE from "../../../../../shared/apiRoute";
+import {getUserList, getUserListWithSearchParam, initRegisterUser} from "../../../../../redux/actions/usersActions";
+import CommonTableHead from "../../../../Common/CommonTableHead";
+import {registerUser, unregisterUser} from "../../../../../lib/api/users";
+import UserTableToolbar from "./SubnetTableToolbar";
+import BootstrapInput from "../../../../Common/BootstrapInput";
 import {readSubnet} from "../../../../../lib/api/subnet";
 
-/** Custom CSS **/
+const headRows = [
+    {id: 'idx', disablePadding: false, label: 'IDX'},
+    {id: 'subnetTag', disablePadding: false, label: 'SUBNET TAG'},
+    {id: 'subnet', disablePadding: false, label: 'SUBNET'},
+    {id: 'subnetmask', disablePadding: false, label: 'SUBNET MASK'},
+    {id: 'gateway', disablePadding: false, label: 'GATEWAY'},
+];
+
 const useStyles = makeStyles(theme => ({
     root: {
-        fontFamily: "Nanum Square acEB",
-        fontSize: 8,
-        fontWeight: "revert",
-        // '&:hover': {
-        //     color: "#063263",
-        // },
+        width: '100%',
     },
-    tab: {
-        fontSize: 12,
+    paper: {
+        width: '100%',
+        marginBottom: theme.spacing(2),
     },
-    fab: {
-        margin: theme.spacing(2),
+    table: {
+        minWidth: 750,
     },
-}));
+    visuallyHidden: {
+        border: 0,
+        clip: 'rect(0 0 0 0)',
+        height: 1,
+        margin: -1,
+        overflow: 'hidden',
+        padding: 0,
+        position: 'absolute',
+        top: 20,
+        width: 1,
+    },
+    row: {
+        '& > *': {
+            borderBottom: 'unset',
+        },
+    },
+    spanSubject: {
+        display: 'inline-block',
+        width: '100px',
+    },
+    spanContents: {
+        display: 'inline-block',
+        // width: '200px',
+    },
+    grid: {
+        flexGrow: 1,
+    },
+    margin: {
+        margin: theme.spacing(1),
+        width: 70,
+        display: "flex",
+    },
+    pagination: {
+        display: "inline-block",
+        paddingTop: 20,
+        paddingBottom: 20,
+    },
+    }));
 
-/** Material table icons **/
-const tableIcons = {
-    Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-    Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-    Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-    DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-    Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-    Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-    Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-    FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-    LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-    NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-    PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref} />),
-    ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-    Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-    SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-    ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-    ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
-};
-
-const SubnetList = () => {
+    const SubnetList = () => {
+    /************************************************************************************
+     * Variable
+     ************************************************************************************/
     const classes = useStyles();
     const dispatch = useDispatch();
+    // const { enqueueSnackbar } = useSnackbar();
     /**
-     * Subnet Data
-     **/
+     * User Data
+     */
     // const {
-    //     dataSet, page,
-    // } = useSelector(({ subnetRd }) => ({
-    //     dataSet: subnetRd.data,
-    //     page: subnetRd.page,
+    //     /** Paging User Data */
+    //     data,
+    //     getPage,
+    //     /** Register User */
+    //     msg,
+    //     msgError,
+    // } = useSelector(({ usersRd }) => ({
+    //     /** Paging User Data */
+    //     data: usersRd.data,
+    //     getPage: usersRd.page,
+    //     /** Register User */
+    //     msg: usersRd.msg,
+    //     msgError: usersRd.msgError,
     // }));
-
-    /**
-     * Pagination state
-     **/
-    // const rows = 15;
-    // const {
-    //     selected,
-    //     pageBeginRow,
-    //     rowsPerPage,
-    //     currentPage,
-    //     totalPage,
-    //     totalCount,
-    //     displayRowsList,
-    //     dense,
-    //     orderBy,
-    //     order,
-    // } = useSelector(({pagingRd}) => ({
-    //     selected: pagingRd.selected,
-    //     pageBeginRow: pagingRd.pageBeginRow,
-    //     rowsPerPage: pagingRd.rowsPerPage,
-    //     currentPage: pagingRd.currentPage,
-    //     totalPage: pagingRd.totalPage,
-    //     totalCount: pagingRd.totalCount,
-    //     displayRowsList: pagingRd.displayRowsList,
-    //     dense: pagingRd.dense,
-    //     orderBy: pagingRd.orderBy,
-    //     order: pagingRd.order,
-    // }));
-
-    /** Initial data **/
     const [state, setState] = useState({
-        columns: [
-            {title: 'IDX', field: 'idx'},
-            {title: 'SUBNET 태그', field: 'subnetTag', width: "20%"},
-            {title: 'SUBNET', field: 'subnet', width: "40%"},
-            {title: 'SUBNET 마스크', field: 'subnetMask', width: "25%"},
-            {title: '게이트웨이', field: 'gateway', width: "25%"},
-        ],
         data: [],
-        page: {
-            count: 0,
-            offset: 0,
-            order: 'desc',
-            orderBy: 'sub_idx',
-            rows: 5,
-        },
+        page: [],
     });
 
-    const orderByName = [
-        "idx",
-        "subnetTag",
-        "subnetStart",
-        "subnetMask",
-        "subnetGateway",
-    ];
-
-    // const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [currentPage, setCurrentPage] = useState(1);
-    // const [totalCount, setTotalCount] = useState(0);
-    // const [orderBy, setOrderBy] = useState("sub_idx");
-    // const [order, setOrder] = useState("desc");
+    /**
+     * Pagination
+     */
     const {
-        rows, offset, count, orderBy, order,
-    } = state.page;
+        selected,
+        pageBeginRow,
+        rowsPerPage,
+        currentPage,
+        totalCount,
+        displayRowsList,
+        dense,
+        orderBy,
+        order,
+    } = useSelector(({pagingRd}) => ({
+        selected: pagingRd.selected,
+        pageBeginRow: pagingRd.pageBeginRow,
+        rowsPerPage: pagingRd.rowsPerPage,
+        currentPage: pagingRd.currentPage,
+        totalPage: pagingRd.totalPage,
+        totalCount: pagingRd.totalCount,
+        displayRowsList: pagingRd.displayRowsList,
+        dense: pagingRd.dense,
+        orderBy: pagingRd.orderBy,
+        order: pagingRd.order,
+    }));
 
-    const handleOrderChange = (orderByStr, direction) => {
-        const isAsc = order === direction && order === "asc";
+    /** Add User in TableToolbar */
+    const [openAddUser, setOpenAddUser] = React.useState(false);
+    const [searchParam, setSearchParam] = useState(null);
+
+    /************************************************************************************
+     * Function
+     ************************************************************************************/
+
+    /** Add User in TableToolbar */
+    const handleOpenAddUser = () => {
+        setOpenAddUser(true);
+    };
+
+    /** Add User in TableToolbar */
+    const handleCloseAddUser = () => {
+        setOpenAddUser(false);
+    };
+
+    // const handleSnackbarFailure = (snackMsg) => {
+    //     enqueueSnackbar(snackMsg);
+    // };
+    //
+    // const handleSnackbarSuccess = (snackMsg) => {
+    //     enqueueSnackbar(snackMsg, { variant: "success" });
+    // };
+
+    /*******************
+     * Pagination
+     *******************/
+
+    /** Pagination */
+    const updatePagingTotalCount = ({count}) => {
+        if (count !== totalCount) {
+            dispatch(pagingChangeTotalCount({totalCount: count}));
+        }
+    };
+
+    /** Pagination */
+    const handleChangePagePrev = () => {
+        if (currentPage > 0) {
+            dispatch(pagingChangeCurrentPagePrev());
+        }
+    };
+
+    /** Pagination */
+    const handleChangePageNext = () => {
+        if (currentPage < totalCount) {
+            dispatch(pagingChangeCurrentPageNext());
+        }
+    };
+
+    /** Pagination */
+    const handleChangePage = (event, newPage) => {
+        console.log("change page: ", newPage);
+        dispatch(pagingChangeCurrentPage({currentPage: newPage}));
+    };
+
+    /** Pagination */
+    const handleChangeRowsPerPage = (e) => {
+        const changeRows = Number(e.target.value);
+        dispatch(pagingChangeRowsPerPage({rowsPerPage: changeRows}));
+    };
+
+    /** Pagination */
+    const handleClick = (event, id) => {
+        const newSelected = new Map(selected);
+        const value = newSelected.get(id);
+        let isActive = true;
+        if (value) {
+            isActive = false;
+        }
+        newSelected.set(id, isActive);
+        dispatch(pagingChangeSelected({selected: newSelected}));
+    };
+
+    /** Pagination */
+    const handleSelectAllClick = (event, checked) => {
+        const newSelected = new Map();
+        if (checked) {
+            state.data.map(n => newSelected.set(n.idx, true));
+        } else {
+            state.data.map(n => newSelected.set(n.idx, false));
+        }
+        dispatch(pagingChangeSelected({selected: newSelected}));
+    };
+
+    /** Pagination */
+    const handleRequestSort = (event, property) => {
+        const isAsc = orderBy === property && order === "asc";
         const changeOrder = isAsc ? "desc" : "asc";
-        setState({
-            ...state,
-            page: {
-                ...state.page,
-                order: changeOrder,
-                orderBy: orderByName[orderByStr],
-            },
-        });
+        if (property !== "collapse") {
+            dispatch(pagingChangeOrder({order: changeOrder}));
+            dispatch(pagingChangeOrderBy({orderBy: property}));
+        }
     };
 
-    const handleRowsPerPage = (size) => {
-        setState({
-            ...state,
-            page: {
-                ...state.page,
-                rows: size,
-            },
-        });
-        console.log("rows: ", state.page.rows, size);
+    /** Pagination */
+    const getPageData = () => {
+        let offset = 0;
+        if (currentPage > 0) {
+            offset = rowsPerPage * currentPage;
+        }
+        console.log("get Page Data: rows ", rowsPerPage, ", offset ", offset,
+            ", orderBy ", orderBy, ", order ", order, ", searchParam ", searchParam);
+        if (searchParam !== null) {
+            dispatch(getUserListWithSearchParam({
+                rows: rowsPerPage, offset, orderBy, order, searchParam,
+            }));
+        } else {
+            dispatch(getUserList({
+                rows: rowsPerPage, offset, orderBy, order,
+            }));
+        }
     };
 
-    const handleChangePage = (pageValue, pageSize) => {
-        setCurrentPage(pageValue);
+    const deleteUsers = async (users) => {
+        try {
+            const response = await unregisterUser({idx: users});
+            getPageData();
+            // handleSnackbarSuccess("계정 삭제에 성공하였습니다.");
+        } catch (error) {
+            getPageData();
+            // handleSnackbarFailure("계정 삭제에 실패하였습니다.");
+        }
     };
 
+    /** Pagination */
+    const handleDeleteSelected = () => {
+        let copyUser = [...state.data];
+        const delList = [];
+        if (selected !== null) {
+            selected.forEach((value, key, mapObject) => {
+                console.log("selected: key ", key, ", value ", value);
+                if (value) {
+                    delList.push(key);
+                }
+            });
+        }
+        console.log("delList: ", delList);
+        deleteUsers(delList);
 
-    /** Update & Register Device **/
-    const RowAdd = newData => null;
+        for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
+            copyUser = copyUser.filter(obj => obj.id !== selected[i]);
+        }
+        console.log("after copyUser:", copyUser);
+    };
 
-    const RowUpdate = (newData, oldData) => new Promise(resolve => null);
+    /** Pagination */
+    const handleChangeDense = (event) => {
+        dispatch(pagingChangeDense({checked: event.target.checked}));
+    };
 
-    const RowDelete = oldData => new Promise(resolve => null);
+    const handleSubmitSearch = (params) => {
+        console.log("handleSubmitSearch() params ", params);
+        setSearchParam(params);
+        // getPageDataWithSearchParam(params);
+    };
 
-    /** Get subnet data **/
+    /** Pagination */
+    const getSelected = id => !!selected.get(id);
+
+    /** Pagination */
+    const handleRefresh = () => {
+        getPageData();
+    };
+
+    /*******************
+     * Axios
+     *******************/
+    const addUser = async (user) => {
+        const {
+            cpIdx, cpName, id, password, name, email,
+            cellPhone, level, userZip, userAddr, userAddrDetail,
+            emailAuthValue, emailAuthGroupList,
+        } = user;
+        try {
+            const response = await registerUser({
+                cpIdx,
+                cpName,
+                id,
+                password,
+                name,
+                email,
+                authLevel: Number(level),
+                hp: cellPhone,
+                zipCode: userZip,
+                address: userAddr,
+                addressDetail: userAddrDetail,
+                emailAuthFlag: emailAuthValue === "1",
+                emailAuthGroupFlag: emailAuthValue === "2",
+                emailAuthGroupList,
+            });
+            // handleSnackbarSuccess("계정 등록에 성공하였습니다.");
+            getPageData();
+        } catch {
+            // handleSnackbarFailure("계정 등록에 실패하였습니다.");
+        }
+    };
+
     const getData = async () => {
         try {
             const response = await readSubnet({
-                rows: state.page.rows,
-                offset: state.page.offset,
-                orderBy: state.page.orderBy,
-                order: state.page.order,
+                rows: rowsPerPage,
+                offset: (currentPage - 1) * rowsPerPage,
+                orderBy,
+                order,
             });
             setState({
                 ...state,
@@ -211,143 +378,358 @@ const SubnetList = () => {
                         ...val,
                         subnet: val.subnetStart.concat(' ~ ') + val.subnetEnd,
                     }))),
-            //page: response.data.page,
+                page: response.data.page,
             });
+            console.log("getData count: ", response.data.page.count);
+            updatePagingTotalCount(response.data.page.count);
         } catch {
             setState({
                 ...state,
                 data: [],
+                page: [],
             });
         }
     };
 
-    useEffect(() => {
-        console.log(state.page);
-        if (state && state.page.order !== undefined) {
-            getData();
-        }
-    }, [currentPage, orderBy, order]);
+    const deleteUser = async () => {
+        console.log("deleteUser");
+    };
 
+    /*******************
+     * Event
+     *******************/
+    const handleSubmitAddUser = (user) => {
+        console.log("handleSubmit() : user ", user);
+        addUser(user);
+        handleCloseAddUser();
+    };
+
+    /************************************************************************************
+     * useEffect
+     ************************************************************************************/
     useEffect(() => {
+        const changeOrderBy = "idx";
+        console.log("[] orderBy: ", changeOrderBy);
+        dispatch(pagingChangeOrderByWithReset({orderBy: changeOrderBy}));
     }, []);
 
-    /** Customizing Pagination Bar **/
-    // const paginationBar = () => (
-    //         <PaginationCustomization
-    //             className={classes.root}
-    //             activePage={currentPage}
-    //             boundaryRange="1"
-    //             showEllipsis="true"
-    //             siblingRange="2"
-    //             totalPages={Math.ceil(totalCount / rowsPerPage) - 1}
-    //             //onPageChange={handleChangePage}
-    //             showFirstAndLastNav="true"
-    //             showPreviousAndNextNav="true"
-    //             size="mini"
-    //         />
-    //         );
+    useEffect(() => {
+        dispatch(pagingDump());
+    }, [totalCount]);
 
-    /** Material-Table component override **/
-    // const customComponents = {
-    //     Pagination: () => (
-    //         <TableCell>
-    //             <div>
-    //                 {paginationBar()}
-    //             </div>
-    //         </TableCell>
-    //     ),
-    // };
+    // useEffect(() => {
+    //     if (getPage) {
+    //         const {count} = getPage;
+    //         /** Pagination */
+    //         updatePagingTotalCount({count});
+    //     }
+    // }, [getPage]);
+    //
+    useEffect(() => {
+        /** Pagination */
+        getData();
+        dispatch(pagingDump());
+    }, [rowsPerPage, pageBeginRow, orderBy, order]);
+    //
+    // useEffect(() => {
+    //     if (msg) {
+    //         // handleSnackbarSuccess("계정 등록에 성공하였습니다.");
+    //         dispatch(initRegisterUser());
+    //         getPageData();
+    //     }
+    // }, [msg]);
+    //
+    // useEffect(() => {
+    //     if (msgError) {
+    //         dispatch(initRegisterUser());
+    //         // handleSnackbarFailure("계정 등록에 실패하였습니다.");
+    //     }
+    // }, [msgError]);
 
-    /** Material-Table options attribute **/
-    const themeName = useSelector(({theme}) => ({
-        className: theme.className,
-    }));
+    useEffect(() => {
+        console.log("useEffect: searchParam ", searchParam);
+        getData();
+    }, [searchParam]);
 
-    const brushColor = () => {
-        if (themeName.className === "theme-light") {
-            return "#FFFFFF";
+    /************************************************************************************
+     * Component
+     ************************************************************************************/
+    const rowSelector = (
+        <FormControl className={classes.margin}>
+            {/*<InputLabel id="demo-customized-select-label">ROWS</InputLabel>*/}
+            <Select
+                onChange={handleChangeRowsPerPage}
+                value={rowsPerPage}
+                input={<BootstrapInput />}
+            >
+                {displayRowsList.map(size => (
+                    <MenuItem key={size} value={size}>{size}</MenuItem>
+                ))}
+            </Select>
+        </FormControl>
+    );
+
+    const paginationBar = (
+        <div className={classes.pagination}>
+            <Pagination
+                shape="rounded"
+                variant="outlined"
+                count={Math.ceil(totalCount / rowsPerPage)}
+                page={currentPage}
+                onChange={handleChangePage}
+            />
+        </div>
+    );
+
+    /************************************************************************************
+     * JSX Template
+     ************************************************************************************/
+    const getAddress = (row) => {
+        let address = "-";
+        if (row.zipcode) {
+            address = row.zipcode;
+            address = address.concat(', ');
         }
-        return "#AAAAAA";
-    };
-    const brushBack = () => {
-        if (themeName.className === "theme-light") {
-            return "#505050";
+        if (row.address) {
+            address = address.concat(row.address);
         }
-        return "#343434";
+        if (row.addressDetail) {
+            if (row.address) {
+                address = address.concat(', ');
+                address = address.concat(row.addressDetail);
+            } else {
+                address = address.concat(row.addressDetail);
+            }
+        }
+        return address;
     };
 
-    const options = {
-        headerStyle: {
-            backgroundColor: brushBack(),
-            color: brushColor(),
-            minWidth: 120,
-            fontSize: 12,
-            fontWeight: "bold",
-            textAlign: "center",
-        },
-        cellStyle: {
-            fontSize: 12,
-            fontWeight: "revert",
-            fontFamily: "Roboto",
-            textAlign: "center",
-        },
-        rowStyle: {
-            "&:hover": {
-                boxShadow: "2px 0 5px 0 darkgray",
-            },
-        },
-        exportButton: true,
-        // pageSize: 5,
-        actionsColumnIndex: -1,
-        thirdSortClick: false,
-    };
-
-    const actions = {
-        // tooltip: "수정 및 삭제",
-        // hidden: true,
-    };
-
-    /** Material-Table localization **/
-    const localization = {
-        header: {
-            actions: "수정/삭제",
-        },
-        body: {
-            emptyDataSourceMessage: "",
-        },
-        pagination: {
-            labelDisplayedRows: "{from} - {to} of {count}",
-            firstTooltip: "첫 페이지",
-            lastTooltip: "마지막 페이지",
-            previousTooltip: "이전 페이지",
-            nextTooltip: "다음 페이지",
-        },
+    const ContentsRow = (props) => {
+        const { row } = props;
+        const [openCollapse, setOpenCollapse] = React.useState(false);
+        const isSelected = getSelected(row.idx);
+        const address = getAddress(row);
+        return (
+            <React.Fragment>
+                <TableRow
+                    hover
+                    // className="cb-material-table__row"
+                    className={classes.row}
+                    role="checkbox"
+                    aria-checked={isSelected}
+                    tabIndex={-1}
+                    key={row.idx}
+                    selected={isSelected}
+                    onClick={() => setOpenCollapse(!openCollapse)}
+                >
+                    <TableCell
+                        className="cb-material-table__cell"
+                        padding="checkbox"
+                        onClick={event => handleClick(event, row.idx)}
+                    >
+                        <Checkbox checked={isSelected}
+                            // className="cb-material-table__checkbox"
+                                  className="cb-material-table__checkbox"
+                        />
+                    </TableCell>
+                    <TableCell
+                        className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "5%"}}
+                    >
+                        {row.idx}
+                    </TableCell>
+                    <TableCell
+                        className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "20%"}}
+                        onFocus={() => { setOpenCollapse(true); }}
+                        onMouseOver={() => { setOpenCollapse(true); }}
+                        onMouseLeave={() => { setOpenCollapse(false); }}
+                    >
+                        {row.subnetTag}
+                    </TableCell>
+                    <TableCell
+                        className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "40%"}}
+                    >
+                        {row.subnet}
+                    </TableCell>
+                    <TableCell
+                        className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "25%"}}
+                    >
+                        {row.subnetMask}
+                    </TableCell>
+                    <TableCell
+                        className="cb-material-table__cell cb-material-table__cell-right"
+                        style={{width: "25%"}}
+                    >
+                        {row.gateway}
+                    </TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
+                        <Collapse in={openCollapse} timeout="auto" unmountOnExit>
+                            <Box margin={1}>
+                                <Typography variant="h6" gutterBottom component="div">
+                                    {row.userId}
+                                </Typography>
+                                <div className={classes.grid}>
+                                    <Grid container spacing={1}>
+                                        <Grid item xs={12} sm={6}>
+                                            <ul>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 소속회사 </span>
+                                                    <span className={classes.spanContents}> {row.cpName} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> ID </span>
+                                                    <span className={classes.spanContents}> {row.userId} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 이름 </span>
+                                                    <span className={classes.spanContents}> {row.name} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 전화번호 </span>
+                                                    <span className={classes.spanContents}> {row.hp === "" ? "-" : row.hp} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 이메일 </span>
+                                                    <span className={classes.spanContents}> {row.email === "" ? "-" : row.email} </span>
+                                                </li>
+                                            </ul>
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            <ul>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 권한 </span>
+                                                    {/*<span className={classes.spanContents}> {row.zipcode},&nbsp;{row.address},&nbsp;{row.addressDetail} </span>*/}
+                                                    <span className={classes.spanContents}> {row.authLevel} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 주소 </span>
+                                                    {/*<span className={classes.spanContents}> {row.zipcode},&nbsp;{row.address},&nbsp;{row.addressDetail} </span>*/}
+                                                    <span className={classes.spanContents}> {address} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 등록일 </span>
+                                                    <span className={classes.spanContents}> {moment(row.registerDate).format('YYYY-MM-DD')} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 인증 </span>
+                                                    <span className={classes.spanContents}>
+                                                        {/* eslint-disable-next-line no-nested-ternary */}
+                                                        {row.emailAuth === true ? "개인 이메일 인증" : (row.groupEmailAuth === true ? "그룹 이메일 인증" : "사용 안함")}
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            {
+                                                row.groupEmailAuth && row.groupEmailAuthList ? (
+                                                    <React.Fragment>
+                                                        <span className={classes.spanContents}>
+                                                            <GroupIcon/> 이메일 인증 그룹 </span>
+                                                        <ul>
+                                                            {row.groupEmailAuthList.map(auth => (
+                                                                <li key={auth.idx}>
+                                                                <span className={classes.spanContents}>
+                                                                    {auth.AuthUserId}/{auth.AuthEmail}</span>
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </React.Fragment>
+                                                ) : <React.Fragment/>
+                                            }
+                                        </Grid>
+                                        <Grid item xs={12} sm={6}>
+                                            {
+                                                row.participateInAccountList && row.participateInAccountList.length > 0 ? (
+                                                    <React.Fragment>
+                                                        <span className={classes.spanContents}>
+                                                            <AccountCircleIcon/> 사용하는 이메일 인증 계정 </span>
+                                                        <ul>
+                                                            {row.participateInAccountList.map(paccount => (
+                                                                <li key={paccount.idx}>
+                                                                    <span className={classes.spanContents}>{paccount.UserId}</span>
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </React.Fragment>
+                                                ) : <React.Fragment/>
+                                            }
+                                        </Grid>
+                                    </Grid>
+                                </div>
+                            </Box>
+                        </Collapse>
+                    </TableCell>
+                </TableRow>
+            </React.Fragment>
+        );
     };
 
     return (
         <Col>
             <Card className="cb-card">
-                <MaterialTable
-                    title="SUBNET LIST"
-                    icons={tableIcons}
-                    columns={state.columns}
-                    className={classes.root}
-                    editable={{
-                        // onRowAdd: RowAdd,
-                        // onRowUpdate: RowUpdate,
-                        // onRowDelete: RowDelete,
-                    }}
-                    onOrderChange={handleOrderChange}
-                    onChangeRowsPerPage={handleRowsPerPage}
-                    onChangePage={handleChangePage}
-                    onRowClick={() => null}
-                    options={options}
-                    // actions={actions}
-                    localization={localization}
-                    data={state.data}
-                    // data={dataSet}
-                    // components={customComponents}
+                <UserTableToolbar
+                    numSelected={[...selected].filter(el => el[1]).length}
+                    handleDeleteSelected={handleDeleteSelected}
+                    handleRefresh={handleRefresh}
+                    onRequestSort={handleRequestSort}
+                    rows={headRows}
+                    toolbarTitle="SUBNET LIST"
+                    handleOpen={handleOpenAddUser}
+                    handleSubmitSearch={handleSubmitSearch}
+                    contents="계정"
                 />
+                <div className="cb-material-table__wrap">
+                    <TableContainer>
+                        <Table
+                            className="cb-material-table"
+                            size={dense ? 'small' : 'medium'}
+                        >
+                            <CommonTableHead
+                                classes={classes}
+                                numSelected={[...selected].filter(el => el[1]).length}
+                                order={order}
+                                orderBy={orderBy}
+                                onSelectAllClick={handleSelectAllClick}
+                                onRequestSort={handleRequestSort}
+                                rowCount={state.data && state.data.length ? state.data.length : 0}
+                                rows={headRows}
+                            />
+                            <TableBody>
+                                { state.data && state.data.map((row, index) => {
+                                    const keyId = index;
+                                    return (
+                                        <ContentsRow key={keyId} row={row} />
+                                    );
+                                })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <div style={{display: "flex"}}>
+                        <Grid item md={4}>
+                            <FormControlLabel
+                                style={{paddingTop: 20, fontStyle: "oblique"}}
+                                className="cb-material-table__padding"
+                                control={<Switch checked={dense} onChange={handleChangeDense} />}
+                                label="DENSE"
+                            />
+                        </Grid>
+                        <Grid item md={1}>
+                            <div style={{padding: "10px 0px"}}>
+                                {rowSelector}
+                            </div>
+                        </Grid>
+                        <Grid item md={7}>
+                            <div style={{display: "flex-right"}}>
+                                {paginationBar}
+                            </div>
+                        </Grid>
+                    </div>
+                </div>
             </Card>
         </Col>
     );
