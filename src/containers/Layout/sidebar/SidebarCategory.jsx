@@ -9,19 +9,27 @@ import {useDispatch, useSelector} from "react-redux";
 import {clearSidebarWindows} from "../../../redux/actions/sidebarActions";
 
 const SidebarCategory = ({
-    title, icon, isNew, children,
+    title, icon, isNew, children, dropdown,
 }) => {
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
     const [hover, setHover] = useState(false);
+    const [state, setState] = useState(false);
+    // const {sidebarDropdown} = useSelector(({customizer}) => ({
+    //     sidebarDropdown: customizer.sidebarDropdown,
+    // }));
+    const {collapse} = state;
     const {clearWindow} = useSelector(({sidebar}) => ({
        clearWindow: sidebar.clearWindow,
     }));
     const categoryClass = classNames({
         'cb_sidebar__category-wrap': true,
-        'cb_sidebar__category-wrap--open': !show,
-        'cb_sidebar__link cb_sidebar__category': true,
+        'cb_sidebar__category-wrap--open': collapse,
+        'cb_sidebar__category cb_sidebar__link': true,
     });
+    const {sidebarDropdown} = useSelector(({customizer}) => ({
+        sidebarDropdown: customizer.sidebarDropdown,
+    }));
 
     const handleMouseEnter = () => {
         setHover(true);
@@ -75,47 +83,75 @@ const SidebarCategory = ({
         }
     }, [clearWindow]);
 
+    const toggleDropdown = () => {
+        setState({ collapse: !collapse });
+    };
+
     return (
-        <div style={{display: "flex"}} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
-            <button className={categoryClass} type="button" onClick={handleClick} style={{zIndex: "120"}}>
-                {icon ? <span className="cb_sidebar__link-icon"><Icon icon={icon}/></span> : ''}
-                <p className="cb_sidebar__link-title">
-                    {title}
-                    {isNew && <span className="cb_sidebar__hr"/>}
-                </p>
-                {/*<span className="cb_sidebar__category-icon lnr lnr-chevron-right"/>*/}
-            </button>
-            <Collapse isOpen={show} id={`collapseId_${title}`} name="collapseName"
-                      className="cb_sidebar__submenu-wrap"
-                      style={{position: "absolute", zIndex: "110", display: "none"}}>
-                {/** Collapse Sidebar hover window * */}
-                <ul className="cb_sidebar__submenu">
-                    <div className="cb_sidebar__submenu-wrap-border">
-                        <div className="cb_sidebar__div_title">
+        // sidebar toggle : dropdown
+        (sidebarDropdown)
+            ? (
+                <div>
+                    <button className={categoryClass} type="button" onClick={toggleDropdown} style={{zIndex: "120"}}>
+                        {icon ? <span className="cb_sidebar__link-icon"><Icon icon={icon}/></span> : ''}
+                        <p className="cb_sidebar__link-title">
                             {title}
-                        </div>
-                        <div type="button" className="cb_sidebar__div_button"
-                             role="button" tabIndex="0">
-                            {children}
-                        </div>
-                    </div>
-                </ul>
-            </Collapse>
-            <Collapse isOpen={hover} className="cb_sidebar__submenu-wrap" style={linkStyle}>
-                {/** Sidebar hover window * */}
-                <ul className="cb_sidebar__submenu">
-                    <div className="cb_sidebar__submenu-wrap-border">
-                        <div className="cb_sidebar__div_title">
+                            {isNew && <span className="cb_sidebar__hr"/>}
+                        </p>
+                        <span className="cb_sidebar__category-icon lnr lnr-chevron-right"/>
+                    </button>
+                    <Collapse isOpen={collapse} className="sidebar__submenu-wrap">
+                        <ul className="sidebar__submenu">
+                            <div>
+                                {children}
+                            </div>
+                        </ul>
+                    </Collapse>
+                </div>
+            )
+            : (
+                // sidebar toggle window
+                <div style={{display: "flex"}} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
+                    <button className={categoryClass} type="button" onClick={handleClick} style={{zIndex: "120"}}>
+                        {icon ? <span className="cb_sidebar__link-icon"><Icon icon={icon}/></span> : ''}
+                        <p className="cb_sidebar__link-title">
                             {title}
-                        </div>
-                        <div type="button" className="cb_sidebar__div_button"
-                             role="button" tabIndex="0">
-                            {children}
-                        </div>
-                    </div>
-                </ul>
-            </Collapse>
-        </div>
+                            {isNew && <span className="cb_sidebar__hr"/>}
+                        </p>
+                        {/*<span className="cb_sidebar__category-icon lnr lnr-chevron-right"/>*/}
+                    </button>
+                    <Collapse isOpen={show} id={`collapseId_${title}`} name="collapseName"
+                              className="cb_sidebar__submenu-wrap"
+                              style={{position: "absolute", zIndex: "110", display: "none"}}>
+                        {/** Collapse Sidebar hover window * */}
+                        <ul className="cb_sidebar__submenu">
+                            <div className="cb_sidebar__submenu-wrap-border">
+                                <div className="cb_sidebar__div_title">
+                                    {title}
+                                </div>
+                                <div type="button" className="cb_sidebar__div_button"
+                                     role="button" tabIndex="0">
+                                    {children}
+                                </div>
+                            </div>
+                        </ul>
+                    </Collapse>
+                    <Collapse isOpen={hover} className="cb_sidebar__submenu-wrap" style={linkStyle}>
+                        {/** Sidebar hover window * */}
+                        <ul className="cb_sidebar__submenu">
+                            <div className="cb_sidebar__submenu-wrap-border">
+                                <div className="cb_sidebar__div_title">
+                                    {title}
+                                </div>
+                                <div type="button" className="cb_sidebar__div_button"
+                                     role="button" tabIndex="0">
+                                    {children}
+                                </div>
+                            </div>
+                        </ul>
+                    </Collapse>
+                </div>
+            )
     );
 };
 

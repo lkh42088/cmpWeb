@@ -8,7 +8,7 @@ import SidebarContent from './SidebarContent';
 import { SidebarProps } from '../../../shared/prop-types/ReducerProps';
 
 const Sidebar = ({
-    changeToDark, changeToLight, changeMobileSidebarVisibility, sidebar, changeMenuTitle, user, logout,
+    changeToDark, changeToLight, changeMobileSidebarVisibility, sidebar, changeMenuTitle, user,
 }) => {
     const sidebarClass = classNames({
         sidebar: true,
@@ -53,6 +53,7 @@ const Sidebar = ({
                         changeToDark={changeToDark}
                         changeToLight={changeToLight}
                         changeMenuTitle={changeMenuTitle}
+                        user={user}
                     />
                 </div>
             </Scrollbar>

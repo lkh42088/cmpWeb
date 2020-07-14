@@ -21,13 +21,13 @@ const SidebarLink = ({
             onClick={handleClick}
             activeClassName="cb_sidebar__link-active"
         >
-            <li className="cb_sidebar__link">
+            <button className="cb_sidebar__link" type="button">
                 {icon ? <span className="cb_sidebar__link-icon"><Icon icon={icon}/></span> : ''}
                 <p className="cb_sidebar__link-title">
                     {title}
                     {newLink ? <Badge className="cb_sidebar__link-badge"><span>New</span></Badge> : ''}
                 </p>
-            </li>
+            </button>
         </NavLink>
     );
 };
