@@ -410,6 +410,8 @@ class AssetsView extends PureComponent {
             rentDateSliceStr = rentDate.replace("|", "~");
         }
 
+        console.log("★★★★★ rack : ", rack);
+
         switch (assetState.deviceType) {
             case 'server':
                 viewModalContent = (
