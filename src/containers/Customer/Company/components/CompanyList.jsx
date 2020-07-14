@@ -20,14 +20,14 @@ import Collapse from "@material-ui/core/Collapse";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import {IconButton, Tooltip} from "@material-ui/core";
 import { useSnackbar } from 'notistack';
 import ReactTooltip from "react-tooltip";
 import {
-    initRegisterCompany,
     getCompanyList,
-    changeCompanyMsgField,
 } from "../../../../redux/actions/companiesActions";
-import {initRegisterUser} from "../../../../redux/actions/usersActions";
 import {
     pagingChangeCurrentPage,
     pagingChangeCurrentPageNext,
@@ -43,6 +43,8 @@ import CommonTableHead from "../../../Common/CommonTableHead";
 import RegisterCompanyPage from "./RegisterCompanyPage";
 import {registerCompany, unregisterCompany} from "../../../../lib/api/company";
 import CompanyTableToolbar from "./CompanyTableToolbar";
+// eslint-disable-next-line import/named
+import {limitLongString} from "../../../../lib/utils/utils";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -118,13 +120,9 @@ const CompanyList = () => {
      */
     const {
         data, getPage,
-        cpMsg,
-        cpMsgError,
     } = useSelector(({ companiesRd, usersRd }) => ({
         data: companiesRd.data,
         getPage: companiesRd.page,
-        cpMsg: companiesRd.msg,
-        cpMsgError: companiesRd.msgError,
     }));
     /**
      * Pagination
@@ -155,16 +153,14 @@ const CompanyList = () => {
     /**
      * Modal variable
      */
-    const [open, setOpen] = React.useState(false);
+    const [openWrite, setOpenWrite] = React.useState(false);
 
-    const handleOpen = () => {
-        dispatch(initRegisterCompany());
-        dispatch(initRegisterUser());
-        setOpen(true);
+    const handleOpenAddCompany = () => {
+        setOpenWrite(true);
     };
 
     const handleClose = () => {
-        setOpen(false);
+        setOpenWrite(false);
     };
 
     const handleTriggerFailure = (snackMsg) => {
@@ -337,20 +333,14 @@ const CompanyList = () => {
     const handleRegisterCompany = (props) => {
         console.log("handleRegisterCompany: ", props);
         doRegisterCompany(props);
-        setOpen(false);
+        setOpenWrite(false);
     };
 
     useEffect(() => {
         const changeOrderBy = "idx";
         console.log("[] orderBy: ", changeOrderBy);
         dispatch(pagingChangeOrderByWithReset({orderBy: changeOrderBy}));
-        dispatch(changeCompanyMsgField({key: "msg", value: null}));
-        dispatch(changeCompanyMsgField({key: "msgError", value: null}));
     }, []);
-
-    useEffect(() => {
-        // dispatch(pagingDump());
-    }, [totalCount]);
 
     useEffect(() => {
         if (getPage) {
@@ -363,23 +353,7 @@ const CompanyList = () => {
     useEffect(() => {
         /** Pagination */
         getPageData();
-        // dispatch(pagingDump());
     }, [rowsPerPage, pageBeginRow, orderBy, order]);
-
-    // useEffect(() => {
-    //     if (cpMsg) {
-    //         console.log("cpMsg: success!");
-    //         getPageData();
-    //         dispatch(changeCompanyMsgField({key: "msg", value: null}));
-    //     }
-    // }, [cpMsg]);
-    //
-    // useEffect(() => {
-    //     if (cpMsgError) {
-    //         console.log("cpMsg: failure!");
-    //         dispatch(changeCompanyMsgField({key: "msgError", value: null}));
-    //     }
-    // }, [cpMsgError]);
 
     /** Pagination */
     const paginationBar = (
@@ -395,21 +369,12 @@ const CompanyList = () => {
         />
     );
 
-    /** 글자수 체크 함수 */
-    const checkStringLength = (str) => {
-        if (str && str.length >= 35) {
-            return str.substr(0, 34).concat('......');
-        }
-        return str;
-    };
-
-    const tooltip = (
-        <ReactTooltip id="tooltip" place="top" effect="solid"
+    const longMsgTooltip = (
+        <ReactTooltip id="tooltipData" place="top" effect="solid"
                       delayHide={500} type="info"
                       className={classes.reactTooltip}
                       getContent={dataTip => `${dataTip}`} />
     );
-
 
     const getAddress = (row) => {
         let address = "-";
@@ -431,11 +396,21 @@ const CompanyList = () => {
         return address;
     };
 
+    const handleDeleteSelectedCompany = (idx) => {
+        console.log("delete company: ", idx);
+    };
+
+    const handleModifySelectedCompany = (idx) => {
+        console.log("modify company: ", idx);
+    };
+
     const DumpRow = (props) => {
         const { row } = props;
         const [openCollapse, setOpenCollapse] = React.useState(false);
         const isSelected = getSelected(row.idx);
         const address = getAddress(row);
+        const cellClassName = "cb-material-table__cell";
+        const cellIcon = isSelected ? "cb-material-table__cell-right" : cellClassName;
         return (
             <React.Fragment>
                 <TableRow
@@ -448,60 +423,89 @@ const CompanyList = () => {
                     selected={isSelected}
                 >
                     <TableCell
-                        className="cb-material-table__cell"
+                        className={cellClassName}
                         padding="checkbox"
                         onClick={event => handleClick(event, row.idx)}
                     >
                         <Checkbox checked={isSelected} className="cb-material-table__checkbox" />
+
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
-                        style={{width: "5%"}}
+                        className={cellClassName}
+                        style={{ width: "5%" }}
                     >
                         {row.idx}
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
+                        className={cellClassName}
                         style={{width: "15%"}}
-                        onFocus={() => { setOpenCollapse(true); }}
-                        onMouseOver={() => { setOpenCollapse(true); }}
+                        onMouseEnter={() => { setOpenCollapse(true); }}
                         onMouseLeave={() => { setOpenCollapse(false); }}
                     >
                         {row.name}
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
+                        className={cellClassName}
                         style={{width: "15%"}}
                     >
                         {row.tel}
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
+                        className={cellClassName}
                         style={{width: "15%"}}
                     >
                         {row.email}
                     </TableCell>
-                    <TableCell className="cb-material-table__cell cb-material-table__cell-right"
-                               style={{width: "10%"}}
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "10%"}}
                     >
                         {row.cpUserId}
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
+                        className={cellClassName}
                         style={{width: "25%"}}
                         data-tip={row.address}
-                        data-for="tooltip"
+                        data-for="tooltipData"
                     >
-                        {checkStringLength(row.address)}
+                        {limitLongString(row.address, 35)}
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
+                        className={cellIcon}
                         style={{width: "25%"}}
                         data-tip={row.memo}
-                        data-for="tooltip"
+                        data-for="tooltipData"
                     >
-                        {checkStringLength(row.memo)}
-                        {tooltip}
+                        {isSelected ? (
+                            <React.Fragment>
+                                {limitLongString(row.memo, 10)}
+                                <Tooltip title="수정">
+                                <IconButton
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleDeleteSelectedCompany(row.idx);
+                                    }}
+                                >
+                                    <EditIcon color="secondary"/>
+                                </IconButton>
+                                </Tooltip>
+                                <Tooltip title="삭제">
+                                <IconButton
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleModifySelectedCompany(row.idx);
+                                    }}
+                                >
+                                    <DeleteIcon color="secondary"/>
+                                </IconButton>
+                                </Tooltip>
+                            </React.Fragment>
+                        ) : (
+                            <React.Fragment>
+                                {limitLongString(row.memo, 35)}
+                            </React.Fragment>
+                        )}
+                        {longMsgTooltip}
                     </TableCell>
                 </TableRow>
                 <TableRow>
@@ -578,7 +582,7 @@ const CompanyList = () => {
                         handleRefresh={handleRefresh}
                         rows={headRows}
                         toolbarTitle="고객사 리스트"
-                        handleOpen={handleOpen}
+                        handleOpen={handleOpenAddCompany}
                         contents="고객사"
                     />
                     <div className="cb-material-table__wrap">
@@ -603,8 +607,7 @@ const CompanyList = () => {
                                         return (
                                             <DumpRow key={keyId} row={row}/>
                                         );
-                                    })
-                                    }
+                                    })}
                                 </TableBody>
                             </Table>
                         </TableContainer>
@@ -616,7 +619,7 @@ const CompanyList = () => {
                         />
                     </div>
                     <RegisterCompanyPage
-                        open={open}
+                        open={openWrite}
                         handleClose={handleClose}
                         handleSubmit={handleRegisterCompany}
                         refreshPage={getPageData}

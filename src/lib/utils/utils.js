@@ -125,3 +125,10 @@ export const checkCellphone = (arg) => {
     // }
     return error;
 };
+
+export const limitLongString = (str, len) => {
+    if (str && str.length >= len) {
+        return str.substr(0, len - 1).concat('... ');
+    }
+    return str;
+};

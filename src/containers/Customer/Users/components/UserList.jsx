@@ -24,7 +24,9 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import GroupIcon from '@material-ui/icons/Group';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import {Button} from "@material-ui/core";
+import {IconButton, Tooltip} from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 import {useSnackbar} from "notistack";
 import {
     pagingChangeCurrentPage,
@@ -44,6 +46,8 @@ import CommonTableHead from "../../../Common/CommonTableHead";
 import UserRegisterDialog from "./UserRegisterDialog";
 import {registerUser, unregisterUser} from "../../../../lib/api/users";
 import UserTableToolbar from "./UserTableToolbar";
+// eslint-disable-next-line import/named
+import {limitLongString} from "../../../../lib/utils/utils";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -51,9 +55,9 @@ const headRows = [
     {id: 'userId', disablePadding: false, label: '아이디'},
     {id: 'userName', disablePadding: false, label: '이름'},
     {id: 'email', disablePadding: false, label: '이메일'},
-    {id: 'hp', disablePadding: false, label: '전화번호'},
     {id: 'cpName', disablePadding: false, label: '회사명'},
     {id: 'authlevel', disablePadding: false, label: '권한'},
+    {id: 'memo', disablePadding: false, label: '메모'},
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -323,8 +327,8 @@ const UserList = () => {
     const addUser = async (user) => {
         const {
             cpIdx, cpName, id, password, name, email,
-            cellPhone, level, userZip, userAddr, userAddrDetail,
-            emailAuthValue, emailAuthGroupList,
+            cellPhone, tel, level, userZip, userAddr, userAddrDetail,
+            emailAuthValue, emailAuthGroupList, memo,
         } = user;
         try {
             const response = await registerUser({
@@ -336,12 +340,14 @@ const UserList = () => {
                 email,
                 authLevel: Number(level),
                 hp: cellPhone,
+                tel,
                 zipCode: userZip,
                 address: userAddr,
                 addressDetail: userAddrDetail,
                 emailAuthFlag: emailAuthValue === "1",
                 emailAuthGroupFlag: emailAuthValue === "2",
                 emailAuthGroupList,
+                memo,
             });
             handleSnackbarSuccess("계정 등록에 성공하였습니다.");
             getPageData();
@@ -361,6 +367,14 @@ const UserList = () => {
         console.log("handleSubmit() : user ", user);
         addUser(user);
         handleCloseAddUser();
+    };
+
+    const handleDeleteSelectedCompany = (idx) => {
+        console.log("delete user: ", idx);
+    };
+
+    const handleModifySelectedCompany = (idx) => {
+        console.log("modify user: ", idx);
     };
 
     /************************************************************************************
@@ -454,6 +468,8 @@ const UserList = () => {
         const [openCollapse, setOpenCollapse] = React.useState(false);
         const isSelected = getSelected(row.idx);
         const address = getAddress(row);
+        const cellClassName = "cb-material-table__cell";
+        const cellIcon = isSelected ? "cb-material-table__cell-right" : cellClassName;
         return (
             <React.Fragment>
                 <TableRow
@@ -468,24 +484,23 @@ const UserList = () => {
                     onClick={() => setOpenCollapse(!openCollapse)}
                 >
                     <TableCell
-                        className="cb-material-table__cell"
+                        className={cellClassName}
                         padding="checkbox"
                         onClick={event => handleClick(event, row.idx)}
                     >
                         <Checkbox checked={isSelected}
-                                  // className="cb-material-table__checkbox"
                                   className="cb-material-table__checkbox"
                         />
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
+                        className={cellClassName}
                         style={{width: "5%"}}
                     >
                         {row.idx}
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
-                        style={{width: "10%"}}
+                        className={cellClassName}
+                        style={{width: "5%"}}
                     >
                         <Avatar
                             className="topbar__avatar-img-list"
@@ -496,45 +511,72 @@ const UserList = () => {
                         {/*<Avatar alt={row.userId} size="40" src="/static/images/avatar/1.jpg"/>*/}
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
-                        style={{width: "15%"}}
-                        onFocus={() => { setOpenCollapse(true); }}
-                        onMouseOver={() => { setOpenCollapse(true); }}
+                        className={cellClassName}
+                        style={{width: "10%"}}
+                        onMouseEnter={() => { setOpenCollapse(true); }}
                         onMouseLeave={() => { setOpenCollapse(false); }}
                     >
                         {row.userId}
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
-                        style={{width: "15%"}}
+                        className={cellClassName}
+                        style={{width: "10%"}}
                     >
                         {row.name}
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
-                        style={{width: "20%"}}
+                        className={cellClassName}
+                        style={{width: "15%"}}
                     >
                         {row.email}
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
-                        style={{width: "10%"}}
-                    >
-                        {row.hp}
-                    </TableCell>
-                    <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
+                        className={cellClassName}
                         style={{width: "15%"}}
                     >
                         {row.cpName}
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
+                        className={cellClassName}
                         style={{width: "10%"}}
                     >
                         {row.authLevel}
                     </TableCell>
-                </TableRow>
+                    <TableCell
+                        className={cellIcon}
+                        style={{width: "25%"}}
+                    >
+                        {isSelected ? (
+                            <React.Fragment>
+                                {limitLongString(row.memo, 10)}
+                                <Tooltip title="수정">
+                                    <IconButton
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleDeleteSelectedCompany(row.idx);
+                                        }}
+                                    >
+                                        <EditIcon color="secondary"/>
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="삭제">
+                                    <IconButton
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleModifySelectedCompany(row.idx);
+                                        }}
+                                    >
+                                        <DeleteIcon color="secondary"/>
+                                    </IconButton>
+                                </Tooltip>
+                            </React.Fragment>
+                        ) : (
+                            <React.Fragment>
+                                {limitLongString(row.memo, 35)}
+                            </React.Fragment>
+                        )}
+                    </TableCell>
+            </TableRow>
                 <TableRow>
                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
                         <Collapse in={openCollapse} timeout="auto" unmountOnExit>

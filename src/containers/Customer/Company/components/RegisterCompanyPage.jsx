@@ -110,6 +110,7 @@ const RegisterCompanyPage = (props) => {
         cpAddrDetail: "",
         cpHomepage: "",
         cpTel: "",
+        cpHp: "",
         cpEmail: "",
         cpIsCompany: false,
         cpMemo: "",
@@ -126,6 +127,7 @@ const RegisterCompanyPage = (props) => {
         cpAddrDetail: false,
         cpHomepage: false,
         cpTel: true,
+        cpHp: false,
         cpEmail: true,
         cpIsCompany: false,
         cpMemo: false,
@@ -142,6 +144,7 @@ const RegisterCompanyPage = (props) => {
         cpAddrDetail: "",
         cpHomepage: "",
         cpTel: "",
+        cpHp: "",
         cpEmail: "",
         cpIsCompany: "",
         cpMemo: "",
@@ -158,6 +161,7 @@ const RegisterCompanyPage = (props) => {
         cpAddrDetail: false,
         cpHomepage: false,
         cpTel: false,
+        cpHp: false,
         cpEmail: false,
         cpIsCompany: false,
         cpMemo: false,
@@ -188,6 +192,7 @@ const RegisterCompanyPage = (props) => {
             cpAddrDetail: "",
             cpHomepage: "",
             cpTel: "",
+            cpHp: "",
             cpEmail: "",
             cpIsCompany: false,
             cpMemo: "",
@@ -203,6 +208,7 @@ const RegisterCompanyPage = (props) => {
             cpAddrDetail: "",
             cpHomepage: "",
             cpTel: "",
+            cpHp: "",
             cpEmail: "",
             cpIsCompany: "",
             cpMemo: "",
@@ -218,6 +224,7 @@ const RegisterCompanyPage = (props) => {
             cpAddrDetail: false,
             cpHomepage: false,
             cpTel: false,
+            cpHp: false,
             cpEmail: false,
             cpIsCompany: false,
             cpMemo: false,
@@ -529,22 +536,6 @@ const RegisterCompanyPage = (props) => {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <div>
-                                        <span className={labelClassName}>* 전화번호</span>
-                                        <TextField
-                                            className={fieldClassName}
-                                            error={errors.cpTel}
-                                            required={requires.cpTel}
-                                            helperText={helpers.cpTel}
-                                            name="cpTel"
-                                            value={fields.cpTel}
-                                            onChange={(e) => { handleChangeFields(e); }}
-                                            variant={variant}
-                                            size={fieldSize}
-                                        />
-                                    </div>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <div>
                                         <span className={labelClassName}>* 이메일</span>
                                         <TextField
                                             className={fieldClassName}
@@ -561,14 +552,30 @@ const RegisterCompanyPage = (props) => {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <div>
-                                        <span className={labelClassName}>홈페이지</span>
+                                        <span className={labelClassName}>* 전화번호</span>
                                         <TextField
                                             className={fieldClassName}
-                                            error={errors.cpHomepage}
-                                            required={requires.cpHomepage}
-                                            helperText={helpers.cpHomepage}
-                                            name="cpHomepage"
-                                            value={fields.cpHomepage}
+                                            error={errors.cpTel}
+                                            required={requires.cpTel}
+                                            helperText={helpers.cpTel}
+                                            name="cpTel"
+                                            value={fields.cpTel}
+                                            onChange={(e) => { handleChangeFields(e); }}
+                                            variant={variant}
+                                            size={fieldSize}
+                                        />
+                                    </div>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <div>
+                                        <span className={labelClassName}>휴대폰번호</span>
+                                        <TextField
+                                            className={fieldClassName}
+                                            error={errors.cpHp}
+                                            required={requires.cpHp}
+                                            helperText={helpers.cpHp}
+                                            name="cpHp"
+                                            value={fields.cpHp}
                                             onChange={(e) => { handleChangeFields(e); }}
                                             variant={variant}
                                             size={fieldSize}
@@ -634,6 +641,22 @@ const RegisterCompanyPage = (props) => {
                                             />
                                             <FormHelperText id="component-helper-text">{helpers.userPassword}</FormHelperText>
                                         </FormControl>
+                                    </div>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <div>
+                                        <span className={labelClassName}>홈페이지</span>
+                                        <TextField
+                                            className={fieldClassName}
+                                            error={errors.cpHomepage}
+                                            required={requires.cpHomepage}
+                                            helperText={helpers.cpHomepage}
+                                            name="cpHomepage"
+                                            value={fields.cpHomepage}
+                                            onChange={(e) => { handleChangeFields(e); }}
+                                            variant={variant}
+                                            size={fieldSize}
+                                        />
                                     </div>
                                 </Grid>
                                 <Grid item xs={6}>
@@ -706,6 +729,22 @@ const RegisterCompanyPage = (props) => {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <div/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <span className={labelClassName}>메모</span>
+                                    <TextField
+                                        className={fieldClassName}
+                                        error={errors.cpMemo}
+                                        required={requires.cpMemo}
+                                        helperText={helpers.cpMemo}
+                                        name="cpMemo"
+                                        value={fields.cpMemo}
+                                        onChange={(e) => { handleChangeFields(e); }}
+                                        variant={variant}
+                                        size={fieldSize}
+                                        multiline
+                                        rows={4}
+                                    />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <div>
