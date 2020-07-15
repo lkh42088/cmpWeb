@@ -173,10 +173,7 @@ export default class AssetsList extends PureComponent {
 
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
         for (const arrData in values) {
-            //console.log("arrData : ", arrData, ", value : ", values[arrData]);
             if (arrData.indexOf("rentDate") !== -1) {
-                //console.log("arrData : ", arrData, ", value : ", values[arrData]);
-                //console.log("start : ", values[arrData].start, ", end : ", values[arrData].end);
                 if (values[arrData].start !== undefined) {
                     rentDataStart = moment(values[arrData].start).format("YYYYMMDD");
                     rentDataEnd = `|${moment(values[arrData].end).format("YYYYMMDD")}`;
@@ -239,8 +236,8 @@ export default class AssetsList extends PureComponent {
             warranty: values.warranty,
         });
 
-        console.log("UPDATE 🙊🙊🙊 가공 전 : ", values);
-        console.log("UPDATE 🙊🙊🙊 가공 후 : ", submitData);
+        console.log("WRITE-LIST 가공 전 : ", values);
+        console.log("WRITE-LIST 가공 후 : ", submitData);
         dispatch(postDevice('update', assetState, submitData));
         this.toggle();
         //dispatch(fetchPosts(assetState));
@@ -598,10 +595,10 @@ export default class AssetsList extends PureComponent {
                                                 className={tableCellClassName}
                                             >{/*펌웨어*/}{d.firmwareVersion}
                                             </TableCell>
-                                            <TableCell
+                                            {/*<TableCell
                                                 className={tableCellClassName}
-                                            >{/*입고일*/}{d.warehousingDate}
-                                            </TableCell>
+                                            >입고일{d.warehousingDate}
+                                            </TableCell>*/}
                                         </Fragment>
                                     )}
                                     {assetState.deviceType === 'part'
@@ -611,14 +608,14 @@ export default class AssetsList extends PureComponent {
                                                 className={tableCellClassName}
                                             >{/*HW S/N*/}{d.hwSn}
                                             </TableCell>
-                                            <TableCell
+                                            {/*<TableCell
                                                 className={tableCellClassName}
-                                            >{/*워런티*/}{d.warranty}
+                                            >워런티{d.warranty}
                                             </TableCell>
                                             <TableCell
                                                 className={tableCellClassName}
-                                            >{/*입고일*/}{d.warehousingDate}
-                                            </TableCell>
+                                            >입고일{d.warehousingDate}
+                                            </TableCell>*/}
                                         </Fragment>
                                     )}
                                 </TableRow>

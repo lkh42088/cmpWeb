@@ -214,7 +214,7 @@ class AssetsLog extends PureComponent {
                                                 </TableCell>
                                                 <TableCell
                                                     className="material-table__cell material-table__cell-right"
-                                                >{moment(d.registerDate).format("YYYY-MM-DD")}
+                                                >{moment(d.registerDate).format("YYYY년MM월DD일")}
                                                 </TableCell>
                                                 <TableCell
                                                     className="material-table__cell material-table__cell-right"

@@ -4,6 +4,7 @@ import {
 } from 'reactstrap';
 import {useDispatch, useSelector} from "react-redux";
 
+import {Dialog} from "material-ui";
 import MagnifyIcon from "mdi-react/MagnifyIcon";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import InputIcon from "@material-ui/icons/Input";
@@ -30,7 +31,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
         outFlag: assetState.deviceOutFlag,
         deviceCode: '',
         operatingFlag: true,
-        carryingFlag: true,
+        carryingFlag: false,
     });
 
     const [modal, setModal] = React.useState({
@@ -498,7 +499,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
             <CardBody className="cb-card-body">
                 <Row style={{padding: 10}}>
                     <Col sm={8} md={8} xs={8} xl={8} lg={8}>
-                    {/*<Col mb={8}>*/}
+                        {/*<Col mb={8}>*/}
                         <form>
                             <div className="search_card_body" style={{maxWidth: "100%"}}>
                                 <div>
@@ -623,8 +624,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                 className={`${modalClass}`}>
                                 <AssetsWrite closeToggle={toggle} assetState={assetState} dispatch={dispatch}
                                              onSubmit={handleSubmit}
-                                             theme={theme}
-                                />
+                                             theme={theme}/>
                             </Modal>
                         </div>
                     </Col>
