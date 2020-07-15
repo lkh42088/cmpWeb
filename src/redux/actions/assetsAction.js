@@ -164,7 +164,7 @@ export const fetchPosts = assetState => async (dispatch) => {
                     offsetPage: assetState.apiPageRd.offsetPage,
                 });
 
-                console.log("response : ", response.data);
+                //console.log("response : ", response.data);
 
                 dispatch({
                     type: GET_DEVICES,
@@ -378,7 +378,7 @@ export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) =>
 
         const jsonData = res.data[0];
 
-        console.log("♡ !!!! ----------> : ", jsonData);
+        //console.log("jsonData : ", jsonData);
 
         let IpArray = '';
         let SplaArray = '';

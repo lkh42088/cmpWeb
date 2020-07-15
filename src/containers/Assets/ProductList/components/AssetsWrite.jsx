@@ -1,39 +1,36 @@
 import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Button, ButtonToolbar, Modal} from 'reactstrap';
+import {
+    Button, ButtonToolbar, Card, CardBody, Modal,
+} from 'reactstrap';
 import classNames from 'classnames';
 import {Field, reduxForm} from "redux-form";
 import {findDOMNode} from "react-dom";
 import {Map} from "immutable";
 
-import CalendarBlankIcon from "mdi-react/CalendarBlankIcon";
+import Dialog from "@material-ui/core/Dialog";
 import AccountSearchIcon from "mdi-react/AccountSearchIcon";
 import PlusIcon from "mdi-react/PlusIcon";
 import MinusIcon from "mdi-react/MinusIcon";
 import CurrencyUsdIcon from 'mdi-react/CurrencyUsdIcon';
 
+import Grid from "@material-ui/core/Grid";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import {FixedSizeList} from "react-window";
 import TableBody from "@material-ui/core/TableBody";
 import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
+import TableHead from "@material-ui/core/TableHead";
 import TableCell from "@material-ui/core/TableCell";
 import MatButton from "@material-ui/core/Button";
-import SendIcon from "@material-ui/icons/Send";
 import EditIcon from "@material-ui/icons/Edit";
 import {withTranslation} from "react-i18next";
-import TablePagination from "@material-ui/core/TablePagination";
 import {getCompanyByName, setAddEleData} from "../../../../redux/actions/assetsAction";
 
-import {RTLProps} from '../../../../shared/prop-types/ReducerProps';
-
-import TextEditor from "../../../../shared/components/text-editor/TextEditor";
 import renderIntervalDatePickerField from "../../../../shared/components/form/IntervalDatePicker";
 import renderDatePickerField from "../../../../shared/components/form/DatePicker";
-/*import renderDatePickerField from "./DatePicker";*/
-import renderSelectField from "../../../../shared/components/form/Select";
-import AssetsEdit from "./AssetsEdit";
-
-//const required = value => (value ? undefined : 'Required');
 
 function validate(values) {
     const errors = {};
@@ -77,8 +74,17 @@ const renderCustomerField = field => (
                  role="button" tabIndex="0">
                 <AccountSearchIcon/>
             </div>
-            {field.meta.touched && field.meta.error
-            && <span className="warringStyle">&nbsp;※ {field.meta.error}</span>}
+
+            {
+                field.label.name === "" ? (
+                    field.meta.touched && field.meta.error
+                    && <span className="warringStyle">&nbsp;※ {field.meta.error}</span>
+                ) : (
+                    <b className="text_cor_orange"
+                       style={{lineHeight: "32px"}}>&nbsp;
+                        {field.label.name} / {field.label.id}</b>
+                )
+            }
         </div>
     </Fragment>
 );
@@ -137,7 +143,9 @@ class AssetsWrite extends PureComponent {
             searchToggleDivision: '',
             searchCompanyName: '',
             searchCustomerId: '',
+            searchCustomerName: '',
             searchOwnerCompanyId: '',
+            searchOwnerCompanyName: '',
             ipArrayMap: {},
             splaArrayMap: {},
         };
@@ -167,57 +175,40 @@ class AssetsWrite extends PureComponent {
     };
 
     searchCompany = () => {
-        const {
-            assetState, dispatch,
-        } = this.props;
-        const {
-            searchCompanyName,
-        } = this.state;
-
-        /*address: "서울시 강남구 언주로 517, 14층"
-        addressDetail: "(역삼동, 강남 KT-IDC)"
-        email: "idc@conbridge.co.kr"
-        homepage: "http://www.conbridge.co.kr"
-        hp: ""
-        idx: 6
-        isCompany: true
-        memo: ""
-        name: "(주)콘텐츠브릿지"
-        tel: "1899-2669"
-        termDate: "0001-01-01T00:00:00Z"
-        userId: "conbridge"
-        zipcode: "135-915"*/
+        const {dispatch} = this.props;
+        const {searchCompanyName} = this.state;
 
         dispatch(getCompanyByName(searchCompanyName));
     };
 
-    setSearchCompany = (val) => {
-        const {
-            assetState, dispatch, handleSubmit,
-        } = this.props;
+    setSearchCompany = (cpUserId, name) => {
         const {searchToggleDivision} = this.state;
-        console.log("function searchToggleDivision : ", searchToggleDivision);
-        console.log("function val : ", val);
 
         if (searchToggleDivision === 'customer') {
             this.setState({
-                searchCustomerId: val,
+                searchCustomerId: cpUserId,
+                searchCustomerName: name,
             });
-            this.customerField.blur();
+
+            setTimeout(() => {
+                this.customerField.blur();
+            }, 500);
         } else if (searchToggleDivision === 'ownerCompany') {
             this.setState({
-                searchOwnerCompanyId: val,
+                searchOwnerCompanyId: cpUserId,
+                searchOwnerCompanyName: name,
             });
-            this.ownerCompanyField.blur();
+
+            setTimeout(() => {
+                this.ownerCompanyField.blur();
+            }, 500);
         }
 
         this.setState(prevState => ({modal: !prevState.modal}));
     };
 
     handleChange = (e) => {
-        const {
-            assetState, dispatch, handleSubmit,
-        } = this.props;
+        const {assetState} = this.props;
         let tempContent;
 
         this.setState({
@@ -237,7 +228,6 @@ class AssetsWrite extends PureComponent {
                             component="select"
                             className="select_col_4">
                             <option value="0">:: SELECT ::</option>
-                            <option value="none">렉없음</option>
                             {assetState.subCodes.data
                                 .map(d => (Number(d.codeId) === Number(e.target.value)
                                     && <option key={d.id} value={d.id}>{d.name}</option>))
@@ -284,10 +274,8 @@ class AssetsWrite extends PureComponent {
     };
 
     handleChangeIp = (e) => {
-        const {assetState, dispatch} = this.props;
-        const {
-            ipArrayMap,
-        } = this.state;
+        const {dispatch} = this.props;
+        const {ipArrayMap} = this.state;
 
         const reName = e.target.name;
         let setIpArrayTemp = new Map();
@@ -303,8 +291,6 @@ class AssetsWrite extends PureComponent {
         }
 
         setIpArrayTemp = JSON.parse(JSON.stringify(setIpArrayTemp));
-
-        console.log("setIpArrayTemp : ", setIpArrayTemp);
 
         this.setState({
             ipArrayMap: setIpArrayTemp,
@@ -343,6 +329,19 @@ class AssetsWrite extends PureComponent {
         dispatch(setAddEleData('spla', setSplaArrayTemp));
     };
 
+    handleChangeOwnerShip = (e) => {
+        if (e.target.value === "1") {
+            this.setState({
+                searchOwnerCompanyId: "conbridge",
+                searchOwnerCompanyName: "(주)콘텐츠브릿지",
+            });
+            this.ownerCompanyField.focus();
+
+            setTimeout(() => {
+                this.ownerCompanyField.blur();
+            }, 500);
+        }
+    };
 
     onClose = () => {
         const {closeToggle} = this.props;
@@ -355,7 +354,6 @@ class AssetsWrite extends PureComponent {
     };
 
     setHtmlPlus = (val) => {
-        console.log("Plus val : ", val);
         const {assetState, dispatch} = this.props;
         const {
             ipArrayMap, splaArrayMap,
@@ -501,6 +499,7 @@ class AssetsWrite extends PureComponent {
             modal, RackComponent, ModelComponent, AddIpComponent, AddSplaComponent,
             RegisterId, IpArray, warehousingDateError,
             searchCompanyName, searchCustomerId, searchOwnerCompanyId, searchToggleDivision,
+            searchCustomerName, searchOwnerCompanyName,
         } = this.state;
         const {showPassword} = this.state;
         let emptyRows;
@@ -737,6 +736,36 @@ class AssetsWrite extends PureComponent {
                 break;
         }
 
+        const viewSearchCompanyTemp = (
+            <Fragment>
+                {assetState.company.length !== undefined
+                    ? (
+                        <Fragment>
+                            {assetState.company.map(d => (
+                                <ListItem key={d.idx} button onClick={() => {
+                                    this.setSearchCompany(d.cpUserId, d.name);
+                                }}>
+                                    <div className="list-title">{d.name}</div>
+                                    {/*<div className="list-title">{d.name}</div>*/}
+                                    <div className="list-title-sub">&nbsp;({d.cpUserId} / {d.email})</div>
+                                </ListItem>
+                            ))}
+                            {emptyRows <= 0 && (
+                                <ListItem>
+                                    <div>검색된 내용이 없습니다.</div>
+                                </ListItem>
+                            )}
+                        </Fragment>
+                    )
+                    : (
+                        <ListItem>
+                            <div>검색된 내용이 없습니다.</div>
+                        </ListItem>
+                    )
+                }
+            </Fragment>
+        );
+
         // TODO 디자인은 나중에
         const viewSearchCompany = (
             <Fragment>
@@ -749,8 +778,8 @@ class AssetsWrite extends PureComponent {
                                     >{/*회사명*/}
                                         <b className="text_cor_green mouse_over_list">
                                             <div className="assets_add_modal_div"
-                                                 onClick={event => this.setSearchCompany(d.cpUserId)}
-                                                 onKeyDown={event => this.setSearchCompany(d.cpUserId)}
+                                                 onClick={event => this.setSearchCompany(d.cpUserId, d.name)}
+                                                 onKeyDown={event => this.setSearchCompany(d.cpUserId, d.name)}
                                                  role="button" tabIndex="0"><span
                                                 className="circle__ste"/>{d.name}</div>
                                         </b>
@@ -765,8 +794,9 @@ class AssetsWrite extends PureComponent {
                             ))}
                             {emptyRows <= 0 && (
                                 <TableRow style={{height: 49 * emptyRows}}>
-                                    <TableCell colSpan={3} style={{textAlign: "center"}}>검색된 내용이
-                                        없습니다.</TableCell>
+                                    <TableCell colSpan={3} style={{textAlign: "center"}}>
+                                        검색된 내용이 없습니다.
+                                    </TableCell>
                                 </TableRow>
                             )}
                         </Fragment>
@@ -779,16 +809,11 @@ class AssetsWrite extends PureComponent {
                         </TableRow>
                     )
                 }
-
-                {/*                {emptyRows <= 0 && (
-                    <TableRow style={{height: 49 * emptyRows}}>
-                        <TableCell colSpan={3} style={{textAlign: "center"}}>검색된 내용이 없습니다.2</TableCell>
-                    </TableRow>
-                )}*/}
             </Fragment>
         );
 
         return (
+            /*<Dialog open="true">*/
             <div>
                 <div className="assets_write__modal__header">
                     <p className="text-modal assets_write__modal__title">장비 등록
@@ -801,7 +826,8 @@ class AssetsWrite extends PureComponent {
                     <form className="modal_form modal_form--horizontal"
                           onSubmit={handleSubmit}>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label text_cor_green">장비코드</span>
+                                        <span
+                                            className="modal_form__form-group-label text_cor_green">장비코드</span>
                             <div className="modal_form__form-group-field">
                                 <b><h6 style={deviceStyle}>장비 등록 시 자동 생성</h6></b>
                             </div>
@@ -864,6 +890,7 @@ class AssetsWrite extends PureComponent {
                                 codeDivision={{
                                     code: assetState.codes.codeOwnership,
                                 }}
+                                onChange={this.handleChangeOwnerShip}
                             />
                         </div>
                         <div className="modal_form__form-group">
@@ -878,13 +905,15 @@ class AssetsWrite extends PureComponent {
                             />
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label text_cor_orange">*&nbsp;고객사</span>
+                                <span
+                                    className="modal_form__form-group-label text_cor_orange">*&nbsp;고객사</span>
                             <Field
                                 name="customer"
                                 type="text"
                                 className="input_col_4"
                                 placeholder="고객사"
                                 initialValues={searchCustomerId}
+                                label={{name: searchCustomerName, id: searchCustomerId}}
                                 component={renderCustomerField}
                                 searchToggle={event => this.searchToggle('customer')}
                                 ref={(ref) => {
@@ -901,13 +930,15 @@ class AssetsWrite extends PureComponent {
                             />
                         </div>
                         <div className="modal_form__form-group">
-                            <span className="modal_form__form-group-label text_cor_orange">*&nbsp;소유업체명</span>
+                                <span
+                                    className="modal_form__form-group-label text_cor_orange">*&nbsp;소유업체명</span>
                             <Field
                                 name="ownerCompany"
                                 type="text"
                                 className="input_col_4"
                                 placeholder="소유업체명"
                                 initialValues={searchOwnerCompanyId}
+                                label={{name: searchOwnerCompanyName, id: searchOwnerCompanyId}}
                                 component={renderCustomerField}
                                 searchToggle={event => this.searchToggle('ownerCompany')}
                                 ref={(ref) => {
@@ -1036,13 +1067,15 @@ class AssetsWrite extends PureComponent {
                     ) : (
                         "ltr-support modal-class_light"
                     )}
-                    className={`assets_write__modal-dialog assets_write__modal-dialog--success ${modalClass}`}>
+                    className={`assets_search__modal-dialog 
+                    assets_write__modal-dialog--success ${modalClass}`}>
                     <div className="search_card_body">
                         <div className="assets_write__modal__header">
                             &nbsp;&nbsp;
-                            <button className="lnr lnr-cross assets_write__modal__close__notitle-btn"
-                                    type="button"
-                                    onClick={this.searchToggle}/>
+                            <button
+                                className="lnr lnr-cross assets_write__modal__close__notitle-btn"
+                                type="button"
+                                onClick={this.searchToggle}/>
                         </div>
                         <div className="assets_write__modal__body assets_write__modal__tableLine">
                             <div className="modal_form__form-group">
@@ -1060,22 +1093,33 @@ class AssetsWrite extends PureComponent {
                                     ※ 업체명으로 검색하세요.
                                 </span>
                                 <div className="modal_form__form-group-field modal-list">
-                                    <Table className="material-table" size="small">
-                                        <thead>
-                                        <th>회사명</th>
-                                        <th>회사 대표 ID</th>
-                                        <th>E-MAIL</th>
-                                        </thead>
+
+                                    <Grid container>
+                                        <Grid item xs={12}
+                                              className="modal-content-list">
+                                            {viewSearchCompanyTemp}
+                                        </Grid>
+                                    </Grid>
+
+                                    {/*<Table className="material-table" size="small">
+                                        <TableHead>
+                                            <TableRow>
+                                                <th>회사명</th>
+                                                <th>회사 대표 ID</th>
+                                                <th>E-MAIL</th>
+                                            </TableRow>
+                                        </TableHead>
                                         <TableBody>
                                             {viewSearchCompany}
                                         </TableBody>
-                                    </Table>
+                                    </Table>*/}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </Modal>
             </div>
+            /*</Dialog>*/
         );
     }
 }
