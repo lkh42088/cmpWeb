@@ -258,7 +258,10 @@ const RegisterCompanyPage = (props) => {
     };
 
     const handleClickShowPassword = () => {
-        setValues({ ...values, showPassword: !values.showPassword });
+        setValues({
+            ...values,
+            showPassword: !values.showPassword,
+        });
     };
 
     const handleCancel = () => {
@@ -623,7 +626,7 @@ const RegisterCompanyPage = (props) => {
                                             <FilledInput
                                                 required={requires.userPassword}
                                                 name="userPassword"
-                                                type={values.showPassword ? 'text' : 'userPassword'}
+                                                type={values.showPassword ? 'text' : 'password'}
                                                 value={fields.userPassword}
                                                 onChange={(e) => { handleChangeFields(e); }}
                                                 endAdornment={(

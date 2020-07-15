@@ -303,13 +303,14 @@ const CompanyList = () => {
     const doRegisterCompany = async (props) => {
         const {
           cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage,
-          cpTel, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
+          cpTel, cpHp, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
           userId, userPassword,
         } = props;
         try {
             const response = await registerCompany({
                 cpName,
                 cpTel,
+                cpHp,
                 cpZip,
                 cpEmail,
                 cpHomepage,
