@@ -90,7 +90,7 @@ export const initialState = {
         ownership: '',
         ownershipDiv: '',
         operatingFlag: true,
-        carryingFlag: true,
+        carryingFlag: false,
     },
     operatingFlag: true,
     carryingFlag: true,

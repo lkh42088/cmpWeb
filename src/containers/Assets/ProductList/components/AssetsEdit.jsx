@@ -15,6 +15,7 @@ import MinusIcon from "mdi-react/MinusIcon";
 import TableBody from "@material-ui/core/TableBody";
 import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
+import TableHead from "@material-ui/core/TableHead";
 import TableCell from "@material-ui/core/TableCell";
 import MatButton from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
@@ -64,12 +65,22 @@ const renderCustomerField = field => (
                  role="button" tabIndex="0">
                 <AccountSearchIcon/>
             </div>
-            {field.meta.touched && field.meta.error
+            {/*{field.meta.touched && field.meta.error
             && <span className="warringStyle">&nbsp;※ {field.meta.error}</span>}
             &nbsp;&nbsp;
             <b className="text_cor_orange"
                style={{lineHeight: "32px"}}>{field
-                .label.name} / {field.label.id}</b>
+                .label.name} / {field.label.id}</b>*/}
+            {
+                field.label.name === "" ? (
+                    field.meta.touched && field.meta.error
+                    && <span className="warringStyle">&nbsp;※ {field.meta.error}</span>
+                ) : (
+                    <b className="text_cor_orange"
+                       style={{lineHeight: "32px"}}>&nbsp;
+                        {field.label.name} / {field.label.id}</b>
+                )
+            }
         </div>
     </Fragment>
 );
@@ -125,7 +136,9 @@ class AssetsEdit extends PureComponent {
             searchToggleDivision: '',
             searchCompanyName: '',
             searchCustomerId: '',
+            searchCustomerName: '',
             searchOwnerCompanyId: '',
+            searchOwnerCompanyName: '',
             deviceDataArray: {},
             initializeData: ({}),
             ipArrayMap: {},
@@ -139,6 +152,7 @@ class AssetsEdit extends PureComponent {
         } = this.props;
         const {
             IpArray, SplaArray, initializeData, ipArrayMap, splaArrayMap,
+            searchCustomerName, searchOwnerCompanyName,
         } = this.state;
 
         //console.log("👉 componentDidMount start");
@@ -167,11 +181,16 @@ class AssetsEdit extends PureComponent {
         setIpArray.splice(0, 1);
 
         //console.log("setIpArrayTemp : ", JSON.parse(JSON.stringify(setIpArrayTemp)));
+        const deviceValue = assetState.device[0];
 
         this.setState({
             IpArray: IpArray.concat(setIpArray),
             SplaArray: SplaArray.concat(setSplaArray),
             initializeData: assetState.deviceOri,
+            searchCustomerId: deviceValue.customer,
+            searchCustomerName: deviceValue.customerName,
+            searchOwnerCompanyId: deviceValue.ownerCompany,
+            searchOwnerCompanyName: deviceValue.ownerCompanyName,
         });
 
         setIpArrayTemp = JSON.parse(JSON.stringify(setIpArrayTemp));
@@ -191,6 +210,8 @@ class AssetsEdit extends PureComponent {
 
         /*console.log("ipArrayMap : ", ipArrayMap);
         console.log("splaArrayMap : ", splaArrayMap);*/
+
+        console.log("assetState.deviceOri : ", assetState.deviceOri);
 
         initialize(assetState.deviceOri);
     }
@@ -222,19 +243,27 @@ class AssetsEdit extends PureComponent {
         dispatch(getCompanyByName(searchCompanyName));
     };
 
-    setSearchCompany = (val) => {
+    setSearchCompany = (cpUserId, name) => {
         const {searchToggleDivision} = this.state;
 
         if (searchToggleDivision === 'customer') {
             this.setState({
-                searchCustomerId: val,
+                searchCustomerId: cpUserId,
+                searchCustomerName: name,
             });
-            this.customerField.blur();
+
+            setTimeout(() => {
+                this.customerField.blur();
+            }, 500);
         } else if (searchToggleDivision === 'ownerCompany') {
             this.setState({
-                searchOwnerCompanyId: val,
+                searchOwnerCompanyId: cpUserId,
+                searchOwnerCompanyName: name,
             });
-            this.ownerCompanyField.blur();
+
+            setTimeout(() => {
+                this.ownerCompanyField.blur();
+            }, 500);
         }
 
         this.setState(prevState => ({modal: !prevState.modal}));
@@ -265,7 +294,7 @@ class AssetsEdit extends PureComponent {
                             name="rack"
                             component="select"
                             className="select_col_4">
-                            <option value="0">렉없음</option>
+                            {/*<option value="0">:: SELECT ::</option>*/}
                             {assetState.subCodes.data
                                 .map(d => (Number(d.codeId) === Number(e.target.value)
                                     && <option key={d.id} value={d.id}>{d.name}</option>))
@@ -321,8 +350,6 @@ class AssetsEdit extends PureComponent {
     };
 
     handleChangeIp = (e) => {
-        //console.log("🤑🤑 handleChangeIp start : ", e.charCode);
-        //console.log("🤑🤑 handleChangeIp start : ");
         const {assetState, dispatch} = this.props;
         const {
             ipArrayMap,
@@ -377,9 +404,23 @@ class AssetsEdit extends PureComponent {
         dispatch(setAddEleData('spla', setSplaArrayTemp));
     };
 
+    handleChangeOwnerShip = (e) => {
+        if (e.target.value === "1") {
+            this.setState({
+                searchOwnerCompanyId: "conbridge",
+                searchOwnerCompanyName: "(주)콘텐츠브릿지",
+            });
+            this.ownerCompanyField.focus();
+
+            setTimeout(() => {
+                this.ownerCompanyField.blur();
+            }, 500);
+        }
+    };
+
     setHtmlPlus = (val) => {
-        const {assetState, dispatch} = this.props;
-        const {initialize} = this.props;
+        const {dispatch} = this.props;
+        //const {initialize} = this.props;
         const {
             ipArrayMap, splaArrayMap,
             AddIpComponentMax, AddSplaComponent, AddSplaComponentMax,
@@ -437,10 +478,6 @@ class AssetsEdit extends PureComponent {
 
             const reName = `spla_${SplaMax + 1}`;
 
-            console.log("Object.keys(splaArrayMap) : ", Object.keys(splaArrayMap));
-            console.log("Object.keys(splaArrayMap).length : ", Object.keys(splaArrayMap).length);
-            console.log("reName : ", reName);
-
             if (Object.keys(splaArrayMap).length < 10) {
                 // eslint-disable-next-line guard-for-in,no-restricted-syntax
                 for (const arrData in splaArrayMap) {
@@ -449,8 +486,6 @@ class AssetsEdit extends PureComponent {
 
                 setSplaArrayTemp = setSplaArrayTemp.set(reName, "");
                 setSplaArrayTemp = JSON.parse(JSON.stringify(setSplaArrayTemp));
-
-                console.log("setSplaArrayTemp : ", setSplaArrayTemp);
 
                 this.setState({
                     AddSplaComponentMax: SplaMax + 1,
@@ -471,9 +506,6 @@ class AssetsEdit extends PureComponent {
         let setSplaArrayTemp = new Map();
 
         if (val === 'ip') {
-            /*            const AddIpComponentTemp = IpArray.slice(IpArray.length)
-                            .concat(IpArray.filter(d => d.toString() !== reName.toString()));*/
-
             // eslint-disable-next-line guard-for-in,no-restricted-syntax
             for (const arrData in ipArrayMap) {
                 if (reName.toString() !== arrData.toString()) {
@@ -484,20 +516,11 @@ class AssetsEdit extends PureComponent {
             setIpArrayTemp = JSON.parse(JSON.stringify(setIpArrayTemp));
 
             this.setState({
-                /*IpArray: AddIpComponentTemp,
-                initializeData: ({
-                    ...initializeData,
-                    inIpArray: AddIpComponentTemp,
-                   [reName.toString()]: '',
-                }),*/
                 ipArrayMap: setIpArrayTemp,
             });
             dispatch(setAddEleData('ip', setIpArrayTemp));
             //initialize(initializeData);
         } else if (val === 'spla') {
-            /*            const AddSplaComponentTemp = SplaArray.slice(SplaArray.length)
-                            .concat(SplaArray.filter(d => d.toString() !== reName.toString()));*/
-
             // eslint-disable-next-line guard-for-in,no-restricted-syntax
             for (const arrData in splaArrayMap) {
                 if (reName.toString() !== arrData.toString()) {
@@ -507,7 +530,6 @@ class AssetsEdit extends PureComponent {
 
             setSplaArrayTemp = JSON.parse(JSON.stringify(setSplaArrayTemp));
             this.setState({
-                /*SplaArray: AddSplaComponentTemp,*/
                 splaArrayMap: setSplaArrayTemp,
             });
             dispatch(setAddEleData('spla', setSplaArrayTemp));
@@ -515,16 +537,15 @@ class AssetsEdit extends PureComponent {
     };
 
     render() {
-        //console.log("👉👉👉👉👉👉👉👉 render start edit");
         const {
-            theme,
-            assetState, dispatch, handleSubmit,
+            theme, assetState, dispatch, handleSubmit,
         } = this.props;
         const {
             deviceDataArray, initializeData, ipArrayMap, splaArrayMap,
             modal, RackComponent, ModelComponent, AddIpComponent, AddSplaComponent,
             RegisterId, IpArray, SplaArray, warehousingDateError,
             searchCompanyName, searchCustomerId, searchOwnerCompanyId, searchToggleDivision,
+            searchCustomerName, searchOwnerCompanyName,
             manufacture, idc,
         } = this.state;
         const {showPassword} = this.state;
@@ -556,9 +577,6 @@ class AssetsEdit extends PureComponent {
         deviceRawValue = assetState.deviceOri;
         const setIpArray = [];
         const setSplaArray = [];
-
-        //console.log("★★★★ ipArrayMap : ", ipArrayMap, "redux : ", assetState.deviceIp);
-        //console.log("★★★★ splaArrayMap : ", splaArrayMap, "redux : ", assetState.deviceSpla);
 
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
         for (const arrData in ipArrayMap) {
@@ -856,13 +874,11 @@ class AssetsEdit extends PureComponent {
                                 <TableRow key={d.idx}>
                                     <TableCell className="material-table__cell material-table__cell-right"
                                     >{/*회사명*/}
-                                        <b className="text_cor_green mouse_over_list">
-                                            <div className="assets_add_modal_div"
-                                                 onClick={event => this.setSearchCompany(d.cpUserId)}
-                                                 onKeyDown={event => this.setSearchCompany(d.cpUserId)}
-                                                 role="button" tabIndex="0"><span
-                                                className="circle__ste"/>{d.name}</div>
-                                        </b>
+                                        <div className="assets_add_modal_div"
+                                             onClick={event => this.setSearchCompany(d.cpUserId, d.name)}
+                                             onKeyDown={event => this.setSearchCompany(d.cpUserId, d.name)}
+                                             role="button" tabIndex="0"><span
+                                            className="circle__ste"/>{d.name}</div>
                                     </TableCell>
                                     <TableCell className="material-table__cell material-table__cell-right"
                                     >{/*회사 대표 ID*/}{d.cpUserId}
@@ -933,7 +949,6 @@ class AssetsEdit extends PureComponent {
                                         name="rack"
                                         component="select"
                                         className="select_col_4">
-                                        <option value="0">선택하세요.</option>
                                         {assetState.subCodes.data
                                             .map(d => (Number(d.codeId) === Number(deviceRawValue.idc)
                                                 && <option key={d.id} value={d.id}>{d.name}</option>))
@@ -1003,6 +1018,7 @@ class AssetsEdit extends PureComponent {
                                 codeDivision={{
                                     code: assetState.codes.codeOwnership,
                                 }}
+                                onChange={this.handleChangeOwnerShip}
                             />
                         </div>
                         <div className="modal_form__form-group">
@@ -1023,7 +1039,8 @@ class AssetsEdit extends PureComponent {
                                 type="text"
                                 className="input_col_4"
                                 placeholder="고객사"
-                                label={{name: deviceValue.customerName, id: deviceValue.customer}}
+                                /*label={{name: deviceValue.customerName, id: deviceValue.customer}}*/
+                                label={{name: searchCustomerName, id: searchCustomerId}}
                                 initialValues={searchCustomerId}
                                 component={renderCustomerField}
                                 /*ref={(ref) => { this.input = ref; }}*/
@@ -1051,7 +1068,8 @@ class AssetsEdit extends PureComponent {
                                 className="input_col_4"
                                 placeholder="소유업체명"
                                 initialValues={searchOwnerCompanyId}
-                                label={{name: deviceValue.ownerCompanyName, id: deviceValue.ownerCompany}}
+                                /*label={{name: deviceValue.ownerCompanyName, id: deviceValue.ownerCompany}}*/
+                                label={{name: searchOwnerCompanyName, id: searchOwnerCompanyId}}
                                 component={renderCustomerField}
                                 searchToggle={event => this.searchToggle('ownerCompany')}
                                 ref={(ref) => {
@@ -1180,7 +1198,8 @@ class AssetsEdit extends PureComponent {
                         ) : (
                             "ltr-support modal-class_light"
                         )}
-                        className={`assets_write__modal-dialog assets_write__modal-dialog--success ${modalClass}`}
+                        className={`assets_search__modal-dialog 
+                        assets_write__modal-dialog--success ${modalClass}`}
                     >
                         <div className="search_card_body">
                             <div className="assets_write__modal__header">
@@ -1206,12 +1225,14 @@ class AssetsEdit extends PureComponent {
                                 </span>
                                     <div className="modal_form__form-group-field modal-list">
                                         <Table className="material-table" size="small">
-                                            <thead>
-                                            <th>회사명</th>
-                                            <th>회사 대표 ID</th>
-                                            <th>E-MAIL</th>
-                                            </thead>
-                                            <TableBody>
+                                            <TableHead>
+                                                <TableRow>
+                                                    <th>회사명</th>
+                                                    <th>회사 대표 ID</th>
+                                                    <th>E-MAIL</th>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody className="mdi-format-font-size-increase">
                                                 {viewSearchCompany}
                                             </TableBody>
                                         </Table>

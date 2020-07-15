@@ -160,7 +160,7 @@ class Layout extends Component {
                 ownership: '',
                 ownershipDiv: '',
                 operatingFlag: true,
-                carryingFlag: true,
+                carryingFlag: false,
             });
 
             const stateVal = ({

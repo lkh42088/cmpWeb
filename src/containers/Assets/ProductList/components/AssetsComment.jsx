@@ -298,7 +298,7 @@ class AssetsComment extends PureComponent {
                                     <span className="text_cor_mat_p">
                                         {d.registerName}
                                         &nbsp;
-                                        [{moment(d.registerDate).format('YYYY-MM-DD')}]
+                                        [{moment(d.registerDate).format('YYYY년MM월DD일')}]
                                     </span>
                                     <div className="chat__bubble-download-comment-wrap">
                                         <div className="chat__bubble-file-name">

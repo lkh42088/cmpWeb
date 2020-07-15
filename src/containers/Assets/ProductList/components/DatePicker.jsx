@@ -68,7 +68,7 @@ class DatePickerField extends PureComponent {
                     className="form__form-group-datepicker"
                     selected={startDate}
                     onChange={this.handleChange}
-                    dateFormat="yyyy/MM/dd"
+                    dateFormat="yyyy년MM월dd일"
                     dropDownMode="select"
                     popperPlacement="center"
                     withPortal={isMobileOnly}

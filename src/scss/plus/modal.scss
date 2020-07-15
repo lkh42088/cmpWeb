@@ -9,6 +9,48 @@
 
 .assets_write__modal-dialog {
   max-width: 785px;
+  max-height: calc(100% -  64px);
+  overflow-y: hidden;
+}
+
+.assets_search__modal-dialog {
+  max-width: 600px;
+  max-height: calc(100% -  45%);
+  top: 10%;
+  overflow-y: hidden;
+
+  .modal-content {
+    overflow-y: hidden;
+
+    .modal-content-list {
+      overflow-y: auto;
+      height: calc(100% - 10%);
+
+      .list-title {
+        font-weight: bold;
+        font-size: x-small;
+
+        @include themify($themes) {
+          color: themed('colorFitness');
+        }
+      }
+
+      .list-title-sub {
+        font-weight: normal;
+        font-size: smaller;
+
+        @include themify($themes) {
+          color: themed('colorFitness');
+        }
+      }
+
+      @include themify($themes) {
+        color: themed('colorText');
+        background: themed('colorBackgroundBody');
+        border: 1px solid themed('colorFieldsBorder');
+      }
+    }
+  }
 }
 
 // (03july2020,ebjee)
@@ -389,6 +431,13 @@
   border-radius: 5px;
   /*padding: 30px 40px 30px 40px;*/
   /*width: 600px;*/
+  height: 100%;
+  height: -moz-available;          /* WebKit-based browsers will ignore this. */
+  height: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+  height: fill-available;
+
+  overflow-y: auto;
+
   .modal-comment-wrap {
     height: 250px;
   }
@@ -403,6 +452,7 @@
   padding-top: 20px;
   border-bottom: 1px solid #f2f4f7;
   font-size: smaller;
+  height: 300px;
 
   th {
     font-size: smaller;

@@ -42,6 +42,32 @@ function textValueCut(val, compareTxt) {
     return val;
 }
 
+function textDateCut(val, type) {
+    let returnVal = '';
+    let valArray = '';
+
+    if (val === null || val === undefined || val === "|") {
+        returnVal = '';
+    } else {
+        switch (type) {
+            case 'warehousingDate':
+                returnVal = `${val.substring(0, 4)}년${val.substring(4, 6)}월${val.substring(6, 8)}일`;
+                break;
+            case 'rentDate':
+                valArray = val.split("|");
+                returnVal = (
+                    `${valArray[0].substring(0, 4)}년${valArray[0].substring(4, 6)}월${valArray[0].substring(6, 8)}일 ~ `
+                );
+                returnVal += `${valArray[1].substring(0, 4)}년${valArray[1].substring(4, 6)}월${valArray[1].substring(6, 8)}일`;
+                break;
+            default:
+                break;
+        }
+    }
+
+    return returnVal;
+}
+
 class AssetsView extends PureComponent {
     static propTypes = {
         // eslint-disable-next-line react/forbid-prop-types
@@ -70,7 +96,7 @@ class AssetsView extends PureComponent {
             comment: '',
             registerId: '',
             modalOpenFlag: false,
-            date: moment(new Date()).format("YYYY-MM-DD"),
+            date: moment(new Date()).format("YYYY년MM월DD일"),
 
             modalWarring: false,
             warringTitle: '',
@@ -394,23 +420,44 @@ class AssetsView extends PureComponent {
         let splaSliceStrArray;
         let dpSplaSliceStr;
 
-        if (ip !== undefined && ip !== "|") {
-            ipSliceStrArray = ip.split("|");
-            dpIpSliceStr = this.reChange(ipSliceStrArray);
-        }
 
-        if (spla !== undefined && spla !== "|") {
-            splaSliceStrArray = spla.split("|");
-            dpSplaSliceStr = this.reChange(splaSliceStrArray);
-        }
+        /* if (ip !== undefined && ip !== "|") {
+             ipSliceStrArray = ip.split("|");
+             dpIpSliceStr = this.reChange(ipSliceStrArray);
+         }
 
-        if (rentDate === "|" || rentDate === undefined) {
-            rentDateSliceStr = "";
-        } else {
-            rentDateSliceStr = rentDate.replace("|", "~");
-        }
+         if (spla !== undefined && spla !== "|") {
+             splaSliceStrArray = spla.split("|");
+             dpSplaSliceStr = this.reChange(splaSliceStrArray);
+         }
 
+         if (rentDate === "|" || rentDate === undefined) {
+             rentDateSliceStr = "";
+         } else {
+             //rentDateSliceStr = rentDate.replace("|", "~");
+             rentDateSliceStr = rentDate.split("|");
+             inRentDate = (
+                 `${rentDateSliceStr[0].substring(0, 4)}년${rentDateSliceStr[0].substring(4, 6)}월${rentDateSliceStr[0].substring(6, 8)}일`
+             );
+         }
+
+         console.log("★★★★★ rack : ", rack);
+
+         if (warehousingDate === null || warehousingDate === undefined) {
+             inWarehousingDate = "error";
+         } else {
+             //inWarehousingDate = warehousingDate.substring(0,4);
+             inWarehousingDate = (
+                 `${warehousingDate.substring(0, 4)}년${warehousingDate.substring(4, 6)}월${warehousingDate.substring(6, 8)}일`
+             );
+         }*/
+/*
         console.log("★★★★★ rack : ", rack);
+
+        let inRack = rack;
+        if (rack === 0 || rack === "") {
+            inRack = "랙없음";
+        }*/
 
         switch (assetState.deviceType) {
             case 'server':
@@ -680,7 +727,8 @@ class AssetsView extends PureComponent {
                                             <div className="col-lg-8 col-md-12">
                                                             <textarea
                                                                 className={classNameMap.textareaPreCont}
-                                                                rows="1" value={textValueCut(deviceCode, undefined)}
+                                                                rows="1"
+                                                                value={textValueCut(deviceCode, undefined)}
                                                                 disabled/>
                                             </div>
                                         </div>
@@ -783,8 +831,11 @@ class AssetsView extends PureComponent {
                                             <div className="col-lg-8 col-md-12">
                                                             <textarea
                                                                 className={classNameMap.textareaPreCont}
-                                                                rows="1" value={`${rentDateSliceStr}`}
-                                                                disabled/>
+                                                                rows="1"
+                                                                /*value={`${textDateCut(rentDate, "rentDate")}`}*/
+                                                                disabled
+                                                                value={textDateCut(rentDate, "rentDate")}
+                                                            />
                                             </div>
                                         </div>
                                     </div>
@@ -811,7 +862,9 @@ class AssetsView extends PureComponent {
                                             <div className="col-lg-8 col-md-12">
                                                             <textarea
                                                                 className={classNameMap.textareaPreCont}
-                                                                rows="1" value={`${warehousingDate}`}
+                                                                rows="1"
+                                                                /*value={`${inWarehousingDate}`}*/
+                                                                value={textDateCut(warehousingDate, "warehousingDate")}
                                                                 disabled/>
                                             </div>
                                         </div>

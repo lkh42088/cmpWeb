@@ -371,6 +371,9 @@ const UserList = () => {
 
     const handleDeleteSelectedCompany = (idx) => {
         console.log("delete user: ", idx);
+        const delList = [];
+        delList.push(idx);
+        deleteUsers(delList);
     };
 
     const handleModifySelectedCompany = (idx) => {
@@ -553,7 +556,7 @@ const UserList = () => {
                                     <IconButton
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            handleDeleteSelectedCompany(row.idx);
+                                            handleModifySelectedCompany(row.idx);
                                         }}
                                     >
                                         <EditIcon color="secondary"/>
@@ -563,7 +566,7 @@ const UserList = () => {
                                     <IconButton
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            handleModifySelectedCompany(row.idx);
+                                            handleDeleteSelectedCompany(row.idx);
                                         }}
                                     >
                                         <DeleteIcon color="secondary"/>

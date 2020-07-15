@@ -7,9 +7,11 @@ import Grid from '@material-ui/core/Grid';
 import BusinessIcon from '@material-ui/icons/Business';
 import WriteCompanyFrom from "./WriteCompanyForm";
 
-const RegisterCompanyPage = (props) => {
+const ModifyCompanyPage = (props) => {
     /** props */
-    const {open, handleClose, handleSubmit } = props;
+    const {
+        open, handleClose, handleSubmit, data,
+    } = props;
 
     console.log("Register Company Page..");
     return (
@@ -25,15 +27,16 @@ const RegisterCompanyPage = (props) => {
                                     <BusinessIcon/>
                                 </Grid>
                                 <Grid item>
-                                    <h3 className="bold-text">고객사 등록</h3>
+                                    <h3 className="bold-text">고객사 수정</h3>
                                 </Grid>
-                        </Grid>
-                    </div>
+                            </Grid>
+                        </div>
                         <WriteCompanyFrom
                             open={open}
                             handleClose={handleClose}
                             handleSubmit={handleSubmit}
-                            isRegister
+                            data={data}
+                            isRegister={false}
                         />
                     </CardBody>
                 </Card>
@@ -42,4 +45,4 @@ const RegisterCompanyPage = (props) => {
     );
 };
 
-export default RegisterCompanyPage;
+export default ModifyCompanyPage;
