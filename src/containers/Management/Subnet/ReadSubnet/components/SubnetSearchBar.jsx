@@ -20,24 +20,31 @@ import MenuItem from "@material-ui/core/MenuItem";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Portal from "@material-ui/core/Portal";
 import Container from "@material-ui/core/Container";
+import Switch from "@material-ui/core/Switch";
+import Pagination from "@material-ui/lab/Pagination";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    pagingChangeCurrentPage,
+    pagingChangeDense,
+    pagingChangeRowsPerPage,
+} from "../../../../../redux/actions/pagingActions";
 
 const useStyles = makeStyles(theme => ({
     root: {
         paddingLeft: theme.spacing(2),
         paddingRight: theme.spacing(1),
-        backgroundColor: "transparent",
     },
     highlight:
         theme.palette.type === 'light'
             ? {
                 color: theme.palette.secondary.main,
-                // backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-                backgroundColor: "transparent",
+                backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+                // backgroundColor: "transparent",
             }
             : {
                 color: theme.palette.text.primary,
-                // backgroundColor: theme.palette.secondary.dark,
-                backgroundColor: "transparent",
+                backgroundColor: theme.palette.secondary.dark,
+                // backgroundColor: "transparent",
             },
     title:
         theme.palette.type === 'light'
@@ -69,7 +76,6 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         [theme.breakpoints.up('sm')]: {
             marginLeft: theme.spacing(1),
-            width: 'auto',
         },
     },
     searchIcon: {
@@ -118,12 +124,18 @@ const useStyles = makeStyles(theme => ({
             // },
         },
     },
-    paper: {
-        width: '60ch',
-        color: 'inherit',
-        backgroundClip: theme.palette.common.white,
-        backgroundColor: "black",
-    },
+    paper:
+        theme.palette.type === 'light'
+            ? {
+                width: '85ch',
+                color: 'inherit',
+                backgroundColor: "#f2f4f7",
+            }
+            : {
+                width: '85ch',
+                color: 'inherit',
+                backgroundColor: "#33333a",
+            },
 }));
 
 // 권한 레벨 INPUT
@@ -147,6 +159,7 @@ const BootstrapInput = withStyles(theme => ({
 // 권한 레벨 Menu
 const ITEM_HEIGHT = 36;
 const ITEM_PADDING_TOP = 8;
+const authLevelList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const MenuProps = {
     PaperProps: {
         style: {
@@ -161,6 +174,7 @@ const SubnetSearchBar = (props) => {
      * Variable
      ************************************************************************************/
     const classes = useStyles();
+    const dispatch = useDispatch();
     const { handleSubmit } = props;
 
     const [openSearch, setOpenSearch] = React.useState(false);
@@ -223,6 +237,8 @@ const SubnetSearchBar = (props) => {
     /************************************************************************************
      * JSX Template
      ************************************************************************************/
+
+
     const variant = "standard";
     const fieldSize = "small";
     const buttonSize = "small";
@@ -230,129 +246,128 @@ const SubnetSearchBar = (props) => {
     console.log("SearchBar...");
     return (
         <Container>
-            <Grid
-                container
-                justify="space-between"
-                spacing={2}
-            >
-                <Grid item container xs={12} alignItems="flex-end" direction="column">
-                    <Grid item>
-                        <div className={classes.search}>
-                            <div className={classes.searchIcon}>
-                                <SearchIcon />
-                            </div>
-                            <InputBase
-                                ref={anchorRef}
-                                placeholder="Search…"
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                                inputProps={{ 'aria-label': 'search' }}
-                                endAdornment={(
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            edge="end"
-                                            aria-controls={openSearch ? 'menu-list-grow' : undefined}
-                                            aria-haspopup="true"
-                                            onClick={handleToggle}
-                                        >
-                                            <ArrowDropDownIcon/>
-                                        </IconButton>
-                                    </InputAdornment>
-                                )}
-                            />
-                            <Popper
-                                open={openSearch}
-                                anchorEl={anchorRef.current}
-                                role={undefined}
-                                transition
-                                // disablePortal
-                            >
-                                {({ TransitionProps, placement }) => (
-                                    <Grow
-                                        {...TransitionProps}
-                                        style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+            <Grid container spacing={2} >
+                <Grid item>
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon />
+                        </div>
+                        <InputBase
+                            ref={anchorRef}
+                            placeholder="Search…"
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}
+                            inputProps={{ 'aria-label': 'search' }}
+                            endAdornment={(
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        edge="end"
+                                        aria-controls={openSearch ? 'menu-list-grow' : undefined}
+                                        aria-haspopup="true"
+                                        onClick={handleToggle}
                                     >
-                                        <Paper
-                                            className={classes.paper}
-                                        >
-                                            <ClickAwayListener onClickAway={handleClose}>
-                                                <div style={{
-                                                    margin: '5px',
-                                                    padding: '5px',
-                                                }}>
-                                                    <Grid container spacing={1}>
-                                                        <Grid item xs={3} spacing={1}>
-                                                            <span className={classes.span}>아이디</span>
-                                                        </Grid>
-                                                        <Grid item xs={9} spacing={1}>
-                                                            <TextField
-                                                                variant={variant}
-                                                                size={fieldSize}
-                                                                name="userId"
+                                        <ArrowDropDownIcon/>
+                                    </IconButton>
+                                </InputAdornment>
+                            )}
+                        />
+                        <Popper
+                            open={openSearch}
+                            anchorEl={anchorRef.current}
+                            role={undefined}
+                            transition
+                            style={{position: "relative", zIndex: 1100}}
+                            // disablePortal
+                        >
+                            {({ TransitionProps, placement }) => (
+                                <Grow
+                                    {...TransitionProps}
+                                    style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                                >
+                                    <Paper
+                                        className={classes.paper}
+                                    >
+                                        <ClickAwayListener onClickAway={handleClose}>
+                                            <div style={{
+                                                margin: '5px',
+                                                padding: '5px',
+                                            }}>
+                                                <Grid container spacing={1}>
+                                                    <Grid item xs={3} spacing={1}>
+                                                        <span className={classes.span}>아이디</span>
+                                                    </Grid>
+                                                    <Grid item xs={9} spacing={1}>
+                                                        <TextField
+                                                            variant={variant}
+                                                            size={fieldSize}
+                                                            name="userId"
+                                                            onChange={(e) => { handleChangeField(e); }}
+                                                            fullWidth />
+                                                    </Grid>
+                                                    <Grid item xs={3} spacing={1}>
+                                                        <span className={classes.span}>이름</span>
+                                                    </Grid>
+                                                    <Grid item xs={9} spacing={1}>
+                                                        <TextField
+                                                            variant={variant}
+                                                            size={fieldSize}
+                                                            name="username"
+                                                            onChange={(e) => { handleChangeField(e); }}
+                                                            fullWidth />
+                                                    </Grid>
+                                                    <Grid item xs={3} spacing={1}>
+                                                        <span className={classes.span}>이메일</span>
+                                                    </Grid>
+                                                    <Grid item xs={9} spacing={1}>
+                                                        <TextField
+                                                            variant={variant}
+                                                            size={fieldSize}
+                                                            name="email"
+                                                            onChange={(e) => { handleChangeField(e); }}
+                                                            fullWidth />
+                                                    </Grid>
+                                                    <Grid item xs={3} spacing={1}>
+                                                        <span className={classes.span}>회사명</span>
+                                                    </Grid>
+                                                    <Grid item xs={4} spacing={1}>
+                                                        <TextField
+                                                            variant={variant}
+                                                            size={fieldSize}
+                                                            fullWidth />
+                                                    </Grid>
+                                                    <Grid item xs={2} spacing={1}>
+                                                        <span className={classes.span}>권한</span>
+                                                    </Grid>
+                                                    <Grid item xs={3} spacing={1}>
+                                                        <FormControl>
+                                                            <Select
+                                                                value={fields.level}
                                                                 onChange={(e) => { handleChangeField(e); }}
-                                                                fullWidth />
-                                                        </Grid>
-                                                        <Grid item xs={3} spacing={1}>
-                                                            <span className={classes.span}>이름</span>
-                                                        </Grid>
-                                                        <Grid item xs={9} spacing={1}>
-                                                            <TextField
-                                                                variant={variant}
-                                                                size={fieldSize}
-                                                                name="username"
-                                                                onChange={(e) => { handleChangeField(e); }}
-                                                                fullWidth />
-                                                        </Grid>
-                                                        <Grid item xs={3} spacing={1}>
-                                                            <span className={classes.span}>이메일</span>
-                                                        </Grid>
-                                                        <Grid item xs={9} spacing={1}>
-                                                            <TextField
-                                                                variant={variant}
-                                                                size={fieldSize}
-                                                                name="email"
-                                                                onChange={(e) => { handleChangeField(e); }}
-                                                                fullWidth />
-                                                        </Grid>
-                                                        <Grid item xs={3} spacing={1}>
-                                                            <span className={classes.span}>회사명</span>
-                                                        </Grid>
-                                                        <Grid item xs={4} spacing={1}>
-                                                            <TextField
-                                                                variant={variant}
-                                                                size={fieldSize}
-                                                                fullWidth />
-                                                        </Grid>
-                                                        <Grid item xs={2} spacing={1}>
-                                                            <span className={classes.span}>권한</span>
-                                                        </Grid>
-                                                        <Grid item xs={3} spacing={1}>
-                                                            <FormControl>
-                                                                <Select
-                                                                    value={fields.level}
-                                                                    onChange={(e) => { handleChangeField(e); }}
-                                                                    input={<BootstrapInput />}
-                                                                    MenuProps={MenuProps}
-                                                                    autoWidth
-                                                                >
-                                                                    <MenuItem value={0}>선택안함</MenuItem>
-                                                                    <MenuItem value={1}>1</MenuItem>
-                                                                    <MenuItem value={2}>2</MenuItem>
-                                                                    <MenuItem value={3}>3</MenuItem>
-                                                                    <MenuItem value={4}>4</MenuItem>
-                                                                    <MenuItem value={5}>5</MenuItem>
-                                                                    <MenuItem value={6}>6</MenuItem>
-                                                                    <MenuItem value={7}>7</MenuItem>
-                                                                    <MenuItem value={8}>8</MenuItem>
-                                                                    <MenuItem value={9}>9</MenuItem>
-                                                                    <MenuItem value={10}>10</MenuItem>
-                                                                </Select>
-                                                            </FormControl>
-                                                        </Grid>
-                                                        <Grid item spacing={1}>
+                                                                // input={<BootstrapInput />}
+                                                                MenuProps={MenuProps}
+                                                                autoWidth
+                                                            >
+                                                                <option value="0">NONE</option>
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                                <option value="6">6</option>
+                                                                <option value="7">7</option>
+                                                                <option value="8">8</option>
+                                                                <option value="9">9</option>
+                                                                <option value="10">10</option>
+                                                                {/*{authLevelList.map((value) => (*/}
+                                                                {/*    <option value={value}>{value}</option>*/}
+                                                                {/*)}*/}
+                                                            </Select>
+                                                        </FormControl>
+                                                    </Grid>
+                                                    <Grid item spacing={1}>
                                                             <span className={classes.span}>
                                                                 <FormControlLabel
                                                                     control={<Checkbox onChange={handleCheckEmail} name="email" color="primary" />}
@@ -361,13 +376,14 @@ const SubnetSearchBar = (props) => {
                                                                 <FormControlLabel
                                                                     control={<Checkbox onChange={handleCheckGroupEmail} name="groupEmail" color="primary" />}
                                                                     label="그룹 이메일 인증"
+                                                                    aria-setsize="5"
                                                                 />
                                                             </span>
-                                                        </Grid>
-                                                        <Grid item xs={12} spacing={1}>
-                                                            <div style={{
-                                                                float: 'right',
-                                                            }}>
+                                                    </Grid>
+                                                    <Grid item xs={12} spacing={1}>
+                                                        <div style={{
+                                                            float: 'right',
+                                                        }}>
                                                             <Button
                                                                 className={classes.margin}
                                                                 variant="contained"
@@ -377,17 +393,16 @@ const SubnetSearchBar = (props) => {
                                                             >
                                                                 검색
                                                             </Button>
-                                                            </div>
-                                                        </Grid>
+                                                        </div>
                                                     </Grid>
-                                                </div>
-                                            </ClickAwayListener>
-                                        </Paper>
-                                    </Grow>
-                                )}
-                            </Popper>
-                        </div>
-                    </Grid>
+                                                </Grid>
+                                            </div>
+                                        </ClickAwayListener>
+                                    </Paper>
+                                </Grow>
+                            )}
+                        </Popper>
+                    </div>
                 </Grid>
             </Grid>
         </Container>

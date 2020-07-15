@@ -46,16 +46,23 @@ import {
 import {getUserList, getUserListWithSearchParam, initRegisterUser} from "../../../../../redux/actions/usersActions";
 import CommonTableHead from "../../../../Common/CommonTableHead";
 import {registerUser, unregisterUser} from "../../../../../lib/api/users";
-import UserTableToolbar from "./SubnetTableToolbar";
 import BootstrapInput from "../../../../Common/BootstrapInput";
 import {readSubnet} from "../../../../../lib/api/subnet";
+import SubnetTableToolbar from "./SubnetTableToolbar";
+import ReactVirtualizedTable from "./VirtualizeTable";
 
 const headRows = [
-    {id: 'idx', disablePadding: false, label: 'IDX'},
-    {id: 'subnetTag', disablePadding: false, label: 'SUBNET TAG'},
-    {id: 'subnet', disablePadding: false, label: 'SUBNET'},
-    {id: 'subnetmask', disablePadding: false, label: 'SUBNET MASK'},
-    {id: 'gateway', disablePadding: false, label: 'GATEWAY'},
+    {
+        id: 'idx', disablePadding: false, label: 'IDX', minWidth: "50",
+    }, {
+        id: 'subnetTag', disablePadding: false, label: 'SUBNET TAG', minWidth: "150",
+    }, {
+        id: 'subnet', disablePadding: false, label: 'SUBNET', minWidth: "400",
+    }, {
+        id: 'subnetMask', disablePadding: false, label: 'SUBNET MASK', minWidth: "200",
+    }, {
+        id: 'gateway', disablePadding: false, label: 'GATEWAY', minWidth: "200",
+    },
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -672,63 +679,46 @@ const useStyles = makeStyles(theme => ({
     return (
         <Col>
             <Card className="cb-card">
-                <UserTableToolbar
-                    numSelected={[...selected].filter(el => el[1]).length}
-                    handleDeleteSelected={handleDeleteSelected}
-                    handleRefresh={handleRefresh}
-                    onRequestSort={handleRequestSort}
-                    rows={headRows}
-                    toolbarTitle="SUBNET LIST"
-                    handleOpen={handleOpenAddUser}
-                    handleSubmitSearch={handleSubmitSearch}
-                    contents="계정"
-                />
-                <div className="cb-material-table__wrap">
-                    <TableContainer>
-                        <Table
-                            className="cb-material-table"
-                            size={dense ? 'small' : 'medium'}
-                        >
-                            <CommonTableHead
-                                classes={classes}
-                                numSelected={[...selected].filter(el => el[1]).length}
-                                order={order}
-                                orderBy={orderBy}
-                                onSelectAllClick={handleSelectAllClick}
-                                onRequestSort={handleRequestSort}
-                                rowCount={state.data && state.data.length ? state.data.length : 0}
-                                rows={headRows}
-                            />
-                            <TableBody>
-                                { state.data && state.data.map((row, index) => {
-                                    const keyId = index;
-                                    return (
-                                        <ContentsRow key={keyId} row={row} />
-                                    );
-                                })}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <div style={{display: "flex"}}>
-                        <Grid item md={4}>
-                            <FormControlLabel
-                                style={{paddingTop: 20, fontStyle: "oblique"}}
-                                className="cb-material-table__padding"
-                                control={<Switch checked={dense} onChange={handleChangeDense} />}
-                                label="DENSE"
-                            />
-                        </Grid>
-                        <Grid item md={1}>
-                            <div style={{padding: "10px 0px"}}>
-                                {rowSelector}
-                            </div>
-                        </Grid>
-                        <Grid item md={7}>
-                            <div style={{display: "flex-right"}}>
-                                {paginationBar}
-                            </div>
-                        </Grid>
-                    </div>
+                <Grid container style={{display: "flex", zIndex: 100}}>
+                    <Grid item md={12}>
+                        <SubnetTableToolbar
+                            numSelected={[...selected].filter(el => el[1]).length}
+                            handleDeleteSelected={handleDeleteSelected}
+                            handleRefresh={handleRefresh}
+                            onRequestSort={handleRequestSort}
+                            rows={headRows}
+                            toolbarTitle="SUBNET LIST"
+                            handleOpen={handleOpenAddUser}
+                            handleSubmitSearch={handleSubmitSearch}
+                            contents="계정"
+                        />
+                    </Grid>
+                </Grid>
+                <div className="cb-material-table__wrap" style={{height: 650}}>
+                    <Table
+                        stickyHeader
+                        className="cb-material-table-fixed"
+                        size={dense ? 'small' : 'medium'}
+                    >
+                        <CommonTableHead
+                            classes={classes}
+                            numSelected={[...selected].filter(el => el[1]).length}
+                            order={order}
+                            orderBy={orderBy}
+                            onSelectAllClick={handleSelectAllClick}
+                            onRequestSort={handleRequestSort}
+                            rowCount={state.data && state.data.length ? state.data.length : 0}
+                            rows={headRows}
+                        />
+                        <TableBody>
+                            { state.data && state.data.map((row, index) => {
+                                const keyId = index;
+                                return (
+                                    <ContentsRow key={keyId} row={row} />
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
                 </div>
             </Card>
         </Col>
