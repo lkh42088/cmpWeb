@@ -41,10 +41,11 @@ import {
 } from "../../../../redux/actions/pagingActions";
 import CommonTableHead from "../../../Common/CommonTableHead";
 import RegisterCompanyPage from "./RegisterCompanyPage";
-import {registerCompany, unregisterCompany} from "../../../../lib/api/company";
+import {modifyCompany, registerCompany, unregisterCompany} from "../../../../lib/api/company";
 import CompanyTableToolbar from "./CompanyTableToolbar";
 // eslint-disable-next-line import/named
 import {limitLongString} from "../../../../lib/utils/utils";
+import ModifyCompanyPage from "./ModifyCompanyPage";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -153,14 +154,24 @@ const CompanyList = () => {
     /**
      * Modal variable
      */
-    const [openWrite, setOpenWrite] = React.useState(false);
+    const [modifyData, setModifyData] = React.useState(null);
+    const [openModifyCompany, setOpenModifyCompany] = React.useState(false);
+    const [openRegisterCompany, setOpenRegisterCompany] = React.useState(false);
 
-    const handleOpenAddCompany = () => {
-        setOpenWrite(true);
+    const handleOpenModifyCompany = () => {
+        setOpenModifyCompany(true);
     };
 
-    const handleClose = () => {
-        setOpenWrite(false);
+    const handleCloseModifyCompany = () => {
+        setOpenModifyCompany(false);
+    };
+
+    const handleOpenRegisterCompany = () => {
+        setOpenRegisterCompany(true);
+    };
+
+    const handleCloseRegisterCompany = () => {
+        setOpenRegisterCompany(false);
     };
 
     const handleTriggerFailure = (snackMsg) => {
@@ -302,9 +313,9 @@ const CompanyList = () => {
 
     const doRegisterCompany = async (props) => {
         const {
-          cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage,
-          cpTel, cpHp, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
-          userId, userPassword,
+            cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage,
+            cpTel, cpHp, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
+            userId, userPassword,
         } = props;
         try {
             const response = await registerCompany({
@@ -322,10 +333,41 @@ const CompanyList = () => {
                 cpMemo,
                 cpTerminationDate,
             });
-            handleTriggerSuccess("고객사 등록에 성공하였습니다.");
+            handleTriggerSuccess("고객사 등록이 성공하였습니다.");
             getPageData();
         } catch (error) {
-            handleTriggerFailure("고객사 등록에 실패하였습니다.");
+            handleTriggerFailure("고객사 등록이 실패하였습니다.");
+            getPageData();
+            console.log("handleRegisterCompany error!");
+        }
+    };
+
+    const doModifyCompany = async (props) => {
+        const {
+          cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage,
+          cpTel, cpHp, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
+          userId, userPassword,
+        } = props;
+        try {
+            const response = await modifyCompany({
+                cpName,
+                cpTel,
+                cpHp,
+                cpZip,
+                cpEmail,
+                cpHomepage,
+                cpAddr,
+                cpAddrDetail,
+                userId,
+                userPassword,
+                cpIsCompany,
+                cpMemo,
+                cpTerminationDate,
+            });
+            handleTriggerSuccess("고객사 수정이 성공하였습니다.");
+            getPageData();
+        } catch (error) {
+            handleTriggerFailure("고객사 수정이 실패하였습니다.");
             getPageData();
             console.log("handleRegisterCompany error!");
         }
@@ -334,7 +376,13 @@ const CompanyList = () => {
     const handleRegisterCompany = (props) => {
         console.log("handleRegisterCompany: ", props);
         doRegisterCompany(props);
-        setOpenWrite(false);
+        setOpenRegisterCompany(false);
+    };
+
+    const handleModifyCompany = (props) => {
+        console.log("handleRegisterCompany: ", props);
+        doModifyCompany(props);
+        setOpenModifyCompany(false);
     };
 
     useEffect(() => {
@@ -399,10 +447,17 @@ const CompanyList = () => {
 
     const handleDeleteSelectedCompany = (idx) => {
         console.log("delete company: ", idx);
+        const delList = [];
+        delList.push(idx);
+        deleteCompanies(delList);
     };
 
     const handleModifySelectedCompany = (idx) => {
         console.log("modify company: ", idx);
+        const res = data.filter(item => item.idx === idx);
+        console.log("res: ", res);
+        setModifyData(res[0]);
+        handleOpenModifyCompany();
     };
 
     const DumpRow = (props) => {
@@ -484,7 +539,7 @@ const CompanyList = () => {
                                 <IconButton
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        handleDeleteSelectedCompany(row.idx);
+                                        handleModifySelectedCompany(row.idx);
                                     }}
                                 >
                                     <EditIcon color="secondary"/>
@@ -494,7 +549,7 @@ const CompanyList = () => {
                                 <IconButton
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        handleModifySelectedCompany(row.idx);
+                                        handleDeleteSelectedCompany(row.idx);
                                     }}
                                 >
                                     <DeleteIcon color="secondary"/>
@@ -583,7 +638,7 @@ const CompanyList = () => {
                         handleRefresh={handleRefresh}
                         rows={headRows}
                         toolbarTitle="고객사 리스트"
-                        handleOpen={handleOpenAddCompany}
+                        handleOpen={handleOpenRegisterCompany}
                         contents="고객사"
                     />
                     <div className="cb-material-table__wrap">
@@ -619,9 +674,16 @@ const CompanyList = () => {
                             label="Dense padding"
                         />
                     </div>
+                    <ModifyCompanyPage
+                        open={openModifyCompany}
+                        handleClose={handleCloseModifyCompany}
+                        handleSubmit={handleModifyCompany}
+                        refreshPage={getPageData}
+                        data={modifyData}
+                    />
                     <RegisterCompanyPage
-                        open={openWrite}
-                        handleClose={handleClose}
+                        open={openRegisterCompany}
+                        handleClose={handleCloseRegisterCompany}
                         handleSubmit={handleRegisterCompany}
                         refreshPage={getPageData}
                     />
