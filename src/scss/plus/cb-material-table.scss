@@ -5,6 +5,12 @@
   }
 }
 
+.cb-material-table-fixed {
+  th {
+    white-space: nowrap;
+  }
+}
+
 .cb-material-table__toolbar-wrap {
   position: absolute;
   top: 10px;

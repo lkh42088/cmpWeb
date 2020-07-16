@@ -28,3 +28,9 @@ export const loginEmailConfirm = ({
 
 export const checkLogin = () => client.get('/v1/auth/check');
 export const logout = () => client.post('/v1/auth/logout');
+
+export const checkPassword = ({
+    id, password,
+}) => client.post('/v1/auth/check-password', {
+    id, password,
+});
