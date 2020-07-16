@@ -595,6 +595,10 @@ const CompanyList = () => {
                                                     <span className={classes.spanSubject}> 전화번호</span>
                                                     <span className={classes.spanContents}> {row.tel} </span>
                                                 </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 휴대폰번호</span>
+                                                    <span className={classes.spanContents}> {row.hp} </span>
+                                                </li>
                                             </ul>
                                         </Grid>
                                         <Grid item xs={12} sm={6}>

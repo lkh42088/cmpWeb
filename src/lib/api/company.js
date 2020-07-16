@@ -23,7 +23,7 @@ export const registerCompany = ({
 export const modifyCompany = ({
     cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage, cpTel, cpHp, cpEmail,
     cpIsCompany, cpMemo, cpTerminationDate, userId, userPassword,
-}) => client.post('/v1/customers/modify', {
+}) => client.post('/v1/customers/modify-company', {
     name: cpName,
     zipcode: cpZip,
     address: cpAddr,
