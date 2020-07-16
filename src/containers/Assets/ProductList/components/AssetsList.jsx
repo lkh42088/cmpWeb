@@ -25,13 +25,10 @@ import {
     fetchPostsCheckCount,
     getDeviceOriByIdx,
     postDevice,
-    setDeviceSelected, setAssetsPage, setApiPage,
+    setDeviceSelected, setAssetsPage, setApiPage, setState,
 } from '../../../../redux/actions/assetsAction';
 
 import AssetsHead from './AssetsHead';
-import AssetsWrite from "./AssetsWrite";
-import AssetsView from "./AssetsView";
-import AssetsEdit from "./AssetsEdit";
 
 /*order by 사용 함수*/
 function getSorting(order, orderBy) {
@@ -175,8 +172,10 @@ export default class AssetsList extends PureComponent {
         for (const arrData in values) {
             if (arrData.indexOf("rentDate") !== -1) {
                 if (values[arrData].start !== undefined) {
-                    rentDataStart = moment(values[arrData].start).format("YYYYMMDD");
-                    rentDataEnd = `|${moment(values[arrData].end).format("YYYYMMDD")}`;
+                    rentDataStart = moment(values[arrData].start)
+                        .format("YYYYMMDD");
+                    rentDataEnd = `|${moment(values[arrData].end)
+                        .format("YYYYMMDD")}`;
                     rentData = `${rentDataStart}${rentDataEnd}`;
                 } else if (values[arrData] !== '' && values[arrData] !== undefined) {
                     rentData = values[arrData];
@@ -184,7 +183,8 @@ export default class AssetsList extends PureComponent {
                     rentData = "|";
                 }
             } else if (arrData.indexOf("warehousingDate") !== -1) {
-                warehousingDate = moment(values[arrData]).format("YYYYMMDD");
+                warehousingDate = moment(values[arrData])
+                    .format("YYYYMMDD");
             }
         }
 
@@ -381,23 +381,30 @@ export default class AssetsList extends PureComponent {
     };
 
     isSelected = (id) => {
-        const {selected} = this.state;
+        const { selected } = this.state;
         return !!selected.get(id);
     };
 
     toggle = (e) => {
         //this.setState(prevState => ({isOpenView: !prevState.isOpenView}));
-        const {dispatch} = this.props;
+        const { dispatch } = this.props;
         dispatch(setAssetsPage('view'));
+
+        const stateVal = ({
+            page: 'view',
+            type: 'device',
+            division: 'outFlag',
+            state: 'confirm',
+        });
+
+        dispatch(setState(stateVal));
     };
 
     setDeviceIdx = (event, deviceCode) => {
-        const {dispatch, assetState} = this.props;
+        const { dispatch, assetState } = this.props;
 
         dispatch(getDeviceByIdx(deviceCode, assetState.deviceType));
         dispatch(getDeviceOriByIdx(deviceCode, assetState.deviceType));
-
-        //this.setComponents('read', deviceCode);
     };
 
 
@@ -465,6 +472,7 @@ export default class AssetsList extends PureComponent {
         const tableCellBoldClassName = 'material-table__cell material-table__cell-bold';
         //TODO length 값 0 일때도 처리해야함
         let denseChkboxClassNmae;
+        let emptyRows;
 
         if (dense === true) {
             denseChkboxClassNmae = {paddingLeft: "10px"};
@@ -472,230 +480,269 @@ export default class AssetsList extends PureComponent {
             denseChkboxClassNmae = {};
         }
 
+        if (assetState.devices.length > 0) {
+            emptyRows = assetState.devices.length;
+        } else {
+            emptyRows = 0;
+        }
+
+        //console.log("---> : ", assetState.devices);
+
         const deviceComponent = (
             <Fragment>
                 <TableBody>
-                    {assetState.devices
-                        /*.sort(getSorting(order, orderBy))*/
-                        .slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)
-                        .map((d, index) => {
-                            let isSelected = this.isSelected(d.deviceCode);
-                            let ipSliceStr;
+                    {assetState.devices.length !== undefined
+                        ? (
+                            <Fragment>
+                                {assetState.devices
+                                    /*.sort(getSorting(order, orderBy))*/
+                                    .slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)
+                                    .map((d, index) => {
+                                        let isSelected = this.isSelected(d.deviceCode);
+                                        let ipSliceStr;
+                                        let outFlagStr;
 
-                            if (d.ip !== undefined) {
-                                ipSliceStr = d.ip.replace(/\|/gi, ", ").slice(0, -2);
-                            } else {
-                                ipSliceStr = "";
-                            }
+                                        if (d.ip !== undefined) {
+                                            ipSliceStr = d.ip.replace(/\|/gi, ", ")
+                                                .slice(0, -2);
+                                        } else {
+                                            ipSliceStr = "";
+                                        }
 
-                            if (assetState.deviceSelected.size === undefined) {
-                                isSelected = false;
-                            }
+                                        if (assetState.deviceSelected.size === undefined) {
+                                            isSelected = false;
+                                        }
 
-                            return (
-                                <TableRow
-                                    key={d.deviceCode}
-                                    className="material-table__row"
-                                    role="checkbox"
-                                    aria-checked={isSelected}
-                                    tabIndex={-1}
-                                    selected={isSelected}
-                                >
-                                    <TableCell className="material-table__cell"
-                                               padding="checkbox"
-                                               style={denseChkboxClassNmae}
-                                               onClick={event => this.handleClick(event, d.deviceCode)}>
-                                        <Checkbox checked={isSelected}
-                                                  className="material-table__checkbox"/>
-                                    </TableCell>
-                                    {/*<TableCell
-                                        className={tableCellClassName}
-                                    >No
-                                        {d.Idx}
-                                    </TableCell>*/}
-                                    <TableCell
-                                        className={tableCellClassName}
-                                        onClick={event => this.setDeviceIdx(event, d.deviceCode)}
-                                    >{/*장비코드*/}
-                                        <b className="text_cor_green mouse_over_list">
-                                            <div className="assets_add_modal_div" onClick={this.toggle}
-                                                 onKeyDown={this.toggle}
-                                                 role="button" tabIndex="0"><span
-                                                className="circle__ste"/>{d.deviceCode}</div>
-                                        </b>
-                                    </TableCell>
-                                    <TableCell
-                                        className={tableCellClassName}
-                                    >{/*구분*/}{d.deviceType}
-                                    </TableCell>
-                                    <TableCell
-                                        className={tableCellClassName}
-                                    >{/*제조사*/}{d.manufacture}
-                                    </TableCell>
-                                    <TableCell
-                                        className={tableCellClassName}
-                                    >{/*모델명*/}{d.model}
-                                    </TableCell>
-                                    {/*tableCellBoldClassName*/}
-                                    <TableCell
-                                        className={tableCellClassName}
-                                    >{/*고객사*/}
-                                        {d.customerName}
-                                        {/*<b className="text_cor_orange">{d.customerName}</b>*/}
-                                        {/*<b className="text_cor_red">{d.customer}</b>*/}
-                                    </TableCell>
-                                    <TableCell
-                                        className={tableCellClassName}
-                                    >{/*IDC*/}{d.idc}
-                                    </TableCell>
-                                    <TableCell
-                                        className={tableCellClassName}
-                                    >{/*위치*/}{d.rack}
-                                    </TableCell>
-                                    <TableCell
-                                        className={tableCellClassName}
-                                    >{/*소유권*/}{d.ownership}
-                                    </TableCell>
-                                    <TableCell
-                                        className={tableCellClassName}
-                                    >{/*소유권구분*/}{d.ownershipDiv}
-                                    </TableCell>
-                                    {/*<TableCell*/}
-                                    {/*    className={tableCellClassName}*/}
-                                    {/*>/!*용도*!/{d.purpose}*/}
-                                    {/*</TableCell>*/}
+                                        if (d.outFlag === true) {
+                                            outFlagStr = (
+                                                <span className="text_cor_red font-weight-bold">반출</span>
+                                            );
+                                        } else {
+                                            outFlagStr = (
+                                                <span className="text_cor_accent font-weight-bold">운영</span>
+                                            );
+                                        }
 
-                                    {assetState.deviceType === 'server'
-                                    && (
-                                        <Fragment>
-                                            <TableCell
-                                                className={tableCellClassName} title={ipSliceStr}
-                                            >{/*IP*/}
-                                                {textLengthOverCut(ipSliceStr, 50)}
-                                            </TableCell>
-                                            <TableCell
-                                                className={tableCellClassName}
-                                            >{/*크기*/}{d.size}
-                                            </TableCell>
-                                        </Fragment>
-                                    )}
-                                    {assetState.deviceType === 'network'
-                                    && (
-                                        <Fragment>
-                                            <TableCell
-                                                className={tableCellClassName} title={ipSliceStr}
-                                            >{/*IP*/}
-                                                {textLengthOverCut(ipSliceStr, 50)}
-                                            </TableCell>
-                                            <TableCell
-                                                className={tableCellClassName}
-                                            >{/*HW S/N*/}{d.hwSn}
-                                            </TableCell>
-                                            <TableCell
-                                                className={tableCellClassName}
-                                            >{/*펌웨어*/}{d.firmwareVersion}
-                                            </TableCell>
-                                            {/*<TableCell
-                                                className={tableCellClassName}
-                                            >입고일{d.warehousingDate}
-                                            </TableCell>*/}
-                                        </Fragment>
-                                    )}
-                                    {assetState.deviceType === 'part'
-                                    && (
-                                        <Fragment>
-                                            <TableCell
-                                                className={tableCellClassName}
-                                            >{/*HW S/N*/}{d.hwSn}
-                                            </TableCell>
-                                            {/*<TableCell
-                                                className={tableCellClassName}
-                                            >워런티{d.warranty}
-                                            </TableCell>
-                                            <TableCell
-                                                className={tableCellClassName}
-                                            >입고일{d.warehousingDate}
-                                            </TableCell>*/}
-                                        </Fragment>
-                                    )}
-                                </TableRow>
-                            );
-                        })}
+                                        return (
+                                            <TableRow
+                                                key={d.deviceCode}
+                                                className="material-table__row"
+                                                role="checkbox"
+                                                aria-checked={isSelected}
+                                                tabIndex={-1}
+                                                selected={isSelected}
+                                            >
+                                                <TableCell className="material-table__cell"
+                                                           padding="checkbox"
+                                                           style={denseChkboxClassNmae}
+                                                           onClick={event => this.handleClick(event, d.deviceCode)}>
+                                                    <Checkbox checked={isSelected}
+                                                              className="material-table__checkbox"/>
+                                                </TableCell>
+                                                <TableCell
+                                                    className={tableCellClassName}
+                                                    onClick={event => this.setDeviceIdx(event, d.deviceCode)}
+                                                >{/*장비코드*/}
+                                                    <b className="text_cor_green mouse_over_list">
+                                                        <div className="assets_add_modal_div"
+                                                             onClick={this.toggle}
+                                                             onKeyDown={this.toggle}
+                                                             role="button" tabIndex="0"><span
+                                                            className="circle__ste"/>{d.deviceCode}</div>
+                                                    </b>
+                                                </TableCell>
+                                                <TableCell
+                                                    className={tableCellClassName}
+                                                >{/*구분*/}{d.deviceType}
+                                                </TableCell>
+                                                <TableCell
+                                                    className={tableCellClassName}
+                                                >{/*제조사*/}{d.manufacture}
+                                                </TableCell>
+                                                <TableCell
+                                                    className={tableCellClassName}
+                                                >{/*모델명*/}{d.model}
+                                                </TableCell>
+                                                {/*tableCellBoldClassName*/}
+                                                <TableCell
+                                                    className={tableCellClassName}
+                                                >{/*고객사*/}
+                                                    {d.customerName}
+                                                    {/*<b className="text_cor_orange">{d.customerName}</b>*/}
+                                                    {/*<b className="text_cor_red">{d.customer}</b>*/}
+                                                </TableCell>
+                                                <TableCell
+                                                    className={tableCellClassName}
+                                                >{/*IDC*/}{d.idc}
+                                                </TableCell>
+                                                <TableCell
+                                                    className={tableCellClassName}
+                                                >{/*위치*/}{d.rack}
+                                                </TableCell>
+                                                <TableCell
+                                                    className={tableCellClassName}
+                                                >{/*소유권*/}{d.ownership}
+                                                </TableCell>
+                                                <TableCell
+                                                    className={tableCellClassName}
+                                                >{/*소유권구분*/}{d.ownershipDiv}
+                                                </TableCell>
+                                                {/*<TableCell*/}
+                                                {/*    className={tableCellClassName}*/}
+                                                {/*>/!*용도*!/{d.purpose}*/}
+                                                {/*</TableCell>*/}
+
+                                                {assetState.deviceType === 'server'
+                                                && (
+                                                    <Fragment>
+                                                        <TableCell
+                                                            className={tableCellClassName} title={ipSliceStr}
+                                                        >{/*IP*/}
+                                                            {textLengthOverCut(ipSliceStr, 50)}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            className={tableCellClassName}
+                                                        >{/*크기*/}{d.size}
+                                                        </TableCell>
+                                                    </Fragment>
+                                                )}
+                                                {assetState.deviceType === 'network'
+                                                && (
+                                                    <Fragment>
+                                                        <TableCell
+                                                            className={tableCellClassName} title={ipSliceStr}
+                                                        >{/*IP*/}
+                                                            {textLengthOverCut(ipSliceStr, 50)}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            className={tableCellClassName}
+                                                        >{/*HW S/N*/}{d.hwSn}
+                                                        </TableCell>
+                                                        <TableCell
+                                                            className={tableCellClassName}
+                                                        >{/*펌웨어*/}{d.firmwareVersion}
+                                                        </TableCell>
+                                                        {/*<TableCell
+                                                        className={tableCellClassName}
+                                                    >입고일{d.warehousingDate}
+                                                    </TableCell>*/}
+                                                    </Fragment>
+                                                )}
+                                                {assetState.deviceType === 'part'
+                                                && (
+                                                    <Fragment>
+                                                        <TableCell
+                                                            className={tableCellClassName}
+                                                        >{/*HW S/N*/}{d.hwSn}
+                                                        </TableCell>
+                                                        {/*<TableCell
+                                                        className={tableCellClassName}
+                                                    >워런티{d.warranty}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        className={tableCellClassName}
+                                                    >입고일{d.warehousingDate}
+                                                    </TableCell>*/}
+                                                    </Fragment>
+                                                )}
+                                                {assetState.searchRd.operatingFlag === true
+                                                && assetState.searchRd.carryingFlag === true ? (
+                                                    <TableCell
+                                                        className={tableCellClassName}
+                                                    >{/*운영여부*/}{outFlagStr}
+                                                    </TableCell>
+                                                ) : false}
+                                            </TableRow>
+                                        );
+                                    })}
+                                {emptyRows <= 0 && (
+                                    <TableRow>
+                                        <TableCell colSpan={15}
+                                                   className={tableCellClassName}>데이터가 존재하지 않습니다.</TableCell>
+                                    </TableRow>
+                                )}
+                            </Fragment>
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={15}
+                                           className={tableCellClassName}>데이터가 존재하지 않습니다.</TableCell>
+                            </TableRow>
+                        )}
                 </TableBody>
             </Fragment>
         );
 
         return (
             // <Col sm={12} md={12} xs={12} xl={12} lg={12}>
-                <Card className="cb-card">
-                    <CardBody className="cb-card-body">
-                        <div>
-                            <TableContainer>
-                                <Table className="material-table material-table__wrap"
-                                       size={dense ? 'small' : 'medium'}>
-                                    <AssetsHead
-                                        numSelected={[...selected].filter(el => el[1]).length}
-                                        order={order}
-                                        orderBy={orderBy}
-                                        onSelectAllClick={this.handleSelectAllClick}
-                                        onRequestSort={this.handleRequestSort}
-                                        rowCount={Number(assetState.devices.length)}
-                                        selectedSize={Number(assetState.deviceSelected.size)}
-                                        rowsPerPage={rowsPerPage}
-                                        assetState={assetState}
-                                        dispatch={dispatch}
-                                    />
-                                    {deviceComponent}
-                                </Table>
-                            </TableContainer>
-                            <div>
-                                <FormControlLabel
-                                    control={<Switch checked={dense} onChange={this.handleChangeDense}/>}
-                                    label="Dense padding"
-                                    style={{padding: 5}}
-                                    className="list-dense-padding"
-                                />
-                                <TablePagination
-                                    component="div"
-                                    className="material-table__pagination"
-                                    count={Number(assetState.page.count)}
+            <Card className="cb-card">
+                <CardBody className="cb-card-body">
+                    <div>
+                        <TableContainer>
+                            <Table className="material-table material-table__wrap"
+                                   size={dense ? 'small' : 'medium'}>
+                                <AssetsHead
+                                    numSelected={[...selected].filter(el => el[1]).length}
+                                    order={order}
+                                    orderBy={orderBy}
+                                    onSelectAllClick={this.handleSelectAllClick}
+                                    onRequestSort={this.handleRequestSort}
+                                    rowCount={Number(assetState.devices.length)}
+                                    selectedSize={Number(assetState.deviceSelected.size)}
                                     rowsPerPage={rowsPerPage}
-                                    page={pageNoNum}
-                                    backIconButtonProps={{
-                                        'aria-label': 'Previous Page',
-                                        disabled: false,
-                                        onClick: this.handleChangePageBack,
-                                    }}
-                                    /*nextIconButtonProps={{'aria-label': 'Next Page'}}*/
-                                    nextIconButtonProps={{
-                                        'aria-label': 'Next Page',
-                                        disabled: false,
-                                        onClick: this.handleChangePage,
-                                    }}
-                                    /*onChangePage={this.handleChangePage}*/
-                                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                                    rowsPerPageOptions={[10, 50, 100]}
-                                    dir="ltr"
-                                    labelDisplayedRows={
-                                        ({to, count}) => (
-                                            <span
-                                                style={{fontSize: 14}}><span>page: {assetState.page.page}</span>
-                                                &nbsp;&nbsp;&nbsp; total : {count}
-                                    </span>
-                                        )
-                                    }
-                                    SelectProps={{
-                                        inputProps: {'aria-label': 'rows per page'},
-                                        native: true,
-                                    }}
+                                    assetState={assetState}
+                                    dispatch={dispatch}
                                 />
-                            </div>
+                                {deviceComponent}
+                            </Table>
+                        </TableContainer>
+                        <div>
+                            <FormControlLabel
+                                control={<Switch checked={dense} onChange={this.handleChangeDense}/>}
+                                label="Dense padding"
+                                style={{padding: 5}}
+                                className="list-dense-padding"
+                            />
+                            <TablePagination
+                                component="div"
+                                className="material-table__pagination"
+                                count={Number(assetState.page.count)}
+                                rowsPerPage={rowsPerPage}
+                                page={pageNoNum}
+                                backIconButtonProps={{
+                                    'aria-label': 'Previous Page',
+                                    disabled: false,
+                                    onClick: this.handleChangePageBack,
+                                }}
+                                /*nextIconButtonProps={{'aria-label': 'Next Page'}}*/
+                                nextIconButtonProps={{
+                                    'aria-label': 'Next Page',
+                                    disabled: false,
+                                    onClick: this.handleChangePage,
+                                }}
+                                /*onChangePage={this.handleChangePage}*/
+                                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                                rowsPerPageOptions={[10, 50, 100]}
+                                dir="ltr"
+                                labelDisplayedRows={
+                                    ({to, count}) => (
+                                        <span
+                                            style={{fontSize: 14}}><span>page: {assetState.page.page}</span>
+                                            &nbsp;&nbsp;&nbsp; total : {count}
+                                    </span>
+                                    )
+                                }
+                                SelectProps={{
+                                    inputProps: {'aria-label': 'rows per page'},
+                                    native: true,
+                                }}
+                            />
                         </div>
-                        {/*장비 상세*/}
-                        {/* <Modal
+                    </div>
+                    {/*장비 상세*/}
+                    {/* <Modal
                             isOpen={isOpenView}
                             modalClassName="ltr-support"
-                            className={`assets_write__modal-dialog 
+                            className={`assets_write__modal-dialog
                             assets_write__modal-dialog ${modalClass}`}
                         >
                             {viewModalContent}
@@ -704,14 +751,14 @@ export default class AssetsList extends PureComponent {
                         <Modal
                             isOpen={isOpenWrite}
                             modalClassName="ltr-support"
-                            className={`assets_write__modal-dialog 
+                            className={`assets_write__modal-dialog
                             assets_write__modal-dialog ${modalClass}`}
                         >
                             <AssetsWrite closeToggle={this.toggle}
                                          title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다."/>
                         </Modal>*/}
-                    </CardBody>
-                </Card>
+                </CardBody>
+            </Card>
             // </Col>
         );
     }

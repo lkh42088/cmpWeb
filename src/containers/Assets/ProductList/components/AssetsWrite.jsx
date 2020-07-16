@@ -152,13 +152,12 @@ class AssetsWrite extends PureComponent {
     }
 
     componentDidMount() {
-        const {
-            initialize,
-        } = this.props;
+        const { initialize } = this.props;
         initialize({warehousingDate: new Date()});
     }
 
     searchToggle = (division) => {
+        const { dispatch } = this.props;
         this.setState({
             searchToggleDivision: division,
         });
@@ -172,11 +171,16 @@ class AssetsWrite extends PureComponent {
         }
 
         this.setState(prevState => ({modal: !prevState.modal}));
+
+        dispatch(getCompanyByName());
+        this.setState({
+            searchCompanyName: '',
+        });
     };
 
     searchCompany = () => {
-        const {dispatch} = this.props;
-        const {searchCompanyName} = this.state;
+        const { dispatch } = this.props;
+        const { searchCompanyName } = this.state;
 
         dispatch(getCompanyByName(searchCompanyName));
     };

@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 import {Dialog} from "material-ui";
 import MagnifyIcon from "mdi-react/MagnifyIcon";
+import InsertInvitationIcon from '@material-ui/icons/InsertInvitation';
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import InputIcon from "@material-ui/icons/Input";
 import LaunchIcon from "@material-ui/icons/Launch";
@@ -138,6 +139,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
                     deviceCode: deviceCodeData,
                 });
 
+                //console.log("submitData : ", submitData);
                 dispatch(postDeviceOutFlag(assetState, submitData, 'list'));
             } else {
                 setModal({
@@ -159,7 +161,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
         <span role="button" tabIndex="0"
               onClick={event => toggleOutFlag("1")}
               onKeyDown={event => toggleOutFlag("1")}>
-                    <InputIcon/>&nbsp;
+                    <InputIcon fontSize="small"/>&nbsp;
             반출
             </span>
     );
@@ -168,7 +170,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
         <span role="button" tabIndex="0"
               onClick={event => toggleOutFlag("0")}
               onKeyDown={event => toggleOutFlag("0")}>
-                <LaunchIcon/>&nbsp;
+                <LaunchIcon fontSize="small"/>&nbsp;
             반입
             </span>
     );
@@ -279,14 +281,16 @@ const AssetsSearch = ({assetState, user, theme}) => {
         for (const arrData in values) {
             if (arrData.indexOf("rentDate") !== -1) {
                 if (values[arrData].start !== null && values[arrData].start !== undefined) {
-                    rentDataStart = moment(values[arrData].start).format("YYYYMMDD");
+                    rentDataStart = moment(values[arrData].start)
+                        .format("YYYYMMDD");
                 } else {
                     rentDataStart = null;
                 }
 
                 if (rentDataStart !== null) {
                     if (values[arrData].end !== null) {
-                        rentDataEnd = `|${moment(values[arrData].end).format("YYYYMMDD")}`;
+                        rentDataEnd = `|${moment(values[arrData].end)
+                            .format("YYYYMMDD")}`;
                     } else {
                         rentDataEnd = "|";
                     }
@@ -295,7 +299,8 @@ const AssetsSearch = ({assetState, user, theme}) => {
                     rentData = "|";
                 }
             } else if (arrData.indexOf("warehousingDate") !== -1) {
-                warehousingDate = moment(values[arrData]).format("YYYYMMDD");
+                warehousingDate = moment(values[arrData])
+                    .format("YYYYMMDD");
             }
         }
 
@@ -381,9 +386,9 @@ const AssetsSearch = ({assetState, user, theme}) => {
         let postArray = {};
         let postDivision;
 
-        console.log("onSearch : ", e);
+        /*        console.log("onSearch : ", e);
 
-        e.preventDefault();
+                e.preventDefault();*/
 
         if (schSelect === 'customer') {
             postDivision = 'deviceCode';
@@ -439,6 +444,38 @@ const AssetsSearch = ({assetState, user, theme}) => {
             ...device,
             [e.target.name]: e.target.checked,
         });
+
+        dispatch(setDeviceSelected(''));
+        dispatch(fetchPostSearchDevice(assetState, postArray));
+    };
+
+    const setToggleOutFlagText = (val) => {
+        let postArray = {};
+        if (val === "1") { // 운영장비 클릭
+            postArray.operatingFlag = !device.operatingFlag;
+
+            setDevice({
+                ...device,
+                operatingFlag: !device.operatingFlag,
+            });
+
+            postArray = ({
+                ...device,
+                operatingFlag: !device.operatingFlag,
+            });
+        } else { // 반출장비 클릭
+            postArray.carryingFlag = !device.carryingFlag;
+
+            setDevice({
+                ...device,
+                carryingFlag: !device.carryingFlag,
+            });
+
+            postArray = ({
+                ...device,
+                carryingFlag: !device.carryingFlag,
+            });
+        }
 
         dispatch(setDeviceSelected(''));
         dispatch(fetchPostSearchDevice(assetState, postArray));
@@ -504,95 +541,93 @@ const AssetsSearch = ({assetState, user, theme}) => {
                 <Row style={{padding: 10}}>
                     <Col sm={8} md={8} xs={8} xl={8} lg={8}>
                         {/*<Col mb={8}>*/}
-                        <form>
-                            <div className="search_card_body" style={{maxWidth: "100%"}}>
-                                <div>
-                                    <select name="schSelect" className="search_select"
-                                            onChange={onChangeSelect}>
-                                        <option value="0">:: SELECT ::</option>
-                                        <option value="deviceCode">장비코드</option>
-                                        <option value="customer">고객사</option>
-                                    </select>
-                                    &nbsp;&nbsp;
-                                    <input placeholder="Search..." name="schText"
-                                           className="search_input"
-                                           onKeyDown={(event) => {
-                                               if (event.keyCode === 13) {
-                                                   onSearch();
-                                               }
-                                           }}
-                                    />
-                                    <MagnifyIcon className="search_icon" role="button" tabIndex="0"
-                                                 onClick={onSearch}
-                                                 onKeyDown={onSearch}/>
-                                    &nbsp;&nbsp;
-                                    {
-                                        assetState.codes.codeDeviceType !== undefined ? (
-                                            <Fragment>
-                                                <select name="ownership" className="search_select"
-                                                        onChange={onChangeCode}
-                                                        value={assetState.searchRd.ownership}>
-                                                    <option value="0">:: 소유권 ::</option>
-                                                    {
-                                                        assetState.codes.codeOwnership.map((d, index) => (
-                                                            <option key={d.codeId.toString()}
-                                                                    value={d.codeId}>{d.name}</option>
-                                                        ))}
-                                                </select>
-                                                &nbsp;&nbsp;
-                                                <select name="ownershipDiv" className="search_select"
-                                                        onChange={onChangeCode}
-                                                        value={assetState.searchRd.ownershipDiv}>
-                                                    <option value="0">:: 소유권구분 ::</option>
-                                                    {
-                                                        assetState.codes.codeOwnershipDiv.map((d, index) => (
-                                                            <option key={d.codeId.toString()}
-                                                                    value={d.codeId}>{d.name}</option>
-                                                        ))}
-                                                </select>
-                                                &nbsp;&nbsp;
-                                                <select name="idc" className="search_select"
-                                                        onChange={onChangeCode}
-                                                        value={assetState.searchRd.idc}>
-                                                    <option value="0">:: IDC ::</option>
-                                                    {
-                                                        assetState.codes.codeIdc.map((d, index) => (
-                                                            <option key={d.codeId.toString()}
-                                                                    value={d.codeId}>{d.name}</option>
-                                                        ))}
-                                                </select>
-                                                &nbsp;&nbsp;
-                                                <select name="manufacture" className="search_select"
-                                                        onChange={onChangeCode}
-                                                        value={assetState.searchRd.manufacture}>
-                                                    <option value="0">:: 제조사 ::</option>
-                                                    {
-                                                        assetState.codes.codeManufacture.map((d, index) => (
-                                                            <option key={d.codeId.toString()}
-                                                                    value={d.codeId}>{d.name}</option>
-                                                        ))}
-                                                </select>
-                                                &nbsp;&nbsp;
-                                                <select name="deviceType" className="search_select"
-                                                        onChange={onChangeCode}
-                                                        value={assetState.searchRd.deviceType}>
-                                                    <option value="0">:: 장비구분 ::</option>
-                                                    {
-                                                        assetState.codes.codeDeviceType.map((d, index) => (
-                                                            <option key={d.codeId.toString()}
-                                                                    value={d.codeId}>{d.name}</option>
-                                                        ))}
-                                                </select>
-                                            </Fragment>
-                                        ) : (
-                                            <Fragment>
-                                                -
-                                            </Fragment>
-                                        )
-                                    }
-                                </div>
+                        <div className="search_card_body" style={{maxWidth: "100%"}}>
+                            <div>
+                                <select name="schSelect" className="search_select"
+                                        onChange={onChangeSelect}>
+                                    <option value="0">:: SELECT ::</option>
+                                    <option value="deviceCode">장비코드</option>
+                                    <option value="customer">고객사</option>
+                                </select>
+                                &nbsp;&nbsp;
+                                <input placeholder="Search..." name="schText"
+                                       className="search_input"
+                                       onKeyDown={(event) => {
+                                           if (event.keyCode === 13) {
+                                               onSearch();
+                                           }
+                                       }}
+                                />
+                                <MagnifyIcon className="search_icon" role="button" tabIndex="0"
+                                             onClick={onSearch}
+                                             onKeyDown={onSearch}/>
+                                &nbsp;&nbsp;
+                                {
+                                    assetState.codes.codeDeviceType !== undefined ? (
+                                        <Fragment>
+                                            <select name="ownership" className="search_select"
+                                                    onChange={onChangeCode}
+                                                    value={assetState.searchRd.ownership}>
+                                                <option value="0">:: 소유권 ::</option>
+                                                {
+                                                    assetState.codes.codeOwnership.map((d, index) => (
+                                                        <option key={d.codeId.toString()}
+                                                                value={d.codeId}>{d.name}</option>
+                                                    ))}
+                                            </select>
+                                            &nbsp;&nbsp;
+                                            <select name="ownershipDiv" className="search_select"
+                                                    onChange={onChangeCode}
+                                                    value={assetState.searchRd.ownershipDiv}>
+                                                <option value="0">:: 소유권구분 ::</option>
+                                                {
+                                                    assetState.codes.codeOwnershipDiv.map((d, index) => (
+                                                        <option key={d.codeId.toString()}
+                                                                value={d.codeId}>{d.name}</option>
+                                                    ))}
+                                            </select>
+                                            &nbsp;&nbsp;
+                                            <select name="idc" className="search_select"
+                                                    onChange={onChangeCode}
+                                                    value={assetState.searchRd.idc}>
+                                                <option value="0">:: IDC ::</option>
+                                                {
+                                                    assetState.codes.codeIdc.map((d, index) => (
+                                                        <option key={d.codeId.toString()}
+                                                                value={d.codeId}>{d.name}</option>
+                                                    ))}
+                                            </select>
+                                            &nbsp;&nbsp;
+                                            <select name="manufacture" className="search_select"
+                                                    onChange={onChangeCode}
+                                                    value={assetState.searchRd.manufacture}>
+                                                <option value="0">:: 제조사 ::</option>
+                                                {
+                                                    assetState.codes.codeManufacture.map((d, index) => (
+                                                        <option key={d.codeId.toString()}
+                                                                value={d.codeId}>{d.name}</option>
+                                                    ))}
+                                            </select>
+                                            &nbsp;&nbsp;
+                                            <select name="deviceType" className="search_select"
+                                                    onChange={onChangeCode}
+                                                    value={assetState.searchRd.deviceType}>
+                                                <option value="0">:: 장비구분 ::</option>
+                                                {
+                                                    assetState.codes.codeDeviceType.map((d, index) => (
+                                                        <option key={d.codeId.toString()}
+                                                                value={d.codeId}>{d.name}</option>
+                                                    ))}
+                                            </select>
+                                        </Fragment>
+                                    ) : (
+                                        <Fragment>
+                                            -
+                                        </Fragment>
+                                    )
+                                }
                             </div>
-                        </form>
+                        </div>
                     </Col>
                     {/*<Col sm={12} md={12} xs={12} xl={12} lg={12}>*/}
                     <Col sm={4} md={4} xs={4} xl={4} lg={4}>
@@ -607,7 +642,11 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                    value={device.operatingFlag}
                                    onChange={setToggleOutFlag}/>&nbsp;
                             <label htmlFor="operatingFlag" className="search_checkboxText">
-                                운영장비&nbsp;
+                                <span
+                                    role="button" tabIndex="0"
+                                    onClick={event => setToggleOutFlagText('1')}
+                                    onKeyDown={event => setToggleOutFlagText('1')}>
+                                    운영장비&nbsp;</span>
                             </label>
                             &nbsp;&nbsp;&nbsp;
                             <input type="checkbox" name="carryingFlag" className="search_checkbox"
@@ -616,13 +655,28 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                    value={device.carryingFlag}
                                    onChange={setToggleOutFlag}/>&nbsp;
                             <label htmlFor="carryingFlag" className="search_checkboxText">
-                                반출장비&nbsp;
+                                <span
+                                    role="button" tabIndex="0"
+                                    onClick={event => setToggleOutFlagText('0')}
+                                    onKeyDown={event => setToggleOutFlagText('0')}>
+                                    반출장비&nbsp;</span>
                             </label>
                             <ButtonToolbar>
-                            <span role="button" tabIndex="0"
-                                  onClick={toggle} onKeyDown={toggle}>
-                                    <CreateIcon/>&nbsp;장비 등록</span>
-                                {renderSwitch()}
+                                <div className="search_btn-text">
+                                    <span role="button" tabIndex="0"
+                                          onClick={toggle} onKeyDown={toggle}>
+                                        <CreateIcon fontSize="small"/>&nbsp;장비 등록&nbsp;&nbsp;</span>
+                                    {renderSwitch()}
+                                </div>
+                            </ButtonToolbar>
+                            <ButtonToolbar>
+                                <div className="search_btn-text">
+                                    <span
+                                        role="button" tabIndex="0"
+                                        onClick={event => setToggleOutFlagText('1')}
+                                        onKeyDown={event => setToggleOutFlagText('1')}>
+                                                        &nbsp;<InsertInvitationIcon/>&nbsp;한달 기간 검색[개발중]</span>
+                                </div>
                             </ButtonToolbar>
                             <Modal
                                 isOpen={modal.modalOpenFlag}

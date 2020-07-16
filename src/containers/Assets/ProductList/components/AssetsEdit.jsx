@@ -219,6 +219,7 @@ class AssetsEdit extends PureComponent {
     }
 
     searchToggle = (division) => {
+        const { dispatch } = this.props;
         this.setState({
             searchToggleDivision: division,
         });
@@ -232,6 +233,11 @@ class AssetsEdit extends PureComponent {
         }
 
         this.setState(prevState => ({modal: !prevState.modal}));
+
+        dispatch(getCompanyByName());
+        this.setState({
+            searchCompanyName: '',
+        });
     };
 
     searchCompany = () => {
@@ -579,6 +585,18 @@ class AssetsEdit extends PureComponent {
         deviceRawValue = assetState.deviceOri;
         const setIpArray = [];
         const setSplaArray = [];
+        let outFlagStr;
+
+
+        if (deviceValue.outFlag === true) {
+            outFlagStr = (
+                <span className="text_cor_red font-weight-bold">반출장비</span>
+            );
+        } else {
+            outFlagStr = (
+                <span className="text_cor_accent font-weight-bold">운영장비</span>
+            );
+        }
 
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
         for (const arrData in ipArrayMap) {
@@ -955,7 +973,7 @@ class AssetsEdit extends PureComponent {
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label text_cor_green">장비코드</span>
                             <div className="modal_form__form-group-field">
-                                <b><h6 style={deviceStyle}>{deviceValue.deviceCode}</h6></b>
+                                <b><h6 style={deviceStyle}>{deviceValue.deviceCode} [{outFlagStr}]</h6></b>
                             </div>
                         </div>
                         <div className="modal_form__form-group">
@@ -1072,7 +1090,10 @@ class AssetsEdit extends PureComponent {
                                 className="input_col_4"
                                 placeholder="고객사"
                                 /*label={{name: deviceValue.customerName, id: deviceValue.customer}}*/
-                                label={{name: searchCustomerName, id: searchCustomerId}}
+                                label={{
+                                    name: searchCustomerName,
+                                    id: searchCustomerId,
+                                }}
                                 initialValues={searchCustomerId}
                                 component={renderCustomerField}
                                 /*ref={(ref) => { this.input = ref; }}*/
@@ -1101,7 +1122,10 @@ class AssetsEdit extends PureComponent {
                                 placeholder="소유업체명"
                                 initialValues={searchOwnerCompanyId}
                                 /*label={{name: deviceValue.ownerCompanyName, id: deviceValue.ownerCompany}}*/
-                                label={{name: searchOwnerCompanyName, id: searchOwnerCompanyId}}
+                                label={{
+                                    name: searchOwnerCompanyName,
+                                    id: searchOwnerCompanyId,
+                                }}
                                 component={renderCustomerField}
                                 searchToggle={event => this.searchToggle('ownerCompany')}
                                 ref={(ref) => {

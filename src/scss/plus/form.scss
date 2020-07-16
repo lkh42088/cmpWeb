@@ -737,4 +737,10 @@
   }
 }
 
+.search_btn-text {
+  @include themify($themes) {
+    color: themed('colorText');
+  }
+}
+
 
