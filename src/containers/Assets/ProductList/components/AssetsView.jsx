@@ -12,9 +12,11 @@ import MatButton from '@material-ui/core/Button';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import InputIcon from "@material-ui/icons/Input";
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import LaunchIcon from "@material-ui/icons/Launch";
 import SendIcon from "@material-ui/icons/Send";
 import TocIcon from '@material-ui/icons/Toc';
 import EditIcon from '@material-ui/icons/Edit';
@@ -30,7 +32,7 @@ import AccordionDetails from '@material-ui/core/AccordionActions';
 import AssetsComment from "./AssetsComment";
 import AssetsLog from "./AssetsLog";
 import {
-    getDeviceOriByIdx, setState,
+    getDeviceOriByIdx, setState, postDeviceOutFlag,
     postDevice, postDeviceComment, setAssetsPage,
 } from "../../../../redux/actions/assetsAction";
 import AssetsEdit from "./AssetsEdit";
@@ -96,7 +98,8 @@ class AssetsView extends PureComponent {
             comment: '',
             registerId: '',
             modalOpenFlag: false,
-            date: moment(new Date()).format("YYYY년MM월DD일"),
+            date: moment(new Date())
+                .format("YYYY년MM월DD일"),
 
             modalWarring: false,
             warringTitle: '',
@@ -194,7 +197,7 @@ class AssetsView extends PureComponent {
     };
 
     handleSubmitEdit = (values) => {
-        const {assetState, dispatch, user} = this.props;
+        const { assetState, dispatch, user } = this.props;
         dispatch(setAssetsPage('view'));
 
         let division = '|';
@@ -243,8 +246,10 @@ class AssetsView extends PureComponent {
         for (const arrData in values) {
             if (arrData.indexOf("rentDate") !== -1) {
                 if (values[arrData].start !== undefined) {
-                    rentDataStart = moment(values[arrData].start).format("YYYYMMDD");
-                    rentDataEnd = `|${moment(values[arrData].end).format("YYYYMMDD")}`;
+                    rentDataStart = moment(values[arrData].start)
+                        .format("YYYYMMDD");
+                    rentDataEnd = `|${moment(values[arrData].end)
+                        .format("YYYYMMDD")}`;
                     rentData = `${rentDataStart}${rentDataEnd}`;
                 } else if (values[arrData] !== '' && values[arrData] !== undefined) {
                     rentData = values[arrData];
@@ -260,7 +265,8 @@ class AssetsView extends PureComponent {
                     reWarehousingDate = values[arrData];
                 }
 
-                warehousingDate = moment(reWarehousingDate).format("YYYYMMDD");
+                warehousingDate = moment(reWarehousingDate)
+                    .format("YYYYMMDD");
             }
         }
 
@@ -371,6 +377,18 @@ class AssetsView extends PureComponent {
         return <React.Fragment>{output}</React.Fragment>;
     };
 
+    toggleOutFlag = (val, deviceCode) => {
+        const { assetState, dispatch, user } = this.props;
+
+        const submitData = ({
+            userId: user.id,
+            outFlag: val,
+            deviceCode,
+        });
+
+        dispatch(postDeviceOutFlag(assetState, submitData, 'view'));
+    };
+
     render() {
         const {
             assetState, dispatch, user, theme,
@@ -410,7 +428,7 @@ class AssetsView extends PureComponent {
             deviceCode, model, contents, customer, manufacture, deviceType, warehousingDate,
             rentDate, ownership, ownershipDiv, ownerCompany, hwSn, idc, rack, cost, purpose,
             monitoringFlag, MonitoringMethod, ip, size, spla, cpu, memory, hdd, rackCode, rackTag,
-            rackLoc, firmwareVersion, warranty, customerName, ownerCompanyName,
+            rackLoc, firmwareVersion, warranty, customerName, ownerCompanyName, outFlag,
         } = deviceValue;
 
         let rentDateSliceStr;
@@ -419,6 +437,36 @@ class AssetsView extends PureComponent {
         let dpIpSliceStr;
         let splaSliceStrArray;
         let dpSplaSliceStr;
+        let outFlagStr;
+        let componentOutFlag;
+
+        if (outFlag === true) {
+            outFlagStr = (
+                <span className="text_cor_red font-weight-bold">반출장비</span>
+            );
+
+            componentOutFlag = (
+                <span role="button" tabIndex="0"
+                      onClick={event => this.toggleOutFlag("0", deviceCode)}
+                      onKeyDown={event => this.toggleOutFlag("0", deviceCode)}>
+                <LaunchIcon fontSize="small"/>&nbsp;
+                    반입
+            </span>
+            );
+        } else {
+            outFlagStr = (
+                <span className="text_cor_accent font-weight-bold">운영장비</span>
+            );
+
+            componentOutFlag = (
+                <span role="button" tabIndex="0"
+                      onClick={event => this.toggleOutFlag("1", deviceCode)}
+                      onKeyDown={event => this.toggleOutFlag("1", deviceCode)}>
+                    <InputIcon fontSize="small"/>&nbsp;
+                    반출
+                 </span>
+            );
+        }
 
 
         /* if (ip !== undefined && ip !== "|") {
@@ -451,13 +499,13 @@ class AssetsView extends PureComponent {
                  `${warehousingDate.substring(0, 4)}년${warehousingDate.substring(4, 6)}월${warehousingDate.substring(6, 8)}일`
              );
          }*/
-/*
-        console.log("★★★★★ rack : ", rack);
+        /*
+                console.log("★★★★★ rack : ", rack);
 
-        let inRack = rack;
-        if (rack === 0 || rack === "") {
-            inRack = "랙없음";
-        }*/
+                let inRack = rack;
+                if (rack === 0 || rack === "") {
+                    inRack = "랙없음";
+                }*/
 
         switch (assetState.deviceType) {
             case 'server':
@@ -549,7 +597,7 @@ class AssetsView extends PureComponent {
                                     <div className="col-lg-8 col-md-12">
                                         <textarea
                                             className={classNameMap.textareaPreCont}
-                                            value={rackTag} rows="1"
+                                            value={textValueCut(rackTag, undefined)} rows="1"
                                             disabled/>
                                     </div>
                                 </div>
@@ -564,7 +612,7 @@ class AssetsView extends PureComponent {
                                     <div className="col-lg-8 col-md-12">
                                         <textarea
                                             className={classNameMap.textareaPreCont}
-                                            value={size} rows="1"
+                                            value={textValueCut(size, undefined)} rows="1"
                                             disabled/>
                                     </div>
                                 </div>
@@ -722,6 +770,30 @@ class AssetsView extends PureComponent {
                                     <div className="col-md-6">
                                         <div className={classNameMap.rowFormItem}>
                                             <div className={classNameMap.itemContainer}>
+                                                <div className={classNameMap.formInforLabel}>운영여부</div>
+                                            </div>
+                                            <div className="col-lg-6 col-md-6">
+                                                {outFlagStr}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div className={classNameMap.rowFormItem}>
+                                            <div className={classNameMap.itemContainer}>
+                                                <div className={classNameMap.formInforLabel}>&nbsp;</div>
+                                            </div>
+                                            <div className="col-lg-8 col-md-12">
+                                                <span className="float-right">
+                                                    {componentOutFlag}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-6">
+                                        <div className={classNameMap.rowFormItem}>
+                                            <div className={classNameMap.itemContainer}>
                                                 <div className={classNameMap.formInforLabel}>장비코드</div>
                                             </div>
                                             <div className="col-lg-8 col-md-12">
@@ -757,7 +829,8 @@ class AssetsView extends PureComponent {
                                             <div className="col-lg-8 col-md-12">
                                                             <textarea
                                                                 className={classNameMap.textareaPreCont}
-                                                                rows="1" value={`${deviceType}`}
+                                                                rows="1"
+                                                                value={textValueCut(deviceType, undefined)}
                                                                 disabled/>
                                             </div>
                                         </div>
@@ -771,7 +844,9 @@ class AssetsView extends PureComponent {
                                             <div className="col-lg-8 col-md-12">
                                                             <textarea
                                                                 className={classNameMap.textareaPreCont}
-                                                                rows="1" value={`${manufacture} / ${model}`}
+                                                                rows="1"
+                                                                value={textValueCut(`${manufacture} / ${model}`, undefined)}
+                                                                /*value={`${manufacture} / ${model}`}*/
                                                                 disabled/>
                                             </div>
                                         </div>

@@ -14,35 +14,72 @@ import {
 
 const rows = [
     /*{id: 'Idx', disablePadding: false, label: 'No.'},*/
-    {id: 'deviceCode', disablePadding: false, label: '장비코드'},
-    {id: 'deviceType', disablePadding: false, label: '구분'},
-    {id: 'manufacture', disablePadding: false, label: '제조사'},
-    {id: 'model', disablePadding: false, label: '모델명'},
-    {id: 'customer', disablePadding: false, label: '고객사'},
-    {id: 'idc', disablePadding: false, label: 'IDC'},
-    {id: 'rack', disablePadding: false, label: '위치'},
-    {id: 'ownership', disablePadding: false, label: '소유권'},
-    {id: 'ownerCompany', disablePadding: false, label: '소유권 구분'},
-    // {id: 'purpose', disablePadding: false, label: '용도'},
+    {
+        id: 'deviceCode', disablePadding: false, label: '장비코드', order: 1,
+    },
+    {
+        id: 'deviceType', disablePadding: false, label: '구분', order: 2,
+    },
+    {
+        id: 'manufacture', disablePadding: false, label: '제조사', order: 3,
+    },
+    {
+        id: 'model', disablePadding: false, label: '모델명', order: 4,
+    },
+    {
+        id: 'customer', disablePadding: false, label: '고객사', order: 5,
+    },
+    {
+        id: 'idc', disablePadding: false, label: 'IDC', order: 6,
+    },
+    {
+        id: 'rack', disablePadding: false, label: '위치', order: 7,
+    },
+    {
+        id: 'ownership', disablePadding: false, label: '소유권', order: 8,
+    },
+    {
+        id: 'ownerCompany', disablePadding: false, label: '소유권 구분', order: 9,
+    },
 ];
 
 class AssetsHead extends PureComponent {
-    state = {
+    /*state = {
         // eslint-disable-next-line react/no-unused-state
         rows: [
-            /*{id: 'Idx', disablePadding: false, label: 'No.'},*/
-            {id: 'deviceCode', disablePadding: false, label: '장비코드'},
-            {id: 'deviceType', disablePadding: false, label: '구분'},
-            {id: 'manufacture', disablePadding: false, label: '제조사'},
-            {id: 'model', disablePadding: false, label: '모델명'},
-            {id: 'customer', disablePadding: false, label: '고객사'},
-            {id: 'idc', disablePadding: false, label: 'IDC'},
-            {id: 'rack', disablePadding: false, label: '위치'},
-            {id: 'ownership', disablePadding: false, label: '소유권'},
-            {id: 'ownerCompany', disablePadding: false, label: '소유권 구분'},
-            // {id: 'purpose', disablePadding: false, label: '용도'},
+            /!*{id: 'Idx', disablePadding: false, label: 'No.'},*!/
+            {
+                id: 'deviceCode', disablePadding: false, label: '장비코드', order: 1,
+            },
+            {
+                id: 'deviceType', disablePadding: false, label: '구분', order: 2,
+            },
+            {
+                id: 'manufacture', disablePadding: false, label: '제조사', order: 3,
+            },
+            {
+                id: 'model', disablePadding: false, label: '모델명', order: 4,
+            },
+            {
+                id: 'customer', disablePadding: false, label: '고객사', order: 5,
+            },
+            {
+                id: 'idc', disablePadding: false, label: 'IDC', order: 6,
+            },
+            {
+                id: 'rack', disablePadding: false, label: '위치', order: 7,
+            },
+            {
+                id: 'ownership', disablePadding: false, label: '소유권', order: 8,
+            },
+            {
+                id: 'ownerCompany', disablePadding: false, label: '소유권 구분', order: 9,
+            },
+            {
+                id: 'outFlag', disablePadding: false, label: '운영여부', order: 15,
+            },
         ],
-    };
+    };*/
 
     static propTypes = {
         // eslint-disable-next-line react/forbid-prop-types
@@ -59,13 +96,105 @@ class AssetsHead extends PureComponent {
         rowsPerPage: PropTypes.number.isRequired,
     };
 
+    constructor() {
+        super();
+        this.state = {
+            rows: [
+                {
+                    id: 'deviceCode', disablePadding: false, label: '장비코드', order: 1,
+                },
+                {
+                    id: 'deviceType', disablePadding: false, label: '구분', order: 2,
+                },
+                {
+                    id: 'manufacture', disablePadding: false, label: '제조사', order: 3,
+                },
+                {
+                    id: 'model', disablePadding: false, label: '모델명', order: 4,
+                },
+                {
+                    id: 'customer', disablePadding: false, label: '고객사', order: 5,
+                },
+                {
+                    id: 'idc', disablePadding: false, label: 'IDC', order: 6,
+                },
+                {
+                    id: 'rack', disablePadding: false, label: '위치', order: 7,
+                },
+                {
+                    id: 'ownership', disablePadding: false, label: '소유권', order: 8,
+                },
+                {
+                    id: 'ownerCompany', disablePadding: false, label: '소유권 구분', order: 9,
+                },
+            ],
+        };
+    }
+
     // eslint-disable-next-line consistent-return
     static getDerivedStateFromProps = (nextProps, prevState) => {
-        if (nextProps.assetState.deviceType === 'server') {
+        let oriRows = rows;
+
+        if (nextProps.assetState.searchRd.operatingFlag === true
+            && nextProps.assetState.searchRd.carryingFlag === true) {
+            oriRows = oriRows.concat(
+                {
+                    id: 'outFlag', disablePadding: false, label: '운영여부', order: 15,
+                },
+            );
+        }
+
+        switch (nextProps.assetState.deviceType) {
+            case "server":
+                oriRows = oriRows.concat(
+                    {
+                        id: 'ip', disablePadding: false, label: 'IP', order: 10,
+                    },
+                    {
+                        id: 'size', disablePadding: false, label: '크기', order: 11,
+                    },
+                );
+                break;
+            case "network":
+                oriRows = oriRows.concat(
+                    {
+                        id: 'ip', disablePadding: false, label: 'IP', order: 10,
+                    },
+                    {
+                        id: 'hwSn', disablePadding: false, label: 'HwSn', order: 11,
+                    },
+                    {
+                        id: 'firmwareVersion', disablePadding: false, label: 'FirmwareVersion', order: 12,
+                    },
+                );
+                break;
+            case "part":
+                oriRows = oriRows.concat(
+                    {
+                        id: 'hwSn', disablePadding: false, label: 'HwSn', order: 10,
+                    },
+                );
+                break;
+            default:
+                break;
+        }
+
+        return {
+            rows: oriRows,
+        };
+
+        /*if (nextProps.assetState.deviceType === 'server') {
             return {
                 rows: rows.concat(
-                    {id: 'ip', disablePadding: false, label: 'IP'},
-                    {id: 'size', disablePadding: false, label: '크기'},
+                    {
+                        id: 'ip', disablePadding: false, label: 'IP', order: 10,
+                    },
+                    {
+                        id: 'size', disablePadding: false, label: '크기', order: 11,
+                    },
+                    {
+                        id: 'outFlag', disablePadding: false, label: '운영여부', order: 15,
+                    },
                 ),
             };
         }
@@ -73,10 +202,18 @@ class AssetsHead extends PureComponent {
         if (nextProps.assetState.deviceType === 'network') {
             return {
                 rows: rows.concat(
-                    {id: 'ip', disablePadding: false, label: 'IP'},
-                    {id: 'hwSn', disablePadding: false, label: 'HwSn'},
-                    {id: 'firmwareVersion', disablePadding: false, label: 'FirmwareVersion'},
-                    /*{id: 'warehousingDate', disablePadding: false, label: '입고일'},*/
+                    {
+                        id: 'ip', disablePadding: false, label: 'IP', order: 10,
+                    },
+                    {
+                        id: 'hwSn', disablePadding: false, label: 'HwSn', order: 11,
+                    },
+                    {
+                        id: 'firmwareVersion', disablePadding: false, label: 'FirmwareVersion', order: 12,
+                    },
+                    {
+                        id: 'outFlag', disablePadding: false, label: '운영여부', order: 15,
+                    },
                 ),
             };
         }
@@ -84,12 +221,15 @@ class AssetsHead extends PureComponent {
         if (nextProps.assetState.deviceType === 'part') {
             return {
                 rows: rows.concat(
-                    {id: 'hwSn', disablePadding: false, label: 'HwSn'},
-                    /*{id: 'warranty', disablePadding: false, label: 'Warranty'},
-                    {id: 'warehousingDate', disablePadding: false, label: '입고일'},*/
+                    {
+                        id: 'hwSn', disablePadding: false, label: 'HwSn', order: 10,
+                    },
+                    {
+                        id: 'outFlag', disablePadding: false, label: '운영여부', order: 15,
+                    },
                 ),
             };
-        }
+        }*/
 
       /*  if (nextProps.assetState.apiPageRd.order === prevState.stateOrder) {
             onRequestSort(nextProps.assetState.apiPageRd.orderBy, nextProps.assetState.apiPageRd.order);
@@ -212,7 +352,9 @@ class AssetsHead extends PureComponent {
                         />
                     </TableCell>
                     {/* eslint-disable-next-line react/destructuring-assignment */}
-                    {this.state.rows.map(row => (
+                    {this.state.rows
+                        .sort((a, b) => (a.order > b.order ? 1 : -1))
+                        .map(row => (
                         <TableCell
                             className="material-table__cell
                             material-table__cell--sort material-table__cell-right"
