@@ -49,19 +49,18 @@ import {registerUser, unregisterUser} from "../../../../../lib/api/users";
 import BootstrapInput from "../../../../Common/BootstrapInput";
 import {readSubnet} from "../../../../../lib/api/subnet";
 import SubnetTableToolbar from "./SubnetTableToolbar";
-import ReactVirtualizedTable from "./VirtualizeTable";
 
 const headRows = [
     {
-        id: 'idx', disablePadding: false, label: 'IDX', minWidth: "50",
+        id: 'idx', disablePadding: false, label: 'IDX', minWidth: "50px",
     }, {
-        id: 'subnetTag', disablePadding: false, label: 'SUBNET TAG', minWidth: "150",
+        id: 'subnetTag', disablePadding: false, label: 'SUBNET TAG', minWidth: "150px", fontSize: "20px",
     }, {
-        id: 'subnet', disablePadding: false, label: 'SUBNET', minWidth: "400",
+        id: 'subnet', disablePadding: false, label: 'SUBNET', minWidth: "400px",
     }, {
-        id: 'subnetMask', disablePadding: false, label: 'SUBNET MASK', minWidth: "200",
+        id: 'subnetMask', disablePadding: false, label: 'SUBNET MASK', minWidth: "200px",
     }, {
-        id: 'gateway', disablePadding: false, label: 'GATEWAY', minWidth: "200",
+        id: 'gateway', disablePadding: false, label: 'GATEWAY', minWidth: "200px",
     },
 ];
 
