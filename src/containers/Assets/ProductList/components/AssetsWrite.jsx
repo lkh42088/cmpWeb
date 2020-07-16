@@ -1059,6 +1059,7 @@ class AssetsWrite extends PureComponent {
                         </div>
                     </form>
                 </div>
+                {/*todo 검색 모달 공통으로 빼기 - 현재 사용 assetswrite, assetsedit*/}
                 <Modal
                     isOpen={modal}
                     toggle={this.searchToggle}
@@ -1084,7 +1085,13 @@ class AssetsWrite extends PureComponent {
                                     <input name="searchCompanyName" className="search_input-customer"
                                            value={searchCompanyName}
                                            placeholder="고객사명..."
-                                           onChange={this.handleChange}/>
+                                           onChange={this.handleChange}
+                                           onKeyDown={(event) => {
+                                               if (event.keyCode === 13) {
+                                                   this.searchCompany();
+                                               }
+                                           }}
+                                    />
                                 </span>
                                 {/*<button type="submit" onClick={event => this.searchCompany()}>검색</button>*/}
                                 <Button className="search_btn" type="submit" color="primary"
