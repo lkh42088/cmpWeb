@@ -32,7 +32,7 @@ function CommonTableHead(props) {
                         align="left"
                         padding={row.disablePadding ? 'none' : 'default'}
                         sortDirection={orderBy === row.id ? order : false}
-                        style={{minWidth: row.minWidth, fontSize: row.fontSize}}
+                        style={{minWidth: row.minWidth}}
                     >
                         <TableSortLabel
                             active={orderBy === row.id}

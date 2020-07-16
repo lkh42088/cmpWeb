@@ -54,7 +54,7 @@ const headRows = [
     {
         id: 'idx', disablePadding: false, label: 'IDX', minWidth: "50px",
     }, {
-        id: 'subnetTag', disablePadding: false, label: 'SUBNET TAG', minWidth: "150px", fontSize: "20px",
+        id: 'subnetTag', disablePadding: false, label: 'SUBNET TAG', minWidth: "150px",
     }, {
         id: 'subnet', disablePadding: false, label: 'SUBNET', minWidth: "400px",
     }, {
