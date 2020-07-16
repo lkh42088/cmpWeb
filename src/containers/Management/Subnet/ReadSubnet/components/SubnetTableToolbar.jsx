@@ -18,6 +18,9 @@ import Switch from "@material-ui/core/Switch";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import {useDispatch, useSelector} from "react-redux";
+import ReactTooltip from "react-tooltip";
+import {Button} from "@material-ui/core";
+import TablePagination from "@material-ui/core/TablePagination";
 import {
     pagingChangeCurrentPage,
     pagingChangeDense,
@@ -25,6 +28,7 @@ import {
 } from "../../../../../redux/actions/pagingActions";
 import SubnetSearchBar from "./SubnetSearchBar";
 import BootstrapInput from "../../../../Common/BootstrapInput";
+import CommonTableExportCSV from "../../../../Common/CommonTableExportCSV";
 
 const useToolbarStyles = makeStyles(theme => ({
     root: {
@@ -36,10 +40,12 @@ const useToolbarStyles = makeStyles(theme => ({
             ? {
                 color: theme.palette.secondary.main,
                 backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+                opacity: 0.5,
             }
             : {
                 color: theme.palette.text.primary,
                 backgroundColor: theme.palette.secondary.dark,
+                opacity: 0.5,
             },
     title:
         theme.palette.type === 'light'
@@ -70,9 +76,14 @@ const useToolbarStyles = makeStyles(theme => ({
         paddingTop: 20,
         paddingBottom: 20,
     },
+    tooltip: {
+        fontSize: 7,
+        fontWeight: "revert",
+    },
 }));
 
 const TableFilterButton = (props) => {
+    const classes = useToolbarStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const { rows, onRequestSort } = props;
 
@@ -94,16 +105,22 @@ const TableFilterButton = (props) => {
 
     return (
         <>
-            <Tooltip title="정렬목록" aria-label="sort">
-                <IconButton
-                    className="cb-material-table__tooltip-button"
-                    aria-owns={anchorEl ? 'simple-menu' : null}
-                    aria-haspopup="true"
-                    onClick={handleClick}
-                >
-                    <FilterListIcon />
-                </IconButton>
-            </Tooltip>
+            <IconButton
+                className="cb-material-table__tooltip-button"
+                aria-owns={anchorEl ? 'simple-menu' : null}
+                aria-haspopup="true"
+                onClick={handleClick}
+                data-tip data-for="tooltipSort"
+            >
+                <FilterListIcon />
+            </IconButton>
+            <ReactTooltip id="tooltipSort" effect="float"
+                          delayHide={100} type="dark"
+                          place="bottom"
+                          className={classes.tooltip}
+            >
+                정렬 목록
+            </ReactTooltip>
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
@@ -131,7 +148,7 @@ const SubnetTableToolbar = (props) => {
     const classes = useToolbarStyles();
     const dispatch = useDispatch();
     const {
-        toolbarTitle, rows, numSelected, handleDeleteSelected, onRequestSort,
+        toolbarTitle, rows, data, numSelected, handleDeleteSelected, onRequestSort,
         handleOpen, contents, handleRefresh, handleSubmitSearch,
     } = props;
     const addComment = contents.concat(" 추가");
@@ -180,32 +197,19 @@ const SubnetTableToolbar = (props) => {
         console.log("handleDelete...");
     };
 
-    const rowSelector = (
-        <FormControl className={classes.margin}>
-            {/*<InputLabel id="demo-customized-select-label">ROWS</InputLabel>*/}
-            <Select
-                onChange={handleChangeRowsPerPage}
-                value={rowsPerPage}
-                input={<BootstrapInput />}
-            >
-                {displayRowsList.map(size => (
-                    <MenuItem key={size} value={size}>{size}</MenuItem>
-                ))}
-            </Select>
-        </FormControl>
-    );
-
+    /** COMPONENT */
     const paginationBar = (
-        <div className={classes.pagination}>
-            <Pagination
-                shape="rounded"
-                variant="outlined"
-                type="ellipsis"
-                count={Math.ceil(totalCount / rowsPerPage)}
-                page={currentPage}
-                onChange={handleChangePage}
-            />
-        </div>
+        <TablePagination
+            component="div"
+            count={totalCount}
+            rowsPerPage={rowsPerPage}
+            page={currentPage}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+            rowsPerPageOptions={displayRowsList}
+            labelRowsPerPage=""
+            labelDisplayedRows={() => ""}
+        />
     );
     
     return (
@@ -232,22 +236,30 @@ const SubnetTableToolbar = (props) => {
                         {/*********************************************************************
                          * Table Search bar
                          **********************************************************************/}
-                        <Grid container flexGrow="1" alignItems="center" wrap="nowrap" style={{maxHeight: 72}}>
+                        <Grid container alignItems="center" wrap="nowrap" style={{maxHeight: 72}}>
                             <Grid item md={2} >
                                 <div style={{minWidth: 155}}>
-                                    <Tooltip title={addComment} aria-label="add">
-                                        <IconButton type="button" onClick={handleOpen}>
-                                            <AddIcon/>
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Tooltip title="Refresh" aria-label="refresh">
-                                        <IconButton
-                                            type="button"
-                                            onClick={handleRefresh}
-                                        >
-                                            <RefreshIcon/>
-                                        </IconButton>
-                                    </Tooltip>
+                                    <IconButton type="button" onClick={handleOpen}
+                                                data-tip data-for="tooltipAdd">
+                                        <AddIcon/>
+                                    </IconButton>
+                                    <ReactTooltip id="tooltipAdd" effect="float"
+                                                  delayHide={100} type="dark" place="bottom"
+                                                  className={classes.tooltip}>
+                                        서브넷 추가
+                                    </ReactTooltip>
+                                    <IconButton
+                                        type="button"
+                                        onClick={handleRefresh}
+                                        data-tip data-for="tooltipRefresh"
+                                    >
+                                        <RefreshIcon/>
+                                    </IconButton>
+                                    <ReactTooltip id="tooltipRefresh" effect="float"
+                                                  delayHide={100} type="dark" place="bottom"
+                                                  className={classes.tooltip}>
+                                        TABLE RELOAD
+                                    </ReactTooltip>
                                     {numSelected > 0 ? (
                                         <Tooltip title={deleteComment} aria-label="delete">
                                             <IconButton
@@ -269,24 +281,34 @@ const SubnetTableToolbar = (props) => {
                                     />
                                 </div>
                             </Grid>
-                            <Grid item md={4} />
-                            <Grid item md={1}>
-                                <div style={{minWidth: 80}}>
-                                    {rowSelector}
+                            <Grid item md={3} />
+                            <Grid item md={3}>
+                                <div style={{
+                                    display: "flex", alignItems: "center", float: "right", minWidth: 340,
+                                }}>
+                                    {/*Pagination*/}
+                                    <div style={{paddingRight: 10}}>
+                                        {paginationBar}
+                                    </div>
+                                    {/*Export CSV*/}
+                                    <div>
+                                        <CommonTableExportCSV csvData={data} fileName="subnet_test.csv" />
+                                    </div>
+                                    {/*Dense padding button*/}
+                                    <FormControlLabel
+                                        style={{fontStyle: "oblique", float: "right", paddingLeft: 30}}
+                                        className="cb-material-table__padding"
+                                        control={<Switch checked={dense} size="small" onChange={handleChangeDense} />}
+                                        data-tip data-for="tooltipDense"
+                                    />
+                                    <ReactTooltip id="tooltipDense" effect="float"
+                                                  delayHide={100} type="dark"
+                                                  place="bottom"
+                                                  className={classes.tooltip}
+                                    >
+                                        DENSE PADDING
+                                    </ReactTooltip>
                                 </div>
-                            </Grid>
-                            <Grid item md={1}>
-                                <div style={{minWidth: 80}}>
-                                    {paginationBar}
-                                </div>
-                            </Grid>
-                            <Grid item md={1}>
-                                <FormControlLabel
-                                    style={{fontStyle: "oblique", minWidth: 100}}
-                                    className="cb-material-table__padding"
-                                    control={<Switch checked={dense} onChange={handleChangeDense} />}
-                                    label="DENSE"
-                                />
                             </Grid>
                         </Grid>
                     </>
