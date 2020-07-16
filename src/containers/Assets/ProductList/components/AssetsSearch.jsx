@@ -375,11 +375,15 @@ const AssetsSearch = ({assetState, user, theme}) => {
         }
     };
 
-    const onSearch = () => {
+    const onSearch = (e) => {
         const schSelect = document.getElementsByName("schSelect")[0].value;
         const schText = document.getElementsByName("schText")[0].value;
         let postArray = {};
         let postDivision;
+
+        console.log("onSearch : ", e);
+
+        e.preventDefault();
 
         if (schSelect === 'customer') {
             postDivision = 'deviceCode';
@@ -511,7 +515,13 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                     </select>
                                     &nbsp;&nbsp;
                                     <input placeholder="Search..." name="schText"
-                                           className="search_input"/>
+                                           className="search_input"
+                                           onKeyDown={(event) => {
+                                               if (event.keyCode === 13) {
+                                                   onSearch();
+                                               }
+                                           }}
+                                    />
                                     <MagnifyIcon className="search_icon" role="button" tabIndex="0"
                                                  onClick={onSearch}
                                                  onKeyDown={onSearch}/>

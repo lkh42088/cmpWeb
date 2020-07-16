@@ -194,13 +194,11 @@ class AssetsHead extends PureComponent {
             } else {
                 allCheck = false;
             }
-        } else if (true) {
-            if (selectedSize === rowCount) {
+        } else if (selectedSize === rowCount) {
                 allCheck = true;
             } else {
                 allCheck = false;
             }
-        }
 
         return (
             <TableHead>

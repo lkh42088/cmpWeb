@@ -12,6 +12,8 @@ import CurrencyUsdIcon from "mdi-react/CurrencyUsdIcon";
 import PlusIcon from "mdi-react/PlusIcon";
 import MinusIcon from "mdi-react/MinusIcon";
 
+import Grid from "@material-ui/core/Grid";
+import ListItem from "@material-ui/core/ListItem";
 import TableBody from "@material-ui/core/TableBody";
 import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
@@ -864,6 +866,36 @@ class AssetsEdit extends PureComponent {
                 break;
         }
 
+        const viewSearchCompanyTemp = (
+            <Fragment>
+                {assetState.company.length !== undefined
+                    ? (
+                        <Fragment>
+                            {assetState.company.map(d => (
+                                <ListItem key={d.idx} button onClick={() => {
+                                    this.setSearchCompany(d.cpUserId, d.name);
+                                }}>
+                                    <div className="list-title">{d.name}</div>
+                                    {/*<div className="list-title">{d.name}</div>*/}
+                                    <div className="list-title-sub">&nbsp;({d.cpUserId} / {d.email})</div>
+                                </ListItem>
+                            ))}
+                            {emptyRows <= 0 && (
+                                <ListItem>
+                                    <div>검색된 내용이 없습니다.</div>
+                                </ListItem>
+                            )}
+                        </Fragment>
+                    )
+                    : (
+                        <ListItem>
+                            <div>검색된 내용이 없습니다.</div>
+                        </ListItem>
+                    )
+                }
+            </Fragment>
+        );
+
         // TODO 디자인은 나중에
         const viewSearchCompany = (
             <Fragment>
@@ -1190,6 +1222,7 @@ class AssetsEdit extends PureComponent {
                             </div>
                         </div>
                     </form>
+                    {/*todo 검색 모달 공통으로 빼기 - 현재 사용 assetswrite, assetsedit*/}
                     <Modal
                         isOpen={modal}
                         toggle={this.searchToggle}
@@ -1215,7 +1248,13 @@ class AssetsEdit extends PureComponent {
                                     <input name="searchCompanyName" className="search_input"
                                            value={searchCompanyName}
                                            placeholder="고객사명..."
-                                           onChange={this.handleChange}/>
+                                           onChange={this.handleChange}
+                                           onKeyDown={(event) => {
+                                               if (event.keyCode === 13) {
+                                                   this.searchCompany();
+                                               }
+                                           }}
+                                    />
                                 </span>
                                     {/*<button type="submit" onClick={event => this.searchCompany()}>검색</button>*/}
                                     <Button className="search_btn" type="submit" color="primary"
@@ -1224,7 +1263,14 @@ class AssetsEdit extends PureComponent {
                                     ※ 업체명으로 검색하세요.
                                 </span>
                                     <div className="modal_form__form-group-field modal-list">
-                                        <Table className="material-table" size="small">
+
+                                        <Grid container>
+                                            <Grid item xs={12}
+                                                  className="modal-content-list">
+                                                {viewSearchCompanyTemp}
+                                            </Grid>
+                                        </Grid>
+                                        {/*<Table className="material-table" size="small">
                                             <TableHead>
                                                 <TableRow>
                                                     <th>회사명</th>
@@ -1235,7 +1281,7 @@ class AssetsEdit extends PureComponent {
                                             <TableBody className="mdi-format-font-size-increase">
                                                 {viewSearchCompany}
                                             </TableBody>
-                                        </Table>
+                                        </Table>*/}
                                     </div>
                                 </div>
                             </div>
