@@ -338,7 +338,7 @@ const CompanyList = () => {
         } catch (error) {
             handleTriggerFailure("고객사 등록이 실패하였습니다.");
             getPageData();
-            console.log("handleRegisterCompany error!");
+            console.log("doRegisterCompany error!");
         }
     };
 
@@ -369,18 +369,18 @@ const CompanyList = () => {
         } catch (error) {
             handleTriggerFailure("고객사 수정이 실패하였습니다.");
             getPageData();
-            console.log("handleRegisterCompany error!");
+            console.log("doModifyCompany error!");
         }
     };
 
-    const handleRegisterCompany = (props) => {
-        console.log("handleRegisterCompany: ", props);
+    const handleSubmitRegisterCompany = (props) => {
+        console.log("handleSubmitRegisterCompany: ", props);
         doRegisterCompany(props);
         setOpenRegisterCompany(false);
     };
 
-    const handleModifyCompany = (props) => {
-        console.log("handleRegisterCompany: ", props);
+    const handleSubmitModifyCompany = (props) => {
+        console.log("handleSubmitModifyCompany: ", props);
         doModifyCompany(props);
         setOpenModifyCompany(false);
     };
@@ -681,14 +681,14 @@ const CompanyList = () => {
                     <ModifyCompanyPage
                         open={openModifyCompany}
                         handleClose={handleCloseModifyCompany}
-                        handleSubmit={handleModifyCompany}
+                        handleSubmit={handleSubmitModifyCompany}
                         refreshPage={getPageData}
                         data={modifyData}
                     />
                     <RegisterCompanyPage
                         open={openRegisterCompany}
                         handleClose={handleCloseRegisterCompany}
-                        handleSubmit={handleRegisterCompany}
+                        handleSubmit={handleSubmitRegisterCompany}
                         refreshPage={getPageData}
                     />
                </CardBody>
