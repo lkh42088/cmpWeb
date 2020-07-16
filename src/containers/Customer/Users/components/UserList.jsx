@@ -43,11 +43,12 @@ import {
 } from "../../../../redux/actions/pagingActions";
 import {getUserList, getUserListWithSearchParam, initRegisterUser} from "../../../../redux/actions/usersActions";
 import CommonTableHead from "../../../Common/CommonTableHead";
-import UserRegisterDialog from "./UserRegisterDialog";
+import RegisterUserPage from "./RegisterUserPage";
 import {registerUser, unregisterUser} from "../../../../lib/api/users";
 import UserTableToolbar from "./UserTableToolbar";
 // eslint-disable-next-line import/named
 import {limitLongString} from "../../../../lib/utils/utils";
+import ModifyUserPage from "./ModifyUserPage";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -152,20 +153,27 @@ const UserList = () => {
         order: pagingRd.order,
     }));
 
-    /** Add User in TableToolbar */
+    const [modifyData, setModifyData] = React.useState(null);
+    const [openModifyUser, setOpenModifyUser] = React.useState(false);
+
     const [openAddUser, setOpenAddUser] = React.useState(false);
     const [searchParam, setSearchParam] = useState(null);
 
     /************************************************************************************
      * Function
      ************************************************************************************/
+    const handleOpenModifyUser = () => {
+        setOpenModifyUser(true);
+    };
 
-    /** Add User in TableToolbar */
+    const handleCloseModifyUser = () => {
+        setOpenModifyUser(false);
+    };
+
     const handleOpenAddUser = () => {
         setOpenAddUser(true);
     };
 
-    /** Add User in TableToolbar */
     const handleCloseAddUser = () => {
         setOpenAddUser(false);
     };
@@ -369,15 +377,23 @@ const UserList = () => {
         handleCloseAddUser();
     };
 
-    const handleDeleteSelectedCompany = (idx) => {
+    const handleSubmitModifyUser = (props) => {
+        console.log("handleSubmitModifyUser: ", props);
+        setOpenModifyUser(false);
+    };
+
+    const handleDeleteSelectedUser = (idx) => {
         console.log("delete user: ", idx);
         const delList = [];
         delList.push(idx);
         deleteUsers(delList);
     };
 
-    const handleModifySelectedCompany = (idx) => {
+    const handleModifySelectedUser = (idx) => {
         console.log("modify user: ", idx);
+        const res = data.filter(item => item.idx === idx);
+        setModifyData(res[0]);
+        handleOpenModifyUser();
     };
 
     /************************************************************************************
@@ -556,7 +572,7 @@ const UserList = () => {
                                     <IconButton
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            handleModifySelectedCompany(row.idx);
+                                            handleModifySelectedUser(row.idx);
                                         }}
                                     >
                                         <EditIcon color="secondary"/>
@@ -566,7 +582,7 @@ const UserList = () => {
                                     <IconButton
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            handleDeleteSelectedCompany(row.idx);
+                                            handleDeleteSelectedUser(row.idx);
                                         }}
                                     >
                                         <DeleteIcon color="secondary"/>
@@ -732,8 +748,13 @@ const UserList = () => {
                             label="Dense padding"
                         />
                     </div>
-
-                    <UserRegisterDialog
+                    <ModifyUserPage
+                        open={openModifyUser}
+                        handleClose={handleCloseModifyUser}
+                        handleSubmit={handleSubmitModifyUser}
+                        data={modifyData}
+                    />
+                    <RegisterUserPage
                         open={openAddUser}
                         handleClose={handleCloseAddUser}
                         handleSubmit={handleSubmitAddUser}
