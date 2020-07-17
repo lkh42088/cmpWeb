@@ -407,7 +407,7 @@
     font-size: 4vmin; // 56px->4min
     line-height: 60px;
     // Add [08July2020,khlee]
-    margin-right: 13%;
+    margin-right: 5%; // 13->5 [17July2020,khlee]
     margin-top: 8%;
 
     @include themify($themes) {

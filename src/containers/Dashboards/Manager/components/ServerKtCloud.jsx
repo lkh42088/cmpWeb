@@ -6,8 +6,8 @@ import {
 } from 'recharts';
 import {withTranslation} from 'react-i18next';
 import PropTypes from 'prop-types';
+import {Card} from 'reactstrap';
 import Panel from '../../../../shared/components/Panel';
-
 import getTooltipStyles from '../../../../shared/helpers';
 
 const data01 = [
@@ -15,17 +15,6 @@ const data01 = [
     {name: '서울M2', value: 2000, fill: '#70bbfd'},
     {name: '중부1', value: 500, fill: '#f6da6e'},
     {name: '중부2', value: 700, fill: '#ff4861'}];
-
-const style = (dir) => {
-    const left = dir === 'ltr' ? {left: 0} : {right: 0};
-    return ({
-        ...left,
-        width: 150,
-        lineHeight: '24px',
-        position: 'absolute',
-    });
-};
-
 
 const renderLegend = ({payload}) => (
     <ul className="dashboard__chart-legend">
@@ -77,16 +66,7 @@ class ServerKtCloud extends PureComponent {
         const {x, y} = this.state;
 
         return (
-            <Panel
-                xl={4}
-                lg={6}
-                md={6}
-                sm={12}
-                xs={12}
-                title="서버(Server) Kt Cloud (xxx)"
-            >
-                {/*subhead="Top selling items statistic by last month"*/}
-                <div dir={dir}>
+            <Panel title="SERVER : KT CLOUD">
                     <ResponsiveContainer className="dashboard__chart-pie dashboard__chart-pie--crypto"
                                          height={360}>
                         <PieChart className="dashboard__chart-pie-container">
@@ -104,14 +84,16 @@ class ServerKtCloud extends PureComponent {
                                 label={value => (`${value.value.toFixed(2)}`)}
                                 onMouseMove={this.onMouseMove}
                             />
-                            <Legend layout="vertical" verticalAlign="bottom" wrapperStyle={style(dir)}
-                                    content={renderLegend}/>
+                            <Legend
+                                layout="vertical"
+                                align="left"
+                                verticalAlign="bottom"
+                                content={renderLegend}/>
                         </PieChart>
                     </ResponsiveContainer>
                     <div className="dashboard__health-chart-info">
                         <div className="dashboard__health-chart-number">4200</div>
                     </div>
-                </div>
             </Panel>
         );
     }

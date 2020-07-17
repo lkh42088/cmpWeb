@@ -12,8 +12,24 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import {Button, TextField} from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import {fade, lighten, makeStyles} from "@material-ui/core/styles";
+import Select from "@material-ui/core/Select";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControl from "@material-ui/core/FormControl";
+import MenuItem from "@material-ui/core/MenuItem";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Portal from "@material-ui/core/Portal";
 import Container from "@material-ui/core/Container";
+import Switch from "@material-ui/core/Switch";
+import Pagination from "@material-ui/lab/Pagination";
 import {useDispatch, useSelector} from "react-redux";
+import {AutoComplete, SelectField} from "material-ui";
+import {
+    pagingChangeCurrentPage,
+    pagingChangeDense,
+    pagingChangeRowsPerPage,
+} from "../../../../../redux/actions/pagingActions";
+import BootstrapInput from "../../../../Common/BootstrapInput";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -124,6 +140,38 @@ const useStyles = makeStyles(theme => ({
             },
 }));
 
+// 권한 레벨 INPUT
+// const BootstrapInput = withStyles(theme => ({
+//     input: {
+//         borderRadius: 4,
+//         position: 'relative',
+//         backgroundColor: theme.palette.background.paper,
+//         border: '1px solid #ced4da',
+//         fontSize: 12,
+//         padding: '5px 26px 10px 12px',
+//         transition: theme.transitions.create(['border-color', 'box-shadow']),
+//         '&:focus': {
+//             borderRadius: 4,
+//             borderColor: '#80bdff',
+//             boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+//         },
+//     },
+// }))(InputBase);
+
+// 권한 레벨 Menu
+const ITEM_HEIGHT = 36;
+const ITEM_PADDING_TOP = 8;
+const authLevelList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const MenuProps = {
+    disablePortal: true,
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 100,
+        },
+    },
+};
+
 const SubnetSearchBar = (props) => {
     /************************************************************************************
      * Variable
@@ -168,6 +216,14 @@ const SubnetSearchBar = (props) => {
     const handleSubmitInternal = () => {
         console.log("handleSubmitInternal() fields ", fields);
         handleSubmit(fields);
+    };
+
+    const handleCheckEmail = () => {
+        console.log("handleCheckEmail");
+    };
+
+    const handleCheckGroupEmail = () => {
+        console.log("handleCheckGroupEmail");
     };
 
     /************************************************************************************
@@ -278,6 +334,50 @@ const SubnetSearchBar = (props) => {
                                                             fullWidth />
                                                     </Grid>
                                                     <Grid item xs={1} />
+                                                    {/*<Grid item xs={2} spacing={1}>*/}
+                                                    {/*    <span className={classes.span}>회사명</span>*/}
+                                                    {/*</Grid>*/}
+                                                    {/*<Grid item xs={4} spacing={1}>*/}
+                                                    {/*    <TextField*/}
+                                                    {/*        variant={variant}*/}
+                                                    {/*        size={fieldSize}*/}
+                                                    {/*        fullWidth />*/}
+                                                    {/*</Grid>*/}
+                                                    {/*<Grid item xs={2} spacing={1}>*/}
+                                                    {/*    <span className={classes.span}>권한</span>*/}
+                                                    {/*</Grid>*/}
+                                                    {/*<Grid item xs={3} spacing={1}>*/}
+                                                    {/*    <FormControl>*/}
+                                                    {/*        <Select*/}
+                                                    {/*            name="level"*/}
+                                                    {/*            value={fields.level}*/}
+                                                    {/*            onChange={(e) => { handleChangeField(e); }}*/}
+                                                    {/*            input={<BootstrapInput />}*/}
+                                                    {/*            MenuProps={MenuProps}*/}
+                                                    {/*            autoWidth*/}
+                                                    {/*        >*/}
+                                                    {/*            <MenuItem alignItems="center" value={0}>선택</MenuItem>*/}
+                                                    {/*            {*/}
+                                                    {/*                authLevelList.map(value => (*/}
+                                                    {/*                    <MenuItem alignItems="center" value={value}>{value}</MenuItem>*/}
+                                                    {/*                ))*/}
+                                                    {/*            }*/}
+                                                    {/*        </Select>*/}
+                                                    {/*    </FormControl>*/}
+                                                    {/*</Grid>*/}
+                                                    {/*<Grid item spacing={1}>*/}
+                                                    {/*        <span className={classes.span}>*/}
+                                                    {/*            <FormControlLabel*/}
+                                                    {/*                control={<Checkbox onChange={handleCheckEmail} name="email" color="primary" />}*/}
+                                                    {/*                label="이메일 인증"*/}
+                                                    {/*            />*/}
+                                                    {/*            <FormControlLabel*/}
+                                                    {/*                control={<Checkbox onChange={handleCheckGroupEmail} name="groupEmail" color="primary" />}*/}
+                                                    {/*                label="그룹 이메일 인증"*/}
+                                                    {/*                aria-setsize="5"*/}
+                                                    {/*            />*/}
+                                                    {/*        </span>*/}
+                                                    {/*</Grid>*/}
                                                     <Grid item xs={12} spacing={1}>
                                                         <div style={{
                                                             float: 'right',

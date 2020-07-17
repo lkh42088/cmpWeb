@@ -4,7 +4,6 @@ import {
     CardBody,
     Col,
 } from 'reactstrap';
-import Avatar from "react-avatar";
 
 import moment from "moment";
 import Table from '@material-ui/core/Table';
@@ -25,11 +24,8 @@ import Grid from '@material-ui/core/Grid';
 import GroupIcon from '@material-ui/icons/Group';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {useSnackbar} from "notistack";
-import Pagination from '@material-ui/lab/Pagination';
 import {InputBase, Select} from "@material-ui/core";
-import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
 import {
     pagingChangeCurrentPage,
     pagingChangeCurrentPageNext,
@@ -90,6 +86,14 @@ const useStyles = makeStyles(theme => ({
         '& > *': {
             borderBottom: 'unset',
         },
+        "&:hover":
+            theme.palette.type === 'light'
+                ? {
+                    boxShadow: "5px 2px 8px 2px #999999",
+                }
+                : {
+                    boxShadow: "5px 2px 10px 2px #000000",
+                },
     },
     spanSubject: {
         display: 'inline-block',
@@ -112,9 +116,9 @@ const useStyles = makeStyles(theme => ({
         paddingTop: 20,
         paddingBottom: 20,
     },
-    }));
+}));
 
-    const SubnetList = () => {
+const SubnetList = () => {
     /************************************************************************************
      * Variable
      ************************************************************************************/
@@ -173,6 +177,14 @@ const useStyles = makeStyles(theme => ({
     /** Add User in TableToolbar */
     const [openAddUser, setOpenAddUser] = React.useState(false);
     const [searchParam, setSearchParam] = useState(null);
+
+    const orderByName = {
+        idx: "sub_idx",
+        subnetTag: "sub_tag",
+        subnet: "sub_ip_start",
+        subnetMask: "sub_mask",
+        gateway: "sub_gateway",
+    };
 
     /************************************************************************************
      * Function
@@ -262,7 +274,7 @@ const useStyles = makeStyles(theme => ({
         const changeOrder = isAsc ? "desc" : "asc";
         if (property !== "collapse") {
             dispatch(pagingChangeOrder({order: changeOrder}));
-            dispatch(pagingChangeOrderBy({orderBy: property}));
+            dispatch(pagingChangeOrderBy({orderBy: orderByName[property]}));
         }
     };
 
@@ -317,11 +329,6 @@ const useStyles = makeStyles(theme => ({
         console.log("after copyUser:", copyUser);
     };
 
-    /** Pagination */
-    const handleChangeDense = (event) => {
-        dispatch(pagingChangeDense({checked: event.target.checked}));
-    };
-
     const handleSubmitSearch = (params) => {
         console.log("handleSubmitSearch() params ", params);
         setSearchParam(params);
@@ -330,11 +337,6 @@ const useStyles = makeStyles(theme => ({
 
     /** Pagination */
     const getSelected = id => !!selected.get(id);
-
-    /** Pagination */
-    const handleRefresh = () => {
-        getPageData();
-    };
 
     /*******************
      * Axios
@@ -373,7 +375,7 @@ const useStyles = makeStyles(theme => ({
         try {
             const response = await readSubnet({
                 rows: rowsPerPage,
-                offset: (currentPage - 1) * rowsPerPage,
+                offset: (currentPage === 0) ? 0 : (currentPage - 1) * rowsPerPage,
                 orderBy,
                 order,
             });
@@ -410,13 +412,19 @@ const useStyles = makeStyles(theme => ({
         handleCloseAddUser();
     };
 
+    /** Pagination */
+    const handleRefresh = () => {
+        getData();
+    };
+
     /************************************************************************************
      * useEffect
      ************************************************************************************/
     useEffect(() => {
-        const changeOrderBy = "idx";
-        console.log("[] orderBy: ", changeOrderBy);
+        const changeOrderBy = "sub_idx";
+        // console.log("[] orderBy: ", changeOrderBy);
         dispatch(pagingChangeOrderByWithReset({orderBy: changeOrderBy}));
+        dispatch(pagingChangeCurrentPage({currentPage: 1}));
     }, []);
 
     useEffect(() => {
@@ -434,7 +442,7 @@ const useStyles = makeStyles(theme => ({
     useEffect(() => {
         /** Pagination */
         getData();
-        dispatch(pagingDump());
+        // dispatch(pagingDump());
     }, [rowsPerPage, pageBeginRow, orderBy, order]);
     //
     // useEffect(() => {
@@ -453,39 +461,39 @@ const useStyles = makeStyles(theme => ({
     // }, [msgError]);
 
     useEffect(() => {
-        console.log("useEffect: searchParam ", searchParam);
+        // console.log("useEffect: searchParam ", searchParam);
         getData();
     }, [searchParam]);
 
     /************************************************************************************
      * Component
      ************************************************************************************/
-    const rowSelector = (
-        <FormControl className={classes.margin}>
-            {/*<InputLabel id="demo-customized-select-label">ROWS</InputLabel>*/}
-            <Select
-                onChange={handleChangeRowsPerPage}
-                value={rowsPerPage}
-                input={<BootstrapInput />}
-            >
-                {displayRowsList.map(size => (
-                    <MenuItem key={size} value={size}>{size}</MenuItem>
-                ))}
-            </Select>
-        </FormControl>
-    );
+    // const rowSelector = (
+    //     <FormControl className={classes.margin}>
+    //         {/*<InputLabel id="demo-customized-select-label">ROWS</InputLabel>*/}
+    //         <Button
+    //             onChange={handleChangeRowsPerPage}
+    //             value={rowsPerPage}
+    //             // input={<BootstrapInput />}
+    //         >
+    //             {displayRowsList.map(size => (
+    //                 <MenuItem key={size} value={size}>{size}</MenuItem>
+    //             ))}
+    //         </Button>
+    //     </FormControl>
+    // );
 
-    const paginationBar = (
-        <div className={classes.pagination}>
-            <Pagination
-                shape="rounded"
-                variant="outlined"
-                count={Math.ceil(totalCount / rowsPerPage)}
-                page={currentPage}
-                onChange={handleChangePage}
-            />
-        </div>
-    );
+    // const paginationBar = (
+    //     <div className={classes.pagination}>
+    //         <Pagination
+    //             shape="rounded"
+    //             variant="outlined"
+    //             count={Math.ceil(totalCount / rowsPerPage)}
+    //             page={currentPage}
+    //             onChange={handleChangePage}
+    //         />
+    //     </div>
+    // );
 
     /************************************************************************************
      * JSX Template
@@ -519,7 +527,6 @@ const useStyles = makeStyles(theme => ({
             <React.Fragment>
                 <TableRow
                     hover
-                    // className="cb-material-table__row"
                     className={classes.row}
                     role="checkbox"
                     aria-checked={isSelected}
@@ -678,7 +685,7 @@ const useStyles = makeStyles(theme => ({
     return (
         <Col>
             <Card className="cb-card">
-                <Grid container style={{display: "flex", zIndex: 100}}>
+                <Grid container style={{display: "flex"}}>
                     <Grid item md={12}>
                         <SubnetTableToolbar
                             numSelected={[...selected].filter(el => el[1]).length}
@@ -690,6 +697,7 @@ const useStyles = makeStyles(theme => ({
                             handleOpen={handleOpenAddUser}
                             handleSubmitSearch={handleSubmitSearch}
                             contents="계정"
+                            data={state.data}
                         />
                     </Grid>
                 </Grid>
