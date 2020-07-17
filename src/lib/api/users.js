@@ -1,5 +1,28 @@
 import client from "./client";
 
+export const modifyUser = ({
+    cpIdx, cpName, id, password, name,
+    email, authLevel, hp, tel, zipCode, address,
+    addressDetail, emailAuthFlag, emailAuthGroupFlag, emailAuthGroupList, memo,
+}) => client.post('/v1/users/modify', {
+    cpIdx,
+    cpName,
+    id,
+    password,
+    name,
+    email,
+    authLevel,
+    hp,
+    tel,
+    zipCode,
+    address,
+    addressDetail,
+    emailAuthFlag,
+    emailAuthGroupFlag,
+    emailAuthGroupList,
+    memo,
+});
+
 export const registerUser = ({
     cpIdx, cpName, id, password, name,
     email, authLevel, hp, tel, zipCode, address,

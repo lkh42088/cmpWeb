@@ -44,7 +44,7 @@ import {
 import {getUserList, getUserListWithSearchParam, initRegisterUser} from "../../../../redux/actions/usersActions";
 import CommonTableHead from "../../../Common/CommonTableHead";
 import RegisterUserPage from "./RegisterUserPage";
-import {registerUser, unregisterUser} from "../../../../lib/api/users";
+import {modifyUser, registerUser, unregisterUser} from "../../../../lib/api/users";
 import UserTableToolbar from "./UserTableToolbar";
 // eslint-disable-next-line import/named
 import {limitLongString} from "../../../../lib/utils/utils";
@@ -332,7 +332,7 @@ const UserList = () => {
     /*******************
      * Axios
      *******************/
-    const addUser = async (user) => {
+    const asyncAddUser = async (user) => {
         const {
             cpIdx, cpName, id, password, name, email,
             cellPhone, tel, level, userZip, userAddr, userAddrDetail,
@@ -364,6 +364,38 @@ const UserList = () => {
         }
     };
 
+    const asyncModifyUser = async (user) => {
+        const {
+            cpIdx, cpName, id, password, name, email,
+            cellPhone, tel, level, userZip, userAddr, userAddrDetail,
+            emailAuthValue, emailAuthGroupList, memo,
+        } = user;
+        try {
+            const response = await modifyUser({
+                cpIdx,
+                cpName,
+                id,
+                password,
+                name,
+                email,
+                authLevel: Number(level),
+                hp: cellPhone,
+                tel,
+                zipCode: userZip,
+                address: userAddr,
+                addressDetail: userAddrDetail,
+                emailAuthFlag: emailAuthValue === "1",
+                emailAuthGroupFlag: emailAuthValue === "2",
+                emailAuthGroupList,
+                memo,
+            });
+            handleSnackbarSuccess("계정 수정이 성공하였습니다.");
+            getPageData();
+        } catch {
+            handleSnackbarFailure("계정 수정이 실패하였습니다.");
+        }
+    };
+
     const deleteUser = async () => {
         console.log("deleteUser");
     };
@@ -373,13 +405,14 @@ const UserList = () => {
      *******************/
     const handleSubmitAddUser = (user) => {
         console.log("handleSubmit() : user ", user);
-        addUser(user);
+        asyncAddUser(user);
         handleCloseAddUser();
     };
 
-    const handleSubmitModifyUser = (props) => {
-        console.log("handleSubmitModifyUser: ", props);
-        setOpenModifyUser(false);
+    const handleSubmitModifyUser = (user) => {
+        console.log("handleSubmitModifyUser: ", user);
+        asyncModifyUser(user);
+        handleCloseModifyUser();
     };
 
     const handleDeleteSelectedUser = (idx) => {
@@ -621,6 +654,10 @@ const UserList = () => {
                                                 </li>
                                                 <li>
                                                     <span className={classes.spanSubject}> 전화번호 </span>
+                                                    <span className={classes.spanContents}> {row.tel === "" ? "-" : row.tel} </span>
+                                                </li>
+                                                <li>
+                                                    <span className={classes.spanSubject}> 휴대폰번호 </span>
                                                     <span className={classes.spanContents}> {row.hp === "" ? "-" : row.hp} </span>
                                                 </li>
                                                 <li>

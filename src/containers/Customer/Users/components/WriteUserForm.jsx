@@ -29,6 +29,7 @@ import {checkDuplicateUser} from "../../../../lib/api/users";
 import {getCompanies, getUsersByCpIdx} from "../../../../lib/api/company";
 import LookupCompany from "../../../Common/LookupCompany";
 import LookupZipcode from "../../../Common/LookupZipcode";
+import ChangePasswordDialog from "../../Company/components/ChangePasswordDialog";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -207,6 +208,8 @@ const WriteUserForm = (props) => {
     const [menuCompany, setMenuCompany] = useState(false);
     const [openZip, setOpenZip] = useState(false);
     const [openSearchCompany, setOpenSearchCompany] = useState(false);
+    const [passwordGridSize, setPasswordGridSize] = useState(6);
+    const [openChangePassword, setOpenChangePassword] = useState(false);
 
     /************************************************************************************
      * Function
@@ -256,9 +259,12 @@ const WriteUserForm = (props) => {
 
         /** password */
         let errorPassword = false;
-        const helperPassword = checkPasswordPattern(fields.password);
-        if (helperPassword !== "") {
-            errorPassword = true;
+        let helperPassword = "";
+        if (isRegister === true) {
+            helperPassword = checkPasswordPattern(fields.password);
+            if (helperPassword !== "") {
+                errorPassword = true;
+            }
         }
 
         /** name */
@@ -453,8 +459,11 @@ const WriteUserForm = (props) => {
         }
     };
 
-    const handleCheckUser = () => {
-        console.log("handleCheckUser: ");
+    const handleClickCheckUser = () => {
+        console.log("handleClickCheckUser: ");
+        if (isRegister === false) {
+            return;
+        }
         const res = checkId(fields.id);
         if (res !== "") {
             setErrors({
@@ -533,6 +542,23 @@ const WriteUserForm = (props) => {
     /*******************
      * Event
      *******************/
+    const handleOpenChangePassword = () => {
+        setOpenChangePassword(true);
+    };
+
+    const handleCloseChangePassword = () => {
+        setOpenChangePassword(false);
+    };
+
+    const handleCompleteChangePassword = (res) => {
+        setOpenChangePassword(false);
+        console.log("change password: ", res);
+        setFields({
+            ...fields,
+            password: res,
+        });
+    };
+
     const handleClickShowPassword = (event) => {
         event.preventDefault();
         setShowPassword(!showPassword);
@@ -580,7 +606,7 @@ const WriteUserForm = (props) => {
             setFields({
                 ...fields,
                 cpName: data.cpName,
-                cpIdx: data.idx,
+                cpIdx: data.companyIdx,
                 id: data.userId,
                 name: data.name,
                 email: data.email,
@@ -599,7 +625,10 @@ const WriteUserForm = (props) => {
                 cpName: true,
                 cpIdx: true,
                 id: true,
+                password: true,
             });
+            setConfirmUser(true);
+            setPasswordGridSize(4);
         }
     }, []);
 
@@ -667,9 +696,9 @@ const WriteUserForm = (props) => {
                             size={buttonSize}
                             endIcon={<SearchIcon/>}
                             style={{
-                                maxWidth: '100px',
+                                maxWidth: '105px',
                                 maxHeight: '45px',
-                                minWidth: '100px',
+                                minWidth: '105px',
                                 minHeight: '45px',
                                 margin: '20px 0px 0px 0px',
                             }}
@@ -700,7 +729,7 @@ const WriteUserForm = (props) => {
                                         <InputAdornment position="end">
                                             <IconButton
                                                 aria-label="toggle password visibility"
-                                                onClick={handleCheckUser}
+                                                onClick={handleClickCheckUser}
                                                 onMouseDown={handleMouseDownPassword}
                                                 edge="end"
                                             >
@@ -713,7 +742,7 @@ const WriteUserForm = (props) => {
                             </FormControl>
                         </div>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={passwordGridSize}>
                         <div>
                             <span className={labelClassName}>* 계정 암호</span>
                             <FormControl
@@ -746,6 +775,37 @@ const WriteUserForm = (props) => {
                             </FormControl>
                         </div>
                     </Grid>
+                    {
+                        isRegister === false ? (
+                            <React.Fragment>
+                                <Grid item xs={2}>
+                                    <Button
+                                        className={classes.margin}
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={handleOpenChangePassword}
+                                        size={buttonSize}
+                                        // endIcon={<SearchIcon/>}
+                                        style={{
+                                            maxWidth: '80px',
+                                            maxHeight: '45px',
+                                            minWidth: '80px',
+                                            minHeight: '45px',
+                                            margin: '20px 0px 0px 0px',
+                                        }}
+                                    >
+                                        변경
+                                    </Button>
+                                </Grid>
+                                <ChangePasswordDialog
+                                    userId={fields.userId}
+                                    open={openChangePassword}
+                                    handleClose={handleCloseChangePassword}
+                                    handleComplete={handleCompleteChangePassword}
+                                />
+                            </React.Fragment>
+                        ) : <React.Fragment/>
+                    }
                     <Grid item xs={6}>
                         <div>
                             <span className={labelClassName}>* 이름</span>
