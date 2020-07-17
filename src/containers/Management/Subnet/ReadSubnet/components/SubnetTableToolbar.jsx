@@ -80,6 +80,9 @@ const useToolbarStyles = makeStyles(theme => ({
         fontSize: 7,
         fontWeight: "revert",
     },
+    grid: {
+        gridTemplateColumns: "155 1fr 1fr 350 30",
+    },
 }));
 
 const TableFilterButton = (props) => {
@@ -236,8 +239,10 @@ const SubnetTableToolbar = (props) => {
                         {/*********************************************************************
                          * Table Search bar
                          **********************************************************************/}
-                        <Grid container alignItems="center" wrap="nowrap" style={{maxHeight: 72}}>
-                            <Grid item md={2} >
+                        <Grid container alignItems="center" wrap="nowrap" style={{maxHeight: 72}}
+                              className={classes.grid}
+                        >
+                            <Grid item md={2} zeroMinWidth>
                                 <div style={{minWidth: 155}}>
                                     <IconButton type="button" onClick={handleOpen}
                                                 data-tip data-for="tooltipAdd">
@@ -274,7 +279,7 @@ const SubnetTableToolbar = (props) => {
                                     )}
                                 </div>
                             </Grid>
-                            <Grid item md={4}>
+                            <Grid item md={4} zeroMinWidth>
                                 <div style={{minWidth: 200}}>
                                     <SubnetSearchBar
                                         handleSubmit={handleSubmitSearch}
@@ -282,9 +287,9 @@ const SubnetTableToolbar = (props) => {
                                 </div>
                             </Grid>
                             <Grid item md={3} />
-                            <Grid item md={3}>
+                            <Grid item md={3} zeroMinWidth>
                                 <div style={{
-                                    display: "flex", alignItems: "center", float: "right", minWidth: 340,
+                                    display: "flex", alignItems: "center", float: "right", minWidth: 350,
                                 }}>
                                     {/*Pagination*/}
                                     <div style={{paddingRight: 10}}>

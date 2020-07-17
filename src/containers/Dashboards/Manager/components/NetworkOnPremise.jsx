@@ -13,7 +13,7 @@ import getTooltipStyles from '../../../../shared/helpers';
 const data01 = [
     {name: '목동 L3', value: 900, fill: '#4ce1b6'},
     {name: '분당 L2', value: 400, fill: '#70bbfd'},
-    {name: '영동 방화벽', value: 250, fill: '#f6da6e'},
+    {name: '영동', value: 250, fill: '#f6da6e'},
     {name: '부산 L2', value: 200, fill: '#ff4861'}];
 
 const style = (dir) => {
@@ -77,14 +77,7 @@ class NetworkOnPremise extends PureComponent {
         const {x, y} = this.state;
 
         return (
-            <Panel
-                xl={4}
-                lg={6}
-                md={6}
-                sm={12}
-                xs={12}
-                title="네트워크 기기 온프레미스"
-            >
+            <Panel title="NETWORK : 온프레미스" >
                 {/*subhead="Top selling items statistic by last month"*/}
                 <div dir={dir}>
                     <ResponsiveContainer className="dashboard__chart-pie dashboard__chart-pie--crypto"
@@ -104,12 +97,15 @@ class NetworkOnPremise extends PureComponent {
                                 label={value => (`${value.value.toFixed(2)}`)}
                                 onMouseMove={this.onMouseMove}
                             />
-                            <Legend layout="vertical" verticalAlign="bottom" wrapperStyle={style(dir)}
-                                    content={renderLegend}/>
+                            <Legend
+                                layout="vertical"
+                                align="left"
+                                verticalAlign="bottom"
+                                content={renderLegend}/>
                         </PieChart>
                     </ResponsiveContainer>
                     <div className="dashboard__health-chart-info">
-                        <div className="dashboard__health-chart-number">1750</div>
+                        <div className="dashboard__health-chart-number">2750</div>
                     </div>
                 </div>
             </Panel>

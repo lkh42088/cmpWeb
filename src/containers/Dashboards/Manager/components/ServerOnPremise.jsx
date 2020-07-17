@@ -77,15 +77,7 @@ class ServerOnPremise extends PureComponent {
         const {x, y} = this.state;
 
         return (
-            <Panel
-                xl={4}
-                lg={6}
-                md={6}
-                sm={12}
-                xs={12}
-                title="서버(Server) 온프레미스 (xxx)"
-            >
-                {/*subhead="Top selling items statistic by last month"*/}
+            <Panel title="SERVER : 온프레미스" >
                 <div dir={dir}>
                     <ResponsiveContainer className="dashboard__chart-pie dashboard__chart-pie--crypto"
                                          height={360}>
@@ -104,8 +96,11 @@ class ServerOnPremise extends PureComponent {
                                 label={value => (`${value.value.toFixed(2)}`)}
                                 onMouseMove={this.onMouseMove}
                             />
-                            <Legend layout="vertical" verticalAlign="bottom" wrapperStyle={style(dir)}
-                                    content={renderLegend}/>
+                            <Legend
+                                layout="vertical"
+                                align="left"
+                                verticalAlign="bottom"
+                                content={renderLegend}/>
                         </PieChart>
                     </ResponsiveContainer>
                     <div className="dashboard__health-chart-info">
