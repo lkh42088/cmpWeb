@@ -280,7 +280,7 @@ const SubnetTableToolbar = (props) => {
                                 </div>
                             </Grid>
                             <Grid item md={4} zeroMinWidth>
-                                <div style={{minWidth: 200}}>
+                                <div style={{overflow: "hidden"}}>
                                     <SubnetSearchBar
                                         handleSubmit={handleSubmitSearch}
                                     />

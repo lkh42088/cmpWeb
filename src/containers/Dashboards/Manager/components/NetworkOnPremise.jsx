@@ -78,35 +78,32 @@ class NetworkOnPremise extends PureComponent {
 
         return (
             <Panel title="NETWORK : 온프레미스" >
-                {/*subhead="Top selling items statistic by last month"*/}
-                <div dir={dir}>
-                    <ResponsiveContainer className="dashboard__chart-pie dashboard__chart-pie--crypto"
-                                         height={360}>
-                        <PieChart className="dashboard__chart-pie-container">
-                            <Tooltip
-                                formatter={value => (`${value.toFixed(2)}`)}
-                                position={{x, y}}
-                                {...getTooltipStyles(themeName)}
-                            />
-                            <Pie
-                                data={data01}
-                                dataKey="value"
-                                cy={175}
-                                innerRadius={90}
-                                outerRadius={140}
-                                label={value => (`${value.value.toFixed(2)}`)}
-                                onMouseMove={this.onMouseMove}
-                            />
-                            <Legend
-                                layout="vertical"
-                                align="left"
-                                verticalAlign="bottom"
-                                content={renderLegend}/>
-                        </PieChart>
-                    </ResponsiveContainer>
-                    <div className="dashboard__health-chart-info">
-                        <div className="dashboard__health-chart-number">2750</div>
-                    </div>
+                <ResponsiveContainer className="dashboard__chart-pie dashboard__chart-pie--crypto"
+                                     height={360}>
+                    <PieChart className="dashboard__chart-pie-container">
+                        <Tooltip
+                            formatter={value => (`${value.toFixed(2)}`)}
+                            position={{x, y}}
+                            {...getTooltipStyles(themeName)}
+                        />
+                        <Pie
+                            data={data01}
+                            dataKey="value"
+                            cy={175}
+                            innerRadius={90}
+                            outerRadius={140}
+                            label={value => (`${value.value.toFixed(2)}`)}
+                            onMouseMove={this.onMouseMove}
+                        />
+                        <Legend
+                            layout="vertical"
+                            align="left"
+                            verticalAlign="bottom"
+                            content={renderLegend}/>
+                    </PieChart>
+                </ResponsiveContainer>
+                <div className="dashboard__health-chart-info">
+                    <div className="dashboard__health-chart-number">2750</div>
                 </div>
             </Panel>
         );
