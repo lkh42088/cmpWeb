@@ -61,7 +61,7 @@ const ManagerDashboard = ({
                     <Grid item lg={6} md={12} sm={12}>
                         <PublicNetwork />
                     </Grid>
-                    <Grid item lg={6} md={12} sm={12} className={classes.paper}>
+                    <Grid item lg={6} md={12} sm={12}>
                         <RandomAnimatedBars />
                     </Grid>
                 </Grid>

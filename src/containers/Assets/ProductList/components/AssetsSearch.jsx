@@ -481,6 +481,29 @@ const AssetsSearch = ({assetState, user, theme}) => {
         dispatch(fetchPostSearchDevice(assetState, postArray));
     };
 
+    // eslint-disable-next-line consistent-return
+    const setToggleRentPeriod = (period) => {
+        console.log("setToggleRentPeriod start");
+        const today = new Date();
+        console.log("11..... : ", moment(today).add(1, 'M').format("YYYYMMDD"));
+
+
+        switch (period) {
+            case "30":
+                console.log("한달 기간 검색할거야??");
+
+
+                console.log("========================================");
+
+                break;
+            case "-":
+                console.log("다른 기간일 수 도 있구!!");
+                break;
+            default:
+                break;
+        }
+    };
+
     useEffect(() => {
         document.getElementsByName("schSelect")[0].value = '0';
         document.getElementsByName("schText")[0].value = '';
@@ -673,8 +696,8 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                 <div className="search_btn-text">
                                     <span
                                         role="button" tabIndex="0"
-                                        onClick={event => setToggleOutFlagText('1')}
-                                        onKeyDown={event => setToggleOutFlagText('1')}>
+                                        onClick={event => setToggleRentPeriod('30')}
+                                        onKeyDown={event => setToggleRentPeriod('30')}>
                                                         &nbsp;<InsertInvitationIcon/>&nbsp;한달 기간 검색[개발중]</span>
                                 </div>
                             </ButtonToolbar>

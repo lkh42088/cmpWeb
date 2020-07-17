@@ -16,17 +16,6 @@ const data01 = [
     {name: '중부1', value: 500, fill: '#f6da6e'},
     {name: '중부2', value: 700, fill: '#ff4861'}];
 
-const style = (dir) => {
-    const left = dir === 'ltr' ? {left: 0} : {right: 0};
-    return ({
-        ...left,
-        width: 150,
-        lineHeight: '24px',
-        position: 'absolute',
-    });
-};
-
-
 const renderLegend = ({payload}) => (
     <ul className="dashboard__chart-legend">
         {
@@ -77,7 +66,7 @@ class ServerKtCloud extends PureComponent {
         const {x, y} = this.state;
 
         return (
-            <Panel title="SERVER : KT CLOUD" >
+            <Panel title="SERVER : KT CLOUD">
                     <ResponsiveContainer className="dashboard__chart-pie dashboard__chart-pie--crypto"
                                          height={360}>
                         <PieChart className="dashboard__chart-pie-container">

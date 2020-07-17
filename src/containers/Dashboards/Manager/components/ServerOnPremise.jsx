@@ -16,17 +16,6 @@ const data01 = [
     {name: '영동', value: 500, fill: '#f6da6e'},
     {name: '부산', value: 500, fill: '#ff4861'}];
 
-const style = (dir) => {
-    const left = dir === 'ltr' ? {left: 0} : {right: 0};
-    return ({
-        ...left,
-        width: 150,
-        lineHeight: '24px',
-        position: 'absolute',
-    });
-};
-
-
 const renderLegend = ({payload}) => (
     <ul className="dashboard__chart-legend">
         {
@@ -78,34 +67,32 @@ class ServerOnPremise extends PureComponent {
 
         return (
             <Panel title="SERVER : 온프레미스" >
-                <div dir={dir}>
-                    <ResponsiveContainer className="dashboard__chart-pie dashboard__chart-pie--crypto"
-                                         height={360}>
-                        <PieChart className="dashboard__chart-pie-container">
-                            <Tooltip
-                                formatter={value => (`${value.toFixed(2)}`)}
-                                position={{x, y}}
-                                {...getTooltipStyles(themeName)}
-                            />
-                            <Pie
-                                data={data01}
-                                dataKey="value"
-                                cy={175}
-                                innerRadius={90}
-                                outerRadius={140}
-                                label={value => (`${value.value.toFixed(2)}`)}
-                                onMouseMove={this.onMouseMove}
-                            />
-                            <Legend
-                                layout="vertical"
-                                align="left"
-                                verticalAlign="bottom"
-                                content={renderLegend}/>
-                        </PieChart>
-                    </ResponsiveContainer>
-                    <div className="dashboard__health-chart-info">
-                        <div className="dashboard__health-chart-number">3000</div>
-                    </div>
+                <ResponsiveContainer className="dashboard__chart-pie dashboard__chart-pie--crypto"
+                                     height={360}>
+                    <PieChart className="dashboard__chart-pie-container">
+                        <Tooltip
+                            formatter={value => (`${value.toFixed(2)}`)}
+                            position={{x, y}}
+                            {...getTooltipStyles(themeName)}
+                        />
+                        <Pie
+                            data={data01}
+                            dataKey="value"
+                            cy={175}
+                            innerRadius={90}
+                            outerRadius={140}
+                            label={value => (`${value.value.toFixed(2)}`)}
+                            onMouseMove={this.onMouseMove}
+                        />
+                        <Legend
+                            layout="vertical"
+                            align="left"
+                            verticalAlign="bottom"
+                            content={renderLegend}/>
+                    </PieChart>
+                </ResponsiveContainer>
+                <div className="dashboard__health-chart-info">
+                    <div className="dashboard__health-chart-number">3000</div>
                 </div>
             </Panel>
         );
