@@ -112,9 +112,6 @@ const DashboardCustomer = ({t}) => {
         <Container fluid>
             <Row className={classes.row}>
                 <RouterBreadcrumbs url={window.location.href}/>
-                {/*<Col md={12}>*/}
-                {/*    <SubnetHeader head="DASHBOARD" />*/}
-                {/*</Col>*/}
             </Row>
             <Row>
                 <Col md={6} lg={6} xs={12} sm={12} xl={3} style={{padding: 10}}>
