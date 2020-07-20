@@ -91,9 +91,8 @@ export const initialState = {
         ownershipDiv: '',
         operatingFlag: true,
         carryingFlag: false,
+        rentPeriod: false,
     },
-    operatingFlag: true,
-    carryingFlag: true,
     deviceLog: {
         deviceCode: '',
         field: '',

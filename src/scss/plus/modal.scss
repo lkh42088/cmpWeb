@@ -9,14 +9,14 @@
 
 .assets_write__modal-dialog {
   max-width: 785px;
-  max-height: calc(100% -  64px);
-  overflow-y: hidden;
+  height: calc(100% -  64px);
+  overflow-y: auto;
 }
 
 // (16july2020,ebjee)
 .assets_search__modal-dialog {
   max-width: 600px;
-  max-height: calc(100% -  45%);
+  max-height: calc(100% -  55%);
   top: 10%;
   overflow-y: hidden;
 

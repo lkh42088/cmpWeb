@@ -924,7 +924,8 @@ class AssetsView extends PureComponent {
                                             <div className="col-lg-8 col-md-12">
                                                             <textarea
                                                                 className={classNameMap.textareaPreCont}
-                                                                value={hwSn} rows="1"
+                                                                rows="1"
+                                                                value={textValueCut(hwSn, undefined)}
                                                                 disabled/>
                                             </div>
                                         </div>
@@ -954,7 +955,8 @@ class AssetsView extends PureComponent {
                                             <div className="col-lg-8 col-md-12">
                                                             <textarea
                                                                 className={classNameMap.textareaPreCont}
-                                                                rows="1" value={`${cost}`}
+                                                                rows="1"
+                                                                value={textValueCut(cost, undefined)}
                                                                 disabled/>
                                             </div>
                                         </div>
@@ -967,7 +969,8 @@ class AssetsView extends PureComponent {
                                             <div className="col-lg-8 col-md-12">
                                                             <textarea
                                                                 className={classNameMap.textareaPreCont}
-                                                                value={purpose} rows="1"
+                                                                rows="1"
+                                                                value={textValueCut(purpose, undefined)}
                                                                 disabled/>
                                             </div>
                                         </div>
