@@ -11,9 +11,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import RefreshIcon from '@material-ui/icons/Refresh';
-import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
-import Select from "@material-ui/core/Select";
 import Paper from "@material-ui/core/Paper";
 import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
@@ -165,7 +162,7 @@ const TableFilterButton = (props) => {
 const UserTableToolbar = (props) => {
     const classes = useToolbarStyles();
     const {
-        toolbarTitle, rows, numSelected, handleDeleteSelected, onRequestSort,
+        rows, numSelected, handleDeleteSelected, onRequestSort,
         handleOpen, contents, handleRefresh, handleSubmitSearch,
         count, rowsPerPage, page, onChangePage, onChangeRowsPerPage, rowsPerPageOptions,
     } = props;
@@ -189,6 +186,7 @@ const UserTableToolbar = (props) => {
     const handleSelectItem = (item) => {
         setSelectSearch(item);
         setSearchPlaceHolder(`${item} 검색`);
+        setSearchContent("");
         setAnchorMenu(null);
     };
 

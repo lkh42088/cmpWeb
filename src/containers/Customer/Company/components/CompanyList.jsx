@@ -26,7 +26,7 @@ import {IconButton, Tooltip} from "@material-ui/core";
 import { useSnackbar } from 'notistack';
 import ReactTooltip from "react-tooltip";
 import {
-    getCompanyList,
+    getCompanyList, getCompanyListWithSearchParam,
 } from "../../../../redux/actions/companiesActions";
 import {
     pagingChangeCurrentPage,
@@ -46,6 +46,7 @@ import CompanyTableToolbar from "./CompanyTableToolbar";
 // eslint-disable-next-line import/named
 import {limitLongString} from "../../../../lib/utils/utils";
 import ModifyCompanyPage from "./ModifyCompanyPage";
+import UserTableToolbar from "../../Users/components/UserTableToolbar";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -158,6 +159,8 @@ const CompanyList = () => {
     const [openModifyCompany, setOpenModifyCompany] = React.useState(false);
     const [openRegisterCompany, setOpenRegisterCompany] = React.useState(false);
 
+    const [searchParam, setSearchParam] = useState(null);
+
     const handleOpenModifyCompany = () => {
         setOpenModifyCompany(true);
     };
@@ -263,9 +266,20 @@ const CompanyList = () => {
         }
         console.log(">>>>>> get Page Data: rows ", rowsPerPage, ", offset ", offset,
             ", orderBy ", orderBy, ", order ", order);
-        dispatch(getCompanyList({
-            rows: rowsPerPage, offset, orderBy, order,
-        }));
+        if (searchParam !== null) {
+            dispatch(getCompanyListWithSearchParam({
+                rows: rowsPerPage, offset, orderBy, order, searchParam,
+            }));
+        } else {
+            dispatch(getCompanyList({
+                rows: rowsPerPage, offset, orderBy, order,
+            }));
+        }
+    };
+
+    const handleSubmitSearch = (params) => {
+        console.log("handleSubmitSearch ", params);
+        setSearchParam(params);
     };
 
     const deleteCompanies = async (companies) => {
@@ -403,6 +417,11 @@ const CompanyList = () => {
         /** Pagination */
         getPageData();
     }, [rowsPerPage, pageBeginRow, orderBy, order]);
+
+    useEffect(() => {
+        console.log("useEffect: searchParam ", searchParam);
+        getPageData();
+    }, [searchParam]);
 
     /** Pagination */
     const paginationBar = (
@@ -641,9 +660,15 @@ const CompanyList = () => {
                         onRequestSort={handleRequestSort}
                         handleRefresh={handleRefresh}
                         rows={headRows}
-                        toolbarTitle="고객사 리스트"
                         handleOpen={handleOpenRegisterCompany}
                         contents="고객사"
+                        handleSubmitSearch={handleSubmitSearch}
+                        count={totalCount}
+                        rowsPerPage={rowsPerPage}
+                        page={currentPage}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                        rowsPerPageOptions={displayRowsList}
                     />
                     <div className="cb-material-table__wrap">
                         <TableContainer>
@@ -671,7 +696,7 @@ const CompanyList = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                        {paginationBar}
+                        {/*{paginationBar}*/}
                         <FormControlLabel
                             className="cb-material-table__padding"
                             control={<Switch checked={dense} onChange={handleChangeDense} />}

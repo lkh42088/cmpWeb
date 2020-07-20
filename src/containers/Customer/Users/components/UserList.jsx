@@ -778,7 +778,6 @@ const UserList = () => {
                         handleRefresh={handleRefresh}
                         onRequestSort={handleRequestSort}
                         rows={headRows}
-                        toolbarTitle="계정 리스트"
                         handleOpen={handleOpenAddUser}
                         handleSubmitSearch={handleSubmitSearch}
                         contents="계정"
