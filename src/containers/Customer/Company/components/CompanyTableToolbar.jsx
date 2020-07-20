@@ -287,7 +287,7 @@ const CompanyTableToolbar = (props) => {
                             justify="space-between"
                             alignItems="center"
                         >
-                            <Grid item md={2} zeroMinWidth>
+                            <Grid item md={3} zeroMinWidth>
                                 <TableFilterButton rows={rows} onRequestSort={onRequestSort}/>
                                 <Tooltip title="Refresh" aria-label="refresh">
                                     <IconButton
@@ -361,7 +361,7 @@ const CompanyTableToolbar = (props) => {
                                     </IconButton>
                                 </Paper>
                             </Grid>
-                            <Grid item md={4} zeroMinWidth>
+                            <Grid item md={5} zeroMinWidth>
                                 <TablePagination
                                     component="div"
                                     className="material-table__pagination"

@@ -256,7 +256,7 @@ const UserTableToolbar = (props) => {
                             justify="space-between"
                             alignItems="center"
                         >
-                            <Grid item md={2} zeroMinWidth>
+                            <Grid item md={3} zeroMinWidth>
                                 <TableFilterButton rows={rows} onRequestSort={onRequestSort}/>
                                 <Tooltip title="Refresh" aria-label="refresh">
                                     <IconButton
@@ -381,7 +381,7 @@ const UserTableToolbar = (props) => {
                                     {/*/>*/}
                                 </Paper>
                             </Grid>
-                            <Grid item md={4} zeroMinWidth>
+                            <Grid item md={5} zeroMinWidth>
                             <TablePagination
                                 component="div"
                                 className="material-table__pagination"
