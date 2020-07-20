@@ -75,9 +75,14 @@
   }
 
   &:hover {
-
     @include themify($themes) {
       background-color: themed('colorBackgroundBody');
+    }
+
+    .cb-material-table__checkbox--checked {
+      @include themify($themes) {
+        color: #737883
+      }
     }
   }
 }
@@ -134,6 +139,12 @@
 
   @include themify($themes) {
     color: themed('colorIcon');
+  }
+
+  &:hover {
+    @include themify($themes) {
+      color: #737883
+    }
   }
 }
 

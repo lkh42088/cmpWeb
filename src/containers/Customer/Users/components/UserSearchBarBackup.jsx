@@ -153,7 +153,7 @@ const MenuProps = {
     },
 };
 
-const UserSearchBar = (props) => {
+const UserSearchBarBackup = (props) => {
     /************************************************************************************
      * Variable
      ************************************************************************************/
@@ -391,4 +391,4 @@ const UserSearchBar = (props) => {
     );
 };
 
-export default UserSearchBar;
+export default UserSearchBarBackup;

@@ -52,6 +52,12 @@ export const checkDupCompany = ({
     name: cpName,
 });
 
+export const getCompanyListWithSearchParam = ({
+    rows, offset, orderBy, order, searchParam,
+}) => client.post(`/v1/customers/companies/page-with-search-param`, {
+    rows, offset, orderBy, order, searchParam,
+});
+
 export const getCompanyList = ({
     rows, offset, orderBy, order,
 }) => client.get(`/v1/customers/companies/${rows}/${offset}/${orderBy}/${order}`);

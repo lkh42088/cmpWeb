@@ -59,9 +59,6 @@ const SidebarContent = ({
                             <SidebarLink title="계정 관리" route="/customers/users"
                                 // onClick={() => changeMenuTitle('MANAGER', '계정 관리', '')}/>
                                          onClick={hideSidebar}/>
-                            <SidebarLink title="계정 관리 old" route="/customers/usersBackup"
-                                // onClick={() => changeMenuTitle('MANAGER', '계정 관리', '')}/>
-                                         onClick={hideSidebar}/>
                             <SidebarLink title="고객사 관리" route="/customers/companies"
                                 // onClick={() => changeMenuTitle('MANAGER', '고객사 관리', '')}/>
                                          onClick={hideSidebar}/>
@@ -94,8 +91,6 @@ const SidebarContent = ({
                                      onClick={() => changeMenuTitle('BOARD', '', '')}/>
                         <SidebarCategory title="MANAGER" icon={usersIcon} dropdown={dropdown}>
                             <SidebarLink title="계정 관리" route="/customers/usersBackup"
-                                         onClick={hideSidebar}/>
-                            <SidebarLink title="계정 관리 old" route="/customers/users"
                                          onClick={hideSidebar}/>
                             <SidebarLink title="고객사 관리" route="/customers/companies"
                                          onClick={hideSidebar}/>

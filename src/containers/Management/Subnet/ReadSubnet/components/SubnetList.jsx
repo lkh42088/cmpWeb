@@ -82,7 +82,7 @@ const useStyles = makeStyles(theme => ({
         top: 20,
         width: 1,
     },
-    row: {
+    rowCss: {
         '& > *': {
             borderBottom: 'unset',
         },
@@ -527,7 +527,7 @@ const SubnetList = () => {
             <React.Fragment>
                 <TableRow
                     hover
-                    className={classes.row}
+                    className={classes.rowCss}
                     role="checkbox"
                     aria-checked={isSelected}
                     tabIndex={-1}
