@@ -11,7 +11,11 @@
   width: 200px;   // [23June2020,khlee]
   box-shadow: 0 1px 30px 1px rgba(0, 0, 0, 0.11);
   padding-top: 60px;
-  transition: transform 0.3s, width 0.3s;
+  // Add sidebar collapse animation [21July2020,khlee]
+  transition: transform 0.2s, width 0.2s;
+  transition-property: width;
+  transition-timing-function: ease-in-out;
+  transition-delay: 0.1s;
 
   // LKH
   //font-family: "Nanum Square acEB";
