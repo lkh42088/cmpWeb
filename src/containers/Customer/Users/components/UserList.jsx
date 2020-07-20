@@ -83,10 +83,22 @@ const useStyles = makeStyles(theme => ({
         top: 20,
         width: 1,
     },
-    row: {
+    rowCss: {
         '& > *': {
             borderBottom: 'unset',
         },
+        "&:hover":
+            theme.palette.type === 'light'
+                ? {
+                    boxShadow: "4px 2px 3px #999999",
+                    border: "1px solid #e0e0e0",
+                    borderRight: "1px solid #e0e0e0",
+                }
+                : {
+                    boxShadow: "4px 2px 3px #000000",
+                    border: "1px solid #000000",
+                    borderRight: "1px solid #e0e0e0",
+                },
     },
     spanSubject: {
         display: 'inline-block',
@@ -318,7 +330,6 @@ const UserList = () => {
     const handleSubmitSearch = (params) => {
         console.log("handleSubmitSearch() params ", params);
         setSearchParam(params);
-        // getPageDataWithSearchParam(params);
     };
 
     /** Pagination */
@@ -489,6 +500,7 @@ const UserList = () => {
             onChangePage={handleChangePage}
             onChangeRowsPerPage={handleChangeRowsPerPage}
             rowsPerPageOptions={displayRowsList}
+
         />
     );
 
@@ -522,18 +534,34 @@ const UserList = () => {
         const address = getAddress(row);
         const cellClassName = "cb-material-table__cell";
         const cellIcon = isSelected ? "cb-material-table__cell-right" : cellClassName;
+        const [checkboxColor, setCheckboxColor] = useState('');
         return (
             <React.Fragment>
                 <TableRow
                     hover
                     // className="cb-material-table__row"
-                    className={classes.row}
+                    className={classes.rowCss}
                     role="checkbox"
                     aria-checked={isSelected}
                     tabIndex={-1}
                     key={row.idx}
                     selected={isSelected}
                     onClick={() => setOpenCollapse(!openCollapse)}
+                    onMouseOver={() => {
+                        if (isSelected === false) {
+                            setCheckboxColor('#737883');
+                        }
+                    }}
+                    onFocus={() => {
+                        if (isSelected === false) {
+                            setCheckboxColor('#737883');
+                        }
+                    }}
+                    onMouseLeave={() => {
+                        if (isSelected === false) {
+                            setCheckboxColor('#dddddd');
+                        }
+                    }}
                 >
                     <TableCell
                         className={cellClassName}
@@ -542,6 +570,9 @@ const UserList = () => {
                     >
                         <Checkbox checked={isSelected}
                                   className="cb-material-table__checkbox"
+                                  style={{
+                                      color: `${checkboxColor}`,
+                                  }}
                         />
                     </TableCell>
                     <TableCell
@@ -751,6 +782,12 @@ const UserList = () => {
                         handleOpen={handleOpenAddUser}
                         handleSubmitSearch={handleSubmitSearch}
                         contents="계정"
+                        count={totalCount}
+                        rowsPerPage={rowsPerPage}
+                        page={currentPage}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                        rowsPerPageOptions={displayRowsList}
                     />
                     <div className="cb-material-table__wrap">
                         <TableContainer>
@@ -778,7 +815,7 @@ const UserList = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                        {paginationBar}
+                        {/*{paginationBar}*/}
                         <FormControlLabel
                             className="cb-material-table__padding"
                             control={<Switch checked={dense} onChange={handleChangeDense} />}
