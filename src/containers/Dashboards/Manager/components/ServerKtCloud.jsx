@@ -7,8 +7,8 @@ import {
 import {withTranslation} from 'react-i18next';
 import PropTypes from 'prop-types';
 import {Card} from 'reactstrap';
-import Panel from '../../../../shared/components/Panel';
 import getTooltipStyles from '../../../../shared/helpers';
+import Panel from './Panel';
 
 const data01 = [
     {name: '서울M', value: 1000, fill: '#4ce1b6'},
@@ -62,38 +62,38 @@ class ServerKtCloud extends PureComponent {
     };
 
     render() {
-        const {t, dir, themeName} = this.props;
+        const {themeName, close} = this.props;
         const {x, y} = this.state;
 
         return (
-            <Panel title="SERVER : KT CLOUD">
-                    <ResponsiveContainer className="dashboard__chart-pie dashboard__chart-pie--crypto"
-                                         height={360}>
-                        <PieChart className="dashboard__chart-pie-container">
-                            <Tooltip
-                                formatter={value => (`${value.toFixed(2)}`)}
-                                position={{x, y}}
-                                {...getTooltipStyles(themeName)}
-                            />
-                            <Pie
-                                data={data01}
-                                dataKey="value"
-                                cy={175}
-                                innerRadius={90}
-                                outerRadius={140}
-                                label={value => (`${value.value.toFixed(2)}`)}
-                                onMouseMove={this.onMouseMove}
-                            />
-                            <Legend
-                                layout="vertical"
-                                align="left"
-                                verticalAlign="bottom"
-                                content={renderLegend}/>
-                        </PieChart>
-                    </ResponsiveContainer>
-                    <div className="dashboard__health-chart-info">
-                        <div className="dashboard__health-chart-number">4200</div>
-                    </div>
+            <Panel title="SERVER : KT CLOUD" close={close}>
+                <ResponsiveContainer className="dashboard__chart-pie dashboard__chart-pie--crypto"
+                                     height={360}>
+                    <PieChart className="dashboard__chart-pie-container">
+                        <Tooltip
+                            formatter={value => (`${value.toFixed(2)}`)}
+                            position={{x, y}}
+                            {...getTooltipStyles(themeName)}
+                        />
+                        <Pie
+                            data={data01}
+                            dataKey="value"
+                            cy={175}
+                            innerRadius={90}
+                            outerRadius={140}
+                            label={value => (`${value.value.toFixed(2)}`)}
+                            onMouseMove={this.onMouseMove}
+                        />
+                        <Legend
+                            layout="vertical"
+                            align="left"
+                            verticalAlign="bottom"
+                            content={renderLegend}/>
+                    </PieChart>
+                </ResponsiveContainer>
+                <div className="dashboard__health-chart-info">
+                    <div className="dashboard__health-chart-number">4200</div>
+                </div>
             </Panel>
         );
     }

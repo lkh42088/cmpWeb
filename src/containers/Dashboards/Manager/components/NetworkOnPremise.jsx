@@ -6,8 +6,7 @@ import {
 } from 'recharts';
 import {withTranslation} from 'react-i18next';
 import PropTypes from 'prop-types';
-import Panel from '../../../../shared/components/Panel';
-
+import Panel from './Panel';
 import getTooltipStyles from '../../../../shared/helpers';
 
 const data01 = [
@@ -73,11 +72,11 @@ class NetworkOnPremise extends PureComponent {
     };
 
     render() {
-        const {t, dir, themeName} = this.props;
+        const {close, themeName} = this.props;
         const {x, y} = this.state;
 
         return (
-            <Panel title="NETWORK : 온프레미스" >
+            <Panel title="NETWORK : 온프레미스" close={close}>
                 <ResponsiveContainer className="dashboard__chart-pie dashboard__chart-pie--crypto"
                                      height={360}>
                     <PieChart className="dashboard__chart-pie-container">

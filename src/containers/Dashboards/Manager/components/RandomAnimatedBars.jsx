@@ -4,7 +4,7 @@ import { Card, CardBody, Col } from 'reactstrap';
 import { Bar } from 'react-chartjs-2';
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
-import Panel from "../../../../shared/components/Panel";
+import Panel from "./Panel";
 
 const initialState = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -101,11 +101,11 @@ class RandomAnimatedBars extends PureComponent {
   }
 
   render() {
-    const { t } = this.props;
+    const { t, close } = this.props;
     const { data } = this.state;
 
     return (
-        <Panel md title="TOTAL ALARM COUNT" >
+        <Panel md title="TOTAL ALARM COUNT" close={close} >
           <Bar data={data} options={options} />
         </Panel>
     );
