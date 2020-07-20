@@ -161,6 +161,7 @@ class Layout extends Component {
                 ownershipDiv: '',
                 operatingFlag: true,
                 carryingFlag: false,
+                rentPeriod: false,
             });
 
             const stateVal = ({

@@ -33,6 +33,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
         deviceCode: '',
         operatingFlag: true,
         carryingFlag: false,
+        rentPeriod: false,
     });
 
     const [modal, setModal] = React.useState({
@@ -71,7 +72,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
         });
     };
 
-    const warringToggle = (e) => {
+    /*const warringToggle = (e) => {
         const stateVal = ({
             page: 'list',
             type: 'device',
@@ -80,7 +81,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
         });
 
         dispatch(setState(stateVal));
-    };
+    };*/
 
     const toggleOutFlag = (val) => {
         let division = ',';
@@ -99,14 +100,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
                 },
                 warringIcon: '',
             });
-
-            /*const stateVal = ({
-                type: 'device',
-                division: 'outFlag',
-                state: 'empty',
-            });
-
-            dispatch(setState(stateVal));*/
         } else {
             let finCheck = false;
 
@@ -139,7 +132,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
                     deviceCode: deviceCodeData,
                 });
 
-                //console.log("submitData : ", submitData);
                 dispatch(postDeviceOutFlag(assetState, submitData, 'list'));
             } else {
                 setModal({
@@ -202,17 +194,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
                     </Fragment>
                 );
             }
-            /*viewComponentOutFlag = (
-                <Fragment>
-                    {componentOperatinng}
-                </Fragment>
-            );*/
         } else if (assetState.searchRd.operatingFlag === false && assetState.searchRd.carryingFlag === true) {
-            /*viewComponentOutFlag = (
-                <Fragment>
-                    {componentCarrying}
-                </Fragment>
-            );*/
             if (finCheck) {
                 viewComponentOutFlag = (
                     <Fragment>
@@ -220,13 +202,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
                     </Fragment>
                 );
             }
-            /*if (assetState.deviceSelected.size !== undefined || assetState.deviceSelected.size > 0) {
-                viewComponentOutFlag = (
-                    <Fragment>
-                        {componentCarrying}
-                    </Fragment>
-                );
-            }*/
         } else if (assetState.searchRd.operatingFlag === false && assetState.searchRd.carryingFlag === false) {
             viewComponentOutFlag = "";
         }
@@ -430,7 +405,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
         }
     };
 
-    const setToggleOutFlag = (e) => {
+    const setToggleFlag = (e) => {
         let postArray = {};
 
         postArray[e.target.name] = e.target.checked;
@@ -449,9 +424,9 @@ const AssetsSearch = ({assetState, user, theme}) => {
         dispatch(fetchPostSearchDevice(assetState, postArray));
     };
 
-    const setToggleOutFlagText = (val) => {
+    const setToggleFlagText = (val) => {
         let postArray = {};
-        if (val === "1") { // 운영장비 클릭
+        /*if (val === "1") { // 운영장비 클릭
             postArray.operatingFlag = !device.operatingFlag;
 
             setDevice({
@@ -475,6 +450,52 @@ const AssetsSearch = ({assetState, user, theme}) => {
                 ...device,
                 carryingFlag: !device.carryingFlag,
             });
+        }*/
+
+        switch (val) {
+            case "1": // 운영장비 선택
+                postArray.operatingFlag = !device.operatingFlag;
+
+                setDevice({
+                    ...device,
+                    operatingFlag: !device.operatingFlag,
+                });
+
+                postArray = ({
+                    ...device,
+                    operatingFlag: !device.operatingFlag,
+                });
+                break;
+            case "0": // 반출장비 선택
+                postArray.carryingFlag = !device.carryingFlag;
+
+                setDevice({
+                    ...device,
+                    carryingFlag: !device.carryingFlag,
+                });
+
+                postArray = ({
+                    ...device,
+                    carryingFlag: !device.carryingFlag,
+                });
+                break;
+            case "2": // 한달이내 임대기간 종료하는 장비 검색
+                /*const today = new Date();
+                const period = moment(today).add(1, 'M').format("YYYYMMDD");*/
+                postArray.rentPeriod = !device.rentPeriod;
+
+                setDevice({
+                    ...device,
+                    rentPeriod: !device.rentPeriod,
+                });
+
+                postArray = ({
+                    ...device,
+                    rentPeriod: !device.rentPeriod,
+                });
+                break;
+            default:
+                break;
         }
 
         dispatch(setDeviceSelected(''));
@@ -482,18 +503,19 @@ const AssetsSearch = ({assetState, user, theme}) => {
     };
 
     // eslint-disable-next-line consistent-return
-    const setToggleRentPeriod = (period) => {
+   /* const setToggleRentPeriod = (period) => {
         console.log("setToggleRentPeriod start");
         const today = new Date();
+        let postArray = {};
         console.log("11..... : ", moment(today).add(1, 'M').format("YYYYMMDD"));
 
 
         switch (period) {
             case "30":
                 console.log("한달 기간 검색할거야??");
-
-
                 console.log("========================================");
+                dispatch(setDeviceSelected(''));
+                dispatch(fetchPostSearchDevice(assetState, postArray));
 
                 break;
             case "-":
@@ -502,7 +524,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
             default:
                 break;
         }
-    };
+    };*/
 
     useEffect(() => {
         document.getElementsByName("schSelect")[0].value = '0';
@@ -663,12 +685,12 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                 /*checked={device.operatingFlag}*/
                                    checked={assetState.searchRd.operatingFlag}
                                    value={device.operatingFlag}
-                                   onChange={setToggleOutFlag}/>&nbsp;
+                                   onChange={setToggleFlag}/>&nbsp;
                             <label htmlFor="operatingFlag" className="search_checkboxText">
                                 <span
                                     role="button" tabIndex="0"
-                                    onClick={event => setToggleOutFlagText('1')}
-                                    onKeyDown={event => setToggleOutFlagText('1')}>
+                                    onClick={event => setToggleFlagText('1')}
+                                    onKeyDown={event => setToggleFlagText('1')}>
                                     운영장비&nbsp;</span>
                             </label>
                             &nbsp;&nbsp;&nbsp;
@@ -676,13 +698,26 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                 /*checked={device.carryingFlag}*/
                                    checked={assetState.searchRd.carryingFlag}
                                    value={device.carryingFlag}
-                                   onChange={setToggleOutFlag}/>&nbsp;
+                                   onChange={setToggleFlag}/>&nbsp;
                             <label htmlFor="carryingFlag" className="search_checkboxText">
                                 <span
                                     role="button" tabIndex="0"
-                                    onClick={event => setToggleOutFlagText('0')}
-                                    onKeyDown={event => setToggleOutFlagText('0')}>
+                                    onClick={event => setToggleFlagText('0')}
+                                    onKeyDown={event => setToggleFlagText('0')}>
                                     반출장비&nbsp;</span>
+                            </label>
+                            &nbsp;&nbsp;&nbsp;
+                            <input type="checkbox" name="rentPeriod" className="search_checkbox"
+                                /*checked={device.carryingFlag}*/
+                                   checked={assetState.searchRd.rentPeriod}
+                                   value={device.rentPeriod}
+                                   onChange={setToggleFlag}/>&nbsp;
+                            <label htmlFor="rentPeriod" className="search_checkboxText">
+                                    <span
+                                        role="button" tabIndex="0"
+                                        onClick={event => setToggleFlagText('0')}
+                                        onKeyDown={event => setToggleFlagText('0')}>
+                                        임대 만료예정 (한달기준)&nbsp;</span>
                             </label>
                             <ButtonToolbar>
                                 <div className="search_btn-text">
@@ -692,7 +727,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                     {renderSwitch()}
                                 </div>
                             </ButtonToolbar>
-                            <ButtonToolbar>
+                            {/*<ButtonToolbar>
                                 <div className="search_btn-text">
                                     <span
                                         role="button" tabIndex="0"
@@ -700,7 +735,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                         onKeyDown={event => setToggleRentPeriod('30')}>
                                                         &nbsp;<InsertInvitationIcon/>&nbsp;한달 기간 검색[개발중]</span>
                                 </div>
-                            </ButtonToolbar>
+                            </ButtonToolbar>*/}
                             <Modal
                                 isOpen={modal.modalOpenFlag}
                                 modalClassName={theme.className === 'theme-dark' ? (
