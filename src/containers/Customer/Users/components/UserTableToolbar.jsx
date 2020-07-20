@@ -70,17 +70,17 @@ const useToolbarStyles = makeStyles(theme => ({
         width: '100%',
         backgroundColor:
             theme.palette.type === 'light'
-            ? '#fef4f7' : '#424242',
+            ? '#f2f4f7' : '#424242',
         "&:hover":
             theme.palette.type === 'light'
                 ? {
-                    boxShadow: "4px 2px 3px #999999",
+                    boxShadow: "4px 2px 2px #999999",
                     border: "1px solid #e0e0e0",
                     borderRight: "1px solid #e0e0e0",
                     backgroundColor: '#ffffff',
                 }
                 : {
-                    boxShadow: "4px 2px 3px #000000",
+                    boxShadow: "4px 2px 2px #000000",
                     border: "1px solid #000000",
                     borderRight: "1px solid #e0e0e0",
                     backgroundColor: '#424242',
