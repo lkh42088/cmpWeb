@@ -30,6 +30,7 @@ import {
     changeToSidebarDropdown,
     toggleBoxShadow,
     toggleTopNavigation,
+    changeDensePadding,
 } from '../../redux/actions/customizerActions';
 import {
     CustomizerProps, SidebarProps, ThemeProps, RTLProps, UserProps, MenuTitleProps,
@@ -221,6 +222,11 @@ class Layout extends Component {
         dispatch(changeToSidebarDropdown());
     };
 
+    changeDensePadding = () => {
+        const {dispatch} = this.props;
+        dispatch(changeDensePadding());
+    };
+
     logout = () => {
         const {dispatch} = this.props;
         dispatch(logout());
@@ -256,6 +262,7 @@ class Layout extends Component {
                     changeBorderRadius={this.changeBorderRadius}
                     toggleBoxShadow={this.toggleBoxShadow}
                     changeToSidebarDropdown={this.changeToSidebarDropdown}
+                    changeDensePadding={this.changeDensePadding}
                 />
                 {customizer.topNavigation
                     ? (

@@ -15,7 +15,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-
 import PropTypes, {string} from 'prop-types';
 import moment from "moment";
 import {
@@ -25,9 +24,11 @@ import {
     fetchPostsCheckCount,
     getDeviceOriByIdx,
     postDevice,
-    setDeviceSelected, setAssetsPage, setApiPage, setState,
+    setDeviceSelected,
+    setAssetsPage,
+    setApiPage,
+    setState,
 } from '../../../../redux/actions/assetsAction';
-
 import AssetsHead from './AssetsHead';
 
 /*order by 사용 함수*/
@@ -289,9 +290,10 @@ export default class AssetsList extends PureComponent {
         dispatch(setDeviceSelected(newSelected));
     };
 
-    handleChangeDense = (event) => {
-        this.setState(prevState => ({dense: !prevState.dense}));
-    };
+    /** Block dense padding button */
+    // handleChangeDense = (event) => {
+    //     this.setState(prevState => ({dense: !prevState.dense}));
+    // };
 
     handleChangePageBack = () => {
         const {assetState, dispatch} = this.props;
@@ -466,7 +468,9 @@ export default class AssetsList extends PureComponent {
         const {
             order, orderBy, selected, rowsPerPage, page, dense, pageNoNum,
         } = this.state;
-        const {assetState, dispatch, user} = this.props;
+        const {
+            assetState, dispatch, user, densePadding,
+        } = this.props;
 
         const tableCellClassName = 'material-table__cell material-table__cell-right';
         const tableCellBoldClassName = 'material-table__cell material-table__cell-bold';
@@ -474,7 +478,7 @@ export default class AssetsList extends PureComponent {
         let denseChkboxClassNmae;
         let emptyRows;
 
-        if (dense === true) {
+        if (densePadding === true) {
             denseChkboxClassNmae = {paddingLeft: "10px"};
         } else {
             denseChkboxClassNmae = {};
@@ -679,7 +683,7 @@ export default class AssetsList extends PureComponent {
                     <div>
                         <TableContainer>
                             <Table className="material-table material-table__wrap"
-                                   size={dense ? 'small' : 'medium'}>
+                                   size={densePadding ? 'small' : 'medium'}>
                                 <AssetsHead
                                     numSelected={[...selected].filter(el => el[1]).length}
                                     order={order}
@@ -696,12 +700,13 @@ export default class AssetsList extends PureComponent {
                             </Table>
                         </TableContainer>
                         <div>
-                            <FormControlLabel
-                                control={<Switch checked={dense} onChange={this.handleChangeDense}/>}
-                                label="Dense padding"
-                                style={{padding: 5}}
-                                className="list-dense-padding"
-                            />
+                            {/*Block dense padding button */}
+                            {/*<FormControlLabel*/}
+                            {/*    control={<Switch checked={dense} onChange={this.handleChangeDense}/>}*/}
+                            {/*    label="Dense padding"*/}
+                            {/*    style={{padding: 5}}*/}
+                            {/*    className="list-dense-padding"*/}
+                            {/*/>*/}
                             <TablePagination
                                 component="div"
                                 className="material-table__pagination"

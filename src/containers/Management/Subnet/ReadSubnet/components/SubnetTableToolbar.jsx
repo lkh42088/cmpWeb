@@ -300,19 +300,19 @@ const SubnetTableToolbar = (props) => {
                                         <CommonTableExportCSV csvData={data} fileName="subnet_test.csv" />
                                     </div>
                                     {/*Dense padding button*/}
-                                    <FormControlLabel
-                                        style={{fontStyle: "oblique", float: "right", paddingLeft: 30}}
-                                        className="cb-material-table__padding"
-                                        control={<Switch checked={dense} size="small" onChange={handleChangeDense} />}
-                                        data-tip data-for="tooltipDense"
-                                    />
-                                    <ReactTooltip id="tooltipDense" effect="float"
-                                                  delayHide={100} type="dark"
-                                                  place="bottom"
-                                                  className={classes.tooltip}
-                                    >
-                                        DENSE PADDING
-                                    </ReactTooltip>
+                                    {/*<FormControlLabel*/}
+                                    {/*    style={{fontStyle: "oblique", float: "right", paddingLeft: 30}}*/}
+                                    {/*    className="cb-material-table__padding"*/}
+                                    {/*    control={<Switch checked={dense} size="small" onChange={handleChangeDense} />}*/}
+                                    {/*    data-tip data-for="tooltipDense"*/}
+                                    {/*/>*/}
+                                    {/*<ReactTooltip id="tooltipDense" effect="float"*/}
+                                    {/*              delayHide={100} type="dark"*/}
+                                    {/*              place="bottom"*/}
+                                    {/*              className={classes.tooltip}*/}
+                                    {/*>*/}
+                                    {/*    DENSE PADDING*/}
+                                    {/*</ReactTooltip>*/}
                                 </div>
                             </Grid>
                         </Grid>

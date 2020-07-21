@@ -174,6 +174,11 @@ const SubnetList = () => {
         order: pagingRd.order,
     }));
 
+    /** Dense Padding */
+    const {densePadding} = useSelector(({customizer}) => ({
+        densePadding: customizer.densePadding,
+    }));
+
     /** Add User in TableToolbar */
     const [openAddUser, setOpenAddUser] = React.useState(false);
     const [searchParam, setSearchParam] = useState(null);
@@ -705,7 +710,7 @@ const SubnetList = () => {
                     <Table
                         stickyHeader
                         className="cb-material-table-fixed"
-                        size={dense ? 'small' : 'medium'}
+                        size={densePadding ? 'small' : 'medium'}
                     >
                         <CommonTableHead
                             classes={classes}
