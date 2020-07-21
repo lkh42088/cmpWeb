@@ -219,9 +219,9 @@ const SubnetTableToolbar = (props) => {
             labelDisplayedRows={() => {
                 let res = "";
                 if (page > 0) {
-                    res = `${count}개 중 ${page * rowsPerPage + 1}-${rowsPerPage * (page + 1)}`;
+                    res = `${count} 개 중 ${page * rowsPerPage + 1} - ${rowsPerPage * (page + 1)}`;
                 } else {
-                    res = `${count}개 중 ${1}-${rowsPerPage}`;
+                    res = `${count} 개 중 ${1} - ${rowsPerPage}`;
                 }
                 return res;
             }}
