@@ -154,34 +154,36 @@ const SubnetTableToolbar = (props) => {
     const classes = useToolbarStyles();
     const dispatch = useDispatch();
     const {
-        toolbarTitle, rows, data, numSelected, handleDeleteSelected, onRequestSort,
+        rows, numSelected, handleDeleteSelected, onRequestSort,
         handleOpen, contents, handleRefresh, handleSubmitSearch,
+        count, rowsPerPage, page, onChangePage, onChangeRowsPerPage,
+        rowsPerPageOptions, data,
     } = props;
     const addComment = contents.concat(" 추가");
     const deleteComment = `선택한 ${contents} 삭제`;
 
-    const {
-        selected,
-        pageBeginRow,
-        rowsPerPage,
-        currentPage,
-        totalCount,
-        displayRowsList,
-        dense,
-        orderBy,
-        order,
-    } = useSelector(({pagingRd}) => ({
-        selected: pagingRd.selected,
-        pageBeginRow: pagingRd.pageBeginRow,
-        rowsPerPage: pagingRd.rowsPerPage,
-        currentPage: pagingRd.currentPage,
-        totalPage: pagingRd.totalPage,
-        totalCount: pagingRd.totalCount,
-        displayRowsList: pagingRd.displayRowsList,
-        dense: pagingRd.dense,
-        orderBy: pagingRd.orderBy,
-        order: pagingRd.order,
-    }));
+    // const {
+    //     selected,
+    //     pageBeginRow,
+    //     rowsPerPage,
+    //     currentPage,
+    //     totalCount,
+    //     displayRowsList,
+    //     dense,
+    //     orderBy,
+    //     order,
+    // } = useSelector(({pagingRd}) => ({
+    //     selected: pagingRd.selected,
+    //     pageBeginRow: pagingRd.pageBeginRow,
+    //     rowsPerPage: pagingRd.rowsPerPage,
+    //     currentPage: pagingRd.currentPage,
+    //     totalPage: pagingRd.totalPage,
+    //     totalCount: pagingRd.totalCount,
+    //     displayRowsList: pagingRd.displayRowsList,
+    //     dense: pagingRd.dense,
+    //     orderBy: pagingRd.orderBy,
+    //     order: pagingRd.order,
+    // }));
 
     /** Pagination */
     const handleChangePage = (event, newPage) => {
@@ -207,14 +209,22 @@ const SubnetTableToolbar = (props) => {
     const paginationBar = (
         <TablePagination
             component="div"
-            count={totalCount}
+            count={count}
             rowsPerPage={rowsPerPage}
-            page={currentPage}
+            page={page}
             onChangePage={handleChangePage}
             onChangeRowsPerPage={handleChangeRowsPerPage}
-            rowsPerPageOptions={displayRowsList}
-            labelRowsPerPage=""
-            labelDisplayedRows={() => ""}
+            rowsPerPageOptions={rowsPerPageOptions}
+            labelRowsPerPage="개수"
+            labelDisplayedRows={() => {
+                let res = "";
+                if (page > 0) {
+                    res = `${count}개 중 ${page * rowsPerPage + 1}-${rowsPerPage * (page + 1)}`;
+                } else {
+                    res = `${count}개 중 ${1}-${rowsPerPage}`;
+                }
+                return res;
+            }}
         />
     );
     
@@ -239,7 +249,8 @@ const SubnetTableToolbar = (props) => {
                     </>
                 ) : (
                     <>
-                        {/*********************************************************************
+                        {
+                        /*********************************************************************
                          * Table Search bar
                          **********************************************************************/}
                         <Grid container alignItems="center" wrap="nowrap" style={{maxHeight: 72}}
@@ -280,6 +291,8 @@ const SubnetTableToolbar = (props) => {
                                     ) : (
                                         <TableFilterButton rows={rows} onRequestSort={onRequestSort}/>
                                     )}
+                                    {/*Export CSV*/}
+                                    <CommonTableExportCSV csvData={data} fileName="subnet_test.csv" />
                                 </div>
                             </Grid>
                             <Grid item md={4} zeroMinWidth>
@@ -289,8 +302,8 @@ const SubnetTableToolbar = (props) => {
                                     />
                                 </div>
                             </Grid>
-                            <Grid item md={3} />
-                            <Grid item md={3} zeroMinWidth>
+                            <Grid item md={2} />
+                            <Grid item md={4} zeroMinWidth>
                                 <div style={{
                                     display: "flex", alignItems: "center", float: "right", minWidth: 350,
                                 }}>
@@ -298,24 +311,6 @@ const SubnetTableToolbar = (props) => {
                                     <div style={{paddingRight: 10}}>
                                         {paginationBar}
                                     </div>
-                                    {/*Export CSV*/}
-                                    <div>
-                                        <CommonTableExportCSV csvData={data} fileName="subnet_test.csv" />
-                                    </div>
-                                    {/*Dense padding button*/}
-                                    {/*<FormControlLabel*/}
-                                    {/*    style={{fontStyle: "oblique", float: "right", paddingLeft: 30}}*/}
-                                    {/*    className="cb-material-table__padding"*/}
-                                    {/*    control={<Switch checked={dense} size="small" onChange={handleChangeDense} />}*/}
-                                    {/*    data-tip data-for="tooltipDense"*/}
-                                    {/*/>*/}
-                                    {/*<ReactTooltip id="tooltipDense" effect="float"*/}
-                                    {/*              delayHide={100} type="dark"*/}
-                                    {/*              place="bottom"*/}
-                                    {/*              className={classes.tooltip}*/}
-                                    {/*>*/}
-                                    {/*    DENSE PADDING*/}
-                                    {/*</ReactTooltip>*/}
                                 </div>
                             </Grid>
                         </Grid>
