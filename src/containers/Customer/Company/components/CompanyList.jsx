@@ -26,7 +26,7 @@ import {IconButton, Tooltip} from "@material-ui/core";
 import { useSnackbar } from 'notistack';
 import ReactTooltip from "react-tooltip";
 import {
-    getCompanyList,
+    getCompanyList, getCompanyListWithSearchParam,
 } from "../../../../redux/actions/companiesActions";
 import {
     pagingChangeCurrentPage,
@@ -46,6 +46,7 @@ import CompanyTableToolbar from "./CompanyTableToolbar";
 // eslint-disable-next-line import/named
 import {limitLongString} from "../../../../lib/utils/utils";
 import ModifyCompanyPage from "./ModifyCompanyPage";
+import UserTableToolbar from "../../Users/components/UserTableToolbar";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -94,6 +95,23 @@ const useStyles = makeStyles(theme => ({
         fontSize: 7,
         fontFamily: "GmarketSansTTFBold",
     },
+    rowCss: {
+        '& > *': {
+            borderBottom: 'unset',
+        },
+        "&:hover":
+            theme.palette.type === 'light'
+                ? {
+                    boxShadow: "4px 2px 3px #999999",
+                    border: "1px solid #e0e0e0",
+                    borderRight: "1px solid #e0e0e0",
+                }
+                : {
+                    boxShadow: "4px 2px 3px #000000",
+                    border: "1px solid #000000",
+                    borderRight: "1px solid #e0e0e0",
+                },
+    },
     spanSubject: {
         display: 'inline-block',
         width: '100px',
@@ -104,11 +122,6 @@ const useStyles = makeStyles(theme => ({
     },
     grid: {
         flexGrow: 1,
-    },
-    row: {
-        '& > *': {
-            borderBottom: 'unset',
-        },
     },
 }));
 
@@ -157,6 +170,8 @@ const CompanyList = () => {
     const [modifyData, setModifyData] = React.useState(null);
     const [openModifyCompany, setOpenModifyCompany] = React.useState(false);
     const [openRegisterCompany, setOpenRegisterCompany] = React.useState(false);
+
+    const [searchParam, setSearchParam] = useState(null);
 
     const handleOpenModifyCompany = () => {
         setOpenModifyCompany(true);
@@ -263,9 +278,20 @@ const CompanyList = () => {
         }
         console.log(">>>>>> get Page Data: rows ", rowsPerPage, ", offset ", offset,
             ", orderBy ", orderBy, ", order ", order);
-        dispatch(getCompanyList({
-            rows: rowsPerPage, offset, orderBy, order,
-        }));
+        if (searchParam !== null) {
+            dispatch(getCompanyListWithSearchParam({
+                rows: rowsPerPage, offset, orderBy, order, searchParam,
+            }));
+        } else {
+            dispatch(getCompanyList({
+                rows: rowsPerPage, offset, orderBy, order,
+            }));
+        }
+    };
+
+    const handleSubmitSearch = (params) => {
+        console.log("handleSubmitSearch ", params);
+        setSearchParam(params);
     };
 
     const deleteCompanies = async (companies) => {
@@ -404,6 +430,11 @@ const CompanyList = () => {
         getPageData();
     }, [rowsPerPage, pageBeginRow, orderBy, order]);
 
+    useEffect(() => {
+        console.log("useEffect: searchParam ", searchParam);
+        getPageData();
+    }, [searchParam]);
+
     /** Pagination */
     const paginationBar = (
         <TablePagination
@@ -467,23 +498,45 @@ const CompanyList = () => {
         const address = getAddress(row);
         const cellClassName = "cb-material-table__cell";
         const cellIcon = isSelected ? "cb-material-table__cell-right" : cellClassName;
+        const [checkboxColor, setCheckboxColor] = useState('');
         return (
             <React.Fragment>
                 <TableRow
                     hover
                     // className="cb-material-table__row"
-                    className={classes.row}
+                    className={classes.rowCss}
                     role="checkbox"
-                    onClick={() => setOpenCollapse(!openCollapse)}
                     aria-checked={isSelected}
                     selected={isSelected}
+                    onClick={() => setOpenCollapse(!openCollapse)}
+                    onMouseOver={() => {
+                        if (isSelected === false) {
+                            setCheckboxColor('#737883');
+                        }
+                    }}
+                    onFocus={() => {
+                        if (isSelected === false) {
+                            setCheckboxColor('#737883');
+                        }
+                    }}
+                    onMouseLeave={() => {
+                        if (isSelected === false) {
+                            setCheckboxColor('#dddddd');
+                        }
+                    }}
                 >
                     <TableCell
                         className={cellClassName}
                         padding="checkbox"
                         onClick={event => handleClick(event, row.idx)}
                     >
-                        <Checkbox checked={isSelected} className="cb-material-table__checkbox" />
+                        <Checkbox
+                            checked={isSelected}
+                            className="cb-material-table__checkbox"
+                            style={{
+                                color: `${checkboxColor}`,
+                            }}
+                        />
 
                     </TableCell>
                     <TableCell
@@ -641,9 +694,15 @@ const CompanyList = () => {
                         onRequestSort={handleRequestSort}
                         handleRefresh={handleRefresh}
                         rows={headRows}
-                        toolbarTitle="고객사 리스트"
                         handleOpen={handleOpenRegisterCompany}
                         contents="고객사"
+                        handleSubmitSearch={handleSubmitSearch}
+                        count={totalCount}
+                        rowsPerPage={rowsPerPage}
+                        page={currentPage}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                        rowsPerPageOptions={displayRowsList}
                     />
                     <div className="cb-material-table__wrap">
                         <TableContainer>
@@ -671,7 +730,7 @@ const CompanyList = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                        {paginationBar}
+                        {/*{paginationBar}*/}
                         <FormControlLabel
                             className="cb-material-table__padding"
                             control={<Switch checked={dense} onChange={handleChangeDense} />}

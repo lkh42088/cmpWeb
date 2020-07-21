@@ -2,12 +2,15 @@ import {List, Map} from "immutable";
 import {handleActions} from "redux-actions";
 import {
     GET_COMPANY_LIST_SUCCESS,
+    GET_COMPANY_LIST_FAILURE,
     GET_COMPANIES_BY_NAME_SUCCESS,
     GET_COMPANIES_BY_NAME_FAILURE,
     GET_COMPANIES_SUCCESS,
     GET_COMPANIES_FAILURE,
     GET_USERS_BY_COMPANY_SUCCESS,
     GET_USERS_BY_COMPANY_FAILURE,
+    GET_COMPANY_LIST_WITH_SEARCH_PARAM_SUCCESS,
+    GET_COMPANY_LIST_WITH_SEARCH_PARAM_FAILURE,
 } from "../actions/companiesActions";
 
 const initialState = {
@@ -44,6 +47,11 @@ const companiesReducer = handleActions(
     {
         /** get companies List */
         [GET_COMPANY_LIST_SUCCESS]: (state, action) => ({
+            ...state,
+            data: action.payload.data,
+            page: action.payload.page,
+        }),
+        [GET_COMPANY_LIST_WITH_SEARCH_PARAM_SUCCESS]: (state, action) => ({
             ...state,
             data: action.payload.data,
             page: action.payload.page,
