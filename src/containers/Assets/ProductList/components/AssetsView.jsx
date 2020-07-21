@@ -437,7 +437,7 @@ class AssetsView extends PureComponent {
         let dpIpSliceStr;
         let splaSliceStrArray;
         let dpSplaSliceStr;
-        let outFlagStr;
+        let outFlagStr = "";
         let componentOutFlag;
 
         if (outFlag === true) {
@@ -453,7 +453,7 @@ class AssetsView extends PureComponent {
                     반입
             </span>
             );
-        } else {
+        } else if (outFlag === false) {
             outFlagStr = (
                 <span className="text_cor_accent font-weight-bold">운영장비</span>
             );

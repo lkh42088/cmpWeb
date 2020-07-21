@@ -7,12 +7,6 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 class IntervalDatePickerField extends PureComponent {
-    static propTypes = {
-        onChange: PropTypes.func.isRequired,
-        // eslint-disable-next-line react/require-default-props
-        value: PropTypes.string,
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -23,22 +17,7 @@ class IntervalDatePickerField extends PureComponent {
         this.handleChange = this.handleChange.bind(this);
     }
 
-
-    componentDidMount() {
-        const {
-            rentDate,
-        } = this.props;
-        const {
-            startDate, endDate,
-        } = this.state;
-
-        console.log("componentDidMount start : ", rentDate);
-    }
-
     static getDerivedStateFromProps(nextProps, prevState) {
-        // 여기서는 setState 를 하는 것이 아니라
-        // 특정 props 가 바뀔 때 설정하고 설정하고 싶은 state 값을 리턴하는 형태로
-        // 사용됩니다.
         if (nextProps.value !== prevState.value && prevState.earlyFlag === true) {
             if (nextProps.value !== undefined && nextProps.value !== "|"
                 && nextProps.value !== "" && typeof nextProps.value === "string") {
@@ -77,6 +56,8 @@ class IntervalDatePickerField extends PureComponent {
     render() {
         const {startDate, endDate} = this.state;
         const {value} = this.props;
+
+        console.log("★★★★★ Data;.......value : ", value);
 
         return (
             <div className="date-picker date-picker--interval">

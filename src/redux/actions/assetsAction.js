@@ -240,7 +240,8 @@ export const fetchPostSearchDevice = (assetState, dispatchVal) => async (dispatc
         let postJsonData = JSON.stringify(dispatchVal);
         const orderBy = 'DeviceCode';
         const order = 1;
-        const rowsPerPage = 10;
+        /*const rowsPerPage = 10;*/
+        const {rowsPerPage} = assetState.apiPageRd;
         const offsetPage = 0;
 
         // v1/search/devices/:type/:outFlag/:row/:page/:order/:dir/:offsetPage
