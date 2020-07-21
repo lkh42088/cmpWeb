@@ -1,37 +1,103 @@
 //font-family [2020-06-08 byeonghwa jung]
-@font-face { font-family: 'Nanum BarunGothic'; src: url(../fonts/Nanum/BARUNGOTHIC/NanumBarunGothic.ttf) format('truetype'); }
-@font-face { font-family: 'Nanum BarunGothic Bold'; src: url(../fonts/Nanum/BARUNGOTHIC/NanumBarunGothicBold.ttf) format('truetype'); }
-@font-face { font-family: 'Nanum BarunGothic Light'; src: url(../fonts/Nanum/BARUNGOTHIC/NanumBarunGothicLight.ttf) format('truetype'); }
-@font-face { font-family: 'Nanum BarunGothic Ultra Light'; src: url(../fonts/Nanum/BARUNGOTHIC/NanumBarunGothicUltraLight.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum BarunGothic'; src: url(fonts/Nanum/BARUNGOTHIC/NanumBarunGothic.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum BarunGothic Bold'; src: url(fonts/Nanum/BARUNGOTHIC/NanumBarunGothicBold.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum BarunGothic Light'; src: url(fonts/Nanum/BARUNGOTHIC/NanumBarunGothicLight.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum BarunGothic Ultra Light'; src: url(fonts/Nanum/BARUNGOTHIC/NanumBarunGothicUltraLight.ttf) format('truetype'); }
 
-@font-face { font-family: 'Nanum BarunPenR'; src: url(../fonts/Nanum/BARUNPEN/NanumBarunpenR.ttf) format('truetype'); }
-@font-face { font-family: 'Nanum BarunPenB'; src: url(../fonts/Nanum/BARUNPEN/NanumBarunpenB.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum BarunPenR'; src: url(fonts/Nanum/BARUNPEN/NanumBarunpenR.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum BarunPenB'; src: url(fonts/Nanum/BARUNPEN/NanumBarunpenB.ttf) format('truetype'); }
 
-@font-face { font-family: 'Nanum Gothic'; src: url(../fonts/Nanum/GOTHIC/NanumGothic.ttf) format('truetype'); }
-@font-face { font-family: 'Nanum Gothic Bold'; src: url(../fonts/Nanum/GOTHIC/NanumGothicBold.ttf) format('truetype'); }
-@font-face { font-family: 'Nanum Gothic Extra Bold'; src: url(../fonts/Nanum/GOTHIC/NanumGothicExtraBold.ttf) format('truetype'); }
-@font-face { font-family: 'Nanum Gothic Light'; src: url(../fonts/Nanum/GOTHIC/NanumGothicLight.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Gothic'; src: url(fonts/Nanum/GOTHIC/NanumGothic.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Gothic Bold'; src: url(fonts/Nanum/GOTHIC/NanumGothicBold.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Gothic Extra Bold'; src: url(fonts/Nanum/GOTHIC/NanumGothicExtraBold.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Gothic Light'; src: url(fonts/Nanum/GOTHIC/NanumGothicLight.ttf) format('truetype'); }
 
-@font-face { font-family: 'Nanum Myeongjo'; src: url(../fonts/Nanum/MYUNGJO/NanumMyeongjo.ttf) format('truetype'); }
-@font-face { font-family: 'Nanum Myeongjo Bold'; src: url(../fonts/Nanum/MYUNGJO/NanumMyeongjoBold.ttf) format('truetype'); }
-@font-face { font-family: 'Nanum Myeongjo Extra Bold'; src: url(../fonts/Nanum/MYUNGJO/NanumMyeongjoExtraBold.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Myeongjo'; src: url(fonts/Nanum/MYUNGJO/NanumMyeongjo.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Myeongjo Bold'; src: url(fonts/Nanum/MYUNGJO/NanumMyeongjoBold.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Myeongjo Extra Bold'; src: url(fonts/Nanum/MYUNGJO/NanumMyeongjoExtraBold.ttf) format('truetype'); }
 
-@font-face { font-family: 'Nanum Brush'; src: url(../fonts/Nanum/SONGEULSSI/NanumBrush.ttf) format('truetype'); }
-@font-face { font-family: 'Nanum Pen'; src: url(../fonts/Nanum/SONGEULSSI/NanumPen.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Brush'; src: url(fonts/Nanum/SONGEULSSI/NanumBrush.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Pen'; src: url(fonts/Nanum/SONGEULSSI/NanumPen.ttf) format('truetype'); }
 
-@font-face { font-family: 'Nanum Square acB'; src: url(../fonts/Nanum/SQUARE/NanumSquare_acB.ttf) format('truetype'); }
-@font-face { font-family: 'Nanum Square acEB'; src: url(../fonts/Nanum/SQUARE/NanumSquare_acEB.ttf) format('truetype'); }
-@font-face { font-family: 'Nanum Square acL'; src: url(../fonts/Nanum/SQUARE/NanumSquare_acL.ttf) format('truetype'); }
-@font-face { font-family: 'Nanum Square acR'; src: url(../fonts/Nanum/SQUARE/NanumSquare_acR.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Square acB'; src: url(fonts/Nanum/SQUARE/NanumSquare_acB.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Square acEB'; src: url(fonts/Nanum/SQUARE/NanumSquare_acEB.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Square acL'; src: url(fonts/Nanum/SQUARE/NanumSquare_acL.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Square acR'; src: url(fonts/Nanum/SQUARE/NanumSquare_acR.ttf) format('truetype'); }
 
-@font-face { font-family: 'Nanum Square RoundB'; src: url(../fonts/Nanum/SQUARE_ROUND/NanumSquareRoundB.ttf) format('truetype'); }
-@font-face { font-family: 'Nanum Square RoundEB'; src: url(../fonts/Nanum/SQUARE_ROUND/NanumSquareRoundB.ttf) format('truetype'); }
-@font-face { font-family: 'Nanum Square RoundL'; src: url(../fonts/Nanum/SQUARE_ROUND/NanumSquareRoundB.ttf) format('truetype'); }
-@font-face { font-family: 'Nanum Square RoundR'; src: url(../fonts/Nanum/SQUARE_ROUND/NanumSquareRoundB.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Square RoundB'; src: url(fonts/Nanum/SQUARE_ROUND/NanumSquareRoundB.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Square RoundEB'; src: url(fonts/Nanum/SQUARE_ROUND/NanumSquareRoundB.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Square RoundL'; src: url(fonts/Nanum/SQUARE_ROUND/NanumSquareRoundB.ttf) format('truetype'); }
+@font-face { font-family: 'Nanum Square RoundR'; src: url(fonts/Nanum/SQUARE_ROUND/NanumSquareRoundB.ttf) format('truetype'); }
 
 
 // font-family [2020-06-10 LKH]
-@font-face { font-family: 'Black HanSans'; src: url(../fonts/Black_Han_Sans/BlackHanSans-Regular.ttf) format('truetype'); }
-@font-face { font-family: 'GmarketSansTTFBold'; src: url(../fonts/GmarketSansTTF/GmarketSansTTFBold.ttf) format('truetype'); }
-@font-face { font-family: 'GmarketSansTTFLight'; src: url(../fonts/GmarketSansTTF/GmarketSansTTFLight.ttf) format('truetype'); }
-@font-face { font-family: 'GmarketSansTTFMedium'; src: url(../fonts/GmarketSansTTF/GmarketSansTTFMedium.ttf) format('truetype'); }
+@font-face { font-family: 'Black HanSans'; src: url(fonts/Black_Han_Sans/BlackHanSans-Regular.ttf) format('truetype'); }
+
+@font-face { font-family: 'GmarketSansTTFBold'; src: url(fonts/GmarketSansTTF/GmarketSansTTFBold.ttf) format('truetype'); }
+@font-face { font-family: 'GmarketSansTTFLight'; src: url(fonts/GmarketSansTTF/GmarketSansTTFLight.ttf) format('truetype'); }
+@font-face { font-family: 'GmarketSansTTFMedium'; src: url(fonts/GmarketSansTTF/GmarketSansTTFMedium.ttf) format('truetype'); }
+
+// Add google font [21July2020.khlee]
+@font-face { font-family: 'DoHyeon R'; src: url(fonts/Google/DoHyeon-Regular.ttf) format('truetype'); }
+
+@font-face { font-family: 'GothicA1 Black'; src: url(fonts/Google/GothicA1-Black.ttf) format('truetype'); }
+@font-face { font-family: 'GothicA1 Bold'; src: url(fonts/Google/GothicA1-Bold.ttf) format('truetype'); }
+@font-face { font-family: 'GothicA1 Extra Bold'; src: url(fonts/Google/GothicA1-ExtraBold.ttf) format('truetype'); }
+@font-face { font-family: 'GothicA1 Extra Light'; src: url(fonts/Google/GothicA1-ExtraLight.ttf) format('truetype'); }
+@font-face { font-family: 'GothicA1 Light'; src: url(fonts/Google/GothicA1-Light.ttf) format('truetype'); }
+@font-face { font-family: 'GothicA1 Medium'; src: url(fonts/Google/GothicA1-Medium.ttf) format('truetype'); }
+@font-face { font-family: 'GothicA1 R'; src: url(fonts/Google/GothicA1-Regular.ttf) format('truetype'); }
+@font-face { font-family: 'GothicA1 SemiBold'; src: url(fonts/Google/GothicA1-SemiBold.ttf) format('truetype'); }
+@font-face { font-family: 'GothicA1 Thin'; src: url(fonts/Google/GothicA1-Thin.ttf) format('truetype'); }
+
+@font-face { font-family: 'Noto Sans KR Black'; src: url(fonts/Google/NotoSansKR-Black.otf) format('opentype'); }
+@font-face { font-family: 'Noto Sans KR Bold'; src: url(fonts/Google/NotoSansKR-Bold.otf) format('opentype'); }
+@font-face { font-family: 'Noto Sans KR Light'; src: url(fonts/Google/NotoSansKR-Light.otf) format('opentype'); }
+@font-face { font-family: 'Noto Sans KR Medium'; src: url(fonts/Google/NotoSansKR-Medium.otf) format('opentype'); }
+@font-face { font-family: 'Noto Sans KR R'; src: url(fonts/Google/NotoSansKR-Regular.otf) format('opentype'); }
+@font-face { font-family: 'Noto Sans KR Thin'; src: url(fonts/Google/NotoSansKR-Thin.otf) format('opentype'); }
+
+@font-face { font-family: 'Noto Serif KR Black'; src: url(fonts/Google/NotoSerifKR-Black.otf) format('opentype'); }
+@font-face { font-family: 'Noto Serif KR Bold'; src: url(fonts/Google/NotoSerifKR-Bold.otf) format('opentype'); }
+@font-face { font-family: 'Noto Serif KR Extra Light'; src: url(fonts/Google/NotoSerifKR-ExtraLight.otf) format('opentype'); }
+@font-face { font-family: 'Noto Serif KR Light'; src: url(fonts/Google/NotoSerifKR-Light.otf) format('opentype'); }
+@font-face { font-family: 'Noto Serif KR Medium'; src: url(fonts/Google/NotoSerifKR-Medium.otf) format('opentype'); }
+@font-face { font-family: 'Noto Serif KR R'; src: url(fonts/Google/NotoSerifKR-Regular.otf) format('opentype'); }
+@font-face { font-family: 'Noto Serif KR SemiBold'; src: url(fonts/Google/NotoSerifKR-SemiBold.otf) format('opentype'); }
+
+@font-face { font-family: 'SongMyung R'; src: url(fonts/Google/SongMyung-Regular.ttf) format('truetype'); }
+
+@font-face { font-family: 'Binggrae Taom'; src: url(fonts/Binggrae/BinggraeTaom.ttf) format('truetype'); }
+@font-face { font-family: 'Binggrae Taom Bold'; src: url(fonts/Binggrae/BinggraeTaom-Bold.ttf) format('truetype'); }
+
+@font-face { font-family: 'BM HANNA 11'; src: url(fonts/BM/BMHANNA_11yrs_ttf.ttf) format('truetype'); }
+
+@font-face { font-family: 'Godo Rounded L'; src: url(fonts/Godo/godoRounded-L.ttf) format('truetype'); }
+@font-face { font-family: 'Godo Rounded R'; src: url(fonts/Godo/godoRounded-R.ttf) format('truetype'); }
+
+@font-face { font-family: 'Iropke BatangM'; src: url(fonts/IropkeBatangM/IropkeBatangM.eot) format('embedded-opentype'); }
+
+@font-face { font-family: 'Nexon Gothic'; src: url(fonts/NEXON/NEXON-Lv1-Gothic-OTF.eot) format('embedded-opentype'); }
+@font-face { font-family: 'Nexon Gothic Bold'; src: url(fonts/NEXON/NEXON-Lv1-Gothic-OTF-Bold.eot) format('embedded-opentype'); }
+@font-face { font-family: 'Nexon Gothic Light'; src: url(fonts/NEXON/NEXON-Lv1-Gothic-OTF-Light.eot) format('embedded-opentype'); }
+@font-face { font-family: 'Nexon Gothic Low'; src: url(fonts/NEXON/NEXON-Lv1-Gothic-Low-OTF.woff) format('woff'); }
+@font-face { font-family: 'Nexon Gothic Low Bold'; src: url(fonts/NEXON/NEXON-Lv1-Gothic-Low-OTF-Bold.woff) format('woff'); }
+@font-face { font-family: 'Nexon Gothic Low Light'; src: url(fonts/NEXON/NEXON-Lv1-Gothic-Low-OTF-Light.woff) format('woff'); }
+
+@font-face { font-family: 'Youth'; src: url(fonts/Youth_ttf/Youth.ttf) format('truetype'); }
+
+@font-face { font-family: 'HS Spring'; src: url(fonts/Spring/HS-spring-2.0.ttf) format('truetype'); }
+
+@font-face { font-family: 'Source Han Serif KR Bold'; src: url(fonts/Source-han-serif/SourceHanSerifKR-Bold.otf) format('opentype'); }
+@font-face { font-family: 'Source Han Serif KR Extra Light'; src: url(fonts/Source-han-serif/SourceHanSerifKR-ExtraLight.otf) format('opentype'); }
+@font-face { font-family: 'Source Han Serif KR Heavy'; src: url(fonts/Source-han-serif/SourceHanSerifKR-Heavy.otf) format('opentype'); }
+@font-face { font-family: 'Source Han Serif KR Light'; src: url(fonts/Source-han-serif/SourceHanSerifKR-Light.otf) format('opentype'); }
+@font-face { font-family: 'Source Han Serif KR Medium'; src: url(fonts/Source-han-serif/SourceHanSerifKR-Medium.otf) format('opentype'); }
+@font-face { font-family: 'Source Han Serif KR R'; src: url(fonts/Source-han-serif/SourceHanSerifKR-Regular.otf) format('opentype'); }
+@font-face { font-family: 'Source Han Serif KR SemiBold'; src: url(fonts/Source-han-serif/SourceHanSerifKR-SemiBold.otf) format('opentype'); }
+
+@font-face { font-family: 'Seoul Namsan B'; src: url(fonts/Seoul/SeoulNamsanB.ttf) format('truetype'); }
+@font-face { font-family: 'Seoul Namsan EB'; src: url(fonts/Seoul/SeoulNamsanEB.ttf) format('truetype'); }
+@font-face { font-family: 'Seoul Namsan L'; src: url(fonts/Seoul/SeoulNamsanL.ttf) format('truetype'); }
+@font-face { font-family: 'Seoul Namsan M'; src: url(fonts/Seoul/SeoulNamsanM.ttf) format('truetype'); }
+@font-face { font-family: 'Seoul Namsanvert'; src: url(fonts/Seoul/SeoulNamsanvert.ttf) format('truetype'); }

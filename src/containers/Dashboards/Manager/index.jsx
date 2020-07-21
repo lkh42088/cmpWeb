@@ -19,7 +19,7 @@ import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
 
 const useStyles = makeStyles(theme => ({
     root: {
-        fontFamily: "Nanum Gothic Extra Bold",
+        fontFamily: "Noto Sans KR R",
         fontSize: 10,
         fontWeight: "revert",
         flexGrow: 1,
