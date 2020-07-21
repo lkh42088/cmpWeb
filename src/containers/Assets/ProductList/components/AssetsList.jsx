@@ -31,6 +31,8 @@ import {
 import AssetsHead from './AssetsHead';
 
 /*order by 사용 함수*/
+
+/*
 function getSorting(order, orderBy) {
     if (order === 'desc') {
         return (a, b) => {
@@ -53,6 +55,7 @@ function getSorting(order, orderBy) {
         return 0;
     };
 }
+*/
 
 
 function textLengthOverCut(txt, len, lastTxt) {
@@ -312,11 +315,11 @@ export default class AssetsList extends PureComponent {
                 deviceType: assetState.deviceType,
                 orderBy,
                 order,
-                rowsPerPage,
+                rowsPerPage: assetState.apiPageRd.rowsPerPage,
                 showPage: pageCnt - 1,
-                overNum: rowsPerPage,
+                overNum: assetState.apiPageRd.rowsPerPage,
                 outFlag: assetState.deviceOutFlag,
-                offsetPage: (rowsPerPage * ((pageCnt - 1) - 1)),
+                offsetPage: (assetState.apiPageRd.rowsPerPage * ((pageCnt - 1) - 1)),
             });
             dispatch(setDeviceSelected(''));
             dispatch(fetchPostsCheckCount(assetState, dispatchVal));
@@ -329,7 +332,10 @@ export default class AssetsList extends PureComponent {
             orderBy, rowsPerPage, order, showPage,
         } = this.state;
 
-        const pageCount = rowsPerPage * (assetState.page.page);
+        console.log("💋💋rowsPerPage : ", rowsPerPage);
+        console.log("💋💋💋assetState.apiPageRd.rowsPerPage : ", assetState.apiPageRd.rowsPerPage);
+
+        const pageCount = assetState.apiPageRd.rowsPerPage * (assetState.page.page);
 
         if (pageCount !== assetState.page.count && pageCount < assetState.page.count) {
             this.setState({
@@ -342,11 +348,11 @@ export default class AssetsList extends PureComponent {
                 deviceType: assetState.deviceType,
                 orderBy,
                 order,
-                rowsPerPage,
+                rowsPerPage: assetState.apiPageRd.rowsPerPage,
                 showPage: assetState.page.page + 1,
-                overNum: rowsPerPage,
+                overNum: assetState.apiPageRd.rowsPerPage,
                 outFlag: assetState.deviceOutFlag,
-                offsetPage: (rowsPerPage * ((assetState.page.page + 1) - 1)),
+                offsetPage: (assetState.apiPageRd.rowsPerPage * ((assetState.page.page + 1) - 1)),
             });
 
             dispatch(setDeviceSelected(''));
@@ -359,11 +365,18 @@ export default class AssetsList extends PureComponent {
         const {
             orderBy, rowsPerPage, order,
         } = this.state;
+        let eventVal;
+
+        if (typeof event === "object") {
+            eventVal = Number(event.target.value);
+        } else {
+            eventVal = Number(event);
+        }
 
         this.setState({
             page: 0,
             showPage: 1,
-            rowsPerPage: Number(event.target.value),
+            rowsPerPage: eventVal,
             pageNoNum: 0,
         });
 
@@ -371,23 +384,23 @@ export default class AssetsList extends PureComponent {
             deviceType: assetState.deviceType,
             orderBy,
             order,
-            rowsPerPage: Number(event.target.value),
+            rowsPerPage: eventVal,
             page: 0,
             showPage: 1,
             outFlag: assetState.deviceOutFlag,
-            offsetPage: (Number(event.target.value) * (1 - 1)),
+            offsetPage: (eventVal * (1 - 1)),
         });
         dispatch(fetchPostsCheckCount(assetState, dispatchVal));
     };
 
     isSelected = (id) => {
-        const { selected } = this.state;
+        const {selected} = this.state;
         return !!selected.get(id);
     };
 
     toggle = (e) => {
         //this.setState(prevState => ({isOpenView: !prevState.isOpenView}));
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         dispatch(setAssetsPage('view'));
 
         const stateVal = ({
@@ -401,7 +414,7 @@ export default class AssetsList extends PureComponent {
     };
 
     setDeviceIdx = (event, deviceCode) => {
-        const { dispatch, assetState } = this.props;
+        const {dispatch, assetState} = this.props;
 
         dispatch(getDeviceByIdx(deviceCode, assetState.deviceType));
         dispatch(getDeviceOriByIdx(deviceCode, assetState.deviceType));
@@ -496,7 +509,8 @@ export default class AssetsList extends PureComponent {
                             <Fragment>
                                 {assetState.devices
                                     /*.sort(getSorting(order, orderBy))*/
-                                    .slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)
+                                    .slice(page * assetState.apiPageRd.rowsPerPage,
+                                        (page * assetState.apiPageRd.rowsPerPage) + assetState.apiPageRd.rowsPerPage)
                                     .map((d, index) => {
                                         let isSelected = this.isSelected(d.deviceCode);
                                         let ipSliceStr;
@@ -688,7 +702,7 @@ export default class AssetsList extends PureComponent {
                                     onRequestSort={this.handleRequestSort}
                                     rowCount={Number(assetState.devices.length)}
                                     selectedSize={Number(assetState.deviceSelected.size)}
-                                    rowsPerPage={rowsPerPage}
+                                    rowsPerPage={assetState.apiPageRd.rowsPerPage}
                                     assetState={assetState}
                                     dispatch={dispatch}
                                 />
@@ -706,7 +720,7 @@ export default class AssetsList extends PureComponent {
                                 component="div"
                                 className="material-table__pagination"
                                 count={Number(assetState.page.count)}
-                                rowsPerPage={rowsPerPage}
+                                rowsPerPage={assetState.apiPageRd.rowsPerPage}
                                 page={pageNoNum}
                                 backIconButtonProps={{
                                     'aria-label': 'Previous Page',
@@ -719,7 +733,7 @@ export default class AssetsList extends PureComponent {
                                     disabled: false,
                                     onClick: this.handleChangePage,
                                 }}
-                                /*onChangePage={this.handleChangePage}*/
+                                onChangePage={this.handleChangePage}
                                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
                                 rowsPerPageOptions={[10, 50, 100]}
                                 dir="ltr"

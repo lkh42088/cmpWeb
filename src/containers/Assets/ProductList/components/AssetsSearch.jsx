@@ -31,9 +31,9 @@ const AssetsSearch = ({assetState, user, theme}) => {
     const [device, setDevice] = React.useState({
         outFlag: assetState.deviceOutFlag,
         deviceCode: '',
-        operatingFlag: true,
-        carryingFlag: false,
-        rentPeriod: false,
+        operatingFlag: assetState.searchRd.operatingFlag,
+        carryingFlag: assetState.searchRd.carryingFlag,
+        rentPeriod: assetState.searchRd.rentPeriod,
     });
 
     const [modal, setModal] = React.useState({
@@ -407,6 +407,8 @@ const AssetsSearch = ({assetState, user, theme}) => {
 
     const setToggleFlag = (e) => {
         let postArray = {};
+        console.log("setToggleFlag name : ", e.target.name);
+        console.log("setToggleFlag checked : ", e.target.checked);
 
         postArray[e.target.name] = e.target.checked;
 
@@ -426,6 +428,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
 
     const setToggleFlagText = (val) => {
         let postArray = {};
+        console.log("setToggleFlagText : ", val);
         /*if (val === "1") { // 운영장비 클릭
             postArray.operatingFlag = !device.operatingFlag;
 
@@ -715,8 +718,8 @@ const AssetsSearch = ({assetState, user, theme}) => {
                             <label htmlFor="rentPeriod" className="search_checkboxText">
                                     <span
                                         role="button" tabIndex="0"
-                                        onClick={event => setToggleFlagText('0')}
-                                        onKeyDown={event => setToggleFlagText('0')}>
+                                        onClick={event => setToggleFlagText('2')}
+                                        onKeyDown={event => setToggleFlagText('2')}>
                                         임대 만료예정 (한달기준)&nbsp;</span>
                             </label>
                             <ButtonToolbar>
