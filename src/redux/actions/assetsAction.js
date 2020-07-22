@@ -257,7 +257,7 @@ export const fetchPostSearchDevice = (assetState, dispatchVal) => async (dispatc
                         // eslint-disable-next-line no-return-assign
                         .map(c => (
                             /*tempCustomer = `${tempCustomer},${c.userId}`*/
-                            tempCustomer.push(`'${c.userId}'`)
+                            tempCustomer.push(`'${c.cpUserId}'`)
                         ));
 
                     dispatchVal = ({

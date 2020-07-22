@@ -59,12 +59,6 @@ class AssetsComment extends PureComponent {
     }
 
     static getDerivedStateFromProps = (nextProps, prevState) => {
-        /*console.log("nextProps : ", nextProps.assetState.stateVal);
-        console.log("type : ", nextProps.assetState.stateVal.type);
-        console.log("state : ", nextProps.assetState.stateVal.state);*/
-
-        //console.log("nextProps.assetState.stateVal : ", nextProps.assetState.stateVal);
-
         if (nextProps.assetState.stateVal.type === 'comment') {
             switch (nextProps.assetState.stateVal.state) {
                 case 'confirm':

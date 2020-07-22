@@ -81,6 +81,8 @@ export const initialState = {
         state: '',
     },
     searchRd: {
+        schSelect: '',
+        schText: '',
         customer: '',
         deviceCode: '',
         deviceType: '',

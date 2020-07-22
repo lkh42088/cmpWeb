@@ -3,16 +3,25 @@ import {
     Card, CardBody, Col, Row, Container, ButtonToolbar, Button, Modal,
 } from 'reactstrap';
 import {useDispatch, useSelector} from "react-redux";
+import {makeStyles} from '@material-ui/core/styles';
 
 import {Dialog} from "material-ui";
 import MagnifyIcon from "mdi-react/MagnifyIcon";
 import InsertInvitationIcon from '@material-ui/icons/InsertInvitation';
+import Grid from "@material-ui/core/Grid";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import InputAdornment from '@material-ui/core/InputAdornment';
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import InputIcon from "@material-ui/icons/Input";
 import LaunchIcon from "@material-ui/icons/Launch";
 import CreateIcon from "@material-ui/icons/Create";
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
+import TextField from '@material-ui/core/TextField';
 
 import {Field, reduxForm} from 'redux-form';
 import classNames from "classnames";
@@ -20,13 +29,45 @@ import moment from "moment";
 
 import {withTranslation} from 'react-i18next';
 import {
-    fetchPostsCheckCount, fetchPosts,
-    fetchPostSearchDevice, postDevice, postDeviceOutFlag, setDeviceSelected, setState,
+    fetchPostsCheckCount, fetchPosts, setState,
+    fetchPostSearchDevice, postDevice, postDeviceOutFlag, setDeviceSelected,
 } from "../../../../redux/actions/assetsAction";
 import AssetsWrite from "./AssetsWrite";
 
+const useStyles = makeStyles(theme => ({
+    button: {
+        display: 'block',
+        marginTop: theme.spacing(2),
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 100,
+        '& .MuiInputBase-root ': {
+            fontSize: 12,
+        },
+        '& .MuiFormLabel-root ': {
+            fontSize: 12,
+        },
+        '& .MuiInputBase-input ': {
+            fontSize: 12,
+        },
+    },
+    textField: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+        width: '25ch',
+        '& .MuiInputBase-root ': {
+            fontSize: 12,
+        },
+        '& .MuiFormLabel-root ': {
+            fontSize: 12,
+        },
+    },
+}));
+
 const AssetsSearch = ({assetState, user, theme}) => {
     const dispatch = useDispatch();
+    const classes = useStyles();
 
     const [device, setDevice] = React.useState({
         outFlag: assetState.deviceOutFlag,
@@ -49,13 +90,38 @@ const AssetsSearch = ({assetState, user, theme}) => {
         warringIcon: '',
     });
 
+    const [open, setOpen] = React.useState({
+        schSelectOpen: false,
+        typeOpen: false,
+        ownershipOpen: false,
+        ownershipDivOpen: false,
+        idcOpen: false,
+        manufactureOpen: false,
+    });
+
+    const [schValue, setSchValue] = React.useState({
+        schSelect: assetState.searchRd.schSelect,
+        schText: assetState.searchRd.schText,
+        deviceType: assetState.searchRd.deviceType,
+        ownership: assetState.searchRd.ownership,
+        ownershipDiv: assetState.searchRd.ownershipDiv,
+        idc: assetState.searchRd.idc,
+        manufacture: assetState.searchRd.manufacture,
+        /*
+                schSelect: '',
+                schText: '',
+                deviceType: '',
+                ownership: '',
+                ownershipDiv: '',
+                idc: '',
+                manufacture: '',*/
+    });
+
     const modalClass = classNames({
         'assets_write__modal-dialog': true,
         'assets_write__modal-dialog--colored': false,
         'assets_write__modal-dialog--header': false,
     });
-
-    //console.log("assetState .... : ", assetState.searchRd);
 
     const modalClose = (division) => {
         setModal({
@@ -71,17 +137,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
             modalOpenFlag: !modal.modalOpenFlag,
         });
     };
-
-    /*const warringToggle = (e) => {
-        const stateVal = ({
-            page: 'list',
-            type: 'device',
-            division: 'outFlag',
-            state: 'confirm',
-        });
-
-        dispatch(setState(stateVal));
-    };*/
 
     const toggleOutFlag = (val) => {
         let division = ',';
@@ -329,18 +384,38 @@ const AssetsSearch = ({assetState, user, theme}) => {
         toggle(); // modal close
     };
 
+    const onChangeSchText = (e) => {
+        console.log("e.... : ", e);
+        setSchValue({
+            ...schValue,
+            [e.target.name]: e.target.value,
+        });
+    };
+
     const onChangeCode = (e) => {
         let postArray = {};
         postArray[e.target.name] = e.target.value;
         postArray = ({
             ...device,
+            ...schValue,
             [e.target.name]: e.target.value,
         });
+
+        if (schValue.schText !== undefined || schValue.schText !== '') {
+            postArray[schValue.schSelect] = schValue.schText;
+        }
 
         setDevice({
             ...device,
             [e.target.name]: e.target.value,
         });
+
+        setSchValue({
+            ...schValue,
+            [e.target.name]: e.target.value,
+        });
+
+        console.log("🙉🙉🙉 postArray : ", postArray);
 
         dispatch(setDeviceSelected(''));
         dispatch(fetchPostSearchDevice(assetState, postArray));
@@ -352,6 +427,11 @@ const AssetsSearch = ({assetState, user, theme}) => {
                 ...device,
                 [e.target.value]: document.getElementsByName("schText")[0].value,
             });
+
+            setSchValue({
+                ...schValue,
+                schSelect: e.target.value,
+            });
         }
     };
 
@@ -361,17 +441,13 @@ const AssetsSearch = ({assetState, user, theme}) => {
         let postArray = {};
         let postDivision;
 
-        /*        console.log("onSearch : ", e);
-
-                e.preventDefault();*/
-
         if (schSelect === 'customer') {
             postDivision = 'deviceCode';
         } else if (schSelect === 'deviceCode') {
             postDivision = 'customer';
         }
 
-        if (schSelect === "0") {
+        if (schSelect === "0" || schSelect === "") {
             setModal({
                 ...modal,
                 modalWarring: !modal.modalWarring,
@@ -398,6 +474,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
                 [schSelect]: schText,
                 [postDivision]: '',
                 schText,
+                schSelect: schValue.schSelect,
             });
 
             dispatch(setDeviceSelected(''));
@@ -407,8 +484,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
 
     const setToggleFlag = (e) => {
         let postArray = {};
-        console.log("setToggleFlag name : ", e.target.name);
-        console.log("setToggleFlag checked : ", e.target.checked);
 
         postArray[e.target.name] = e.target.checked;
 
@@ -428,32 +503,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
 
     const setToggleFlagText = (val) => {
         let postArray = {};
-        console.log("setToggleFlagText : ", val);
-        /*if (val === "1") { // 운영장비 클릭
-            postArray.operatingFlag = !device.operatingFlag;
-
-            setDevice({
-                ...device,
-                operatingFlag: !device.operatingFlag,
-            });
-
-            postArray = ({
-                ...device,
-                operatingFlag: !device.operatingFlag,
-            });
-        } else { // 반출장비 클릭
-            postArray.carryingFlag = !device.carryingFlag;
-
-            setDevice({
-                ...device,
-                carryingFlag: !device.carryingFlag,
-            });
-
-            postArray = ({
-                ...device,
-                carryingFlag: !device.carryingFlag,
-            });
-        }*/
 
         switch (val) {
             case "1": // 운영장비 선택
@@ -505,34 +554,38 @@ const AssetsSearch = ({assetState, user, theme}) => {
         dispatch(fetchPostSearchDevice(assetState, postArray));
     };
 
-    // eslint-disable-next-line consistent-return
-   /* const setToggleRentPeriod = (period) => {
-        console.log("setToggleRentPeriod start");
-        const today = new Date();
-        let postArray = {};
-        console.log("11..... : ", moment(today).add(1, 'M').format("YYYYMMDD"));
+    const schHandleClose = (txt) => {
+        setOpen({
+            ...open,
+            [txt]: false,
+        });
+    };
 
+    const schHandleOpen = (txt) => {
+        setOpen({
+            ...open,
+            [txt]: true,
+        });
+    };
 
-        switch (period) {
-            case "30":
-                console.log("한달 기간 검색할거야??");
-                console.log("========================================");
-                dispatch(setDeviceSelected(''));
-                dispatch(fetchPostSearchDevice(assetState, postArray));
+    /*useEffect(() => {
+        console.log("😗😗😗😗😗😗😗 test useEffect... : ", assetState.searchRd);
+        setSchValue({
+            ...schValue,
+            schSelect: assetState.searchRd.schSelect,
+            schText: assetState.searchRd.schText,
+            deviceType: assetState.searchRd.deviceType,
+            ownership: assetState.searchRd.ownership,
+            ownershipDiv: assetState.searchRd.ownershipDiv,
+            idc: assetState.searchRd.idc,
+            manufacture: assetState.searchRd.manufacture,
+        });
+    }, []);*/
 
-                break;
-            case "-":
-                console.log("다른 기간일 수 도 있구!!");
-                break;
-            default:
-                break;
-        }
-    };*/
-
-    useEffect(() => {
+    /*useEffect(() => {
         document.getElementsByName("schSelect")[0].value = '0';
         document.getElementsByName("schText")[0].value = '';
-    }, [assetState.deviceType]);
+    }, [assetState.deviceType]);*/
 
     useEffect(() => {
         renderSwitch();
@@ -586,87 +639,272 @@ const AssetsSearch = ({assetState, user, theme}) => {
     return (
         <Card className="cb-card">
             <CardBody className="cb-card-body">
-                <Row style={{padding: 10}}>
+                <Row>
                     <Col sm={8} md={8} xs={8} xl={8} lg={8}>
                         {/*<Col mb={8}>*/}
                         <div className="search_card_body" style={{maxWidth: "100%"}}>
                             <div>
-                                <select name="schSelect" className="search_select"
-                                        onChange={onChangeSelect}>
-                                    <option value="0">:: SELECT ::</option>
-                                    <option value="deviceCode">장비코드</option>
-                                    <option value="customer">고객사</option>
-                                </select>
-                                &nbsp;&nbsp;
-                                <input placeholder="Search..." name="schText"
-                                       className="search_input"
-                                       onKeyDown={(event) => {
-                                           if (event.keyCode === 13) {
-                                               onSearch();
-                                           }
-                                       }}
-                                />
-                                <MagnifyIcon className="search_icon" role="button" tabIndex="0"
+
+                                {/*<MagnifyIcon className="search_icon" role="button" tabIndex="0"
                                              onClick={onSearch}
                                              onKeyDown={onSearch}/>
-                                &nbsp;&nbsp;
+                                &nbsp;&nbsp;*/}
                                 {
                                     assetState.codes.codeDeviceType !== undefined ? (
                                         <Fragment>
-                                            <select name="ownership" className="search_select"
+                                            <FormControl className={classes.formControl}>
+                                                <InputLabel id="type-select-label">장비구분</InputLabel>
+                                                <Select
+                                                    labelId="type-select-label"
+                                                    open={open.typeOpen}
+                                                    onClose={event => schHandleClose('typeOpen')}
+                                                    onOpen={event => schHandleOpen('typeOpen')}
+                                                    value={schValue.deviceType || ''}
                                                     onChange={onChangeCode}
-                                                    value={assetState.searchRd.ownership}>
-                                                <option value="0">:: 소유권 ::</option>
-                                                {
-                                                    assetState.codes.codeOwnership.map((d, index) => (
-                                                        <option key={d.codeId.toString()}
-                                                                value={d.codeId}>{d.name}</option>
-                                                    ))}
-                                            </select>
-                                            &nbsp;&nbsp;
-                                            <select name="ownershipDiv" className="search_select"
+                                                    name="deviceType">
+                                                    <MenuItem value="">
+                                                        <em>None</em>
+                                                    </MenuItem>
+                                                    {
+                                                        assetState.codes.codeDeviceType.map((d, index) => (
+                                                            <MenuItem key={d.codeId.toString()}
+                                                                      value={d.codeId.toString()}>{d.name}
+                                                            </MenuItem>
+                                                        ))}
+                                                </Select>
+                                            </FormControl>
+                                            <FormControl className={classes.formControl}>
+                                                <InputLabel id="ownership-select-label">소유권</InputLabel>
+                                                <Select
+                                                    labelId="ownership-select-label"
+                                                    open={open.ownershipOpen}
+                                                    onClose={event => schHandleClose('ownershipOpen')}
+                                                    onOpen={event => schHandleOpen('ownershipOpen')}
+                                                    value={schValue.ownership || ''}
                                                     onChange={onChangeCode}
-                                                    value={assetState.searchRd.ownershipDiv}>
-                                                <option value="0">:: 소유권구분 ::</option>
-                                                {
-                                                    assetState.codes.codeOwnershipDiv.map((d, index) => (
-                                                        <option key={d.codeId.toString()}
-                                                                value={d.codeId}>{d.name}</option>
-                                                    ))}
-                                            </select>
-                                            &nbsp;&nbsp;
-                                            <select name="idc" className="search_select"
+                                                    name="ownership">
+                                                    <MenuItem value="">
+                                                        <em>None</em>
+                                                    </MenuItem>
+                                                    {
+                                                        assetState.codes.codeOwnership.map((d, index) => (
+                                                            <MenuItem key={d.codeId.toString()}
+                                                                      value={d.codeId.toString()}>{d.name}
+                                                            </MenuItem>
+                                                        ))}
+                                                </Select>
+                                            </FormControl>
+                                            <FormControl className={classes.formControl}>
+                                                <InputLabel id="ownershipDiv-select-label">소유권구분</InputLabel>
+                                                <Select
+                                                    labelId="ownershipDiv-select-label"
+                                                    open={open.ownershipDivOpen}
+                                                    onClose={event => schHandleClose('ownershipDivOpen')}
+                                                    onOpen={event => schHandleOpen('ownershipDivOpen')}
+                                                    value={schValue.ownershipDiv || ''}
                                                     onChange={onChangeCode}
-                                                    value={assetState.searchRd.idc}>
-                                                <option value="0">:: IDC ::</option>
-                                                {
-                                                    assetState.codes.codeIdc.map((d, index) => (
-                                                        <option key={d.codeId.toString()}
-                                                                value={d.codeId}>{d.name}</option>
-                                                    ))}
-                                            </select>
-                                            &nbsp;&nbsp;
-                                            <select name="manufacture" className="search_select"
+                                                    name="ownershipDiv">
+                                                    <MenuItem value="">
+                                                        <em>None</em>
+                                                    </MenuItem>
+                                                    {
+                                                        assetState.codes.codeOwnershipDiv.map((d, index) => (
+                                                            <MenuItem key={d.codeId.toString()}
+                                                                      value={d.codeId.toString()}>{d.name}
+                                                            </MenuItem>
+                                                        ))}
+                                                </Select>
+                                            </FormControl>
+                                            <FormControl className={classes.formControl}>
+                                                <InputLabel id="idc-select-label">IDC</InputLabel>
+                                                <Select
+                                                    labelId="idc-select-label"
+                                                    open={open.idcOpen}
+                                                    onClose={event => schHandleClose('idcOpen')}
+                                                    onOpen={event => schHandleOpen('idcOpen')}
+                                                    value={schValue.idc || ''}
                                                     onChange={onChangeCode}
-                                                    value={assetState.searchRd.manufacture}>
-                                                <option value="0">:: 제조사 ::</option>
-                                                {
-                                                    assetState.codes.codeManufacture.map((d, index) => (
-                                                        <option key={d.codeId.toString()}
-                                                                value={d.codeId}>{d.name}</option>
-                                                    ))}
-                                            </select>
-                                            &nbsp;&nbsp;
-                                            <select name="deviceType" className="search_select"
+                                                    name="idc">
+                                                    <MenuItem value="">
+                                                        <em>None</em>
+                                                    </MenuItem>
+                                                    {
+                                                        assetState.codes.codeIdc.map((d, index) => (
+                                                            <MenuItem key={d.codeId.toString()}
+                                                                      value={d.codeId.toString()}>{d.name}
+                                                            </MenuItem>
+                                                        ))}
+                                                </Select>
+                                            </FormControl>
+                                            <FormControl className={classes.formControl}>
+                                                <InputLabel id="manufacture-select-label">제조사</InputLabel>
+                                                <Select
+                                                    labelId="manufacture-select-label"
+                                                    open={open.manufactureOpen}
+                                                    onClose={event => schHandleClose('manufactureOpen')}
+                                                    onOpen={event => schHandleOpen('manufactureOpen')}
+                                                    value={schValue.manufacture || ''}
                                                     onChange={onChangeCode}
-                                                    value={assetState.searchRd.deviceType}>
-                                                <option value="0">:: 장비구분 ::</option>
-                                                {
-                                                    assetState.codes.codeDeviceType.map((d, index) => (
-                                                        <option key={d.codeId.toString()}
-                                                                value={d.codeId}>{d.name}</option>
-                                                    ))}
-                                            </select>
+                                                    name="manufacture">
+                                                    <MenuItem value="">
+                                                        <em>None</em>
+                                                    </MenuItem>
+                                                    {
+                                                        assetState.codes.codeManufacture.map((d, index) => (
+                                                            <MenuItem key={d.codeId.toString()}
+                                                                      value={d.codeId.toString()}>{d.name}
+                                                            </MenuItem>
+                                                        ))}
+                                                </Select>
+                                            </FormControl>
+                                            {/*<TextField
+                                                label="text"
+                                                id="margin-dense"
+                                                style={{ margin: 11 }}
+                                                className={classes.textField}
+                                                helperText=""
+                                                margin="dense"
+                                                name="schText"
+                                                onKeyDown={(event) => {
+                                                    if (event.keyCode === 13) {
+                                                        onSearch();
+                                                    }
+                                                }}
+                                                value={schValue.schText || ''}
+                                                onChange={e => onChangeSchText(e)}
+                                            />*/}
+                                            {/*<MagnifyIcon className="search_icon" role="button" tabIndex="0"
+                                                         onClick={onSearch}
+                                                         onKeyDown={onSearch}/>
+                                            &nbsp;&nbsp;*/}
+
+                                            <FormControl className={classes.formControl}>
+                                                <InputLabel id="text-select-label">select</InputLabel>
+                                                <Select
+                                                    labelId="text-select-label"
+                                                    open={open.schSelectOpen}
+                                                    onClose={event => schHandleClose('schSelectOpen')}
+                                                    onOpen={event => schHandleOpen('schSelectOpen')}
+                                                    onChange={onChangeSelect}
+                                                    name="schSelect"
+                                                    value={schValue.schSelect || ''}>
+                                                    <MenuItem value="">
+                                                        <em>None</em>
+                                                    </MenuItem>
+                                                    <MenuItem value="deviceCode">장비코드</MenuItem>
+                                                    <MenuItem value="customer">고객사</MenuItem>
+                                                </Select>
+                                            </FormControl>
+                                            <TextField
+                                                id="input-with-icon-textfield"
+                                                label="TextField"
+                                                style={{margin: 8}}
+                                                className={classes.textField}
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment position="start">
+                                                            <MagnifyIcon className="search_icon"
+                                                                         role="button"
+                                                                         tabIndex="0"
+                                                                         onClick={onSearch}
+                                                                         onKeyDown={onSearch}/>
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                            />
+                                            {/*<Grid container alignItems="flex-end">
+                                                <FormControl className={classes.formControl}>
+                                                    <InputLabel id="text-select-label">select</InputLabel>
+                                                    <Select
+                                                        labelId="text-select-label"
+                                                        open={open.schSelectOpen}
+                                                        onClose={event => schHandleClose('schSelectOpen')}
+                                                        onOpen={event => schHandleOpen('schSelectOpen')}
+                                                        onChange={onChangeSelect}
+                                                        name="schSelect"
+                                                        value={schValue.schSelect || ''}>
+                                                        <MenuItem value="">
+                                                            <em>None</em>
+                                                        </MenuItem>
+                                                        <MenuItem value="deviceCode">장비코드</MenuItem>
+                                                        <MenuItem value="customer">고객사</MenuItem>
+                                                    </Select>
+                                                </FormControl>
+                                                <Grid item>
+                                                    <TextField
+                                                        className={classes.textField}
+                                                        style={{ margin: 8 }}
+                                                        id="input-with-icon-grid"
+                                                        label="text"
+                                                        name="schText"
+                                                        onKeyDown={(event) => {
+                                                            if (event.keyCode === 13) {
+                                                                onSearch();
+                                                            }
+                                                        }}
+                                                        value={schValue.schText || ''}
+                                                        onChange={e => onChangeSchText(e)}
+                                                    />
+                                                </Grid>
+                                                <Grid item>
+                                                    <MagnifyIcon className="search_icon"
+                                                                 style={{marginBottom: "10px"}}
+                                                                 role="button"
+                                                                 tabIndex="0"
+                                                                 onClick={onSearch}
+                                                                 onKeyDown={onSearch}/>
+                                                </Grid>
+                                            </Grid>*/}
+                                            <div className="search_card_body">
+                                                <input type="checkbox" name="operatingFlag"
+                                                       className="search_checkbox"
+                                                       checked={assetState.searchRd.operatingFlag}
+                                                       value={device.operatingFlag}
+                                                       onChange={setToggleFlag}/>&nbsp;
+                                                <label htmlFor="operatingFlag" className="search_checkboxText">
+                                                <span
+                                                    role="button" tabIndex="0"
+                                                    onClick={event => setToggleFlagText('1')}
+                                                    onKeyDown={event => setToggleFlagText('1')}>
+                                                    운영장비&nbsp;</span>
+                                                </label>
+                                                &nbsp;&nbsp;&nbsp;
+                                                <input type="checkbox" name="carryingFlag" className="search_checkbox"
+                                                       checked={assetState.searchRd.carryingFlag}
+                                                       value={device.carryingFlag}
+                                                       onChange={setToggleFlag}/>&nbsp;
+                                                <label htmlFor="carryingFlag" className="search_checkboxText">
+                                                <span
+                                                    role="button" tabIndex="0"
+                                                    onClick={event => setToggleFlagText('0')}
+                                                    onKeyDown={event => setToggleFlagText('0')}>
+                                                    반출장비&nbsp;</span>
+                                                </label>
+                                                &nbsp;&nbsp;&nbsp;
+                                                <input type="checkbox" name="rentPeriod" className="search_checkbox"
+                                                       checked={assetState.searchRd.rentPeriod}
+                                                       value={device.rentPeriod}
+                                                       onChange={setToggleFlag}/>&nbsp;
+                                                <label htmlFor="rentPeriod" className="search_checkboxText">
+                                                <span
+                                                    role="button" tabIndex="0"
+                                                    onClick={event => setToggleFlagText('2')}
+                                                    onKeyDown={event => setToggleFlagText('2')}>
+                                                    임대 만료예정 (한달기준)&nbsp;</span>
+                                                </label>
+                                                <span role="button" tabIndex="0"
+                                                      onClick={toggle} onKeyDown={toggle}>
+                                                        <CreateIcon fontSize="small"/>&nbsp;장비 등록&nbsp;&nbsp;</span>
+                                                {renderSwitch()}
+                                                {/*<ButtonToolbar>
+                                                    <div className="search_btn-text">
+                                                        <span role="button" tabIndex="0"
+                                                          onClick={toggle} onKeyDown={toggle}>
+                                                        <CreateIcon fontSize="small"/>&nbsp;장비 등록&nbsp;&nbsp;</span>
+                                                        {renderSwitch()}
+                                                    </div>
+                                                </ButtonToolbar>*/}
+                                            </div>
                                         </Fragment>
                                     ) : (
                                         <Fragment>
@@ -678,14 +916,13 @@ const AssetsSearch = ({assetState, user, theme}) => {
                         </div>
                     </Col>
                     {/*<Col sm={12} md={12} xs={12} xl={12} lg={12}>*/}
-                    <Col sm={4} md={4} xs={4} xl={4} lg={4}>
+                    <Col sm={4} md={4} xs={4} xl={4} lg={4}
+                         className="search-side-area">
                         {/*1 : true , 0 : false */}
                         {/*0 : 반입, 1 : 반출*/}
-                        <div className="search_card_body"
-                             style={{float: "right"}}>
+                        {/*<div className="search_card_body">
                             <input type="checkbox" name="operatingFlag"
                                    className="search_checkbox"
-                                /*checked={device.operatingFlag}*/
                                    checked={assetState.searchRd.operatingFlag}
                                    value={device.operatingFlag}
                                    onChange={setToggleFlag}/>&nbsp;
@@ -698,7 +935,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
                             </label>
                             &nbsp;&nbsp;&nbsp;
                             <input type="checkbox" name="carryingFlag" className="search_checkbox"
-                                /*checked={device.carryingFlag}*/
                                    checked={assetState.searchRd.carryingFlag}
                                    value={device.carryingFlag}
                                    onChange={setToggleFlag}/>&nbsp;
@@ -711,7 +947,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
                             </label>
                             &nbsp;&nbsp;&nbsp;
                             <input type="checkbox" name="rentPeriod" className="search_checkbox"
-                                /*checked={device.carryingFlag}*/
                                    checked={assetState.searchRd.rentPeriod}
                                    value={device.rentPeriod}
                                    onChange={setToggleFlag}/>&nbsp;
@@ -730,28 +965,19 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                     {renderSwitch()}
                                 </div>
                             </ButtonToolbar>
-                            {/*<ButtonToolbar>
-                                <div className="search_btn-text">
-                                    <span
-                                        role="button" tabIndex="0"
-                                        onClick={event => setToggleRentPeriod('30')}
-                                        onKeyDown={event => setToggleRentPeriod('30')}>
-                                                        &nbsp;<InsertInvitationIcon/>&nbsp;한달 기간 검색[개발중]</span>
-                                </div>
-                            </ButtonToolbar>*/}
-                            <Modal
-                                isOpen={modal.modalOpenFlag}
-                                modalClassName={theme.className === 'theme-dark' ? (
-                                    "ltr-support modal-class_dark"
-                                ) : (
-                                    "ltr-support modal-class_light"
-                                )}
-                                className={`${modalClass}`}>
-                                <AssetsWrite closeToggle={toggle} assetState={assetState} dispatch={dispatch}
-                                             onSubmit={handleSubmit}
-                                             theme={theme}/>
-                            </Modal>
-                        </div>
+                        </div>*/}
+                        <Modal
+                            isOpen={modal.modalOpenFlag}
+                            modalClassName={theme.className === 'theme-dark' ? (
+                                "ltr-support modal-class_dark"
+                            ) : (
+                                "ltr-support modal-class_light"
+                            )}
+                            className={`${modalClass}`}>
+                            <AssetsWrite closeToggle={toggle} assetState={assetState} dispatch={dispatch}
+                                         onSubmit={handleSubmit}
+                                         theme={theme}/>
+                        </Modal>
                     </Col>
                     {/*<Modal
                         isOpen={modal.modalWarring}

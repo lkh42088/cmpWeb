@@ -27,6 +27,7 @@ import {
     postDevice,
     setDeviceSelected, setAssetsPage, setApiPage, setState,
 } from '../../../../redux/actions/assetsAction';
+import * as common from "../../../../lib/common";
 
 import AssetsHead from './AssetsHead';
 
@@ -57,22 +58,7 @@ function getSorting(order, orderBy) {
 }
 */
 
-
-function textLengthOverCut(txt, len, lastTxt) {
-    if (len === "" || len === undefined) { // 기본값
-        len = 20;
-    }
-    if (lastTxt === "" || lastTxt === undefined) { // 기본값
-        lastTxt = "...";
-    }
-    if (txt.length > len) {
-        txt = txt.substr(0, len) + lastTxt;
-    }
-    return txt;
-}
-
 export default class AssetsList extends PureComponent {
-    //assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
     static propTypes = {
         // eslint-disable-next-line react/forbid-prop-types
         assetState: PropTypes.object.isRequired,
@@ -127,7 +113,7 @@ export default class AssetsList extends PureComponent {
     };*/
 
     handleSubmit = (values) => {
-        const {assetState, dispatch, user} = this.props;
+        const { assetState, dispatch, user } = this.props;
 
         let division = '|';
         let divisionCount = 0;
@@ -247,7 +233,7 @@ export default class AssetsList extends PureComponent {
     };
 
     handleRequestSort = (property, submitOrder) => {
-        const {assetState, dispatch} = this.props;
+        const { assetState, dispatch } = this.props;
         this.setState({
             order: submitOrder,
             orderBy: property,
@@ -257,7 +243,7 @@ export default class AssetsList extends PureComponent {
     };
 
     handleSelectAllClick = (event, checked) => {
-        const {assetState, dispatch} = this.props;
+        const { assetState, dispatch } = this.props;
         if (checked) {
             const newSelected = new Map();
             assetState.devices.map(n => newSelected.set(n.deviceCode, true));
@@ -271,8 +257,8 @@ export default class AssetsList extends PureComponent {
     };
 
     handleClick = (event, id) => {
-        const {dispatch, assetState} = this.props;
-        const {selected} = this.state;
+        const { dispatch, assetState } = this.props;
+        const { selected } = this.state;
 
         let newSelected;
         if (assetState.deviceSelected.size === undefined) {
@@ -612,7 +598,7 @@ export default class AssetsList extends PureComponent {
                                                         <TableCell
                                                             className={tableCellClassName} title={ipSliceStr}
                                                         >{/*IP*/}
-                                                            {textLengthOverCut(ipSliceStr, 50)}
+                                                            {common.textLengthOverCut(ipSliceStr, 50)}
                                                         </TableCell>
                                                         <TableCell
                                                             className={tableCellClassName}
@@ -626,7 +612,7 @@ export default class AssetsList extends PureComponent {
                                                         <TableCell
                                                             className={tableCellClassName} title={ipSliceStr}
                                                         >{/*IP*/}
-                                                            {textLengthOverCut(ipSliceStr, 50)}
+                                                            {common.textLengthOverCut(ipSliceStr, 50)}
                                                         </TableCell>
                                                         <TableCell
                                                             className={tableCellClassName}
