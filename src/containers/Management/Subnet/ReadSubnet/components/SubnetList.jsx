@@ -4,7 +4,6 @@ import {
     CardBody,
     Col,
 } from 'reactstrap';
-
 import moment from "moment";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -60,63 +59,72 @@ const headRows = [
     },
 ];
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        width: '100%',
-    },
-    paper: {
-        width: '100%',
-        marginBottom: theme.spacing(2),
-    },
-    table: {
-        minWidth: 750,
-    },
-    visuallyHidden: {
-        border: 0,
-        clip: 'rect(0 0 0 0)',
-        height: 1,
-        margin: -1,
-        overflow: 'hidden',
-        padding: 0,
-        position: 'absolute',
-        top: 20,
-        width: 1,
-    },
-    rowCss: {
-        '& > *': {
-            borderBottom: 'unset',
-        },
-        "&:hover":
-            theme.palette.type === 'light'
-                ? {
-                    boxShadow: "4px 2px 6px 1px #999999",
-                }
-                : {
-                    boxShadow: "5px 2px 10px 2px #000000",
+const useStyles = makeStyles((theme) => {
+    const isIE = /*@cc_on!@*/false || !!document.documentMode;
+    if (!isIE) {
+        return ({
+            root: {
+                width: '100%',
+            },
+            paper: {
+                width: '100%',
+                marginBottom: theme.spacing(2),
+            },
+            table: {
+                minWidth: 750,
+            },
+            visuallyHidden: {
+                border: 0,
+                clip: 'rect(0 0 0 0)',
+                height: 1,
+                margin: -1,
+                overflow: 'hidden',
+                padding: 0,
+                position: 'absolute',
+                top: 20,
+                width: 1,
+            },
+            rowCss: {
+                '& > *': {
+                    borderBottom: 'unset',
                 },
-    },
-    spanSubject: {
-        display: 'inline-block',
-        width: '100px',
-    },
-    spanContents: {
-        display: 'inline-block',
-        // width: '200px',
-    },
-    grid: {
-        flexGrow: 1,
-    },
-    margin: {
-        margin: theme.spacing(1),
-        width: 70,
-        display: "flex",
-    },
-    pagination: {
-        display: "inline-block",
-        paddingTop: 20,
-        paddingBottom: 20,
-    },
-}));
+                "&:hover":
+                    theme.palette.type === 'light'
+                        ? {
+                            boxShadow: "4px 2px 6px 1px #999999",
+                            transition: "box-shadow 0.3s 0s",
+
+                        }
+                        : {
+                            boxShadow: "5px 2px 10px 2px #000000",
+                            transition: "box-shadow 0.3s 0s",
+                        },
+            },
+            spanSubject: {
+                display: 'inline-block',
+                width: '100px',
+            },
+            spanContents: {
+                display: 'inline-block',
+                // width: '200px',
+            },
+            grid: {
+                flexGrow: 1,
+            },
+            margin: {
+                margin: theme.spacing(1),
+                width: 70,
+                display: "flex",
+            },
+            pagination: {
+                display: "inline-block",
+                paddingTop: 20,
+                paddingBottom: 20,
+            },
+        });
+    }
+    return null;
+});
 
 const SubnetList = () => {
     /************************************************************************************
@@ -182,6 +190,7 @@ const SubnetList = () => {
     /** Add User in TableToolbar */
     const [openAddUser, setOpenAddUser] = React.useState(false);
     const [searchParam, setSearchParam] = useState(null);
+    const [tableHeight, setTableHeight] = useState(580);
 
     const orderByName = {
         idx: "sub_idx",
@@ -551,13 +560,13 @@ const SubnetList = () => {
                         />
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
+                        className="cb-material-table__cell"
                         style={{width: "5%"}}
                     >
                         {row.idx}
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
+                        className="cb-material-table__cell"
                         style={{width: "20%"}}
                         onFocus={() => { setOpenCollapse(true); }}
                         onMouseOver={() => { setOpenCollapse(true); }}
@@ -566,19 +575,19 @@ const SubnetList = () => {
                         {row.subnetTag}
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
+                        className="cb-material-table__cell"
                         style={{width: "40%"}}
                     >
                         {row.subnet}
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
+                        className="cb-material-table__cell"
                         style={{width: "25%"}}
                     >
                         {row.subnetMask}
                     </TableCell>
                     <TableCell
-                        className="cb-material-table__cell cb-material-table__cell-right"
+                        className="cb-material-table__cell"
                         style={{width: "25%"}}
                     >
                         {row.gateway}
@@ -689,7 +698,7 @@ const SubnetList = () => {
 
     return (
         <Col>
-            <Card className="cb-card">
+            <Card className="cb-card-subnet">
                 <Grid container style={{display: "flex"}}>
                     <Grid item md={12}>
                         <SubnetTableToolbar
@@ -707,11 +716,17 @@ const SubnetList = () => {
                             onChangePage={handleChangePage}
                             onChangeRowsPerPage={handleChangeRowsPerPage}
                             rowsPerPageOptions={displayRowsList}
+                            setTableHeight={setTableHeight}
                             data={state.data}
                         />
                     </Grid>
                 </Grid>
-                <div className="cb-material-table__wrap" style={{height: 650}}>
+                <div className="cb-material-table__wrap"
+                     style={{
+                         height: tableHeight,
+                         transition: "height 0.3s 0.1s",
+                     }}
+                >
                     <Table
                         stickyHeader
                         className="cb-material-table-fixed"

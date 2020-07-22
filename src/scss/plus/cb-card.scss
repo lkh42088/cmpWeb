@@ -20,6 +20,22 @@
   }
 }
 
+// [22July2020,khlee]
+.cb-card-subnet {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+
+  &:hover {
+    // 사이드바 마우스 오버 시 CARD SHADOW [24June2020,khlee]
+    @include themify($themes) {
+      transition: background-color 1.5s 0s;
+      box-shadow: 1px 2px 5px themed('colorShadow');
+      background-color: themed('colorBackground');
+    }
+  }
+}
+
 // [2020-06-09 byeonghwa jung]
 .cb-card-body__thin-padding {
   height: 100%;
@@ -29,6 +45,7 @@
   @include themify($themes) {
     background-color: themed('colorBackground');
   }
+
 }
 
 .cb-card-body {

@@ -68,7 +68,7 @@
     "rc-time-picker": "^3.6.2",
     "rc-tooltip": "^3.7.3",
     "react": "^16.9.0",
-    "react-app-polyfill": "^0.2.1",
+    "react-app-polyfill": "^1.0.6",
     "react-avatar": "^3.9.7",
     "react-big-calendar": "^0.22.0",
     "react-chartjs-2": "^2.7.4",
@@ -171,12 +171,20 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      ">0.2%",
+      "ie 11",
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx}"
@@ -219,3 +227,4 @@
     ]
   }
 }
+
