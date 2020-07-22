@@ -13,29 +13,18 @@ import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 import classNames from 'classnames';
 import Collapse from "../../../../shared/components/Collapse";
-
-
-function textLengthOverCut(txt, len, lastTxt) {
-    if (len === "" || len === undefined) { // 기본값
-        len = 20;
-    }
-    if (lastTxt === "" || lastTxt === undefined) { // 기본값
-        lastTxt = "...";
-    }
-    if (txt.length > len) {
-        txt = txt.substr(0, len) + lastTxt;
-    }
-    return txt;
-}
+import * as common from "../../../../lib/common";
 
 function textSplitOverCut(txt, com) {
-    const splaArray = txt.split(com);
+    const txtArray = txt.split(com);
 
     // eslint-disable-next-line array-callback-return,consistent-return
-    const output = [...splaArray].map((char, index) => {
+    const output = [...txtArray].map((char, index) => {
         if (char !== "") {
             return (
-                <ol key={`${char}`}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{char}</ol>
+                <Fragment key={`${char}`}>
+                    <ol>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{char}</ol>
+                </Fragment>
             );
         }
     });
@@ -72,7 +61,10 @@ class AssetsLog extends PureComponent {
             order = 'asc';
         }
 
-        this.setState({order, orderBy});
+        this.setState({
+            order,
+            orderBy,
+        });
     };
 
     handleClick = (event, id) => {
@@ -136,6 +128,43 @@ class AssetsLog extends PureComponent {
                 return <Badge color="primary">Debug</Badge>;
             default:
                 return '';
+        }
+    };
+
+    // eslint-disable-next-line consistent-return
+    renderContentSwitch = (workCode, param, oldStatus, newStatus) => {
+        if (workCode === "2") {
+            let reBefore;
+            let reAfter;
+            switch (param) {
+                case 'SPLA':
+                    reBefore = <span title={oldStatus}>{textSplitOverCut(oldStatus, ",")}</span>;
+                    reAfter = <span title={newStatus}>{textSplitOverCut(newStatus, ",")}</span>;
+                    break;
+                case 'IP':
+                    reBefore = <span title={oldStatus}>{textSplitOverCut(oldStatus, "|")}</span>;
+                    reAfter = <span title={newStatus}>{textSplitOverCut(newStatus, "|")}</span>;
+                    break;
+                case '임대 기간':
+                    reBefore = <span>{common.textDateCut(oldStatus, 'rentDate')}</span>;
+                    reAfter = <span>{common.textDateCut(newStatus, 'rentDate')}</span>;
+                    break;
+                case '입고일':
+                    reBefore = <span>{common.textDateCut(oldStatus, 'warehousingDate')}</span>;
+                    reAfter = <span>{common.textDateCut(newStatus, 'warehousingDate')}</span>;
+                    break;
+                default:
+                    reBefore = <span title={oldStatus}>{common.textLengthOverCut(oldStatus, 80)}</span>;
+                    reAfter = <span title={newStatus}>{common.textLengthOverCut(newStatus, 80)}</span>;
+                    break;
+            }
+
+            return (
+                <Fragment>
+                    변경 전 :&nbsp;{reBefore} <br/>
+                    변경 후 :&nbsp;{reAfter}
+                </Fragment>
+            );
         }
     };
 
@@ -214,7 +243,8 @@ class AssetsLog extends PureComponent {
                                                 </TableCell>
                                                 <TableCell
                                                     className="material-table__cell material-table__cell-right"
-                                                >{moment(d.registerDate).format("YYYY년MM월DD일")}
+                                                >{moment(d.registerDate)
+                                                    .format("YYYY년MM월DD일")}
                                                 </TableCell>
                                                 <TableCell
                                                     className="material-table__cell material-table__cell-right"
@@ -222,41 +252,42 @@ class AssetsLog extends PureComponent {
                                                 </TableCell>
                                                 <TableCell
                                                     className="material-table__cell material-table__cell-right
-                                                            text-left"
-                                                >{
-                                                    // eslint-disable-next-line no-nested-ternary
-                                                    d.workCode.toString() === '2' ? (
-                                                        d.field === "SPLA" ? (
-                                                            <Fragment>
-                                                                변경 전 :
-                                                                <span title={d.oldStatus}>
+                                                            text-left">
+                                                    {this.renderContentSwitch(d.workCode.toString(), d.field, d.oldStatus, d.newStatus)}
+                                                    {/*{
+                                                        // eslint-disable-next-line no-nested-ternary
+                                                        d.workCode.toString() === '2' ? (
+                                                            d.field === "SPLA" ? (
+                                                                <Fragment>
+                                                                    변경 전 :
+                                                                    <span title={d.oldStatus}>
                                                                     {textSplitOverCut(d.oldStatus, ",")}
                                                                 </span>
-                                                                <br/>
-                                                                변경 후 :
-                                                                <span title={d.newStatus}>
+                                                                    <br/>
+                                                                    변경 후 :
+                                                                    <span title={d.newStatus}>
                                                                     {textSplitOverCut(d.newStatus, ",")}
                                                                 </span>
-                                                            </Fragment>
-                                                        ) : (
-                                                            <Fragment>
-                                                                변경 전 :
-                                                                <span title={d.oldStatus}>
+                                                                </Fragment>
+                                                            ) : (
+                                                                <Fragment>
+                                                                    변경 전 :
+                                                                    <span title={d.oldStatus}>
                                                                     {textLengthOverCut(d.oldStatus, 80)}
                                                                 </span>
-                                                                <br/>
-                                                                변경 후 :
-                                                                <span title={d.newStatus}>
+                                                                    <br/>
+                                                                    변경 후 :
+                                                                    <span title={d.newStatus}>
                                                                     {textLengthOverCut(d.newStatus, 80)}
                                                                 </span>
+                                                                </Fragment>
+                                                            )
+                                                        ) : (
+                                                            <Fragment>
+                                                                &nbsp;
                                                             </Fragment>
                                                         )
-                                                    ) : (
-                                                        <Fragment>
-                                                            &nbsp;
-                                                        </Fragment>
-                                                    )
-                                                }
+                                                    }*/}
                                                 </TableCell>
                                             </TableRow>
                                         ))}

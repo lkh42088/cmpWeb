@@ -28,10 +28,6 @@ import {
 import renderIntervalDatePickerField from "./IntervalDatePicker";
 import renderDatePickerField from "./DatePicker";
 
-function checkIP(strIP) {
-    const expUrl = /^(1|2)?\d?\d([.](1|2)?\d?\d){3}$/;
-    return expUrl.test(strIP);
-}
 
 function validate(values) {
     const errors = {};
