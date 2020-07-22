@@ -22,6 +22,9 @@ import Select from '@material-ui/core/Select';
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import TextField from '@material-ui/core/TextField';
+import Avatar from '@material-ui/core/Avatar';
+import {deepOrange, green, pink} from '@material-ui/core/colors';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 
 import {Field, reduxForm} from 'redux-form';
 import classNames from "classnames";
@@ -62,6 +65,28 @@ const useStyles = makeStyles(theme => ({
         '& .MuiFormLabel-root ': {
             fontSize: 12,
         },
+    },
+    root: {
+        display: 'flex',
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+    },
+    square: {
+        backgroundColor: '#f3f3f4',
+        color: 'black',
+        width: 80,
+        height: 30,
+        fontSize: 12,
+        fontWeight: 900,
+    },
+    rounded: {
+        backgroundColor: '#f3f3f4',
+        color: 'black',
+        width: 80,
+        height: 30,
+        fontSize: 12,
+        fontWeight: 900,
     },
 }));
 
@@ -107,14 +132,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
         ownershipDiv: assetState.searchRd.ownershipDiv,
         idc: assetState.searchRd.idc,
         manufacture: assetState.searchRd.manufacture,
-        /*
-                schSelect: '',
-                schText: '',
-                deviceType: '',
-                ownership: '',
-                ownershipDiv: '',
-                idc: '',
-                manufacture: '',*/
     });
 
     const modalClass = classNames({
@@ -205,22 +222,40 @@ const AssetsSearch = ({assetState, user, theme}) => {
     };
 
     const componentOperatinng = (
+        <Avatar variant="rounded" className={classes.square} role="button" tabIndex="0"
+                onClick={event => toggleOutFlag("1")}
+                onKeyDown={event => toggleOutFlag("1")}>
+            <LaunchIcon fontSize="small"
+                        style={{
+                            color: "#596e79",
+                        }}/>&nbsp;반출
+        </Avatar>
+    );
+
+    const componentCarrying = (
+        <Avatar variant="rounded" className={classes.square} role="button" tabIndex="0"
+                onClick={event => toggleOutFlag("0")}
+                onKeyDown={event => toggleOutFlag("0")}>
+            <LaunchIcon fontSize="small"
+                        style={{
+                            color: "#596e79",
+                        }}/>&nbsp;반입
+        </Avatar>
+    );
+/*
+
         <span role="button" tabIndex="0"
               onClick={event => toggleOutFlag("1")}
               onKeyDown={event => toggleOutFlag("1")}>
                     <InputIcon fontSize="small"/>&nbsp;
             반출
             </span>
-    );
-
-    const componentCarrying = (
-        <span role="button" tabIndex="0"
-              onClick={event => toggleOutFlag("0")}
-              onKeyDown={event => toggleOutFlag("0")}>
+    <span role="button" tabIndex="0"
+          onClick={event => toggleOutFlag("0")}
+          onKeyDown={event => toggleOutFlag("0")}>
                 <LaunchIcon fontSize="small"/>&nbsp;
-            반입
-            </span>
-    );
+        반입
+            </span>*/
 
     const renderSwitch = () => {
         let viewComponentOutFlag;
@@ -640,7 +675,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
         <Card className="cb-card">
             <CardBody className="cb-card-body">
                 <Row>
-                    <Col sm={8} md={8} xs={8} xl={8} lg={8}>
+                    <Col sm={12} md={12} xs={12} xl={12} lg={12}>
                         {/*<Col mb={8}>*/}
                         <div className="search_card_body" style={{maxWidth: "100%"}}>
                             <div>
@@ -798,6 +833,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                             <TextField
                                                 id="input-with-icon-textfield"
                                                 label="TextField"
+                                                name="schText"
                                                 style={{margin: 8}}
                                                 className={classes.textField}
                                                 InputProps={{
@@ -806,12 +842,51 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                                             <MagnifyIcon className="search_icon"
                                                                          role="button"
                                                                          tabIndex="0"
+                                                                         fontSize="small"
                                                                          onClick={onSearch}
                                                                          onKeyDown={onSearch}/>
                                                         </InputAdornment>
                                                     ),
                                                 }}
                                             />
+                                            <div className="search_card_body_checkbox">
+                                                <input type="checkbox" name="operatingFlag"
+                                                       className="search_checkbox"
+                                                       checked={assetState.searchRd.operatingFlag}
+                                                       value={device.operatingFlag}
+                                                       onChange={setToggleFlag}/>&nbsp;
+                                                <label htmlFor="operatingFlag" className="search_checkboxText">
+                                                    <span
+                                                        role="button" tabIndex="0"
+                                                        onClick={event => setToggleFlagText('1')}
+                                                        onKeyDown={event => setToggleFlagText('1')}>
+                                                        운영장비&nbsp;</span>
+                                                </label>
+                                                &nbsp;&nbsp;&nbsp;<br/>
+                                                <input type="checkbox" name="carryingFlag" className="search_checkbox"
+                                                       checked={assetState.searchRd.carryingFlag}
+                                                       value={device.carryingFlag}
+                                                       onChange={setToggleFlag}/>&nbsp;
+                                                <label htmlFor="carryingFlag" className="search_checkboxText">
+                                                    <span
+                                                        role="button" tabIndex="0"
+                                                        onClick={event => setToggleFlagText('0')}
+                                                        onKeyDown={event => setToggleFlagText('0')}>
+                                                        반출장비&nbsp;</span>
+                                                </label>
+                                                &nbsp;&nbsp;&nbsp;<br/>
+                                                <input type="checkbox" name="rentPeriod" className="search_checkbox"
+                                                       checked={assetState.searchRd.rentPeriod}
+                                                       value={device.rentPeriod}
+                                                       onChange={setToggleFlag}/>&nbsp;
+                                                <label htmlFor="rentPeriod" className="search_checkboxText">
+                                                    <span
+                                                        role="button" tabIndex="0"
+                                                        onClick={event => setToggleFlagText('2')}
+                                                        onKeyDown={event => setToggleFlagText('2')}>
+                                                        임대 만료예정 (한달기준)&nbsp;</span>
+                                                </label>
+                                            </div>
                                             {/*<Grid container alignItems="flex-end">
                                                 <FormControl className={classes.formControl}>
                                                     <InputLabel id="text-select-label">select</InputLabel>
@@ -855,8 +930,8 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                                                  onKeyDown={onSearch}/>
                                                 </Grid>
                                             </Grid>*/}
-                                            <div className="search_card_body">
-                                                <input type="checkbox" name="operatingFlag"
+                                            <div className="search_card_body_sub">
+                                                {/*<input type="checkbox" name="operatingFlag"
                                                        className="search_checkbox"
                                                        checked={assetState.searchRd.operatingFlag}
                                                        value={device.operatingFlag}
@@ -891,11 +966,22 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                                     onClick={event => setToggleFlagText('2')}
                                                     onKeyDown={event => setToggleFlagText('2')}>
                                                     임대 만료예정 (한달기준)&nbsp;</span>
-                                                </label>
-                                                <span role="button" tabIndex="0"
+                                                </label>*/}
+                                                <div className={classes.root}>
+                                                    <Avatar variant="rounded" className={classes.rounded}
+                                                            role="button" tabIndex="0"
+                                                            onClick={toggle} onKeyDown={toggle}>
+                                                        <CreateIcon fontSize="small"
+                                                                    style={{
+                                                                        color: "#3f51b5",
+                                                                    }}
+                                                        />&nbsp;장비 등록
+                                                    </Avatar>
+                                                    {renderSwitch()}
+                                                </div>
+                                                {/*<span role="button" tabIndex="0"
                                                       onClick={toggle} onKeyDown={toggle}>
-                                                        <CreateIcon fontSize="small"/>&nbsp;장비 등록&nbsp;&nbsp;</span>
-                                                {renderSwitch()}
+                                                        <CreateIcon/>&nbsp;장비 등록&nbsp;&nbsp;</span>*/}
                                                 {/*<ButtonToolbar>
                                                     <div className="search_btn-text">
                                                         <span role="button" tabIndex="0"
@@ -915,70 +1001,18 @@ const AssetsSearch = ({assetState, user, theme}) => {
                             </div>
                         </div>
                     </Col>
-                    {/*<Col sm={12} md={12} xs={12} xl={12} lg={12}>*/}
-                    <Col sm={4} md={4} xs={4} xl={4} lg={4}
-                         className="search-side-area">
-                        {/*1 : true , 0 : false */}
-                        {/*0 : 반입, 1 : 반출*/}
-                        {/*<div className="search_card_body">
-                            <input type="checkbox" name="operatingFlag"
-                                   className="search_checkbox"
-                                   checked={assetState.searchRd.operatingFlag}
-                                   value={device.operatingFlag}
-                                   onChange={setToggleFlag}/>&nbsp;
-                            <label htmlFor="operatingFlag" className="search_checkboxText">
-                                <span
-                                    role="button" tabIndex="0"
-                                    onClick={event => setToggleFlagText('1')}
-                                    onKeyDown={event => setToggleFlagText('1')}>
-                                    운영장비&nbsp;</span>
-                            </label>
-                            &nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" name="carryingFlag" className="search_checkbox"
-                                   checked={assetState.searchRd.carryingFlag}
-                                   value={device.carryingFlag}
-                                   onChange={setToggleFlag}/>&nbsp;
-                            <label htmlFor="carryingFlag" className="search_checkboxText">
-                                <span
-                                    role="button" tabIndex="0"
-                                    onClick={event => setToggleFlagText('0')}
-                                    onKeyDown={event => setToggleFlagText('0')}>
-                                    반출장비&nbsp;</span>
-                            </label>
-                            &nbsp;&nbsp;&nbsp;
-                            <input type="checkbox" name="rentPeriod" className="search_checkbox"
-                                   checked={assetState.searchRd.rentPeriod}
-                                   value={device.rentPeriod}
-                                   onChange={setToggleFlag}/>&nbsp;
-                            <label htmlFor="rentPeriod" className="search_checkboxText">
-                                    <span
-                                        role="button" tabIndex="0"
-                                        onClick={event => setToggleFlagText('2')}
-                                        onKeyDown={event => setToggleFlagText('2')}>
-                                        임대 만료예정 (한달기준)&nbsp;</span>
-                            </label>
-                            <ButtonToolbar>
-                                <div className="search_btn-text">
-                                    <span role="button" tabIndex="0"
-                                          onClick={toggle} onKeyDown={toggle}>
-                                        <CreateIcon fontSize="small"/>&nbsp;장비 등록&nbsp;&nbsp;</span>
-                                    {renderSwitch()}
-                                </div>
-                            </ButtonToolbar>
-                        </div>*/}
-                        <Modal
-                            isOpen={modal.modalOpenFlag}
-                            modalClassName={theme.className === 'theme-dark' ? (
-                                "ltr-support modal-class_dark"
-                            ) : (
-                                "ltr-support modal-class_light"
-                            )}
-                            className={`${modalClass}`}>
-                            <AssetsWrite closeToggle={toggle} assetState={assetState} dispatch={dispatch}
-                                         onSubmit={handleSubmit}
-                                         theme={theme}/>
-                        </Modal>
-                    </Col>
+                    <Modal
+                        isOpen={modal.modalOpenFlag}
+                        modalClassName={theme.className === 'theme-dark' ? (
+                            "ltr-support modal-class_dark"
+                        ) : (
+                            "ltr-support modal-class_light"
+                        )}
+                        className={`${modalClass}`}>
+                        <AssetsWrite closeToggle={toggle} assetState={assetState} dispatch={dispatch}
+                                     onSubmit={handleSubmit}
+                                     theme={theme}/>
+                    </Modal>
                     {/*<Modal
                         isOpen={modal.modalWarring}
                         toggle={modalClose}

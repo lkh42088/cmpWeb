@@ -408,9 +408,7 @@ export default class AssetsList extends PureComponent {
         dispatch(getDeviceOriByIdx(deviceCode, assetState.deviceType));
     };
 
-
     /*
-
         setComponents = (division, deviceCode) => {
             const {dispatch, assetState} = this.props;
 

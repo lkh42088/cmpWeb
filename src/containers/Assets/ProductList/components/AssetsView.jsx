@@ -9,9 +9,6 @@ import PropTypes from 'prop-types';
 import moment from "moment";
 import Avatar from "react-avatar";
 import MatButton from '@material-ui/core/Button';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import InputIcon from "@material-ui/icons/Input";
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -20,8 +17,6 @@ import LaunchIcon from "@material-ui/icons/Launch";
 import SendIcon from "@material-ui/icons/Send";
 import TocIcon from '@material-ui/icons/Toc';
 import EditIcon from '@material-ui/icons/Edit';
-import PaperclipIcon from 'mdi-react/PaperclipIcon';
-import EmoticonIcon from 'mdi-react/EmoticonIcon';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 
@@ -436,7 +431,15 @@ class AssetsView extends PureComponent {
             );
         }
 
+        if (ip !== undefined && ip !== "|") {
+            ipSliceStrArray = ip.split("|");
+            dpIpSliceStr = this.reChange(ipSliceStrArray);
+        }
 
+        if (spla !== undefined && spla !== "|") {
+            splaSliceStrArray = spla.split("|");
+            dpSplaSliceStr = this.reChange(splaSliceStrArray);
+        }
         /* if (ip !== undefined && ip !== "|") {
              ipSliceStrArray = ip.split("|");
              dpIpSliceStr = this.reChange(ipSliceStrArray);

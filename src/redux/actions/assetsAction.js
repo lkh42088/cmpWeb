@@ -490,6 +490,11 @@ export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) =>
             type: GET_DEVICE_ORI_BY_DEVICECODE,
             payload: jsonData,
         });
+
+        dispatch({
+           type: SET_DEVICE_SELECTED,
+           payload: {},
+        });
     } catch (error) {
         console.log("error : ", error);
     }
