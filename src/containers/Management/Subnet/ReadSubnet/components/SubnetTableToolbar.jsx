@@ -21,6 +21,8 @@ import {useDispatch, useSelector} from "react-redux";
 import ReactTooltip from "react-tooltip";
 import {Button} from "@material-ui/core";
 import TablePagination from "@material-ui/core/TablePagination";
+import InputBase from '@material-ui/core/InputBase';
+import SearchIcon from '@material-ui/icons/Search';
 import {
     pagingChangeCurrentPage,
     pagingChangeDense,
@@ -29,6 +31,7 @@ import {
 import SubnetSearchBar from "./SubnetSearchBar";
 import BootstrapInput from "../../../../Common/BootstrapInput";
 import CommonTableExportCSV from "../../../../Common/CommonTableExportCSV";
+import CustomSlider from "./CustomSlider";
 
 const useToolbarStyles = makeStyles(theme => ({
     root: {
@@ -85,6 +88,46 @@ const useToolbarStyles = makeStyles(theme => ({
     },
     grid: {
         gridTemplateColumns: "155 1fr 1fr 350 30",
+    },
+    search: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade(theme.palette.common.white, 0.15),
+        '&:hover': {
+            backgroundColor: fade(theme.palette.common.white, 0.25),
+        },
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: theme.spacing(1),
+            width: 'auto',
+        },
+    },
+    searchIcon: {
+        padding: theme.spacing(0, 2),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    inputRoot: {
+        color: 'inherit',
+        fontSize: 'inherit',
+    },
+    inputInput: {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            width: '50%',
+            '&:focus': {
+                width: '100%',
+            },
+        },
     },
 }));
 
@@ -157,52 +200,33 @@ const SubnetTableToolbar = (props) => {
         rows, numSelected, handleDeleteSelected, onRequestSort,
         handleOpen, contents, handleRefresh, handleSubmitSearch,
         count, rowsPerPage, page, onChangePage, onChangeRowsPerPage,
-        rowsPerPageOptions, data,
+        rowsPerPageOptions, setTableHeight, data,
     } = props;
     const addComment = contents.concat(" 추가");
     const deleteComment = `선택한 ${contents} 삭제`;
 
-    // const {
-    //     selected,
-    //     pageBeginRow,
-    //     rowsPerPage,
-    //     currentPage,
-    //     totalCount,
-    //     displayRowsList,
-    //     dense,
-    //     orderBy,
-    //     order,
-    // } = useSelector(({pagingRd}) => ({
-    //     selected: pagingRd.selected,
-    //     pageBeginRow: pagingRd.pageBeginRow,
-    //     rowsPerPage: pagingRd.rowsPerPage,
-    //     currentPage: pagingRd.currentPage,
-    //     totalPage: pagingRd.totalPage,
-    //     totalCount: pagingRd.totalCount,
-    //     displayRowsList: pagingRd.displayRowsList,
-    //     dense: pagingRd.dense,
-    //     orderBy: pagingRd.orderBy,
-    //     order: pagingRd.order,
-    // }));
+    // /** Pagination */
+    // const handleChangePage = (event, newPage) => {
+    //     console.log("change page: ", newPage);
+    //     dispatch(pagingChangeCurrentPage({currentPage: newPage}));
+    // };
 
-    /** Pagination */
-    const handleChangePage = (event, newPage) => {
-        console.log("change page: ", newPage);
-        dispatch(pagingChangeCurrentPage({currentPage: newPage}));
-    };
+    // /** Pagination */
+    // const handleChangeRowsPerPage = (e) => {
+    //     const changeRows = Number(e.target.value);
+    //     dispatch(pagingChangeRowsPerPage({rowsPerPage: changeRows}));
+    // };
+    //
+    // /** Pagination */
+    // const handleChangeDense = (event) => {
+    //     dispatch(pagingChangeDense({checked: event.target.checked}));
+    // };
+    // const handleDelete = () => {
+    //     console.log("handleDelete...");
+    // };
 
-    /** Pagination */
-    const handleChangeRowsPerPage = (e) => {
-        const changeRows = Number(e.target.value);
-        dispatch(pagingChangeRowsPerPage({rowsPerPage: changeRows}));
-    };
-
-    /** Pagination */
-    const handleChangeDense = (event) => {
-        dispatch(pagingChangeDense({checked: event.target.checked}));
-    };    
-    const handleDelete = () => {
-        console.log("handleDelete...");
+    const handleSliderChange = (e, val) => {
+        setTableHeight((val * 20));
     };
 
     /** COMPONENT */
@@ -212,16 +236,16 @@ const SubnetTableToolbar = (props) => {
             count={count}
             rowsPerPage={rowsPerPage}
             page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
+            onChangePage={onChangePage}
+            onChangeRowsPerPage={onChangeRowsPerPage}
             rowsPerPageOptions={rowsPerPageOptions}
             labelRowsPerPage="개수"
             labelDisplayedRows={() => {
                 let res = "";
                 if (page > 0) {
-                    res = `${count} 개 중 ${page * rowsPerPage + 1} - ${rowsPerPage * (page + 1)}`;
+                    res = `총 ${count} 개 중 ${page * rowsPerPage + 1} ~ ${rowsPerPage * (page + 1)}`;
                 } else {
-                    res = `${count} 개 중 ${1} - ${rowsPerPage}`;
+                    res = `총 ${count} 개 중 ${1} ~ ${rowsPerPage}`;
                 }
                 return res;
             }}
@@ -232,6 +256,7 @@ const SubnetTableToolbar = (props) => {
         <div>
             <Toolbar
                 className={clsx(classes.root, { [classes.highlight]: numSelected > 0 })}
+                variant="dense"
             >
                 {numSelected > 0 ? (
                     <>
@@ -253,11 +278,16 @@ const SubnetTableToolbar = (props) => {
                         /*********************************************************************
                          * Table Search bar
                          **********************************************************************/}
-                        <Grid container alignItems="center" wrap="nowrap" style={{maxHeight: 72}}
+                        <Grid container
+                              alignItems="center"
+                              wrap="nowrap"
+                              // style={{maxHeight: 72}}
+                              direction="row"
+                              justify="space-between"
                               className={classes.grid}
                         >
                             <Grid item md={2} zeroMinWidth>
-                                <div style={{minWidth: 155}}>
+                                <div>
                                     <IconButton type="button" onClick={handleOpen}
                                                 data-tip data-for="tooltipAdd">
                                         <AddIcon/>
@@ -274,6 +304,7 @@ const SubnetTableToolbar = (props) => {
                                     >
                                         <RefreshIcon/>
                                     </IconButton>
+                                    <CommonTableExportCSV csvData={data} fileName="subnet_test.csv" />
                                     <ReactTooltip id="tooltipRefresh" effect="float"
                                                   delayHide={100} type="dark" place="bottom"
                                                   className={classes.tooltip}>
@@ -292,18 +323,40 @@ const SubnetTableToolbar = (props) => {
                                         <TableFilterButton rows={rows} onRequestSort={onRequestSort}/>
                                     )}
                                     {/*Export CSV*/}
-                                    <CommonTableExportCSV csvData={data} fileName="subnet_test.csv" />
                                 </div>
                             </Grid>
-                            <Grid item md={4} zeroMinWidth>
-                                <div style={{overflow: "hidden"}}>
-                                    <SubnetSearchBar
-                                        handleSubmit={handleSubmitSearch}
+                            <Grid item xs md={4} zeroMinWidth>
+                                <div className={classes.search}>
+                                    <div className={classes.searchIcon}>
+                                        <SearchIcon />
+                                    </div>
+                                    <InputBase
+                                        placeholder="Search…"
+                                        classes={{
+                                            root: classes.inputRoot,
+                                            input: classes.inputInput,
+                                        }}
+                                        inputProps={{ 'aria-label': 'search' }}
                                     />
                                 </div>
+                                {/*<div style={{overflow: "hidden"}}>*/}
+                                {/*    <SubnetSearchBar*/}
+                                {/*        handleSubmit={handleSubmitSearch}*/}
+                                {/*    />*/}
+                                {/*</div>*/}
                             </Grid>
-                            <Grid item md={2} />
-                            <Grid item md={4} zeroMinWidth>
+                            <Grid item md={1} zeroMinWidth/>
+                            <Grid item md={1} zeroMinWidth>
+                                <CustomSlider
+                                    onChange={handleSliderChange}
+                                    valueLabelDisplay="auto"
+                                    aria-label="테이블 높이"
+                                    step="10"
+                                    defaultValue="30"
+                                    valueLabelFormat={val => (val * 20)}
+                                />
+                            </Grid>
+                            <Grid item md={5} zeroMinWidth>
                                 <div style={{
                                     display: "flex", alignItems: "center", float: "right", minWidth: 350,
                                 }}>

@@ -7,7 +7,7 @@ const SubnetListCard = () => (
     <Container fluid>
         <Row>
             <Col>
-                <Row>
+                <Row style={{paddingLeft: 10}}>
                     <RouterBreadcrumbs url={window.location.href}/>
                 </Row>
                 <Row>

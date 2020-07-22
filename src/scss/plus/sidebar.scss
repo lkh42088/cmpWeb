@@ -238,10 +238,16 @@
 
 // 사이드바 Window
 .cb_sidebar__submenu {
-  transition: height 0.5s 0s, padding 0.5s 0s, opacity 0.4s 0.1s;
+  //transition: height 0.5s 0s, padding 0.5s 0s, opacity 0.4s 0.1s;
+  // [22July2020,khlee]
+  transition: height 0.2s 0s, padding 0.2s 0s, opacity 0.2s 0.1s, box-shadow 0.3s 0.1s;
   /*padding: 15px 0;*/
   //padding-left: 240px;  // Origin
   padding-left: 200px;  // [23June2020.khlee]
+
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    padding: 0;
+  }
 
   & .cb_sidebar__submenu {
     margin-bottom: 0;
@@ -401,6 +407,8 @@
     border: 1px solid themed('colorShadow');
     box-shadow: 2px 1px 2px 0px themed('colorShadow'); // [23June2020,khlee]
     border-radius: 0 3px 3px 0;
+    // 사이드바 Window 배경색 [22July2020,khlee]
+    background-color: themed('colorBackgroundBody');
   }
 }
 
@@ -418,7 +426,6 @@
   /*box-shadow: 0 1px 30px 1px rgba(0, 0, 0, 0.11);*/
   @include themify($themes) {
     color: themed('colorEmoji');
-    background-color: themed('colorBackground');
   }
 }
 
@@ -427,7 +434,6 @@
   //box-shadow: 0 1px 30px 1px rgba(0, 0, 0, 0.11); // Origin
   @include themify($themes) {
     color: themed('colorText');
-    background-color: themed('colorBackground');
   }
 }
 
