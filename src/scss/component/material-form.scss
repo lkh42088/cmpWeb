@@ -31,7 +31,8 @@
 
     input, textarea {
       font-size: 14px;
-      font-family:"Nanum BarnGothic Light";
+      //font-family:"Nanum BarnGothic Light";
+      font-family: "Noto Sans KR R", Roboto, sans-serif;  // [21July2020,khlee]
 
       @include themify($themes) {
         color: themed('colorText');
@@ -39,7 +40,8 @@
     }
     label {
       font-size: 14px;
-      font-family:"Nanum BarnGothic Light";
+      //font-family:"Nanum BarnGothic Light";
+      font-family: "Noto Sans KR R", Roboto, sans-serif;  // [21July2020,khlee]
       @include directify($directions) {
         #{directed('left')}: 0px;
         #{directed('right')}: auto;
@@ -122,7 +124,8 @@
   .material-form__label-cb {
     margin: 0;
     font-size: 12px;
-    font-family:"Nanum BarnGothic Light";
+    //font-family:"Nanum BarnGothic Light";
+    font-family: "Noto Sans KR R", Roboto, sans-serif;  // [21July2020,khlee]
 
     @include themify($themes) {
       color: themed('colorText');

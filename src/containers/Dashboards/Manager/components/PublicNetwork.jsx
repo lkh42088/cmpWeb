@@ -68,10 +68,6 @@ const options = {
 };
 
 class RandomAnimatedLine extends PureComponent {
-    static propTypes = {
-        t: PropTypes.func.isRequired,
-    };
-
     constructor() {
         super();
         this.state = {
@@ -134,7 +130,7 @@ class RandomAnimatedLine extends PureComponent {
         const {data} = this.state;
 
         return (
-            <Panel md title="공용 네트워크 트래픽" close={close}>
+            <Panel title="공용 네트워크 트래픽" close={close}>
                 <Line data={data} options={options}/>
             </Panel>
         );

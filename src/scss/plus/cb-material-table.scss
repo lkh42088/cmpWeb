@@ -119,8 +119,9 @@
   @include themify($themes) {
     text-align: right;
     color: themed('colorText');
-    font-size: 10px;
-    font-family: "Nanum Square acEB"; // Add for Table Cell [2020.06.10 LKH]
+    font-size: 12px;
+    // Nanum Square -> Noto Sans KR R [21July2020,khlee]
+    font-family: "Noto Sans KR R", Roboto, sans-serif;
   }
 }
 
@@ -129,8 +130,9 @@
   @include themify($themes) {
     text-align: center;   // [01July2020,khlee]
     color: themed('colorText');
-    font-size: 10px;
-    font-family: "Nanum Square acEB"; // Add for Table Cell [2020.06.10 LKH]
+    font-size: 12px;
+    // Nanum Square -> Noto Sans KR R [21July2020,khlee]
+    font-family: "Noto Sans KR R", Roboto, sans-serif;
   }
 }
 

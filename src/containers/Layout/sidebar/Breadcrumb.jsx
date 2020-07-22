@@ -24,8 +24,8 @@ const StyledBreadcrumb = withStyles(theme => ({
         height: theme.spacing(3),
         color: theme.palette.type === 'dark' ? "darkgray" : "black",
         fontWeight: theme.typography.fontWeightRegular,
-        fontSize: 13,
-        fontFamily: "Roboto",
+        fontSize: 11,
+        fontFamily: "Noto Sans KR Medium",
         '&:hover, &:focus': {
             backgroundColor: theme.palette.grey[300],
             color: theme.palette.type === 'dark' ? "black" : "white",

@@ -8,7 +8,8 @@ $landing-gradient-hover: linear-gradient(228deg, darken(rgba(127, 244, 222, 0.95
 
 .landing {
   //font-family: 'Poppins', sans-serif;
-  font-family: 'Nanum Gothic', 'Poppins', sans-serif; // [2020-06-08 byeonghwa jung]
+  //font-family: 'Nanum Gothic', 'Poppins', sans-serif; // [2020-06-08 byeonghwa jung]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
   width: 100%;
   background: #ffffff;
   position: absolute;
@@ -75,7 +76,8 @@ $landing-gradient-hover: linear-gradient(228deg, darken(rgba(127, 244, 222, 0.95
     width: auto;
     padding: 16px 30px;
     //font-family: 'Poppins', sans-serif;
-    font-family: 'Nanum Gothic', 'Poppins', sans-serif; // [2020-06-08 byeonghwa jung]
+    //font-family: 'Nanum Gothic', 'Poppins', sans-serif; // [2020-06-08 byeonghwa jung]
+    font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
   }
 
   &.landing__btn--feedback {
@@ -84,7 +86,8 @@ $landing-gradient-hover: linear-gradient(228deg, darken(rgba(127, 244, 222, 0.95
     height: 50px;
     padding: 16px 30px;
     //font-family: 'Poppins', sans-serif;
-    font-family: 'Nanum Gothic', 'Poppins', sans-serif; // [2020-06-08 byeonghwa jung]
+    //font-family: 'Nanum Gothic', 'Poppins', sans-serif; // [2020-06-08 byeonghwa jung]
+    font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
     line-height: 20px;
   }
 }
@@ -102,7 +105,8 @@ $landing-gradient-hover: linear-gradient(228deg, darken(rgba(127, 244, 222, 0.95
   font-size: 14px;
   line-height: 49px;
   //font-family: inherit;
-  font-family: 'Nanum BarunPenR', inherit; // [2020-06-08 byeonghwa jung]
+  //font-family: 'Nanum BarunPenR', inherit; // [2020-06-08 byeonghwa jung]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
 
   background: #FFFFFF;
   opacity: 0.6;
@@ -209,7 +213,8 @@ $landing-gradient-hover: linear-gradient(228deg, darken(rgba(127, 244, 222, 0.95
     cursor: pointer;
     display: none;
     //font-family: 'Poppins', sans-serif;
-    font-family: 'Nanum Gothic', 'Poppins', sans-serif; // [2020-06-08 byeonghwa jung]
+    //font-family: 'Nanum Gothic', 'Poppins', sans-serif; // [2020-06-08 byeonghwa jung]
+    font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
 
     &:hover {
       color: darken($landing-accent-color, 15%);
@@ -453,7 +458,8 @@ $landing-gradient-hover: linear-gradient(228deg, darken(rgba(127, 244, 222, 0.95
   line-height: 40px;
   color: #577687;
   //font-family: Poppins,sans-serif;
-  font-family: 'Nanum Gothic', 'Poppins', sans-serif; // [2020-06-08 byeonghwa jung]
+  //font-family: 'Nanum Gothic', 'Poppins', sans-serif; // [2020-06-08 byeonghwa jung]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
 }
 
 .applications__slider-btn--selected {

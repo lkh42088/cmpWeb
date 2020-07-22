@@ -19,23 +19,14 @@ import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
 
 const useStyles = makeStyles(theme => ({
     root: {
-        fontFamily: "Nanum Gothic Extra Bold",
+        fontFamily: "Source Han Serif KR R",
         fontSize: 10,
         fontWeight: "revert",
         flexGrow: 1,
+        height: 480,
     },
-    container: {
-        display: "grid",
-        gridTemplateColumns: "repeat(6, 1fr)",
-        gridAutoFlow: "dense",
-        gridTemplateRows: "auto 1fr",
-        gridGap: 20,
-    },
-    gridOneRow: {
-        gridColumnEnd: "span 2",
-    },
-    gridTwoRows: {
-        gridColumnEnd: "span 3",
+    gridItem: {
+        height: "100%",
     },
 }));
 
@@ -44,19 +35,19 @@ const ManagerDashboard = ({
 }) => {
     const classes = useStyles();
     const onClick1 = () => {
-        document.getElementById("div1").style.display = "none";
+        document.getElementById("grid1").style.display = "none";
     };
     const onClick2 = () => {
-        document.getElementById("div2").style.display = "none";
+        document.getElementById("grid2").style.display = "none";
     };
     const onClick3 = () => {
-        document.getElementById("div3").style.display = "none";
+        document.getElementById("grid3").style.display = "none";
     };
     const onClick4 = () => {
-        document.getElementById("div4").style.display = "none";
+        document.getElementById("grid4").style.display = "none";
     };
     const onClick5 = () => {
-        document.getElementById("div5").style.display = "none";
+        document.getElementById("grid5").style.display = "none";
     };
 
     return (
@@ -65,23 +56,23 @@ const ManagerDashboard = ({
                 <RouterBreadcrumbs url={window.location.href}/>
             </Col>
             <div className="dashboard">
-                <div className={classes.container}>
-                    <div className={classes.gridOneRow} id="div1">
+                <Grid container>
+                    <Grid item xs={12} sm={12} md={6} lg={4} id="grid1">
                         <ServerKtCloud close={onClick1}/>
-                    </div>
-                    <div className={classes.gridOneRow} id="div2">
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={6} lg={4} id="grid2">
                         <ServerOnPremise close={onClick2}/>
-                    </div>
-                    <div className={classes.gridOneRow} id="div3">
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={6} lg={4} id="grid3">
                         <NetworkOnPremise close={onClick3}/>
-                    </div>
-                    <div className={classes.gridTwoRows} id="div4">
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12} lg={6} id="grid4">
                         <PublicNetwork close={onClick4}/>
-                    </div>
-                    <div className={classes.gridTwoRows} id="div5">
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={12} lg={6} id="grid5">
                         <RandomAnimatedBars close={onClick5}/>
-                    </div>
-                </div>
+                    </Grid>
+                </Grid>
             </div>
         </Container>
     );

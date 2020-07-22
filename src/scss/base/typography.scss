@@ -51,7 +51,8 @@ h3 {
 
 h4 {
   font-size: 14px;     // Modify For Card Title [2020.06.10 LKH]
-  font-family: "Nanum Square acEB", inherit; // Add For Card Title [2020.06.10 LKH]
+  //font-family: "Nanum Square acEB", inherit; // Add For Card Title [2020.06.10 LKH]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
   line-height: 24px;
 
   &.subhead {
@@ -113,7 +114,8 @@ h6 {
 
   h1, h2, h3, h4, h5, h6 {
     margin-bottom: 10px;
-    font-family: "Nanum Square acEB", inherit; // Add [2020.06.10 LKH]
+    //font-family: "Nanum Square acEB", inherit; // Add [2020.06.10 LKH]
+    font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
   }
 }
 
@@ -154,7 +156,8 @@ blockquote {
   text-transform: capitalize;
   //font-size: 20px;    // Origin
   font-size: 16px;    // Modify Title [2020.06.10 LKH]
-  font-family: "Nanum Gothic Extra Bold", inherit; // Add [2020.06.10 LKH]
+  //font-family: "Nanum Gothic Extra Bold", inherit; // Add [2020.06.10 LKH]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
 
   &:last-child {
     margin-bottom: 30px;
@@ -175,7 +178,8 @@ blockquote {
   text-transform: capitalize;
   //font-size: 20px;    // Origin
   font-size: 16px;    // Modify Title [2020.06.10 LKH]
-  font-family: "Nanum Gothic Extra Bold", inherit; // Add [2020.06.10 LKH]
+  //font-family: "Nanum Gothic Extra Bold", inherit; // Add [2020.06.10 LKH]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
 
   &:last-child {
     margin-bottom: 15px;
@@ -195,7 +199,8 @@ blockquote {
   &.subhead {
     //font-size: 14px;    // Origin
     font-size: 12px;    // Modify Subtitle [2020.06.10 LKH]
-    font-family: "Nanum Gothic Extra Bold", inherit; // Add [2020.06.10 LKH]
+    //font-family: "Nanum Gothic Extra Bold", inherit; // Add [2020.06.10 LKH]
+    font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
     opacity: 0.7;
   }
 }

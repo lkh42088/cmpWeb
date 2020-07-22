@@ -165,6 +165,11 @@ const UserList = () => {
         order: pagingRd.order,
     }));
 
+    /** Dense Padding */
+    const {densePadding} = useSelector(({customizer}) => ({
+        densePadding: customizer.densePadding,
+    }));
+
     const [modifyData, setModifyData] = React.useState(null);
     const [openModifyUser, setOpenModifyUser] = React.useState(false);
 
@@ -792,7 +797,7 @@ const UserList = () => {
                         <TableContainer>
                             <Table
                                 className="cb-material-table"
-                                size={dense ? 'small' : 'medium'}
+                                size={densePadding ? 'small' : 'medium'}
                             >
                                 <CommonTableHead
                                     classes={classes}
@@ -815,11 +820,12 @@ const UserList = () => {
                             </Table>
                         </TableContainer>
                         {/*{paginationBar}*/}
-                        <FormControlLabel
-                            className="cb-material-table__padding"
-                            control={<Switch checked={dense} onChange={handleChangeDense} />}
-                            label="Dense padding"
-                        />
+                        {/*Block dense padding button */}
+                        {/*<FormControlLabel*/}
+                        {/*    className="cb-material-table__padding"*/}
+                        {/*    control={<Switch checked={dense} onChange={handleChangeDense} />}*/}
+                        {/*    label="Dense padding"*/}
+                        {/*/>*/}
                     </div>
                     <ModifyUserPage
                         open={openModifyUser}

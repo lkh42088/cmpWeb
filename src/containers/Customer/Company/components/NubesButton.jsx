@@ -21,7 +21,8 @@ export const NubesButtonDefault = withStyles({
     },
     label: {
         textTransform: 'capitalize',
-        fontFamily: 'Nanum Square RoundR',
+        //fontFamily: 'Nanum Square RoundR',
+        fontFamily: 'Noto Sans KR R',
         fontSize: '12px',
         color: "#524d4d",
         width: '100%',
@@ -44,7 +45,7 @@ export const NubesButtonPrimary = withStyles({
     },
     label: {
         textTransform: 'capitalize',
-        fontFamily: 'Nanum Square RoundR',
+        fontFamily: 'Noto Sans KR R',
         fontSize: '12px',
         width: '100%',
     },
@@ -66,7 +67,8 @@ export const NubesButtonSecondary = withStyles({
     },
     label: {
         textTransform: 'capitalize',
-        fontFamily: 'Nanum Square RoundR',
+        //fontFamily: 'Nanum Square RoundR',
+        fontFamily: 'Noto Sans KR R',
         fontSize: '12px',
         width: '100%',
         // width: '5em',
@@ -87,7 +89,8 @@ const NubesButton2 = withStyles({
     },
     label: {
         textTransform: 'capitalize',
-        fontFamily: 'Nanum Square RoundR',
+        //fontFamily: 'Nanum Square RoundR',
+        fontFamily: 'Noto Sans KR R',
         fontSize: '12px',
     },
 })(Button);
@@ -113,7 +116,8 @@ const styles = {
     },
     label: {
         textTransform: 'capitalize',
-        fontFamily: 'Nanum Square RoundR',
+        // fontFamily: 'Nanum Square RoundR',
+        fontFamily: 'Noto Sans KR R',
         fontSize: '12px',
     },
 };

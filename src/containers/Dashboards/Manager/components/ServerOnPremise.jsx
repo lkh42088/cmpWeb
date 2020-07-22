@@ -37,12 +37,6 @@ renderLegend.propTypes = {
 };
 
 class ServerOnPremise extends PureComponent {
-    static propTypes = {
-        t: PropTypes.func.isRequired,
-        dir: PropTypes.string.isRequired,
-        themeName: PropTypes.string.isRequired,
-    };
-
     constructor(props) {
         super(props);
         this.state = {

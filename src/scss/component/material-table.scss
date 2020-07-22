@@ -118,9 +118,10 @@ td.material-table__cell {
 
     padding: 5px 0px;    // Add For Table Cell [2020.06.10 LKH]
     // 10->9 [01July2020,khlee]
-    font-size: 9px;
-    // Nanum Squre-> Nanum Gothic [01July2020,khlee]
-    font-family: "Nanum Gothic Extra Bold";
+    font-size: 12px;
+    // Nanum Squre-> Nanum Gothic Extra Bold [01July2020,khlee]
+    // -> Noto Sans KR R [21July2020,khlee]
+    font-family: "Noto Sans KR R", Roboto, sans-serif;
 
     // Add [01July2020,khlee]
     text-align: center;

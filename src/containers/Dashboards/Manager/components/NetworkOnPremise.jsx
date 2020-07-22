@@ -49,7 +49,6 @@ renderLegend.propTypes = {
 class NetworkOnPremise extends PureComponent {
     static propTypes = {
         t: PropTypes.func.isRequired,
-        dir: PropTypes.string.isRequired,
         themeName: PropTypes.string.isRequired,
     };
 

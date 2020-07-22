@@ -89,7 +89,8 @@ hr {
 
 pre {
   //font-family: monospace, monospace; /* 1 */
-  font-family: "Nanum BarunGothic", "monospace"; /* 1 */ //[2020-06-08 byeonghwa jung]
+  //font-family: "Nanum BarunGothic", "monospace"; /* 1 */ //[2020-06-08 byeonghwa jung]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
   font-size: 1em; /* 2 */
 }
 
@@ -144,7 +145,8 @@ code,
 kbd,
 samp {
   //font-family: monospace, monospace; /* 1 */
-  font-family: "Nanum BarunGothic", "monospace"; /* 1 */ //[2020-06-08 byeonghwa jung]
+  //font-family: "Nanum BarunGothic", "monospace"; /* 1 */ //[2020-06-08 byeonghwa jung]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
   font-size: 1em; /* 2 */
 }
 
@@ -245,7 +247,8 @@ optgroup,
 select,
 textarea {
   //font-family: sans-serif; /* 1 */
-  font-family: "Nanum BarunGothic", "sans-serif"; /* 1 */ //[2020-06-08 byeonghwa jung]
+  //font-family: "Nanum BarunGothic", "sans-serif"; /* 1 */ //[2020-06-08 byeonghwa jung]
+  font-family: 'Nexon Gothic Low', Roboto, sans-serif;  // [21July2020,khlee]
   font-size: 100%; /* 1 */
   line-height: 1.15; /* 1 */
   margin: 0; /* 2 */

@@ -24,6 +24,11 @@ const MaterialTable = () => {
         title: menuTitle,
     }));
 
+    /** Dense Padding */
+    const {densePadding} = useSelector(({customizer}) => ({
+        densePadding: customizer.densePadding,
+    }));
+
     const [user, setUser] = useState(localStorage.getItem('user'));
 
     // TODO Reselect 사용으로 변경하기
@@ -75,7 +80,7 @@ const MaterialTable = () => {
                 ) : false}
                 <Row>
                     {assetState.assetsPage === 'list'
-                        ? <AssetsList assetState={assetState} dispatch={dispatch} user={user}/> : false}
+                        ? <AssetsList assetState={assetState} dispatch={dispatch} densePadding={densePadding} user={user}/> : false}
                     {assetState.assetsPage === 'view' || assetState.assetsPage === 'edit'
                         ? <AssetsView assetState={assetState} dispatch={dispatch} user={user} theme={themeRd}/> : false}
 

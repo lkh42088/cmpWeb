@@ -89,7 +89,7 @@ const useStyles = makeStyles(theme => ({
         "&:hover":
             theme.palette.type === 'light'
                 ? {
-                    boxShadow: "5px 2px 8px 2px #999999",
+                    boxShadow: "4px 2px 6px 1px #999999",
                 }
                 : {
                     boxShadow: "5px 2px 10px 2px #000000",
@@ -172,6 +172,11 @@ const SubnetList = () => {
         dense: pagingRd.dense,
         orderBy: pagingRd.orderBy,
         order: pagingRd.order,
+    }));
+
+    /** Dense Padding */
+    const {densePadding} = useSelector(({customizer}) => ({
+        densePadding: customizer.densePadding,
     }));
 
     /** Add User in TableToolbar */
@@ -690,13 +695,18 @@ const SubnetList = () => {
                         <SubnetTableToolbar
                             numSelected={[...selected].filter(el => el[1]).length}
                             handleDeleteSelected={handleDeleteSelected}
-                            handleRefresh={handleRefresh}
                             onRequestSort={handleRequestSort}
+                            handleRefresh={handleRefresh}
                             rows={headRows}
-                            toolbarTitle="SUBNET LIST"
-                            handleOpen={handleOpenAddUser}
+                            // handleOpen={handleOpenRegisterCompany}
                             handleSubmitSearch={handleSubmitSearch}
-                            contents="계정"
+                            contents="SUBNET"
+                            count={totalCount}
+                            rowsPerPage={rowsPerPage}
+                            page={currentPage}
+                            onChangePage={handleChangePage}
+                            onChangeRowsPerPage={handleChangeRowsPerPage}
+                            rowsPerPageOptions={displayRowsList}
                             data={state.data}
                         />
                     </Grid>
@@ -705,7 +715,7 @@ const SubnetList = () => {
                     <Table
                         stickyHeader
                         className="cb-material-table-fixed"
-                        size={dense ? 'small' : 'medium'}
+                        size={densePadding ? 'small' : 'medium'}
                     >
                         <CommonTableHead
                             classes={classes}

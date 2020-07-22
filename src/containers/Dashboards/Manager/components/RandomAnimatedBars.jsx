@@ -105,7 +105,7 @@ class RandomAnimatedBars extends PureComponent {
     const { data } = this.state;
 
     return (
-        <Panel md title="TOTAL ALARM COUNT" close={close} >
+        <Panel title="TOTAL ALARM COUNT" close={close} >
           <Bar data={data} options={options} />
         </Panel>
     );
