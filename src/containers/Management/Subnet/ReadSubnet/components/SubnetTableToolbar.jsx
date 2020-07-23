@@ -124,7 +124,6 @@ const useToolbarStyles = makeStyles(theme => ({
         // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
         transition: 'width 0.5s 0s',
-        border: "1px solid",    //todo remove
         width: '50%',
         "&:focus": {
             width: '100%',
