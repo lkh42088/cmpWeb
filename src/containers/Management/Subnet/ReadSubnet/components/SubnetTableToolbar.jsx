@@ -31,7 +31,7 @@ import {
 import SubnetSearchBar from "./SubnetSearchBar";
 import BootstrapInput from "../../../../Common/BootstrapInput";
 import CommonTableExportCSV from "../../../../Common/CommonTableExportCSV";
-import CustomSlider from "./CustomSlider";
+import CustomSlider from "../../../../Common/CustomSlider";
 
 const useToolbarStyles = makeStyles(theme => ({
     root: {
@@ -87,21 +87,23 @@ const useToolbarStyles = makeStyles(theme => ({
         fontWeight: "revert",
     },
     grid: {
-        gridTemplateColumns: "155 1fr 1fr 350 30",
+        gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
     },
     search: {
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
+        backgroundColor:
+            theme.palette.type === 'light'
+                ? fade("#646777", 0.25)
+                : fade(theme.palette.common.white, 0.15),
         '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
+            backgroundColor:
+                theme.palette.type === 'light'
+                    ? fade("#646777", 0.15)
+                    : fade(theme.palette.common.white, 0.35),
         },
         marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(1),
-            width: 'auto',
-        },
+        width: 'auto',
     },
     searchIcon: {
         padding: theme.spacing(0, 2),
@@ -115,18 +117,29 @@ const useToolbarStyles = makeStyles(theme => ({
     inputRoot: {
         color: 'inherit',
         fontSize: 'inherit',
+        width: "100%",
     },
     inputInput: {
         padding: theme.spacing(1, 1, 1, 0),
         // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-        transition: theme.transitions.create('width'),
+        transition: 'width 0.5s 0s',
+        border: "1px solid",    //todo remove
+        width: '50%',
+        "&:focus": {
+            width: '100%',
+        },
+    },
+    slider: {
+        position: 'relative',
+        marginLeft: 0,
         width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            width: '50%',
-            '&:focus': {
-                width: '100%',
-            },
+        [theme.breakpoints.down('lg')]: {
+            marginLeft: theme.spacing(1),
+            width: '80%',
+        },
+        [theme.breakpoints.down('md')]: {
+            display: 'none',
         },
     },
 }));
@@ -279,14 +292,13 @@ const SubnetTableToolbar = (props) => {
                          * Table Search bar
                          **********************************************************************/}
                         <Grid container
-                              alignItems="center"
-                              wrap="nowrap"
-                              // style={{maxHeight: 72}}
                               direction="row"
-                              justify="space-between"
-                              className={classes.grid}
+                              justify="flex-start"
+                              alignItems="center"
+                              // className={classes.grid}
                         >
-                            <Grid item md={2} zeroMinWidth>
+                            <Grid item md={2}>
+                                {/*Button Collection : Add, Refresh, Filter, ExportCSV*/}
                                 <div>
                                     <IconButton type="button" onClick={handleOpen}
                                                 data-tip data-for="tooltipAdd">
@@ -322,10 +334,10 @@ const SubnetTableToolbar = (props) => {
                                     ) : (
                                         <TableFilterButton rows={rows} onRequestSort={onRequestSort}/>
                                     )}
-                                    {/*Export CSV*/}
                                 </div>
                             </Grid>
-                            <Grid item xs md={4} zeroMinWidth>
+                            <Grid item xs md={3} justify="space-between">
+                                {/*SearchBar*/}
                                 <div className={classes.search}>
                                     <div className={classes.searchIcon}>
                                         <SearchIcon />
@@ -339,14 +351,10 @@ const SubnetTableToolbar = (props) => {
                                         inputProps={{ 'aria-label': 'search' }}
                                     />
                                 </div>
-                                {/*<div style={{overflow: "hidden"}}>*/}
-                                {/*    <SubnetSearchBar*/}
-                                {/*        handleSubmit={handleSubmitSearch}*/}
-                                {/*    />*/}
-                                {/*</div>*/}
                             </Grid>
-                            <Grid item md={1} zeroMinWidth/>
-                            <Grid item md={1} zeroMinWidth>
+                            <Grid item md={1}/>
+                            <Grid item md={1}>
+                                {/*Table Height Control Slider*/}
                                 <CustomSlider
                                     onChange={handleSliderChange}
                                     valueLabelDisplay="auto"
@@ -354,6 +362,7 @@ const SubnetTableToolbar = (props) => {
                                     step="10"
                                     defaultValue="30"
                                     valueLabelFormat={val => (val * 20)}
+                                    className={classes.slider}
                                 />
                             </Grid>
                             <Grid item md={5} zeroMinWidth>
