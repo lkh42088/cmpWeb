@@ -13,6 +13,7 @@ import {
     PAGING_CHANGE_DENSE,
     PAGING_CHANGE_ORDER,
     PAGING_CHANGE_ORDER_BY,
+    PAGING_CHANGE_ORDER_AND_ORDERBY,
     PAGING_CHANGE_ORDER_BY_WITH_RESET,
     PAGING_CHANGE_ROWS_PER_PAGE,
     PAGING_CHANGE_SELECTED,
@@ -168,6 +169,11 @@ const pagingReducer = handleActions(
         [PAGING_CHANGE_ORDER]: (state, action) => ({
             ...state,
             order: action.payload.order,
+        }),
+        [PAGING_CHANGE_ORDER_AND_ORDERBY]: (state, action) => ({
+            ...state,
+            order: action.payload.order,
+            orderBy: action.payload.orderBy,
         }),
     },
     initialState,

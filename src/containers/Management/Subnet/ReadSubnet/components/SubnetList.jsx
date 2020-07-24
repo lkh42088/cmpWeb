@@ -34,7 +34,7 @@ import {
     pagingChangeOrderBy,
     pagingChangeOrderByWithReset,
     pagingChangeRowsPerPage,
-    pagingChangeSelected,
+    pagingChangeSelected, pagingChangeSorting,
     pagingChangeTotalCount,
     pagingDump,
 } from "../../../../../redux/actions/pagingActions";
@@ -195,7 +195,7 @@ const SubnetList = () => {
     /**************************************************************
      * Pagination
      **************************************************************/
-    const updatePagingTotalCount = ({count}) => {
+    const updatePagingTotalCount = (count) => {
         if (count !== totalCount) {
             dispatch(pagingChangeTotalCount({totalCount: count}));
         }
@@ -248,14 +248,13 @@ const SubnetList = () => {
 
     /** Pagination */
     const handleRequestSort = (event, property) => {
-        console.log("▤▤▤▤▤▤▤▤▤▤▤▤▤▤▤handleRequestSort");
         const isAsc = orderBy === property && order === "asc";
         const changeOrder = isAsc ? "desc" : "asc";
-        console.log(event.target.value, property, isAsc, changeOrder, orderByName[property]);
-        // if (property !== "collapse") {
-            dispatch(pagingChangeOrder({order: changeOrder}));
-            dispatch(pagingChangeOrderBy({orderBy: orderByName[property]}));
-        // }
+        console.log("▤▤▤▤▤▤▤", property, isAsc, changeOrder, orderByName[property]);
+        dispatch(pagingChangeSorting({
+            order: changeOrder,
+            orderBy: orderByName[property],
+        }));
     };
 
     /** Pagination */
@@ -351,6 +350,7 @@ const SubnetList = () => {
     };
 
     const getData = async () => {
+        console.log("★★★★★★★★", "get Data!!");
         try {
             let response;
             if (searchParam !== null) {
@@ -378,7 +378,6 @@ const SubnetList = () => {
                     }))),
                 page: response.data.page,
             });
-            console.log("getData count: ", response.data.page.count);
         } catch {
             setState({
                 ...state,
@@ -411,29 +410,22 @@ const SubnetList = () => {
      ************************************************************************************/
     useEffect(() => {
         const changeOrderBy = "sub_idx";
-        // console.log("[] orderBy: ", changeOrderBy);
         dispatch(pagingChangeOrderByWithReset({orderBy: changeOrderBy}));
-        dispatch(pagingChangeCurrentPage({currentPage: 1}));
     }, []);
 
-    // useEffect(() => {
-    //     if (getPage) {
-    //         const {count} = getPage;
-    //         /** Pagination */
-    //         updatePagingTotalCount({count});
-    //     }
-    // }, [getPage]);
-    //
     useEffect(() => {
-        /** Pagination */
         getData();
-        // dispatch(pagingDump());
     }, [rowsPerPage, pageBeginRow, orderBy, order]);
 
     useEffect(() => {
-
+        updatePagingTotalCount(state.page.count);
     }, [state.page.count]);
-    //
+
+    useEffect(() => {
+        console.log("useEffect: searchParam ", searchParam);
+        getData();
+    }, [searchParam]);
+
     // useEffect(() => {
     //     if (msg) {
     //         // handleSnackbarSuccess("계정 등록에 성공하였습니다.");
@@ -449,40 +441,9 @@ const SubnetList = () => {
     //     }
     // }, [msgError]);
 
-    useEffect(() => {
-        // console.log("useEffect: searchParam ", searchParam);
-        getData();
-    }, [searchParam]);
-
     /************************************************************************************
      * Component
      ************************************************************************************/
-    // const rowSelector = (
-    //     <FormControl className={classes.margin}>
-    //         {/*<InputLabel id="demo-customized-select-label">ROWS</InputLabel>*/}
-    //         <Button
-    //             onChange={handleChangeRowsPerPage}
-    //             value={rowsPerPage}
-    //             // input={<BootstrapInput />}
-    //         >
-    //             {displayRowsList.map(size => (
-    //                 <MenuItem key={size} value={size}>{size}</MenuItem>
-    //             ))}
-    //         </Button>
-    //     </FormControl>
-    // );
-
-    // const paginationBar = (
-    //     <div className={classes.pagination}>
-    //         <Pagination
-    //             shape="rounded"
-    //             variant="outlined"
-    //             count={Math.ceil(totalCount / rowsPerPage)}
-    //             page={currentPage}
-    //             onChange={handleChangePage}
-    //         />
-    //     </div>
-    // );
 
     /************************************************************************************
      * JSX Template
@@ -691,6 +652,7 @@ const SubnetList = () => {
                             onChangePage={handleChangePage}
                             onChangeRowsPerPage={handleChangeRowsPerPage}
                             rowsPerPageOptions={displayRowsList}
+                            defaultHeight={30}
                             setTableHeight={setTableHeight}
                             data={state.data}
                         />

@@ -212,7 +212,7 @@ const SubnetTableToolbar = (props) => {
         rows, numSelected, handleDeleteSelected, onRequestSort,
         handleOpen, contents, handleRefresh, handleSubmitSearch,
         count, rowsPerPage, page, onChangePage, onChangeRowsPerPage,
-        rowsPerPageOptions, setTableHeight, data,
+        rowsPerPageOptions, defaultHeight, setTableHeight, data,
     } = props;
     const addComment = contents.concat(" 추가");
     const deleteComment = `선택한 ${contents} 삭제`;
@@ -245,7 +245,7 @@ const SubnetTableToolbar = (props) => {
     const paginationBar = (
         <TablePagination
             component="div"
-            count={count}
+            count={count || 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onChangePage={onChangePage}
@@ -292,7 +292,7 @@ const SubnetTableToolbar = (props) => {
                          **********************************************************************/}
                         <Grid container
                               direction="row"
-                              justify="flex-start"
+                              justify="space-between"
                               alignItems="center"
                               // className={classes.grid}
                         >
@@ -335,7 +335,7 @@ const SubnetTableToolbar = (props) => {
                                     )}
                                 </div>
                             </Grid>
-                            <Grid item xs md={3} justify="space-between">
+                            <Grid item xs md={3} >
                                 {/*SearchBar*/}
                                 <div className={classes.search}>
                                     <div className={classes.searchIcon}>
@@ -358,8 +358,8 @@ const SubnetTableToolbar = (props) => {
                                     onChange={handleSliderChange}
                                     valueLabelDisplay="auto"
                                     aria-label="테이블 높이"
-                                    step="10"
-                                    defaultValue="30"
+                                    step={10}
+                                    defaultValue={defaultHeight}
                                     valueLabelFormat={val => (val * 20)}
                                     className={classes.slider}
                                 />
