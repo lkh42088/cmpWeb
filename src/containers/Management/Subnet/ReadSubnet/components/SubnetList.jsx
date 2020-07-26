@@ -39,11 +39,11 @@ import {
     pagingDump,
 } from "../../../../../redux/actions/pagingActions";
 import {getUserList, getUserListWithSearchParam, initRegisterUser} from "../../../../../redux/actions/usersActions";
-import CommonTableHead from "../../../../Common/CommonTableHead";
 import {registerUser, unregisterUser} from "../../../../../lib/api/users";
 import BootstrapInput from "../../../../Common/BootstrapInput";
 import {readSubnet} from "../../../../../lib/api/subnet";
 import SubnetTableToolbar from "./SubnetTableToolbar";
+import SubnetTableHead from "./SubnetTableHead";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'IDX'},
@@ -201,18 +201,6 @@ const SubnetList = () => {
         }
     };
 
-    const handleChangePagePrev = () => {
-        if (currentPage > 0) {
-            dispatch(pagingChangeCurrentPagePrev());
-        }
-    };
-
-    const handleChangePageNext = () => {
-        if (currentPage < totalCount) {
-            dispatch(pagingChangeCurrentPageNext());
-        }
-    };
-
     const handleChangePage = (event, newPage) => {
         console.log("change page: ", newPage);
         dispatch(pagingChangeCurrentPage({currentPage: newPage}));
@@ -248,9 +236,15 @@ const SubnetList = () => {
 
     /** Pagination */
     const handleRequestSort = (event, property) => {
-        const isAsc = orderBy === property && order === "asc";
-        const changeOrder = isAsc ? "desc" : "asc";
-        console.log("▤▤▤▤▤▤▤", property, isAsc, changeOrder, orderByName[property]);
+        // const isAsc = orderBy === property && order === "asc";
+        // const changeOrder = isAsc ? "desc" : "asc";
+        let changeOrder = "desc";
+        if (orderBy === property) {
+            if (order === "desc") {
+                changeOrder = "asc";
+            }
+        }
+        console.log("▤▤▤▤▤▤▤", property, changeOrder, orderByName[property]);
         dispatch(pagingChangeSorting({
             order: changeOrder,
             orderBy: orderByName[property],
@@ -669,7 +663,7 @@ const SubnetList = () => {
                         className="cb-material-table-fixed"
                         size={densePadding ? 'small' : 'medium'}
                     >
-                        <CommonTableHead
+                        <SubnetTableHead
                             classes={classes}
                             numSelected={[...selected].filter(el => el[1]).length}
                             order={order}
