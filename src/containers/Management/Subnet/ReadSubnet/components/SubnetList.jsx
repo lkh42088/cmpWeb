@@ -34,56 +34,30 @@ import {
     pagingChangeOrderBy,
     pagingChangeOrderByWithReset,
     pagingChangeRowsPerPage,
-    pagingChangeSelected,
+    pagingChangeSelected, pagingChangeSorting,
     pagingChangeTotalCount,
     pagingDump,
 } from "../../../../../redux/actions/pagingActions";
 import {getUserList, getUserListWithSearchParam, initRegisterUser} from "../../../../../redux/actions/usersActions";
-import CommonTableHead from "../../../../Common/CommonTableHead";
 import {registerUser, unregisterUser} from "../../../../../lib/api/users";
 import BootstrapInput from "../../../../Common/BootstrapInput";
 import {readSubnet} from "../../../../../lib/api/subnet";
 import SubnetTableToolbar from "./SubnetTableToolbar";
+import SubnetTableHead from "./SubnetTableHead";
 
 const headRows = [
-    {
-        id: 'idx', disablePadding: false, label: 'IDX', minWidth: "50px",
-    }, {
-        id: 'subnetTag', disablePadding: false, label: 'SUBNET TAG', minWidth: "150px",
-    }, {
-        id: 'subnet', disablePadding: false, label: 'SUBNET', minWidth: "400px",
-    }, {
-        id: 'subnetMask', disablePadding: false, label: 'SUBNET MASK', minWidth: "200px",
-    }, {
-        id: 'gateway', disablePadding: false, label: 'GATEWAY', minWidth: "200px",
-    },
+    {id: 'idx', disablePadding: false, label: 'IDX'},
+    {id: 'subnetTag', disablePadding: false, label: 'SUBNET TAG'},
+    {id: 'subnet', disablePadding: false, label: 'SUBNET'},
+    {id: 'subnetMask', disablePadding: false, label: 'SUBNET MASK'},
+    {id: 'gateway', disablePadding: false, label: 'GATEWAY'},
 ];
 
 const useStyles = makeStyles((theme) => {
+    // Block to CSS, on case Internet Explorer Browser
     const isIE = /*@cc_on!@*/false || !!document.documentMode;
     if (!isIE) {
         return ({
-            root: {
-                width: '100%',
-            },
-            paper: {
-                width: '100%',
-                marginBottom: theme.spacing(2),
-            },
-            table: {
-                minWidth: 750,
-            },
-            visuallyHidden: {
-                border: 0,
-                clip: 'rect(0 0 0 0)',
-                height: 1,
-                margin: -1,
-                overflow: 'hidden',
-                padding: 0,
-                position: 'absolute',
-                top: 20,
-                width: 1,
-            },
             rowCss: {
                 '& > *': {
                     borderBottom: 'unset',
@@ -127,15 +101,12 @@ const useStyles = makeStyles((theme) => {
 });
 
 const SubnetList = () => {
-    /************************************************************************************
+    /**************************************************************
      * Variable
-     ************************************************************************************/
+     **************************************************************/
     const classes = useStyles();
     const dispatch = useDispatch();
     // const { enqueueSnackbar } = useSnackbar();
-    /**
-     * User Data
-     */
     // const {
     //     /** Paging User Data */
     //     data,
@@ -156,9 +127,7 @@ const SubnetList = () => {
         page: [],
     });
 
-    /**
-     * Pagination
-     */
+    /** Pagination */
     const {
         selected,
         pageBeginRow,
@@ -192,6 +161,7 @@ const SubnetList = () => {
     const [searchParam, setSearchParam] = useState(null);
     const [tableHeight, setTableHeight] = useState(580);
 
+    /** Order name */
     const orderByName = {
         idx: "sub_idx",
         subnetTag: "sub_tag",
@@ -200,9 +170,9 @@ const SubnetList = () => {
         gateway: "sub_gateway",
     };
 
-    /************************************************************************************
+    /**************************************************************
      * Function
-     ************************************************************************************/
+     **************************************************************/
 
     /** Add User in TableToolbar */
     const handleOpenAddUser = () => {
@@ -222,45 +192,27 @@ const SubnetList = () => {
     //     enqueueSnackbar(snackMsg, { variant: "success" });
     // };
 
-    /*******************
+    /**************************************************************
      * Pagination
-     *******************/
-
-    /** Pagination */
-    const updatePagingTotalCount = ({count}) => {
+     **************************************************************/
+    const updatePagingTotalCount = (count) => {
         if (count !== totalCount) {
             dispatch(pagingChangeTotalCount({totalCount: count}));
         }
     };
 
-    /** Pagination */
-    const handleChangePagePrev = () => {
-        if (currentPage > 0) {
-            dispatch(pagingChangeCurrentPagePrev());
-        }
-    };
-
-    /** Pagination */
-    const handleChangePageNext = () => {
-        if (currentPage < totalCount) {
-            dispatch(pagingChangeCurrentPageNext());
-        }
-    };
-
-    /** Pagination */
     const handleChangePage = (event, newPage) => {
         console.log("change page: ", newPage);
         dispatch(pagingChangeCurrentPage({currentPage: newPage}));
     };
 
-    /** Pagination */
     const handleChangeRowsPerPage = (e) => {
         const changeRows = Number(e.target.value);
         dispatch(pagingChangeRowsPerPage({rowsPerPage: changeRows}));
     };
 
     /** Pagination */
-    const handleClick = (event, id) => {
+    const handleCellClick = (event, id) => {
         const newSelected = new Map(selected);
         const value = newSelected.get(id);
         let isActive = true;
@@ -284,12 +236,19 @@ const SubnetList = () => {
 
     /** Pagination */
     const handleRequestSort = (event, property) => {
-        const isAsc = orderBy === property && order === "asc";
-        const changeOrder = isAsc ? "desc" : "asc";
-        if (property !== "collapse") {
-            dispatch(pagingChangeOrder({order: changeOrder}));
-            dispatch(pagingChangeOrderBy({orderBy: orderByName[property]}));
+        // const isAsc = orderBy === property && order === "asc";
+        // const changeOrder = isAsc ? "desc" : "asc";
+        let changeOrder = "desc";
+        if (orderBy === property) {
+            if (order === "desc") {
+                changeOrder = "asc";
+            }
         }
+        console.log("▤▤▤▤▤▤▤", property, changeOrder, orderByName[property]);
+        dispatch(pagingChangeSorting({
+            order: changeOrder,
+            orderBy: orderByName[property],
+        }));
     };
 
     /** Pagination */
@@ -349,12 +308,11 @@ const SubnetList = () => {
         // getPageDataWithSearchParam(params);
     };
 
-    /** Pagination */
     const getSelected = id => !!selected.get(id);
 
-    /*******************
-     * Axios
-     *******************/
+    /**************************************************************
+     * Axios Function
+     **************************************************************/
     const addUser = async (user) => {
         const {
             cpIdx, cpName, id, password, name, email,
@@ -386,13 +344,25 @@ const SubnetList = () => {
     };
 
     const getData = async () => {
+        console.log("★★★★★★★★", "get Data!!");
         try {
-            const response = await readSubnet({
-                rows: rowsPerPage,
-                offset: (currentPage === 0) ? 0 : (currentPage - 1) * rowsPerPage,
-                orderBy,
-                order,
-            });
+            let response;
+            if (searchParam !== null) {
+                response = await readSubnet({
+                    rows: rowsPerPage,
+                    offset: (currentPage === 0) ? 0 : (currentPage - 1) * rowsPerPage,
+                    orderBy,
+                    order,
+                });
+            } else {
+                response = await readSubnet({
+                    rows: rowsPerPage,
+                    offset: (currentPage === 0) ? 0 : (currentPage - 1) * rowsPerPage,
+                    orderBy,
+                    order,
+                    searchParam,
+                });
+            }
             setState({
                 ...state,
                 data: (
@@ -402,8 +372,6 @@ const SubnetList = () => {
                     }))),
                 page: response.data.page,
             });
-            console.log("getData count: ", response.data.page.count);
-            updatePagingTotalCount(response.data.page.count);
         } catch {
             setState({
                 ...state,
@@ -436,29 +404,22 @@ const SubnetList = () => {
      ************************************************************************************/
     useEffect(() => {
         const changeOrderBy = "sub_idx";
-        // console.log("[] orderBy: ", changeOrderBy);
         dispatch(pagingChangeOrderByWithReset({orderBy: changeOrderBy}));
-        dispatch(pagingChangeCurrentPage({currentPage: 1}));
     }, []);
 
     useEffect(() => {
-        dispatch(pagingDump());
-    }, [totalCount]);
-
-    // useEffect(() => {
-    //     if (getPage) {
-    //         const {count} = getPage;
-    //         /** Pagination */
-    //         updatePagingTotalCount({count});
-    //     }
-    // }, [getPage]);
-    //
-    useEffect(() => {
-        /** Pagination */
         getData();
-        // dispatch(pagingDump());
     }, [rowsPerPage, pageBeginRow, orderBy, order]);
-    //
+
+    useEffect(() => {
+        updatePagingTotalCount(state.page.count);
+    }, [state.page.count]);
+
+    useEffect(() => {
+        console.log("useEffect: searchParam ", searchParam);
+        getData();
+    }, [searchParam]);
+
     // useEffect(() => {
     //     if (msg) {
     //         // handleSnackbarSuccess("계정 등록에 성공하였습니다.");
@@ -474,40 +435,9 @@ const SubnetList = () => {
     //     }
     // }, [msgError]);
 
-    useEffect(() => {
-        // console.log("useEffect: searchParam ", searchParam);
-        getData();
-    }, [searchParam]);
-
     /************************************************************************************
      * Component
      ************************************************************************************/
-    // const rowSelector = (
-    //     <FormControl className={classes.margin}>
-    //         {/*<InputLabel id="demo-customized-select-label">ROWS</InputLabel>*/}
-    //         <Button
-    //             onChange={handleChangeRowsPerPage}
-    //             value={rowsPerPage}
-    //             // input={<BootstrapInput />}
-    //         >
-    //             {displayRowsList.map(size => (
-    //                 <MenuItem key={size} value={size}>{size}</MenuItem>
-    //             ))}
-    //         </Button>
-    //     </FormControl>
-    // );
-
-    // const paginationBar = (
-    //     <div className={classes.pagination}>
-    //         <Pagination
-    //             shape="rounded"
-    //             variant="outlined"
-    //             count={Math.ceil(totalCount / rowsPerPage)}
-    //             page={currentPage}
-    //             onChange={handleChangePage}
-    //         />
-    //     </div>
-    // );
 
     /************************************************************************************
      * JSX Template
@@ -552,7 +482,7 @@ const SubnetList = () => {
                     <TableCell
                         className="cb-material-table__cell"
                         padding="checkbox"
-                        onClick={event => handleClick(event, row.idx)}
+                        onClick={event => handleCellClick(event, row.idx)}
                     >
                         <Checkbox checked={isSelected}
                             // className="cb-material-table__checkbox"
@@ -601,92 +531,92 @@ const SubnetList = () => {
                                     {row.userId}
                                 </Typography>
                                 <div className={classes.grid}>
-                                    <Grid container spacing={1}>
-                                        <Grid item xs={12} sm={6}>
-                                            <ul>
-                                                <li>
-                                                    <span className={classes.spanSubject}> 소속회사 </span>
-                                                    <span className={classes.spanContents}> {row.cpName} </span>
-                                                </li>
-                                                <li>
-                                                    <span className={classes.spanSubject}> ID </span>
-                                                    <span className={classes.spanContents}> {row.userId} </span>
-                                                </li>
-                                                <li>
-                                                    <span className={classes.spanSubject}> 이름 </span>
-                                                    <span className={classes.spanContents}> {row.name} </span>
-                                                </li>
-                                                <li>
-                                                    <span className={classes.spanSubject}> 전화번호 </span>
-                                                    <span className={classes.spanContents}> {row.hp === "" ? "-" : row.hp} </span>
-                                                </li>
-                                                <li>
-                                                    <span className={classes.spanSubject}> 이메일 </span>
-                                                    <span className={classes.spanContents}> {row.email === "" ? "-" : row.email} </span>
-                                                </li>
-                                            </ul>
-                                        </Grid>
-                                        <Grid item xs={12} sm={6}>
-                                            <ul>
-                                                <li>
-                                                    <span className={classes.spanSubject}> 권한 </span>
-                                                    {/*<span className={classes.spanContents}> {row.zipcode},&nbsp;{row.address},&nbsp;{row.addressDetail} </span>*/}
-                                                    <span className={classes.spanContents}> {row.authLevel} </span>
-                                                </li>
-                                                <li>
-                                                    <span className={classes.spanSubject}> 주소 </span>
-                                                    {/*<span className={classes.spanContents}> {row.zipcode},&nbsp;{row.address},&nbsp;{row.addressDetail} </span>*/}
-                                                    <span className={classes.spanContents}> {address} </span>
-                                                </li>
-                                                <li>
-                                                    <span className={classes.spanSubject}> 등록일 </span>
-                                                    <span className={classes.spanContents}> {moment(row.registerDate).format('YYYY-MM-DD')} </span>
-                                                </li>
-                                                <li>
-                                                    <span className={classes.spanSubject}> 인증 </span>
-                                                    <span className={classes.spanContents}>
-                                                        {/* eslint-disable-next-line no-nested-ternary */}
-                                                        {row.emailAuth === true ? "개인 이메일 인증" : (row.groupEmailAuth === true ? "그룹 이메일 인증" : "사용 안함")}
-                                                    </span>
-                                                </li>
-                                            </ul>
-                                        </Grid>
-                                        <Grid item xs={12} sm={6}>
-                                            {
-                                                row.groupEmailAuth && row.groupEmailAuthList ? (
-                                                    <React.Fragment>
-                                                        <span className={classes.spanContents}>
-                                                            <GroupIcon/> 이메일 인증 그룹 </span>
-                                                        <ul>
-                                                            {row.groupEmailAuthList.map(auth => (
-                                                                <li key={auth.idx}>
-                                                                <span className={classes.spanContents}>
-                                                                    {auth.AuthUserId}/{auth.AuthEmail}</span>
-                                                                </li>
-                                                            ))}
-                                                        </ul>
-                                                    </React.Fragment>
-                                                ) : <React.Fragment/>
-                                            }
-                                        </Grid>
-                                        <Grid item xs={12} sm={6}>
-                                            {
-                                                row.participateInAccountList && row.participateInAccountList.length > 0 ? (
-                                                    <React.Fragment>
-                                                        <span className={classes.spanContents}>
-                                                            <AccountCircleIcon/> 사용하는 이메일 인증 계정 </span>
-                                                        <ul>
-                                                            {row.participateInAccountList.map(paccount => (
-                                                                <li key={paccount.idx}>
-                                                                    <span className={classes.spanContents}>{paccount.UserId}</span>
-                                                                </li>
-                                                            ))}
-                                                        </ul>
-                                                    </React.Fragment>
-                                                ) : <React.Fragment/>
-                                            }
-                                        </Grid>
-                                    </Grid>
+                                    {/*<Grid container spacing={1}>*/}
+                                    {/*    <Grid item xs={12} sm={6}>*/}
+                                    {/*        <ul>*/}
+                                    {/*            <li>*/}
+                                    {/*                <span className={classes.spanSubject}> 소속회사 </span>*/}
+                                    {/*                <span className={classes.spanContents}> {row.cpName} </span>*/}
+                                    {/*            </li>*/}
+                                    {/*            <li>*/}
+                                    {/*                <span className={classes.spanSubject}> ID </span>*/}
+                                    {/*                <span className={classes.spanContents}> {row.userId} </span>*/}
+                                    {/*            </li>*/}
+                                    {/*            <li>*/}
+                                    {/*                <span className={classes.spanSubject}> 이름 </span>*/}
+                                    {/*                <span className={classes.spanContents}> {row.name} </span>*/}
+                                    {/*            </li>*/}
+                                    {/*            <li>*/}
+                                    {/*                <span className={classes.spanSubject}> 전화번호 </span>*/}
+                                    {/*                <span className={classes.spanContents}> {row.hp === "" ? "-" : row.hp} </span>*/}
+                                    {/*            </li>*/}
+                                    {/*            <li>*/}
+                                    {/*                <span className={classes.spanSubject}> 이메일 </span>*/}
+                                    {/*                <span className={classes.spanContents}> {row.email === "" ? "-" : row.email} </span>*/}
+                                    {/*            </li>*/}
+                                    {/*        </ul>*/}
+                                    {/*    </Grid>*/}
+                                    {/*    <Grid item xs={12} sm={6}>*/}
+                                    {/*        <ul>*/}
+                                    {/*            <li>*/}
+                                    {/*                <span className={classes.spanSubject}> 권한 </span>*/}
+                                    {/*                /!*<span className={classes.spanContents}> {row.zipcode},&nbsp;{row.address},&nbsp;{row.addressDetail} </span>*!/*/}
+                                    {/*                <span className={classes.spanContents}> {row.authLevel} </span>*/}
+                                    {/*            </li>*/}
+                                    {/*            <li>*/}
+                                    {/*                <span className={classes.spanSubject}> 주소 </span>*/}
+                                    {/*                /!*<span className={classes.spanContents}> {row.zipcode},&nbsp;{row.address},&nbsp;{row.addressDetail} </span>*!/*/}
+                                    {/*                <span className={classes.spanContents}> {address} </span>*/}
+                                    {/*            </li>*/}
+                                    {/*            <li>*/}
+                                    {/*                <span className={classes.spanSubject}> 등록일 </span>*/}
+                                    {/*                <span className={classes.spanContents}> {moment(row.registerDate).format('YYYY-MM-DD')} </span>*/}
+                                    {/*            </li>*/}
+                                    {/*            <li>*/}
+                                    {/*                <span className={classes.spanSubject}> 인증 </span>*/}
+                                    {/*                <span className={classes.spanContents}>*/}
+                                    {/*                    /!* eslint-disable-next-line no-nested-ternary *!/*/}
+                                    {/*                    {row.emailAuth === true ? "개인 이메일 인증" : (row.groupEmailAuth === true ? "그룹 이메일 인증" : "사용 안함")}*/}
+                                    {/*                </span>*/}
+                                    {/*            </li>*/}
+                                    {/*        </ul>*/}
+                                    {/*    </Grid>*/}
+                                    {/*    <Grid item xs={12} sm={6}>*/}
+                                    {/*        {*/}
+                                    {/*            row.groupEmailAuth && row.groupEmailAuthList ? (*/}
+                                    {/*                <React.Fragment>*/}
+                                    {/*                    <span className={classes.spanContents}>*/}
+                                    {/*                        <GroupIcon/> 이메일 인증 그룹 </span>*/}
+                                    {/*                    <ul>*/}
+                                    {/*                        {row.groupEmailAuthList.map(auth => (*/}
+                                    {/*                            <li key={auth.idx}>*/}
+                                    {/*                            <span className={classes.spanContents}>*/}
+                                    {/*                                {auth.AuthUserId}/{auth.AuthEmail}</span>*/}
+                                    {/*                            </li>*/}
+                                    {/*                        ))}*/}
+                                    {/*                    </ul>*/}
+                                    {/*                </React.Fragment>*/}
+                                    {/*            ) : <React.Fragment/>*/}
+                                    {/*        }*/}
+                                    {/*    </Grid>*/}
+                                    {/*    <Grid item xs={12} sm={6}>*/}
+                                    {/*        {*/}
+                                    {/*            row.participateInAccountList && row.participateInAccountList.length > 0 ? (*/}
+                                    {/*                <React.Fragment>*/}
+                                    {/*                    <span className={classes.spanContents}>*/}
+                                    {/*                        <AccountCircleIcon/> 사용하는 이메일 인증 계정 </span>*/}
+                                    {/*                    <ul>*/}
+                                    {/*                        {row.participateInAccountList.map(paccount => (*/}
+                                    {/*                            <li key={paccount.idx}>*/}
+                                    {/*                                <span className={classes.spanContents}>{paccount.UserId}</span>*/}
+                                    {/*                            </li>*/}
+                                    {/*                        ))}*/}
+                                    {/*                    </ul>*/}
+                                    {/*                </React.Fragment>*/}
+                                    {/*            ) : <React.Fragment/>*/}
+                                    {/*        }*/}
+                                    {/*    </Grid>*/}
+                                    {/*</Grid>*/}
                                 </div>
                             </Box>
                         </Collapse>
@@ -704,7 +634,7 @@ const SubnetList = () => {
                         <SubnetTableToolbar
                             numSelected={[...selected].filter(el => el[1]).length}
                             handleDeleteSelected={handleDeleteSelected}
-                            onRequestSort={handleRequestSort}
+                            // onRequestSort={handleRequestSort}
                             handleRefresh={handleRefresh}
                             rows={headRows}
                             // handleOpen={handleOpenRegisterCompany}
@@ -716,6 +646,7 @@ const SubnetList = () => {
                             onChangePage={handleChangePage}
                             onChangeRowsPerPage={handleChangeRowsPerPage}
                             rowsPerPageOptions={displayRowsList}
+                            defaultHeight={30}
                             setTableHeight={setTableHeight}
                             data={state.data}
                         />
@@ -732,7 +663,7 @@ const SubnetList = () => {
                         className="cb-material-table-fixed"
                         size={densePadding ? 'small' : 'medium'}
                     >
-                        <CommonTableHead
+                        <SubnetTableHead
                             classes={classes}
                             numSelected={[...selected].filter(el => el[1]).length}
                             order={order}
