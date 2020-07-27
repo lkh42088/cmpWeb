@@ -275,7 +275,7 @@ const SubnetTableToolbar = (props) => {
                         <Typography className={classes.selected} color="inherit" variant="subtitle1" component="div">
                             {numSelected} selected
                         </Typography>
-                        <Tooltip title="선택한 계정 삭제">
+                        <Tooltip title="선택한 항목 삭제">
                             <IconButton
                                 aria-label="delete"
                                 onClick={handleDeleteSelected}

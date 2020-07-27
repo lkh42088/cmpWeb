@@ -54,6 +54,7 @@
     "mdi-react": "^5.2.0",
     "mini-css-extract-plugin": "^0.5.0",
     "moment": "^2.24.0",
+    "mui-datatables": "^3.3.0",
     "node-pre-gyp": "0.14.0",
     "notistack": "^0.9.17",
     "optimize-css-assets-webpack-plugin": "5.0.1",
@@ -227,4 +228,3 @@
     ]
   }
 }
-

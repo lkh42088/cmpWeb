@@ -7,7 +7,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 const DialogForm = (props) => {
     const {
         open, handleClose, handleSubmit, data,
-        childComponent, title, icon,
+        childComponent, title, icon, width,
     } = props;
 
     return (
@@ -15,7 +15,7 @@ const DialogForm = (props) => {
             open={open}
         >
             <Card>
-                <CardBody>
+                <CardBody style={{width, fontSize: "12px"}}>
                     <div className="card__title">
                         <Grid container spacing={1} alignItems="center">
                             <Grid item>

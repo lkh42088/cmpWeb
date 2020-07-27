@@ -9,3 +9,5 @@ export const createSubnet = ({
 export const readSubnet = ({
     rows, offset, orderBy, order,
 }) => client.get(`/v1/subnet/${rows}/${offset}/${orderBy}/${order}`);
+
+export const deleteSubnets = ({idx}) => client.delete(`/v1/subnet/${idx}`);

@@ -32,6 +32,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import BlurOnOutlinedIcon from '@material-ui/icons/BlurOnOutlined';
 import BuildIcon from '@material-ui/icons/Build';
 import ReactTooltip from "react-tooltip";
+import MUIDataTable from "mui-datatables";
 import {
     pagingChangeCurrentPage,
     pagingChangeCurrentPageNext,
@@ -57,11 +58,11 @@ import SubnetWriteForm from "../../CreateSubnet/components/SubnetWriteForm";
 import DialogForm from "../../../../Common/DialogForm";
 
 const headRows = [
-    {id: 'idx', disablePadding: false, label: 'IDX'},
-    {id: 'subnetTag', disablePadding: false, label: 'SUBNET TAG'},
-    {id: 'subnet', disablePadding: false, label: 'SUBNET'},
-    {id: 'subnetMask', disablePadding: false, label: 'SUBNET MASK'},
-    {id: 'gateway', disablePadding: false, label: 'GATEWAY'},
+    {name: 'idx', label: 'IDX', options: {filter: true, sort: true}},
+    {name: 'subnetTag', label: 'SUBNET TAG', options: {filter: true, sort: true}},
+    {name: 'subnet', label: 'SUBNET', options: {filter: true, sort: true}},
+    {name: 'subnetMask', label: 'SUBNET MASK', options: {filter: true, sort: true}},
+    {name: 'gateway', label: 'GATEWAY', options: {filter: true, sort: true}},
 ];
 
 /**************************************************************
@@ -125,7 +126,7 @@ const useStyles = makeStyles((theme) => {
     return null;
 });
 
-const SubnetList = () => {
+const __SubnetList = () => {
     /**************************************************************
      * Variable
      **************************************************************/
@@ -496,6 +497,10 @@ const SubnetList = () => {
         return address;
     };
 
+    const options = {
+        filterType: 'checkbox',
+    };
+
     const ContentsRow = (props) => {
         const { row } = props;
         const [openCollapse, setOpenCollapse] = React.useState(false);
@@ -694,59 +699,60 @@ const SubnetList = () => {
     return (
         <Col>
             <Card className="cb-card-subnet">
-                <Grid container style={{display: "flex"}}>
-                    <Grid item md={12}>
-                        <SubnetTableToolbar
-                            numSelected={[...selected].filter(el => el[1]).length}
-                            handleDeleteSelected={handleDeleteSelected}
-                            onRequestSort={handleRequestSort}
-                            handleRefresh={handleRefresh}
-                            rows={headRows}
-                            handleOpen={handleOpenModal}
-                            handleSubmitSearch={handleSubmitSearch}
-                            contents="SUBNET"
-                            count={totalCount}
-                            rowsPerPage={rowsPerPage}
-                            page={currentPage}
-                            onChangePage={handleChangePage}
-                            onChangeRowsPerPage={handleChangeRowsPerPage}
-                            rowsPerPageOptions={displayRowsList}
-                            defaultHeight={30}
-                            setTableHeight={setTableHeight}
-                            data={state.data}
-                        />
-                    </Grid>
-                </Grid>
+                {/*<Grid container style={{display: "flex"}}>*/}
+                {/*    <Grid item md={12}>*/}
+                {/*        <SubnetTableToolbar*/}
+                {/*            numSelected={[...selected].filter(el => el[1]).length}*/}
+                {/*            handleDeleteSelected={handleDeleteSelected}*/}
+                {/*            onRequestSort={handleRequestSort}*/}
+                {/*            handleRefresh={handleRefresh}*/}
+                {/*            rows={headRows}*/}
+                {/*            handleOpen={handleOpenModal}*/}
+                {/*            handleSubmitSearch={handleSubmitSearch}*/}
+                {/*            contents="SUBNET"*/}
+                {/*            count={totalCount}*/}
+                {/*            rowsPerPage={rowsPerPage}*/}
+                {/*            page={currentPage}*/}
+                {/*            onChangePage={handleChangePage}*/}
+                {/*            onChangeRowsPerPage={handleChangeRowsPerPage}*/}
+                {/*            rowsPerPageOptions={displayRowsList}*/}
+                {/*            defaultHeight={30}*/}
+                {/*            setTableHeight={setTableHeight}*/}
+                {/*            data={state.data}*/}
+                {/*        />*/}
+                {/*    </Grid>*/}
+                {/*</Grid>*/}
                 <div className="cb-material-table__wrap"
-                     style={{
-                         height: tableHeight,
-                         transition: "height 0.3s 0.1s",
-                     }}
+                     // style={{
+                     //     height: tableHeight,
+                     //     transition: "height 0.3s 0.1s",
+                     // }}
                 >
-                    <Table
-                        stickyHeader
-                        className="cb-material-table-fixed"
-                        size={densePadding ? 'small' : 'medium'}
-                    >
-                        <CommonTableHead
-                            classes={classes}
-                            numSelected={[...selected].filter(el => el[1]).length}
-                            order={order}
-                            orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
-                            onRequestSort={handleRequestSort}
-                            rowCount={state.data && state.data.length ? state.data.length : 0}
-                            rows={headRows}
-                        />
-                        <TableBody>
-                            { state.data && state.data.map((row, index) => {
-                                const keyId = index;
-                                return (
-                                    <ContentsRow key={keyId} row={row} />
-                                );
-                            })}
-                        </TableBody>
-                    </Table>
+                    <MUIDataTable
+                        title="SUBNET LIST"
+                        data={state.data}
+                        columns={headRows}
+                        options={options}
+                        // dragableColumn={true}
+                    />
+                        {/*<CommonTableHead*/}
+                        {/*    classes={classes}*/}
+                        {/*    numSelected={[...selected].filter(el => el[1]).length}*/}
+                        {/*    order={order}*/}
+                        {/*    orderBy={orderBy}*/}
+                        {/*    onSelectAllClick={handleSelectAllClick}*/}
+                        {/*    onRequestSort={handleRequestSort}*/}
+                        {/*    rowCount={state.data && state.data.length ? state.data.length : 0}*/}
+                        {/*    rows={headRows}*/}
+                        {/*/>*/}
+                        {/*<TableBody>*/}
+                        {/*    { state.data && state.data.map((row, index) => {*/}
+                        {/*        const keyId = index;*/}
+                        {/*        return (*/}
+                        {/*            <ContentsRow key={keyId} row={row} />*/}
+                        {/*        );*/}
+                        {/*    })}*/}
+                        {/*</TableBody>*/}
                     <ConfirmSnackbar
                         open={open}
                         warningContents={warningContents}
@@ -772,4 +778,4 @@ const SubnetList = () => {
     );
 };
 
-export default React.memo(SubnetList);
+export default React.memo(__SubnetList);
