@@ -166,8 +166,8 @@ export const fetchPosts = assetState => async (dispatch) => {
         })
             .then((response) => {
                 console.log("★ response ... : ", response);
-                console.log("★ response.data ... : ", response.data);
-                console.log("★ response.TypeServerCount ... : ", response.TypeServerCount);
+                console.log("★ response.data ... : ", response.data.value);
+                console.log("★ response.TypeServerCount ... : ", response.data.serverCount);
             })
             .catch((error) => {
                 console.log('error : ', error.response);
