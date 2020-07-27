@@ -97,10 +97,10 @@ export const getCodes = dispatchVal => async (dispatch) => {
         const Codes = await axios.get(`${API_ROUTE}/codes`);
         const SubCodes = await axios.get(`${API_ROUTE}/subcodes`);
         const codeType = `device_${dispatchVal.deviceType}`;
-        
-/*        console.log("Codes : ", Codes);
-        console.log("SubCodes : ", SubCodes);
-        console.log("codeType : ", codeType);*/
+
+        /*        console.log("Codes : ", Codes);
+                console.log("SubCodes : ", SubCodes);
+                console.log("codeType : ", codeType);*/
 
         const DeviceType = setCodeMap(Codes.data, codeType, 'device_type_cd');
         const Manufacture = setCodeMap(Codes.data, codeType, 'manufacture_cd');
@@ -113,7 +113,15 @@ export const getCodes = dispatchVal => async (dispatch) => {
         const RackCode = setCodeMap(Codes.data, 'total', 'rack_code_cd');
 
         const submitData = ({
-            DeviceType, Manufacture, Ownership, OwnershipDiv, Idc, Size, Spla, Customer, RackCode,
+            DeviceType,
+            Manufacture,
+            Ownership,
+            OwnershipDiv,
+            Idc,
+            Size,
+            Spla,
+            Customer,
+            RackCode,
         });
 
         dispatch({
@@ -144,9 +152,25 @@ export const fetchPosts = assetState => async (dispatch) => {
         // v1/search/devices/:type/:outFlag/:row/:page/:order/:dir/:offsetPage
         const url = `${API_ROUTE}/search/devices/${assetState.deviceType}/${assetState.apiPageRd.rowsPerPage}/${assetState.apiPageRd.showPage}/${assetState.apiPageRd.orderBy}/${order}/${assetState.apiPageRd.offsetPage}`;
 
+        //router.GET("/v1/search/devices/count/:type", h.GetDevicesTypeCount)
+        const cntUrl = `${API_ROUTE}/search/count/devices/${assetState.deviceType}`;
+
         //console.log("😅😅 url : ", url);
 
         const postJsonData = JSON.stringify(assetState.searchRd);
+
+        axios({
+            method: 'post',
+            url: cntUrl,
+            data: postJsonData,
+        })
+            .then((schResponse) => {
+                console.log("search ... response : ", schResponse.data);
+            })
+            .catch((schError) => {
+                console.log('schError : ', schError.response);
+            });
+
 
         axios({
             method: 'post',
@@ -240,7 +264,6 @@ export const fetchPostSearchDevice = (assetState, dispatchVal) => async (dispatc
         let postJsonData = JSON.stringify(dispatchVal);
         const orderBy = 'DeviceCode';
         const order = 1;
-        /*const rowsPerPage = 10;*/
         const {rowsPerPage} = assetState.apiPageRd;
         const offsetPage = 0;
 
@@ -492,8 +515,8 @@ export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) =>
         });
 
         dispatch({
-           type: SET_DEVICE_SELECTED,
-           payload: {},
+            type: SET_DEVICE_SELECTED,
+            payload: {},
         });
     } catch (error) {
         console.log("error : ", error);

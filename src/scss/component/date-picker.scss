@@ -126,3 +126,21 @@
   }
   
 }
+
+
+// (23july2020,ebjee)
+@media screen and (max-width: 768px) {
+  .date-picker {
+    &.date-picker--interval {
+      display: grid;
+    }
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .date-picker {
+    &.date-picker--interval {
+      display: grid;
+    }
+  }
+}

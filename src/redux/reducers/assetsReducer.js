@@ -94,6 +94,9 @@ export const initialState = {
         operatingFlag: true,
         carryingFlag: false,
         rentPeriod: false,
+        serverCnt: 0,
+        storageCnt: 0,
+        etcCnt: 0,
     },
     deviceLog: {
         deviceCode: '',

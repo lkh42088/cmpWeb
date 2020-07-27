@@ -1,10 +1,13 @@
 /* eslint-disable no-param-reassign */
-import React, {PureComponent} from 'react';
+import React, {PureComponent, Fragment} from 'react';
 import DatePicker from 'react-datepicker';
 import {isMobileOnly} from 'react-device-detect';
 import MinusIcon from 'mdi-react/MinusIcon';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import {Field} from "redux-form";
+import EditIcon from "@material-ui/icons/Edit";
+import MatButton from "@material-ui/core/Button";
 
 class IntervalDatePickerField extends PureComponent {
     constructor(props) {
@@ -22,9 +25,15 @@ class IntervalDatePickerField extends PureComponent {
             if (nextProps.value !== undefined && nextProps.value !== "|"
                 && nextProps.value !== "" && typeof nextProps.value === "string") {
                 if (nextProps.value.indexOf("|") !== -1) {
-                    const startArr = new Date(moment(nextProps.value.split("|")[0]).format("YYYY/MM/DD"));
-                    const endArr = new Date(moment(nextProps.value.split("|")[1]).format("YYYY/MM/DD"));
-                    return {startDate: startArr, endDate: endArr, earlyFlag: false};
+                    const startArr = new Date(moment(nextProps.value.split("|")[0])
+                        .format("YYYY/MM/DD"));
+                    const endArr = new Date(moment(nextProps.value.split("|")[1])
+                        .format("YYYY/MM/DD"));
+                    return {
+                        startDate: startArr,
+                        endDate: endArr,
+                        earlyFlag: false,
+                    };
                 }
             }
         }
@@ -49,42 +58,48 @@ class IntervalDatePickerField extends PureComponent {
         startDate = startDate || stateStartDate;
         endDate = endDate || stateEndDate;
 
-        this.setState({startDate, endDate});
-        onChange({start: startDate, end: endDate});
+        this.setState({
+            startDate,
+            endDate,
+        });
+        onChange({
+            start: startDate,
+            end: endDate,
+        });
     }
 
     render() {
         const {startDate, endDate} = this.state;
         const {value} = this.props;
 
-        console.log("★★★★★ Data;.......value : ", value);
-
         return (
-            <div className="date-picker date-picker--interval">
-                <DatePicker
-                    selected={startDate}
-                    selectsStart
-                    startDate={startDate}
-                    endDate={endDate}
-                    onChange={this.handleChangeStart}
-                    dateFormat="yyyy년MM월dd일"
-                    placeholderText="From"
-                    dropDownMode="select"
-                    withPortal={isMobileOnly}
-                />
-                <MinusIcon className="date-picker__svg"/>
-                <DatePicker
-                    selected={endDate}
-                    selectsEnd
-                    startDate={startDate}
-                    endDate={endDate}
-                    onChange={this.handleChangeEnd}
-                    dateFormat="yyyy년MM월dd일"
-                    placeholderText="To"
-                    dropDownMode="select"
-                    withPortal={isMobileOnly}
-                />
-            </div>
+            <Fragment>
+                <div className="date-picker date-picker--interval">
+                    <DatePicker
+                        selected={startDate}
+                        selectsStart
+                        startDate={startDate}
+                        endDate={endDate}
+                        onChange={this.handleChangeStart}
+                        dateFormat="yyyy년MM월dd일"
+                        placeholderText="From"
+                        dropDownMode="select"
+                        withPortal={isMobileOnly}
+                    />
+                    <MinusIcon className="date-picker__svg"/>
+                    <DatePicker
+                        selected={endDate}
+                        selectsEnd
+                        startDate={startDate}
+                        endDate={endDate}
+                        onChange={this.handleChangeEnd}
+                        dateFormat="yyyy년MM월dd일"
+                        placeholderText="To"
+                        dropDownMode="select"
+                        withPortal={isMobileOnly}
+                    />
+                </div>
+            </Fragment>
         );
     }
 }

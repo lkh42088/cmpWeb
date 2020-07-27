@@ -13,6 +13,9 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import InputIcon from "@material-ui/icons/Input";
+import IconButton from "@material-ui/core/IconButton";
+import AddIcon from "@material-ui/icons/Add";
+import ReactTooltip from "react-tooltip";
 import LaunchIcon from "@material-ui/icons/Launch";
 import CreateIcon from "@material-ui/icons/Create";
 import InputLabel from '@material-ui/core/InputLabel';
@@ -36,6 +39,7 @@ import {
     fetchPostSearchDevice, postDevice, postDeviceOutFlag, setDeviceSelected,
 } from "../../../../redux/actions/assetsAction";
 import AssetsWrite from "./AssetsWrite";
+import CommonTableExportCSV from "../../../Common/CommonTableExportCSV";
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -43,7 +47,7 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(2),
     },
     formControl: {
-        margin: theme.spacing(1),
+        margin: 5,
         minWidth: 100,
         '& .MuiInputBase-root ': {
             fontSize: 12,
@@ -68,9 +72,6 @@ const useStyles = makeStyles(theme => ({
     },
     root: {
         display: 'flex',
-        '& > *': {
-            margin: theme.spacing(1),
-        },
     },
     square: {
         backgroundColor: '#f3f3f4',
@@ -87,6 +88,18 @@ const useStyles = makeStyles(theme => ({
         height: 30,
         fontSize: 12,
         fontWeight: 900,
+    },
+    tooltip: {
+        fontSize: 7,
+        fontWeight: "revert",
+    },
+    iconOutFlag: {
+        margin: "0",
+        padding: "0",
+    },
+    iconAdd: {
+        margin: "0 10px 0 0",
+        padding: "0",
     },
 }));
 
@@ -222,40 +235,63 @@ const AssetsSearch = ({assetState, user, theme}) => {
     };
 
     const componentOperatinng = (
-        <Avatar variant="rounded" className={classes.square} role="button" tabIndex="0"
-                onClick={event => toggleOutFlag("1")}
-                onKeyDown={event => toggleOutFlag("1")}>
-            <LaunchIcon fontSize="small"
-                        style={{
-                            color: "#596e79",
-                        }}/>&nbsp;반출
-        </Avatar>
+        <Fragment>
+            {/*<Avatar variant="rounded" className={classes.square} role="button" tabIndex="0"
+                    onClick={event => toggleOutFlag("1")}
+                    onKeyDown={event => toggleOutFlag("1")}>
+                <LaunchIcon fontSize="small"
+                            style={{
+                                color: "#596e79",
+                            }}/>&nbsp;반출
+            </Avatar>*/}
+            <IconButton type="button" onClick={event => toggleOutFlag("1")}
+                        data-tip data-for="tooltipOutFlagOut"
+                        className={classes.iconOutFlag}>
+                <InputIcon/>
+            </IconButton>
+            <ReactTooltip id="tooltipOutFlagOut" effect="float"
+                          delayHide={100} type="dark" place="bottom"
+                          className={classes.tooltip}>
+                반출
+            </ReactTooltip>
+        </Fragment>
     );
 
     const componentCarrying = (
-        <Avatar variant="rounded" className={classes.square} role="button" tabIndex="0"
-                onClick={event => toggleOutFlag("0")}
-                onKeyDown={event => toggleOutFlag("0")}>
-            <LaunchIcon fontSize="small"
-                        style={{
-                            color: "#596e79",
-                        }}/>&nbsp;반입
-        </Avatar>
+        <Fragment>
+            {/*<Avatar variant="rounded" className={classes.square} role="button" tabIndex="0"
+                    onClick={event => toggleOutFlag("0")}
+                    onKeyDown={event => toggleOutFlag("0")}>
+                <LaunchIcon fontSize="small"
+                            style={{
+                                color: "#596e79",
+                            }}/>&nbsp;반입
+            </Avatar>*/}
+            <IconButton type="button" onClick={event => toggleOutFlag("0")}
+                        data-tip data-for="tooltipOutFlagIn"
+                        className={classes.iconOutFlag}>
+                <LaunchIcon/>
+            </IconButton>
+            <ReactTooltip id="tooltipOutFlagIn" effect="float"
+                          delayHide={100} type="dark" place="bottom"
+                          className={classes.tooltip}>
+                반입
+            </ReactTooltip>
+        </Fragment>
     );
-/*
-
+    /*
+            <span role="button" tabIndex="0"
+                  onClick={event => toggleOutFlag("1")}
+                  onKeyDown={event => toggleOutFlag("1")}>
+                        <InputIcon fontSize="small"/>&nbsp;
+                반출
+                </span>
         <span role="button" tabIndex="0"
-              onClick={event => toggleOutFlag("1")}
-              onKeyDown={event => toggleOutFlag("1")}>
-                    <InputIcon fontSize="small"/>&nbsp;
-            반출
-            </span>
-    <span role="button" tabIndex="0"
-          onClick={event => toggleOutFlag("0")}
-          onKeyDown={event => toggleOutFlag("0")}>
-                <LaunchIcon fontSize="small"/>&nbsp;
-        반입
-            </span>*/
+              onClick={event => toggleOutFlag("0")}
+              onKeyDown={event => toggleOutFlag("0")}>
+                    <LaunchIcon fontSize="small"/>&nbsp;
+            반입
+                </span>*/
 
     const renderSwitch = () => {
         let viewComponentOutFlag;
@@ -585,6 +621,8 @@ const AssetsSearch = ({assetState, user, theme}) => {
                 break;
         }
 
+        console.log("rentPeriod : ", device.rentPeriod);
+
         dispatch(setDeviceSelected(''));
         dispatch(fetchPostSearchDevice(assetState, postArray));
     };
@@ -617,10 +655,15 @@ const AssetsSearch = ({assetState, user, theme}) => {
         });
     }, []);*/
 
-    /*useEffect(() => {
-        document.getElementsByName("schSelect")[0].value = '0';
-        document.getElementsByName("schText")[0].value = '';
-    }, [assetState.deviceType]);*/
+    useEffect(() => {
+        /*document.getElementsByName("schSelect")[0].value = '';
+        document.getElementsByName("schText")[0].value = '';*/
+        setSchValue({
+            ...schValue,
+            schSelect: '',
+            schText: '',
+        });
+    }, [assetState.deviceType]);
 
     useEffect(() => {
         renderSwitch();
@@ -676,17 +719,152 @@ const AssetsSearch = ({assetState, user, theme}) => {
             <CardBody className="cb-card-body">
                 <Row>
                     <Col sm={12} md={12} xs={12} xl={12} lg={12}>
-                        {/*<Col mb={8}>*/}
                         <div className="search_card_body" style={{maxWidth: "100%"}}>
                             <div>
-
-                                {/*<MagnifyIcon className="search_icon" role="button" tabIndex="0"
-                                             onClick={onSearch}
-                                             onKeyDown={onSearch}/>
-                                &nbsp;&nbsp;*/}
                                 {
                                     assetState.codes.codeDeviceType !== undefined ? (
                                         <Fragment>
+                                            <div className={classes.root}>
+                                                {/*<Avatar variant="rounded" className={classes.rounded}
+                                                            role="button" tabIndex="0"
+                                                            onClick={toggle} onKeyDown={toggle}>
+                                                        <CreateIcon fontSize="small"
+                                                                    style={{
+                                                                        color: "#3f51b5",
+                                                                    }}
+                                                        />&nbsp;장비 등록
+                                                    </Avatar>*/}
+                                                <Grid item md={1} zeroMinWidth>
+                                                    <div>
+                                                        <IconButton type="button" onClick={toggle}
+                                                                    data-tip data-for="tooltipAdd"
+                                                                    className={classes.iconAdd}>
+                                                            <AddIcon/>
+                                                        </IconButton>
+                                                        <ReactTooltip id="tooltipAdd" effect="float"
+                                                                      delayHide={100} type="dark" place="bottom"
+                                                                      className={classes.tooltip}>
+                                                            장비 추가
+                                                        </ReactTooltip>
+
+                                                        <CommonTableExportCSV
+                                                            csvData={assetState.devices}
+                                                            fileName="subnet_test.csv"
+                                                            style={{
+                                                                margin: "0 10px 0 0",
+                                                                padding: "0",
+                                                            }}
+                                                        />
+                                                        {renderSwitch()}
+                                                    </div>
+                                                </Grid>
+                                                <Grid item xs md={8} zeroMinWidth>
+                                                    <div>
+                                                        <div className="search_card_body_checkbox">
+                                                            <input type="checkbox" name="operatingFlag"
+                                                                   className="search_checkbox"
+                                                                   checked={assetState.searchRd.operatingFlag}
+                                                                   value={device.operatingFlag}
+                                                                   onChange={setToggleFlag}/>&nbsp;
+                                                            <label htmlFor="operatingFlag" className="search_checkboxText">
+                                                            <span
+                                                                role="button" tabIndex="0"
+                                                                onClick={event => setToggleFlagText('1')}
+                                                                onKeyDown={event => setToggleFlagText('1')}>
+                                                                운영장비&nbsp;</span>
+                                                            </label>
+                                                            &nbsp;&nbsp;&nbsp;<br/>
+                                                            <input type="checkbox" name="carryingFlag" className="search_checkbox"
+                                                                   checked={assetState.searchRd.carryingFlag}
+                                                                   value={device.carryingFlag}
+                                                                   onChange={setToggleFlag}/>&nbsp;
+                                                            <label htmlFor="carryingFlag" className="search_checkboxText">
+                                                            <span
+                                                                role="button" tabIndex="0"
+                                                                onClick={event => setToggleFlagText('0')}
+                                                                onKeyDown={event => setToggleFlagText('0')}>
+                                                                반출장비&nbsp;</span>
+                                                            </label>
+                                                            &nbsp;&nbsp;&nbsp;<br/>
+                                                            <input type="checkbox" name="rentPeriod" className="search_checkbox"
+                                                                   checked={assetState.searchRd.rentPeriod}
+                                                                   value={device.rentPeriod}
+                                                                   onChange={setToggleFlag}/>&nbsp;
+                                                            <label htmlFor="rentPeriod" className="search_checkboxText">
+                                                            <span
+                                                                role="button" tabIndex="0"
+                                                                onClick={event => setToggleFlagText('2')}
+                                                                onKeyDown={event => setToggleFlagText('2')}>
+                                                                임대 만료예정 &nbsp;</span>
+                                                                {assetState.searchRd.rentPeriod ? (
+                                                                    <span className="text_cor_orange">(한달기준)</span>
+                                                                ) : false}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </Grid>
+                                                <Grid item xs md={3} zeroMinWidth>
+                                                    <div>
+                                                        <div className="float-right circle-legend">
+                                                            <div className="float-left">
+                                                            <span className="circle__eth"
+                                                                  role="button" tabIndex="0"/>서버
+                                                                ({assetState.searchRd.serverCnt})&nbsp;&nbsp;
+                                                            </div>
+                                                            <div className="float-left">
+                                                            <span className="circle__ste"
+                                                                  role="button" tabIndex="0"/>스토리지
+                                                                ({assetState.searchRd.storageCnt})&nbsp;&nbsp;
+                                                            </div>
+                                                            <div className="float-left">
+                                                            <span className="circle__neo"
+                                                                  role="button" tabIndex="0"/>기타
+                                                                ({assetState.searchRd.etcCnt})&nbsp;&nbsp;
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </Grid>
+                                            </div>
+                                        </Fragment>
+                                    ) : (
+                                        <Fragment>
+                                            -
+                                        </Fragment>
+                                    )
+                                }
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <p style={{
+                        border: "1px solid #f2f4f7",
+                        width: "100%",
+                    }}/>
+                </Row>
+                <Row>
+                    <Col sm={12} md={12} xs={12} xl={12} lg={12}>
+                        {/*<Col mb={8}>*/}
+                        <div className="search_card_body" style={{maxWidth: "100%"}}>
+                            <div>
+                                {
+                                    assetState.codes.codeDeviceType !== undefined ? (
+                                        <Fragment>
+                                            {/*<div className="search_card_body_sub">
+                                                <div className={classes.root}>
+                                                    <IconButton type="button" onClick={toggle}
+                                                                data-tip data-for="tooltipAdd">
+                                                        <AddIcon/>
+                                                    </IconButton>
+                                                    <ReactTooltip id="tooltipAdd" effect="float"
+                                                                  delayHide={100} type="dark" place="bottom"
+                                                                  className={classes.tooltip}>
+                                                        장비 추가
+                                                    </ReactTooltip>
+                                                    <CommonTableExportCSV csvData={assetState.devices} fileName="subnet_test.csv"/>
+                                                    {renderSwitch()}
+                                                </div>
+                                            </div>*/}
                                             <FormControl className={classes.formControl}>
                                                 <InputLabel id="type-select-label">장비구분</InputLabel>
                                                 <Select
@@ -699,13 +877,12 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                                     name="deviceType">
                                                     <MenuItem value="">
                                                         <em>None</em>
-                                                    </MenuItem>
-                                                    {
-                                                        assetState.codes.codeDeviceType.map((d, index) => (
-                                                            <MenuItem key={d.codeId.toString()}
-                                                                      value={d.codeId.toString()}>{d.name}
-                                                            </MenuItem>
-                                                        ))}
+                                                    </MenuItem>{
+                                                    assetState.codes.codeDeviceType.map((d, index) => (
+                                                        <MenuItem key={d.codeId.toString()}
+                                                                  value={d.codeId.toString()}>{d.name} / {d.codeId}
+                                                        </MenuItem>
+                                                    ))}
                                                 </Select>
                                             </FormControl>
                                             <FormControl className={classes.formControl}>
@@ -720,13 +897,12 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                                     name="ownership">
                                                     <MenuItem value="">
                                                         <em>None</em>
-                                                    </MenuItem>
-                                                    {
-                                                        assetState.codes.codeOwnership.map((d, index) => (
-                                                            <MenuItem key={d.codeId.toString()}
-                                                                      value={d.codeId.toString()}>{d.name}
-                                                            </MenuItem>
-                                                        ))}
+                                                    </MenuItem>{
+                                                    assetState.codes.codeOwnership.map((d, index) => (
+                                                        <MenuItem key={d.codeId.toString()}
+                                                                  value={d.codeId.toString()}>{d.name}
+                                                        </MenuItem>
+                                                    ))}
                                                 </Select>
                                             </FormControl>
                                             <FormControl className={classes.formControl}>
@@ -741,13 +917,12 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                                     name="ownershipDiv">
                                                     <MenuItem value="">
                                                         <em>None</em>
-                                                    </MenuItem>
-                                                    {
-                                                        assetState.codes.codeOwnershipDiv.map((d, index) => (
-                                                            <MenuItem key={d.codeId.toString()}
-                                                                      value={d.codeId.toString()}>{d.name}
-                                                            </MenuItem>
-                                                        ))}
+                                                    </MenuItem>{
+                                                    assetState.codes.codeOwnershipDiv.map((d, index) => (
+                                                        <MenuItem key={d.codeId.toString()}
+                                                                  value={d.codeId.toString()}>{d.name}
+                                                        </MenuItem>
+                                                    ))}
                                                 </Select>
                                             </FormControl>
                                             <FormControl className={classes.formControl}>
@@ -762,13 +937,12 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                                     name="idc">
                                                     <MenuItem value="">
                                                         <em>None</em>
-                                                    </MenuItem>
-                                                    {
-                                                        assetState.codes.codeIdc.map((d, index) => (
-                                                            <MenuItem key={d.codeId.toString()}
-                                                                      value={d.codeId.toString()}>{d.name}
-                                                            </MenuItem>
-                                                        ))}
+                                                    </MenuItem>{
+                                                    assetState.codes.codeIdc.map((d, index) => (
+                                                        <MenuItem key={d.codeId.toString()}
+                                                                  value={d.codeId.toString()}>{d.name}
+                                                        </MenuItem>
+                                                    ))}
                                                 </Select>
                                             </FormControl>
                                             <FormControl className={classes.formControl}>
@@ -783,36 +957,14 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                                     name="manufacture">
                                                     <MenuItem value="">
                                                         <em>None</em>
-                                                    </MenuItem>
-                                                    {
-                                                        assetState.codes.codeManufacture.map((d, index) => (
-                                                            <MenuItem key={d.codeId.toString()}
-                                                                      value={d.codeId.toString()}>{d.name}
-                                                            </MenuItem>
-                                                        ))}
+                                                    </MenuItem>{
+                                                    assetState.codes.codeManufacture.map((d, index) => (
+                                                        <MenuItem key={d.codeId.toString()}
+                                                                  value={d.codeId.toString()}>{d.name}
+                                                        </MenuItem>
+                                                    ))}
                                                 </Select>
                                             </FormControl>
-                                            {/*<TextField
-                                                label="text"
-                                                id="margin-dense"
-                                                style={{ margin: 11 }}
-                                                className={classes.textField}
-                                                helperText=""
-                                                margin="dense"
-                                                name="schText"
-                                                onKeyDown={(event) => {
-                                                    if (event.keyCode === 13) {
-                                                        onSearch();
-                                                    }
-                                                }}
-                                                value={schValue.schText || ''}
-                                                onChange={e => onChangeSchText(e)}
-                                            />*/}
-                                            {/*<MagnifyIcon className="search_icon" role="button" tabIndex="0"
-                                                         onClick={onSearch}
-                                                         onKeyDown={onSearch}/>
-                                            &nbsp;&nbsp;*/}
-
                                             <FormControl className={classes.formControl}>
                                                 <InputLabel id="text-select-label">select</InputLabel>
                                                 <Select
@@ -830,12 +982,34 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                                     <MenuItem value="customer">고객사</MenuItem>
                                                 </Select>
                                             </FormControl>
+                                            {/*<div onSubmit="event.preventDefault();" role="search"
+                                                 className="div-schText">
+                                                <label htmlFor="search">Search for stuff</label>
+                                                <input id="search" type="search"
+                                                       name="schText"
+                                                       value={schValue.schText || ''}
+                                                       onKeyDown={(event) => {
+                                                           if (event.keyCode === 13) {
+                                                               onSearch();
+                                                           }
+                                                       }}
+                                                       onChange={onChangeSchText}
+                                                       placeholder="Search..." required/>
+                                                <button type="button" onClick={onSearch}>Go</button>
+                                            </div>*/}
                                             <TextField
                                                 id="input-with-icon-textfield"
                                                 label="TextField"
                                                 name="schText"
-                                                style={{margin: 8}}
+                                                value={schValue.schText || ''}
+                                                style={{margin: 5}}
                                                 className={classes.textField}
+                                                onKeyDown={(event) => {
+                                                    if (event.keyCode === 13) {
+                                                        onSearch();
+                                                    }
+                                                }}
+                                                onChange={onChangeSchText}
                                                 InputProps={{
                                                     endAdornment: (
                                                         <InputAdornment position="start">
@@ -849,7 +1023,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                                     ),
                                                 }}
                                             />
-                                            <div className="search_card_body_checkbox">
+                                            {/*<div className="search_card_body_checkbox">
                                                 <input type="checkbox" name="operatingFlag"
                                                        className="search_checkbox"
                                                        checked={assetState.searchRd.operatingFlag}
@@ -886,111 +1060,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                                         onKeyDown={event => setToggleFlagText('2')}>
                                                         임대 만료예정 (한달기준)&nbsp;</span>
                                                 </label>
-                                            </div>
-                                            {/*<Grid container alignItems="flex-end">
-                                                <FormControl className={classes.formControl}>
-                                                    <InputLabel id="text-select-label">select</InputLabel>
-                                                    <Select
-                                                        labelId="text-select-label"
-                                                        open={open.schSelectOpen}
-                                                        onClose={event => schHandleClose('schSelectOpen')}
-                                                        onOpen={event => schHandleOpen('schSelectOpen')}
-                                                        onChange={onChangeSelect}
-                                                        name="schSelect"
-                                                        value={schValue.schSelect || ''}>
-                                                        <MenuItem value="">
-                                                            <em>None</em>
-                                                        </MenuItem>
-                                                        <MenuItem value="deviceCode">장비코드</MenuItem>
-                                                        <MenuItem value="customer">고객사</MenuItem>
-                                                    </Select>
-                                                </FormControl>
-                                                <Grid item>
-                                                    <TextField
-                                                        className={classes.textField}
-                                                        style={{ margin: 8 }}
-                                                        id="input-with-icon-grid"
-                                                        label="text"
-                                                        name="schText"
-                                                        onKeyDown={(event) => {
-                                                            if (event.keyCode === 13) {
-                                                                onSearch();
-                                                            }
-                                                        }}
-                                                        value={schValue.schText || ''}
-                                                        onChange={e => onChangeSchText(e)}
-                                                    />
-                                                </Grid>
-                                                <Grid item>
-                                                    <MagnifyIcon className="search_icon"
-                                                                 style={{marginBottom: "10px"}}
-                                                                 role="button"
-                                                                 tabIndex="0"
-                                                                 onClick={onSearch}
-                                                                 onKeyDown={onSearch}/>
-                                                </Grid>
-                                            </Grid>*/}
-                                            <div className="search_card_body_sub">
-                                                {/*<input type="checkbox" name="operatingFlag"
-                                                       className="search_checkbox"
-                                                       checked={assetState.searchRd.operatingFlag}
-                                                       value={device.operatingFlag}
-                                                       onChange={setToggleFlag}/>&nbsp;
-                                                <label htmlFor="operatingFlag" className="search_checkboxText">
-                                                <span
-                                                    role="button" tabIndex="0"
-                                                    onClick={event => setToggleFlagText('1')}
-                                                    onKeyDown={event => setToggleFlagText('1')}>
-                                                    운영장비&nbsp;</span>
-                                                </label>
-                                                &nbsp;&nbsp;&nbsp;
-                                                <input type="checkbox" name="carryingFlag" className="search_checkbox"
-                                                       checked={assetState.searchRd.carryingFlag}
-                                                       value={device.carryingFlag}
-                                                       onChange={setToggleFlag}/>&nbsp;
-                                                <label htmlFor="carryingFlag" className="search_checkboxText">
-                                                <span
-                                                    role="button" tabIndex="0"
-                                                    onClick={event => setToggleFlagText('0')}
-                                                    onKeyDown={event => setToggleFlagText('0')}>
-                                                    반출장비&nbsp;</span>
-                                                </label>
-                                                &nbsp;&nbsp;&nbsp;
-                                                <input type="checkbox" name="rentPeriod" className="search_checkbox"
-                                                       checked={assetState.searchRd.rentPeriod}
-                                                       value={device.rentPeriod}
-                                                       onChange={setToggleFlag}/>&nbsp;
-                                                <label htmlFor="rentPeriod" className="search_checkboxText">
-                                                <span
-                                                    role="button" tabIndex="0"
-                                                    onClick={event => setToggleFlagText('2')}
-                                                    onKeyDown={event => setToggleFlagText('2')}>
-                                                    임대 만료예정 (한달기준)&nbsp;</span>
-                                                </label>*/}
-                                                <div className={classes.root}>
-                                                    <Avatar variant="rounded" className={classes.rounded}
-                                                            role="button" tabIndex="0"
-                                                            onClick={toggle} onKeyDown={toggle}>
-                                                        <CreateIcon fontSize="small"
-                                                                    style={{
-                                                                        color: "#3f51b5",
-                                                                    }}
-                                                        />&nbsp;장비 등록
-                                                    </Avatar>
-                                                    {renderSwitch()}
-                                                </div>
-                                                {/*<span role="button" tabIndex="0"
-                                                      onClick={toggle} onKeyDown={toggle}>
-                                                        <CreateIcon/>&nbsp;장비 등록&nbsp;&nbsp;</span>*/}
-                                                {/*<ButtonToolbar>
-                                                    <div className="search_btn-text">
-                                                        <span role="button" tabIndex="0"
-                                                          onClick={toggle} onKeyDown={toggle}>
-                                                        <CreateIcon fontSize="small"/>&nbsp;장비 등록&nbsp;&nbsp;</span>
-                                                        {renderSwitch()}
-                                                    </div>
-                                                </ButtonToolbar>*/}
-                                            </div>
+                                            </div>*/}
                                         </Fragment>
                                     ) : (
                                         <Fragment>
@@ -1013,28 +1083,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                      onSubmit={handleSubmit}
                                      theme={theme}/>
                     </Modal>
-                    {/*<Modal
-                        isOpen={modal.modalWarring}
-                        toggle={modalClose}
-                        modalClassName="ltr-support"
-                        className={`modal-dialog-dialog ${modal.warringClass}`}
-                    >
-                        <div className="modal__header">
-                            <button className="lnr lnr-cross modal__close-btn" type="button"
-                                    onClick={modalClose}/>
-                            <span className="lnr lnr-cross-circle modal__title-icon"/>
-                            <h4 className="text-modal  modal__title">{modal.warringTitle}</h4>
-                        </div>
-                        <div className="modal__body">
-                            {modal.warringContents}
-                            <br/>
-                        </div>
-                        <ButtonToolbar className="modal__footer">
-                            <Button className="modal_ok" outline={modal.warringType}
-                                    color={modal.warringType}
-                                    onClick={modalClose}>Close</Button>
-                        </ButtonToolbar>
-                    </Modal>*/}
                     <Snackbar
                         anchorOrigin={{
                             vertical: 'bottom',
@@ -1045,7 +1093,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
                         onClose={modalClose}
                     >
                         <SnackbarContent
-                            /*message={`${warringIcon} ${warringContents}`}*/
                             style={modal.warringStyle}
                             message={(
                                 <span id="client-snackbar" style={{lineHeight: "2"}}>
