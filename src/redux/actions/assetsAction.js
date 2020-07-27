@@ -164,11 +164,13 @@ export const fetchPosts = assetState => async (dispatch) => {
             url: cntUrl,
             data: postJsonData,
         })
-            .then((schResponse) => {
-                console.log("search ... response : ", schResponse.data);
+            .then((response) => {
+                console.log("★ response ... : ", response);
+                console.log("★ response.data ... : ", response.data);
+                console.log("★ response.TypeServerCount ... : ", response.TypeServerCount);
             })
-            .catch((schError) => {
-                console.log('schError : ', schError.response);
+            .catch((error) => {
+                console.log('error : ', error.response);
             });
 
 
@@ -188,7 +190,7 @@ export const fetchPosts = assetState => async (dispatch) => {
                     offsetPage: assetState.apiPageRd.offsetPage,
                 });
 
-                //console.log("response : ", response.data);
+                console.log("response : ", response.data);
 
                 dispatch({
                     type: GET_DEVICES,
@@ -356,7 +358,7 @@ export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
         const res = await axios.get(`${API_ROUTE}/device/${deviceType}/${deviceCode}`);
         const comments = await axios.get(`${API_ROUTE}/comments/${deviceCode}`);
         //router.GET("/v1/log/device/:value", h.GetDevicesByLog)
-        const logs = await axios.get(`${API_ROUTE}/log/device/${deviceCode}`);
+        const logs = await axios.get(`${API_ROUTE}/logs/${deviceCode}`);
 
         //console.log("★★★★★★★★★★★★★★★★★logs : ", logs.data);
 
@@ -933,7 +935,7 @@ export const setSearch = dispatchVal => async (dispatch) => {
 export const setDeviceLog = dispatchVal => async (dispatch) => {
     try {
         console.log("💎 setDeviceLog start");
-        const res = await axios.get(`${API_ROUTE}/log/device/${dispatchVal}`);
+        const res = await axios.get(`${API_ROUTE}/logs/${dispatchVal}`);
 
         dispatch({
             type: SET_DEVICE_LOG,

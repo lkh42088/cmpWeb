@@ -808,18 +808,18 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                                         <div className="float-right circle-legend">
                                                             <div className="float-left">
                                                             <span className="circle__eth"
-                                                                  role="button" tabIndex="0"/>서버
-                                                                ({assetState.searchRd.serverCnt})&nbsp;&nbsp;
+                                                                  role="button" tabIndex="0"/>
+                                                                  서버 ({assetState.searchRd.serverCnt})&nbsp;&nbsp;
                                                             </div>
                                                             <div className="float-left">
                                                             <span className="circle__ste"
-                                                                  role="button" tabIndex="0"/>스토리지
-                                                                ({assetState.searchRd.storageCnt})&nbsp;&nbsp;
+                                                                  role="button" tabIndex="0"/>
+                                                                  스토리지 ({assetState.searchRd.storageCnt})&nbsp;&nbsp;
                                                             </div>
                                                             <div className="float-left">
                                                             <span className="circle__neo"
-                                                                  role="button" tabIndex="0"/>기타
-                                                                ({assetState.searchRd.etcCnt})&nbsp;&nbsp;
+                                                                  role="button" tabIndex="0"/>
+                                                                  기타 ({assetState.searchRd.etcCnt})&nbsp;&nbsp;
                                                             </div>
                                                         </div>
                                                     </div>
