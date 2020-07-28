@@ -1,7 +1,7 @@
 @import '~react-datepicker/dist/react-datepicker.css';
 @import '~rc-time-picker/assets/index.css';
 
-.form {
+.cb-form {
   display: flex;
   flex-wrap: wrap;
   @include directify($directions) {
@@ -36,7 +36,7 @@
     }
 
     @include themify($themes) {
-      border: 1px solid themed('colorFieldsBorder');
+      //border: 1px solid themed('colorFieldsBorder');
       color: themed('colorText');
     }
 
@@ -56,7 +56,8 @@
 
     &:focus, &:active {
       outline: none;
-      border-color: $color-accent;
+      //border-color: $color-accent;
+      border-color: $color-bg;
     }
   }
 
@@ -64,14 +65,14 @@
     min-height: 85px;
   }
 
-  &.form--horizontal {
+  &.cb-form--horizontal {
 
-    .form__form-group {
+    .cb-form__form-group {
       display: flex;
       flex-wrap: wrap;
     }
 
-    .form__form-group-field {
+    .cb-form__form-group-field {
       width: calc(100% - 80px);
       @include directify($directions) {
         #{directed('padding-left')}: 10px;
@@ -79,48 +80,48 @@
       }
     }
 
-    .form__form-group-label {
+    .cb-form__form-group-label {
       width: 80px;
       max-height: 32px;
       line-height: 18px;
       margin: auto 0;
       font-weight: bold;
 
-      & + .form__form-group-field {
+      & + .cb-form__form-group-field {
         @include directify($directions) {
           #{directed('margin-left')}: 0px;
         }
       }
     }
 
-    .form__form-group-description {
+    .cb-form__form-group-description {
       @include directify($directions) {
         #{directed('margin-left')}: 90px;
       }
     }
 
-    .form__button-toolbar {
+    .cb-form__button-toolbar {
       @include directify($directions) {
         #{directed('margin-left')}: 0px;
       }
     }
 
-    .form__form-group-input-wrap--error-above {
+    .cb-form__form-group-input-wrap--error-above {
       margin-bottom: 15px;
 
-      .form__form-group-error {
+      .cb-form__form-group-error {
         top: -28px;
       }
     }
 
     @media screen and (min-width: 480px) {
 
-      .form__form-group-label {
+      .cb-form__form-group-label {
         font-weight: bold;
         width: 120px;
       }
 
-      .form__form-group-field {
+      .cb-form__form-group-field {
         width: calc(100% - 120px);
         @include directify($directions) {
           #{directed('margin-left')}: 120px;
@@ -128,7 +129,7 @@
         }
       }
 
-      .form__form-group-description, .form__button-toolbar {
+      .cb-form__form-group-description, .form__button-toolbar {
         @include directify($directions) {
           #{directed('margin-left')}: 140px;
         }
@@ -136,7 +137,7 @@
     }
   }
 
-  &.form--preview {
+  &.cb-form--preview {
     display: flex;
 
     & > div:nth-child(2) {
@@ -145,7 +146,7 @@
       }
     }
 
-    .form__form-group {
+    .cb-form__form-group {
       margin-bottom: 10px;
       width: auto;
       min-height: 18px;
@@ -156,21 +157,21 @@
     }
   }
 
-  &.form--justify {
+  &.cb-form--justify {
     display: flex;
     flex-wrap: wrap;
 
-    .form__form-group {
+    .cb-form__form-group {
       width: 33.3333%;
     }
 
-    .form__button-toolbar {
+    .cb-form__button-toolbar {
       width: 100%;
     }
   }
 }
 
-.form__assets_sch {
+.cb-form__assets_sch {
   width: calc(22% - 10px);
   height: 100%;
 
@@ -178,7 +179,7 @@
     #{directed('margin-right')}: 30px;
   }
 
-  .form__button-toolbar {
+  .cb-form__button-toolbar {
     float: right;
   }
 
@@ -190,13 +191,13 @@
   }
 }
 
-.form__form-group__assets_sch {
+.cb-form__form-group__assets_sch {
   margin-bottom: 5px;
   width: 100%;
   position: relative;
 }
 
-.form__form-group-label__assets_sch {
+.cb-form__form-group-label__assets_sch {
   font-weight: bold;
   margin-bottom: 0px;
   font-size: x-small;
@@ -213,7 +214,7 @@
 
 
 
-.form__half {
+.cb-form__half {
   width: calc(50% - 15px);
   height: 100%;
 
@@ -223,7 +224,7 @@
     }
   }
 
-  .form__button-toolbar {
+  .cb-form__button-toolbar {
     float: right;
   }
 
@@ -235,13 +236,13 @@
   }
 }
 
-.form__form-group {
+.cb-form__form-group {
   margin-bottom: 10px;
   width: 100%;
   position: relative;
 }
 
-.form__form-group--address {
+.cb-form__form-group--address {
 
   input:last-child {
     @include directify($directions) {
@@ -251,7 +252,7 @@
   }
 }
 
-.form__form-group-field {
+.cb-form__form-group-field {
   width: 100%;
   display: flex;
   margin: auto;
@@ -260,7 +261,16 @@
   }
 }
 
-.form__form-group-label {
+.cb-form__form-group-field-subnet {
+  width: 80%;
+  display: flex;
+  margin: auto;
+  @include directify($directions) {
+    direction: #{directed('direction')};
+  }
+}
+
+.cb-form__form-group-label {
   margin-bottom: 4px;
   display: inline-block;
   font-weight: bold;
@@ -274,7 +284,7 @@
   }
 }
 
-.form__form-group-button {
+.cb-form__form-group-button {
   padding: 6px;
   height: 32px;
   cursor: pointer;
@@ -302,7 +312,7 @@
   }
 }
 
-.form__form-group-file {
+.cb-form__form-group-file {
 
   label {
     border-radius: 2px;
@@ -337,7 +347,7 @@
   }
 }
 
-.form__form-group-icon {
+.cb-form__form-group-icon {
   padding: 6px;
   height: 32px;
 
@@ -354,14 +364,14 @@
   }
 }
 
-.form__form-group-description {
+.cb-form__form-group-description {
   font-size: 10px;
   color: $color-additional;
   line-height: 13px;
   margin-top: 2px;
 }
 
-.form__button-toolbar {
+.cb-form__button-toolbar {
   margin-top: 10px;
   @include directify($directions) {
     direction: #{directed('direction')};
@@ -369,11 +379,11 @@
 
 }
 
-.form__form-group-input-wrap {
+.cb-form__form-group-input-wrap {
   width: 100%;
 }
 
-.form__form-group-error {
+.cb-form__form-group-error {
   font-size: 10px;
   line-height: 13px;
   color: #ad4444;
@@ -382,9 +392,9 @@
   margin-top: 10px;
 }
 
-.form__form-group-input-wrap--error-above {
+.cb-form__form-group-input-wrap--error-above {
 
-  .form__form-group-error {
+  .cb-form__form-group-error {
     position: absolute;
     margin: 0;
     @include directify($directions) {
@@ -408,18 +418,18 @@
   }
 }
 
-.form__form-group-date-cvc {
+.cb-form__form-group-date-cvc {
   display: flex;
   width: 100%;
 
-  .form__form-group-date {
+  .cb-form__form-group-date {
     width: 100%;
     @include directify($directions) {
       #{directed('margin-right')}: 20px;
     }
   }
 
-  .form__form-group-cvc {
+  .cb-form__form-group-cvc {
     max-width: 280px;
     width: 100%;
   }
@@ -427,23 +437,23 @@
   @media screen and (max-width: 767px) {
     flex-wrap: wrap;
 
-    .form__form-group-date {
+    .cb-form__form-group-date {
       @include directify($directions) {
         #{directed('margin-right')}: 0px;
       }
     }
 
-    .form__form-group-cvc {
+    .cb-form__form-group-cvc {
       max-width: 100%;
     }
   }
 }
 
-.form__form-group-id-category {
+.cb-form__form-group-id-category {
   width: 100%;
   display: flex;
 
-  .form__form-group-id {
+  .cb-form__form-group-id {
     min-width: 100px;
     width: 40%;
     @include directify($directions) {
@@ -454,7 +464,7 @@
   @media screen and (max-width: 767px) {
     flex-wrap: wrap;
 
-    .form__form-group-id {
+    .cb-form__form-group-id {
       @include directify($directions) {
         #{directed('margin-right')}: 0px;
       }
@@ -463,7 +473,7 @@
   }
 }
 
-.form__form-group-price-discount {
+.cb-form__form-group-price-discount {
   width: 100%;
   display: flex;
   margin-bottom: 20px;
@@ -472,7 +482,7 @@
     margin-bottom: 0;
   }
 
-  .form__form-group-price {
+  .cb-form__form-group-price {
     @include directify($directions) {
       #{directed('margin-right')}: 20px;
     }
@@ -481,14 +491,14 @@
   @media screen and (max-width: 767px) {
     flex-wrap: wrap;
 
-    .form__form-group-price {
+    .cb-form__form-group-price {
       @include directify($directions) {
         #{directed('margin-right')}: 0px;
       }
     }
   }
 }
-.form.form--color-picker .form__form-group {
+.cb-form.cb-form--color-picker .cb-form__form-group {
   @media screen and (max-width: 767px) {
     width: 100%;
 
@@ -498,7 +508,7 @@
   }
 }
  
-.form--color-picker {
+.cb-form--color-picker {
   @media screen and (max-width: 767px) {
     justify-content:  space-between;
   }

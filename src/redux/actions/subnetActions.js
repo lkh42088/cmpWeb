@@ -19,11 +19,11 @@ export const INPUT_SUBNET = 'subnet/INPUT';
  * 2. Action Function
  *****************************************************************************/
 // export const initSubnet = createAction(INIT_SUBNET);
-export const createSubnet = createAction(CREATE_SUBNET, ({
-    subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
-}) => ({
-    subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
-}));
+// export const createSubnet = createAction(CREATE_SUBNET, ({
+//     subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
+// }) => ({
+//     subnetTag, subnetStart, subnetEnd, subnetMask, gateway,
+// }));
 // 장비코드로 검색한 결과를 표시
 export const searchDeviceSubnet = createAction(SEARCH_DEVICE_SUBNET, ({
     deviceCode, deviceType, customer,

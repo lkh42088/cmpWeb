@@ -20,38 +20,22 @@ const useStyles = makeStyles(theme => ({
         paddingLeft: theme.spacing(2),
         paddingRight: theme.spacing(1),
     },
-    highlight:
-        theme.palette.type === 'light'
-            ? {
-                color: theme.palette.secondary.main,
-                backgroundColor: lighten(theme.palette.secondary.light, 0.85),
-                // backgroundColor: "transparent",
-            }
-            : {
-                color: theme.palette.text.primary,
-                backgroundColor: theme.palette.secondary.dark,
-                // backgroundColor: "transparent",
-            },
-    title:
-        theme.palette.type === 'light'
-            ? {
-                flex: '1 1 100%',
-                color: '#646777',
-                fontSize: 18,
-                //fontFamily: "Nanum BarunGothic",
-                fontFamily: 'Noto Sans KR R',
-            }
-            : {
-                flex: '1 1 100%',
-                color: '#dddddd',
-                fontSize: 18,
-                //fontFamily: "Nanum BarunGothic",
-                fontFamily: 'Noto Sans KR R',
-            },
+    highlight: {
+        color: theme.palette.type === 'light'
+            ? theme.palette.secondary.main
+            : theme.palette.text.primary,
+        backgroundColor: theme.palette.type === 'light'
+            ? lighten(theme.palette.secondary.light, 0.85)
+            : theme.palette.secondary.dark,
+    },
+    title: {
+        color: theme.palette.type === 'light' ? "#646777" : "#DDDDDD",
+        flex: '1 1 100%',
+        fontSize: 18,
+    },
     selected: {
         flex: '1 1 100%',
         fontSize: 15,
-        //fontFamily: "Nanum BarunGothic Bold",
         fontFamily: 'Noto Sans KR R',
     },
     search: {
@@ -62,10 +46,12 @@ const useStyles = makeStyles(theme => ({
             backgroundColor: fade(theme.palette.common.black, 0.25),
         },
         marginLeft: 0,
-        width: '100%',
+        width: "50%",
         [theme.breakpoints.up('sm')]: {
+            width: "50%",
             marginLeft: theme.spacing(1),
         },
+
     },
     searchIcon: {
         padding: theme.spacing(0, 2),
@@ -76,55 +62,34 @@ const useStyles = makeStyles(theme => ({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    span:
-        theme.palette.type === 'light'
-            ? {
-                color: '#646777',
-                padding: theme.spacing(1, 2),
-                height: 'auto',
-                display: 'flex',
-                justifyContent: 'left',
-            }
-            : {
-                color: '#dddddd',
-                padding: theme.spacing(1, 2),
-                height: 'auto',
-                display: 'flex',
-                justifyContent: 'left',
-            },
-    inputRoot:
-        theme.palette.type === 'light'
-            ? {
-                color: 'inherit',
-            }
-            : {
-                color: '#AAAAAA',
-            },
+    span: {
+        color: theme.palette.type === 'light' ? "#646777" : "#DDDDDD",
+        padding: theme.spacing(1, 2),
+        height: 'auto',
+        display: 'flex',
+        justifyContent: 'left',
+    },
+    inputRoot: {
+        color: theme.palette.type === 'light' ? 'inherit' : '#AAAAAA',
+    },
     inputInput: {
         padding: theme.spacing(1, 1, 1, 0),
         // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
+        transition: "width 0.5s 0s",
+        width: "50%",
         [theme.breakpoints.up('sm')]: {
-            width: '50ch',
-            // '&:focus': {
-            //     width: '40ch',
-            // },
+            width: "12ch",
+            '&:focus-within': {
+                width: "20ch",
+            },
         },
     },
-    paper:
-        theme.palette.type === 'light'
-            ? {
-                width: '85ch',
-                color: 'inherit',
-                backgroundColor: "#f2f4f7",
-            }
-            : {
-                width: '85ch',
-                color: 'inherit',
-                backgroundColor: "#33333a",
-            },
+    paper: {
+        width: '85ch',
+        color: 'inherit',
+        backgroundColor: theme.palette.type === 'light' ? "#f2f4f7" : "#33333a",
+    },
 }));
 
 const SubnetSearchBar = (props) => {

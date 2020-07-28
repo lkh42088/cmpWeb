@@ -348,6 +348,7 @@ const SubnetTableToolbar = (props) => {
                                             input: classes.inputInput,
                                         }}
                                         inputProps={{ 'aria-label': 'search' }}
+                                        // onKeyDown={handleKeyDown}
                                     />
                                 </div>
                             </Grid>

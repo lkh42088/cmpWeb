@@ -1,54 +1,31 @@
 import React, {useEffect, useState} from "react";
-import {
-    Card,
-    CardBody,
-    Col,
-} from 'reactstrap';
-import moment from "moment";
+import {Card, Col} from 'reactstrap';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TablePagination from '@material-ui/core/TablePagination';
 import {useDispatch, useSelector} from "react-redux";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
-import TableContainer from "@material-ui/core/TableContainer";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import Collapse from '@material-ui/core/Collapse';
 import {makeStyles, withStyles} from "@material-ui/core/styles";
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import GroupIcon from '@material-ui/icons/Group';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {useSnackbar} from "notistack";
-import {
-IconButton, InputBase, Select, Tooltip,
-} from "@material-ui/core";
-import InputLabel from '@material-ui/core/InputLabel';
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
+import {IconButton} from "@material-ui/core";
 import BlurOnOutlinedIcon from '@material-ui/icons/BlurOnOutlined';
 import BuildIcon from '@material-ui/icons/Build';
 import ReactTooltip from "react-tooltip";
 import {
     pagingChangeCurrentPage,
-    pagingChangeCurrentPageNext,
-    pagingChangeCurrentPagePrev,
-    pagingChangeDense,
-    pagingChangeOrder,
-    pagingChangeOrderBy,
     pagingChangeOrderByWithReset,
     pagingChangeRowsPerPage,
     pagingChangeSelected, pagingChangeSorting,
     pagingChangeTotalCount,
-    pagingDump,
 } from "../../../../../redux/actions/pagingActions";
-import {getUserList, getUserListWithSearchParam, initRegisterUser} from "../../../../../redux/actions/usersActions";
-import {registerUser, unregisterUser} from "../../../../../lib/api/users";
-import BootstrapInput from "../../../../Common/BootstrapInput";
-import {readSubnet, deleteSubnets} from "../../../../../lib/api/subnet";
+import {
+    readSubnet, deleteSubnets, createSubnet, updateSubnet,
+} from "../../../../../lib/api/subnet";
 import SubnetTableToolbar from "./SubnetTableToolbar";
 import CommonTableHead from "../../../../Common/CommonTableHead";
 import ConfirmSnackbar from "../../../../Common/ConfirmSnackbar";
@@ -132,21 +109,6 @@ const SubnetList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar();
-    // const {
-    //     /** Paging User Data */
-    //     data,
-    //     getPage,
-    //     /** Register User */
-    //     msg,
-    //     msgError,
-    // } = useSelector(({ usersRd }) => ({
-    //     /** Paging User Data */
-    //     data: usersRd.data,
-    //     getPage: usersRd.page,
-    //     /** Register User */
-    //     msg: usersRd.msg,
-    //     msgError: usersRd.msgError,
-    // }));
     const [state, setState] = useState({
         data: [],
         page: [],
@@ -189,22 +151,12 @@ const SubnetList = () => {
     const [openModal, setOpenModal] = useState(false);
     const [title, setTitle] = useState('');
     const [selectedData, setSelectedData] = useState(null);
+    const [create, setCreate] = useState(true);
     const [warningContents, setWarningContents] = useState('');
 
     /**************************************************************
      * Function
      **************************************************************/
-
-    /** Add User in TableToolbar */
-    const handleOpenAddUser = () => {
-        setOpenAddUser(true);
-    };
-
-    /** Add User in TableToolbar */
-    const handleCloseAddUser = () => {
-        setOpenAddUser(false);
-    };
-
     const handleSnackbarFailure = (snackMsg) => {
         enqueueSnackbar(snackMsg);
     };
@@ -262,57 +214,9 @@ const SubnetList = () => {
         }));
     };
 
-    // const getPageData = () => {
-    //     let offset = 0;
-    //     if (currentPage > 0) {
-    //         offset = rowsPerPage * currentPage;
-    //     }
-    //     console.log("get Page Data: rows ", rowsPerPage, ", offset ", offset,
-    //         ", orderBy ", orderBy, ", order ", order, ", searchParam ", searchParam);
-    //     if (searchParam !== null) {
-    //         dispatch(getUserListWithSearchParam({
-    //             rows: rowsPerPage, offset, orderBy, order, searchParam,
-    //         }));
-    //     } else {
-    //         dispatch(getUserList({
-    //             rows: rowsPerPage, offset, orderBy, order,
-    //         }));
-    //     }
-    // };
-
     /**************************************************************
      * Axios Function
      **************************************************************/
-    // const addUser = async (user) => {
-    //     const {
-    //         cpIdx, cpName, id, password, name, email,
-    //         cellPhone, level, userZip, userAddr, userAddrDetail,
-    //         emailAuthValue, emailAuthGroupList,
-    //     } = user;
-    //     try {
-    //         const response = await registerUser({
-    //             cpIdx,
-    //             cpName,
-    //             id,
-    //             password,
-    //             name,
-    //             email,
-    //             authLevel: Number(level),
-    //             hp: cellPhone,
-    //             zipCode: userZip,
-    //             address: userAddr,
-    //             addressDetail: userAddrDetail,
-    //             emailAuthFlag: emailAuthValue === "1",
-    //             emailAuthGroupFlag: emailAuthValue === "2",
-    //             emailAuthGroupList,
-    //         });
-    //         // handleSnackbarSuccess("계정 등록에 성공하였습니다.");
-    //         // getPageData();
-    //     } catch {
-    //         // handleSnackbarFailure("계정 등록에 실패하였습니다.");
-    //     }
-    // };
-
     const getData = async () => {
         // console.log("★★★★★★★★", "get Data!!");
         try {
@@ -364,26 +268,46 @@ const SubnetList = () => {
         }
     };
 
-    // const deleteSubnets = async (subnets) => {
-    //     try {
-    //         const response = await unregisterUser({idx: subnets});
-    //         getData();
-    //         // handleSnackbarSuccess("계정 삭제에 성공하였습니다.");
-    //     } catch (error) {
-    //         getData();
-    //         // handleSnackbarFailure("계정 삭제에 실패하였습니다.");
-    //     }
-    // };
+    const createData = async (data) => {
+        // console.log("★★★★★★★★", "Create Data!! ", data);
+        try {
+            const response = await createSubnet({
+                subnetTag: data.subnetTag,
+                subnetStart: data.subnetStart,
+                subnetEnd: data.subnetEnd,
+                subnetMask: data.subnetMask,
+                gateway: data.gateway,
+            });
+            // console.log(response);
+            getData();
+            handleSnackbarSuccess("SUBNET 생성에 성공 하였습니다.");
+        } catch {
+            handleSnackbarFailure("SUBNET 생성에 실패 하였습니다.");
+        }
+    };
+
+    const modifyData = async (data) => {
+        console.log("★★★★★★★★", "Modify Data!! ", data);
+        try {
+            const response = await updateSubnet({
+                idx: data.idx,
+                subnetTag: data.subnetTag,
+                subnetStart: data.subnetStart,
+                subnetEnd: data.subnetEnd,
+                subnetMask: data.subnetMask,
+                gateway: data.gateway,
+            });
+            // console.log(response);
+            getData();
+            handleSnackbarSuccess("SUBNET 수정에 성공 하였습니다.");
+        } catch {
+            handleSnackbarFailure("SUBNET 수정에 실패 하였습니다.");
+        }
+    };
 
     /**************************************************************
      * Event Handler
      **************************************************************/
-    const handleSubmitAddUser = (user) => {
-        console.log("handleSubmit() : user ", user);
-        // addUser(user);
-        handleCloseAddUser();
-    };
-
     const handleRefresh = () => {
         getData();
     };
@@ -394,7 +318,16 @@ const SubnetList = () => {
     };
 
     const handleOpenModal = () => {
+        setSelectedData({
+            idx: 0,
+            subnetTag: '',
+            subnetStart: '',
+            subnetEnd: '',
+            subnetMask: '',
+            gateway: '',
+        });
         setTitle("서브넷 추가");
+        setCreate(true);
         setOpenModal(true);
     };
 
@@ -402,16 +335,21 @@ const SubnetList = () => {
         setOpenModal(false);
     };
 
-    const handleSubmitModal = () => {
+    const handleSubmitModal = (data) => {
+        if (create) {
+            createData(data);
+        } else {
+            modifyData(data);
+        }
         setOpenModal(false);
     };
 
     const handleModifySelected = (id) => {
         const row = state.data.filter(item => item.idx === id);
-        console.log(row[0]);
         setSelectedData(row[0]);
-        console.log("★★★★ selectedData", selectedData);
+
         setTitle("서브넷 수정");
+        setCreate(false);
         setOpenModal(true);
     };
 
@@ -459,24 +397,9 @@ const SubnetList = () => {
     }, [state.page.count]);
 
     useEffect(() => {
-        console.log("useEffect: searchParam ", searchParam);
+        // console.log("useEffect: searchParam ", searchParam);
         getData();
     }, [searchParam]);
-
-    // useEffect(() => {
-    //     if (msg) {
-    //         // handleSnackbarSuccess("계정 등록에 성공하였습니다.");
-    //         dispatch(initRegisterUser());
-    //         getPageData();
-    //     }
-    // }, [msg]);
-    //
-    // useEffect(() => {
-    //     if (msgError) {
-    //         dispatch(initRegisterUser());
-    //         // handleSnackbarFailure("계정 등록에 실패하였습니다.");
-    //     }
-    // }, [msgError]);
 
     /**************************************************************
      * Component
@@ -485,31 +408,10 @@ const SubnetList = () => {
     /**************************************************************
      * JSX Template
      **************************************************************/
-    const getAddress = (row) => {
-        let address = "-";
-        if (row.zipcode) {
-            address = row.zipcode;
-            address = address.concat(', ');
-        }
-        if (row.address) {
-            address = address.concat(row.address);
-        }
-        if (row.addressDetail) {
-            if (row.address) {
-                address = address.concat(', ');
-                address = address.concat(row.addressDetail);
-            } else {
-                address = address.concat(row.addressDetail);
-            }
-        }
-        return address;
-    };
-
     const ContentsRow = (props) => {
         const { row } = props;
         const [openCollapse, setOpenCollapse] = React.useState(false);
         const isSelected = getSelected(row.idx);
-        const address = getAddress(row);
         return (
             <React.Fragment>
                 <TableRow
@@ -559,12 +461,6 @@ const SubnetList = () => {
                     >
                         {row.subnetMask}
                     </TableCell>
-                    {/*<TableCell*/}
-                    {/*    className="cb-material-table__cell"*/}
-                    {/*    style={{width: "25%"}}*/}
-                    {/*>*/}
-                    {/*    {row.gateway}*/}
-                    {/*</TableCell>*/}
                     <TableCell
                         className="cb-material-table__cell"
                         style={{width: "30%"}}
@@ -769,12 +665,18 @@ const SubnetList = () => {
                 open={openModal}
                 title={title}
                 icon={<BlurOnOutlinedIcon />}
-                width="400px"
+                width="600px"
                 childComponent={(
                     <SubnetWriteForm
                         handleClose={handleCloseModal}
                         handleSubmit={handleSubmitModal}
-                        data={selectedData}
+                        subnetIdxValue={selectedData && selectedData.idx}
+                        subnetStartValue={selectedData && selectedData.subnetStart}
+                        subnetEndValue={selectedData && selectedData.subnetEnd}
+                        subnetTagValue={selectedData && selectedData.subnetTag}
+                        subnetMaskValue={selectedData && selectedData.subnetMask}
+                        gatewayValue={selectedData && selectedData.gateway}
+                        create={create}
                     />
                     )}
             />

@@ -14,24 +14,24 @@ import {
 } from "../actions/subnetActions";
 
 const initSubnet = {
-    data: List([
-        Map({}),
-    ]),
-    page: {
-        count: 0, // total count
-        rows: 0,
-        offset: 0,
-        orderBy: "sub_idx",
-        order: "asc",
-        currentPage: 0,
-    },
+    // data: List([
+    //     Map({}),
+    // ]),
+    // page: {
+    //     count: 0, // total count
+    //     rows: 0,
+    //     offset: 0,
+    //     orderBy: "sub_idx",
+    //     order: "asc",
+    //     currentPage: 0,
+    // },
 };
 
 const subnetReducer = handleActions(
     {
-        [CREATE_SUBNET]: () => ({
-
-        }),
+        // [CREATE_SUBNET]: () => ({
+        //
+        // }),
         [SEARCH_DEVICE_SUBNET]: () => ({
 
         }),

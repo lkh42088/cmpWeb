@@ -733,7 +733,7 @@ const __SubnetList = () => {
                         data={state.data}
                         columns={headRows}
                         options={options}
-                        // dragableColumn={true}
+                        draggableColumns="true"
                     />
                         {/*<CommonTableHead*/}
                         {/*    classes={classes}*/}
