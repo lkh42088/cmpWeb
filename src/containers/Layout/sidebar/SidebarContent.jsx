@@ -43,6 +43,12 @@ const SidebarContent = ({
                         <Link to={getDashBoardLink()} onClick={() => changeMenuTitle('DASHBOARD', '', '')} >
                             <SidebarCategory title="DASHBOARD" icon={outlineDashboard} />
                         </Link>
+                        <SidebarCategory title="MICRO CLOUD" icon={serverOutlineBadged} dropdown={dropdown}>
+                            <SidebarLink title="SERVER" route="/micro/servers"
+                                         onClick={() => changeMenuTitle('MICRO CLOUD', 'SERVER', '')}/>
+                            <SidebarLink title="VM" route="/micro/vms"
+                                         onClick={() => changeMenuTitle('MICRO CLOUD', 'VM', '')}/>
+                        </SidebarCategory>
                         <SidebarCategory title="SERVER" icon={serverOutlineBadged} dropdown={dropdown}>
                             <SidebarLink title="온프레미스" route="/assets/server"
                                          onClick={() => changeMenuTitle('SERVER', '온프레미스', 'server')}/>
@@ -75,6 +81,12 @@ const SidebarContent = ({
                     <ul className="cb_sidebar__block">
                         <SidebarLink title="DASHBOARD" icon={outlineDashboard} route={getDashBoardLink}
                                      onClick={() => changeMenuTitle('DASHBOARD', '', '')}/>
+                        <SidebarCategory title="MICRO CLOUD" icon={serverOutlineBadged} dropdown={dropdown}>
+                            <SidebarLink title="SERVER" route="/micro/servers"
+                                         onClick={() => changeMenuTitle('MICRO CLOUD', 'SERVER', '')}/>
+                            <SidebarLink title="VM" route="/micro/servers"
+                                         onClick={() => changeMenuTitle('MICRO CLOUD', 'VM', '')}/>
+                        </SidebarCategory>
                         <SidebarCategory title="SERVER" icon={serverOutlineBadged} dropdown={dropdown}>
                             <SidebarLink title="온프레미스" route="/assets/server"
                                          onClick={() => changeMenuTitle('SERVER', '온프레미스', 'server')}/>
