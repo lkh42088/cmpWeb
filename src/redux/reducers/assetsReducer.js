@@ -81,6 +81,8 @@ export const initialState = {
         state: '',
     },
     searchRd: {
+        schSelect: '',
+        schText: '',
         customer: '',
         deviceCode: '',
         deviceType: '',
@@ -92,6 +94,9 @@ export const initialState = {
         operatingFlag: true,
         carryingFlag: false,
         rentPeriod: false,
+        serverCnt: 0,
+        storageCnt: 0,
+        etcCnt: 0,
     },
     deviceLog: {
         deviceCode: '',

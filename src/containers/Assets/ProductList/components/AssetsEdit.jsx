@@ -11,6 +11,7 @@ import AccountSearchIcon from "mdi-react/AccountSearchIcon";
 import CurrencyUsdIcon from "mdi-react/CurrencyUsdIcon";
 import PlusIcon from "mdi-react/PlusIcon";
 import MinusIcon from "mdi-react/MinusIcon";
+import InputAdornment from '@material-ui/core/InputAdornment';
 
 import Grid from "@material-ui/core/Grid";
 import ListItem from "@material-ui/core/ListItem";
@@ -28,10 +29,6 @@ import {
 import renderIntervalDatePickerField from "./IntervalDatePicker";
 import renderDatePickerField from "./DatePicker";
 
-function checkIP(strIP) {
-    const expUrl = /^(1|2)?\d?\d([.](1|2)?\d?\d){3}$/;
-    return expUrl.test(strIP);
-}
 
 function validate(values) {
     const errors = {};

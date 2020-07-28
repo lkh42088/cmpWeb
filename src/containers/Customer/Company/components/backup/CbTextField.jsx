@@ -81,7 +81,8 @@ export const StyledTextField = styled(TextField)`
     .MuiFormControl-root {
     }
     .MuiFormLabel-root {
-        font-family: "Nanum Squre acEB";
+        //font-family: "Nanum Squre acEB";
+        font-family: "Noto Sans KR R";
     }
     label.Mui-focused {
         color: ${props => props.color || '#4ce1b6'};

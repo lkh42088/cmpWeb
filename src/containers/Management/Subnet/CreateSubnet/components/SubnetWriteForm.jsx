@@ -46,8 +46,9 @@ const gatewayCheck = value => (value && !check(value)
 let SubnetWriteForm = (props) => {
     const dispatch = useDispatch();
     const {
-        error, handleSubmit, pristine, reset, submitting,
+        error, pristine, reset, submitting,
         subnetStartValue, subnetEndValue, subnetTagValue, subnetMaskValue, gatewayValue,
+        open, data, handleClose, handleSubmit,
     } = props;
 
     const handleCreate = (e) => {
@@ -62,12 +63,19 @@ let SubnetWriteForm = (props) => {
         }));
         // Init field
         dispatch(reset);
+        handleClose();
+    };
+
+    const handleClickCancel = () => {
+        reset();
+        handleClose();
     };
 
     return (
-        <Col xs={12} md={12} lg={9} xl={5} cssModule="table">
-            <Card className="cb-card">
-                <CardBody>
+        // <Col xs={12} md={12} lg={7} xl={7} cssModule="table">
+            <Col>
+            {/*<Card className="cb-card">*/}
+            {/*    <CardBody>*/}
                     <form className="form form-horizontal">
                         <div className="form__form-group">
                             <span className="form__form-group-label">SUBNET</span>
@@ -77,6 +85,7 @@ let SubnetWriteForm = (props) => {
                                     component={renderField}
                                     label="Start"
                                     validate={ipCheck}
+                                    values={data && data.subnetStart}
                                 />
                             </div>
                             <div className="form__form-group-field">
@@ -85,6 +94,7 @@ let SubnetWriteForm = (props) => {
                                     component={renderField}
                                     label="End"
                                     validate={ipCheck}
+                                    values={data && data.subnetEnd}
                                 />
                             </div>
                         </div>
@@ -97,6 +107,7 @@ let SubnetWriteForm = (props) => {
                                     component="input"
                                     type="text"
                                     placeholder="Tag"
+                                    values={data && data.subnetTag}
                                 />
                             </div>
                         </div>
@@ -108,6 +119,7 @@ let SubnetWriteForm = (props) => {
                                     component={renderField}
                                     label="Mask"
                                     validate={subnetMaskCheck}
+                                    values={data && data.subnetMask}
                                 />
                             </div>
                         </div>
@@ -119,6 +131,7 @@ let SubnetWriteForm = (props) => {
                                     component={renderField}
                                     label="Gateway"
                                     validate={gatewayCheck}
+                                    values={data && data.gateway}
                                 />
                             </div>
                         </div>
@@ -133,15 +146,15 @@ let SubnetWriteForm = (props) => {
                                     생성
                                 </Button>
                                 <Button type="button"
-                                        disabled={pristine || submitting}
-                                        onClick={reset}>
+                                        // disabled={pristine || submitting}
+                                        onClick={handleClickCancel}>
                                     취소
                                 </Button>
                             </ButtonToolbar>
                         </div>
                     </form>
-                </CardBody>
-            </Card>
+            {/*    </CardBody>*/}
+            {/*</Card>*/}
         </Col>
     );
 };

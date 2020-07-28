@@ -4,7 +4,7 @@
   height: 100%;
   border: none;
   background-color: transparent;
-  font-family: 'Nanum Square acEB', sans-serif;  // [22June2020,khlee]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
 
   &.cb-card--not-full-height {
     height: auto;
@@ -20,6 +20,22 @@
   }
 }
 
+// [22July2020,khlee]
+.cb-card-subnet {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+
+  &:hover {
+    // 사이드바 마우스 오버 시 CARD SHADOW [24June2020,khlee]
+    @include themify($themes) {
+      transition: background-color 1.5s 0s;
+      box-shadow: 1px 2px 5px themed('colorShadow');
+      background-color: themed('colorBackground');
+    }
+  }
+}
+
 // [2020-06-09 byeonghwa jung]
 .cb-card-body__thin-padding {
   height: 100%;
@@ -29,12 +45,13 @@
   @include themify($themes) {
     background-color: themed('colorBackground');
   }
+
 }
 
 .cb-card-body {
   height: 100%;
   border-radius: 5px;
-  font-family: 'Nanum Square acEB', sans-serif;  // [22June2020,khlee]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
 
   @include themify($themes) {
     background-color: themed('colorBackground');

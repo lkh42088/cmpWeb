@@ -6,7 +6,7 @@ import {
 } from 'recharts';
 import {withTranslation} from 'react-i18next';
 import PropTypes from 'prop-types';
-import Panel from '../../../../shared/components/Panel';
+import Panel from './Panel';
 
 import getTooltipStyles from '../../../../shared/helpers';
 
@@ -37,12 +37,6 @@ renderLegend.propTypes = {
 };
 
 class ServerOnPremise extends PureComponent {
-    static propTypes = {
-        t: PropTypes.func.isRequired,
-        dir: PropTypes.string.isRequired,
-        themeName: PropTypes.string.isRequired,
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -62,11 +56,11 @@ class ServerOnPremise extends PureComponent {
     };
 
     render() {
-        const {t, dir, themeName} = this.props;
+        const {themeName, close} = this.props;
         const {x, y} = this.state;
 
         return (
-            <Panel title="SERVER : 온프레미스" >
+            <Panel title="SERVER : 온프레미스" close={close}>
                 <ResponsiveContainer className="dashboard__chart-pie dashboard__chart-pie--crypto"
                                      height={360}>
                     <PieChart className="dashboard__chart-pie-container">

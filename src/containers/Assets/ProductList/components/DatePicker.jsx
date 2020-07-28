@@ -15,12 +15,6 @@ import DateFnsUtils from '@date-io/date-fns';
 import moment from "moment";
 
 class DatePickerField extends PureComponent {
-    static propTypes = {
-        onChange: PropTypes.func.isRequired,
-        // eslint-disable-next-line react/require-default-props
-        value: PropTypes.string,
-    };
-
     constructor() {
         super();
         this.state = {

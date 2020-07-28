@@ -9,9 +9,6 @@ import PropTypes from 'prop-types';
 import moment from "moment";
 import Avatar from "react-avatar";
 import MatButton from '@material-ui/core/Button';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import InputIcon from "@material-ui/icons/Input";
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -20,8 +17,6 @@ import LaunchIcon from "@material-ui/icons/Launch";
 import SendIcon from "@material-ui/icons/Send";
 import TocIcon from '@material-ui/icons/Toc';
 import EditIcon from '@material-ui/icons/Edit';
-import PaperclipIcon from 'mdi-react/PaperclipIcon';
-import EmoticonIcon from 'mdi-react/EmoticonIcon';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 
@@ -35,40 +30,8 @@ import {
     getDeviceOriByIdx, setState, postDeviceOutFlag,
     postDevice, postDeviceComment, setAssetsPage,
 } from "../../../../redux/actions/assetsAction";
+import * as common from "../../../../lib/common";
 import AssetsEdit from "./AssetsEdit";
-
-function textValueCut(val, compareTxt) {
-    if (val === compareTxt) {
-        val = '';
-    }
-    return val;
-}
-
-function textDateCut(val, type) {
-    let returnVal = '';
-    let valArray = '';
-
-    if (val === null || val === undefined || val === "|") {
-        returnVal = '';
-    } else {
-        switch (type) {
-            case 'warehousingDate':
-                returnVal = `${val.substring(0, 4)}년${val.substring(4, 6)}월${val.substring(6, 8)}일`;
-                break;
-            case 'rentDate':
-                valArray = val.split("|");
-                returnVal = (
-                    `${valArray[0].substring(0, 4)}년${valArray[0].substring(4, 6)}월${valArray[0].substring(6, 8)}일 ~ `
-                );
-                returnVal += `${valArray[1].substring(0, 4)}년${valArray[1].substring(4, 6)}월${valArray[1].substring(6, 8)}일`;
-                break;
-            default:
-                break;
-        }
-    }
-
-    return returnVal;
-}
 
 class AssetsView extends PureComponent {
     static propTypes = {
@@ -197,7 +160,7 @@ class AssetsView extends PureComponent {
     };
 
     handleSubmitEdit = (values) => {
-        const { assetState, dispatch, user } = this.props;
+        const {assetState, dispatch, user} = this.props;
         dispatch(setAssetsPage('view'));
 
         let division = '|';
@@ -378,7 +341,7 @@ class AssetsView extends PureComponent {
     };
 
     toggleOutFlag = (val, deviceCode) => {
-        const { assetState, dispatch, user } = this.props;
+        const {assetState, dispatch, user} = this.props;
 
         const submitData = ({
             userId: user.id,
@@ -437,7 +400,7 @@ class AssetsView extends PureComponent {
         let dpIpSliceStr;
         let splaSliceStrArray;
         let dpSplaSliceStr;
-        let outFlagStr;
+        let outFlagStr = "";
         let componentOutFlag;
 
         if (outFlag === true) {
@@ -453,7 +416,7 @@ class AssetsView extends PureComponent {
                     반입
             </span>
             );
-        } else {
+        } else if (outFlag === false) {
             outFlagStr = (
                 <span className="text_cor_accent font-weight-bold">운영장비</span>
             );
@@ -468,7 +431,15 @@ class AssetsView extends PureComponent {
             );
         }
 
+        if (ip !== undefined && ip !== "|") {
+            ipSliceStrArray = ip.split("|");
+            dpIpSliceStr = this.reChange(ipSliceStrArray);
+        }
 
+        if (spla !== undefined && spla !== "|") {
+            splaSliceStrArray = spla.split("|");
+            dpSplaSliceStr = this.reChange(splaSliceStrArray);
+        }
         /* if (ip !== undefined && ip !== "|") {
              ipSliceStrArray = ip.split("|");
              dpIpSliceStr = this.reChange(ipSliceStrArray);
@@ -520,7 +491,7 @@ class AssetsView extends PureComponent {
                                     <div className="col-lg-8 col-md-12">
                                         <textarea
                                             className={classNameMap.textareaPreCont}
-                                            value={textValueCut(cpu, undefined)} rows="1"
+                                            value={common.textValueCut(cpu, undefined)} rows="1"
                                             disabled/>
                                     </div>
                                 </div>
@@ -552,7 +523,7 @@ class AssetsView extends PureComponent {
                                     <div className="col-lg-8 col-md-12">
                                         <textarea
                                             className={classNameMap.textareaPreCont}
-                                            value={textValueCut(memory, undefined)} rows="1"
+                                            value={common.textValueCut(memory, undefined)} rows="1"
                                             disabled/>
                                     </div>
                                 </div>
@@ -584,7 +555,7 @@ class AssetsView extends PureComponent {
                                     <div className="col-lg-8 col-md-12">
                                         <textarea
                                             className={classNameMap.textareaPreCont}
-                                            value={textValueCut(hdd, undefined)} rows="1"
+                                            value={common.textValueCut(hdd, undefined)} rows="1"
                                             disabled/>
                                     </div>
                                 </div>
@@ -597,7 +568,7 @@ class AssetsView extends PureComponent {
                                     <div className="col-lg-8 col-md-12">
                                         <textarea
                                             className={classNameMap.textareaPreCont}
-                                            value={textValueCut(rackTag, undefined)} rows="1"
+                                            value={common.textValueCut(rackTag, undefined)} rows="1"
                                             disabled/>
                                     </div>
                                 </div>
@@ -612,7 +583,7 @@ class AssetsView extends PureComponent {
                                     <div className="col-lg-8 col-md-12">
                                         <textarea
                                             className={classNameMap.textareaPreCont}
-                                            value={textValueCut(size, undefined)} rows="1"
+                                            value={common.textValueCut(size, undefined)} rows="1"
                                             disabled/>
                                     </div>
                                 </div>
@@ -797,11 +768,11 @@ class AssetsView extends PureComponent {
                                                 <div className={classNameMap.formInforLabel}>장비코드</div>
                                             </div>
                                             <div className="col-lg-8 col-md-12">
-                                                            <textarea
-                                                                className={classNameMap.textareaPreCont}
-                                                                rows="1"
-                                                                value={textValueCut(deviceCode, undefined)}
-                                                                disabled/>
+                                                <textarea
+                                                    className={classNameMap.textareaPreCont}
+                                                    rows="1"
+                                                    value={common.textValueCut(deviceCode, undefined)}
+                                                    disabled/>
                                             </div>
                                         </div>
                                     </div>
@@ -812,10 +783,11 @@ class AssetsView extends PureComponent {
                                                 </div>
                                             </div>
                                             <div className="col-lg-8 col-md-12">
-                                                            <textarea
-                                                                className={classNameMap.textareaPreCont}
-                                                                rows="1" value={`${idc} / ${rack}`}
-                                                                disabled/>
+                                                <textarea
+                                                    className={classNameMap.textareaPreCont}
+                                                    rows="1"
+                                                    value={common.textValueCut(`${idc} / ${rack}`, "undefined / undefined")}
+                                                    disabled/>
                                             </div>
                                         </div>
                                     </div>
@@ -827,11 +799,11 @@ class AssetsView extends PureComponent {
                                                 <div className={classNameMap.formInforLabel}>장비구분</div>
                                             </div>
                                             <div className="col-lg-8 col-md-12">
-                                                            <textarea
-                                                                className={classNameMap.textareaPreCont}
-                                                                rows="1"
-                                                                value={textValueCut(deviceType, undefined)}
-                                                                disabled/>
+                                                <textarea
+                                                    className={classNameMap.textareaPreCont}
+                                                    rows="1"
+                                                    value={common.textValueCut(deviceType, undefined)}
+                                                    disabled/>
                                             </div>
                                         </div>
                                     </div>
@@ -842,12 +814,11 @@ class AssetsView extends PureComponent {
                                                 </div>
                                             </div>
                                             <div className="col-lg-8 col-md-12">
-                                                            <textarea
-                                                                className={classNameMap.textareaPreCont}
-                                                                rows="1"
-                                                                value={textValueCut(`${manufacture} / ${model}`, undefined)}
-                                                                /*value={`${manufacture} / ${model}`}*/
-                                                                disabled/>
+                                                <textarea
+                                                    className={classNameMap.textareaPreCont}
+                                                    rows="1"
+                                                    value={common.textValueCut(`${manufacture} / ${model}`, "undefined / undefined")}
+                                                    disabled/>
                                             </div>
                                         </div>
                                     </div>
@@ -859,11 +830,12 @@ class AssetsView extends PureComponent {
                                                 <div className={classNameMap.formInforLabel}>고객사</div>
                                             </div>
                                             <div className="col-lg-8 col-md-12">
-                                                            <textarea
-                                                                className={classNameMap.textareaPreCont}
-                                                                rows="1"
-                                                                value={`${customerName} / ${customer}`}
-                                                                disabled/>
+                                                <textarea
+                                                    className={classNameMap.textareaPreCont}
+                                                    rows="1"
+                                                    /*value={`${customerName} / ${customer}`}*/
+                                                    value={common.textValueCut(`${customerName} / ${customer}`, "undefined / undefined")}
+                                                    disabled/>
                                             </div>
                                         </div>
                                     </div>
@@ -874,11 +846,12 @@ class AssetsView extends PureComponent {
                                                 </div>
                                             </div>
                                             <div className="col-lg-8 col-md-12">
-                                                            <textarea
-                                                                className={classNameMap.textareaPreCont}
-                                                                rows="1"
-                                                                value={`${ownership} / ${ownershipDiv}`}
-                                                                disabled/>
+                                                <textarea
+                                                    className={classNameMap.textareaPreCont}
+                                                    rows="1"
+                                                    /*value={`${ownership} / ${ownershipDiv}`}*/
+                                                    value={common.textValueCut(`${ownership} / ${ownershipDiv}`, "undefined / undefined")}
+                                                    disabled/>
                                             </div>
                                         </div>
                                     </div>
@@ -890,11 +863,12 @@ class AssetsView extends PureComponent {
                                                 <div className={classNameMap.formInforLabel}>소유업체명</div>
                                             </div>
                                             <div className="col-lg-8 col-md-12">
-                                                            <textarea
-                                                                className={classNameMap.textareaPreCont}
-                                                                rows="1"
-                                                                value={`${ownerCompanyName} / ${ownerCompany}`}
-                                                                disabled/>
+                                                <textarea
+                                                    className={classNameMap.textareaPreCont}
+                                                    rows="1"
+                                                    /*value={`${ownerCompanyName} / ${ownerCompany}`}*/
+                                                    value={common.textValueCut(`${ownerCompanyName} / ${ownerCompany}`, "undefined / undefined")}
+                                                    disabled/>
                                             </div>
                                         </div>
                                     </div>
@@ -904,13 +878,13 @@ class AssetsView extends PureComponent {
                                                 <div className={classNameMap.formInforLabel}>임대기간</div>
                                             </div>
                                             <div className="col-lg-8 col-md-12">
-                                                            <textarea
-                                                                className={classNameMap.textareaPreCont}
-                                                                rows="1"
+                                                <textarea
+                                                    className={classNameMap.textareaPreCont}
+                                                    rows="1"
                                                                 /*value={`${textDateCut(rentDate, "rentDate")}`}*/
-                                                                disabled
-                                                                value={textDateCut(rentDate, "rentDate")}
-                                                            />
+                                                    disabled
+                                                    value={common.textDateCut(rentDate, "rentDate")}
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -922,11 +896,11 @@ class AssetsView extends PureComponent {
                                                 <div className={classNameMap.formInforLabel}>HW S/N</div>
                                             </div>
                                             <div className="col-lg-8 col-md-12">
-                                                            <textarea
-                                                                className={classNameMap.textareaPreCont}
-                                                                rows="1"
-                                                                value={textValueCut(hwSn, undefined)}
-                                                                disabled/>
+                                                <textarea
+                                                    className={classNameMap.textareaPreCont}
+                                                    rows="1"
+                                                    value={common.textValueCut(hwSn, undefined)}
+                                                    disabled/>
                                             </div>
                                         </div>
                                     </div>
@@ -936,12 +910,12 @@ class AssetsView extends PureComponent {
                                                 <div className={classNameMap.formInforLabel}>입고일</div>
                                             </div>
                                             <div className="col-lg-8 col-md-12">
-                                                            <textarea
-                                                                className={classNameMap.textareaPreCont}
-                                                                rows="1"
-                                                                /*value={`${inWarehousingDate}`}*/
-                                                                value={textDateCut(warehousingDate, "warehousingDate")}
-                                                                disabled/>
+                                                <textarea
+                                                    className={classNameMap.textareaPreCont}
+                                                    rows="1"
+                                                    /*value={`${inWarehousingDate}`}*/
+                                                    value={common.textDateCut(warehousingDate, "warehousingDate")}
+                                                    disabled/>
                                             </div>
                                         </div>
                                     </div>
@@ -953,11 +927,11 @@ class AssetsView extends PureComponent {
                                                 <div className={classNameMap.formInforLabel}>원가</div>
                                             </div>
                                             <div className="col-lg-8 col-md-12">
-                                                            <textarea
-                                                                className={classNameMap.textareaPreCont}
-                                                                rows="1"
-                                                                value={textValueCut(cost, undefined)}
-                                                                disabled/>
+                                                <textarea
+                                                    className={classNameMap.textareaPreCont}
+                                                    rows="1"
+                                                    value={common.textValueCut(cost, undefined)}
+                                                    disabled/>
                                             </div>
                                         </div>
                                     </div>
@@ -967,11 +941,11 @@ class AssetsView extends PureComponent {
                                                 <div className={classNameMap.formInforLabel}>용도</div>
                                             </div>
                                             <div className="col-lg-8 col-md-12">
-                                                            <textarea
-                                                                className={classNameMap.textareaPreCont}
-                                                                rows="1"
-                                                                value={textValueCut(purpose, undefined)}
-                                                                disabled/>
+                                                <textarea
+                                                    className={classNameMap.textareaPreCont}
+                                                    rows="1"
+                                                    value={common.textValueCut(purpose, undefined)}
+                                                    disabled/>
                                             </div>
                                         </div>
                                     </div>

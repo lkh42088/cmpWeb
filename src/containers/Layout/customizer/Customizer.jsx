@@ -12,6 +12,7 @@ import ToggleShadow from './ToggleShadow';
 import ToggleTopMenu from './ToggleTopMenu';
 import ToggleRTL from './ToggleRTL';
 import ToggleSidebar from "./ToggleSidebar";
+import ToggleDensePadding from "./ToggleDensePadding";
 
 const settings = `${process.env.PUBLIC_URL}/img/settings.svg`;
 
@@ -31,6 +32,7 @@ export default class Customizer extends PureComponent {
     changeBorderRadius: PropTypes.func.isRequired,
     toggleBoxShadow: PropTypes.func.isRequired,
     changeToSidebarDropdown: PropTypes.func.isRequired,
+    changeDensePadding: PropTypes.func.isRequired,
   };
 
   state = {
@@ -70,6 +72,7 @@ export default class Customizer extends PureComponent {
       changeToDark,
       changeToLight,
       changeToSidebarDropdown,
+      changeDensePadding,
       changeToRTL,
       changeToLTR,
       changeBorderRadius,
@@ -99,6 +102,7 @@ export default class Customizer extends PureComponent {
           {/*<ToggleSquared customizer={customizer} changeBorderRadius={changeBorderRadius} />*/}
           {/*<ToggleShadow customizer={customizer} toggleBoxShadow={toggleBoxShadow} />*/}
           {/*<ToggleRTL customizer={customizer} changeToRTL={changeToRTL} changeToLTR={changeToLTR} rtl={rtl} />*/}
+          <ToggleDensePadding changeDense={changeDensePadding} customizer={customizer}/>
           {(!show && !collapse)
               ? (<ToggleSidebar changeToSidebar={changeToSidebarDropdown} customizer={customizer}/>)
               : null

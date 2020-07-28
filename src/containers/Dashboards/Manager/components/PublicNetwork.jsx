@@ -4,7 +4,7 @@ import {Card, CardBody, Col} from 'reactstrap';
 import {Line} from 'react-chartjs-2';
 import {withTranslation} from 'react-i18next';
 import PropTypes from 'prop-types';
-import Panel from "../../../../shared/components/Panel";
+import Panel from "./Panel";
 
 const initialState = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -68,10 +68,6 @@ const options = {
 };
 
 class RandomAnimatedLine extends PureComponent {
-    static propTypes = {
-        t: PropTypes.func.isRequired,
-    };
-
     constructor() {
         super();
         this.state = {
@@ -130,11 +126,11 @@ class RandomAnimatedLine extends PureComponent {
     }
 
     render() {
-        const {t} = this.props;
+        const {t, close} = this.props;
         const {data} = this.state;
 
         return (
-            <Panel md title="공용 네트워크 트래픽" >
+            <Panel title="공용 네트워크 트래픽" close={close}>
                 <Line data={data} options={options}/>
             </Panel>
         );

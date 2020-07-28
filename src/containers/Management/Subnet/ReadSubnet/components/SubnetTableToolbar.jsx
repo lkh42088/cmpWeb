@@ -21,6 +21,8 @@ import {useDispatch, useSelector} from "react-redux";
 import ReactTooltip from "react-tooltip";
 import {Button} from "@material-ui/core";
 import TablePagination from "@material-ui/core/TablePagination";
+import InputBase from '@material-ui/core/InputBase';
+import SearchIcon from '@material-ui/icons/Search';
 import {
     pagingChangeCurrentPage,
     pagingChangeDense,
@@ -29,6 +31,7 @@ import {
 import SubnetSearchBar from "./SubnetSearchBar";
 import BootstrapInput from "../../../../Common/BootstrapInput";
 import CommonTableExportCSV from "../../../../Common/CommonTableExportCSV";
+import CustomSlider from "../../../../Common/CustomSlider";
 
 const useToolbarStyles = makeStyles(theme => ({
     root: {
@@ -53,18 +56,21 @@ const useToolbarStyles = makeStyles(theme => ({
                 flex: '1 1 100%',
                 color: '#646777',
                 fontSize: 18,
-                fontFamily: "Nanum BarunGothic",
+                //fontFamily: "Nanum BarunGothic",
+                fontFamily: 'Noto Sans KR R',
             }
             : {
                 flex: '1 1 100%',
                 color: '#dddddd',
                 fontSize: 18,
-                fontFamily: "Nanum BarunGothic",
+                //fontFamily: "Nanum BarunGothic",
+                fontFamily: 'Noto Sans KR R',
             },
     selected: {
         flex: '1 1 100%',
         fontSize: 15,
-        fontFamily: "Nanum BarunGothic Bold",
+        //fontFamily: "Nanum BarunGothic Bold",
+        fontFamily: 'Noto Sans KR R',
     },
     margin: {
         margin: theme.spacing(1),
@@ -81,7 +87,59 @@ const useToolbarStyles = makeStyles(theme => ({
         fontWeight: "revert",
     },
     grid: {
-        gridTemplateColumns: "155 1fr 1fr 350 30",
+        gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+    },
+    search: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor:
+            theme.palette.type === 'light'
+                ? fade("#646777", 0.25)
+                : fade(theme.palette.common.white, 0.15),
+        '&:hover': {
+            backgroundColor:
+                theme.palette.type === 'light'
+                    ? fade("#646777", 0.15)
+                    : fade(theme.palette.common.white, 0.35),
+        },
+        marginLeft: 0,
+        width: 'auto',
+    },
+    searchIcon: {
+        padding: theme.spacing(0, 2),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    inputRoot: {
+        color: 'inherit',
+        fontSize: 'inherit',
+        width: "100%",
+    },
+    inputInput: {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        transition: 'width 0.5s 0s',
+        width: '50%',
+        "&:focus": {
+            width: '100%',
+        },
+    },
+    slider: {
+        position: 'relative',
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.down('lg')]: {
+            marginLeft: theme.spacing(1),
+            width: '80%',
+        },
+        [theme.breakpoints.down('md')]: {
+            display: 'none',
+        },
     },
 }));
 
@@ -151,67 +209,58 @@ const SubnetTableToolbar = (props) => {
     const classes = useToolbarStyles();
     const dispatch = useDispatch();
     const {
-        toolbarTitle, rows, data, numSelected, handleDeleteSelected, onRequestSort,
+        rows, numSelected, handleDeleteSelected, onRequestSort,
         handleOpen, contents, handleRefresh, handleSubmitSearch,
+        count, rowsPerPage, page, onChangePage, onChangeRowsPerPage,
+        rowsPerPageOptions, defaultHeight, setTableHeight, data,
     } = props;
     const addComment = contents.concat(" 추가");
     const deleteComment = `선택한 ${contents} 삭제`;
 
-    const {
-        selected,
-        pageBeginRow,
-        rowsPerPage,
-        currentPage,
-        totalCount,
-        displayRowsList,
-        dense,
-        orderBy,
-        order,
-    } = useSelector(({pagingRd}) => ({
-        selected: pagingRd.selected,
-        pageBeginRow: pagingRd.pageBeginRow,
-        rowsPerPage: pagingRd.rowsPerPage,
-        currentPage: pagingRd.currentPage,
-        totalPage: pagingRd.totalPage,
-        totalCount: pagingRd.totalCount,
-        displayRowsList: pagingRd.displayRowsList,
-        dense: pagingRd.dense,
-        orderBy: pagingRd.orderBy,
-        order: pagingRd.order,
-    }));
+    // /** Pagination */
+    // const handleChangePage = (event, newPage) => {
+    //     console.log("change page: ", newPage);
+    //     dispatch(pagingChangeCurrentPage({currentPage: newPage}));
+    // };
 
-    /** Pagination */
-    const handleChangePage = (event, newPage) => {
-        console.log("change page: ", newPage);
-        dispatch(pagingChangeCurrentPage({currentPage: newPage}));
-    };
+    // /** Pagination */
+    // const handleChangeRowsPerPage = (e) => {
+    //     const changeRows = Number(e.target.value);
+    //     dispatch(pagingChangeRowsPerPage({rowsPerPage: changeRows}));
+    // };
+    //
+    // /** Pagination */
+    // const handleChangeDense = (event) => {
+    //     dispatch(pagingChangeDense({checked: event.target.checked}));
+    // };
+    // const handleDelete = () => {
+    //     console.log("handleDelete...");
+    // };
 
-    /** Pagination */
-    const handleChangeRowsPerPage = (e) => {
-        const changeRows = Number(e.target.value);
-        dispatch(pagingChangeRowsPerPage({rowsPerPage: changeRows}));
-    };
-
-    /** Pagination */
-    const handleChangeDense = (event) => {
-        dispatch(pagingChangeDense({checked: event.target.checked}));
-    };    
-    const handleDelete = () => {
-        console.log("handleDelete...");
+    const handleSliderChange = (e, val) => {
+        setTableHeight((val * 20));
     };
 
     /** COMPONENT */
     const paginationBar = (
         <TablePagination
             component="div"
-            count={totalCount}
+            count={count || 0}
             rowsPerPage={rowsPerPage}
-            page={currentPage}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-            rowsPerPageOptions={displayRowsList}
-            labelRowsPerPage=""
-            labelDisplayedRows={() => ""}
+            page={page}
+            onChangePage={onChangePage}
+            onChangeRowsPerPage={onChangeRowsPerPage}
+            rowsPerPageOptions={rowsPerPageOptions}
+            labelRowsPerPage="개수"
+            labelDisplayedRows={() => {
+                let res = "";
+                if (page > 0) {
+                    res = `총 ${count} 개 중 ${page * rowsPerPage + 1} ~ ${rowsPerPage * (page + 1)}`;
+                } else {
+                    res = `총 ${count} 개 중 ${1} ~ ${rowsPerPage}`;
+                }
+                return res;
+            }}
         />
     );
     
@@ -219,13 +268,14 @@ const SubnetTableToolbar = (props) => {
         <div>
             <Toolbar
                 className={clsx(classes.root, { [classes.highlight]: numSelected > 0 })}
+                variant="dense"
             >
                 {numSelected > 0 ? (
                     <>
                         <Typography className={classes.selected} color="inherit" variant="subtitle1" component="div">
                             {numSelected} selected
                         </Typography>
-                        <Tooltip title="선택한 계정 삭제">
+                        <Tooltip title="선택한 항목 삭제">
                             <IconButton
                                 aria-label="delete"
                                 onClick={handleDeleteSelected}
@@ -236,14 +286,19 @@ const SubnetTableToolbar = (props) => {
                     </>
                 ) : (
                     <>
-                        {/*********************************************************************
+                        {
+                        /*********************************************************************
                          * Table Search bar
                          **********************************************************************/}
-                        <Grid container alignItems="center" wrap="nowrap" style={{maxHeight: 72}}
-                              className={classes.grid}
+                        <Grid container
+                              direction="row"
+                              justify="space-between"
+                              alignItems="center"
+                              // className={classes.grid}
                         >
-                            <Grid item md={2} zeroMinWidth>
-                                <div style={{minWidth: 155}}>
+                            <Grid item md={2}>
+                                {/*Button Collection : Add, Refresh, Filter, ExportCSV*/}
+                                <div>
                                     <IconButton type="button" onClick={handleOpen}
                                                 data-tip data-for="tooltipAdd">
                                         <AddIcon/>
@@ -260,6 +315,7 @@ const SubnetTableToolbar = (props) => {
                                     >
                                         <RefreshIcon/>
                                     </IconButton>
+                                    <CommonTableExportCSV csvData={data} fileName="subnet_test.csv" />
                                     <ReactTooltip id="tooltipRefresh" effect="float"
                                                   delayHide={100} type="dark" place="bottom"
                                                   className={classes.tooltip}>
@@ -279,15 +335,36 @@ const SubnetTableToolbar = (props) => {
                                     )}
                                 </div>
                             </Grid>
-                            <Grid item md={4} zeroMinWidth>
-                                <div style={{overflow: "hidden"}}>
-                                    <SubnetSearchBar
-                                        handleSubmit={handleSubmitSearch}
+                            <Grid item xs md={3} >
+                                {/*SearchBar*/}
+                                <div className={classes.search}>
+                                    <div className={classes.searchIcon}>
+                                        <SearchIcon />
+                                    </div>
+                                    <InputBase
+                                        placeholder="Search…"
+                                        classes={{
+                                            root: classes.inputRoot,
+                                            input: classes.inputInput,
+                                        }}
+                                        inputProps={{ 'aria-label': 'search' }}
                                     />
                                 </div>
                             </Grid>
-                            <Grid item md={3} />
-                            <Grid item md={3} zeroMinWidth>
+                            <Grid item md={1}/>
+                            <Grid item md={1}>
+                                {/*Table Height Control Slider*/}
+                                <CustomSlider
+                                    onChange={handleSliderChange}
+                                    valueLabelDisplay="auto"
+                                    aria-label="테이블 높이"
+                                    step={10}
+                                    defaultValue={defaultHeight}
+                                    valueLabelFormat={val => (val * 20)}
+                                    className={classes.slider}
+                                />
+                            </Grid>
+                            <Grid item md={5} zeroMinWidth>
                                 <div style={{
                                     display: "flex", alignItems: "center", float: "right", minWidth: 350,
                                 }}>
@@ -295,24 +372,6 @@ const SubnetTableToolbar = (props) => {
                                     <div style={{paddingRight: 10}}>
                                         {paginationBar}
                                     </div>
-                                    {/*Export CSV*/}
-                                    <div>
-                                        <CommonTableExportCSV csvData={data} fileName="subnet_test.csv" />
-                                    </div>
-                                    {/*Dense padding button*/}
-                                    <FormControlLabel
-                                        style={{fontStyle: "oblique", float: "right", paddingLeft: 30}}
-                                        className="cb-material-table__padding"
-                                        control={<Switch checked={dense} size="small" onChange={handleChangeDense} />}
-                                        data-tip data-for="tooltipDense"
-                                    />
-                                    <ReactTooltip id="tooltipDense" effect="float"
-                                                  delayHide={100} type="dark"
-                                                  place="bottom"
-                                                  className={classes.tooltip}
-                                    >
-                                        DENSE PADDING
-                                    </ReactTooltip>
                                 </div>
                             </Grid>
                         </Grid>

@@ -6,100 +6,8 @@
 
 .search_card_body {
   /*padding: 8px;*/
-  font-family: 'Nanum Square acEB', sans-serif;  // [22June2020,khlee]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
   font-size: 9px;  // [22June2020,khlee]
-/*  display: flex;
-  flex-wrap: wrap;
-  padding: 8px;
-  box-shadow: 0 0 1px $color-black-dep1;
-  border-radius: 5px;*/
-  /*background-color: #738598;*/
-  /*color: $color-light-gray;*/
-
-  /*background-color: $color-black-dep1;*/
-  /*
-    select {
-      background: transparent;
-      font-weight: bold;
-      color: $color-light-gray;
-      border: 1px solid #d8dfe9;
-
-      &::-webkit-input-placeholder {
-        color: $color-light-gray;
-      }
-      &::-moz-placeholder {
-        color: $color-light-gray;
-      }
-      !* Firefox 19+ *!
-      &:-moz-placeholder {
-        color: $color-light-gray;
-      }
-      !* Firefox 18- *!
-      &:-ms-input-placeholder {
-        color: $color-light-gray;
-      }
-
-      @include themify($themes) {
-        border: 1px solid themed('colorFieldsBorder');
-        !*color: themed('colorText');*!
-        !*color: themed('colorText');*!
-      }
-
-      option {
-        color: $color-black-dep1;
-      }
-    }*/
-
-  /*input {
-    color: $color-light-gray;
-    width: 120px;
-    padding: 5px 5px;
-    font-size: 9px;
-    height: 16px;
-    !*height: 39px;*!
-    transition: border 0.3s;
-    background: transparent;
-    font-weight: bold;
-
-    &::-webkit-input-placeholder {
-      color: $color-light-gray;
-    }
-    &::-moz-placeholder {
-      color: $color-light-gray;
-    }
-    !* Firefox 19+ *!
-    &:-moz-placeholder {
-      color: $color-light-gray;
-    }
-    !* Firefox 18- *!
-    &:-ms-input-placeholder {
-      color: $color-light-gray;
-    }
-
-    @include themify($themes) {
-      border: 1px solid themed('colorFieldsBorder');
-      !*color: themed('colorText');*!
-    }
-
-    &[disabled] {
-
-      @include themify($themes) {
-        background: themed('colorBackgroundBody');
-      }
-
-      &:focus, &:active {
-
-        @include themify($themes) {
-          border-color: themed('colorBorder');
-        }
-      }
-    }
-
-    &:focus, &:active {
-      outline: none;
-      border-color: $color-accent;
-    }
-  }*/
 
   input.search_input::placeholder {
     color: $color-black-dep3;
@@ -200,6 +108,25 @@
     /*background-color: #e7e2e2;
     border-color: #e7e2e2;
     color: #646777;*/
+  }
+
+  .search_card_body_sub {
+    /*border: 1px dotted #006a71;*/
+    /*padding-left: 8px;*/
+    /*border-radius: 5px;*/
+    /*box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);*/
+    width: fit-content;
+    display: inline-block;
+    padding: 10px 5px 0 0;
+  }
+
+  .search_card_body_checkbox {
+    /*border: 1px dotted #006a71;*/
+    /*width: fit-content;
+    display: inline-block;
+    padding-left: 15px;*/
+    display: flex;
+    margin: 5px 0 0 20px;
   }
 }
 
@@ -628,6 +555,91 @@
 /*topbtn-------------------------------------------------------------------------------------------*/
 
 
+// (04july2020,ebjee) -> 나중에 사용할 ....
+:root {
+  --rad: .7rem;
+  --dur: .3s;
+  --color-dark: #2f2f2f;
+  --color-light: #fff;
+  --color-brand: #57bd84;
+  --font-fam: 'Lato', sans-serif;
+  --height: 30px;
+  --btn-width: 2rem;
+  --bez: cubic-bezier(0, 0, 0.43, 1.49);
+}
+
+.div-schText {
+  position: relative;
+  width: 10rem;
+  /*background: var(--color-brand);*/
+  border-radius: 5px;
+  /*@include themify($themes) {
+    background: themed('colorBackgroundBody');
+  }*/
+
+  input {
+    height: var(--height);
+    font-family: var(--font-fam);
+    @include themify($themes) {
+      border: 1px solid themed('colorFieldsBorder');
+      color: themed('colorText');
+    }
+  }
+
+  button {
+    height: var(--height);
+    font-family: var(--font-fam);
+    color: var(--color-dark);
+    border: none;
+    @include themify($themes) {
+      color: themed('colorText');
+    }
+  }
+
+  input[type="search"] {
+    outline: 0; // <-- shold probably remove this for better accessibility, adding for demo aesthetics for now.
+    width: 100%;
+    /*background: var(--color-light);*/
+    padding: 0 1rem;
+    /*border-radius: var(--rad);*/
+    border-radius: 5px;
+    appearance: none; //for iOS input[type="search"] roundedness issue. border-radius alone doesn't work
+    transition: all var(--dur) var(--bez);
+    transition-property: width, border-radius;
+    z-index: 1;
+    position: relative;
+    @include themify($themes) {
+      border: 1px solid themed('colorFieldsBorder');
+      /*background: themed('colorBackgroundBody');*/
+    }
+  }
+  button {
+    display: none; // prevent being able to tab to it
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2rem;
+    font-weight: bold;
+    /*background: var(--color-brand);*/
+    border-radius: 0 5px 5px 0;
+    @include themify($themes) {
+      background: themed('colorHeaderDataPicker');
+    }
+  }
+  input:not(:placeholder-shown) {
+    border-radius: var(--rad) 0 0 var(--rad);
+    width: calc(100% - var(--btn-width));
+    + button {
+      display: block;
+    }
+  }
+  label {
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+  }
+}
 
 
 
@@ -641,3 +653,5 @@
 @media screen and (max-width: 420px) {
 
 }
+
+

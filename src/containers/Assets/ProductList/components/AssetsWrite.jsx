@@ -1048,7 +1048,7 @@ class AssetsWrite extends PureComponent {
                                     variant="contained"
                                     color="primary"
                                     type="submit"
-                                    endIcon={<EditIcon/>}
+                                    startIcon={<EditIcon/>}
                                 >
                                     등록
                                 </MatButton>

@@ -30,7 +30,8 @@
 
     input, textarea {
       font-size: 14px;
-      font-family:"Nanum BarnGothic Light";
+      // Nanum Square -> Noto Sans KR R [21July2020,khlee]
+      font-family: "Noto Sans KR R", Roboto, sans-serif;
 
       @include themify($themes) {
         color: themed('colorText');
@@ -38,7 +39,8 @@
     }
     label {
       font-size: 14px;
-      font-family:"Nanum BarnGothic Light";
+      // Nanum Square -> Noto Sans KR R [21July2020,khlee]
+      font-family: "Noto Sans KR R", Roboto, sans-serif;
       @include directify($directions) {
         #{directed('left')}: 0px;
         #{directed('right')}: auto;
@@ -60,7 +62,8 @@
   .cb-material-form__label {
     margin: 0;
     font-size: 12px;
-    font-family:"Nanum BarnGothic Light";
+    // Nanum Square -> Noto Sans KR R [21July2020,khlee]
+    font-family: "Noto Sans KR R", Roboto, sans-serif;
 
     @include themify($themes) {
       color: themed('colorText');

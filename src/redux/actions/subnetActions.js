@@ -41,7 +41,10 @@ export const searchDeviceSubnet = createAction(SEARCH_DEVICE_SUBNET, ({
 //     rows, offset, orderBy, order,
 // }));
 export const updateSubnet = createAction(UPDATE_SUBNET);
-export const deleteSubnet = createAction(DELETE_SUBNET);
+// export const deleteSubnet = createAction(
+//     DELETE_SUBNET,
+//     ({idx}) => ({idx}),
+// );
 export const inputSubnet = createAction(
     INPUT_SUBNET,
     ({key, value}) => ({key, value}),

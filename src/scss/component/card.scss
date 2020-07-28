@@ -4,7 +4,8 @@
   height: 100%;
   border: none;
   background-color: transparent;
-  font-family: 'Nanum Square acEB', sans-serif;  // [22June2020,khlee]
+  //font-family: 'Nanum Square acEB', sans-serif;  // [22June2020,khlee]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
 
   &.card--not-full-height {
     height: auto;
@@ -25,7 +26,8 @@
 .card-body {
   height: 100%;
   border-radius: 5px;
-  font-family: 'Nanum Square acEB', sans-serif;  // [22June2020,khlee]
+  //font-family: 'Nanum Square acEB', sans-serif;  // [22June2020,khlee]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
 
   @include themify($themes) {
     background-color: themed('colorBackground');

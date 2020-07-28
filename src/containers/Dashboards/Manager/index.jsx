@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import {
   Col, Container, Row, CardBody, Card,
 } from 'reactstrap';
@@ -19,19 +19,14 @@ import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
 
 const useStyles = makeStyles(theme => ({
     root: {
-        fontFamily: "Nanum Gothic Extra Bold",
+        fontFamily: "Source Han Serif KR R",
         fontSize: 10,
         fontWeight: "revert",
         flexGrow: 1,
+        height: 480,
     },
-    paper: {
-        // padding: theme.spacing(2),
-        textAlign: "center",
-        color: theme.palette.text.secondary,
-        gridAutoFlow: "dense",
-    },
-    flex: {
-        display: "flex",
+    gridItem: {
+        height: "100%",
     },
 }));
 
@@ -39,34 +34,47 @@ const ManagerDashboard = ({
     t, cryptoTable, dispatch, rtl, theme,
 }) => {
     const classes = useStyles();
+    const onClick1 = () => {
+        document.getElementById("grid1").style.display = "none";
+    };
+    const onClick2 = () => {
+        document.getElementById("grid2").style.display = "none";
+    };
+    const onClick3 = () => {
+        document.getElementById("grid3").style.display = "none";
+    };
+    const onClick4 = () => {
+        document.getElementById("grid4").style.display = "none";
+    };
+    const onClick5 = () => {
+        document.getElementById("grid5").style.display = "none";
+    };
 
     return (
-        <>
-            <Container className="dashboard">
-                <Col md={12}>
-                    <RouterBreadcrumbs url={window.location.href}/>
-                </Col>
-            </Container>
+        <Container>
+            <Col md={12}>
+                <RouterBreadcrumbs url={window.location.href}/>
+            </Col>
             <div className="dashboard">
-                <Grid container className={classes.paper}>
-                    <Grid item lg={4} md={6} sm={6}>
-                        <ServerKtCloud />
+                <Grid container>
+                    <Grid item xs={12} sm={12} md={6} lg={4} id="grid1">
+                        <ServerKtCloud close={onClick1}/>
                     </Grid>
-                    <Grid item lg={4} md={6} sm={6}>
-                        <ServerOnPremise />
+                    <Grid item xs={12} sm={12} md={6} lg={4} id="grid2">
+                        <ServerOnPremise close={onClick2}/>
                     </Grid>
-                    <Grid item lg={4} md={6} >
-                        <NetworkOnPremise />
+                    <Grid item xs={12} sm={12} md={6} lg={4} id="grid3">
+                        <NetworkOnPremise close={onClick3}/>
                     </Grid>
-                    <Grid item lg={6} md={12} sm={12}>
-                        <PublicNetwork />
+                    <Grid item xs={12} sm={12} md={12} lg={6} id="grid4">
+                        <PublicNetwork close={onClick4}/>
                     </Grid>
-                    <Grid item lg={6} md={12} sm={12}>
-                        <RandomAnimatedBars />
+                    <Grid item xs={12} sm={12} md={12} lg={6} id="grid5">
+                        <RandomAnimatedBars close={onClick5}/>
                     </Grid>
                 </Grid>
             </div>
-        </>
+        </Container>
     );
 };
 

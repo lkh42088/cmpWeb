@@ -15,7 +15,6 @@ import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-
 import PropTypes, {string} from 'prop-types';
 import moment from "moment";
 import {
@@ -25,12 +24,17 @@ import {
     fetchPostsCheckCount,
     getDeviceOriByIdx,
     postDevice,
-    setDeviceSelected, setAssetsPage, setApiPage, setState,
+    setDeviceSelected,
+    setAssetsPage,
+    setApiPage,
+    setState,
 } from '../../../../redux/actions/assetsAction';
-
+import * as common from "../../../../lib/common";
 import AssetsHead from './AssetsHead';
 
 /*order by 사용 함수*/
+
+/*
 function getSorting(order, orderBy) {
     if (order === 'desc') {
         return (a, b) => {
@@ -53,23 +57,9 @@ function getSorting(order, orderBy) {
         return 0;
     };
 }
-
-
-function textLengthOverCut(txt, len, lastTxt) {
-    if (len === "" || len === undefined) { // 기본값
-        len = 20;
-    }
-    if (lastTxt === "" || lastTxt === undefined) { // 기본값
-        lastTxt = "...";
-    }
-    if (txt.length > len) {
-        txt = txt.substr(0, len) + lastTxt;
-    }
-    return txt;
-}
+*/
 
 export default class AssetsList extends PureComponent {
-    //assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
     static propTypes = {
         // eslint-disable-next-line react/forbid-prop-types
         assetState: PropTypes.object.isRequired,
@@ -124,7 +114,7 @@ export default class AssetsList extends PureComponent {
     };*/
 
     handleSubmit = (values) => {
-        const {assetState, dispatch, user} = this.props;
+        const { assetState, dispatch, user } = this.props;
 
         let division = '|';
         let divisionCount = 0;
@@ -244,7 +234,7 @@ export default class AssetsList extends PureComponent {
     };
 
     handleRequestSort = (property, submitOrder) => {
-        const {assetState, dispatch} = this.props;
+        const { assetState, dispatch } = this.props;
         this.setState({
             order: submitOrder,
             orderBy: property,
@@ -254,7 +244,7 @@ export default class AssetsList extends PureComponent {
     };
 
     handleSelectAllClick = (event, checked) => {
-        const {assetState, dispatch} = this.props;
+        const { assetState, dispatch } = this.props;
         if (checked) {
             const newSelected = new Map();
             assetState.devices.map(n => newSelected.set(n.deviceCode, true));
@@ -268,8 +258,8 @@ export default class AssetsList extends PureComponent {
     };
 
     handleClick = (event, id) => {
-        const {dispatch, assetState} = this.props;
-        const {selected} = this.state;
+        const { dispatch, assetState } = this.props;
+        const { selected } = this.state;
 
         let newSelected;
         if (assetState.deviceSelected.size === undefined) {
@@ -289,9 +279,10 @@ export default class AssetsList extends PureComponent {
         dispatch(setDeviceSelected(newSelected));
     };
 
-    handleChangeDense = (event) => {
-        this.setState(prevState => ({dense: !prevState.dense}));
-    };
+    /** Block dense padding button */
+    // handleChangeDense = (event) => {
+    //     this.setState(prevState => ({dense: !prevState.dense}));
+    // };
 
     handleChangePageBack = () => {
         const {assetState, dispatch} = this.props;
@@ -312,11 +303,11 @@ export default class AssetsList extends PureComponent {
                 deviceType: assetState.deviceType,
                 orderBy,
                 order,
-                rowsPerPage,
+                rowsPerPage: assetState.apiPageRd.rowsPerPage,
                 showPage: pageCnt - 1,
-                overNum: rowsPerPage,
+                overNum: assetState.apiPageRd.rowsPerPage,
                 outFlag: assetState.deviceOutFlag,
-                offsetPage: (rowsPerPage * ((pageCnt - 1) - 1)),
+                offsetPage: (assetState.apiPageRd.rowsPerPage * ((pageCnt - 1) - 1)),
             });
             dispatch(setDeviceSelected(''));
             dispatch(fetchPostsCheckCount(assetState, dispatchVal));
@@ -329,7 +320,10 @@ export default class AssetsList extends PureComponent {
             orderBy, rowsPerPage, order, showPage,
         } = this.state;
 
-        const pageCount = rowsPerPage * (assetState.page.page);
+        console.log("💋💋rowsPerPage : ", rowsPerPage);
+        console.log("💋💋💋assetState.apiPageRd.rowsPerPage : ", assetState.apiPageRd.rowsPerPage);
+
+        const pageCount = assetState.apiPageRd.rowsPerPage * (assetState.page.page);
 
         if (pageCount !== assetState.page.count && pageCount < assetState.page.count) {
             this.setState({
@@ -342,11 +336,11 @@ export default class AssetsList extends PureComponent {
                 deviceType: assetState.deviceType,
                 orderBy,
                 order,
-                rowsPerPage,
+                rowsPerPage: assetState.apiPageRd.rowsPerPage,
                 showPage: assetState.page.page + 1,
-                overNum: rowsPerPage,
+                overNum: assetState.apiPageRd.rowsPerPage,
                 outFlag: assetState.deviceOutFlag,
-                offsetPage: (rowsPerPage * ((assetState.page.page + 1) - 1)),
+                offsetPage: (assetState.apiPageRd.rowsPerPage * ((assetState.page.page + 1) - 1)),
             });
 
             dispatch(setDeviceSelected(''));
@@ -359,11 +353,18 @@ export default class AssetsList extends PureComponent {
         const {
             orderBy, rowsPerPage, order,
         } = this.state;
+        let eventVal;
+
+        if (typeof event === "object") {
+            eventVal = Number(event.target.value);
+        } else {
+            eventVal = Number(event);
+        }
 
         this.setState({
             page: 0,
             showPage: 1,
-            rowsPerPage: Number(event.target.value),
+            rowsPerPage: eventVal,
             pageNoNum: 0,
         });
 
@@ -371,23 +372,23 @@ export default class AssetsList extends PureComponent {
             deviceType: assetState.deviceType,
             orderBy,
             order,
-            rowsPerPage: Number(event.target.value),
+            rowsPerPage: eventVal,
             page: 0,
             showPage: 1,
             outFlag: assetState.deviceOutFlag,
-            offsetPage: (Number(event.target.value) * (1 - 1)),
+            offsetPage: (eventVal * (1 - 1)),
         });
         dispatch(fetchPostsCheckCount(assetState, dispatchVal));
     };
 
     isSelected = (id) => {
-        const { selected } = this.state;
+        const {selected} = this.state;
         return !!selected.get(id);
     };
 
     toggle = (e) => {
         //this.setState(prevState => ({isOpenView: !prevState.isOpenView}));
-        const { dispatch } = this.props;
+        const {dispatch} = this.props;
         dispatch(setAssetsPage('view'));
 
         const stateVal = ({
@@ -401,15 +402,13 @@ export default class AssetsList extends PureComponent {
     };
 
     setDeviceIdx = (event, deviceCode) => {
-        const { dispatch, assetState } = this.props;
+        const {dispatch, assetState} = this.props;
 
         dispatch(getDeviceByIdx(deviceCode, assetState.deviceType));
         dispatch(getDeviceOriByIdx(deviceCode, assetState.deviceType));
     };
 
-
     /*
-
         setComponents = (division, deviceCode) => {
             const {dispatch, assetState} = this.props;
 
@@ -466,7 +465,9 @@ export default class AssetsList extends PureComponent {
         const {
             order, orderBy, selected, rowsPerPage, page, dense, pageNoNum,
         } = this.state;
-        const {assetState, dispatch, user} = this.props;
+        const {
+            assetState, dispatch, user, densePadding,
+        } = this.props;
 
         const tableCellClassName = 'material-table__cell material-table__cell-right';
         const tableCellBoldClassName = 'material-table__cell material-table__cell-bold';
@@ -474,7 +475,7 @@ export default class AssetsList extends PureComponent {
         let denseChkboxClassNmae;
         let emptyRows;
 
-        if (dense === true) {
+        if (densePadding === true) {
             denseChkboxClassNmae = {paddingLeft: "10px"};
         } else {
             denseChkboxClassNmae = {};
@@ -496,7 +497,8 @@ export default class AssetsList extends PureComponent {
                             <Fragment>
                                 {assetState.devices
                                     /*.sort(getSorting(order, orderBy))*/
-                                    .slice(page * rowsPerPage, (page * rowsPerPage) + rowsPerPage)
+                                    .slice(page * assetState.apiPageRd.rowsPerPage,
+                                        (page * assetState.apiPageRd.rowsPerPage) + assetState.apiPageRd.rowsPerPage)
                                     .map((d, index) => {
                                         let isSelected = this.isSelected(d.deviceCode);
                                         let ipSliceStr;
@@ -598,7 +600,7 @@ export default class AssetsList extends PureComponent {
                                                         <TableCell
                                                             className={tableCellClassName} title={ipSliceStr}
                                                         >{/*IP*/}
-                                                            {textLengthOverCut(ipSliceStr, 50)}
+                                                            {common.textLengthOverCut(ipSliceStr, 50)}
                                                         </TableCell>
                                                         <TableCell
                                                             className={tableCellClassName}
@@ -612,7 +614,7 @@ export default class AssetsList extends PureComponent {
                                                         <TableCell
                                                             className={tableCellClassName} title={ipSliceStr}
                                                         >{/*IP*/}
-                                                            {textLengthOverCut(ipSliceStr, 50)}
+                                                            {common.textLengthOverCut(ipSliceStr, 50)}
                                                         </TableCell>
                                                         <TableCell
                                                             className={tableCellClassName}
@@ -679,7 +681,7 @@ export default class AssetsList extends PureComponent {
                     <div>
                         <TableContainer>
                             <Table className="material-table material-table__wrap"
-                                   size={dense ? 'small' : 'medium'}>
+                                   size={densePadding ? 'small' : 'medium'}>
                                 <AssetsHead
                                     numSelected={[...selected].filter(el => el[1]).length}
                                     order={order}
@@ -688,7 +690,7 @@ export default class AssetsList extends PureComponent {
                                     onRequestSort={this.handleRequestSort}
                                     rowCount={Number(assetState.devices.length)}
                                     selectedSize={Number(assetState.deviceSelected.size)}
-                                    rowsPerPage={rowsPerPage}
+                                    rowsPerPage={assetState.apiPageRd.rowsPerPage}
                                     assetState={assetState}
                                     dispatch={dispatch}
                                 />
@@ -696,17 +698,18 @@ export default class AssetsList extends PureComponent {
                             </Table>
                         </TableContainer>
                         <div>
-                            <FormControlLabel
-                                control={<Switch checked={dense} onChange={this.handleChangeDense}/>}
-                                label="Dense padding"
-                                style={{padding: 5}}
-                                className="list-dense-padding"
-                            />
+                            {/*Block dense padding button */}
+                            {/*<FormControlLabel*/}
+                            {/*    control={<Switch checked={dense} onChange={this.handleChangeDense}/>}*/}
+                            {/*    label="Dense padding"*/}
+                            {/*    style={{padding: 5}}*/}
+                            {/*    className="list-dense-padding"*/}
+                            {/*/>*/}
                             <TablePagination
                                 component="div"
                                 className="material-table__pagination"
                                 count={Number(assetState.page.count)}
-                                rowsPerPage={rowsPerPage}
+                                rowsPerPage={assetState.apiPageRd.rowsPerPage}
                                 page={pageNoNum}
                                 backIconButtonProps={{
                                     'aria-label': 'Previous Page',
@@ -719,7 +722,7 @@ export default class AssetsList extends PureComponent {
                                     disabled: false,
                                     onClick: this.handleChangePage,
                                 }}
-                                /*onChangePage={this.handleChangePage}*/
+                                onChangePage={this.handleChangePage}
                                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
                                 rowsPerPageOptions={[10, 50, 100]}
                                 dir="ltr"

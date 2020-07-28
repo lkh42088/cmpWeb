@@ -96,18 +96,21 @@ const useToolbarStyles = makeStyles(theme => ({
                 flex: '1 1 100%',
                 color: '#646777',
                 fontSize: 18,
-                fontFamily: "Nanum BarunGothic",
+                //fontFamily: "Nanum BarunGothic",
+                fontFamily: 'Noto Sans KR R',
             }
             : {
                 flex: '1 1 100%',
                 color: '#dddddd',
                 fontSize: 18,
-                fontFamily: "Nanum BarunGothic",
+                //fontFamily: "Nanum BarunGothic",
+                fontFamily: 'Noto Sans KR R',
             },
     selected: {
         flex: '1 1 100%',
         fontSize: 15,
-        fontFamily: "Nanum BarunGothic Bold",
+        //fontFamily: "Nanum BarunGothic Bold",
+        fontFamily: 'Noto Sans KR R',
     },
     search: {
         position: 'relative',

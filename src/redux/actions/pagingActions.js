@@ -23,6 +23,7 @@ export const PAGING_CHANGE_DENSE = 'paging/PAGING_CHANGE_DENSE';
 export const PAGING_CHANGE_ORDER_BY = 'paging/PAGING_CHANGE_ORDER_BY';
 export const PAGING_CHANGE_ORDER_BY_WITH_RESET = 'paging/PAGING_CHANGE_ORDER_BY_WITH_RESET';
 export const PAGING_CHANGE_ORDER = 'paging/PAGING_CHANGE_ORDER';
+export const PAGING_CHANGE_ORDER_AND_ORDERBY = 'paging/PAGING_CHANGE_ORDER_AND_ORDERBY';
 
 /******************************************************************************
  * 2. Action Function
@@ -52,3 +53,5 @@ export const pagingChangeOrderByWithReset = createAction(PAGING_CHANGE_ORDER_BY_
     orderBy => orderBy);
 export const pagingChangeOrder = createAction(PAGING_CHANGE_ORDER,
     order => order);
+export const pagingChangeSorting = createAction(PAGING_CHANGE_ORDER_AND_ORDERBY,
+    ({order, orderBy}) => ({order, orderBy}));
