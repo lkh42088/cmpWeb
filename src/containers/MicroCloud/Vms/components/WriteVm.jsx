@@ -94,6 +94,7 @@ const WriteVm = (props) => {
         serialNumber: '',
         name: '',
         image: 0,
+        imageName: '',
         cpu: 0,
         ram: 0,
         hdd: 0,
@@ -199,6 +200,7 @@ const WriteVm = (props) => {
             hdd: false,
             ipAddr: false,
         });
+        setServerList([]);
     };
 
     const handleCancel = () => {
@@ -450,6 +452,7 @@ const WriteVm = (props) => {
                                     value={fields.image}
                                     onChange={(e) => {
                                         handleChangeField("image", e.target.value);
+                                        handleChangeField("imageName", imageList.find(item => item.value === e.target.value));
                                     }}
                                     MenuProps={MenuProps}
                                 >
@@ -518,23 +521,23 @@ const WriteVm = (props) => {
                             />
                         </div>
                     </Grid>
-                    <Grid item xs={6}>
-                        <div>
-                            <span className={labelClassName}>* IP Address</span>
-                            <TextField
-                                className={fieldClassName}
-                                error={errors.ipAddr}
-                                required={requires.ipAddr}
-                                disabled={disables.ipAddr}
-                                helperText={helpers.ipAddr}
-                                name="ipAddr"
-                                value={fields.ipAddr}
-                                onChange={(e) => { handleChangeField("ipAddr", e.target.value); }}
-                                variant={variant}
-                                size={fieldSize}
-                            />
-                        </div>
-                    </Grid>
+                    {/*<Grid item xs={6}>*/}
+                    {/*    <div>*/}
+                    {/*        <span className={labelClassName}>* IP Address</span>*/}
+                    {/*        <TextField*/}
+                    {/*            className={fieldClassName}*/}
+                    {/*            error={errors.ipAddr}*/}
+                    {/*            required={requires.ipAddr}*/}
+                    {/*            disabled={disables.ipAddr}*/}
+                    {/*            helperText={helpers.ipAddr}*/}
+                    {/*            name="ipAddr"*/}
+                    {/*            value={fields.ipAddr}*/}
+                    {/*            onChange={(e) => { handleChangeField("ipAddr", e.target.value); }}*/}
+                    {/*            variant={variant}*/}
+                    {/*            size={fieldSize}*/}
+                    {/*        />*/}
+                    {/*    </div>*/}
+                    {/*</Grid>*/}
                     <Grid item xs={12}>
                         <div>
                             <Button

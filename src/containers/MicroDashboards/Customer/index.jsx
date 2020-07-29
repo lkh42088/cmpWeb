@@ -7,7 +7,6 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import {makeStyles} from "@material-ui/core/styles";
 import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
-import SubnetHeader from "../../Management/Subnet/CreateSubnet/components/SubnetHeader";
 import TotalViews from "./components/TotalViews";
 import CustomerBilling from "./components/CustomerBilling";
 import InternetStatistics from "./components/InternetStatistics";

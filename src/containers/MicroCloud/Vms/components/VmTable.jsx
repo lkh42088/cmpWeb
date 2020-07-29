@@ -243,7 +243,7 @@ const VmTable = () => {
 
     const asyncAddVm = async (vm) => {
         const {
-            name, cpIdx, serialNumber, serverIdx, cpu, ram, hdd, image,
+            name, cpIdx, serialNumber, serverIdx, cpu, ram, hdd, image, imageName,
         } = vm;
         try {
             const response = await registerMcVm({
@@ -257,7 +257,7 @@ const VmTable = () => {
                 ram: parseInt(ram),
                 // eslint-disable-next-line radix
                 hdd: parseInt(hdd),
-                image,
+                image: imageName,
             });
             handleSnackbarSuccess("VM 등록에 성공하였습니다.");
             getPageData();

@@ -4,6 +4,7 @@ import {
     TOGGLE_TOP_NAVIGATION,
     TOGGLE_SIDEBAR_DROPDOWN,
     TOGGLE_DENSE_PADDING,
+    TOGGLE_HYBRID_CLOUD,
 } from '../actions/customizerActions';
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
     topNavigation: false,
     sidebarDropdown: false,
     densePadding: false,
+    hybridCloud: false,
 };
 
 export default function (state = initialState, action) {
@@ -26,6 +28,8 @@ export default function (state = initialState, action) {
             return { ...state, sidebarDropdown: !state.sidebarDropdown };
         case TOGGLE_DENSE_PADDING:
             return { ...state, densePadding: !state.densePadding };
+        case TOGGLE_HYBRID_CLOUD:
+            return { ...state, hybridCloud: !state.hybridCloud };
         default:
             return state;
     }
