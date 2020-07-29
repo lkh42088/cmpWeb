@@ -6,10 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
-import Collapse from '@material-ui/core/Collapse';
 import {makeStyles, withStyles} from "@material-ui/core/styles";
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import {useSnackbar} from "notistack";
 import {IconButton} from "@material-ui/core";
@@ -32,6 +29,7 @@ import ConfirmSnackbar from "../../../Common/ConfirmSnackbar";
 import {limitLongString} from "../../../../lib/utils/utils";
 import SubnetWriteForm from "./SubnetWriteForm";
 import DialogForm from "../../../Common/DialogForm";
+import SubnetContents from "./SubnetContents";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'IDX'},
@@ -439,8 +437,7 @@ const SubnetList = () => {
                         onClick={event => handleCellClick(event, row.idx)}
                     >
                         <Checkbox checked={isSelected}
-                            // className="cb-material-table__checkbox"
-                                  className="cb-material-table__checkbox"
+                            className="cb-material-table__checkbox"
                         />
                     </TableCell>
                     <TableCell
@@ -503,103 +500,7 @@ const SubnetList = () => {
                     </TableCell>
                 </TableRow>
                 <TableRow>
-                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
-                        <Collapse in={openCollapse} timeout="auto" unmountOnExit>
-                            <Box margin={1}>
-                                <Typography variant="h6" gutterBottom component="div">
-                                    {row.userId}
-                                </Typography>
-                                <div className={classes.grid}>
-                                    {/*<Grid container spacing={1}>*/}
-                                    {/*    <Grid item xs={12} sm={6}>*/}
-                                    {/*        <ul>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> 소속회사 </span>*/}
-                                    {/*                <span className={classes.spanContents}> {row.cpName} </span>*/}
-                                    {/*            </li>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> ID </span>*/}
-                                    {/*                <span className={classes.spanContents}> {row.userId} </span>*/}
-                                    {/*            </li>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> 이름 </span>*/}
-                                    {/*                <span className={classes.spanContents}> {row.name} </span>*/}
-                                    {/*            </li>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> 전화번호 </span>*/}
-                                    {/*                <span className={classes.spanContents}> {row.hp === "" ? "-" : row.hp} </span>*/}
-                                    {/*            </li>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> 이메일 </span>*/}
-                                    {/*                <span className={classes.spanContents}> {row.email === "" ? "-" : row.email} </span>*/}
-                                    {/*            </li>*/}
-                                    {/*        </ul>*/}
-                                    {/*    </Grid>*/}
-                                    {/*    <Grid item xs={12} sm={6}>*/}
-                                    {/*        <ul>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> 권한 </span>*/}
-                                    {/*                /!*<span className={classes.spanContents}> {row.zipcode},&nbsp;{row.address},&nbsp;{row.addressDetail} </span>*!/*/}
-                                    {/*                <span className={classes.spanContents}> {row.authLevel} </span>*/}
-                                    {/*            </li>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> 주소 </span>*/}
-                                    {/*                /!*<span className={classes.spanContents}> {row.zipcode},&nbsp;{row.address},&nbsp;{row.addressDetail} </span>*!/*/}
-                                    {/*                <span className={classes.spanContents}> {address} </span>*/}
-                                    {/*            </li>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> 등록일 </span>*/}
-                                    {/*                <span className={classes.spanContents}> {moment(row.registerDate).format('YYYY-MM-DD')} </span>*/}
-                                    {/*            </li>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> 인증 </span>*/}
-                                    {/*                <span className={classes.spanContents}>*/}
-                                    {/*                    /!* eslint-disable-next-line no-nested-ternary *!/*/}
-                                    {/*                    {row.emailAuth === true ? "개인 이메일 인증" : (row.groupEmailAuth === true ? "그룹 이메일 인증" : "사용 안함")}*/}
-                                    {/*                </span>*/}
-                                    {/*            </li>*/}
-                                    {/*        </ul>*/}
-                                    {/*    </Grid>*/}
-                                    {/*    <Grid item xs={12} sm={6}>*/}
-                                    {/*        {*/}
-                                    {/*            row.groupEmailAuth && row.groupEmailAuthList ? (*/}
-                                    {/*                <React.Fragment>*/}
-                                    {/*                    <span className={classes.spanContents}>*/}
-                                    {/*                        <GroupIcon/> 이메일 인증 그룹 </span>*/}
-                                    {/*                    <ul>*/}
-                                    {/*                        {row.groupEmailAuthList.map(auth => (*/}
-                                    {/*                            <li key={auth.idx}>*/}
-                                    {/*                            <span className={classes.spanContents}>*/}
-                                    {/*                                {auth.AuthUserId}/{auth.AuthEmail}</span>*/}
-                                    {/*                            </li>*/}
-                                    {/*                        ))}*/}
-                                    {/*                    </ul>*/}
-                                    {/*                </React.Fragment>*/}
-                                    {/*            ) : <React.Fragment/>*/}
-                                    {/*        }*/}
-                                    {/*    </Grid>*/}
-                                    {/*    <Grid item xs={12} sm={6}>*/}
-                                    {/*        {*/}
-                                    {/*            row.participateInAccountList && row.participateInAccountList.length > 0 ? (*/}
-                                    {/*                <React.Fragment>*/}
-                                    {/*                    <span className={classes.spanContents}>*/}
-                                    {/*                        <AccountCircleIcon/> 사용하는 이메일 인증 계정 </span>*/}
-                                    {/*                    <ul>*/}
-                                    {/*                        {row.participateInAccountList.map(paccount => (*/}
-                                    {/*                            <li key={paccount.idx}>*/}
-                                    {/*                                <span className={classes.spanContents}>{paccount.UserId}</span>*/}
-                                    {/*                            </li>*/}
-                                    {/*                        ))}*/}
-                                    {/*                    </ul>*/}
-                                    {/*                </React.Fragment>*/}
-                                    {/*            ) : <React.Fragment/>*/}
-                                    {/*        }*/}
-                                    {/*    </Grid>*/}
-                                    {/*</Grid>*/}
-                                </div>
-                            </Box>
-                        </Collapse>
-                    </TableCell>
+                    {SubnetContents}
                 </TableRow>
             </React.Fragment>
         );
