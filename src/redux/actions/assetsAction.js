@@ -124,8 +124,6 @@ export const fetchPosts = assetState => async (dispatch) => {
         const url = `${API_ROUTE}/search/devices/${assetState.deviceMenuUrl}/${assetState.apiPageRd.rowsPerPage}/${assetState.apiPageRd.showPage}/${assetState.apiPageRd.orderBy}/${order}/${assetState.apiPageRd.offsetPage}`;
         const cntUrl = `${API_ROUTE}/search/count/devices/${assetState.deviceMenuUrl}`;
 
-        //console.log("fetchPosts cntUrl : ", cntUrl);
-
         const postJsonData = JSON.stringify(assetState.searchRd);
 
         axios({
@@ -134,7 +132,6 @@ export const fetchPosts = assetState => async (dispatch) => {
             data: postJsonData,
         })
             .then((response) => {
-                console.log("response.data : ", response.data);
                 dispatch({
                     type: SET_DEVICE_STATISTICS,
                     payload: response.data,

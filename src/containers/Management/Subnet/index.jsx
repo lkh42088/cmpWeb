@@ -1,7 +1,8 @@
 import React from 'react';
 import {Col, Container, Row} from 'reactstrap';
+import {SnackbarProvider} from "notistack";
 import SubnetList from "./components/SubnetList";
-import RouterBreadcrumbs from "../../../Layout/sidebar/Breadcrumb";
+import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
 
 const SubnetListCard = () => (
     <Container fluid>
@@ -11,7 +12,9 @@ const SubnetListCard = () => (
                     <RouterBreadcrumbs url={window.location.href}/>
                 </Row>
                 <Row>
-                    <SubnetList />
+                    <SnackbarProvider maxSnack={3}>
+                        <SubnetList />
+                    </SnackbarProvider>
                 </Row>
             </Col>
         </Row>
