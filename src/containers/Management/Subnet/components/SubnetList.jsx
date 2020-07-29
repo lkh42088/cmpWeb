@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => {
         return ({
             rowCss: {
                 '& > *': {
-                    borderBottom: 'unset',
+                    borderBottom: true,
                 },
                 "&:hover":
                     theme.palette.type === 'light'
