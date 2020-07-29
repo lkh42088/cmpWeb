@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
@@ -11,6 +11,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import SendIcon from "@material-ui/icons/Send";
 import {getCompanies} from "../../../../lib/api/company";
 import LookupCompany from "../../../Common/LookupCompany";
+import {getMcServersByCpIdx} from "../../../../lib/api/microCloud";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -60,6 +61,11 @@ const MenuProps = {
     },
 };
 
+const imageList = [
+    { value: 1, name: "Windows 10" },
+    { value: 2, name: "Ubuntu 18.04" },
+];
+
 const WriteVm = (props) => {
     /************************************************************************************
      * Props
@@ -74,6 +80,7 @@ const WriteVm = (props) => {
     const classes = useStyles();
 
     const [companyList, setCompanyList] = useState([]);
+    const [serverList, setServerList] = useState([]);
     const [menuCompany, setMenuCompany] = useState(false);
     const [openSearchCompany, setOpenSearchCompany] = useState(false);
 
@@ -83,9 +90,10 @@ const WriteVm = (props) => {
     const [fields, setFields] = useState({
         cpName: '',
         cpIdx: 0,
+        serverIdx: 0,
         serialNumber: '',
         name: '',
-        image: '0',
+        image: 0,
         cpu: 0,
         ram: 0,
         hdd: 0,
@@ -95,6 +103,7 @@ const WriteVm = (props) => {
     const [requires, setRequireds] = useState({
         cpName: true,
         cpIdx: true,
+        serverIdx: true,
         serialNumber: true,
         name: true,
         image: true,
@@ -107,6 +116,7 @@ const WriteVm = (props) => {
     const [disables, setDisables] = useState({
         cpName: false,
         cpIdx: false,
+        serverIdx: false,
         serialNumber: false,
         name: false,
         image: false,
@@ -119,6 +129,7 @@ const WriteVm = (props) => {
     const [helpers, setHelpers] = useState({
         cpName: "",
         cpIdx: "",
+        serverIdx: "",
         serialNumber: "",
         name: "",
         image: "",
@@ -131,9 +142,13 @@ const WriteVm = (props) => {
     const [errors, setErrors] = useState({
         cpName: false,
         cpIdx: false,
+        serverIdx: false,
         serialNumber: false,
         name: false,
         image: false,
+        cpu: false,
+        ram: false,
+        hdd: false,
         ipAddr: false,
     });
 
@@ -151,6 +166,7 @@ const WriteVm = (props) => {
         setFields({
             cpName: '',
             cpIdx: 0,
+            serverIdx: 0,
             serialNumber: '',
             name: '',
             image: '0',
@@ -162,6 +178,7 @@ const WriteVm = (props) => {
         setHelpers({
             cpName: "",
             cpIdx: "",
+            serverIdx: "",
             serialNumber: "",
             name: '',
             image: "",
@@ -173,6 +190,7 @@ const WriteVm = (props) => {
         setErrors({
             cpName: false,
             cpIdx: false,
+            serverIdx: false,
             serialNumber: false,
             name: false,
             image: false,
@@ -204,10 +222,19 @@ const WriteVm = (props) => {
      * Change
      *******************/
     const handleChangeField = (name, value) => {
-        setFields({
-            ...fields,
-            [name]: value,
-        });
+        if (name === "cpIdx") {
+            setFields({
+                ...fields,
+                serverIdx: 0,
+                serialNumber: "",
+                [name]: value,
+            });
+        } else {
+            setFields({
+                ...fields,
+                [name]: value,
+            });
+        }
         setErrors({
             ...errors,
             [name]: false,
@@ -252,6 +279,31 @@ const WriteVm = (props) => {
         handleChangeField("cpIdx", idx);
     };
 
+    const getMcServers = async () => {
+        try {
+            console.log("cpIdx.. ", fields.cpIdx);
+            const response = await getMcServersByCpIdx({
+                cpIdx: fields.cpIdx,
+            });
+            console.log("get.. ", response);
+            setServerList(response.data);
+        } catch (e) {
+            console.log("fail.. ");
+            setServerList([]);
+        }
+    };
+
+    useEffect(() => {
+        console.log("change cpIdx: ", fields.cpIdx);
+        getMcServers();
+    }, [fields.cpIdx]);
+
+    useEffect(() => {
+        if (companyList === null || companyList.length === 0) {
+            getCompanyList();
+        }
+    }, []);
+
     const variant = "filled";
     const fieldSize = "small";
     const buttonSize = "large";
@@ -278,7 +330,9 @@ const WriteVm = (props) => {
                                     name="cpIdx"
                                     value={fields.cpIdx}
                                     error={errors.cpIdx}
-                                    onChange={(e) => { handleChangeField("cpIdx", e.target.value); }}
+                                    onChange={(e) => {
+                                        handleChangeField("cpIdx", e.target.value);
+                                    }}
                                     onClick={handleMenuCompany}
                                     MenuProps={MenuProps}
                                 >
@@ -332,23 +386,31 @@ const WriteVm = (props) => {
                                 size={fieldSize}
                                 className={fieldClassName}
                                 variant="filled"
-                                error={errors.serialNumber}
-                                disabled={disables.serialNumber}
+                                error={errors.serverIdx}
+                                disabled={disables.serverIdx}
                             >
                                 <Select
-                                    required={errors.serialNumber}
-                                    disabled={disables.serialNumber}
-                                    name="serialNumber"
-                                    value={fields.serialNumber}
-                                    onChange={(e) => { handleChangeField("serialNumber", e.target.value); }}
+                                    required={errors.serverIdx}
+                                    disabled={disables.serverIdx}
+                                    name="serverIdx"
+                                    value={fields.serverIdx}
+                                    onChange={(e) => {
+                                        console.log("serverIdx: ", e.target);
+                                        console.log("serverIdx: value ", e.target.value);
+                                        handleChangeField("serialNumber", serverList.find(item => item.idx === e.target.value));
+                                        handleChangeField("serverIdx", e.target.value);
+                                    }}
                                     MenuProps={MenuProps}
                                 >
-                                    <MenuItem key={0} value="0">
+                                    <MenuItem key={0} value={0}>
                                         <em>None</em>
                                     </MenuItem>
-                                    <MenuItem key={1} value="1">Light</MenuItem>
-                                    <MenuItem key={2} value="1">Standard</MenuItem>
-                                    <MenuItem key={3} value="2">Advance</MenuItem>
+                                    {serverList && serverList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <MenuItem key={key} value={item.idx}>{item.serialNumber}</MenuItem>
+                                        );
+                                    })}
                                 </Select>
                                 <FormHelperText>{helpers.serialNumber}</FormHelperText>
                             </FormControl>
@@ -386,15 +448,20 @@ const WriteVm = (props) => {
                                     disabled={disables.image}
                                     name="image"
                                     value={fields.image}
-                                    onChange={(e) => { handleChangeField("image", e.target.value); }}
+                                    onChange={(e) => {
+                                        handleChangeField("image", e.target.value);
+                                    }}
                                     MenuProps={MenuProps}
                                 >
-                                    <MenuItem key={0} value="0">
+                                    <MenuItem key={0} value={0}>
                                         <em>None</em>
                                     </MenuItem>
-                                    <MenuItem key={1} value="1">Light</MenuItem>
-                                    <MenuItem key={2} value="1">Standard</MenuItem>
-                                    <MenuItem key={3} value="2">Advance</MenuItem>
+                                    {imageList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                        );
+                                    })}
                                 </Select>
                                 <FormHelperText>{helpers.image}</FormHelperText>
                             </FormControl>
@@ -428,7 +495,7 @@ const WriteVm = (props) => {
                                 helperText={helpers.ram}
                                 name="ram"
                                 value={fields.ram}
-                                onChange={(e) => { handleChangeField("ipAddr", e.target.value); }}
+                                onChange={(e) => { handleChangeField("ram", e.target.value); }}
                                 variant={variant}
                                 size={fieldSize}
                             />

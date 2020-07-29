@@ -26,7 +26,9 @@ import {
 import VmTableToolbar from "./VmTableToolbar";
 import CommonTableHead from "../../../Common/CommonTableHead";
 import RegisterVm from "./RegisterVm";
-import {registerMicroCloudVm} from "../../../../lib/api/microCloud";
+import {
+    getMcVms, registerMcVm, unregisterMcVm,
+} from "../../../../lib/api/microCloud";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -36,7 +38,7 @@ const headRows = [
     {id: 'cpu', disablePadding: false, label: 'CPU'},
     {id: 'ram', disablePadding: false, label: 'RAM'},
     {id: 'hdd', disablePadding: false, label: 'HDD'},
-    {id: 'status', disablePadding: false, label: 'Status'},
+    // {id: 'status', disablePadding: false, label: 'Status'},
     {id: 'ipAddr', disablePadding: false, label: 'IP Address'},
 ];
 
@@ -94,8 +96,9 @@ const useStyles = makeStyles(theme => ({
 
 const VmTable = () => {
     const classes = useStyles();
-    const [data, setData] = useState([]);
 
+    const [data, setData] = useState([]);
+    const [paging, setPaging] = useState(null);
     const [openAddVm, setOpenAddVm] = useState(false);
     const [searchParam, setSearchParam] = useState(null);
     const { enqueueSnackbar } = useSnackbar();
@@ -204,8 +207,22 @@ const VmTable = () => {
     /** Pagination */
     const getSelected = id => !!selected.get(id);
 
-    const getPageData = () => {
-
+    const getPageData = async () => {
+        let offset = 0;
+        if (currentPage > 0) {
+            offset = rowsPerPage * currentPage;
+        }
+        try {
+            const response = await getMcVms({
+                rows: rowsPerPage, offset, orderBy, order,
+            });
+            console.log("response: data ", response.data.data);
+            console.log("response: page ", response.data.page);
+            setData(response.data.data);
+            setPaging(response.data.page);
+        } catch (e) {
+            console.log("getPageData error!");
+        }
     };
 
     const handleOpenAddVm = () => {
@@ -225,10 +242,22 @@ const VmTable = () => {
     };
 
     const asyncAddVm = async (vm) => {
-        const { cpIdx, serialNumber } = vm;
+        const {
+            name, cpIdx, serialNumber, serverIdx, cpu, ram, hdd, image,
+        } = vm;
         try {
-            const response = await registerMicroCloudVm({
-                cpIdx, serialNumber,
+            const response = await registerMcVm({
+                name,
+                cpIdx,
+                serialNumber,
+                serverIdx,
+                // eslint-disable-next-line radix
+                cpu: parseInt(cpu),
+                // eslint-disable-next-line radix
+                ram: parseInt(ram),
+                // eslint-disable-next-line radix
+                hdd: parseInt(hdd),
+                image,
             });
             handleSnackbarSuccess("VM 등록에 성공하였습니다.");
             getPageData();
@@ -253,11 +282,52 @@ const VmTable = () => {
         getPageData();
     };
 
+    const deleteData = async (items) => {
+        try {
+            const response = await unregisterMcVm({idx: items});
+            getPageData();
+            handleSnackbarSuccess("VM 삭제에 성공하였습니다.");
+        } catch (error) {
+            getPageData();
+            handleSnackbarFailure("VM 삭제에 실패하였습니다.");
+        }
+    };
+
+    const handleDeleteSelected = () => {
+        let copyData = [...data];
+        console.log("deleted Selected:");
+        console.log("copyData:", copyData);
+        console.log("SELECTED:", selected);
+        const delList = [];
+        if (selected !== null) {
+            selected.forEach((value, key, mapObject) => {
+                console.log("selected: key ", key, ", value ", value);
+                if (value) {
+                    delList.push(key);
+                }
+            });
+        }
+        console.log("delList: ", delList);
+        deleteData(delList);
+
+        for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
+            copyData = copyData.filter(obj => obj.id !== selected[i]);
+        }
+        console.log("after copyData:", copyData);
+    };
+
     useEffect(() => {
         /** Pagination */
         getPageData();
         dispatch(pagingDump());
     }, [rowsPerPage, pageBeginRow, orderBy, order]);
+
+    useEffect(() => {
+        if (paging) {
+            const {count} = paging;
+            updatePagingTotalCount({count});
+        }
+    }, [paging]);
 
     const ContentsRow = (props) => {
         const {row} = props;
@@ -308,19 +378,19 @@ const VmTable = () => {
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "5%"}}
+                        style={{width: "10%"}}
                     >
                         {row.idx}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "10%"}}
+                        style={{width: "15%"}}
                     >
                         {row.cpName}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "10%"}}
+                        style={{width: "15%"}}
                     >
                         {row.serialNumber}
                     </TableCell>
@@ -348,15 +418,15 @@ const VmTable = () => {
                     >
                         {row.hdd}
                     </TableCell>
+                    {/*<TableCell*/}
+                    {/*    className={cellClassName}*/}
+                    {/*    style={{width: "10%"}}*/}
+                    {/*>*/}
+                    {/*    {row.status}*/}
+                    {/*</TableCell>*/}
                     <TableCell
                         className={cellClassName}
-                        style={{width: "10%"}}
-                    >
-                        {row.status}
-                    </TableCell>
-                    <TableCell
-                        className={cellClassName}
-                        style={{width: "15%"}}
+                        style={{width: "20%"}}
                     >
                         {row.ipAddr}
                     </TableCell>
@@ -369,23 +439,23 @@ const VmTable = () => {
         <Col md={12} lg={12}>
             <Card className="cb-card">
                 <CardBody className="cb-card-body">
+                    <VmTableToolbar
+                        numSelected={[...selected].filter(el => el[1]).length}
+                        handleDeleteSelected={handleDeleteSelected}
+                        handleRefresh={handleRefresh}
+                        onRequestSort={handleRequestSort}
+                        rows={headRows}
+                        handleOpen={handleOpenAddVm}
+                        handleSubmitSearch={handleSubmitSearch}
+                        contents="VM"
+                        count={totalCount}
+                        rowsPerPage={rowsPerPage}
+                        page={currentPage}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                        rowsPerPageOptions={displayRowsList}
+                    />
                     <div className="cb-material-table__wrap">
-                        <VmTableToolbar
-                            numSelected={[...selected].filter(el => el[1]).length}
-                            // handleDeleteSelected={handleDeleteSelected}
-                            handleRefresh={handleRefresh}
-                            onRequestSort={handleRequestSort}
-                            rows={headRows}
-                            handleOpen={handleOpenAddVm}
-                            handleSubmitSearch={handleSubmitSearch}
-                            contents="VM"
-                            count={totalCount}
-                            rowsPerPage={rowsPerPage}
-                            page={currentPage}
-                            onChangePage={handleChangePage}
-                            onChangeRowsPerPage={handleChangeRowsPerPage}
-                            rowsPerPageOptions={displayRowsList}
-                        />
                         <TableContainer>
                             <Table
                                 className="cb-material-table"

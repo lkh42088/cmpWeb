@@ -26,7 +26,9 @@ import {
 import CommonTableHead from "../../../Common/CommonTableHead";
 import ServerTableToolbar from "./ServerTableToolbar";
 import RegisterServer from "./RegisterServer";
-import {getMicroCloudServers, registerMicroCloudServer} from "../../../../lib/api/microCloud";
+import {
+    getMcServers, registerMcServer, unregisterMcServer,
+} from "../../../../lib/api/microCloud";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -92,11 +94,11 @@ const useStyles = makeStyles(theme => ({
 
 const ServerTable = () => {
     const classes = useStyles();
-    const [data, setData] = useState([]);
 
+    const [data, setData] = useState([]);
+    const [paging, setPaging] = useState(null);
     const [openAddServer, setOpenAddServer] = useState(false);
     const [searchParam, setSearchParam] = useState(null);
-
     const { enqueueSnackbar } = useSnackbar();
 
     const dispatch = useDispatch();
@@ -209,11 +211,12 @@ const ServerTable = () => {
             offset = rowsPerPage * currentPage;
         }
         try {
-            const response = await getMicroCloudServers({
+            const response = await getMcServers({
                 rows: rowsPerPage, offset, orderBy, order,
             });
             console.log("response:", response.data.data);
             setData(response.data.data);
+            setPaging(response.data.page);
         } catch (e) {
             console.log("getPageData error!");
         }
@@ -240,7 +243,7 @@ const ServerTable = () => {
             cpIdx, cpName, serialNumber, type, ipAddr,
         } = server;
         try {
-            const response = await registerMicroCloudServer({
+            const response = await registerMcServer({
                 cpIdx, cpName, serialNumber, type, ipAddr,
             });
             handleSnackbarSuccess("서버 등록에 성공하였습니다.");
@@ -266,12 +269,52 @@ const ServerTable = () => {
         getPageData();
     };
 
+    const deleteData = async (items) => {
+        try {
+            const response = await unregisterMcServer({idx: items});
+            getPageData();
+            handleSnackbarSuccess("Server 삭제에 성공하였습니다.");
+        } catch (error) {
+            getPageData();
+            handleSnackbarFailure("Server 삭제에 실패하였습니다.");
+        }
+    };
+
+    const handleDeleteSelected = () => {
+        let copyData = [...data];
+        console.log("deleted Selected:");
+        console.log("copyData:", copyData);
+        console.log("SELECTED:", selected);
+        const delList = [];
+        if (selected !== null) {
+            selected.forEach((value, key, mapObject) => {
+                console.log("selected: key ", key, ", value ", value);
+                if (value) {
+                    delList.push(key);
+                }
+            });
+        }
+        console.log("delList: ", delList);
+        deleteData(delList);
+
+        for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
+            copyData = copyData.filter(obj => obj.id !== selected[i]);
+        }
+        console.log("after copyData:", copyData);
+    };
+
     useEffect(() => {
         /** Pagination */
         getPageData();
         dispatch(pagingDump());
     }, [rowsPerPage, pageBeginRow, orderBy, order]);
 
+    useEffect(() => {
+        if (paging) {
+            const {count} = paging;
+            updatePagingTotalCount({count});
+        }
+    }, [paging]);
 
     const ContentsRow = (props) => {
         const {row} = props;
@@ -371,23 +414,23 @@ const ServerTable = () => {
         <Col md={12} lg={12}>
             <Card className="cb-card">
                 <CardBody className="cb-card-body">
+                    <ServerTableToolbar
+                        numSelected={[...selected].filter(el => el[1]).length}
+                        handleDeleteSelected={handleDeleteSelected}
+                        handleRefresh={handleRefresh}
+                        onRequestSort={handleRequestSort}
+                        rows={headRows}
+                        handleOpen={handleOpenAddServer}
+                        handleSubmitSearch={handleSubmitSearch}
+                        contents="서버"
+                        count={totalCount}
+                        rowsPerPage={rowsPerPage}
+                        page={currentPage}
+                        onChangePage={handleChangePage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                        rowsPerPageOptions={displayRowsList}
+                    />
                     <div className="cb-material-table__wrap">
-                        <ServerTableToolbar
-                            numSelected={[...selected].filter(el => el[1]).length}
-                            // handleDeleteSelected={handleDeleteSelected}
-                            handleRefresh={handleRefresh}
-                            onRequestSort={handleRequestSort}
-                            rows={headRows}
-                            handleOpen={handleOpenAddServer}
-                            handleSubmitSearch={handleSubmitSearch}
-                            contents="서버"
-                            count={totalCount}
-                            rowsPerPage={rowsPerPage}
-                            page={currentPage}
-                            onChangePage={handleChangePage}
-                            onChangeRowsPerPage={handleChangeRowsPerPage}
-                            rowsPerPageOptions={displayRowsList}
-                        />
                         <TableContainer>
                             <Table
                                 className="cb-material-table"

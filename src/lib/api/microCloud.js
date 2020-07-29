@@ -1,21 +1,39 @@
 import client from "./client";
 
-export const registerMicroCloudServer = ({
+// Servers
+export const registerMcServer = ({
     cpIdx, serialNumber, type, ipAddr,
 }) => client.post('/v1/micro/servers/register', {
     cpIdx, serialNumber, type, ipAddr,
 });
 
-export const getMicroCloudServers = ({
-    rows, offset, orderBy, order,
-}) => client.get(`/v1/micro/servers/${rows}/${offset}/${orderBy}/${order}`);
-
-export const registerMicroCloudVm = ({
-    cpIdx, serialNumber, serverType, ipaddr,
-}) => client.post('/v1/micro/servers/register', {
-    cpIdx, serialNumber, serverType, ipaddr,
+export const unregisterMcServer = ({
+    idx,
+}) => client.post('/v1/micro/servers/unregister', {
+    idx,
 });
 
-export const getMicroCloudVms = ({
+export const getMcServers = ({
     rows, offset, orderBy, order,
-}) => client.get(`/v1/micro/vms/${rows}/${offset}/${orderBy}/${order}`);
+}) => client.get(`/v1/micro/servers-paging/${rows}/${offset}/${orderBy}/${order}`);
+
+export const getMcServersByCpIdx = ({
+    cpIdx,
+}) => client.get(`/v1/micro/servers/search-company/${cpIdx}`);
+
+// VMs
+export const registerMcVm = ({
+    name, cpIdx, serialNumber, serverIdx, image, cpu, ram, hdd,
+}) => client.post('/v1/micro/vms/register', {
+    name, cpIdx, serialNumber, serverIdx, os: image, cpu, ram, hdd,
+});
+
+export const getMcVms = ({
+    rows, offset, orderBy, order,
+}) => client.get(`/v1/micro/vms-paging/${rows}/${offset}/${orderBy}/${order}`);
+
+export const unregisterMcVm = ({
+    idx,
+}) => client.post('/v1/micro/vms/unregister', {
+    idx,
+});

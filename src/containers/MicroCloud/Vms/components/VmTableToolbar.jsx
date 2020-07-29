@@ -242,7 +242,7 @@ const VmTableToolbar = (props) => {
                         <Typography className={classes.selected} color="inherit" variant="subtitle1" component="div">
                             {numSelected} selected
                         </Typography>
-                        <Tooltip title="선택한 계정 삭제">
+                        <Tooltip title={`선택한 ${contents} 삭제`}>
                             <IconButton
                                 aria-label="delete"
                                 onClick={handleDeleteSelected}
@@ -331,57 +331,6 @@ const VmTableToolbar = (props) => {
                                     <IconButton color="primary" className={classes.iconButton} aria-label="directions">
                                         <DirectionsIcon />
                                     </IconButton>
-                                    {/*<div>*/}
-                                    {/*    <FormControl*/}
-                                    {/*        className={classes.formControl}*/}
-                                    {/*        variant="outlined"*/}
-                                    {/*        size="small"*/}
-                                    {/*    >*/}
-                                    {/*        <InputLabel id="demo-simple-select-outlined-label">이메일 인증</InputLabel>*/}
-                                    {/*        <Select*/}
-                                    {/*            labelId="demo-simple-select-outlined-label"*/}
-                                    {/*            id="demo-simple-select-outlined"*/}
-                                    {/*            // value={age}*/}
-                                    {/*            onChange={handleChange}*/}
-                                    {/*            label="email-auth"*/}
-                                    {/*        >*/}
-                                    {/*            <MenuItem value="">*/}
-                                    {/*                <em>None</em>*/}
-                                    {/*            </MenuItem>*/}
-                                    {/*            <MenuItem value={10}>개인 이메일 인증</MenuItem>*/}
-                                    {/*            <MenuItem value={20}>그룹 이메일 인증</MenuItem>*/}
-                                    {/*        </Select>*/}
-                                    {/*    </FormControl>*/}
-                                    {/*</div>*/}
-                                    {/*<div>*/}
-                                    {/*    <FormControl*/}
-                                    {/*        className={classes.formControl}*/}
-                                    {/*        variant="outlined"*/}
-                                    {/*        size="small"*/}
-                                    {/*    >*/}
-                                    {/*        <InputLabel id="demo-simple-select-outlined-label">권한</InputLabel>*/}
-                                    {/*        <Select*/}
-                                    {/*            labelId="demo-simple-select-outlined-label"*/}
-                                    {/*            id="demo-simple-select-outlined"*/}
-                                    {/*            // value={age}*/}
-                                    {/*            onChange={handleChange}*/}
-                                    {/*            label="auth-level"*/}
-                                    {/*        >*/}
-                                    {/*            <MenuItem value="">*/}
-                                    {/*                <em>None</em>*/}
-                                    {/*            </MenuItem>*/}
-                                    {/*            <MenuItem value={1}>1</MenuItem>*/}
-                                    {/*            <MenuItem value={2}>2</MenuItem>*/}
-                                    {/*            <MenuItem value={3}>3</MenuItem>*/}
-                                    {/*            <MenuItem value={4}>4</MenuItem>*/}
-                                    {/*            <MenuItem value={5}>5</MenuItem>*/}
-                                    {/*            <MenuItem value={6}>6</MenuItem>*/}
-                                    {/*        </Select>*/}
-                                    {/*    </FormControl>*/}
-                                    {/*</div>*/}
-                                    {/*<UserSearchBar*/}
-                                    {/*    handleSubmit={handleSubmitSearch}*/}
-                                    {/*/>*/}
                                 </Paper>
                             </Grid>
                             <Grid item md={5} zeroMinWidth>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
@@ -222,6 +222,12 @@ const WriteServer = (props) => {
         console.log("handleCompleteSearchCompany: ", idx, name);
         handleChangeField("cpIdx", idx);
     };
+
+    useEffect(() => {
+        if (companyList === null || companyList.length === 0) {
+            getCompanyList();
+        }
+    }, []);
 
     const variant = "filled";
     const fieldSize = "small";
