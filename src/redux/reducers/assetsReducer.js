@@ -6,20 +6,22 @@ import {
     GET_CODES,
     GET_SUBCODES,
     GET_COMPANIES,
-    SET_DEVICE_DEVICECODE,
-    SET_COMMENT,
-
     GET_COMMENTS_BY_DEVICECODE,
     GET_DEVICES_CHECKCOUNT, SET_STATUS,
     GET_DEVICE_ORI_BY_DEVICECODE,
 
+    SET_DEVICE_DEVICECODE,
+    SET_COMMENT,
     SET_ADD_ELE_IP_DATA, SET_ADD_ELE_SPLA_DATA,
     SET_DEVICE_SELECTED, SET_DEVICE_OUTFLAG, SET_DEVICE_TYPE,
     SET_DEVICE_SEARCH, SET_DEVICE_OUTFLAG_OPERATING, SET_DEVICE_OUTFLAG_CARRYING,
-    SET_API_PAGE, SET_ASSETS_PAGE, SET_DEVICE_LOG,
+    SET_API_PAGE, SET_ASSETS_PAGE, SET_DEVICE_LOG, SET_DEVICE_STATISTICS, SET_DEVICE_MENU_URL,
+    SET_DEVICE_SEARCH_DIVISION,
 } from "../actions/assetsAction";
 
 export const initialState = {
+    deviceMenuUrl: 'server',
+    deviceSearchDivision: false,
     deviceType: 'server',
     deviceByDeviceCode: '',
     assetsPage: 'list',
@@ -109,6 +111,16 @@ export const initialState = {
         registerId: '',
         registerName: '',
         workCode: '',
+    },
+    deviceStatistics: {
+        serverCount: 0,
+        storageCount: 0,
+        etcCount: 0,
+        l2Count: 0,
+        l3Count: 0,
+        routerCount: 0,
+        hddCount: 0,
+        kvmCount: 0,
     },
 };
 
@@ -237,7 +249,7 @@ const assetsReducer = (state = initialState, action) => {
             };
         case SET_DEVICE_LOG:
             return {
-              ...state,
+                ...state,
                 deviceLog: payload,
             };
         case SET_COMMENT:
@@ -245,6 +257,22 @@ const assetsReducer = (state = initialState, action) => {
                 ...state,
                 comments: payload,
             };
+        case SET_DEVICE_STATISTICS:
+            return {
+                ...state,
+                deviceStatistics: payload,
+            };
+        case SET_DEVICE_MENU_URL:
+            return {
+                ...state,
+                deviceMenuUrl: payload,
+            };
+        case SET_DEVICE_SEARCH_DIVISION:
+            return {
+                ...state,
+                deviceSearchDivision: payload,
+            };
+
         /*case SET_DEVICE_OUTFLAG_OPERATING:
             return {
                 ...state,

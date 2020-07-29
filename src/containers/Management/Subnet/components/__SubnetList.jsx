@@ -45,17 +45,17 @@ import {
     pagingChangeSelected, pagingChangeSorting,
     pagingChangeTotalCount,
     pagingDump,
-} from "../../../../../redux/actions/pagingActions";
-import {getUserList, getUserListWithSearchParam, initRegisterUser} from "../../../../../redux/actions/usersActions";
-import {registerUser, unregisterUser} from "../../../../../lib/api/users";
-import BootstrapInput from "../../../../Common/BootstrapInput";
-import {readSubnet, deleteSubnets} from "../../../../../lib/api/subnet";
+} from "../../../../redux/actions/pagingActions";
+import {getUserList, getUserListWithSearchParam, initRegisterUser} from "../../../../redux/actions/usersActions";
+import {registerUser, unregisterUser} from "../../../../lib/api/users";
+import BootstrapInput from "../../../Common/BootstrapInput";
+import {readSubnet, deleteSubnets} from "../../../../lib/api/subnet";
 import SubnetTableToolbar from "./SubnetTableToolbar";
-import CommonTableHead from "../../../../Common/CommonTableHead";
-import ConfirmSnackbar from "../../../../Common/ConfirmSnackbar";
-import {limitLongString} from "../../../../../lib/utils/utils";
-import SubnetWriteForm from "../../CreateSubnet/components/SubnetWriteForm";
-import DialogForm from "../../../../Common/DialogForm";
+import CommonTableHead from "../../../Common/CommonTableHead";
+import ConfirmSnackbar from "../../../Common/ConfirmSnackbar";
+import {limitLongString} from "../../../../lib/utils/utils";
+import SubnetWriteForm from "./SubnetWriteForm";
+import DialogForm from "../../../Common/DialogForm";
 
 const headRows = [
     {name: 'idx', label: 'IDX', options: {filter: true, sort: true}},
@@ -733,7 +733,7 @@ const __SubnetList = () => {
                         data={state.data}
                         columns={headRows}
                         options={options}
-                        // dragableColumn={true}
+                        draggableColumns="true"
                     />
                         {/*<CommonTableHead*/}
                         {/*    classes={classes}*/}

@@ -1,39 +1,30 @@
-import React, {PureComponent, Fragment} from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {
-    Button, ButtonToolbar, Card, Col, Modal, Row,
-} from 'reactstrap';
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from "@material-ui/core/SnackbarContent";
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import MatButton from '@material-ui/core/Button';
+import { Col, Modal } from 'reactstrap';
 import Avatar from "react-avatar";
 import moment from "moment";
 
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from "@material-ui/core/SnackbarContent";
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import MatButton from '@material-ui/core/Button';
+
 import classNames from 'classnames';
-import Collapse from "../../../../shared/components/Collapse";
 import {
-    fetchPosts,
-    getDeviceCommentByDeviceCode, postDeviceComment,
+    getDeviceCommentByDeviceCode,
+    postDeviceComment,
     setState,
 } from '../../../../redux/actions/assetsAction';
-import ModalSub from '../../../../shared/components/ModalSub';
-
-//assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
 
 class AssetsComment extends PureComponent {
     static propTypes = {
         // eslint-disable-next-line react/forbid-prop-types
         assetState: PropTypes.object.isRequired,
-        dispatch: PropTypes.func.isRequired,
         // eslint-disable-next-line react/forbid-prop-types
         theme: PropTypes.object.isRequired,
+        dispatch: PropTypes.func.isRequired,
     };
 
     constructor() {
@@ -120,14 +111,8 @@ class AssetsComment extends PureComponent {
         // 페이지 리로딩 방지
         e.preventDefault();
 
-        // eslint-disable-next-line react/destructuring-assignment
-        // 상태값을 onCreate 를 통하여 부모에게 전달
-        // eslint-disable-next-line react/prop-types,react/destructuring-assignment
-        // this.props.setTotalManager(this.state);
-        const {assetState, dispatch, user} = this.props;
-        const {
-            commentIdx, comment, registerId,
-        } = this.state;
+        const { assetState, dispatch, user } = this.props;
+        const { commentIdx, comment, registerId } = this.state;
 
         const submitData = ({
             idx: commentIdx,
@@ -157,12 +142,10 @@ class AssetsComment extends PureComponent {
     };
 
     commentDelete = () => {
-        const {assetState, dispatch, user} = this.props;
+        const { assetState, dispatch, user } = this.props;
 
         //setTotalManager(this.state);
-        const {
-            commentIdx, comment, deviceCode,
-        } = this.state;
+        const { commentIdx, comment, deviceCode } = this.state;
 
         const submitData = ({
             idx: commentIdx,
@@ -199,7 +182,7 @@ class AssetsComment extends PureComponent {
     };
 
     modalClose = (division) => {
-        const {assetState, dispatch} = this.props;
+        const { dispatch } = this.props;
         if (division !== 'error') {
             this.setState(prevState => ({modalOpenFlag: !prevState.modalOpenFlag}));
 
@@ -215,9 +198,7 @@ class AssetsComment extends PureComponent {
     };
 
     commentToggle = (division, val) => {
-        const {assetState, dispatch} = this.props;
-
-        //console.log("division : ", division);
+        const { dispatch } = this.props;
 
         if (division === 'update') {
             this.setCommentVal(division, val);
@@ -238,7 +219,7 @@ class AssetsComment extends PureComponent {
     };
 
     setCommentVal = (division, val) => {
-        const {user} = this.props;
+        //const { user } = this.props;
         this.setState({
             comment: val.contents,
             commentIdx: val.idx,
@@ -253,7 +234,7 @@ class AssetsComment extends PureComponent {
         };*/
 
     componentDidUpdate = (prevProps, prevState) => {
-        const {assetState, dispatch} = this.props;
+        const { assetState, dispatch } = this.props;
 
         if (assetState !== prevProps.assetState) {
             if (assetState.stateVal.state === 'success' && assetState.stateVal.type === 'comment') {
@@ -263,11 +244,11 @@ class AssetsComment extends PureComponent {
     };
 
     render() {
-        const {assetState, theme} = this.props;
+        const { assetState, theme } = this.props;
         const {
             modal, comment, registerId, registerName, registerDate,
-            modalWarring, warringTitle, warringIcon,
-            warringContents, warringClass, warringType, warringStyle,
+            modalWarring, warringIcon, warringContents, warringType, warringStyle,
+            warringTitle, warringClass,
         } = this.state;
 
         let deviceComments;
@@ -283,7 +264,6 @@ class AssetsComment extends PureComponent {
                     {assetState.comments.map((d, i) => (
                         <div className={bubbleClass} key={d.idx}>
                             <div className="chat__bubble-avatar">
-                                {/*<img src={comment.avatar} alt="ava" />*/}
                                 <Avatar className="topbar__avatar-img-list" name={d.registerId}
                                         size="40"/>
                             </div>
@@ -318,34 +298,8 @@ class AssetsComment extends PureComponent {
                                     <pre>{d.contents}</pre>
                                 </div>
                             </div>
-                            {/*<div className="chat__bubble-message-wrap">
-                                <p className="chat__bubble-date">22</p>
-                            </div>*/}
                         </div>
                     ))}
-                    {/*{assetState.comments
-                            .sort()
-                            .map(d => (
-                                <div key={d.idx} className="chat__dialog-messages">
-                                    <span>▶ {d.registerName} ({d.registerId}) -  [{d.registerDate}]</span>
-                                    <div>
-                                    <span className="modal_comment_del" type="button" role="button"
-                                          tabIndex="0"
-                                          onClick={() => this.commentToggle('delete', d)}
-                                          onKeyDown={() => this.commentToggle('delete', d)}>삭제
-                                    </span>
-                                        <span className="modal_comment_edit" type="button" role="button"
-                                              tabIndex="0"
-                                              onClick={() => this.commentToggle('update', d)}
-                                              onKeyDown={() => this.commentToggle('update', d)}
-                                        >수정
-                                    </span>
-                                    </div>
-                                    <pre>
-                                        {d.contents}
-                                    </pre>
-                                </div>
-                            ))}*/}
                 </Fragment>
             );
         } else {
@@ -405,79 +359,6 @@ class AssetsComment extends PureComponent {
                             </div>
                         </form>
                     </Modal>
-
-                    {/*<Modal
-                        isOpen={modalWarring}
-                        toggle={this.modalClose}
-                        modalClassName="ltr-support"
-                        className={`modal-dialog-dialog ${warringClass}`}
-                    >
-                        <div className="modal__header">
-                            <button className="lnr lnr-cross modal__close-btn" type="button"
-                                    onClick={this.modalClose}/>
-                            <span className="lnr lnr-cross-circle modal__title-icon"/>
-                            <h4 className="text-modal  modal__title">{warringTitle}</h4>
-                        </div>
-                        <div className="modal__body">
-                            {warringContents}
-                            <br/>
-                            <span className="modal_form__form-group-description">
-                                  작성한 사용자만 수정/삭제 할 수 있습니다.
-                                </span>
-                        </div>
-                        <ButtonToolbar className="modal__footer">
-                            {
-                                assetState.stateVal.state === 'request' ? (
-                                    <Button className="modal_ok" outline={warringType} color={warringType}
-                                            onClick={this.commentDelete}>Ok</Button>
-                                ) : (
-                                    <Fragment>
-                                        &nbsp;
-                                    </Fragment>
-                                )
-                            }
-                            <Button className="modal_ok" outline={warringType} color={warringType}
-                                    onClick={this.modalClose}>Close</Button>
-                        </ButtonToolbar>
-                    </Modal>*/}
-                    {/*<Snackbar
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        }}
-                        open={modalWarring}
-                    >
-                        <SnackbarContent
-                            style={warringStyle}
-                            message={(
-                                <span id="client-snackbar" style={{lineHeight: "2"}}>
-                                    {warringIcon}&nbsp;{warringContents}
-                                 </span>
-                            )}
-                            action={(
-                                <Fragment>
-                                    {
-                                        assetState.stateVal.state === 'request' ? (
-                                            <Fragment>
-                                                <MatButton className="modal_ok" color="secondary" size="small"
-                                                    onClick={this.commentDelete}>Ok</MatButton>
-                                                <MatButton className="modal_ok" color="secondary" size="small"
-                                                           onClick={this.modalClose}>Close</MatButton>
-                                            </Fragment>
-                                        ) : (
-                                            <Fragment>
-                                                &nbsp;
-                                            </Fragment>
-                                        )
-                                    }
-                                    <IconButton size="small" aria-label="close" color="inherit"
-                                                onClick={this.modalClose}>
-                                        <CloseIcon fontSize="small"/>
-                                    </IconButton>
-                                </Fragment>
-                            )}
-                        />
-                    </Snackbar>*/}
                     {
                         warringType === 'request' ? (
                             <Snackbar

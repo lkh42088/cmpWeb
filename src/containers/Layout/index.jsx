@@ -7,7 +7,9 @@ import classNames from 'classnames';
 import NotificationSystem from 'rc-notification';
 
 import {
-    fetchPosts, setDeviceType, setApiPage, setSearch, setDeviceSelected, setAssetsPage, setState,
+    fetchPosts, setDeviceType, setApiPage, setSearch,
+    setDeviceSelected, setAssetsPage, setState,
+    setDeviceByDeviceCode,
 } from '../../redux/actions/assetsAction';
 
 import Topbar from './topbar/Topbar';
@@ -135,7 +137,7 @@ class Layout extends Component {
 
 
     changeMenuTitle = (title, subTitle, val) => {
-        const {assetState, dispatch} = this.props;
+        const { dispatch } = this.props;
         dispatch(changeMenuTitle(title, subTitle));
 
         // 자산관리 메뉴 선택 시
@@ -179,6 +181,7 @@ class Layout extends Component {
             dispatch(setDeviceSelected(''));
             dispatch(setApiPage(submitDataPage));
             dispatch(setSearch(submitDataSearch));
+            dispatch(setDeviceByDeviceCode(''));
         }
     };
 
@@ -243,8 +246,6 @@ class Layout extends Component {
             'layout--collapse': sidebar.collapse,
             'layout--top-navigation': customizer.topNavigation,
         });
-
-        //console.log("😢😢😢 user : ", user);
 
         return (
             <div className={layoutClass}>

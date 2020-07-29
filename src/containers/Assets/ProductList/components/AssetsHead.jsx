@@ -1,16 +1,15 @@
-import React, {PureComponent, useState} from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+
 import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import {RTLProps} from '../../../../shared/prop-types/ReducerProps';
-import {
-    fetchPosts,
-    setApiPage,
-} from '../../../../redux/actions/assetsAction';
+
+import { RTLProps } from '../../../../shared/prop-types/ReducerProps';
+import { setApiPage } from '../../../../redux/actions/assetsAction';
 
 const rows = [
     /*{id: 'Idx', disablePadding: false, label: 'No.'},*/
@@ -44,43 +43,6 @@ const rows = [
 ];
 
 class AssetsHead extends PureComponent {
-    /*state = {
-        // eslint-disable-next-line react/no-unused-state
-        rows: [
-            /!*{id: 'Idx', disablePadding: false, label: 'No.'},*!/
-            {
-                id: 'deviceCode', disablePadding: false, label: '장비코드', order: 1,
-            },
-            {
-                id: 'deviceType', disablePadding: false, label: '구분', order: 2,
-            },
-            {
-                id: 'manufacture', disablePadding: false, label: '제조사', order: 3,
-            },
-            {
-                id: 'model', disablePadding: false, label: '모델명', order: 4,
-            },
-            {
-                id: 'customer', disablePadding: false, label: '고객사', order: 5,
-            },
-            {
-                id: 'idc', disablePadding: false, label: 'IDC', order: 6,
-            },
-            {
-                id: 'rack', disablePadding: false, label: '위치', order: 7,
-            },
-            {
-                id: 'ownership', disablePadding: false, label: '소유권', order: 8,
-            },
-            {
-                id: 'ownerCompany', disablePadding: false, label: '소유권 구분', order: 9,
-            },
-            {
-                id: 'outFlag', disablePadding: false, label: '운영여부', order: 15,
-            },
-        ],
-    };*/
-
     static propTypes = {
         // eslint-disable-next-line react/forbid-prop-types
         assetState: PropTypes.object.isRequired,
@@ -182,112 +144,7 @@ class AssetsHead extends PureComponent {
         return {
             rows: oriRows,
         };
-
-        /*if (nextProps.assetState.deviceType === 'server') {
-            return {
-                rows: rows.concat(
-                    {
-                        id: 'ip', disablePadding: false, label: 'IP', order: 10,
-                    },
-                    {
-                        id: 'size', disablePadding: false, label: '크기', order: 11,
-                    },
-                    {
-                        id: 'outFlag', disablePadding: false, label: '운영여부', order: 15,
-                    },
-                ),
-            };
-        }
-
-        if (nextProps.assetState.deviceType === 'network') {
-            return {
-                rows: rows.concat(
-                    {
-                        id: 'ip', disablePadding: false, label: 'IP', order: 10,
-                    },
-                    {
-                        id: 'hwSn', disablePadding: false, label: 'HwSn', order: 11,
-                    },
-                    {
-                        id: 'firmwareVersion', disablePadding: false, label: 'FirmwareVersion', order: 12,
-                    },
-                    {
-                        id: 'outFlag', disablePadding: false, label: '운영여부', order: 15,
-                    },
-                ),
-            };
-        }
-
-        if (nextProps.assetState.deviceType === 'part') {
-            return {
-                rows: rows.concat(
-                    {
-                        id: 'hwSn', disablePadding: false, label: 'HwSn', order: 10,
-                    },
-                    {
-                        id: 'outFlag', disablePadding: false, label: '운영여부', order: 15,
-                    },
-                ),
-            };
-        }*/
-
-      /*  if (nextProps.assetState.apiPageRd.order === prevState.stateOrder) {
-            onRequestSort(nextProps.assetState.apiPageRd.orderBy, nextProps.assetState.apiPageRd.order);
-        }*/
     };
-
-    /*componentWillReceiveProps(propData) {
-        /!*컴포넌트가 prop 을 새로 받았을 때 실행
-        prop 에 따라 state 를 업데이트 해야 할 때 사용
-        이 안에서 this.setState() 를 해도 추가적으로 렌더링하지 않음.*!/
-        //updateHeadRows(assetState.deviceType);
-        console.log("AssetsHead componentWillReceiveProps");
-
-        this.setState({
-            rows: rows.filter(id => id !== 'HwSn'),
-        });
-        this.setState({
-            rows: rows.filter(id => id !== 'Warranty'),
-        });
-        this.setState({
-            rows: rows.filter(id => id !== 'FirmwareVersion'),
-        });
-        this.setState({
-            rows: rows.filter(id => id !== 'WarehousingDate'),
-        });
-        this.setState({
-            rows: rows.filter(id => id !== 'Ip'),
-        });
-        this.setState({
-            rows: rows.filter(id => id !== 'Size'),
-        });
-
-        if (propData.assetState.deviceType === 'server') {
-            this.setState({
-                rows: rows.concat(
-                    {id: 'ip', disablePadding: false, label: 'IP'},
-                    {id: 'size', disablePadding: false, label: '크기'},
-                ),
-            });
-        } else if (propData.assetState.deviceType === 'network') {
-            this.setState({
-                rows: rows.concat(
-                    {id: 'ip', disablePadding: false, label: 'IP'},
-                    {id: 'hwSn', disablePadding: false, label: 'HwSn'},
-                    {id: 'firmwareVersion', disablePadding: false, label: 'FirmwareVersion'},
-                    {id: 'warehousingDate', disablePadding: false, label: 'WarehousingDate'},
-                ),
-            });
-        } else if (propData.assetState.deviceType === 'part') {
-            this.setState({
-                rows: rows.concat(
-                    {id: 'hwSn', disablePadding: false, label: 'HwSn'},
-                    {id: 'warranty', disablePadding: false, label: 'Warranty'},
-                    {id: 'warehousingDate', disablePadding: false, label: 'WarehousingDate'},
-                ),
-            });
-        }
-    }*/
 
     createSortHandler = property => (event) => {
         const {
@@ -323,8 +180,8 @@ class AssetsHead extends PureComponent {
 
     render() {
         const {
-            onSelectAllClick, order, orderBy, numSelected, rowCount, rtl, assetState,
-            selectedSize, rowsPerPage,
+            onSelectAllClick, order, orderBy, numSelected, rowCount, selectedSize,
+            rtl, assetState, rowsPerPage,
         } = this.props;
 
         let allCheck = false;

@@ -1,18 +1,14 @@
 import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {
-    Card, CardBody, Col, Badge,
-} from 'reactstrap';
+import { Col, Badge } from 'reactstrap';
 import moment from "moment";
+
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
-import classNames from 'classnames';
-import Collapse from "../../../../shared/components/Collapse";
+
 import * as common from "../../../../lib/common";
 
 function textSplitOverCut(txt, com) {
@@ -32,12 +28,10 @@ function textSplitOverCut(txt, com) {
     return <React.Fragment>{output}</React.Fragment>;
 }
 
-//assetState: PropTypes.arrayOf(PropTypes.string).isRequired,
 class AssetsLog extends PureComponent {
     static propTypes = {
         // eslint-disable-next-line react/forbid-prop-types
         assetState: PropTypes.object.isRequired,
-        dispatch: PropTypes.func.isRequired,
     };
 
     constructor() {
@@ -49,7 +43,6 @@ class AssetsLog extends PureComponent {
             page: 0,
             rowsPerPage: 5,
         };
-        //this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleRequestSort = (event, property) => {
@@ -68,7 +61,7 @@ class AssetsLog extends PureComponent {
     };
 
     handleClick = (event, id) => {
-        const {selected} = this.state;
+        const { selected } = this.state;
         const newSelected = new Map(selected);
         const value = newSelected.get(id);
         let isActive = true;
@@ -88,7 +81,7 @@ class AssetsLog extends PureComponent {
     };
 
     onClose = () => {
-        const {closeToggle} = this.props;
+        const { closeToggle } = this.props;
         closeToggle(); //
     };
 
@@ -172,10 +165,9 @@ class AssetsLog extends PureComponent {
         const {
             order, orderBy, selected, rowsPerPage, page,
         } = this.state;
-        const {assetState, dispatch} = this.props;
+        const { assetState } = this.props;
         let emptyRows;
         let count;
-        /*Collapse... with-shadow modal_comment_register*/
 
         if (assetState.deviceLog.length > 0) {
             emptyRows = rowsPerPage - Math.min(rowsPerPage, assetState.deviceLog.length - (page * rowsPerPage));
@@ -186,14 +178,7 @@ class AssetsLog extends PureComponent {
         }
 
         return (
-            /*<Collapse title="로그 확인"
-                      className="assets_write__modal__tableLine">*/
             <Col md={12} lg={12}>
-                {/*<div className="card__title">
-                            <h5 className="bold-text">title</h5>
-                            <h5 className="subhead">Use default table with property <span
-                                className="red-text">responsive</span></h5>
-                        </div>*/}
                 <div className="material-table__wrap">
                     <Table className="material-table" style={{overFlowX: "scroll"}}>
                         <thead>
@@ -223,14 +208,12 @@ class AssetsLog extends PureComponent {
                                             <TableRow
                                                 className="material-table__row"
                                                 tabIndex={-1}
-                                                key={d.idx}
-                                            >
+                                                key={d.idx}>
                                                 <TableCell
                                                     className="material-table__cell material-table__cell-right"
                                                     component="th"
                                                     scope="row"
-                                                    padding="none"
-                                                >
+                                                    padding="none">
                                                     {this.renderLogLevelSwitch(d.logLevel.toString())}
                                                 </TableCell>
                                                 <TableCell
@@ -254,40 +237,6 @@ class AssetsLog extends PureComponent {
                                                     className="material-table__cell material-table__cell-right
                                                             text-left">
                                                     {this.renderContentSwitch(d.workCode.toString(), d.field, d.oldStatus, d.newStatus)}
-                                                    {/*{
-                                                        // eslint-disable-next-line no-nested-ternary
-                                                        d.workCode.toString() === '2' ? (
-                                                            d.field === "SPLA" ? (
-                                                                <Fragment>
-                                                                    변경 전 :
-                                                                    <span title={d.oldStatus}>
-                                                                    {textSplitOverCut(d.oldStatus, ",")}
-                                                                </span>
-                                                                    <br/>
-                                                                    변경 후 :
-                                                                    <span title={d.newStatus}>
-                                                                    {textSplitOverCut(d.newStatus, ",")}
-                                                                </span>
-                                                                </Fragment>
-                                                            ) : (
-                                                                <Fragment>
-                                                                    변경 전 :
-                                                                    <span title={d.oldStatus}>
-                                                                    {textLengthOverCut(d.oldStatus, 80)}
-                                                                </span>
-                                                                    <br/>
-                                                                    변경 후 :
-                                                                    <span title={d.newStatus}>
-                                                                    {textLengthOverCut(d.newStatus, 80)}
-                                                                </span>
-                                                                </Fragment>
-                                                            )
-                                                        ) : (
-                                                            <Fragment>
-                                                                &nbsp;
-                                                            </Fragment>
-                                                        )
-                                                    }*/}
                                                 </TableCell>
                                             </TableRow>
                                         ))}
@@ -329,7 +278,6 @@ class AssetsLog extends PureComponent {
                     }}
                 />
             </Col>
-            /*</Collapse>*/
         );
     }
 }

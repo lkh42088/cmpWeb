@@ -1,60 +1,35 @@
 import React, {useEffect, useState} from "react";
-import {
-    Card,
-    CardBody,
-    Col,
-} from 'reactstrap';
-import moment from "moment";
+import {Card, Col} from 'reactstrap';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TablePagination from '@material-ui/core/TablePagination';
 import {useDispatch, useSelector} from "react-redux";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
-import TableContainer from "@material-ui/core/TableContainer";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
-import Collapse from '@material-ui/core/Collapse';
 import {makeStyles, withStyles} from "@material-ui/core/styles";
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import GroupIcon from '@material-ui/icons/Group';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {useSnackbar} from "notistack";
-import {
-IconButton, InputBase, Select, Tooltip,
-} from "@material-ui/core";
-import InputLabel from '@material-ui/core/InputLabel';
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
+import {IconButton} from "@material-ui/core";
 import BlurOnOutlinedIcon from '@material-ui/icons/BlurOnOutlined';
 import BuildIcon from '@material-ui/icons/Build';
 import ReactTooltip from "react-tooltip";
 import {
     pagingChangeCurrentPage,
-    pagingChangeCurrentPageNext,
-    pagingChangeCurrentPagePrev,
-    pagingChangeDense,
-    pagingChangeOrder,
-    pagingChangeOrderBy,
     pagingChangeOrderByWithReset,
     pagingChangeRowsPerPage,
     pagingChangeSelected, pagingChangeSorting,
     pagingChangeTotalCount,
-    pagingDump,
-} from "../../../../../redux/actions/pagingActions";
-import {getUserList, getUserListWithSearchParam, initRegisterUser} from "../../../../../redux/actions/usersActions";
-import {registerUser, unregisterUser} from "../../../../../lib/api/users";
-import BootstrapInput from "../../../../Common/BootstrapInput";
-import {readSubnet, deleteSubnets} from "../../../../../lib/api/subnet";
+} from "../../../../redux/actions/pagingActions";
+import {
+    readSubnet, deleteSubnets, createSubnet, updateSubnet,
+} from "../../../../lib/api/subnet";
 import SubnetTableToolbar from "./SubnetTableToolbar";
-import CommonTableHead from "../../../../Common/CommonTableHead";
-import ConfirmSnackbar from "../../../../Common/ConfirmSnackbar";
-import {limitLongString} from "../../../../../lib/utils/utils";
-import SubnetWriteForm from "../../CreateSubnet/components/SubnetWriteForm";
-import DialogForm from "../../../../Common/DialogForm";
+import CommonTableHead from "../../../Common/CommonTableHead";
+import ConfirmSnackbar from "../../../Common/ConfirmSnackbar";
+import {limitLongString} from "../../../../lib/utils/utils";
+import SubnetWriteForm from "./SubnetWriteForm";
+import DialogForm from "../../../Common/DialogForm";
+import SubnetContents from "./SubnetContents";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'IDX'},
@@ -74,7 +49,7 @@ const useStyles = makeStyles((theme) => {
         return ({
             rowCss: {
                 '& > *': {
-                    borderBottom: 'unset',
+                    borderBottom: true,
                 },
                 "&:hover":
                     theme.palette.type === 'light'
@@ -132,21 +107,6 @@ const SubnetList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar();
-    // const {
-    //     /** Paging User Data */
-    //     data,
-    //     getPage,
-    //     /** Register User */
-    //     msg,
-    //     msgError,
-    // } = useSelector(({ usersRd }) => ({
-    //     /** Paging User Data */
-    //     data: usersRd.data,
-    //     getPage: usersRd.page,
-    //     /** Register User */
-    //     msg: usersRd.msg,
-    //     msgError: usersRd.msgError,
-    // }));
     const [state, setState] = useState({
         data: [],
         page: [],
@@ -189,22 +149,12 @@ const SubnetList = () => {
     const [openModal, setOpenModal] = useState(false);
     const [title, setTitle] = useState('');
     const [selectedData, setSelectedData] = useState(null);
+    const [create, setCreate] = useState(true);
     const [warningContents, setWarningContents] = useState('');
 
     /**************************************************************
      * Function
      **************************************************************/
-
-    /** Add User in TableToolbar */
-    const handleOpenAddUser = () => {
-        setOpenAddUser(true);
-    };
-
-    /** Add User in TableToolbar */
-    const handleCloseAddUser = () => {
-        setOpenAddUser(false);
-    };
-
     const handleSnackbarFailure = (snackMsg) => {
         enqueueSnackbar(snackMsg);
     };
@@ -262,75 +212,28 @@ const SubnetList = () => {
         }));
     };
 
-    // const getPageData = () => {
-    //     let offset = 0;
-    //     if (currentPage > 0) {
-    //         offset = rowsPerPage * currentPage;
-    //     }
-    //     console.log("get Page Data: rows ", rowsPerPage, ", offset ", offset,
-    //         ", orderBy ", orderBy, ", order ", order, ", searchParam ", searchParam);
-    //     if (searchParam !== null) {
-    //         dispatch(getUserListWithSearchParam({
-    //             rows: rowsPerPage, offset, orderBy, order, searchParam,
-    //         }));
-    //     } else {
-    //         dispatch(getUserList({
-    //             rows: rowsPerPage, offset, orderBy, order,
-    //         }));
-    //     }
-    // };
-
     /**************************************************************
      * Axios Function
      **************************************************************/
-    // const addUser = async (user) => {
-    //     const {
-    //         cpIdx, cpName, id, password, name, email,
-    //         cellPhone, level, userZip, userAddr, userAddrDetail,
-    //         emailAuthValue, emailAuthGroupList,
-    //     } = user;
-    //     try {
-    //         const response = await registerUser({
-    //             cpIdx,
-    //             cpName,
-    //             id,
-    //             password,
-    //             name,
-    //             email,
-    //             authLevel: Number(level),
-    //             hp: cellPhone,
-    //             zipCode: userZip,
-    //             address: userAddr,
-    //             addressDetail: userAddrDetail,
-    //             emailAuthFlag: emailAuthValue === "1",
-    //             emailAuthGroupFlag: emailAuthValue === "2",
-    //             emailAuthGroupList,
-    //         });
-    //         // handleSnackbarSuccess("계정 등록에 성공하였습니다.");
-    //         // getPageData();
-    //     } catch {
-    //         // handleSnackbarFailure("계정 등록에 실패하였습니다.");
-    //     }
-    // };
-
     const getData = async () => {
         // console.log("★★★★★★★★", "get Data!!");
         try {
             let response;
-            if (searchParam !== null) {
+            if (searchParam !== null && searchParam !== '') {
+                console.log("★★★★", currentPage, rowsPerPage, searchParam);
                 response = await readSubnet({
                     rows: rowsPerPage,
-                    offset: (currentPage === 0) ? 0 : (currentPage - 1) * rowsPerPage,
+                    offset: (currentPage === 0) ? 0 : currentPage * rowsPerPage,
                     orderBy,
                     order,
+                    searchParam,
                 });
             } else {
                 response = await readSubnet({
                     rows: rowsPerPage,
-                    offset: (currentPage === 0) ? 0 : (currentPage - 1) * rowsPerPage,
+                    offset: (currentPage === 0) ? 0 : currentPage * rowsPerPage,
                     orderBy,
                     order,
-                    searchParam,
                 });
             }
             setState({
@@ -364,26 +267,46 @@ const SubnetList = () => {
         }
     };
 
-    // const deleteSubnets = async (subnets) => {
-    //     try {
-    //         const response = await unregisterUser({idx: subnets});
-    //         getData();
-    //         // handleSnackbarSuccess("계정 삭제에 성공하였습니다.");
-    //     } catch (error) {
-    //         getData();
-    //         // handleSnackbarFailure("계정 삭제에 실패하였습니다.");
-    //     }
-    // };
+    const createData = async (data) => {
+        // console.log("★★★★★★★★", "Create Data!! ", data);
+        try {
+            const response = await createSubnet({
+                subnetTag: data.subnetTag,
+                subnetStart: data.subnetStart,
+                subnetEnd: data.subnetEnd,
+                subnetMask: data.subnetMask,
+                gateway: data.gateway,
+            });
+            // console.log(response);
+            getData();
+            handleSnackbarSuccess("SUBNET 생성에 성공 하였습니다.");
+        } catch {
+            handleSnackbarFailure("SUBNET 생성에 실패 하였습니다.");
+        }
+    };
+
+    const modifyData = async (data) => {
+        // console.log("★★★★★★★★", "Modify Data!! ", data);
+        try {
+            const response = await updateSubnet({
+                idx: data.idx,
+                subnetTag: data.subnetTag,
+                subnetStart: data.subnetStart,
+                subnetEnd: data.subnetEnd,
+                subnetMask: data.subnetMask,
+                gateway: data.gateway,
+            });
+            // console.log(response);
+            getData();
+            handleSnackbarSuccess("SUBNET 수정에 성공 하였습니다.");
+        } catch {
+            handleSnackbarFailure("SUBNET 수정에 실패 하였습니다.");
+        }
+    };
 
     /**************************************************************
      * Event Handler
      **************************************************************/
-    const handleSubmitAddUser = (user) => {
-        console.log("handleSubmit() : user ", user);
-        // addUser(user);
-        handleCloseAddUser();
-    };
-
     const handleRefresh = () => {
         getData();
     };
@@ -394,7 +317,16 @@ const SubnetList = () => {
     };
 
     const handleOpenModal = () => {
+        setSelectedData({
+            idx: 0,
+            subnetTag: '',
+            subnetStart: '',
+            subnetEnd: '',
+            subnetMask: '',
+            gateway: '',
+        });
         setTitle("서브넷 추가");
+        setCreate(true);
         setOpenModal(true);
     };
 
@@ -402,16 +334,29 @@ const SubnetList = () => {
         setOpenModal(false);
     };
 
-    const handleSubmitModal = () => {
+    const handleSubmitModal = (data) => {
+        if (create) {
+            createData(data);
+        } else {
+            modifyData(data);
+        }
         setOpenModal(false);
+    };
+
+    const handleSubmitSearchModal = (search) => {
+        setSearchParam(search);
+        getData();
+
+        /** Init value */
+        setSearchParam('');
     };
 
     const handleModifySelected = (id) => {
         const row = state.data.filter(item => item.idx === id);
-        console.log(row[0]);
         setSelectedData(row[0]);
-        console.log("★★★★ selectedData", selectedData);
+
         setTitle("서브넷 수정");
+        setCreate(false);
         setOpenModal(true);
     };
 
@@ -459,24 +404,9 @@ const SubnetList = () => {
     }, [state.page.count]);
 
     useEffect(() => {
-        console.log("useEffect: searchParam ", searchParam);
+        // console.log("useEffect: searchParam ", searchParam);
         getData();
     }, [searchParam]);
-
-    // useEffect(() => {
-    //     if (msg) {
-    //         // handleSnackbarSuccess("계정 등록에 성공하였습니다.");
-    //         dispatch(initRegisterUser());
-    //         getPageData();
-    //     }
-    // }, [msg]);
-    //
-    // useEffect(() => {
-    //     if (msgError) {
-    //         dispatch(initRegisterUser());
-    //         // handleSnackbarFailure("계정 등록에 실패하였습니다.");
-    //     }
-    // }, [msgError]);
 
     /**************************************************************
      * Component
@@ -485,31 +415,10 @@ const SubnetList = () => {
     /**************************************************************
      * JSX Template
      **************************************************************/
-    const getAddress = (row) => {
-        let address = "-";
-        if (row.zipcode) {
-            address = row.zipcode;
-            address = address.concat(', ');
-        }
-        if (row.address) {
-            address = address.concat(row.address);
-        }
-        if (row.addressDetail) {
-            if (row.address) {
-                address = address.concat(', ');
-                address = address.concat(row.addressDetail);
-            } else {
-                address = address.concat(row.addressDetail);
-            }
-        }
-        return address;
-    };
-
     const ContentsRow = (props) => {
         const { row } = props;
         const [openCollapse, setOpenCollapse] = React.useState(false);
         const isSelected = getSelected(row.idx);
-        const address = getAddress(row);
         return (
             <React.Fragment>
                 <TableRow
@@ -528,8 +437,7 @@ const SubnetList = () => {
                         onClick={event => handleCellClick(event, row.idx)}
                     >
                         <Checkbox checked={isSelected}
-                            // className="cb-material-table__checkbox"
-                                  className="cb-material-table__checkbox"
+                            className="cb-material-table__checkbox"
                         />
                     </TableCell>
                     <TableCell
@@ -559,12 +467,6 @@ const SubnetList = () => {
                     >
                         {row.subnetMask}
                     </TableCell>
-                    {/*<TableCell*/}
-                    {/*    className="cb-material-table__cell"*/}
-                    {/*    style={{width: "25%"}}*/}
-                    {/*>*/}
-                    {/*    {row.gateway}*/}
-                    {/*</TableCell>*/}
                     <TableCell
                         className="cb-material-table__cell"
                         style={{width: "30%"}}
@@ -598,103 +500,7 @@ const SubnetList = () => {
                     </TableCell>
                 </TableRow>
                 <TableRow>
-                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
-                        <Collapse in={openCollapse} timeout="auto" unmountOnExit>
-                            <Box margin={1}>
-                                <Typography variant="h6" gutterBottom component="div">
-                                    {row.userId}
-                                </Typography>
-                                <div className={classes.grid}>
-                                    {/*<Grid container spacing={1}>*/}
-                                    {/*    <Grid item xs={12} sm={6}>*/}
-                                    {/*        <ul>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> 소속회사 </span>*/}
-                                    {/*                <span className={classes.spanContents}> {row.cpName} </span>*/}
-                                    {/*            </li>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> ID </span>*/}
-                                    {/*                <span className={classes.spanContents}> {row.userId} </span>*/}
-                                    {/*            </li>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> 이름 </span>*/}
-                                    {/*                <span className={classes.spanContents}> {row.name} </span>*/}
-                                    {/*            </li>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> 전화번호 </span>*/}
-                                    {/*                <span className={classes.spanContents}> {row.hp === "" ? "-" : row.hp} </span>*/}
-                                    {/*            </li>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> 이메일 </span>*/}
-                                    {/*                <span className={classes.spanContents}> {row.email === "" ? "-" : row.email} </span>*/}
-                                    {/*            </li>*/}
-                                    {/*        </ul>*/}
-                                    {/*    </Grid>*/}
-                                    {/*    <Grid item xs={12} sm={6}>*/}
-                                    {/*        <ul>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> 권한 </span>*/}
-                                    {/*                /!*<span className={classes.spanContents}> {row.zipcode},&nbsp;{row.address},&nbsp;{row.addressDetail} </span>*!/*/}
-                                    {/*                <span className={classes.spanContents}> {row.authLevel} </span>*/}
-                                    {/*            </li>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> 주소 </span>*/}
-                                    {/*                /!*<span className={classes.spanContents}> {row.zipcode},&nbsp;{row.address},&nbsp;{row.addressDetail} </span>*!/*/}
-                                    {/*                <span className={classes.spanContents}> {address} </span>*/}
-                                    {/*            </li>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> 등록일 </span>*/}
-                                    {/*                <span className={classes.spanContents}> {moment(row.registerDate).format('YYYY-MM-DD')} </span>*/}
-                                    {/*            </li>*/}
-                                    {/*            <li>*/}
-                                    {/*                <span className={classes.spanSubject}> 인증 </span>*/}
-                                    {/*                <span className={classes.spanContents}>*/}
-                                    {/*                    /!* eslint-disable-next-line no-nested-ternary *!/*/}
-                                    {/*                    {row.emailAuth === true ? "개인 이메일 인증" : (row.groupEmailAuth === true ? "그룹 이메일 인증" : "사용 안함")}*/}
-                                    {/*                </span>*/}
-                                    {/*            </li>*/}
-                                    {/*        </ul>*/}
-                                    {/*    </Grid>*/}
-                                    {/*    <Grid item xs={12} sm={6}>*/}
-                                    {/*        {*/}
-                                    {/*            row.groupEmailAuth && row.groupEmailAuthList ? (*/}
-                                    {/*                <React.Fragment>*/}
-                                    {/*                    <span className={classes.spanContents}>*/}
-                                    {/*                        <GroupIcon/> 이메일 인증 그룹 </span>*/}
-                                    {/*                    <ul>*/}
-                                    {/*                        {row.groupEmailAuthList.map(auth => (*/}
-                                    {/*                            <li key={auth.idx}>*/}
-                                    {/*                            <span className={classes.spanContents}>*/}
-                                    {/*                                {auth.AuthUserId}/{auth.AuthEmail}</span>*/}
-                                    {/*                            </li>*/}
-                                    {/*                        ))}*/}
-                                    {/*                    </ul>*/}
-                                    {/*                </React.Fragment>*/}
-                                    {/*            ) : <React.Fragment/>*/}
-                                    {/*        }*/}
-                                    {/*    </Grid>*/}
-                                    {/*    <Grid item xs={12} sm={6}>*/}
-                                    {/*        {*/}
-                                    {/*            row.participateInAccountList && row.participateInAccountList.length > 0 ? (*/}
-                                    {/*                <React.Fragment>*/}
-                                    {/*                    <span className={classes.spanContents}>*/}
-                                    {/*                        <AccountCircleIcon/> 사용하는 이메일 인증 계정 </span>*/}
-                                    {/*                    <ul>*/}
-                                    {/*                        {row.participateInAccountList.map(paccount => (*/}
-                                    {/*                            <li key={paccount.idx}>*/}
-                                    {/*                                <span className={classes.spanContents}>{paccount.UserId}</span>*/}
-                                    {/*                            </li>*/}
-                                    {/*                        ))}*/}
-                                    {/*                    </ul>*/}
-                                    {/*                </React.Fragment>*/}
-                                    {/*            ) : <React.Fragment/>*/}
-                                    {/*        }*/}
-                                    {/*    </Grid>*/}
-                                    {/*</Grid>*/}
-                                </div>
-                            </Box>
-                        </Collapse>
-                    </TableCell>
+                    {SubnetContents}
                 </TableRow>
             </React.Fragment>
         );
@@ -769,12 +575,19 @@ const SubnetList = () => {
                 open={openModal}
                 title={title}
                 icon={<BlurOnOutlinedIcon />}
-                width="400px"
+                width="600px"
                 childComponent={(
                     <SubnetWriteForm
                         handleClose={handleCloseModal}
                         handleSubmit={handleSubmitModal}
-                        data={selectedData}
+                        handleSubmitSearch={handleSubmitSearchModal}
+                        subnetIdxValue={selectedData && selectedData.idx}
+                        subnetStartValue={selectedData && selectedData.subnetStart}
+                        subnetEndValue={selectedData && selectedData.subnetEnd}
+                        subnetTagValue={selectedData && selectedData.subnetTag}
+                        subnetMaskValue={selectedData && selectedData.subnetMask}
+                        gatewayValue={selectedData && selectedData.gateway}
+                        create={create}
                     />
                     )}
             />
