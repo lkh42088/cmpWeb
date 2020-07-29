@@ -481,7 +481,6 @@ const SubnetList = () => {
                                         handleModifySelected(row.idx);
                                     }}
                                 >
-                                    {/*<EditIcon color="secondary"/>*/}
                                     <BuildIcon fontSize="small" color="secondary"
                                                data-tip data-for="tooltipModify"
                                     />
@@ -500,7 +499,10 @@ const SubnetList = () => {
                     </TableCell>
                 </TableRow>
                 <TableRow>
-                    {SubnetContents}
+                    <SubnetContents
+                        openCollapse={openCollapse}
+                        row={row}
+                    />
                 </TableRow>
             </React.Fragment>
         );
