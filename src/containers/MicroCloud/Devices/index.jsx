@@ -1,20 +1,23 @@
 import React from 'react';
 import {SnackbarProvider} from "notistack";
 import { Container, Row } from 'reactstrap';
-import UserList from "./components/UserList";
 import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
+import ServerTable from "./components/ServerTable";
 
-const MaterialTable = () => (
+const MicroCloudDevices = () => {
+    console.log("User Index");
+    return (
         <Container fluid>
             <Row>
                 <RouterBreadcrumbs url={window.location.href}/>
             </Row>
             <Row>
                 <SnackbarProvider maxSnack={3}>
-                    <UserList/>
+                    <ServerTable/>
                 </SnackbarProvider>
             </Row>
         </Container>
     );
+};
 
-export default MaterialTable;
+export default MicroCloudDevices;

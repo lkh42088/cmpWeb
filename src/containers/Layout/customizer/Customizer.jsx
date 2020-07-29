@@ -13,6 +13,7 @@ import ToggleTopMenu from './ToggleTopMenu';
 import ToggleRTL from './ToggleRTL';
 import ToggleSidebar from "./ToggleSidebar";
 import ToggleDensePadding from "./ToggleDensePadding";
+import ToggleHybridCloud from "./ToggleHybirdCloud";
 
 const settings = `${process.env.PUBLIC_URL}/img/settings.svg`;
 
@@ -33,6 +34,7 @@ export default class Customizer extends PureComponent {
     toggleBoxShadow: PropTypes.func.isRequired,
     changeToSidebarDropdown: PropTypes.func.isRequired,
     changeDensePadding: PropTypes.func.isRequired,
+    toggleHybridCloud: PropTypes.func.isRequired,
   };
 
   state = {
@@ -73,6 +75,7 @@ export default class Customizer extends PureComponent {
       changeToLight,
       changeToSidebarDropdown,
       changeDensePadding,
+      toggleHybridCloud,
       changeToRTL,
       changeToLTR,
       changeBorderRadius,
@@ -103,6 +106,7 @@ export default class Customizer extends PureComponent {
           {/*<ToggleShadow customizer={customizer} toggleBoxShadow={toggleBoxShadow} />*/}
           {/*<ToggleRTL customizer={customizer} changeToRTL={changeToRTL} changeToLTR={changeToLTR} rtl={rtl} />*/}
           <ToggleDensePadding changeDense={changeDensePadding} customizer={customizer}/>
+          <ToggleHybridCloud handleChange={toggleHybridCloud} customizer={customizer}/>
           {(!show && !collapse)
               ? (<ToggleSidebar changeToSidebar={changeToSidebarDropdown} customizer={customizer}/>)
               : null

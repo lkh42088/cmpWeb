@@ -309,18 +309,18 @@ const AssetsSearch = ({ assetState, user, theme }) => {
                     <Fragment>
                         <div className="float-left">
                             <span className="circle__eth"/>
-                            서버
-                            ({assetState.deviceStatistics.serverCount})&nbsp;&nbsp;
+                            <span className="circle__text">
+                                &nbsp;서버 ({assetState.deviceStatistics.serverCount})</span>
                         </div>
                         <div className="float-left">
                             <span className="circle__ste"/>
-                            스토리지
-                            ({assetState.deviceStatistics.storageCount})&nbsp;&nbsp;
+                            <span className="circle__text">
+                                &nbsp;스토리지 ({assetState.deviceStatistics.storageCount})</span>
                         </div>
                         <div className="float-left">
                             <span className="circle__neo"/>
-                            기타
-                            ({assetState.deviceStatistics.etcCount})&nbsp;&nbsp;
+                            <span className="circle__text">
+                                &nbsp;기타 ({assetState.deviceStatistics.etcCount})</span>
                         </div>
                     </Fragment>
                 );
@@ -330,18 +330,18 @@ const AssetsSearch = ({ assetState, user, theme }) => {
                     <Fragment>
                         <div className="float-left">
                             <span className="circle__eth"/>
-                            L2
-                            ({assetState.deviceStatistics.l2Count})&nbsp;&nbsp;
+                            <span className="circle__text">
+                                &nbsp;L2 ({assetState.deviceStatistics.l2Count})</span>
                         </div>
                         <div className="float-left">
                             <span className="circle__ste"/>
-                            L3
-                            ({assetState.deviceStatistics.l3Count})&nbsp;&nbsp;
+                            <span className="circle__text">
+                                &nbsp;L3 ({assetState.deviceStatistics.l3Count})</span>
                         </div>
                         <div className="float-left">
                             <span className="circle__neo"/>
-                            Router
-                            ({assetState.deviceStatistics.routerCount})&nbsp;&nbsp;
+                            <span className="circle__text">
+                                &nbsp;Router ({assetState.deviceStatistics.routerCount})</span>
                         </div>
                     </Fragment>
                 );
@@ -351,13 +351,13 @@ const AssetsSearch = ({ assetState, user, theme }) => {
                     <Fragment>
                         <div className="float-left">
                             <span className="circle__eth"/>
-                            HDD
-                            ({assetState.deviceStatistics.hddCount})&nbsp;&nbsp;
+                            <span className="circle__text">
+                                &nbsp;HDD ({assetState.deviceStatistics.hddCount})</span>
                         </div>
                         <div className="float-left">
                             <span className="circle__ste"/>
-                            KVM
-                            ({assetState.deviceStatistics.kvmCount})&nbsp;&nbsp;
+                            <span className="circle__text">
+                                &nbsp;KVM ({assetState.deviceStatistics.kvmCount})</span>
                         </div>
                     </Fragment>
                 );
@@ -483,8 +483,8 @@ const AssetsSearch = ({ assetState, user, theme }) => {
             warranty: values.warranty,
         });
 
-        console.log("TOP 🙊🙊🙊 가공 전 : ", values);
-        console.log("TOP 🙊🙊🙊 가공 후: ", submitData);
+        console.log("SEARCH SUBMIT 가공 전 : ", values);
+        console.log("SEARCH SUBMIT 가공 후: ", submitData);
         dispatch(postDevice('create', assetState, submitData, 'list'));
         toggle(); // modal close
     };
@@ -670,11 +670,6 @@ const AssetsSearch = ({ assetState, user, theme }) => {
     };
 
     useEffect(() => {
-        /*console.log("😡😡 useEffect---> : start");
-        console.log("😡 val : ", assetState.deviceMenuUrl);
-        console.log("😡 url : ", common.assetsGetUrlMenu(window.location.href));
-        console.log("😡 deviceSearchDivision : ", assetState.deviceSearchDivision);*/
-
         if (assetState.deviceSearchDivision) {
             setSchValue({
                 ...schValue,
@@ -695,21 +690,9 @@ const AssetsSearch = ({ assetState, user, theme }) => {
         }
 
         return () => {
-            /*console.log("🤑🤑 useEffect---> : cleanup");
-            console.log("🤑 val : ", assetState.deviceMenuUrl);
-            console.log("🤑 url : ", window.location.href);
-            console.log("🤑 deviceSearchDivision : ", assetState.deviceSearchDivision);*/
             dispatch(setDeviceSearchDivision(true));
         };
     }, [assetState.deviceMenuUrl]);
-
-/*
-    useEffect(() => {
-        console.log("👾👾 useEffect---> : start");
-        return () => {
-            console.log("👾👾 deviceMenuUrl 👾👾 cleanup.....");
-        };
-    }, [assetState.deviceMenuUrl]);*/
 
     useEffect(() => {
         renderSwitch();
@@ -853,21 +836,6 @@ const AssetsSearch = ({ assetState, user, theme }) => {
                                                     <div>
                                                         <div className="float-right circle-legend">
                                                             {renderTypeSwitch()}
-                                                            {/*<div className="float-left">
-                                                            <span className="circle__eth"/>
-                                                                  서버
-                                                                ({assetState.deviceStatistics.serverCount})&nbsp;&nbsp;
-                                                            </div>
-                                                            <div className="float-left">
-                                                            <span className="circle__ste"/>
-                                                                  스토리지
-                                                                ({assetState.deviceStatistics.storageCount})&nbsp;&nbsp;
-                                                            </div>
-                                                            <div className="float-left">
-                                                            <span className="circle__neo"/>
-                                                                  기타
-                                                                ({assetState.deviceStatistics.etcCount})&nbsp;&nbsp;
-                                                            </div>*/}
                                                         </div>
                                                     </div>
                                                 </Grid>
@@ -1013,7 +981,7 @@ const AssetsSearch = ({ assetState, user, theme }) => {
                                                 </Select>
                                             </FormControl>
                                             <FormControl className={classes.formControl}>
-                                                <InputLabel id="text-select-label">select</InputLabel>
+                                                <InputLabel id="text-select-label">SelectField</InputLabel>
                                                 <Select
                                                     labelId="text-select-label"
                                                     open={open.schSelectOpen}

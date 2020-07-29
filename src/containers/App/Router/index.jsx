@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import MainWrapper from '../MainWrapper';
 import WrappedRoutes from './WrappedRoutes';
 import CbWrappedRoutes from './CbWrappedRoutes';
+import MicroWrappedRoutes from './MicroWrappedRoutes';
 import LogInPage from "../../Login/LogInPage";
 import LogInEmailAuth from "../../Login/AuthFromEmail";
 import EdgeLaunch, {CheckIE} from "../../Common/BrowserCheck";
@@ -20,6 +21,7 @@ const Router = () => {
                         <Route path="/login/email/:id/:target/:secret" component={LogInEmailAuth}/>
                         <Route path="/login" component={LogInPage}/>
                         <Route path="/org" component={WrappedRoutes}/>
+                        <Route path="/micro" component={MicroWrappedRoutes}/>
                         <Route path="/" component={CbWrappedRoutes}/>
                     </Switch>
                 </main>

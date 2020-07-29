@@ -15,8 +15,6 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
 import TableContainer from "@material-ui/core/TableContainer";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import Collapse from '@material-ui/core/Collapse';
 import {makeStyles} from "@material-ui/core/styles";
 import Box from '@material-ui/core/Box';
