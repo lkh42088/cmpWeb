@@ -12,26 +12,12 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import Grid from "@material-ui/core/Grid";
 import AddIcon from "@material-ui/icons/Add";
 import RefreshIcon from '@material-ui/icons/Refresh';
-import Pagination from "@material-ui/lab/Pagination";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import {useDispatch, useSelector} from "react-redux";
 import ReactTooltip from "react-tooltip";
-import {Button} from "@material-ui/core";
 import TablePagination from "@material-ui/core/TablePagination";
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
-import {
-    pagingChangeCurrentPage,
-    pagingChangeDense,
-    pagingChangeRowsPerPage,
-} from "../../../../../redux/actions/pagingActions";
-import SubnetSearchBar from "./SubnetSearchBar";
-import BootstrapInput from "../../../../Common/BootstrapInput";
-import CommonTableExportCSV from "../../../../Common/CommonTableExportCSV";
-import CustomSlider from "../../../../Common/CustomSlider";
+import CommonTableExportCSV from "../../../Common/CommonTableExportCSV";
+import CustomSlider from "../../../Common/CustomSlider";
 
 const useToolbarStyles = makeStyles(theme => ({
     root: {
@@ -207,35 +193,21 @@ const TableFilterButton = (props) => {
 
 const SubnetTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const dispatch = useDispatch();
     const {
         rows, numSelected, handleDeleteSelected, onRequestSort,
         handleOpen, contents, handleRefresh, handleSubmitSearch,
         count, rowsPerPage, page, onChangePage, onChangeRowsPerPage,
         rowsPerPageOptions, defaultHeight, setTableHeight, data,
     } = props;
-    const addComment = contents.concat(" 추가");
     const deleteComment = `선택한 ${contents} 삭제`;
 
-    // /** Pagination */
-    // const handleChangePage = (event, newPage) => {
-    //     console.log("change page: ", newPage);
-    //     dispatch(pagingChangeCurrentPage({currentPage: newPage}));
-    // };
-
-    // /** Pagination */
-    // const handleChangeRowsPerPage = (e) => {
-    //     const changeRows = Number(e.target.value);
-    //     dispatch(pagingChangeRowsPerPage({rowsPerPage: changeRows}));
-    // };
-    //
-    // /** Pagination */
-    // const handleChangeDense = (event) => {
-    //     dispatch(pagingChangeDense({checked: event.target.checked}));
-    // };
-    // const handleDelete = () => {
-    //     console.log("handleDelete...");
-    // };
+    const handleKeyDown = (e) => {
+        if (e.target.value === '') {
+            handleSubmitSearch(e.target.value);
+        } else if (e.key === 'Enter') {
+            handleSubmitSearch(e.target.value);
+        }
+    };
 
     const handleSliderChange = (e, val) => {
         setTableHeight((val * 20));
@@ -294,7 +266,6 @@ const SubnetTableToolbar = (props) => {
                               direction="row"
                               justify="space-between"
                               alignItems="center"
-                              // className={classes.grid}
                         >
                             <Grid item md={2}>
                                 {/*Button Collection : Add, Refresh, Filter, ExportCSV*/}
@@ -348,7 +319,7 @@ const SubnetTableToolbar = (props) => {
                                             input: classes.inputInput,
                                         }}
                                         inputProps={{ 'aria-label': 'search' }}
-                                        // onKeyDown={handleKeyDown}
+                                        onKeyDown={handleKeyDown}
                                     />
                                 </div>
                             </Grid>

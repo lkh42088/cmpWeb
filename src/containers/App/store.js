@@ -25,7 +25,6 @@ import {
 import {checkLoginUser, userSaga} from "../../redux/actions/loginActions";
 import {usersSaga} from "../../redux/actions/usersActions";
 import {companiesSaga} from "../../redux/actions/companiesActions";
-import {createSubnetSaga} from "../../redux/actions/subnetActions";
 
 const rootReducer = combineReducers({
     form: reduxFormReducer, // mounted under "form",
@@ -50,7 +49,6 @@ export function* rootSaga() {
         userSaga(),
         usersSaga(),
         companiesSaga(),
-        createSubnetSaga(),
     ]);
 }
 

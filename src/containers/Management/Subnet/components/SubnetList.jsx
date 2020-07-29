@@ -1,68 +1,44 @@
 import React, {useEffect, useState} from "react";
-import {
-    Card,
-    CardBody,
-    Col,
-} from 'reactstrap';
-import moment from "moment";
+import {Card, Col} from 'reactstrap';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TablePagination from '@material-ui/core/TablePagination';
 import {useDispatch, useSelector} from "react-redux";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
-import TableContainer from "@material-ui/core/TableContainer";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import Collapse from '@material-ui/core/Collapse';
 import {makeStyles, withStyles} from "@material-ui/core/styles";
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import GroupIcon from '@material-ui/icons/Group';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {useSnackbar} from "notistack";
-import {
-IconButton, InputBase, Select, Tooltip,
-} from "@material-ui/core";
-import InputLabel from '@material-ui/core/InputLabel';
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
+import {IconButton} from "@material-ui/core";
 import BlurOnOutlinedIcon from '@material-ui/icons/BlurOnOutlined';
 import BuildIcon from '@material-ui/icons/Build';
 import ReactTooltip from "react-tooltip";
-import MUIDataTable from "mui-datatables";
 import {
     pagingChangeCurrentPage,
-    pagingChangeCurrentPageNext,
-    pagingChangeCurrentPagePrev,
-    pagingChangeDense,
-    pagingChangeOrder,
-    pagingChangeOrderBy,
     pagingChangeOrderByWithReset,
     pagingChangeRowsPerPage,
     pagingChangeSelected, pagingChangeSorting,
     pagingChangeTotalCount,
-    pagingDump,
-} from "../../../../../redux/actions/pagingActions";
-import {getUserList, getUserListWithSearchParam, initRegisterUser} from "../../../../../redux/actions/usersActions";
-import {registerUser, unregisterUser} from "../../../../../lib/api/users";
-import BootstrapInput from "../../../../Common/BootstrapInput";
-import {readSubnet, deleteSubnets} from "../../../../../lib/api/subnet";
+} from "../../../../redux/actions/pagingActions";
+import {
+    readSubnet, deleteSubnets, createSubnet, updateSubnet,
+} from "../../../../lib/api/subnet";
 import SubnetTableToolbar from "./SubnetTableToolbar";
-import CommonTableHead from "../../../../Common/CommonTableHead";
-import ConfirmSnackbar from "../../../../Common/ConfirmSnackbar";
-import {limitLongString} from "../../../../../lib/utils/utils";
-import SubnetWriteForm from "../../CreateSubnet/components/SubnetWriteForm";
-import DialogForm from "../../../../Common/DialogForm";
+import CommonTableHead from "../../../Common/CommonTableHead";
+import ConfirmSnackbar from "../../../Common/ConfirmSnackbar";
+import {limitLongString} from "../../../../lib/utils/utils";
+import SubnetWriteForm from "./SubnetWriteForm";
+import DialogForm from "../../../Common/DialogForm";
 
 const headRows = [
-    {name: 'idx', label: 'IDX', options: {filter: true, sort: true}},
-    {name: 'subnetTag', label: 'SUBNET TAG', options: {filter: true, sort: true}},
-    {name: 'subnet', label: 'SUBNET', options: {filter: true, sort: true}},
-    {name: 'subnetMask', label: 'SUBNET MASK', options: {filter: true, sort: true}},
-    {name: 'gateway', label: 'GATEWAY', options: {filter: true, sort: true}},
+    {id: 'idx', disablePadding: false, label: 'IDX'},
+    {id: 'subnetTag', disablePadding: false, label: 'SUBNET TAG'},
+    {id: 'subnet', disablePadding: false, label: 'SUBNET'},
+    {id: 'subnetMask', disablePadding: false, label: 'SUBNET MASK'},
+    {id: 'gateway', disablePadding: false, label: 'GATEWAY'},
 ];
 
 /**************************************************************
@@ -126,28 +102,13 @@ const useStyles = makeStyles((theme) => {
     return null;
 });
 
-const __SubnetList = () => {
+const SubnetList = () => {
     /**************************************************************
      * Variable
      **************************************************************/
     const classes = useStyles();
     const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar();
-    // const {
-    //     /** Paging User Data */
-    //     data,
-    //     getPage,
-    //     /** Register User */
-    //     msg,
-    //     msgError,
-    // } = useSelector(({ usersRd }) => ({
-    //     /** Paging User Data */
-    //     data: usersRd.data,
-    //     getPage: usersRd.page,
-    //     /** Register User */
-    //     msg: usersRd.msg,
-    //     msgError: usersRd.msgError,
-    // }));
     const [state, setState] = useState({
         data: [],
         page: [],
@@ -185,25 +146,17 @@ const __SubnetList = () => {
     /** Add User in TableToolbar */
     const [openAddUser, setOpenAddUser] = React.useState(false);
     const [searchParam, setSearchParam] = useState(null);
-    const [tableHeight, setTableHeight] = useState(580);
+    const [tableHeight, setTableHeight] = useState(600);
     const [open, setOpen] = useState(false);
     const [openModal, setOpenModal] = useState(false);
+    const [title, setTitle] = useState('');
+    const [selectedData, setSelectedData] = useState(null);
+    const [create, setCreate] = useState(true);
     const [warningContents, setWarningContents] = useState('');
 
     /**************************************************************
      * Function
      **************************************************************/
-
-    /** Add User in TableToolbar */
-    const handleOpenAddUser = () => {
-        setOpenAddUser(true);
-    };
-
-    /** Add User in TableToolbar */
-    const handleCloseAddUser = () => {
-        setOpenAddUser(false);
-    };
-
     const handleSnackbarFailure = (snackMsg) => {
         enqueueSnackbar(snackMsg);
     };
@@ -261,75 +214,28 @@ const __SubnetList = () => {
         }));
     };
 
-    // const getPageData = () => {
-    //     let offset = 0;
-    //     if (currentPage > 0) {
-    //         offset = rowsPerPage * currentPage;
-    //     }
-    //     console.log("get Page Data: rows ", rowsPerPage, ", offset ", offset,
-    //         ", orderBy ", orderBy, ", order ", order, ", searchParam ", searchParam);
-    //     if (searchParam !== null) {
-    //         dispatch(getUserListWithSearchParam({
-    //             rows: rowsPerPage, offset, orderBy, order, searchParam,
-    //         }));
-    //     } else {
-    //         dispatch(getUserList({
-    //             rows: rowsPerPage, offset, orderBy, order,
-    //         }));
-    //     }
-    // };
-
     /**************************************************************
      * Axios Function
      **************************************************************/
-    // const addUser = async (user) => {
-    //     const {
-    //         cpIdx, cpName, id, password, name, email,
-    //         cellPhone, level, userZip, userAddr, userAddrDetail,
-    //         emailAuthValue, emailAuthGroupList,
-    //     } = user;
-    //     try {
-    //         const response = await registerUser({
-    //             cpIdx,
-    //             cpName,
-    //             id,
-    //             password,
-    //             name,
-    //             email,
-    //             authLevel: Number(level),
-    //             hp: cellPhone,
-    //             zipCode: userZip,
-    //             address: userAddr,
-    //             addressDetail: userAddrDetail,
-    //             emailAuthFlag: emailAuthValue === "1",
-    //             emailAuthGroupFlag: emailAuthValue === "2",
-    //             emailAuthGroupList,
-    //         });
-    //         // handleSnackbarSuccess("계정 등록에 성공하였습니다.");
-    //         // getPageData();
-    //     } catch {
-    //         // handleSnackbarFailure("계정 등록에 실패하였습니다.");
-    //     }
-    // };
-
     const getData = async () => {
         // console.log("★★★★★★★★", "get Data!!");
         try {
             let response;
-            if (searchParam !== null) {
+            if (searchParam !== null && searchParam !== '') {
+                console.log("★★★★", currentPage, rowsPerPage, searchParam);
                 response = await readSubnet({
                     rows: rowsPerPage,
-                    offset: (currentPage === 0) ? 0 : (currentPage - 1) * rowsPerPage,
+                    offset: (currentPage === 0) ? 0 : currentPage * rowsPerPage,
                     orderBy,
                     order,
+                    searchParam,
                 });
             } else {
                 response = await readSubnet({
                     rows: rowsPerPage,
-                    offset: (currentPage === 0) ? 0 : (currentPage - 1) * rowsPerPage,
+                    offset: (currentPage === 0) ? 0 : currentPage * rowsPerPage,
                     orderBy,
                     order,
-                    searchParam,
                 });
             }
             setState({
@@ -363,26 +269,46 @@ const __SubnetList = () => {
         }
     };
 
-    // const deleteSubnets = async (subnets) => {
-    //     try {
-    //         const response = await unregisterUser({idx: subnets});
-    //         getData();
-    //         // handleSnackbarSuccess("계정 삭제에 성공하였습니다.");
-    //     } catch (error) {
-    //         getData();
-    //         // handleSnackbarFailure("계정 삭제에 실패하였습니다.");
-    //     }
-    // };
+    const createData = async (data) => {
+        // console.log("★★★★★★★★", "Create Data!! ", data);
+        try {
+            const response = await createSubnet({
+                subnetTag: data.subnetTag,
+                subnetStart: data.subnetStart,
+                subnetEnd: data.subnetEnd,
+                subnetMask: data.subnetMask,
+                gateway: data.gateway,
+            });
+            // console.log(response);
+            getData();
+            handleSnackbarSuccess("SUBNET 생성에 성공 하였습니다.");
+        } catch {
+            handleSnackbarFailure("SUBNET 생성에 실패 하였습니다.");
+        }
+    };
+
+    const modifyData = async (data) => {
+        // console.log("★★★★★★★★", "Modify Data!! ", data);
+        try {
+            const response = await updateSubnet({
+                idx: data.idx,
+                subnetTag: data.subnetTag,
+                subnetStart: data.subnetStart,
+                subnetEnd: data.subnetEnd,
+                subnetMask: data.subnetMask,
+                gateway: data.gateway,
+            });
+            // console.log(response);
+            getData();
+            handleSnackbarSuccess("SUBNET 수정에 성공 하였습니다.");
+        } catch {
+            handleSnackbarFailure("SUBNET 수정에 실패 하였습니다.");
+        }
+    };
 
     /**************************************************************
      * Event Handler
      **************************************************************/
-    const handleSubmitAddUser = (user) => {
-        console.log("handleSubmit() : user ", user);
-        // addUser(user);
-        handleCloseAddUser();
-    };
-
     const handleRefresh = () => {
         getData();
     };
@@ -393,18 +319,47 @@ const __SubnetList = () => {
     };
 
     const handleOpenModal = () => {
-        console.log("★★★★", " Open Modal ");
+        setSelectedData({
+            idx: 0,
+            subnetTag: '',
+            subnetStart: '',
+            subnetEnd: '',
+            subnetMask: '',
+            gateway: '',
+        });
+        setTitle("서브넷 추가");
+        setCreate(true);
         setOpenModal(true);
     };
 
     const handleCloseModal = () => {
-        console.log("★★★★", " Close Modal ");
         setOpenModal(false);
     };
 
-    const handleSubmitModal = () => {
-        console.log("★★★★", " Submit Modal ");
+    const handleSubmitModal = (data) => {
+        if (create) {
+            createData(data);
+        } else {
+            modifyData(data);
+        }
         setOpenModal(false);
+    };
+
+    const handleSubmitSearchModal = (search) => {
+        setSearchParam(search);
+        getData();
+
+        /** Init value */
+        setSearchParam('');
+    };
+
+    const handleModifySelected = (id) => {
+        const row = state.data.filter(item => item.idx === id);
+        setSelectedData(row[0]);
+
+        setTitle("서브넷 수정");
+        setCreate(false);
+        setOpenModal(true);
     };
 
     const handleSubmitSearch = (params) => {
@@ -451,24 +406,9 @@ const __SubnetList = () => {
     }, [state.page.count]);
 
     useEffect(() => {
-        console.log("useEffect: searchParam ", searchParam);
+        // console.log("useEffect: searchParam ", searchParam);
         getData();
     }, [searchParam]);
-
-    // useEffect(() => {
-    //     if (msg) {
-    //         // handleSnackbarSuccess("계정 등록에 성공하였습니다.");
-    //         dispatch(initRegisterUser());
-    //         getPageData();
-    //     }
-    // }, [msg]);
-    //
-    // useEffect(() => {
-    //     if (msgError) {
-    //         dispatch(initRegisterUser());
-    //         // handleSnackbarFailure("계정 등록에 실패하였습니다.");
-    //     }
-    // }, [msgError]);
 
     /**************************************************************
      * Component
@@ -477,35 +417,10 @@ const __SubnetList = () => {
     /**************************************************************
      * JSX Template
      **************************************************************/
-    const getAddress = (row) => {
-        let address = "-";
-        if (row.zipcode) {
-            address = row.zipcode;
-            address = address.concat(', ');
-        }
-        if (row.address) {
-            address = address.concat(row.address);
-        }
-        if (row.addressDetail) {
-            if (row.address) {
-                address = address.concat(', ');
-                address = address.concat(row.addressDetail);
-            } else {
-                address = address.concat(row.addressDetail);
-            }
-        }
-        return address;
-    };
-
-    const options = {
-        filterType: 'checkbox',
-    };
-
     const ContentsRow = (props) => {
         const { row } = props;
         const [openCollapse, setOpenCollapse] = React.useState(false);
         const isSelected = getSelected(row.idx);
-        const address = getAddress(row);
         return (
             <React.Fragment>
                 <TableRow
@@ -555,12 +470,6 @@ const __SubnetList = () => {
                     >
                         {row.subnetMask}
                     </TableCell>
-                    {/*<TableCell*/}
-                    {/*    className="cb-material-table__cell"*/}
-                    {/*    style={{width: "25%"}}*/}
-                    {/*>*/}
-                    {/*    {row.gateway}*/}
-                    {/*</TableCell>*/}
                     <TableCell
                         className="cb-material-table__cell"
                         style={{width: "30%"}}
@@ -572,7 +481,7 @@ const __SubnetList = () => {
                                 <IconButton
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        // handleModifySelectedUser(row.idx);
+                                        handleModifySelected(row.idx);
                                     }}
                                 >
                                     {/*<EditIcon color="secondary"/>*/}
@@ -699,60 +608,59 @@ const __SubnetList = () => {
     return (
         <Col>
             <Card className="cb-card-subnet">
-                {/*<Grid container style={{display: "flex"}}>*/}
-                {/*    <Grid item md={12}>*/}
-                {/*        <SubnetTableToolbar*/}
-                {/*            numSelected={[...selected].filter(el => el[1]).length}*/}
-                {/*            handleDeleteSelected={handleDeleteSelected}*/}
-                {/*            onRequestSort={handleRequestSort}*/}
-                {/*            handleRefresh={handleRefresh}*/}
-                {/*            rows={headRows}*/}
-                {/*            handleOpen={handleOpenModal}*/}
-                {/*            handleSubmitSearch={handleSubmitSearch}*/}
-                {/*            contents="SUBNET"*/}
-                {/*            count={totalCount}*/}
-                {/*            rowsPerPage={rowsPerPage}*/}
-                {/*            page={currentPage}*/}
-                {/*            onChangePage={handleChangePage}*/}
-                {/*            onChangeRowsPerPage={handleChangeRowsPerPage}*/}
-                {/*            rowsPerPageOptions={displayRowsList}*/}
-                {/*            defaultHeight={30}*/}
-                {/*            setTableHeight={setTableHeight}*/}
-                {/*            data={state.data}*/}
-                {/*        />*/}
-                {/*    </Grid>*/}
-                {/*</Grid>*/}
+                <Grid container style={{display: "flex"}}>
+                    <Grid item md={12}>
+                        <SubnetTableToolbar
+                            numSelected={[...selected].filter(el => el[1]).length}
+                            handleDeleteSelected={handleDeleteSelected}
+                            onRequestSort={handleRequestSort}
+                            handleRefresh={handleRefresh}
+                            rows={headRows}
+                            handleOpen={handleOpenModal}
+                            handleSubmitSearch={handleSubmitSearch}
+                            contents="SUBNET"
+                            count={totalCount}
+                            rowsPerPage={rowsPerPage}
+                            page={currentPage}
+                            onChangePage={handleChangePage}
+                            onChangeRowsPerPage={handleChangeRowsPerPage}
+                            rowsPerPageOptions={displayRowsList}
+                            defaultHeight={30}
+                            setTableHeight={setTableHeight}
+                            data={state.data}
+                        />
+                    </Grid>
+                </Grid>
                 <div className="cb-material-table__wrap"
-                     // style={{
-                     //     height: tableHeight,
-                     //     transition: "height 0.3s 0.1s",
-                     // }}
+                     style={{
+                         height: tableHeight,
+                         transition: "height 0.3s 0.1s",
+                     }}
                 >
-                    <MUIDataTable
-                        title="SUBNET LIST"
-                        data={state.data}
-                        columns={headRows}
-                        options={options}
-                        draggableColumns="true"
-                    />
-                        {/*<CommonTableHead*/}
-                        {/*    classes={classes}*/}
-                        {/*    numSelected={[...selected].filter(el => el[1]).length}*/}
-                        {/*    order={order}*/}
-                        {/*    orderBy={orderBy}*/}
-                        {/*    onSelectAllClick={handleSelectAllClick}*/}
-                        {/*    onRequestSort={handleRequestSort}*/}
-                        {/*    rowCount={state.data && state.data.length ? state.data.length : 0}*/}
-                        {/*    rows={headRows}*/}
-                        {/*/>*/}
-                        {/*<TableBody>*/}
-                        {/*    { state.data && state.data.map((row, index) => {*/}
-                        {/*        const keyId = index;*/}
-                        {/*        return (*/}
-                        {/*            <ContentsRow key={keyId} row={row} />*/}
-                        {/*        );*/}
-                        {/*    })}*/}
-                        {/*</TableBody>*/}
+                    <Table
+                        stickyHeader
+                        className="cb-material-table-fixed"
+                        size={densePadding ? 'small' : 'medium'}
+                    >
+                        <CommonTableHead
+                            classes={classes}
+                            numSelected={[...selected].filter(el => el[1]).length}
+                            order={order}
+                            orderBy={orderBy}
+                            onSelectAllClick={handleSelectAllClick}
+                            onRequestSort={handleRequestSort}
+                            rowCount={state.data && state.data.length ? state.data.length : 0}
+                            rows={headRows}
+                        />
+                        <TableBody>
+                            { state.data && state.data.map((row, index) => {
+                                const keyId = index;
+                                return (
+                                    <ContentsRow key={keyId} row={row} />
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
                     <ConfirmSnackbar
                         open={open}
                         warningContents={warningContents}
@@ -764,13 +672,21 @@ const __SubnetList = () => {
             {/*Modal component for Add & Modify*/}
             <DialogForm
                 open={openModal}
-                title="서브넷 추가"
+                title={title}
                 icon={<BlurOnOutlinedIcon />}
+                width="600px"
                 childComponent={(
                     <SubnetWriteForm
                         handleClose={handleCloseModal}
                         handleSubmit={handleSubmitModal}
-                        data={state.data}
+                        handleSubmitSearch={handleSubmitSearchModal}
+                        subnetIdxValue={selectedData && selectedData.idx}
+                        subnetStartValue={selectedData && selectedData.subnetStart}
+                        subnetEndValue={selectedData && selectedData.subnetEnd}
+                        subnetTagValue={selectedData && selectedData.subnetTag}
+                        subnetMaskValue={selectedData && selectedData.subnetMask}
+                        gatewayValue={selectedData && selectedData.gateway}
+                        create={create}
                     />
                     )}
             />
@@ -778,4 +694,4 @@ const __SubnetList = () => {
     );
 };
 
-export default React.memo(__SubnetList);
+export default React.memo(SubnetList);

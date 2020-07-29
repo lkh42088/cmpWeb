@@ -1,18 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
-    Card, CardBody, Col, Row, Button, ButtonToolbar, Container,
+    Col, Row, Button, ButtonToolbar, Container,
 } from 'reactstrap';
-import {
-    Field, formValueSelector, reduxForm,
-} from 'redux-form';
-import {connect, useDispatch} from "react-redux";
-import FormControl from "@material-ui/core/FormControl";
-import FilledInput from "@material-ui/core/FilledInput";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import IconButton from "@material-ui/core/IconButton";
-import CheckBoxIcon from "@material-ui/icons/CheckBox";
-import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import IPut from "iput";
 import {makeStyles} from "@material-ui/core/styles";
 
@@ -60,12 +49,11 @@ const useStyles = makeStyles(theme => ({
 
 const SubnetWriteForm = (props) => {
     const classes = useStyles();
-    const dispatch = useDispatch();
     const {
-        error, pristine, reset, submitting,
+        pristine, submitting,
         subnetIdxValue, subnetStartValue, subnetEndValue,
         subnetTagValue, subnetMaskValue, gatewayValue,
-        open, handleClose, handleSubmit, create,
+        handleClose, handleSubmit, create,
     } = props;
 
     const [fields, setFields] = useState({
@@ -77,13 +65,6 @@ const SubnetWriteForm = (props) => {
         gateway: '',
     });
     
-    const handleChangeField = (label, value) => {
-        setFields({
-            ...fields,
-            [label]: value,
-        });  
-    };
-
     const handleSubnetStart = (val) => {
         setFields({
             ...fields,
@@ -130,7 +111,6 @@ const SubnetWriteForm = (props) => {
             gateway: fields.gateway,
         });
         handleSubmit(subnet);
-        // dispatch(reset);
         handleClose();
     };
 
@@ -211,7 +191,7 @@ const SubnetWriteForm = (props) => {
                 <Col className={classes.Col}>
                 <div className="form__form-group">
                     <ButtonToolbar className="form__button-toolbar-sub">
-                        <Button color="primary" size={50}
+                        <Button color="primary"
                                 disabled={!(fields.subnetStart && fields.subnetEnd && fields.subnetMask)
                                 || pristine || submitting}
                                 onClick={handleCreate}

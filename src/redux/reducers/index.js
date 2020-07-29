@@ -12,7 +12,6 @@ import loadingReducer from "./loadingReducer";
 import usersReducer from "./usersReducer";
 import pagingReducer from "./pagingReducer";
 import companiesReducer from "./companiesReducer";
-import subnetReducer from "./subnetReducer";
 
 export {
     themeReducer,
@@ -29,5 +28,4 @@ export {
     usersReducer,
     pagingReducer,
     companiesReducer,
-    subnetReducer,
 };
