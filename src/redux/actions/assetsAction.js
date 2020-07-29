@@ -17,7 +17,6 @@ export const GET_DEVICES_SEARCH = 'GET_DEVICES_SEARCH';
 export const SET_DEVICE_DEVICECODE = 'SET_DEVICE_DEVICECODE';
 export const SET_COMMENT = 'SET_COMMENT';
 export const SET_STATUS = 'SET_STATUS';
-//export const SET_MODAL_DIVISION = 'SET_MODAL_DIVISION';
 export const SET_ADD_ELE_IP_DATA = 'SET_ADD_ELE_IP_DATA';
 export const SET_ADD_ELE_SPLA_DATA = 'SET_ADD_ELE_SPLA_DATA';
 export const SET_DEVICE_SELECTED = 'SET_DEVICE_SELECTED';
@@ -29,18 +28,14 @@ export const SET_DEVICE_OUTFLAG_CARRYING = 'SET_DEVICE_OUTFLAG_CARRYING';
 export const SET_API_PAGE = 'SET_API_PAGE';
 export const SET_ASSETS_PAGE = 'SET_ASSETS_PAGE';
 export const SET_DEVICE_LOG = 'SET_DEVICE_LOG';
+export const SET_DEVICE_STATISTICS = 'SET_DEVICE_STATISTICS';
+export const SET_DEVICE_MENU_URL = 'SET_DEVICE_MENU_URL';
+export const SET_DEVICE_SEARCH_DIVISION = 'SET_DEVICE_SEARCH_DIVISION';
 
 // const API_ROUTE = 'http://127.0.0.1:8081/v1';
 // order direction
 // 0 : ASC
 // 1 : DESC
-function checkUndefined(val, reVal) {
-    if (typeof val === 'undefined') {
-        // eslint-disable-next-line no-param-reassign
-        val = reVal;
-    }
-    return val;
-}
 
 function checkOrder(val) {
     if (typeof val === 'undefined' || val === 'asc') {
@@ -63,19 +58,9 @@ function setCodeMap(val, codeType, subType) {
         .filter(d => d !== false);
 }
 
-function setJsonArray(name, value) {
-    /*    deviceDataArray: {
-            [name]: value,
-        }*/
-}
-
-function removeHTML(text) {
-    const tmpStr = /[<][^>]*[>]/gi;
-    //text = text.replace("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
-    return text.replace(tmpStr, "");
-}
-
-//===================================================================================================
+/**
+ ****************************************************************************************
+ **/
 
 export const setState = dispatchVal => async (dispatch) => {
     dispatch({
@@ -84,23 +69,12 @@ export const setState = dispatchVal => async (dispatch) => {
     });
 };
 
-/*export const setViewModalDivision = dispatchVal => async (dispatch) => {
-    dispatch({
-        type: SET_MODAL_DIVISION,
-        payload: dispatchVal,
-    });
-};*/
-
 export const getCodes = dispatchVal => async (dispatch) => {
     try {
-        console.log("💎 getCodes start");
+        console.log("💎 getCodes start : ", dispatchVal.deviceMenuUrl);
         const Codes = await axios.get(`${API_ROUTE}/codes`);
         const SubCodes = await axios.get(`${API_ROUTE}/subcodes`);
-        const codeType = `device_${dispatchVal.deviceType}`;
-
-        /*        console.log("Codes : ", Codes);
-                console.log("SubCodes : ", SubCodes);
-                console.log("codeType : ", codeType);*/
+        const codeType = `device_${dispatchVal.deviceMenuUrl}`;
 
         const DeviceType = setCodeMap(Codes.data, codeType, 'device_type_cd');
         const Manufacture = setCodeMap(Codes.data, codeType, 'manufacture_cd');
@@ -134,28 +108,23 @@ export const getCodes = dispatchVal => async (dispatch) => {
             payload: SubCodes,
         });
     } catch (error) {
-        console.log("error : ", error);
+        console.log("try getCodes error : ", error);
     }
 };
 
 // first dispatch
 export const fetchPosts = assetState => async (dispatch) => {
     try {
-        // first get device
-        console.log("💎 fetchPosts start : ", assetState.apiPageRd);
-        //console.log("assetState : ", assetState.apiPageRd);
+        console.log("💎 fetchPosts start : ", assetState.deviceMenuUrl);
 
-        const deviceTypeData = assetState.deviceType;
-        const outFlag = assetState.deviceOutFlag;
+        const deviceTypeData = assetState.deviceMenuUrl;
+        //const outFlag = assetState.deviceOutFlag;
         const order = checkOrder(assetState.apiPageRd.order);
 
-        // v1/search/devices/:type/:outFlag/:row/:page/:order/:dir/:offsetPage
-        const url = `${API_ROUTE}/search/devices/${assetState.deviceType}/${assetState.apiPageRd.rowsPerPage}/${assetState.apiPageRd.showPage}/${assetState.apiPageRd.orderBy}/${order}/${assetState.apiPageRd.offsetPage}`;
+        const url = `${API_ROUTE}/search/devices/${assetState.deviceMenuUrl}/${assetState.apiPageRd.rowsPerPage}/${assetState.apiPageRd.showPage}/${assetState.apiPageRd.orderBy}/${order}/${assetState.apiPageRd.offsetPage}`;
+        const cntUrl = `${API_ROUTE}/search/count/devices/${assetState.deviceMenuUrl}`;
 
-        //router.GET("/v1/search/devices/count/:type", h.GetDevicesTypeCount)
-        const cntUrl = `${API_ROUTE}/search/count/devices/${assetState.deviceType}`;
-
-        //console.log("😅😅 url : ", url);
+        //console.log("fetchPosts cntUrl : ", cntUrl);
 
         const postJsonData = JSON.stringify(assetState.searchRd);
 
@@ -165,14 +134,15 @@ export const fetchPosts = assetState => async (dispatch) => {
             data: postJsonData,
         })
             .then((response) => {
-                console.log("★ response ... : ", response);
-                console.log("★ response.data ... : ", response.data);
-                console.log("★ response.TypeServerCount ... : ", response.TypeServerCount);
+                console.log("response.data : ", response.data);
+                dispatch({
+                    type: SET_DEVICE_STATISTICS,
+                    payload: response.data,
+                });
             })
             .catch((error) => {
-                console.log('error : ', error.response);
+                console.log('fetchPosts axios error : ', error.response);
             });
-
 
         axios({
             method: 'post',
@@ -181,7 +151,7 @@ export const fetchPosts = assetState => async (dispatch) => {
         })
             .then((response) => {
                 const dispatchVal = ({
-                    deviceType: assetState.deviceType,
+                    deviceType: assetState.deviceMenuUrl,
                     orderBy: assetState.apiPageRd.orderBy,
                     order,
                     rowsPerPage: assetState.apiPageRd.rowsPerPage,
@@ -189,8 +159,6 @@ export const fetchPosts = assetState => async (dispatch) => {
                     outFlag: assetState.deviceOutFlag,
                     offsetPage: assetState.apiPageRd.offsetPage,
                 });
-
-                console.log("response : ", response.data);
 
                 dispatch({
                     type: GET_DEVICES,
@@ -205,7 +173,7 @@ export const fetchPosts = assetState => async (dispatch) => {
                 });
             })
             .catch((error) => {
-                console.log('error : ', error.response);
+                console.log('fetchPosts error : ', error.response);
             });
     } catch (error) {
         dispatch({
@@ -214,7 +182,7 @@ export const fetchPosts = assetState => async (dispatch) => {
             deviceType: 'server',
             page: 0,
         });
-        console.log("error : ", error);
+        console.log("try deviceStatistics error : ", error);
     }
 };
 
@@ -245,7 +213,7 @@ export const fetchPostsCheckCount = (assetState, dispatchVal) => async (dispatch
                 });
             })
             .catch((error) => {
-                console.log('error : ', error.response);
+                console.log('fetchPostsCheckCount axios error : ', error.response);
             });
     } catch (error) {
         dispatch({
@@ -254,11 +222,11 @@ export const fetchPostsCheckCount = (assetState, dispatchVal) => async (dispatch
             deviceType: 'server',
             page: 0,
         });
-        console.log(" fetchPostsCheckCount error : ", error);
+        console.log("try fetchPostsCheckCount error : ", error);
     }
 };
 
-// 리스트에서 검색
+// list search dispatch
 export const fetchPostSearchDevice = (assetState, dispatchVal) => async (dispatch) => {
     try {
         console.log("💎 fetchPostSearchDevice start : ", dispatchVal);
@@ -270,7 +238,8 @@ export const fetchPostSearchDevice = (assetState, dispatchVal) => async (dispatc
         const offsetPage = 0;
 
         // v1/search/devices/:type/:outFlag/:row/:page/:order/:dir/:offsetPage
-        const url = `${API_ROUTE}/search/devices/${assetState.deviceType}/${rowsPerPage}/1/${orderBy}/${order}/${offsetPage}`;
+        const url = `${API_ROUTE}/search/devices/${assetState.deviceMenuUrl}/${rowsPerPage}/1/${orderBy}/${order}/${offsetPage}`;
+        const cntUrl = `${API_ROUTE}/search/count/devices/${assetState.deviceMenuUrl}`;
 
         if (dispatchVal.customer !== '' && dispatchVal.customer !== undefined) {
             axios({
@@ -306,17 +275,17 @@ export const fetchPostSearchDevice = (assetState, dispatchVal) => async (dispatc
                                 dispatch({
                                     type: GET_DEVICES_CHECKCOUNT,
                                     payload: responseSearch.data,
-                                    deviceType: assetState.deviceType,
+                                    deviceType: assetState.deviceMenuUrl,
                                     page: responseSearch.data,
                                 });
                             })
                             .catch((error) => {
-                                console.log('error : ', error.response);
+                                console.log('fetchPostSearchDevice axios error : ', error.response);
                             });
                     }
                 })
                 .catch((error) => {
-                    console.log('error : ', error.response);
+                    console.log('fetchPostSearchDevice axios error : ', error.response);
                 });
         } else { // 그 외
             axios({
@@ -328,7 +297,7 @@ export const fetchPostSearchDevice = (assetState, dispatchVal) => async (dispatc
                     dispatch({
                         type: GET_DEVICES_CHECKCOUNT,
                         payload: responseSearch.data,
-                        deviceType: assetState.deviceType,
+                        deviceType: assetState.deviceMenuUrl,
                         page: responseSearch.data,
                     });
 
@@ -338,18 +307,34 @@ export const fetchPostSearchDevice = (assetState, dispatchVal) => async (dispatc
                     });
                 })
                 .catch((error) => {
-                    console.log('error : ', error.response);
+                    console.log('fetchPostSearchDevice error : ', error.response);
                 });
         }
+
+        axios({
+            method: 'post',
+            url: cntUrl,
+            data: postJsonData,
+        })
+            .then((response) => {
+                dispatch({
+                    type: SET_DEVICE_STATISTICS,
+                    payload: response.data,
+                });
+            })
+            .catch((error) => {
+                console.log('deviceStatistics error : ', error.response);
+            });
     } catch (error) {
-        console.log(" fetchPostSearchDevice error : ", error);
+        console.log("try fetchPostSearchDevice error : ", error);
     }
 };
 
 // 특정 장비 가져오기
 export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
     try {
-        console.log("💎 getDeviceByIdx start");
+        console.log("💎 getDeviceByIdx start : ", `${API_ROUTE}/device/${deviceType}/${deviceCode}`);
+
         dispatch({
             type: SET_DEVICE_DEVICECODE,
             payload: deviceCode,
@@ -357,10 +342,7 @@ export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
 
         const res = await axios.get(`${API_ROUTE}/device/${deviceType}/${deviceCode}`);
         const comments = await axios.get(`${API_ROUTE}/comments/${deviceCode}`);
-        //router.GET("/v1/log/device/:value", h.GetDevicesByLog)
         const logs = await axios.get(`${API_ROUTE}/logs/${deviceCode}`);
-
-        //console.log("★★★★★★★★★★★★★★★★★logs : ", logs.data);
 
         dispatch({
             type: GET_DEVICE_BY_DEVICECODE,
@@ -385,7 +367,7 @@ export const getDeviceByIdx = (deviceCode, deviceType) => async (dispatch) => {
             type: GET_DEVICE_BY_DEVICECODE,
             payload: undefined,
         });
-        console.log("error : ", error);
+        console.log("try getDeviceByIdx error : ", error);
     }
 };
 
@@ -396,120 +378,80 @@ export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) =>
         console.log("💎 getDeviceOriByIdx start : ", deviceCode, deviceType);
         const res = await axios.get(`${API_ROUTE}/raw/device/${deviceType}/${deviceCode}`);
 
-        //console.log("특정 장비 ori res : ", res.data);
-        //console.log("deviceType : ", deviceType);
-
         let deviceIpArray = new Map();
         let deviceSplaArray = new Map();
 
         const jsonData = res.data[0];
-
-        //console.log("jsonData : ", jsonData);
 
         let IpArray = '';
         let SplaArray = '';
         let ipCheckCount = 0;
         let splaCheckCount = 0;
 
-        switch (deviceType) {
-            case 'server':
-                IpArray = jsonData.ip.split("|");
-                // eslint-disable-next-line no-loop-func,no-return-assign
-                IpArray.map(d => (
-                    d !== undefined && d !== "" && (
-                        deviceIpArray = deviceIpArray.set(`ip_${ipCheckCount}`, d),
-                            ipCheckCount += 1
-                    )));
+        if (jsonData !== undefined) {
+            switch (deviceType) {
+                case 'server':
+                    IpArray = jsonData.ip.split("|");
+                    // eslint-disable-next-line no-loop-func,no-return-assign
+                    IpArray.map(d => (
+                        d !== undefined && d !== "" && (
+                            deviceIpArray = deviceIpArray.set(`ip_${ipCheckCount}`, d),
+                                ipCheckCount += 1
+                        )));
 
-                dispatch({
-                    type: SET_ADD_ELE_IP_DATA,
-                    payload: JSON.parse(JSON.stringify(deviceIpArray)),
-                });
+                    dispatch({
+                        type: SET_ADD_ELE_IP_DATA,
+                        payload: JSON.parse(JSON.stringify(deviceIpArray)),
+                    });
 
-                SplaArray = jsonData.spla.split("|");
-                // eslint-disable-next-line no-loop-func,no-return-assign
-                SplaArray.map(d => (
-                    d !== undefined && d !== "" && (
-                        deviceSplaArray = deviceSplaArray.set(`spla_${splaCheckCount}`, d),
-                            splaCheckCount += 1
-                    )));
+                    SplaArray = jsonData.spla.split("|");
+                    // eslint-disable-next-line no-loop-func,no-return-assign
+                    SplaArray.map(d => (
+                        d !== undefined && d !== "" && (
+                            deviceSplaArray = deviceSplaArray.set(`spla_${splaCheckCount}`, d),
+                                splaCheckCount += 1
+                        )));
 
-                dispatch({
-                    type: SET_ADD_ELE_SPLA_DATA,
-                    payload: JSON.parse(JSON.stringify(deviceSplaArray)),
-                });
+                    dispatch({
+                        type: SET_ADD_ELE_SPLA_DATA,
+                        payload: JSON.parse(JSON.stringify(deviceSplaArray)),
+                    });
 
-                break;
-            case 'network':
-                IpArray = jsonData.ip.split("|");
-                // eslint-disable-next-line no-loop-func,no-return-assign
-                IpArray.map(d => (
-                    d !== undefined && d !== "" && (
-                        deviceIpArray = deviceIpArray.set(`ip_${ipCheckCount}`, d),
-                            ipCheckCount += 1
-                    )));
+                    break;
+                case 'network':
+                    IpArray = jsonData.ip.split("|");
+                    // eslint-disable-next-line no-loop-func,no-return-assign
+                    IpArray.map(d => (
+                        d !== undefined && d !== "" && (
+                            deviceIpArray = deviceIpArray.set(`ip_${ipCheckCount}`, d),
+                                ipCheckCount += 1
+                        )));
 
-                dispatch({
-                    type: SET_ADD_ELE_IP_DATA,
-                    payload: JSON.parse(JSON.stringify(deviceIpArray)),
-                });
+                    dispatch({
+                        type: SET_ADD_ELE_IP_DATA,
+                        payload: JSON.parse(JSON.stringify(deviceIpArray)),
+                    });
 
-                dispatch({
-                    type: SET_ADD_ELE_SPLA_DATA,
-                    payload: '',
-                });
-                break;
-            case 'part':
-                dispatch({
-                    type: SET_ADD_ELE_IP_DATA,
-                    payload: '',
-                });
+                    dispatch({
+                        type: SET_ADD_ELE_SPLA_DATA,
+                        payload: '',
+                    });
+                    break;
+                case 'part':
+                    dispatch({
+                        type: SET_ADD_ELE_IP_DATA,
+                        payload: '',
+                    });
 
-                dispatch({
-                    type: SET_ADD_ELE_SPLA_DATA,
-                    payload: '',
-                });
-                break;
-            default:
-                break;
+                    dispatch({
+                        type: SET_ADD_ELE_SPLA_DATA,
+                        payload: '',
+                    });
+                    break;
+                default:
+                    break;
+            }
         }
-
-        // todo 이제는 굳이 시간 들여서 가져올 필요는 없음... 리팩토링 필요
-        // eslint-disable-next-line guard-for-in,no-restricted-syntax
-        /* for (const arrData in jsonData) {
-             //console.log("arrData : ", arrData, ", value : ", jsonData[arrData]);
-
-             if (arrData.indexOf("ip", 0) === 0) {
-                 IpArray = jsonData[arrData].split("|");
-
-                 // eslint-disable-next-line no-loop-func,no-return-assign
-                 IpArray.map(d => (
-                     d !== undefined && d !== "" && (
-                         ipCheckCount === 1000 ? (
-                             ipCheckCount += 1,
-                                 deviceDataArray = deviceDataArray.set(`ip_0`, d)
-                         ) : (
-                             deviceDataArray = deviceDataArray.set(`ip_${ipCheckCount}`, d)
-                         )
-                     )));
-             } else if (arrData.indexOf("spla", 0) === 0) {
-                 SplaArray = jsonData[arrData].split("|");
-
-                 // eslint-disable-next-line no-loop-func,no-return-assign
-                 SplaArray.map(d => (
-                     d !== undefined && d !== "" && (
-                         splaCheckCount === 1000 ? (
-                             splaCheckCount += 1,
-                                 deviceDataArray = deviceDataArray.set(`spla0`, d)
-                         ) : (
-                             deviceDataArray = deviceDataArray.set(`spla${splaCheckCount}`, d)
-                         )
-                     )));
-             } else if (arrData.indexOf("contents", 0) === 0) {
-                 deviceDataArray = deviceDataArray.set(arrData, removeHTML(jsonData[arrData]));
-             }
-             deviceDataArray = deviceDataArray.set(arrData, jsonData[arrData]);
-         }*/
 
         dispatch({
             type: GET_DEVICE_ORI_BY_DEVICECODE,
@@ -521,7 +463,7 @@ export const getDeviceOriByIdx = (deviceCode, deviceType) => async (dispatch) =>
             payload: {},
         });
     } catch (error) {
-        console.log("error : ", error);
+        console.log("try getDeviceOriByIdx error : ", error);
     }
 };
 
@@ -534,14 +476,12 @@ export const getCompanyByName = dispatchVal => async (dispatch) => {
 
         const res = await axios.get(`${API_ROUTE}/companies/${dispatchVal}`);
 
-        //console.log("---> : ", res.data);
-
         dispatch({
             type: GET_COMPANIES,
             payload: res.data,
         });
     } catch (error) {
-        console.log("getCompanyByName error : ", error);
+        console.log("try getCompanyByName error : ", error);
     }
 };
 
@@ -551,8 +491,6 @@ export const getDeviceCommentByDeviceCode = assetState => async (dispatch) => {
         console.log("💎 getDeviceCommentByDeviceCode start");
         //API_ROUTE/device/comments/${deviceCode}/${type}
         const comments = await axios.get(`${API_ROUTE}/comments/${assetState.deviceByDeviceCode}`);
-
-        //console.log(assetState.deviceByDeviceCode, " -> comments : ", comments.data);
 
         const stateVal = ({
             page: 'view',
@@ -573,7 +511,7 @@ export const getDeviceCommentByDeviceCode = assetState => async (dispatch) => {
             type: SET_COMMENT,
             comment: undefined,
         });
-        console.log("getDeviceCommentByDeviceCode error : ", error);
+        console.log("try getDeviceCommentByDeviceCode error : ", error);
     }
 };
 
@@ -583,18 +521,18 @@ export const postDevice = (division, assetState, submitData, pageType) => async 
         console.log("💎 postDevice start");
         let method = '';
         //"API_ROUTE/device/create/$(type)/"
-        let url = `${API_ROUTE}/device/${division}/${assetState.deviceType}`;
+        let url = `${API_ROUTE}/device/${division}/${assetState.deviceMenuUrl}`;
         switch (division) {
             case 'create':
                 method = 'post';
                 break;
             case 'update':
                 method = 'put';
-                url = `${API_ROUTE}/device/${division}/${assetState.deviceType}/${submitData.deviceCode}`;
+                url = `${API_ROUTE}/device/${division}/${assetState.deviceMenuUrl}/${submitData.deviceCode}`;
                 break;
             case 'delete':
                 method = 'delete';
-                url = `${API_ROUTE}/device/${division}/${assetState.deviceType}/${submitData.idx}`;
+                url = `${API_ROUTE}/device/${division}/${assetState.deviceMenuUrl}/${submitData.idx}`;
                 break;
             default:
                 break;
@@ -618,36 +556,9 @@ export const postDevice = (division, assetState, submitData, pageType) => async 
                     type: SET_STATUS,
                     payload: stateVal,
                 });
-
-                /*if (division === 'update') {
-                    axios({method: 'get', url: `${API_ROUTE}/log/device/${submitData.deviceCode}`})
-                        .then((response) => {
-                            dispatch({
-                                type: SET_DEVICE_LOG,
-                                payload: response.data,
-                            });
-                        })
-                        .catch((error) => {
-                            console.log('error : ', error.response);
-                        });
-
-                    axios({
-                        method: 'get',
-                        url: `${API_ROUTE}/device/${assetState.deviceType}/${submitData.deviceCode}`,
-                    })
-                        .then((response) => {
-                            dispatch({
-                                type: GET_DEVICE_BY_DEVICECODE,
-                                payload: response.data,
-                            });
-                        })
-                        .catch((error) => {
-                            console.log('error : ', error.response);
-                        });
-                }*/
             })
             .catch((error) => {
-                console.log('error : ', error.response);
+                console.log('postDevice error : ', error.response);
                 const stateVal = ({
                     page: pageType,
                     type: 'device',
@@ -661,7 +572,7 @@ export const postDevice = (division, assetState, submitData, pageType) => async 
                 });
             });
     } catch (error) {
-        console.log("postDevice error : ", error);
+        console.log("try postDevice error : ", error);
     }
 };
 
@@ -687,8 +598,6 @@ export const postDeviceComment = (division, assetState, submitData, pageType) =>
                 break;
         }
 
-        //console.log("장비 댓글 cud submitData : ", submitData);
-
         const postJsonData = JSON.stringify(submitData);
         axios({
             method,
@@ -708,7 +617,7 @@ export const postDeviceComment = (division, assetState, submitData, pageType) =>
                 });
             })
             .catch((error) => {
-                console.log('error : ', error.response);
+                console.log('postDeviceComment error : ', error.response);
                 const stateVal = ({
                     page: pageType,
                     type: 'comment',
@@ -733,7 +642,7 @@ export const postDeviceComment = (division, assetState, submitData, pageType) =>
             type: SET_STATUS,
             payload: stateVal,
         });
-        console.log("error : ", error);
+        console.log("try postDeviceComment error : ", error);
     }
 };
 
@@ -741,7 +650,7 @@ export const postDeviceComment = (division, assetState, submitData, pageType) =>
 export const postDeviceOutFlag = (assetState, dispatchVal, pageType) => async (dispatch) => {
     try {
         const method = 'put';
-        const url = `${API_ROUTE}/devices/update/${assetState.deviceType}`;
+        const url = `${API_ROUTE}/devices/update/${assetState.deviceMenuUrl}`;
         const postJsonData = JSON.stringify(dispatchVal);
 
         axios({
@@ -762,7 +671,7 @@ export const postDeviceOutFlag = (assetState, dispatchVal, pageType) => async (d
                 });
             })
             .catch((error) => {
-                console.log('error : ', error.response);
+                console.log('submitDeviceOutFlag error : ', error.response);
                 const stateVal = ({
                     page: pageType,
                     type: 'device',
@@ -776,7 +685,7 @@ export const postDeviceOutFlag = (assetState, dispatchVal, pageType) => async (d
                 });
             });
     } catch (error) {
-        console.log("submitDeviceOutFlag error : ", error);
+        console.log("try submitDeviceOutFlag error : ", error);
     }
 };
 
@@ -798,7 +707,7 @@ export const setAddEleData = (type, value) => async (dispatch) => {
             payload: value,
         });
     } catch (error) {
-        console.log("setAddEleData error : ", error);
+        console.log("try setAddEleData error : ", error);
     }
 };
 
@@ -812,68 +721,9 @@ export const setDeviceSelected = dispatchVal => async (dispatch) => {
             payload: dispatchVal,
         });
     } catch (error) {
-        console.log("setAddEleData error : ", error);
+        console.log("try setAddEleData error : ", error);
     }
 };
-/*
-// outFlag 저장
-export const setDeviceOutFlag = (assetState, outFlag, division) => async (dispatch) => {
-    try {
-        console.log("💎 setDeviceOutFlag start"); //SET_DEVICE_SELECTED
-
-        //SET_DEVICE_OUTFLAG_OPERATING, SET_DEVICE_OUTFLAG_CARRYING,
-        //SET_DEVICE_OUTFLAG
-
-        let checkOutFlag;
-        let returnVal;
-
-        if (division === 'operatingFlag') { // 운영값이 넘어오면 반출값 조회 후 판단~
-            checkOutFlag = assetState.searchRd.carryingFlag; //반출값 조회 후
-            if (outFlag) {
-                if (checkOutFlag) {
-                    returnVal = '2';
-                } else {
-                    returnVal = '0';
-                }
-            } else {
-                if (checkOutFlag) {
-                    returnVal = '1';
-                } else {
-                    returnVal = '3';
-                }
-            }
-
-            dispatch({
-                type: SET_DEVICE_OUTFLAG_OPERATING,
-                payload: outFlag,
-            });
-        } else if (division === 'carryingFlag') {
-            checkOutFlag = assetState.searchRd.operatingFlag;
-
-
-            dispatch({
-                type: SET_DEVICE_OUTFLAG_CARRYING,
-                payload: outFlag,
-            });
-        }
-
-        // 운영값이 넘어오면 반출값 조회 후 판단~
-            // 반출값 조회
-            // 넘어온 운영값이 true
-                // 반출값이 true
-                    // outFlag = '2' -> 둘다 true
-                // 반출값이 false
-                    // outFlag = '2'
-            // 넘어온 운영값이 false
-                // outFlag = '1'
-        // 반출값이 넘어오면 운영값 조회 후 판단~
-            // 운영값 조회
-
-       //fetchPostSearchDevice(assetState, assetState.searchRd);
-    } catch (error) {
-        console.log("setDeviceOutFlag error : ", error);
-    }
-};*/
 
 // deviceType 저장
 export const setDeviceType = dispatchVal => async (dispatch) => {
@@ -885,7 +735,7 @@ export const setDeviceType = dispatchVal => async (dispatch) => {
             payload: dispatchVal,
         });
     } catch (error) {
-        console.log("setDeviceType error : ", error);
+        console.log("try setDeviceType error : ", error);
     }
 };
 
@@ -899,7 +749,7 @@ export const setAssetsPage = dispatchVal => async (dispatch) => {
             payload: dispatchVal,
         });
     } catch (error) {
-        console.log("setDeviceType error : ", error);
+        console.log("try setDeviceType error : ", error);
     }
 };
 
@@ -913,7 +763,7 @@ export const setApiPage = dispatchVal => async (dispatch) => {
             payload: dispatchVal,
         });
     } catch (error) {
-        console.log("setApiPage error : ", error);
+        console.log("try setApiPage error : ", error);
     }
 };
 
@@ -927,7 +777,7 @@ export const setSearch = dispatchVal => async (dispatch) => {
             payload: dispatchVal,
         });
     } catch (error) {
-        console.log("setSearch error : ", error);
+        console.log("try setSearch error : ", error);
     }
 };
 
@@ -942,6 +792,46 @@ export const setDeviceLog = dispatchVal => async (dispatch) => {
             payload: res.data,
         });
     } catch (error) {
-        console.log("setDeviceLog error : ", error);
+        console.log("try setDeviceLog error : ", error);
+    }
+};
+
+// MENU URL 저장
+export const setDeviceMenuUrl = dispatchVal => async (dispatch) => {
+    try {
+        console.log("💎 setDeviceMenuUrl start : ", dispatchVal);
+
+        dispatch({
+            type: SET_DEVICE_MENU_URL,
+            payload: dispatchVal,
+        });
+    } catch (error) {
+        console.log("try setDeviceMenuUrl error : ", error);
+    }
+};
+
+export const setDeviceSearchDivision = dispatchVal => async (dispatch) => {
+  try {
+      console.log("💎 setDeviceSearchDivision start : ", dispatchVal);
+
+      dispatch({
+          type: SET_DEVICE_SEARCH_DIVISION,
+          payload: dispatchVal,
+      });
+  } catch (error) {
+      console.log("try setDeviceSearchDivision error : ", error);
+  }
+};
+
+export const setDeviceByDeviceCode = dispatchVal => async (dispatch) => {
+    try {
+        console.log("💎 setDeviceByDeviceCode start : ", dispatchVal);
+
+        dispatch({
+            type: SET_DEVICE_DEVICECODE,
+            payload: dispatchVal,
+        });
+    } catch (error) {
+        console.log("try setDeviceByDeviceCode error : ", error);
     }
 };

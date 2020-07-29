@@ -1,30 +1,27 @@
 import React, {PureComponent, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {
-    Button, ButtonToolbar, Card, Modal,
+    Button, Modal,
 } from 'reactstrap';
 import classNames from 'classnames';
-import {Field, reduxForm, FieldArray} from "redux-form";
-import {findDOMNode} from "react-dom";
-import {List, Map} from "immutable";
+import { Field, reduxForm } from "redux-form";
+import { findDOMNode } from "react-dom";
+import { Map } from "immutable";
+
 import AccountSearchIcon from "mdi-react/AccountSearchIcon";
 import CurrencyUsdIcon from "mdi-react/CurrencyUsdIcon";
 import PlusIcon from "mdi-react/PlusIcon";
 import MinusIcon from "mdi-react/MinusIcon";
-import InputAdornment from '@material-ui/core/InputAdornment';
-
 import Grid from "@material-ui/core/Grid";
 import ListItem from "@material-ui/core/ListItem";
-import TableBody from "@material-ui/core/TableBody";
-import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
-import TableHead from "@material-ui/core/TableHead";
 import TableCell from "@material-ui/core/TableCell";
 import MatButton from "@material-ui/core/Button";
 import SendIcon from "@material-ui/icons/Send";
-import {withTranslation} from "react-i18next";
+import { withTranslation } from "react-i18next";
 import {
-    getCompanyByName, setAddEleData, setAssetsPage, setState,
+    getCompanyByName,
+    setAddEleData, setAssetsPage, setState,
 } from "../../../../redux/actions/assetsAction";
 import renderIntervalDatePickerField from "./IntervalDatePicker";
 import renderDatePickerField from "./DatePicker";
@@ -111,9 +108,9 @@ class AssetsEdit extends PureComponent {
     static propTypes = {
         // eslint-disable-next-line react/forbid-prop-types
         assetState: PropTypes.object.isRequired,
-        dispatch: PropTypes.func.isRequired,
         // eslint-disable-next-line react/forbid-prop-types
         theme: PropTypes.object.isRequired,
+        dispatch: PropTypes.func.isRequired,
     };
 
     constructor() {
@@ -121,24 +118,16 @@ class AssetsEdit extends PureComponent {
         //console.log("👉 constructor start");
         this.state = {
             modal: false,
-            showPassword: false,
             RackComponent: <span className="cautionStyle">※ IDC를 선택하세요.</span>,
             ModelComponent: <span className="cautionStyle">※ Model을 선택하세요.</span>,
-            AddIpComponent: [],
-            AddIpComponentMax: 0,
-            AddSplaComponent: [],
-            AddSplaComponentMax: 0,
-            RegisterId: '',
             IpArray: [],
             SplaArray: [],
-            warehousingDateError: 'test',
             searchToggleDivision: '',
             searchCompanyName: '',
             searchCustomerId: '',
             searchCustomerName: '',
             searchOwnerCompanyId: '',
             searchOwnerCompanyName: '',
-            deviceDataArray: {},
             initializeData: ({}),
             ipArrayMap: {},
             splaArrayMap: {},
@@ -150,11 +139,8 @@ class AssetsEdit extends PureComponent {
             initialize, assetState,
         } = this.props;
         const {
-            IpArray, SplaArray, initializeData, ipArrayMap, splaArrayMap,
-            searchCustomerName, searchOwnerCompanyName,
+            IpArray, SplaArray,
         } = this.state;
-
-        //console.log("👉 componentDidMount start");
 
         const setIpArray = [];
         const setSplaArray = [];
@@ -192,8 +178,8 @@ class AssetsEdit extends PureComponent {
             searchOwnerCompanyName: deviceValue.ownerCompanyName,
         });
 
-        setIpArrayTemp = JSON.parse(JSON.stringify(setIpArrayTemp));
-        setSplaArrayTemp = JSON.parse(JSON.stringify(setSplaArrayTemp));
+        //setIpArrayTemp = JSON.parse(JSON.stringify(setIpArrayTemp));
+        //setSplaArrayTemp = JSON.parse(JSON.stringify(setSplaArrayTemp));
 
         //console.log("setIpArrayTemp : ", setIpArrayTemp);
         //console.log("setSplaArrayTemp : ", setSplaArrayTemp);
@@ -209,8 +195,7 @@ class AssetsEdit extends PureComponent {
 
         /*console.log("ipArrayMap : ", ipArrayMap);
         console.log("splaArrayMap : ", splaArrayMap);*/
-
-        console.log("assetState.deviceOri : ", assetState.deviceOri);
+        //console.log("assetState.deviceOri : ", assetState.deviceOri);
 
         initialize(assetState.deviceOri);
     }
@@ -249,7 +234,7 @@ class AssetsEdit extends PureComponent {
     };
 
     setSearchCompany = (cpUserId, name) => {
-        const {searchToggleDivision} = this.state;
+        const { searchToggleDivision } = this.state;
 
         if (searchToggleDivision === 'customer') {
             this.setState({
@@ -275,12 +260,7 @@ class AssetsEdit extends PureComponent {
     };
 
     handleChange = (e) => {
-        const {
-            assetState, dispatch, handleSubmit,
-        } = this.props;
-        const {
-            initializeData,
-        } = this.state;
+        const { assetState } = this.props;
         let tempContent;
 
         this.setState({
@@ -299,7 +279,6 @@ class AssetsEdit extends PureComponent {
                             name="rack"
                             component="select"
                             className="select_col_4">
-                            {/*<option value="0">:: SELECT ::</option>*/}
                             {assetState.subCodes.data
                                 .map(d => (Number(d.codeId) === Number(e.target.value)
                                     && <option key={d.id} value={d.id}>{d.name}</option>))
@@ -349,16 +328,9 @@ class AssetsEdit extends PureComponent {
         dispatch(setAssetsPage('view'));
     };
 
-    showPassword = (e) => {
-        e.preventDefault();
-        this.setState(prevState => ({showPassword: !prevState.showPassword}));
-    };
-
     handleChangeIp = (e) => {
-        const {assetState, dispatch} = this.props;
-        const {
-            ipArrayMap,
-        } = this.state;
+        const { dispatch } = this.props;
+        const { ipArrayMap } = this.state;
 
         const reName = e.target.name;
         let setIpArrayTemp = new Map();
@@ -366,7 +338,6 @@ class AssetsEdit extends PureComponent {
         // todo... 나중에 map 으로 변경하는게 for 안돌리고 처리 괜찮을듯 (map 2개)
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
         for (const arrData in ipArrayMap) {
-            //console.log("arrData : ", arrData, ", value : ", ipArrayMap[arrData]);
             setIpArrayTemp = setIpArrayTemp.set(arrData, ipArrayMap[arrData]);
             if (reName.toString() === arrData.toString()) {
                 setIpArrayTemp = setIpArrayTemp.set(arrData, e.target.value);
@@ -383,8 +354,8 @@ class AssetsEdit extends PureComponent {
     };
 
     handleChangeSpla = (e) => {
-        const {dispatch} = this.props;
-        const {splaArrayMap} = this.state;
+        const { dispatch } = this.props;
+        const { splaArrayMap } = this.state;
         const reName = e.target.name;
 
         let setSplaArrayTemp = new Map();
@@ -392,7 +363,6 @@ class AssetsEdit extends PureComponent {
         // todo... 나중에 map 으로 변경하는게 for 안돌리고 처리 괜찮을듯 (map 2개)
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
         for (const arrData in splaArrayMap) {
-            //console.log("arrData : ", arrData, ", value : ", ipArrayMap[arrData]);
             setSplaArrayTemp = setSplaArrayTemp.set(arrData, splaArrayMap[arrData]);
             if (reName.toString() === arrData.toString()) {
                 setSplaArrayTemp = setSplaArrayTemp.set(arrData, e.target.value);
@@ -400,7 +370,6 @@ class AssetsEdit extends PureComponent {
         }
 
         setSplaArrayTemp = JSON.parse(JSON.stringify(setSplaArrayTemp));
-        //console.log("setSplaArrayTemp: ", setSplaArrayTemp);
 
         this.setState({
             splaArrayMap: setSplaArrayTemp,
@@ -424,11 +393,9 @@ class AssetsEdit extends PureComponent {
     };
 
     setHtmlPlus = (val) => {
-        const {dispatch} = this.props;
-        //const {initialize} = this.props;
+        const { dispatch } = this.props;
         const {
             ipArrayMap, splaArrayMap,
-            AddIpComponentMax, AddSplaComponent, AddSplaComponentMax,
             IpArray, SplaArray,
         } = this.state;
         let tempContent;
@@ -452,7 +419,6 @@ class AssetsEdit extends PureComponent {
             if (Object.keys(ipArrayMap).length < 10) {
                 // eslint-disable-next-line guard-for-in,no-restricted-syntax
                 for (const arrData in ipArrayMap) {
-                    //console.log("arrData : ", arrData, ", value : ", ipArrayMap[arrData]);
                     setIpArrayTemp = setIpArrayTemp.set(arrData, ipArrayMap[arrData]);
                 }
 
@@ -461,7 +427,7 @@ class AssetsEdit extends PureComponent {
                 setIpArrayTemp = JSON.parse(JSON.stringify(setIpArrayTemp));
 
                 this.setState({
-                    AddIpComponentMax: IpMax + 1,
+                    //AddIpComponentMax: IpMax + 1,
                     ipArrayMap: setIpArrayTemp,
                 });
 
@@ -493,7 +459,6 @@ class AssetsEdit extends PureComponent {
                 setSplaArrayTemp = JSON.parse(JSON.stringify(setSplaArrayTemp));
 
                 this.setState({
-                    AddSplaComponentMax: SplaMax + 1,
                     splaArrayMap: setSplaArrayTemp,
                 });
 
@@ -543,17 +508,13 @@ class AssetsEdit extends PureComponent {
 
     render() {
         const {
-            theme, assetState, dispatch, handleSubmit,
+            theme, assetState, handleSubmit,
         } = this.props;
         const {
-            deviceDataArray, initializeData, ipArrayMap, splaArrayMap,
-            modal, RackComponent, ModelComponent, AddIpComponent, AddSplaComponent,
-            RegisterId, IpArray, SplaArray, warehousingDateError,
-            searchCompanyName, searchCustomerId, searchOwnerCompanyId, searchToggleDivision,
-            searchCustomerName, searchOwnerCompanyName,
-            manufacture, idc,
+            ipArrayMap, splaArrayMap, modal, RackComponent, ModelComponent,
+            searchCompanyName, searchCustomerId, searchOwnerCompanyId,
+            searchCustomerName, searchOwnerCompanyName, manufacture, idc,
         } = this.state;
-        const {showPassword} = this.state;
         let deviceRawValue = new Map([]);
         let emptyRows;
 
@@ -891,7 +852,6 @@ class AssetsEdit extends PureComponent {
                                     this.setSearchCompany(d.cpUserId, d.name);
                                 }}>
                                     <div className="list-title">{d.name}</div>
-                                    {/*<div className="list-title">{d.name}</div>*/}
                                     <div className="list-title-sub">&nbsp;({d.cpUserId} / {d.email})</div>
                                 </ListItem>
                             ))}
@@ -911,16 +871,14 @@ class AssetsEdit extends PureComponent {
             </Fragment>
         );
 
-        // TODO 디자인은 나중에
-        const viewSearchCompany = (
+        /*const viewSearchCompany = (
             <Fragment>
                 {assetState.company.length !== undefined
                     ? (
                         <Fragment>
                             {assetState.company.map(d => (
                                 <TableRow key={d.idx}>
-                                    <TableCell className="material-table__cell material-table__cell-right"
-                                    >{/*회사명*/}
+                                    <TableCell className="material-table__cell material-table__cell-right">
                                         <div className="assets_add_modal_div"
                                              onClick={event => this.setSearchCompany(d.cpUserId, d.name)}
                                              onKeyDown={event => this.setSearchCompany(d.cpUserId, d.name)}
@@ -928,10 +886,10 @@ class AssetsEdit extends PureComponent {
                                             className="circle__ste"/>{d.name}</div>
                                     </TableCell>
                                     <TableCell className="material-table__cell material-table__cell-right"
-                                    >{/*회사 대표 ID*/}{d.cpUserId}
+                                    >{d.cpUserId}
                                     </TableCell>
                                     <TableCell className="material-table__cell material-table__cell-right"
-                                    >{/*회사 email*/}{d.email}
+                                    >{d.email}
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -952,7 +910,7 @@ class AssetsEdit extends PureComponent {
                     )
                 }
             </Fragment>
-        );
+        );*/
 
         return (
             <div>

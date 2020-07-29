@@ -1,13 +1,10 @@
 /* eslint-disable no-param-reassign */
-import React, {PureComponent, Fragment} from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import DatePicker from 'react-datepicker';
-import {isMobileOnly} from 'react-device-detect';
+import { isMobileOnly } from 'react-device-detect';
 import MinusIcon from 'mdi-react/MinusIcon';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import {Field} from "redux-form";
-import EditIcon from "@material-ui/icons/Edit";
-import MatButton from "@material-ui/core/Button";
 
 class IntervalDatePickerField extends PureComponent {
     constructor(props) {

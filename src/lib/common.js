@@ -1,4 +1,5 @@
 
+import {WEB_SERVER_ADDR} from "../shared/apiRoute";
 
 // eslint-disable-next-line import/prefer-default-export
 export function setIgnoredYellowBox() {
@@ -58,3 +59,15 @@ export function checkIP(strIP) {
     const expUrl = /^(1|2)?\d?\d([.](1|2)?\d?\d){3}$/;
     return expUrl.test(strIP);
 }
+/** ----------------------------------------------------assets 에서만 사용 start **/
+export function assetsSeperateUrl(tmpUrl) {
+    let tmp = tmpUrl;
+    tmp = tmp.replace(WEB_SERVER_ADDR, "");
+    return tmp.split("/")[2];
+}
+
+export function assetsGetUrlMenu(tmpUrl) {
+    const tmp = assetsSeperateUrl(tmpUrl);
+    return tmp;
+}
+/** -----------------------------------------------------assets 에서만 사용 end **/

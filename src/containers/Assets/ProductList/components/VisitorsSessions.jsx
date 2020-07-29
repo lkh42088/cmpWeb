@@ -7,7 +7,6 @@ import {
 import { withTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import Panel from '../../../../shared/components/Panel';
-
 import getTooltipStyles from '../../../../shared/helpers';
 
 const data01 = [{ name: 'Chrome', value: 12934, fill: '#4ce1b6' },

@@ -66,8 +66,7 @@ class App extends Component {
                                 {!loaded
                                 && (
                                     <Loading loading={loading}/>
-                                )
-                                }
+                                )}
                                 <ConnectedThemeComponent>
                                     <div>
                                         <Router/>

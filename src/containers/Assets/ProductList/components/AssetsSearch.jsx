@@ -1,15 +1,12 @@
 import React, {PureComponent, Fragment, useEffect} from 'react';
 import {
-    Card, CardBody, Col, Row, Container, ButtonToolbar, Button, Modal,
+    Card, CardBody, Col, Row, Modal,
 } from 'reactstrap';
 import {useDispatch, useSelector} from "react-redux";
 import {makeStyles} from '@material-ui/core/styles';
 
-import {Dialog} from "material-ui";
 import MagnifyIcon from "mdi-react/MagnifyIcon";
-import InsertInvitationIcon from '@material-ui/icons/InsertInvitation';
 import Grid from "@material-ui/core/Grid";
-import AccountCircle from "@material-ui/icons/AccountCircle";
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import InputIcon from "@material-ui/icons/Input";
@@ -17,7 +14,6 @@ import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 import ReactTooltip from "react-tooltip";
 import LaunchIcon from "@material-ui/icons/Launch";
-import CreateIcon from "@material-ui/icons/Create";
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -25,19 +21,18 @@ import Select from '@material-ui/core/Select';
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import TextField from '@material-ui/core/TextField';
-import Avatar from '@material-ui/core/Avatar';
-import {deepOrange, green, pink} from '@material-ui/core/colors';
-import AssignmentIcon from '@material-ui/icons/Assignment';
 
-import {Field, reduxForm} from 'redux-form';
+import { reduxForm } from 'redux-form';
 import classNames from "classnames";
 import moment from "moment";
 
-import {withTranslation} from 'react-i18next';
+import { withTranslation } from 'react-i18next';
 import {
-    fetchPostsCheckCount, fetchPosts, setState,
-    fetchPostSearchDevice, postDevice, postDeviceOutFlag, setDeviceSelected,
+    fetchPostSearchDevice,
+    postDevice, postDeviceOutFlag,
+    setDeviceSelected, setDeviceSearchDivision,
 } from "../../../../redux/actions/assetsAction";
+import * as common from "../../../../lib/common";
 import AssetsWrite from "./AssetsWrite";
 import CommonTableExportCSV from "../../../Common/CommonTableExportCSV";
 
@@ -103,7 +98,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const AssetsSearch = ({assetState, user, theme}) => {
+const AssetsSearch = ({ assetState, user, theme }) => {
     const dispatch = useDispatch();
     const classes = useStyles();
 
@@ -161,7 +156,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
     };
 
     const toggle = (e) => {
-        //this.setState(prevState => ({modalOpenFlag: !prevState.modalOpenFlag}));
         setModal({
             ...modal,
             modalOpenFlag: !modal.modalOpenFlag,
@@ -236,14 +230,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
 
     const componentOperatinng = (
         <Fragment>
-            {/*<Avatar variant="rounded" className={classes.square} role="button" tabIndex="0"
-                    onClick={event => toggleOutFlag("1")}
-                    onKeyDown={event => toggleOutFlag("1")}>
-                <LaunchIcon fontSize="small"
-                            style={{
-                                color: "#596e79",
-                            }}/>&nbsp;반출
-            </Avatar>*/}
             <IconButton type="button" onClick={event => toggleOutFlag("1")}
                         data-tip data-for="tooltipOutFlagOut"
                         className={classes.iconOutFlag}>
@@ -259,14 +245,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
 
     const componentCarrying = (
         <Fragment>
-            {/*<Avatar variant="rounded" className={classes.square} role="button" tabIndex="0"
-                    onClick={event => toggleOutFlag("0")}
-                    onKeyDown={event => toggleOutFlag("0")}>
-                <LaunchIcon fontSize="small"
-                            style={{
-                                color: "#596e79",
-                            }}/>&nbsp;반입
-            </Avatar>*/}
             <IconButton type="button" onClick={event => toggleOutFlag("0")}
                         data-tip data-for="tooltipOutFlagIn"
                         className={classes.iconOutFlag}>
@@ -279,19 +257,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
             </ReactTooltip>
         </Fragment>
     );
-    /*
-            <span role="button" tabIndex="0"
-                  onClick={event => toggleOutFlag("1")}
-                  onKeyDown={event => toggleOutFlag("1")}>
-                        <InputIcon fontSize="small"/>&nbsp;
-                반출
-                </span>
-        <span role="button" tabIndex="0"
-              onClick={event => toggleOutFlag("0")}
-              onKeyDown={event => toggleOutFlag("0")}>
-                    <LaunchIcon fontSize="small"/>&nbsp;
-            반입
-                </span>*/
 
     const renderSwitch = () => {
         let viewComponentOutFlag;
@@ -333,6 +298,75 @@ const AssetsSearch = ({assetState, user, theme}) => {
         }
 
         return viewComponentOutFlag;
+    };
+
+    const renderTypeSwitch = () => {
+        let reComponent;
+
+        switch (assetState.deviceMenuUrl) {
+            case "server":
+                reComponent = (
+                    <Fragment>
+                        <div className="float-left">
+                            <span className="circle__eth"/>
+                            서버
+                            ({assetState.deviceStatistics.serverCount})&nbsp;&nbsp;
+                        </div>
+                        <div className="float-left">
+                            <span className="circle__ste"/>
+                            스토리지
+                            ({assetState.deviceStatistics.storageCount})&nbsp;&nbsp;
+                        </div>
+                        <div className="float-left">
+                            <span className="circle__neo"/>
+                            기타
+                            ({assetState.deviceStatistics.etcCount})&nbsp;&nbsp;
+                        </div>
+                    </Fragment>
+                );
+                break;
+            case "network":
+                reComponent = (
+                    <Fragment>
+                        <div className="float-left">
+                            <span className="circle__eth"/>
+                            L2
+                            ({assetState.deviceStatistics.l2Count})&nbsp;&nbsp;
+                        </div>
+                        <div className="float-left">
+                            <span className="circle__ste"/>
+                            L3
+                            ({assetState.deviceStatistics.l3Count})&nbsp;&nbsp;
+                        </div>
+                        <div className="float-left">
+                            <span className="circle__neo"/>
+                            Router
+                            ({assetState.deviceStatistics.routerCount})&nbsp;&nbsp;
+                        </div>
+                    </Fragment>
+                );
+                break;
+            case "part":
+                reComponent = (
+                    <Fragment>
+                        <div className="float-left">
+                            <span className="circle__eth"/>
+                            HDD
+                            ({assetState.deviceStatistics.hddCount})&nbsp;&nbsp;
+                        </div>
+                        <div className="float-left">
+                            <span className="circle__ste"/>
+                            KVM
+                            ({assetState.deviceStatistics.kvmCount})&nbsp;&nbsp;
+                        </div>
+                    </Fragment>
+                );
+                break;
+            default:
+                break;
+        }
+
+        return reComponent;
     };
 
     const handleSubmit = (values) => {
@@ -456,7 +490,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
     };
 
     const onChangeSchText = (e) => {
-        console.log("e.... : ", e);
         setSchValue({
             ...schValue,
             [e.target.name]: e.target.value,
@@ -485,8 +518,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
             ...schValue,
             [e.target.name]: e.target.value,
         });
-
-        console.log("🙉🙉🙉 postArray : ", postArray);
 
         dispatch(setDeviceSelected(''));
         dispatch(fetchPostSearchDevice(assetState, postArray));
@@ -538,6 +569,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
                 [schSelect]: schText,
                 [postDivision]: '',
                 schText,
+                schSelect,
             });
 
             postArray = ({
@@ -603,8 +635,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
                 });
                 break;
             case "2": // 한달이내 임대기간 종료하는 장비 검색
-                /*const today = new Date();
-                const period = moment(today).add(1, 'M').format("YYYYMMDD");*/
                 postArray.rentPeriod = !device.rentPeriod;
 
                 setDevice({
@@ -620,8 +650,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
             default:
                 break;
         }
-
-        console.log("rentPeriod : ", device.rentPeriod);
 
         dispatch(setDeviceSelected(''));
         dispatch(fetchPostSearchDevice(assetState, postArray));
@@ -641,29 +669,47 @@ const AssetsSearch = ({assetState, user, theme}) => {
         });
     };
 
-    /*useEffect(() => {
-        console.log("😗😗😗😗😗😗😗 test useEffect... : ", assetState.searchRd);
-        setSchValue({
-            ...schValue,
-            schSelect: assetState.searchRd.schSelect,
-            schText: assetState.searchRd.schText,
-            deviceType: assetState.searchRd.deviceType,
-            ownership: assetState.searchRd.ownership,
-            ownershipDiv: assetState.searchRd.ownershipDiv,
-            idc: assetState.searchRd.idc,
-            manufacture: assetState.searchRd.manufacture,
-        });
-    }, []);*/
-
     useEffect(() => {
-        /*document.getElementsByName("schSelect")[0].value = '';
-        document.getElementsByName("schText")[0].value = '';*/
-        setSchValue({
-            ...schValue,
-            schSelect: '',
-            schText: '',
-        });
-    }, [assetState.deviceType]);
+        /*console.log("😡😡 useEffect---> : start");
+        console.log("😡 val : ", assetState.deviceMenuUrl);
+        console.log("😡 url : ", common.assetsGetUrlMenu(window.location.href));
+        console.log("😡 deviceSearchDivision : ", assetState.deviceSearchDivision);*/
+
+        if (assetState.deviceSearchDivision) {
+            setSchValue({
+                ...schValue,
+                schSelect: assetState.searchRd.schSelect,
+                schText: assetState.searchRd.schText,
+            });
+        } else { // first page (false)
+            setSchValue({
+                ...schValue,
+                schSelect: '',
+                schText: '',
+                deviceType: '',
+                ownership: '',
+                ownershipDiv: '',
+                idc: '',
+                manufacture: '',
+            });
+        }
+
+        return () => {
+            /*console.log("🤑🤑 useEffect---> : cleanup");
+            console.log("🤑 val : ", assetState.deviceMenuUrl);
+            console.log("🤑 url : ", window.location.href);
+            console.log("🤑 deviceSearchDivision : ", assetState.deviceSearchDivision);*/
+            dispatch(setDeviceSearchDivision(true));
+        };
+    }, [assetState.deviceMenuUrl]);
+
+/*
+    useEffect(() => {
+        console.log("👾👾 useEffect---> : start");
+        return () => {
+            console.log("👾👾 deviceMenuUrl 👾👾 cleanup.....");
+        };
+    }, [assetState.deviceMenuUrl]);*/
 
     useEffect(() => {
         renderSwitch();
@@ -806,21 +852,22 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                                 <Grid item xs md={3} zeroMinWidth>
                                                     <div>
                                                         <div className="float-right circle-legend">
-                                                            <div className="float-left">
-                                                            <span className="circle__eth"
-                                                                  role="button" tabIndex="0"/>
-                                                                  서버 ({assetState.searchRd.serverCnt})&nbsp;&nbsp;
+                                                            {renderTypeSwitch()}
+                                                            {/*<div className="float-left">
+                                                            <span className="circle__eth"/>
+                                                                  서버
+                                                                ({assetState.deviceStatistics.serverCount})&nbsp;&nbsp;
                                                             </div>
                                                             <div className="float-left">
-                                                            <span className="circle__ste"
-                                                                  role="button" tabIndex="0"/>
-                                                                  스토리지 ({assetState.searchRd.storageCnt})&nbsp;&nbsp;
+                                                            <span className="circle__ste"/>
+                                                                  스토리지
+                                                                ({assetState.deviceStatistics.storageCount})&nbsp;&nbsp;
                                                             </div>
                                                             <div className="float-left">
-                                                            <span className="circle__neo"
-                                                                  role="button" tabIndex="0"/>
-                                                                  기타 ({assetState.searchRd.etcCnt})&nbsp;&nbsp;
-                                                            </div>
+                                                            <span className="circle__neo"/>
+                                                                  기타
+                                                                ({assetState.deviceStatistics.etcCount})&nbsp;&nbsp;
+                                                            </div>*/}
                                                         </div>
                                                     </div>
                                                 </Grid>
@@ -880,7 +927,7 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                                     </MenuItem>{
                                                     assetState.codes.codeDeviceType.map((d, index) => (
                                                         <MenuItem key={d.codeId.toString()}
-                                                                  value={d.codeId.toString()}>{d.name} / {d.codeId}
+                                                                  value={d.codeId.toString()}>{d.name}
                                                         </MenuItem>
                                                     ))}
                                                 </Select>
@@ -982,21 +1029,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                                     <MenuItem value="customer">고객사</MenuItem>
                                                 </Select>
                                             </FormControl>
-                                            {/*<div onSubmit="event.preventDefault();" role="search"
-                                                 className="div-schText">
-                                                <label htmlFor="search">Search for stuff</label>
-                                                <input id="search" type="search"
-                                                       name="schText"
-                                                       value={schValue.schText || ''}
-                                                       onKeyDown={(event) => {
-                                                           if (event.keyCode === 13) {
-                                                               onSearch();
-                                                           }
-                                                       }}
-                                                       onChange={onChangeSchText}
-                                                       placeholder="Search..." required/>
-                                                <button type="button" onClick={onSearch}>Go</button>
-                                            </div>*/}
                                             <TextField
                                                 id="input-with-icon-textfield"
                                                 label="TextField"
@@ -1023,44 +1055,6 @@ const AssetsSearch = ({assetState, user, theme}) => {
                                                     ),
                                                 }}
                                             />
-                                            {/*<div className="search_card_body_checkbox">
-                                                <input type="checkbox" name="operatingFlag"
-                                                       className="search_checkbox"
-                                                       checked={assetState.searchRd.operatingFlag}
-                                                       value={device.operatingFlag}
-                                                       onChange={setToggleFlag}/>&nbsp;
-                                                <label htmlFor="operatingFlag" className="search_checkboxText">
-                                                    <span
-                                                        role="button" tabIndex="0"
-                                                        onClick={event => setToggleFlagText('1')}
-                                                        onKeyDown={event => setToggleFlagText('1')}>
-                                                        운영장비&nbsp;</span>
-                                                </label>
-                                                &nbsp;&nbsp;&nbsp;<br/>
-                                                <input type="checkbox" name="carryingFlag" className="search_checkbox"
-                                                       checked={assetState.searchRd.carryingFlag}
-                                                       value={device.carryingFlag}
-                                                       onChange={setToggleFlag}/>&nbsp;
-                                                <label htmlFor="carryingFlag" className="search_checkboxText">
-                                                    <span
-                                                        role="button" tabIndex="0"
-                                                        onClick={event => setToggleFlagText('0')}
-                                                        onKeyDown={event => setToggleFlagText('0')}>
-                                                        반출장비&nbsp;</span>
-                                                </label>
-                                                &nbsp;&nbsp;&nbsp;<br/>
-                                                <input type="checkbox" name="rentPeriod" className="search_checkbox"
-                                                       checked={assetState.searchRd.rentPeriod}
-                                                       value={device.rentPeriod}
-                                                       onChange={setToggleFlag}/>&nbsp;
-                                                <label htmlFor="rentPeriod" className="search_checkboxText">
-                                                    <span
-                                                        role="button" tabIndex="0"
-                                                        onClick={event => setToggleFlagText('2')}
-                                                        onKeyDown={event => setToggleFlagText('2')}>
-                                                        임대 만료예정 (한달기준)&nbsp;</span>
-                                                </label>
-                                            </div>*/}
                                         </Fragment>
                                     ) : (
                                         <Fragment>

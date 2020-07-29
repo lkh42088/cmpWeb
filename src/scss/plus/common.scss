@@ -294,8 +294,10 @@
 .circle-legend {
   padding: 0;
   list-style: none;
-  font-size: medium;
   font-weight: bold;
+  @include themify($themes) {
+    color: themed('colorText');
+  }
 
   span {
     /*background-color: #2C86A2;*/
@@ -470,6 +472,22 @@
 
 .text_cor_orange {
   color: $color-orange;
+}
+
+.text_cor_btc {
+  color: #e85a71;
+}
+
+.text_cor_eth {
+  color: #5e62e6;
+}
+
+.text_cor_neo {
+  color: #3ddb42;
+}
+
+.text_cor_ste {
+  color: #4ea1d3;
 }
 
 .text_cor_mat_p {

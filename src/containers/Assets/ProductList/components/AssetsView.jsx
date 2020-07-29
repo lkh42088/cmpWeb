@@ -236,11 +236,18 @@ class AssetsView extends PureComponent {
         warehousingDate = warehousingDate.toString();
 
         let rackLoc;
+        let rackCode;
 
         if (values.rackLoc !== undefined) {
             rackLoc = values.rackLoc.toString();
         } else {
             rackLoc = "0";
+        }
+
+        if (values.rackCode !== undefined) {
+            rackCode = values.rackCode.toString();
+        } else {
+            rackCode = 0;
         }
 
         const submitData = ({
@@ -270,13 +277,13 @@ class AssetsView extends PureComponent {
             hdd: values.hdd,
             rackTag: values.rackTag,
             rackLoc,
+            rackCode,
             ip: IpArray,
             spla: SplaArray,
             rentDate: rentData,
             warehousingDate,
             monitoringFlag: '',
             monitoringMethod: '',
-            rackCode: values.rackCode,
             firmwareVersion: values.firmwareVersion,
             warranty: values.warranty,
         });

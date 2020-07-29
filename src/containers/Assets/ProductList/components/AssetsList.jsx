@@ -1,9 +1,7 @@
 import React, {PureComponent, Fragment} from 'react';
 import {
-    ButtonToolbar,
     Card,
     CardBody,
-    Col, Modal, Row,
 } from 'reactstrap';
 
 import TableContainer from "@material-ui/core/TableContainer";
@@ -13,24 +11,21 @@ import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
+import LoadingIcon from "mdi-react/LoadingIcon";
 import PropTypes, {string} from 'prop-types';
 import moment from "moment";
 import {
-    getDeviceByIdx,
+    getDeviceByIdx, getDeviceOriByIdx,
     postDeviceComment,
-    fetchPosts,
-    fetchPostsCheckCount,
-    getDeviceOriByIdx,
+    fetchPosts, fetchPostsCheckCount,
     postDevice,
-    setDeviceSelected,
-    setAssetsPage,
+    setDeviceSelected, setAssetsPage,
     setApiPage,
     setState,
 } from '../../../../redux/actions/assetsAction';
 import * as common from "../../../../lib/common";
 import AssetsHead from './AssetsHead';
+import Loading from '../../../../shared/components/Loading';
 
 /*order by 사용 함수*/
 
@@ -76,42 +71,24 @@ export default class AssetsList extends PureComponent {
             rowsPerPage: 10,
             showPage: 1,
             pageNoNum: 0,
-            dense: false,
+            loaded: false, // todo 나중에 로딩바...
         };
+        //this.doneTimeout = null;
+    }
+/*
+    componentDidMount() {
+        setTimeout(() => this.setState({loaded: false}), 2000);
     }
 
-    /*const xuser = localStorage.getItem('user');
-    if (xuser != null) {
-    const jsonUser = JSON.parse(xuser);
-    this.setState({user: jsonUser});*/
-
-    // form submit dispatch 관리
-    /*setTotalManager = (data) => {
-        const {assetState, dispatch} = this.props;
-
-        const submitData = ({
-            idx: data.commentIdx,
-            /!*registerId: data.registerId,*!/ //TODO 로그인한 ID
-            registerId: 'lkb',
-            contents: data.comment,
-            deviceCode: data.deviceCode,
-        });
-
-        console.log("submitData : ", submitData);
-
-        switch (data.postType) {
-            case 'comment':
-                dispatch(postDeviceComment(data.postDivision, assetState, submitData));
-                break;
-            case 'device':
-                if (data.postDivision === 'create') {
-                    console.log("device create");
-                }
-                break;
-            default:
-                break;
-        }
-    };*/
+    static getDerivedStateFromProps(nextProps, prevState) {
+        /!*if (prevState.name !== nextProps.name) {
+            return { name: nextProps.name };
+        }*!/
+        //setTimeout(() => ({ loaded: false }), 2000);
+        
+        return setTimeout(() => ({ loaded: false }), 2000);
+    }
+*/
 
     handleSubmit = (values) => {
         const { assetState, dispatch, user } = this.props;
@@ -215,13 +192,13 @@ export default class AssetsList extends PureComponent {
             hdd: values.hdd,
             rackTag: values.rackTag,
             rackLog,
+            rackCode: values.rackCode,
             ip: IpArray,
             spla: SplaArray,
             rentDate: rentData,
             warehousingDate,
             monitoringFlag: '',
             monitoringMethod: '',
-            rackCode: values.rackCode,
             firmwareVersion: values.firmwareVersion,
             warranty: values.warranty,
         });
@@ -285,10 +262,8 @@ export default class AssetsList extends PureComponent {
     // };
 
     handleChangePageBack = () => {
-        const {assetState, dispatch} = this.props;
-        const {
-            orderBy, rowsPerPage, order, showPage,
-        } = this.state;
+        const { assetState, dispatch } = this.props;
+        const { orderBy, order, showPage } = this.state;
 
         const pageCnt = assetState.page.page;
 
@@ -300,7 +275,7 @@ export default class AssetsList extends PureComponent {
             });
 
             const dispatchVal = ({
-                deviceType: assetState.deviceType,
+                deviceType: assetState.deviceMenuUrl,
                 orderBy,
                 order,
                 rowsPerPage: assetState.apiPageRd.rowsPerPage,
@@ -309,19 +284,15 @@ export default class AssetsList extends PureComponent {
                 outFlag: assetState.deviceOutFlag,
                 offsetPage: (assetState.apiPageRd.rowsPerPage * ((pageCnt - 1) - 1)),
             });
+
             dispatch(setDeviceSelected(''));
             dispatch(fetchPostsCheckCount(assetState, dispatchVal));
         }
     };
 
     handleChangePage = () => {
-        const {assetState, dispatch} = this.props;
-        const {
-            orderBy, rowsPerPage, order, showPage,
-        } = this.state;
-
-        console.log("💋💋rowsPerPage : ", rowsPerPage);
-        console.log("💋💋💋assetState.apiPageRd.rowsPerPage : ", assetState.apiPageRd.rowsPerPage);
+        const { assetState, dispatch } = this.props;
+        const { orderBy, order, showPage } = this.state;
 
         const pageCount = assetState.apiPageRd.rowsPerPage * (assetState.page.page);
 
@@ -333,7 +304,7 @@ export default class AssetsList extends PureComponent {
             });
 
             const dispatchVal = ({
-                deviceType: assetState.deviceType,
+                deviceType: assetState.deviceMenuUrl,
                 orderBy,
                 order,
                 rowsPerPage: assetState.apiPageRd.rowsPerPage,
@@ -349,10 +320,8 @@ export default class AssetsList extends PureComponent {
     };
 
     handleChangeRowsPerPage = (event) => {
-        const {assetState, dispatch} = this.props;
-        const {
-            orderBy, rowsPerPage, order,
-        } = this.state;
+        const { assetState, dispatch } = this.props;
+        const { orderBy, order, rowsPerPage } = this.state;
         let eventVal;
 
         if (typeof event === "object") {
@@ -369,7 +338,7 @@ export default class AssetsList extends PureComponent {
         });
 
         const dispatchVal = ({
-            deviceType: assetState.deviceType,
+            deviceType: assetState.deviceMenuUrl,
             orderBy,
             order,
             rowsPerPage: eventVal,
@@ -378,6 +347,7 @@ export default class AssetsList extends PureComponent {
             outFlag: assetState.deviceOutFlag,
             offsetPage: (eventVal * (1 - 1)),
         });
+
         dispatch(fetchPostsCheckCount(assetState, dispatchVal));
     };
 
@@ -388,7 +358,7 @@ export default class AssetsList extends PureComponent {
 
     toggle = (e) => {
         //this.setState(prevState => ({isOpenView: !prevState.isOpenView}));
-        const {dispatch} = this.props;
+        const { dispatch } = this.props;
         dispatch(setAssetsPage('view'));
 
         const stateVal = ({
@@ -402,75 +372,57 @@ export default class AssetsList extends PureComponent {
     };
 
     setDeviceIdx = (event, deviceCode) => {
-        const {dispatch, assetState} = this.props;
+        const { dispatch, assetState } = this.props;
 
-        dispatch(getDeviceByIdx(deviceCode, assetState.deviceType));
-        dispatch(getDeviceOriByIdx(deviceCode, assetState.deviceType));
+        dispatch(getDeviceByIdx(deviceCode, assetState.deviceMenuUrl));
+        dispatch(getDeviceOriByIdx(deviceCode, assetState.deviceMenuUrl));
     };
 
-    /*
-        setComponents = (division, deviceCode) => {
-            const {dispatch, assetState} = this.props;
+    reTextStyle = (division) => {
+        let textStyle;
 
-            let tempViewModalContent;
-            let checkDivision;
+        switch (division) {
+            case "서버":
+                textStyle = "text_cor_eth";
+                break;
+            case "스토리지":
+                textStyle = "text_cor_ste";
+                break;
+            case "기타":
+                textStyle = "text_cor_neo";
+                break;
+            case "L2":
+                textStyle = "text_cor_eth";
+                break;
+            case "L3":
+                textStyle = "text_cor_ste";
+                break;
+            case "Router":
+                textStyle = "text_cor_neo";
+                break;
+            case "HDD":
+                textStyle = "text_cor_eth";
+                break;
+            case "KVM":
+                textStyle = "text_cor_ste";
+                break;
+            default:
+                textStyle = "";
+                break;
+        }
 
-            let checkDeviceCode = deviceCode;
-
-            if (deviceCode === undefined) {
-                checkDeviceCode = 'temp';
-            }
-
-            // todo checkDeviceCode 사용 여부 확인 필요
-            switch (division) {
-                case 'read':
-                    tempViewModalContent = (
-                        <AssetsView closeToggle={this.toggle}
-                                     updateToggle={this.updateToggle}
-                                     title="장비 확인" message="자산관리 > 장비 확인 페이지 입니다." deviceCode={checkDeviceCode}
-                                     assetState={assetState} dispatch={dispatch}
-                                     setTotalManager={this.setTotalManager}
-                        />
-                    );
-                    break;
-                case "update":
-                    tempViewModalContent = (
-                        <AssetsEdit closeToggle={this.toggle}
-                                    title="장비 확인" message="자산관리 > 장비 수정 페이지 입니다."
-                                    assetState={assetState} dispatch={dispatch}
-                                    setTotalManager={this.setTotalManager}
-                                    onSubmit={this.handleSubmit}
-                        />
-                    );
-                    break;
-                default:
-                    tempViewModalContent = 'test';
-                    break;
-            }
-
-            this.setState({
-                viewModalContent: tempViewModalContent,
-            });
-        };
-
-        componentDidUpdate = (prevProps, prevState) => {
-            const {assetState, dispatch} = this.props;
-            if (assetState !== prevProps.assetState) {
-                this.setComponents(assetState.viewModalDivison);
-            }
-        };
-    */
+        return textStyle;
+    };
 
     render() {
         const {
-            order, orderBy, selected, rowsPerPage, page, dense, pageNoNum,
+            order, orderBy, selected, page, pageNoNum, loading, loaded,
         } = this.state;
-        const {
-            assetState, dispatch, user, densePadding,
-        } = this.props;
+        const { assetState, dispatch, densePadding } = this.props;
 
         const tableCellClassName = 'material-table__cell material-table__cell-right';
-        const tableCellBoldClassName = 'material-table__cell material-table__cell-bold';
+        //const tableCellBoldClassName = 'material-table__cell material-table__cell-bold';
+
         //TODO length 값 0 일때도 처리해야함
         let denseChkboxClassNmae;
         let emptyRows;
@@ -486,8 +438,6 @@ export default class AssetsList extends PureComponent {
         } else {
             emptyRows = 0;
         }
-
-        //console.log("---> : ", assetState.devices);
 
         const deviceComponent = (
             <Fragment>
@@ -554,8 +504,9 @@ export default class AssetsList extends PureComponent {
                                                     </b>
                                                 </TableCell>
                                                 <TableCell
-                                                    className={tableCellClassName}
-                                                >{/*구분*/}{d.deviceType}
+                                                    className={tableCellClassName}>
+                                                    <span className={`${this.reTextStyle(d.deviceType)} font-weight-bold`}>
+                                                     {d.deviceType}</span>
                                                 </TableCell>
                                                 <TableCell
                                                     className={tableCellClassName}
@@ -594,7 +545,7 @@ export default class AssetsList extends PureComponent {
                                                 {/*>/!*용도*!/{d.purpose}*/}
                                                 {/*</TableCell>*/}
 
-                                                {assetState.deviceType === 'server'
+                                                {assetState.deviceMenuUrl === 'server'
                                                 && (
                                                     <Fragment>
                                                         <TableCell
@@ -608,7 +559,7 @@ export default class AssetsList extends PureComponent {
                                                         </TableCell>
                                                     </Fragment>
                                                 )}
-                                                {assetState.deviceType === 'network'
+                                                {assetState.deviceMenuUrl === 'network'
                                                 && (
                                                     <Fragment>
                                                         <TableCell
@@ -630,7 +581,7 @@ export default class AssetsList extends PureComponent {
                                                     </TableCell>*/}
                                                     </Fragment>
                                                 )}
-                                                {assetState.deviceType === 'part'
+                                                {assetState.deviceMenuUrl === 'part'
                                                 && (
                                                     <Fragment>
                                                         <TableCell
@@ -678,6 +629,10 @@ export default class AssetsList extends PureComponent {
             // <Col sm={12} md={12} xs={12} xl={12} lg={12}>
             <Card className="cb-card">
                 <CardBody className="cb-card-body">
+                    {loaded
+                    && (
+                        <div className="panel__refresh"><LoadingIcon /></div>
+                    )}
                     <div>
                         <TableContainer>
                             <Table className="material-table material-table__wrap"

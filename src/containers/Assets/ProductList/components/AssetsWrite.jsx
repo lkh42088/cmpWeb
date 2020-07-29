@@ -27,7 +27,7 @@ import TableCell from "@material-ui/core/TableCell";
 import MatButton from "@material-ui/core/Button";
 import EditIcon from "@material-ui/icons/Edit";
 import {withTranslation} from "react-i18next";
-import {getCompanyByName, setAddEleData} from "../../../../redux/actions/assetsAction";
+import { getCompanyByName, setAddEleData } from "../../../../redux/actions/assetsAction";
 
 import renderIntervalDatePickerField from "../../../../shared/components/form/IntervalDatePicker";
 import renderDatePickerField from "../../../../shared/components/form/DatePicker";
@@ -590,7 +590,8 @@ class AssetsWrite extends PureComponent {
                         <div className="modal_form__form-group">
                             <span className="modal_form__form-group-label">IP</span>
                             <div className="modal_form__form-group-field">
-                                <svg className="mdi-icon " width="24" height="24" fill="currentColor"
+                                <svg className="mdi-icon " width="24" height="24"
+                                     fill="currentColor"
                                      viewBox="0 0 24 24"
                                      onClick={event => this.setHtmlPlus('ip')}
                                      onKeyDown={event => this.setHtmlPlus('ip')}
@@ -778,7 +779,8 @@ class AssetsWrite extends PureComponent {
                         <Fragment>
                             {assetState.company.map(d => (
                                 <TableRow key={d.idx}>
-                                    <TableCell className="material-table__cell material-table__cell-right"
+                                    <TableCell className="material-table__cell
+                                    material-table__cell-right"
                                     >{/*회사명*/}
                                         <b className="text_cor_green mouse_over_list">
                                             <div className="assets_add_modal_div"
@@ -788,10 +790,12 @@ class AssetsWrite extends PureComponent {
                                                 className="circle__ste"/>{d.name}</div>
                                         </b>
                                     </TableCell>
-                                    <TableCell className="material-table__cell material-table__cell-right"
+                                    <TableCell className="material-table__cell
+                                    material-table__cell-right"
                                     >{/*회사 대표 ID*/}{d.cpUserId}
                                     </TableCell>
-                                    <TableCell className="material-table__cell material-table__cell-right"
+                                    <TableCell className="material-table__cell
+                                    material-table__cell-right"
                                     >{/*회사 email*/}{d.email}
                                     </TableCell>
                                 </TableRow>
