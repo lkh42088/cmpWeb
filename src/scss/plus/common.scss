@@ -56,7 +56,7 @@
     display: inline;
     top: -1.5px;
     position: relative;
-    padding-left: 5px;
+    //padding-left: 5px;
     @include themify($themes) {
       color: themed('colorText');
     }
@@ -127,6 +127,11 @@
     padding-left: 15px;*/
     display: flex;
     margin: 5px 0 0 20px;
+
+    span {
+      vertical-align: top;
+      line-height: 18px;
+    }
   }
 }
 
@@ -295,6 +300,8 @@
   padding: 0;
   list-style: none;
   font-weight: bold;
+  margin: 5px 0 0 20px;
+
   @include themify($themes) {
     color: themed('colorText');
   }
@@ -305,11 +312,8 @@
     width: 10px;
     border-radius: 50%;
     display: inline-block;
-    @include directify($directions) {
-      #{directed('margin-right')}: 10px;
-    }
     // didn't rtl
-    margin-right: 10px;
+    /*margin-right: 10px;*/
   }
 
   li {
@@ -318,6 +322,13 @@
     @include themify($themes) {
       color: themed('colorText');
     }
+  }
+
+  .circle__text {
+    width: auto;
+    vertical-align: top;
+    line-height: 18px;
+    margin-right: 12px;
   }
 }
 
