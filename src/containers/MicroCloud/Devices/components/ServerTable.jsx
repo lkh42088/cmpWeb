@@ -70,13 +70,13 @@ const useStyles = makeStyles(theme => ({
             theme.palette.type === 'light'
                 ? {
                     boxShadow: "4px 2px 3px #999999",
-                    border: "1px solid #e0e0e0",
-                    borderRight: "1px solid #e0e0e0",
+                    // border: "1px solid #e0e0e0",
+                    // borderRight: "1px solid #e0e0e0",
                 }
                 : {
                     boxShadow: "4px 2px 3px #000000",
-                    border: "1px solid #000000",
-                    borderRight: "1px solid #e0e0e0",
+                    // border: "1px solid #000000",
+                    // borderRight: "1px solid #e0e0e0",
                 },
     },
     spanSubject: {
@@ -397,7 +397,7 @@ const ServerTable = () => {
                         className={cellClassName}
                         style={{width: "15%"}}
                     >
-                        {row.status}
+                        {row.vmCount}
                     </TableCell>
                     <TableCell
                         className={cellClassName}

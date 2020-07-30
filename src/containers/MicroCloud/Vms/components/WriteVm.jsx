@@ -452,7 +452,7 @@ const WriteVm = (props) => {
                                     value={fields.image}
                                     onChange={(e) => {
                                         handleChangeField("image", e.target.value);
-                                        handleChangeField("imageName", imageList.find(item => item.value === e.target.value));
+                                        handleChangeField("imageName", imageList.find(item => item.value === e.target.value).name);
                                     }}
                                     MenuProps={MenuProps}
                                 >
