@@ -25,7 +25,7 @@ import Avatar from "@material-ui/core/Avatar";
 import SendIcon from "@material-ui/icons/Send";
 import {makeStyles} from "@material-ui/core/styles";
 import {checkId, checkPasswordPattern} from "../../../../lib/utils/utils";
-import {checkDuplicateUser} from "../../../../lib/api/users";
+import {checkDuplicateUser, getAuthList} from "../../../../lib/api/users";
 import {getCompanies, getUsersByCpIdx} from "../../../../lib/api/company";
 import LookupCompany from "../../../Common/LookupCompany";
 import LookupZipcode from "../../../Common/LookupZipcode";
@@ -202,6 +202,7 @@ const WriteUserForm = (props) => {
      *******************/
     const [companyList, setCompanyList] = useState([]);
     const [userList, setUserList] = useState([]);
+    const [authList, setAuthList] = useState([]);
 
     const [confirmUser, setConfirmUser] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -479,6 +480,15 @@ const WriteUserForm = (props) => {
         checkUser();
     };
 
+    const getAuth = async () => {
+        try {
+            const response = await getAuthList();
+            setAuthList(response.data);
+        } catch (error) {
+            setAuthList([]);
+        }
+    };
+
     /*******************
      * Open
      *******************/
@@ -630,6 +640,9 @@ const WriteUserForm = (props) => {
             setConfirmUser(true);
             setPasswordGridSize(4);
         }
+
+        //Auth
+        getAuth();
     }, []);
 
     /************************************************************************************
@@ -877,18 +890,36 @@ const WriteUserForm = (props) => {
                     <Grid item xs={6}>
                         <div>
                             <span className={labelClassName}>* 권한</span>
-                            <TextField
-                                className={fieldClassName}
-                                error={errors.level}
-                                required={requires.level}
-                                disabled={disables.level}
-                                helperText={helpers.level}
-                                name="level"
-                                value={fields.level}
-                                onChange={(e) => { handleChangeField("level", e.target.value); }}
-                                variant={variant}
+                            <FormControl
                                 size={fieldSize}
-                            />
+                                className={fieldClassName}
+                                variant="filled"
+                                error={errors.level}
+                                disabled={disables.level}
+                            >
+                                <Select
+                                    required={errors.level}
+                                    disabled={disables.level}
+                                    name="level"
+                                    value={fields.level}
+                                    onChange={(e) => { handleChangeField("level", e.target.value); }}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem key={0} value={0}>
+                                        <em>None</em>
+                                    </MenuItem>
+                                    {authList && authList.map((item, index) => {
+                                        const key = index;
+                                        if (item.tag !== '') {
+                                            return (
+                                                <MenuItem key={key} value={item.level}>{item.tag}</MenuItem>
+                                            );
+                                        }
+                                        return '';
+                                    })}
+                                </Select>
+                                <FormHelperText>{helpers.level}</FormHelperText>
+                            </FormControl>
                         </div>
                     </Grid>
                     <Grid item xs={6}>

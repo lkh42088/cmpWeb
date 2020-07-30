@@ -69,3 +69,6 @@ export const getUserListWithSearchParam = ({
 });
 
 export const getUserById = ({id}) => client.post(`/v1/users/get-user/${id}`);
+
+// Auth
+export const getAuthList = () => client.get("/v1/auth");
