@@ -7,24 +7,15 @@ import ProfileBtn from './ProfileBtn';
 import ProfileTasks from './ProfileTasks';
 import ProfileTabs from './ProfileTabs';
 
-const Calendar = () => {
-    console.log("userView start");
-
-    const {
-        userIdx,
-        user,
-    } = useSelector(({usersRd}) => ({
-        userIdx: usersRd.userIdx,
-        user: usersRd.user,
-    }));
-
+const UserView = () => {
+    console.log("UserView start");
     return (
         <Container>
             <div className="profile">
                 <Row>
                     <Col md={12} lg={12} xl={4}>
                         <Row>
-                            <ProfileMain userTemp={user}/>
+                            <ProfileMain/>
                             <ProfileBtn />
                             <ProfileTasks />
                         </Row>
@@ -36,4 +27,4 @@ const Calendar = () => {
     );
 };
 
-export default Calendar;
+export default UserView;

@@ -67,3 +67,5 @@ export const getUserListWithSearchParam = ({
 }) => client.post(`/v1/users/page-with-search-param`, {
     rows, offset, orderBy, order, searchParam,
 });
+
+//export const getUserById = ({id}) => client.get(`/v1/users/${id}`);

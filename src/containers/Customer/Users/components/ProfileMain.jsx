@@ -10,14 +10,12 @@ import TableCell from "@material-ui/core/TableCell";
 import MatButton from '@material-ui/core/Button';
 import SendIcon from "@material-ui/icons/Send";
 
-const ProfileMain = (userTemp) => {
+const ProfileMain = () => {
     const {
         user,
     } = useSelector(({usersRd}) => ({
         user: usersRd.user,
     }));
-
-    console.log("🤑 userTemp : ", userTemp.userTemp.idx);
 
     return (
         <Col md={12} lg={12} xl={12}>

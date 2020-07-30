@@ -49,10 +49,6 @@ const ProfileDetail = () => {
 
     const address = getAddress(user);
 
-    useEffect(() => {
-        console.log("😈😈😈😈 ---> 변경되나 보자 : !! : ", user);
-    }, [user]);
-
     return (
         <div>
             <div className="form-infor">

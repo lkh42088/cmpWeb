@@ -13,8 +13,6 @@ const MaterialTable = () => {
         page: usersRd.userPage,
     }));
 
-    console.log("index start");
-
     return (
         <Container fluid>
             <Row>

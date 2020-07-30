@@ -1,11 +1,17 @@
 import MuAvatar from "@material-ui/core/Avatar";
 import Avatar from "react-avatar";
 import PersonIcon from "@material-ui/icons/Person";
-import { makeStyles } from '@material-ui/core/styles';
-import { blue } from '@material-ui/core/colors';
+import {makeStyles} from '@material-ui/core/styles';
+import {blue} from '@material-ui/core/colors';
 import DownIcon from "mdi-react/ChevronDownIcon";
 import {Collapse} from "reactstrap";
 import React, {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+
+import {
+    setUserPage, setUserIdx, setUser,
+} from "../../../redux/actions/usersActions";
+
 import TopbarMenuLink from "./TopbarMenuLink";
 
 // const Ava = `${process.env.PUBLIC_URL}/img/ava.png`;
@@ -22,37 +28,59 @@ const useStyles = makeStyles({
 const TopbarProfile = (props) => {
     const classes = useStyles();
     const [collapse, setCollapse] = useState(false);
-    const { user, logout } = props;
+    const {user, logout} = props;
+    const dispatch = useDispatch();
+
+
+    const {
+        data,
+    } = useSelector(({usersRd}) => ({
+        data: usersRd.data,
+    }));
 
     const toggle = () => {
         setCollapse(!collapse);
     };
 
+    const profile = () => {
+        setCollapse(!collapse);
+        /*const res = data.filter(item => item.userId === user.id);
+        console.log("handleUserPage res[0] : ..... : ", res[0]);
+        console.log("handleUserPage data : ..... : ", data);*/
+        dispatch(setUserPage({userPage: 'view'}));
+        /*dispatch(setUserPage({userPage: 'view'}));
+        dispatch(setUserIdx({userIdx: res[0].idx}));
+        dispatch(setUser(res[0]));*/
+    };
+
+    //console.log("TopbarProfile ....  user : ", user);
+    //console.log("TopbarProfile ....  data : ", data);
+
     return (
         <div className="topbar__profile">
             <button className="topbar__avatar" type="button" onClick={toggle}>
-                { (user && user.id) ? (
-                    <Avatar className="topbar__avatar-img" name={user.id} size="40" />
+                {(user && user.id) ? (
+                    <Avatar className="topbar__avatar-img" name={user.id} size="40"/>
                 ) : (
                     <MuAvatar className={classes.avatar}>
-                        <PersonIcon />
+                        <PersonIcon/>
                     </MuAvatar>
                 )}
                 <p className="topbar__avatar-name">
                     {user != null && user.name != null ? user.name : ""}
                 </p>
-                <DownIcon className="topbar__icon" />
+                <DownIcon className="topbar__icon"/>
             </button>
-            {collapse && <button className="topbar__back" type="button" onClick={toggle} />}
+            {collapse && <button className="topbar__back" type="button" onClick={toggle}/>}
             <Collapse isOpen={collapse} className="topbar__menu-wrap">
                 <div className="topbar__menu">
                     <TopbarMenuLink
                         title="My Profile"
                         icon="user"
-                        path="/account/profile"
-                        onClick={toggle}
+                        path="/customers/users"
+                        onClick={profile}
                     />
-                    <TopbarMenuLink
+                    {/*<TopbarMenuLink
                         title="Calendar"
                         icon="calendar-full"
                         path="/default_pages/calendar"
@@ -82,7 +110,7 @@ const TopbarProfile = (props) => {
                         icon="lock"
                         path="/lock_screen"
                         onClick={toggle}
-                    />
+                    />*/}
                     {/*{auth0.isAuthenticated && (*/}
                     {/*  <TopbarMenuLink*/}
                     {/*    title="Log Out Auth0"*/}

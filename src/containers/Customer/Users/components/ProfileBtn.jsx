@@ -92,7 +92,7 @@ const ProfileBtn = () => {
             });
 
             const submitData = ({
-                cpIdx,
+                companyIdx: cpIdx,
                 cpName,
                 userId: id,
                 password,
@@ -110,7 +110,6 @@ const ProfileBtn = () => {
                 memo,
             });
 
-            console.log("🤑🤑 submitData : ", submitData);
             dispatch(setUser(submitData));
             handleSnackbarSuccess("계정 수정이 성공하였습니다.");
 
