@@ -9,6 +9,7 @@ import {
     GET_USER_LIST_WITH_SEARCH_PARAM_FAILURE,
     CHANGE_USER_FIELD,
     SET_USER_PAGE, SET_USER_IDX, SET_USER,
+    SET_USER_BY_ID,
 } from "../actions/usersActions";
 
 const initialState = {
@@ -58,6 +59,10 @@ const usersReducer = handleActions(
         [SET_USER]: (state, {payload}) => ({
            ...state,
            user: payload,
+        }),
+        [SET_USER_BY_ID]: (state, {payload}) => ({
+            ...state,
+            user: payload,
         }),
     },
     initialState,

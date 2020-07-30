@@ -18,6 +18,7 @@ export const SET_USER = 'user/SET_USER';
 /** SAGA Action Type */
 export const [CHECK_DUP_USER, CHECK_DUP_USER_SUCCESS, CHECK_DUP_USER_FAILURE] = createRequestActionTypes('user/CHECK_DUP_USER');
 export const [GET_USER_LIST, GET_USER_LIST_SUCCESS, GET_USER_LIST_FAILURE] = createRequestActionTypes('user/USERLIST');
+export const [SET_USER_BY_ID] = createRequestActionTypes('user/SET_USER_BY_ID');
 export const [
     GET_USER_LIST_WITH_SEARCH_PARAM,
     GET_USER_LIST_WITH_SEARCH_PARAM_SUCCESS,
@@ -55,6 +56,8 @@ export const getUserListWithSearchParam = createAction(GET_USER_LIST_WITH_SEARCH
 
 export const checkDupUser = createAction(CHECK_DUP_USER, ({ userId }) => ({ userId }));
 
+export const getUserById = createAction(SET_USER_BY_ID, ({ id }) => ({ id }));
+
 /******************************************************************************
  * 3. Saga
  *****************************************************************************/
@@ -62,6 +65,7 @@ const getUserListSaga = createRequestSaga(GET_USER_LIST, users.getUserList);
 const getUserListWithSearchParamSaga = createRequestSaga(GET_USER_LIST_WITH_SEARCH_PARAM,
     users.getUserListWithSearchParam);
 const checkDupUserSaga = createRequestSaga(CHECK_DUP_USER, users.checkDuplicateUser);
+const getUserByIdSaga = createRequestSaga(SET_USER_BY_ID, users.getUserById);
 
 /******************************************************************************
  * 4. Saga Generation Function
@@ -70,4 +74,5 @@ export function* usersSaga() {
     yield takeLatest(GET_USER_LIST, getUserListSaga);
     yield takeLatest(GET_USER_LIST_WITH_SEARCH_PARAM, getUserListWithSearchParamSaga);
     yield takeLatest(CHECK_DUP_USER, checkDupUserSaga);
+    yield takeLatest(SET_USER_BY_ID, getUserByIdSaga);
 }

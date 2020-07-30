@@ -9,10 +9,13 @@ import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 
 import {
-    setUserPage, setUserIdx, setUser,
+    setUser,
+    setUserIdx,
+    setUserPage,
 } from "../../../redux/actions/usersActions";
 
 import TopbarMenuLink from "./TopbarMenuLink";
+import {getUserById, modifyUser} from "../../../lib/api/users";
 
 // const Ava = `${process.env.PUBLIC_URL}/img/ava.png`;
 
@@ -42,15 +45,21 @@ const TopbarProfile = (props) => {
         setCollapse(!collapse);
     };
 
-    const profile = () => {
+    const profile = async () => {
         setCollapse(!collapse);
         /*const res = data.filter(item => item.userId === user.id);
         console.log("handleUserPage res[0] : ..... : ", res[0]);
         console.log("handleUserPage data : ..... : ", data);*/
         dispatch(setUserPage({userPage: 'view'}));
-        /*dispatch(setUserPage({userPage: 'view'}));
-        dispatch(setUserIdx({userIdx: res[0].idx}));
-        dispatch(setUser(res[0]));*/
+        try {
+            const response = await getUserById({
+                id: user.id,
+            });
+            dispatch(setUserIdx({userIdx: response.data.idx}));
+            dispatch(setUser(response.data));
+        } catch {
+            console.log("topbar profile error");
+        }
     };
 
     //console.log("TopbarProfile ....  user : ", user);
