@@ -1,10 +1,5 @@
-import React from "react";
-import TableRow from "@material-ui/core/TableRow";
+import React, {useState} from "react";
 import TableCell from "@material-ui/core/TableCell";
-import Checkbox from "@material-ui/core/Checkbox";
-import {IconButton} from "@material-ui/core";
-import BuildIcon from "@material-ui/icons/Build";
-import ReactTooltip from "react-tooltip";
 import Collapse from "@material-ui/core/Collapse";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
@@ -83,16 +78,16 @@ const SubnetContents = (props) => {
 
     const CustomRect = (properties) => {
         const {
-            width, height, x, y, text,
+            width, height, x, y, text, id,
         } = properties;
 
         const textX = x + 4;
         const textY = y + 12;
 
-        console.log(width, height, x, y, text);
         return (
-            // <g transform="translate(18, 18)">
-            <g>
+            <g
+                id={id} key={id}
+            >
                 <rect x={x} y={y} width={width} height={height} fill="#EDEDED"
                       title="" className={classes.rect}
                       data-container="body"/>
@@ -105,13 +100,12 @@ const SubnetContents = (props) => {
     // eslint-disable-next-line consistent-return
     const MakeRectForm = (properties) => {
         const {
-            startIp, endIp,
+            startIp, endIp, index,
         } = properties;
 
         if (!startIp || !endIp) {
             return null;
         }
-
         const start = startIp.split('.');
         const end = endIp.split('.');
         let lastLocationX = 0;
@@ -121,7 +115,6 @@ const SubnetContents = (props) => {
 
             if (start[3] <= end[3]) {
                 for (let i = Number(start[3]); i <= Number(end[3]); i += 1) {
-                    console.log(start[3], end[3], i);
                     lastLocationX += RECT_SIZE + RECT_SPACE;
                     if (count >= 32) {
                         lastLocationY += RECT_SIZE + RECT_SPACE;
@@ -135,11 +128,11 @@ const SubnetContents = (props) => {
                         x: lastLocationX,
                         y: lastLocationY,
                         text: i,
+                        id: "customRect-".concat(String(index)).concat(`"-"${String(i)}`),
                     }));
                     count += 1;
                 }
             }
-
         return rects;
     };
 
@@ -148,13 +141,14 @@ const SubnetContents = (props) => {
             <Collapse in={openCollapse} timeout="auto" unmountOnExit>
                 <Box margin={1}>
                     <Typography variant="h6" gutterBottom component="div">
-                        {/*{row}*/}
+                        {String(row.subnetStart).concat(" ~ ").concat(row.subnetEnd)}
                     </Typography>
                     <div className={classes.grid}>
-                        <svg width="100%" height="400">
+                        <svg width="100%" height="303">
                             {MakeRectForm({
                                 startIp: row.subnetStart,
                                 endIp: row.subnetEnd,
+                                index: row.idx,
                             })}
                         </svg>
                     </div>
