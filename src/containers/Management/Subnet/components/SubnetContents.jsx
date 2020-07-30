@@ -1,10 +1,5 @@
-import React from "react";
-import TableRow from "@material-ui/core/TableRow";
+import React, {useState} from "react";
 import TableCell from "@material-ui/core/TableCell";
-import Checkbox from "@material-ui/core/Checkbox";
-import {IconButton} from "@material-ui/core";
-import BuildIcon from "@material-ui/icons/Build";
-import ReactTooltip from "react-tooltip";
 import Collapse from "@material-ui/core/Collapse";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
@@ -63,117 +58,103 @@ const useStyles = makeStyles((theme) => {
                 paddingTop: 20,
                 paddingBottom: 20,
             },
+            rect: {
+                boxShadow: "0 2px 4px 0 rgba(0, 0, 0, 0.09)",
+            },
         });
     }
     return null;
 });
 
+const RECT_SIZE = 25;
+const RECT_SPACE = 5;
+const START_LOCATION = 34;
+
 const SubnetContents = (props) => {
+    const classes = useStyles();
     const {
         openCollapse, row,
     } = props;
-    const classes = useStyles();
+
+    const CustomRect = (properties) => {
+        const {
+            width, height, x, y, text, id,
+        } = properties;
+
+        const textX = x + 4;
+        const textY = y + 12;
+
+        return (
+            <g
+                id={id} key={id}
+            >
+                <rect x={x} y={y} width={width} height={height} fill="#EDEDED"
+                      title="" className={classes.rect}
+                      data-container="body"/>
+                <text x={textX} y={textY} dominantBaseline="middle"
+                      fontSize="10" fill="#9A9A9A">{text}</text>
+            </g>
+        );
+    };
+
+    // eslint-disable-next-line consistent-return
+    const MakeRectForm = (properties) => {
+        const {
+            startIp, endIp, index,
+        } = properties;
+
+        if (!startIp || !endIp) {
+            return null;
+        }
+        const start = startIp.split('.');
+        const end = endIp.split('.');
+        let lastLocationX = 0;
+        let lastLocationY = START_LOCATION;
+        let count = 0;
+        const rects = [];
+
+            if (start[3] <= end[3]) {
+                for (let i = Number(start[3]); i <= Number(end[3]); i += 1) {
+                    lastLocationX += RECT_SIZE + RECT_SPACE;
+                    if (count >= 32) {
+                        lastLocationY += RECT_SIZE + RECT_SPACE;
+                        lastLocationX = RECT_SIZE + RECT_SPACE;
+                        count = 0;
+                    }
+
+                    rects.push(CustomRect({
+                        width: RECT_SIZE,
+                        height: RECT_SIZE,
+                        x: lastLocationX,
+                        y: lastLocationY,
+                        text: i,
+                        id: "customRect-".concat(String(index)).concat(`"-"${String(i)}`),
+                    }));
+                    count += 1;
+                }
+            }
+        return rects;
+    };
 
     return (
-        <TableRow>
-            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
-                <Collapse in={openCollapse} timeout="auto" unmountOnExit>
-                    <Box margin={1}>
-                        <Typography variant="h6" gutterBottom component="div">
-                            {row.userId}
-                        </Typography>
-                        <div className={classes.grid}>
-                            {/*<Grid container spacing={1}>*/}
-                            {/*    <Grid item xs={12} sm={6}>*/}
-                            {/*        <ul>*/}
-                            {/*            <li>*/}
-                            {/*                <span className={classes.spanSubject}> 소속회사 </span>*/}
-                            {/*                <span className={classes.spanContents}> {row.cpName} </span>*/}
-                            {/*            </li>*/}
-                            {/*            <li>*/}
-                            {/*                <span className={classes.spanSubject}> ID </span>*/}
-                            {/*                <span className={classes.spanContents}> {row.userId} </span>*/}
-                            {/*            </li>*/}
-                            {/*            <li>*/}
-                            {/*                <span className={classes.spanSubject}> 이름 </span>*/}
-                            {/*                <span className={classes.spanContents}> {row.name} </span>*/}
-                            {/*            </li>*/}
-                            {/*            <li>*/}
-                            {/*                <span className={classes.spanSubject}> 전화번호 </span>*/}
-                            {/*                <span className={classes.spanContents}> {row.hp === "" ? "-" : row.hp} </span>*/}
-                            {/*            </li>*/}
-                            {/*            <li>*/}
-                            {/*                <span className={classes.spanSubject}> 이메일 </span>*/}
-                            {/*                <span className={classes.spanContents}> {row.email === "" ? "-" : row.email} </span>*/}
-                            {/*            </li>*/}
-                            {/*        </ul>*/}
-                            {/*    </Grid>*/}
-                            {/*    <Grid item xs={12} sm={6}>*/}
-                            {/*        <ul>*/}
-                            {/*            <li>*/}
-                            {/*                <span className={classes.spanSubject}> 권한 </span>*/}
-                            {/*                /!*<span className={classes.spanContents}> {row.zipcode},&nbsp;{row.address},&nbsp;{row.addressDetail} </span>*!/*/}
-                            {/*                <span className={classes.spanContents}> {row.authLevel} </span>*/}
-                            {/*            </li>*/}
-                            {/*            <li>*/}
-                            {/*                <span className={classes.spanSubject}> 주소 </span>*/}
-                            {/*                /!*<span className={classes.spanContents}> {row.zipcode},&nbsp;{row.address},&nbsp;{row.addressDetail} </span>*!/*/}
-                            {/*                <span className={classes.spanContents}> {address} </span>*/}
-                            {/*            </li>*/}
-                            {/*            <li>*/}
-                            {/*                <span className={classes.spanSubject}> 등록일 </span>*/}
-                            {/*                <span className={classes.spanContents}> {moment(row.registerDate).format('YYYY-MM-DD')} </span>*/}
-                            {/*            </li>*/}
-                            {/*            <li>*/}
-                            {/*                <span className={classes.spanSubject}> 인증 </span>*/}
-                            {/*                <span className={classes.spanContents}>*/}
-                            {/*                    /!* eslint-disable-next-line no-nested-ternary *!/*/}
-                            {/*                    {row.emailAuth === true ? "개인 이메일 인증" : (row.groupEmailAuth === true ? "그룹 이메일 인증" : "사용 안함")}*/}
-                            {/*                </span>*/}
-                            {/*            </li>*/}
-                            {/*        </ul>*/}
-                            {/*    </Grid>*/}
-                            {/*    <Grid item xs={12} sm={6}>*/}
-                            {/*        {*/}
-                            {/*            row.groupEmailAuth && row.groupEmailAuthList ? (*/}
-                            {/*                <React.Fragment>*/}
-                            {/*                    <span className={classes.spanContents}>*/}
-                            {/*                        <GroupIcon/> 이메일 인증 그룹 </span>*/}
-                            {/*                    <ul>*/}
-                            {/*                        {row.groupEmailAuthList.map(auth => (*/}
-                            {/*                            <li key={auth.idx}>*/}
-                            {/*                            <span className={classes.spanContents}>*/}
-                            {/*                                {auth.AuthUserId}/{auth.AuthEmail}</span>*/}
-                            {/*                            </li>*/}
-                            {/*                        ))}*/}
-                            {/*                    </ul>*/}
-                            {/*                </React.Fragment>*/}
-                            {/*            ) : <React.Fragment/>*/}
-                            {/*        }*/}
-                            {/*    </Grid>*/}
-                            {/*    <Grid item xs={12} sm={6}>*/}
-                            {/*        {*/}
-                            {/*            row.participateInAccountList && row.participateInAccountList.length > 0 ? (*/}
-                            {/*                <React.Fragment>*/}
-                            {/*                    <span className={classes.spanContents}>*/}
-                            {/*                        <AccountCircleIcon/> 사용하는 이메일 인증 계정 </span>*/}
-                            {/*                    <ul>*/}
-                            {/*                        {row.participateInAccountList.map(paccount => (*/}
-                            {/*                            <li key={paccount.idx}>*/}
-                            {/*                                <span className={classes.spanContents}>{paccount.UserId}</span>*/}
-                            {/*                            </li>*/}
-                            {/*                        ))}*/}
-                            {/*                    </ul>*/}
-                            {/*                </React.Fragment>*/}
-                            {/*            ) : <React.Fragment/>*/}
-                            {/*        }*/}
-                            {/*    </Grid>*/}
-                            {/*</Grid>*/}
-                        </div>
-                    </Box>
-                </Collapse>
-            </TableCell>
-        </TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
+            <Collapse in={openCollapse} timeout="auto" unmountOnExit>
+                <Box margin={1}>
+                    <Typography variant="h6" gutterBottom component="div">
+                        {String(row.subnetStart).concat(" ~ ").concat(row.subnetEnd)}
+                    </Typography>
+                    <div className={classes.grid}>
+                        <svg width="100%" height="303">
+                            {MakeRectForm({
+                                startIp: row.subnetStart,
+                                endIp: row.subnetEnd,
+                                index: row.idx,
+                            })}
+                        </svg>
+                    </div>
+                </Box>
+            </Collapse>
+        </TableCell>
     );
 };
 

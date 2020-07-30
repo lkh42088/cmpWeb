@@ -32,7 +32,7 @@ import {
     changeToSidebarDropdown,
     toggleBoxShadow,
     toggleTopNavigation,
-    changeDensePadding,
+    changeDensePadding, toggleHybridCloud,
 } from '../../redux/actions/customizerActions';
 import {
     CustomizerProps, SidebarProps, ThemeProps, RTLProps, UserProps, MenuTitleProps,
@@ -122,7 +122,7 @@ class Layout extends Component {
     }
 
     componentWillUnmount() {
-        notification.destroy();
+        // notification.destroy();
     }
 
     changeSidebarVisibility = () => {
@@ -230,10 +230,15 @@ class Layout extends Component {
         dispatch(changeDensePadding());
     };
 
+    toggleHybridCloud = () => {
+        const {dispatch} = this.props;
+        dispatch(toggleHybridCloud());
+    };
+
     logout = () => {
         const {dispatch} = this.props;
-        dispatch(logout());
         localStorage.removeItem('user');
+        dispatch(logout());
     };
 
     render() {
@@ -264,6 +269,7 @@ class Layout extends Component {
                     toggleBoxShadow={this.toggleBoxShadow}
                     changeToSidebarDropdown={this.changeToSidebarDropdown}
                     changeDensePadding={this.changeDensePadding}
+                    toggleHybridCloud={this.toggleHybridCloud}
                 />
                 {customizer.topNavigation
                     ? (

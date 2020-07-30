@@ -1,16 +1,13 @@
 import React from "react";
-import {Card, CardBody} from "reactstrap";
 import Dialog from "@material-ui/core/Dialog";
+import {Card, CardBody} from "reactstrap";
 import Grid from "@material-ui/core/Grid";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import WriteUserForm from "./WriteUserForm";
+import DnsRoundedIcon from "@material-ui/icons/DnsRounded";
+import WriteVm from "./WriteVm";
 
-const ModifyUserPage = (props) => {
-    /************************************************************************************
-     * Props
-     ************************************************************************************/
+const ModifyVm = (props) => {
     const {
-        open, handleClose, handleSubmit, data,
+        open, handleClose, handleSubmit,
     } = props;
 
     return (
@@ -20,21 +17,20 @@ const ModifyUserPage = (props) => {
             <Card>
                 <CardBody>
                     <div className="card__title">
-                        <Grid container spacing={1}>
+                        <Grid container alignItems="center" spacing={1}>
                             <Grid item>
-                                <AccountCircleIcon/>
+                                <DnsRoundedIcon/>
                             </Grid>
                             <Grid item>
-                                <h3 className="bold-text">계정 수정</h3>
+                                <h3 className="bold-text">VM 수정</h3>
                             </Grid>
                         </Grid>
                     </div>
-                    <WriteUserForm
+                    <WriteVm
                         open={open}
                         handleClose={handleClose}
                         handleSubmit={handleSubmit}
                         isRegister={false}
-                        data={data}
                     />
                 </CardBody>
             </Card>
@@ -42,4 +38,4 @@ const ModifyUserPage = (props) => {
     );
 };
 
-export default ModifyUserPage;
+export default ModifyVm;

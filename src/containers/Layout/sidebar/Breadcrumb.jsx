@@ -56,6 +56,8 @@ const useStyles = makeStyles(theme => ({
 const PAGE_URL = {
     "/dashboards/manager": {title: "관리자 대시보드", subTitle: null, icon: outlineDashboard},
     "/dashboards/customer": {title: "사용자 대시보드", subTitle: null, icon: outlineDashboard},
+    "/micro/servers": {title: "MICRO CLOUD", subTitle: "SERVER", icon: serverOutlineBadged},
+    "/micro/vms": {title: "MICRO CLOUD", subTitle: "VM", icon: serverOutlineBadged},
     "/assets/server": {title: "SERVER", subTitle: "온프레미스", icon: serverOutlineBadged},
     "/assets/network": {title: "NETWORK", subTitle: "네트워크", icon: routerNetwork},
     "/assets/part": {title: "NETWORK", subTitle: "파트 & 기타", icon: routerNetwork},

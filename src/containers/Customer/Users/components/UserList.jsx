@@ -11,8 +11,6 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
 import TableContainer from "@material-ui/core/TableContainer";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import Collapse from '@material-ui/core/Collapse';
 import {makeStyles} from "@material-ui/core/styles";
 import Box from '@material-ui/core/Box';
@@ -123,13 +121,13 @@ const useStyles = makeStyles(theme => ({
             theme.palette.type === 'light'
                 ? {
                     boxShadow: "4px 2px 3px #999999",
-                    border: "1px solid #e0e0e0",
-                    borderRight: "1px solid #e0e0e0",
+                    // border: "1px solid #e0e0e0",
+                    // borderRight: "1px solid #e0e0e0",
                 }
                 : {
                     boxShadow: "4px 2px 3px #000000",
-                    border: "1px solid #000000",
-                    borderRight: "1px solid #e0e0e0",
+                    // border: "1px solid #000000",
+                    // borderRight: "1px solid #e0e0e0",
                 },
     },
     spanSubject: {
