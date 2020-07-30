@@ -2,6 +2,7 @@ import {createAction} from "redux-actions";
 import {takeLatest} from 'redux-saga/effects';
 import createRequestSaga, {createRequestActionTypes} from "../../lib/createRequestSaga";
 import * as users from "../../lib/api/users";
+import {PAGING_CHANGE_DENSE} from "./pagingActions";
 
 /******************************************************************************
  * 1. Action Type
@@ -10,6 +11,9 @@ export const INITIALIZE_REGISTER_USER = 'user/INITIALIZE';
 export const CHANGE_USER_REGISTER_FIELD = 'user/CHANGE_USER_REGISTER_FIELD';
 export const CHANGE_USER_FIELD = 'user/CHANGE_USER_FIELD';
 export const CHECK_USER_REGISTER_FIELD = 'user/CHECK_USER_REGISTER_FIELD';
+export const SET_USER_PAGE = 'user/SET_USER_PAGE';
+export const SET_USER_IDX = 'user/SET_USER_IDX';
+export const SET_USER = 'user/SET_USER';
 
 /** SAGA Action Type */
 export const [CHECK_DUP_USER, CHECK_DUP_USER_SUCCESS, CHECK_DUP_USER_FAILURE] = createRequestActionTypes('user/CHECK_DUP_USER');
@@ -29,6 +33,12 @@ export const changeUserRegisterField = createAction(
     CHANGE_USER_REGISTER_FIELD,
     ({ key, value }) => ({ key, value }),
 );
+
+export const setUserPage = createAction(SET_USER_PAGE,
+    userPage => userPage);
+export const setUserIdx = createAction(SET_USER_IDX, userIdx => userIdx);
+export const setUser = createAction(SET_USER, data => data);
+
 
 /** SAGA Action Function */
 export const getUserList = createAction(GET_USER_LIST, ({

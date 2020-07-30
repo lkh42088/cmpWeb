@@ -745,7 +745,7 @@ class AssetsView extends PureComponent {
                         <AccordionDetails>
                             <div className="form-infor">
                                 <div className="row">
-                                    <div className="col-md-6">
+                                    <div className="col-lg-6">
                                         <div className={classNameMap.rowFormItem}>
                                             <div className={classNameMap.itemContainer}>
                                                 <div className={classNameMap.formInforLabel}>운영여부</div>
@@ -755,7 +755,7 @@ class AssetsView extends PureComponent {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-md-6">
+                                    <div className="col-lg-6">
                                         <div className={classNameMap.rowFormItem}>
                                             <div className={classNameMap.itemContainer}>
                                                 <div className={classNameMap.formInforLabel}>&nbsp;</div>
@@ -962,7 +962,7 @@ class AssetsView extends PureComponent {
                                     <div className={classNameMap.itemContainer}>
                                         <div className={classNameMap.formInforLabel}>기타사항</div>
                                     </div>
-                                    <div className="col-lg-10 col-md-12">
+                                    <div className="col-lg-10">
                                         {/*<div className="form-control-value"
                                                      dangerouslySetInnerHTML={{__html: contents}}/>*/}
                                         <textarea

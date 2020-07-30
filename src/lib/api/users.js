@@ -68,5 +68,7 @@ export const getUserListWithSearchParam = ({
     rows, offset, orderBy, order, searchParam,
 });
 
+//export const getUserById = ({id}) => client.get(`/v1/users/${id}`);
+
 // Auth
 export const getAuthList = () => client.get("/v1/auth");
