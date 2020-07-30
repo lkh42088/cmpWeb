@@ -1,9 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {
-    Card,
-    CardBody,
-    Col,
-} from 'reactstrap';
+import {Card, CardBody, Col} from 'reactstrap';
 import Avatar from "react-avatar";
 
 import moment from "moment";
@@ -41,7 +37,11 @@ import {
     pagingChangeTotalCount,
     pagingDump,
 } from "../../../../redux/actions/pagingActions";
-import {getUserList, getUserListWithSearchParam, initRegisterUser} from "../../../../redux/actions/usersActions";
+import {
+    getUserList, getUserListWithSearchParam, initRegisterUser,
+    setUserPage, setUserIdx, setUser,
+} from "../../../../redux/actions/usersActions";
+
 import CommonTableHead from "../../../Common/CommonTableHead";
 import RegisterUserPage from "./RegisterUserPage";
 import {modifyUser, registerUser, unregisterUser} from "../../../../lib/api/users";
@@ -51,14 +51,46 @@ import {limitLongString} from "../../../../lib/utils/utils";
 import ModifyUserPage from "./ModifyUserPage";
 
 const headRows = [
-    {id: 'idx', disablePadding: false, label: 'Index'},
-    {id: 'avata', disablePadding: false, label: '아바타'},
-    {id: 'userId', disablePadding: false, label: '아이디'},
-    {id: 'userName', disablePadding: false, label: '이름'},
-    {id: 'email', disablePadding: false, label: '이메일'},
-    {id: 'cpName', disablePadding: false, label: '회사명'},
-    {id: 'authlevel', disablePadding: false, label: '권한'},
-    {id: 'memo', disablePadding: false, label: '메모'},
+    {
+        id: 'idx',
+        disablePadding: false,
+        label: 'Index',
+    },
+    {
+        id: 'avata',
+        disablePadding: false,
+        label: '아바타',
+    },
+    {
+        id: 'userId',
+        disablePadding: false,
+        label: '아이디',
+    },
+    {
+        id: 'userName',
+        disablePadding: false,
+        label: '이름',
+    },
+    {
+        id: 'email',
+        disablePadding: false,
+        label: '이메일',
+    },
+    {
+        id: 'cpName',
+        disablePadding: false,
+        label: '회사명',
+    },
+    {
+        id: 'authlevel',
+        disablePadding: false,
+        label: '권한',
+    },
+    {
+        id: 'memo',
+        disablePadding: false,
+        label: '메모',
+    },
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -119,7 +151,7 @@ const UserList = () => {
      ************************************************************************************/
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { enqueueSnackbar } = useSnackbar();
+    const {enqueueSnackbar} = useSnackbar();
     /**
      * User Data
      */
@@ -130,7 +162,7 @@ const UserList = () => {
         /** Register User */
         msg,
         msgError,
-    } = useSelector(({ usersRd }) => ({
+    } = useSelector(({usersRd}) => ({
         /** Paging User Data */
         data: usersRd.data,
         getPage: usersRd.page,
@@ -200,7 +232,7 @@ const UserList = () => {
     };
 
     const handleSnackbarSuccess = (snackMsg) => {
-        enqueueSnackbar(snackMsg, { variant: "success" });
+        enqueueSnackbar(snackMsg, {variant: "success"});
     };
 
     /*******************
@@ -230,7 +262,7 @@ const UserList = () => {
 
     /** Pagination */
     const handleChangePage = (event, newPage) => {
-        console.log("change page: ", newPage);
+        // console.log("change page: ", newPage);
         dispatch(pagingChangeCurrentPage({currentPage: newPage}));
     };
 
@@ -279,15 +311,22 @@ const UserList = () => {
         if (currentPage > 0) {
             offset = rowsPerPage * currentPage;
         }
-        console.log("get Page Data: rows ", rowsPerPage, ", offset ", offset,
-            ", orderBy ", orderBy, ", order ", order, ", searchParam ", searchParam);
+        // console.log("get Page Data: rows ", rowsPerPage, ", offset ", offset,
+            //", orderBy ", orderBy, ", order ", order, ", searchParam ", searchParam);
         if (searchParam !== null) {
             dispatch(getUserListWithSearchParam({
-                rows: rowsPerPage, offset, orderBy, order, searchParam,
+                rows: rowsPerPage,
+                offset,
+                orderBy,
+                order,
+                searchParam,
             }));
         } else {
             dispatch(getUserList({
-                rows: rowsPerPage, offset, orderBy, order,
+                rows: rowsPerPage,
+                offset,
+                orderBy,
+                order,
             }));
         }
     };
@@ -306,25 +345,25 @@ const UserList = () => {
     /** Pagination */
     const handleDeleteSelected = () => {
         let copyUser = [...data];
-        console.log("deleted Selected:");
-        console.log("copyUser:", copyUser);
-        console.log("SELECTED:", selected);
+        //console.log("deleted Selected:");
+        //console.log("copyUser:", copyUser);
+        //console.log("SELECTED:", selected);
         const delList = [];
         if (selected !== null) {
             selected.forEach((value, key, mapObject) => {
-                console.log("selected: key ", key, ", value ", value);
+                //console.log("selected: key ", key, ", value ", value);
                 if (value) {
                     delList.push(key);
                 }
             });
         }
-        console.log("delList: ", delList);
+        //console.log("delList: ", delList);
         deleteUsers(delList);
 
         for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
             copyUser = copyUser.filter(obj => obj.id !== selected[i]);
         }
-        console.log("after copyUser:", copyUser);
+        //console.log("after copyUser:", copyUser);
     };
 
     /** Pagination */
@@ -333,7 +372,7 @@ const UserList = () => {
     };
 
     const handleSubmitSearch = (params) => {
-        console.log("handleSubmitSearch() params ", params);
+        // console.log("handleSubmitSearch() params ", params);
         setSearchParam(params);
     };
 
@@ -413,36 +452,43 @@ const UserList = () => {
     };
 
     const deleteUser = async () => {
-        console.log("deleteUser");
+        // console.log("deleteUser");
     };
 
     /*******************
      * Event
      *******************/
     const handleSubmitAddUser = (user) => {
-        console.log("handleSubmit() : user ", user);
+        // console.log("handleSubmit() : user ", user);
         asyncAddUser(user);
         handleCloseAddUser();
     };
 
     const handleSubmitModifyUser = (user) => {
-        console.log("handleSubmitModifyUser: ", user);
+        // console.log("handleSubmitModifyUser: ", user);
         asyncModifyUser(user);
         handleCloseModifyUser();
     };
 
     const handleDeleteSelectedUser = (idx) => {
-        console.log("delete user: ", idx);
+        // console.log("delete user: ", idx);
         const delList = [];
         delList.push(idx);
         deleteUsers(delList);
     };
 
     const handleModifySelectedUser = (idx) => {
-        console.log("modify user: ", idx);
+        // console.log("modify user: ", idx);
         const res = data.filter(item => item.idx === idx);
         setModifyData(res[0]);
         handleOpenModifyUser();
+    };
+
+    const handleUserPage = (idx) => {
+        const res = data.filter(item => item.idx === idx);
+        dispatch(setUserPage({userPage: 'view'}));
+        dispatch(setUserIdx({userIdx: idx}));
+        dispatch(setUser(res[0]));
     };
 
     /************************************************************************************
@@ -450,7 +496,7 @@ const UserList = () => {
      ************************************************************************************/
     useEffect(() => {
         const changeOrderBy = "idx";
-        console.log("[] orderBy: ", changeOrderBy);
+        // console.log("[] orderBy: ", changeOrderBy);
         dispatch(pagingChangeOrderByWithReset({orderBy: changeOrderBy}));
     }, []);
 
@@ -488,7 +534,7 @@ const UserList = () => {
     }, [msgError]);
 
     useEffect(() => {
-        console.log("useEffect: searchParam ", searchParam);
+        // console.log("useEffect: searchParam ", searchParam);
         getPageData();
     }, [searchParam]);
 
@@ -533,7 +579,7 @@ const UserList = () => {
     };
 
     const ContentsRow = (props) => {
-        const { row } = props;
+        const {row} = props;
         const [openCollapse, setOpenCollapse] = React.useState(false);
         const isSelected = getSelected(row.idx);
         const address = getAddress(row);
@@ -544,7 +590,6 @@ const UserList = () => {
             <React.Fragment>
                 <TableRow
                     hover
-                    // className="cb-material-table__row"
                     className={classes.rowCss}
                     role="checkbox"
                     aria-checked={isSelected}
@@ -601,10 +646,21 @@ const UserList = () => {
                     <TableCell
                         className={cellClassName}
                         style={{width: "10%"}}
-                        onMouseEnter={() => { setOpenCollapse(true); }}
-                        onMouseLeave={() => { setOpenCollapse(false); }}
+                        onMouseEnter={() => {
+                            setOpenCollapse(true);
+                        }}
+                        onMouseLeave={() => {
+                            setOpenCollapse(false);
+                        }}
                     >
-                        {row.userId}
+                        {/*{row.userId}*/}
+                        <b className="text_cor_green mouse_over_list">
+                            <div className="assets_add_modal_div"
+                                 onClick={event => handleUserPage(row.idx)}
+                                 onKeyDown={event => handleUserPage(row.idx)}
+                                 role="button" tabIndex="0"><span
+                                className="circle__ste"/>{row.userId}</div>
+                        </b>
                     </TableCell>
                     <TableCell
                         className={cellClassName}
@@ -664,9 +720,12 @@ const UserList = () => {
                             </React.Fragment>
                         )}
                     </TableCell>
-            </TableRow>
+                </TableRow>
                 <TableRow>
-                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
+                    <TableCell style={{
+                        paddingBottom: 0,
+                        paddingTop: 0,
+                    }} colSpan={12}>
                         <Collapse in={openCollapse} timeout="auto" unmountOnExit>
                             <Box margin={1}>
                                 <Typography variant="h6" gutterBottom component="div">
@@ -716,7 +775,8 @@ const UserList = () => {
                                                 </li>
                                                 <li>
                                                     <span className={classes.spanSubject}> 등록일 </span>
-                                                    <span className={classes.spanContents}> {moment(row.registerDate).format('YYYY-MM-DD')} </span>
+                                                    <span className={classes.spanContents}> {moment(row.registerDate)
+                                                        .format('YYYY-MM-DD')} </span>
                                                 </li>
                                                 <li>
                                                     <span className={classes.spanSubject}> 인증 </span>
@@ -772,7 +832,6 @@ const UserList = () => {
         );
     };
 
-    console.log("UserList");
     return (
         <Col md={12} lg={12}>
             <Card className="cb-card">
@@ -810,10 +869,10 @@ const UserList = () => {
                                     rows={headRows}
                                 />
                                 <TableBody>
-                                    { data && data.map((row, index) => {
+                                    {data && data.map((row, index) => {
                                         const keyId = index;
                                         return (
-                                            <ContentsRow key={keyId} row={row} />
+                                            <ContentsRow key={keyId} row={row}/>
                                         );
                                     })}
                                 </TableBody>

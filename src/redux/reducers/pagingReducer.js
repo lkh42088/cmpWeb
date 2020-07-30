@@ -40,7 +40,7 @@ const pagingReducer = handleActions(
     {
         [PAGING_DUMP]: (state) => {
             console.log("[pagination dump]-------------");
-            console.log("rowsPerPage:", state.rowsPerPage);
+            /*console.log("rowsPerPage:", state.rowsPerPage);
             console.log("currentPage:", state.currentPage);
             console.log("totalPage:", state.totalPage);
             console.log("totalCount:", state.totalCount);
@@ -49,7 +49,7 @@ const pagingReducer = handleActions(
             console.log("selected:", state.selected);
             console.log("dense:", state.dense);
             console.log("orderBy:", state.orderBy);
-            console.log("order:", state.order);
+            console.log("order:", state.order);*/
             return {
                 ...state,
             };

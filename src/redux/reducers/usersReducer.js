@@ -8,6 +8,7 @@ import {
     GET_USER_LIST_WITH_SEARCH_PARAM_SUCCESS,
     GET_USER_LIST_WITH_SEARCH_PARAM_FAILURE,
     CHANGE_USER_FIELD,
+    SET_USER_PAGE, SET_USER_IDX, SET_USER,
 } from "../actions/usersActions";
 
 const initialState = {
@@ -21,6 +22,9 @@ const initialState = {
     },
     msg: null,
     msgError: null,
+    userPage: 'list',
+    userIdx: '',
+    user: {},
 };
 
 const usersReducer = handleActions(
@@ -42,6 +46,18 @@ const usersReducer = handleActions(
         }),
         [CHANGE_USER_FIELD]: (state, { payload: { type, key, value } }) => produce(state, (draft) => {
             draft[type][key] = value;
+        }),
+        [SET_USER_PAGE]: (state, {payload}) => ({
+           ...state,
+           userPage: payload,
+        }),
+        [SET_USER_IDX]: (state, {payload}) => ({
+            ...state,
+            userIdx: payload,
+        }),
+        [SET_USER]: (state, {payload}) => ({
+           ...state,
+           user: payload,
         }),
     },
     initialState,

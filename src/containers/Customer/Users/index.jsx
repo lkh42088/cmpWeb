@@ -1,27 +1,29 @@
 import React from 'react';
 import {SnackbarProvider} from "notistack";
-import { Col, Container, Row } from 'reactstrap';
+import {useDispatch, useSelector} from "react-redux";
+import {Container, Row} from 'reactstrap';
 import UserList from "./components/UserList";
+import UserView from "./components/UserView";
 import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
-
-const paddingCol = {
-    paddingRight: '0px',
-    paddingLeft: '0px',
-};
+import AssetsList from "../../Assets/ProductList/components/AssetsList";
+import AssetsView from "../../Assets/ProductList/components/AssetsView";
 
 const MaterialTable = () => {
-    console.log("User Index");
+    const {page} = useSelector(({usersRd}) => ({
+        page: usersRd.userPage,
+    }));
+
+    console.log("index start");
+
     return (
         <Container fluid>
             <Row>
                 <RouterBreadcrumbs url={window.location.href}/>
             </Row>
             <Row>
-                {/*<Col md={12}>*/}
-                {/*    <h3 className="page-title">MANAGER &gt; 계정 관리</h3>*/}
-                {/*</Col>*/}
                 <SnackbarProvider maxSnack={3}>
-                    <UserList/>
+                    {page === 'list'
+                        ? <UserList/> : <UserView/>}
                 </SnackbarProvider>
             </Row>
         </Container>

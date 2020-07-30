@@ -643,6 +643,15 @@
   align-items: center;
 }
 
+
+.item-container-half {
+  width: 60px;
+  margin-left: 20px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+}
+
 .form-infor__label {
   font-weight: 500;
   line-height: 1.25;
