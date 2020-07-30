@@ -122,7 +122,7 @@ class Layout extends Component {
     }
 
     componentWillUnmount() {
-        notification.destroy();
+        // notification.destroy();
     }
 
     changeSidebarVisibility = () => {
