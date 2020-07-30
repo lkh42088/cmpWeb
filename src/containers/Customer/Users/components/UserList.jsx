@@ -626,7 +626,7 @@ const UserList = () => {
                         className={cellClassName}
                         style={{width: "10%"}}
                     >
-                        {row.authLevel}
+                        {row.authLevelTag}
                     </TableCell>
                     <TableCell
                         className={cellIcon}
@@ -705,7 +705,7 @@ const UserList = () => {
                                                 <li>
                                                     <span className={classes.spanSubject}> 권한 </span>
                                                     {/*<span className={classes.spanContents}> {row.zipcode},&nbsp;{row.address},&nbsp;{row.addressDetail} </span>*/}
-                                                    <span className={classes.spanContents}> {row.authLevel} </span>
+                                                    <span className={classes.spanContents}> {row.authLevelTag} </span>
                                                 </li>
                                                 <li>
                                                     <span className={classes.spanSubject}> 주소 </span>
