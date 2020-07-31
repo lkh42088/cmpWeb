@@ -33,7 +33,7 @@ const ProfileMain = () => {
                         </div>
                         <div className="profile__data">
                             <p className="profile__name">{user.name} [{user.userId}]</p>
-                            <p className="profile__contact">level: {common.textValueCut(user.authLevel, '', '-')}</p>
+                            <p className="profile__contact">level: {common.textValueCut(user.authLevelTag, '', '-')}</p>
                             <p className="profile__contact">email: {common.textValueCut(user.email, '', '-')}</p>
                             <p className="profile__contact" dir="ltr">hp: {common.textValueCut(user.hp, '', '-')}</p>
                             <p className="profile__contact">

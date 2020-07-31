@@ -26,7 +26,7 @@ const ProfileMain = () => {
                         }}>
                             {/*<img src={Ava} alt="avatar"/>*/}
                             <Avatar
-                                className="topbar__avatar-img-list"
+                                className="topbar__avatar-img-list square"
                                 name={company.cpUserId}
                                 size="120"
                             />
