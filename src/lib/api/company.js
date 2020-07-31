@@ -65,3 +65,5 @@ export const getCompanyList = ({
 export const getCompaniesByName = ({ cpName }) => client.get(`/v1/companies/${cpName}`);
 export const getUsersByCpIdx = ({ cpIdx }) => client.get(`/v1/users-about-companies/${cpIdx}`);
 export const getCompanies = () => client.get(`/v1/companies`);
+
+export const getCompanyByName = ({name}) => client.post(`/v1/companies/get-company/${name}`);

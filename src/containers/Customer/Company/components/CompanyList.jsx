@@ -23,11 +23,8 @@ import Grid from "@material-ui/core/Grid";
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import {IconButton, Tooltip} from "@material-ui/core";
-import { useSnackbar } from 'notistack';
+import {useSnackbar} from 'notistack';
 import ReactTooltip from "react-tooltip";
-import {
-    getCompanyList, getCompanyListWithSearchParam,
-} from "../../../../redux/actions/companiesActions";
 import {
     pagingChangeCurrentPage,
     pagingChangeCurrentPageNext,
@@ -39,6 +36,10 @@ import {
     pagingChangeSelected,
     pagingChangeTotalCount,
 } from "../../../../redux/actions/pagingActions";
+import {
+    getCompanyList, getCompanyListWithSearchParam,
+    setCompanyPage, setCompanyIdx, setCompany,
+} from "../../../../redux/actions/companiesActions";
 import CommonTableHead from "../../../Common/CommonTableHead";
 import RegisterCompanyPage from "./RegisterCompanyPage";
 import {modifyCompany, registerCompany, unregisterCompany} from "../../../../lib/api/company";
@@ -47,15 +48,44 @@ import CompanyTableToolbar from "./CompanyTableToolbar";
 import {limitLongString} from "../../../../lib/utils/utils";
 import ModifyCompanyPage from "./ModifyCompanyPage";
 import UserTableToolbar from "../../Users/components/UserTableToolbar";
+import {setUser, setUserIdx, setUserPage} from "../../../../redux/actions/usersActions";
 
 const headRows = [
-    {id: 'idx', disablePadding: false, label: 'Index'},
-    {id: 'name', disablePadding: false, label: '회사명'},
-    {id: 'tel', disablePadding: false, label: '전화번호'},
-    {id: 'email', disablePadding: false, label: '이메일'},
-    {id: 'cpUserId', disablePadding: false, label: '대표 ID'},
-    {id: 'address', disablePadding: false, label: '주소'},
-    {id: 'memo', disablePadding: false, label: '메모'},
+    {
+        id: 'idx',
+        disablePadding: false,
+        label: 'Index',
+    },
+    {
+        id: 'name',
+        disablePadding: false,
+        label: '회사명',
+    },
+    {
+        id: 'tel',
+        disablePadding: false,
+        label: '전화번호',
+    },
+    {
+        id: 'email',
+        disablePadding: false,
+        label: '이메일',
+    },
+    {
+        id: 'cpUserId',
+        disablePadding: false,
+        label: '대표 ID',
+    },
+    {
+        id: 'address',
+        disablePadding: false,
+        label: '주소',
+    },
+    {
+        id: 'memo',
+        disablePadding: false,
+        label: '메모',
+    },
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -128,13 +158,13 @@ const useStyles = makeStyles(theme => ({
 const CompanyList = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { enqueueSnackbar } = useSnackbar();
+    const {enqueueSnackbar} = useSnackbar();
     /**
      * Company Data
      */
     const {
         data, getPage,
-    } = useSelector(({ companiesRd, usersRd }) => ({
+    } = useSelector(({companiesRd, usersRd}) => ({
         data: companiesRd.data,
         getPage: companiesRd.page,
     }));
@@ -201,7 +231,7 @@ const CompanyList = () => {
 
     const handleTriggerSuccess = (snackMsg) => {
         // variant could be success, error, warning, info, or default
-        enqueueSnackbar(snackMsg, { variant: "success" });
+        enqueueSnackbar(snackMsg, {variant: "success"});
     };
 
     /**
@@ -286,11 +316,18 @@ const CompanyList = () => {
             ", orderBy ", orderBy, ", order ", order);
         if (searchParam !== null) {
             dispatch(getCompanyListWithSearchParam({
-                rows: rowsPerPage, offset, orderBy, order, searchParam,
+                rows: rowsPerPage,
+                offset,
+                orderBy,
+                order,
+                searchParam,
             }));
         } else {
             dispatch(getCompanyList({
-                rows: rowsPerPage, offset, orderBy, order,
+                rows: rowsPerPage,
+                offset,
+                orderBy,
+                order,
             }));
         }
     };
@@ -376,9 +413,9 @@ const CompanyList = () => {
 
     const doModifyCompany = async (props) => {
         const {
-          cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage,
-          cpTel, cpHp, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
-          userId, userPassword,
+            cpName, cpZip, cpAddr, cpAddrDetail, cpHomepage,
+            cpTel, cpHp, cpEmail, cpIsCompany, cpMemo, cpTerminationDate,
+            userId, userPassword,
         } = props;
         try {
             const response = await modifyCompany({
@@ -416,6 +453,18 @@ const CompanyList = () => {
         doModifyCompany(props);
         setOpenModifyCompany(false);
     };
+
+    const handleCompanyPage = (idx) => {
+        const res = data.filter(item => item.idx === idx);
+        console.log("handleCompanyPage : ..... : ", data);
+        dispatch(setCompanyPage('view'));
+        dispatch(setCompanyIdx({companyIdx: idx}));
+        dispatch(setCompany(res[0]));
+    };
+
+    /************************************************************************************
+     * useEffect
+     ************************************************************************************/
 
     useEffect(() => {
         const changeOrderBy = "idx";
@@ -459,7 +508,7 @@ const CompanyList = () => {
         <ReactTooltip id="tooltipData" place="top" effect="solid"
                       delayHide={500} type="info"
                       className={classes.reactTooltip}
-                      getContent={dataTip => `${dataTip}`} />
+                      getContent={dataTip => `${dataTip}`}/>
     );
 
     const getAddress = (row) => {
@@ -498,7 +547,7 @@ const CompanyList = () => {
     };
 
     const DumpRow = (props) => {
-        const { row } = props;
+        const {row} = props;
         const [openCollapse, setOpenCollapse] = React.useState(false);
         const isSelected = getSelected(row.idx);
         const address = getAddress(row);
@@ -547,17 +596,28 @@ const CompanyList = () => {
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{ width: "5%" }}
+                        style={{width: "5%"}}
                     >
                         {row.idx}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
                         style={{width: "15%"}}
-                        onMouseEnter={() => { setOpenCollapse(true); }}
-                        onMouseLeave={() => { setOpenCollapse(false); }}
+                        onMouseEnter={() => {
+                            setOpenCollapse(true);
+                        }}
+                        onMouseLeave={() => {
+                            setOpenCollapse(false);
+                        }}
                     >
-                        {row.name}
+                        {/*{row.name}*/}
+                        <b className="text_cor_green mouse_over_list">
+                            <div className="assets_add_modal_div"
+                                 onClick={event => handleCompanyPage(row.idx)}
+                                 onKeyDown={event => handleCompanyPage(row.idx)}
+                                 role="button" tabIndex="0"><span
+                                className="circle__ste"/>{row.name}</div>
+                        </b>
                     </TableCell>
                     <TableCell
                         className={cellClassName}
@@ -595,24 +655,24 @@ const CompanyList = () => {
                             <React.Fragment>
                                 {limitLongString(row.memo, 10)}
                                 <Tooltip title="수정">
-                                <IconButton
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleModifySelectedCompany(row.idx);
-                                    }}
-                                >
-                                    <EditIcon color="secondary"/>
-                                </IconButton>
+                                    <IconButton
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleModifySelectedCompany(row.idx);
+                                        }}
+                                    >
+                                        <EditIcon color="secondary"/>
+                                    </IconButton>
                                 </Tooltip>
                                 <Tooltip title="삭제">
-                                <IconButton
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleDeleteSelectedCompany(row.idx);
-                                    }}
-                                >
-                                    <DeleteIcon color="secondary"/>
-                                </IconButton>
+                                    <IconButton
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleDeleteSelectedCompany(row.idx);
+                                        }}
+                                    >
+                                        <DeleteIcon color="secondary"/>
+                                    </IconButton>
                                 </Tooltip>
                             </React.Fragment>
                         ) : (
@@ -624,7 +684,10 @@ const CompanyList = () => {
                     </TableCell>
                 </TableRow>
                 <TableRow>
-                    <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
+                    <TableCell style={{
+                        paddingBottom: 0,
+                        paddingTop: 0,
+                    }} colSpan={12}>
                         <Collapse in={openCollapse} timeout="auto" unmountOnExit>
                             <Box margin={1}>
                                 <Typography variant="h6" gutterBottom component="div">
@@ -727,7 +790,7 @@ const CompanyList = () => {
                                     rows={headRows}
                                 />
                                 <TableBody>
-                                    { data && data.map((row, index) => {
+                                    {data && data.map((row, index) => {
                                         const keyId = index;
                                         return (
                                             <DumpRow key={keyId} row={row}/>
@@ -757,7 +820,7 @@ const CompanyList = () => {
                         handleSubmit={handleSubmitRegisterCompany}
                         refreshPage={getPageData}
                     />
-               </CardBody>
+                </CardBody>
             </Card>
         </Col>
     );

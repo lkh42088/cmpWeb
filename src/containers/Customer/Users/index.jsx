@@ -9,6 +9,7 @@ import AssetsList from "../../Assets/ProductList/components/AssetsList";
 import AssetsView from "../../Assets/ProductList/components/AssetsView";
 
 const MaterialTable = () => {
+    //console.log("계정관리 index start");
     const {page} = useSelector(({usersRd}) => ({
         page: usersRd.userPage,
     }));

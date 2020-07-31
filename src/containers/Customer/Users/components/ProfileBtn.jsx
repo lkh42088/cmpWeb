@@ -90,7 +90,6 @@ const ProfileBtn = () => {
                 emailAuthGroupList,
                 memo,
             });
-
             const submitData = ({
                 companyIdx: cpIdx,
                 cpName,

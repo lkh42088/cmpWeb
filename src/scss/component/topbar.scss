@@ -138,6 +138,10 @@
   border-radius: 50%;
   height: 36px;
   width: 36px;
+
+  .square {
+    border-radius: 0;
+  }
 }
 
 .topbar__avatar-img {

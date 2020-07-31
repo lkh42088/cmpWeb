@@ -8,15 +8,20 @@ import monitorDashboard from '@iconify/icons-mdi/monitor-dashboard';
 import usersIcon from '@iconify/icons-fa-solid/users';
 import {Link} from "react-router-dom";
 import listAlt from '@iconify/icons-el/list-alt';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import SidebarCategory from './SidebarCategory';
 import SidebarLink from './SidebarLink';
+import {setUserPage} from "../../../redux/actions/usersActions";
+import {setCompanyPage} from "../../../redux/actions/companiesActions";
 
 const SidebarContent = ({
     changeToLight, changeToDark, changeMenuTitle, onClick, user, dropdown, changeHybridCloud,
 }) => {
+    const dispatch = useDispatch();
     const hideSidebar = () => {
         onClick();
+        dispatch(setUserPage('list'));
+        dispatch(setCompanyPage('list'));
     };
     const {
         sidebarDropdown,

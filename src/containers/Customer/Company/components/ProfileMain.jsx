@@ -9,11 +9,11 @@ import * as common from "../../../../lib/common";
 
 const ProfileMain = () => {
     const {
-        user,
-        userPage,
-    } = useSelector(({usersRd}) => ({
-        user: usersRd.user,
-        userPage: usersRd.userPage,
+        company,
+        companyPage,
+    } = useSelector(({companiesRd}) => ({
+        company: companiesRd.company,
+        companyPage: companiesRd.companyPage,
     }));
 
     return (
@@ -26,21 +26,16 @@ const ProfileMain = () => {
                         }}>
                             {/*<img src={Ava} alt="avatar"/>*/}
                             <Avatar
-                                className="topbar__avatar-img-list"
-                                name={user.userId}
+                                className="topbar__avatar-img-list square"
+                                name={company.cpUserId}
                                 size="120"
                             />
                         </div>
                         <div className="profile__data">
-                            <p className="profile__name">{user.name} [{user.userId}]</p>
-                            <p className="profile__contact">level: {common.textValueCut(user.authLevelTag, '', '-')}</p>
-                            <p className="profile__contact">email: {common.textValueCut(user.email, '', '-')}</p>
-                            <p className="profile__contact" dir="ltr">hp: {common.textValueCut(user.hp, '', '-')}</p>
-                            <p className="profile__contact">
-                                email 인증 :
-                                {/* eslint-disable-next-line no-nested-ternary */}
-                                {user.emailAuth === true ? "개인 이메일 인증" : (user.groupEmailAuth === true ? "그룹 이메일 인증" : "사용 안함")}
-                            </p>
+                            <p className="profile__name">{company.name} [{company.cpUserId}]</p>
+                            <p className="profile__work">&nbsp;</p>
+                            <p className="profile__contact">email: {common.textValueCut(company.email, '', '-')}</p>
+                            <p className="profile__contact" dir="ltr">hp: {common.textValueCut(company.hp, '', '-')}</p>
                             {/*<Button color="primary" className="icon profile__btn">
                                 <p><MessageTextOutlineIcon/> 정보 수정</p>
                             </Button>*/}
@@ -55,7 +50,7 @@ const ProfileMain = () => {
                     <div className="profile__stats">
                         <div className="profile__stat">
                             <p className="profile__stat-number">
-                                {user.cpName}
+                                {company.name}
                             </p>
                         </div>
                     </div>

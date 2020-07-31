@@ -11,6 +11,7 @@ import {
     GET_USERS_BY_COMPANY_FAILURE,
     GET_COMPANY_LIST_WITH_SEARCH_PARAM_SUCCESS,
     GET_COMPANY_LIST_WITH_SEARCH_PARAM_FAILURE,
+    SET_COMPANY_PAGE, SET_COMPANY_IDX, SET_COMPANY, SET_COMPANY_BY_NAME,
 } from "../actions/companiesActions";
 
 const initialState = {
@@ -41,6 +42,9 @@ const initialState = {
     msgError: null,
     checkCompany: false,
     confirmCompany: false,
+    companyPage: 'list',
+    companyIdx: '',
+    company: {},
 };
 
 const companiesReducer = handleActions(
@@ -106,6 +110,22 @@ const companiesReducer = handleActions(
                 msg: null,
                 msgError: action.payload,
             },
+        }),
+        [SET_COMPANY_PAGE]: (state, {payload}) => ({
+            ...state,
+            companyPage: payload,
+        }),
+        [SET_COMPANY_IDX]: (state, {payload}) => ({
+            ...state,
+            companyIdx: payload,
+        }),
+        [SET_COMPANY]: (state, {payload}) => ({
+            ...state,
+            company: payload,
+        }),
+        [SET_COMPANY_BY_NAME]: (state, {payload}) => ({
+            ...state,
+            company: payload,
         }),
     },
     initialState,
