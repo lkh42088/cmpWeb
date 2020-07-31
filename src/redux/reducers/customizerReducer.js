@@ -5,6 +5,8 @@ import {
     TOGGLE_SIDEBAR_DROPDOWN,
     TOGGLE_DENSE_PADDING,
     TOGGLE_HYBRID_CLOUD,
+    ENABLE_LOG_NORMAL,
+    ENABLE_LOG_DETAIL,
 } from '../actions/customizerActions';
 
 const initialState = {
@@ -14,6 +16,8 @@ const initialState = {
     sidebarDropdown: false,
     densePadding: false,
     hybridCloud: false,
+    enableLogNormal: false,
+    enableLogDetail: false,
 };
 
 export default function (state = initialState, action) {
@@ -30,6 +34,10 @@ export default function (state = initialState, action) {
             return { ...state, densePadding: !state.densePadding };
         case TOGGLE_HYBRID_CLOUD:
             return { ...state, hybridCloud: !state.hybridCloud };
+        case ENABLE_LOG_NORMAL:
+            return { ...state, enableLogNormal: !state.enableLogNormal};
+        case ENABLE_LOG_DETAIL:
+            return { ...state, enableLogDetail: !state.enableLogDetail};
         default:
             return state;
     }

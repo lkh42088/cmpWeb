@@ -12,6 +12,7 @@ import {createAction} from "redux-actions";
 
 export const PAGING_SETUP = 'paging/PAGING_SETUP';
 export const PAGING_DUMP = 'paging/PAGING_DUMP';
+export const PAGING_SET_LOG = 'paging/PAGING_SET_LOG';
 
 export const PAGING_CHANGE_CURRENT_PAGE_PREV = 'paging/PAGING_CHANGE_CURRENT_PAGE_PREV';
 export const PAGING_CHANGE_CURRENT_PAGE_NEXT = 'paging/PAGING_CHANGE_CURRENT_PAGE_NEXT';
@@ -35,6 +36,7 @@ export const pagingSetup = createAction(PAGING_SETUP,
         rowsPerPage, currentPage, totalPage, totalCount,
     }));
 export const pagingDump = createAction(PAGING_DUMP);
+export const pagingSetLog = createAction(PAGING_SET_LOG, ({enableLog}) => ({enableLog}));
 export const pagingChangeCurrentPagePrev = createAction(PAGING_CHANGE_CURRENT_PAGE_PREV);
 export const pagingChangeCurrentPageNext = createAction(PAGING_CHANGE_CURRENT_PAGE_NEXT);
 export const pagingChangeCurrentPage = createAction(PAGING_CHANGE_CURRENT_PAGE,

@@ -33,7 +33,7 @@ import {
     pagingChangeRowsPerPage,
     pagingChangeSelected,
     pagingChangeTotalCount,
-    pagingDump,
+    pagingDump, pagingSetLog,
 } from "../../../../redux/actions/pagingActions";
 import {
     getUserList, getUserListWithSearchParam, initRegisterUser,
@@ -188,8 +188,14 @@ const UserList = () => {
     }));
 
     /** Dense Padding */
-    const {densePadding} = useSelector(({customizer}) => ({
+    const {
+        densePadding,
+        enableLogNormal,
+        enableLogDetail,
+    } = useSelector(({customizer}) => ({
         densePadding: customizer.densePadding,
+        enableLogNormal: customizer.enableLogNormal,
+        enableLogDetail: customizer.enableLogDetail,
     }));
 
     const [modifyData, setModifyData] = React.useState(null);
@@ -301,8 +307,10 @@ const UserList = () => {
         if (currentPage > 0) {
             offset = rowsPerPage * currentPage;
         }
-        // console.log("get Page Data: rows ", rowsPerPage, ", offset ", offset,
-            //", orderBy ", orderBy, ", order ", order, ", searchParam ", searchParam);
+        if (enableLogNormal) {
+            console.log("getPageData: rows ", rowsPerPage, ", offset ", offset,
+            ", orderBy ", orderBy, ", order ", order, ", searchParam ", searchParam);
+        }
         if (searchParam !== null) {
             dispatch(getUserListWithSearchParam({
                 rows: rowsPerPage,
@@ -449,13 +457,17 @@ const UserList = () => {
      * Event
      *******************/
     const handleSubmitAddUser = (user) => {
-        // console.log("handleSubmit() : user ", user);
+        if (enableLogNormal) {
+            console.log("handleSubmit() : user ", user);
+        }
         asyncAddUser(user);
         handleCloseAddUser();
     };
 
     const handleSubmitModifyUser = (user) => {
-        // console.log("handleSubmitModifyUser: ", user);
+        if (enableLogNormal) {
+            console.log("handleSubmitModifyUser: user ", user);
+        }
         asyncModifyUser(user);
         handleCloseModifyUser();
     };
@@ -492,7 +504,9 @@ const UserList = () => {
     }, []);
 
     useEffect(() => {
-        dispatch(pagingDump());
+        if (enableLogDetail) {
+            dispatch(pagingDump());
+        }
     }, [totalCount]);
 
     useEffect(() => {
@@ -528,6 +542,16 @@ const UserList = () => {
         // console.log("useEffect: searchParam ", searchParam);
         getPageData();
     }, [searchParam]);
+
+    useEffect(() => {
+        dispatch(pagingSetLog({enableLog: enableLogDetail}));
+    }, [enableLogDetail]);
+
+    useEffect(() => {
+        if (enableLogDetail && data) {
+            console.log("update data: ", data);
+        }
+    }, [data]);
 
     /************************************************************************************
      * JSX Template
