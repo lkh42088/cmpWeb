@@ -285,7 +285,7 @@ const WriteUserForm = (props) => {
         }
 
         /** email */
-            // eslint-disable-next-line no-useless-escape
+        // eslint-disable-next-line no-useless-escape
         const checkEmail = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
         let errorEmail = false;
         let helperEmail = '';

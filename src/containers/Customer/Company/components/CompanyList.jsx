@@ -266,7 +266,7 @@ const CompanyList = () => {
 
     /** Pagination */
     const handleChangePage = (event, newPage) => {
-        console.log("change page: ", newPage);
+        // console.log("change page: ", newPage);
         dispatch(pagingChangeCurrentPage({currentPage: newPage}));
     };
 
@@ -312,8 +312,8 @@ const CompanyList = () => {
         if (currentPage > 0) {
             offset = rowsPerPage * currentPage;
         }
-        console.log(">>>>>> get Page Data: rows ", rowsPerPage, ", offset ", offset,
-            ", orderBy ", orderBy, ", order ", order);
+        // console.log(">>>>>> get Page Data: rows ", rowsPerPage, ", offset ", offset,
+        //     ", orderBy ", orderBy, ", order ", order);
         if (searchParam !== null) {
             dispatch(getCompanyListWithSearchParam({
                 rows: rowsPerPage,
@@ -333,7 +333,7 @@ const CompanyList = () => {
     };
 
     const handleSubmitSearch = (params) => {
-        console.log("handleSubmitSearch ", params);
+        // console.log("handleSubmitSearch ", params);
         setSearchParam(params);
     };
 
@@ -350,22 +350,22 @@ const CompanyList = () => {
 
     const handleDeleteSelected = () => {
         let copyUser = [...data];
-        console.log("deleted Selected:");
+        // console.log("deleted Selected:");
         const delList = [];
         if (selected !== null) {
             selected.forEach((value, key, mapObject) => {
-                console.log("selected: key ", key, ", value ", value);
+                // console.log("selected: key ", key, ", value ", value);
                 if (value) {
                     delList.push(key);
                 }
             });
         }
-        console.log("delList: ", delList);
+        // console.log("delList: ", delList);
         deleteCompanies(delList);
         for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
             copyUser = copyUser.filter(obj => obj.id !== selected[i]);
         }
-        console.log("copyUser:", copyUser);
+        // console.log("copyUser:", copyUser);
     };
 
     /** Pagination */
@@ -407,7 +407,7 @@ const CompanyList = () => {
         } catch (error) {
             handleTriggerFailure("고객사 등록이 실패하였습니다.");
             getPageData();
-            console.log("doRegisterCompany error!");
+            // console.log("doRegisterCompany error!");
         }
     };
 
@@ -438,25 +438,25 @@ const CompanyList = () => {
         } catch (error) {
             handleTriggerFailure("고객사 수정이 실패하였습니다.");
             getPageData();
-            console.log("doModifyCompany error!");
+            // console.log("doModifyCompany error!");
         }
     };
 
     const handleSubmitRegisterCompany = (props) => {
-        console.log("handleSubmitRegisterCompany: ", props);
+        // console.log("handleSubmitRegisterCompany: ", props);
         doRegisterCompany(props);
         setOpenRegisterCompany(false);
     };
 
     const handleSubmitModifyCompany = (props) => {
-        console.log("handleSubmitModifyCompany: ", props);
+        // console.log("handleSubmitModifyCompany: ", props);
         doModifyCompany(props);
         setOpenModifyCompany(false);
     };
 
     const handleCompanyPage = (idx) => {
         const res = data.filter(item => item.idx === idx);
-        console.log("handleCompanyPage : ..... : ", data);
+        // console.log("handleCompanyPage : ..... : ", data);
         dispatch(setCompanyPage('view'));
         dispatch(setCompanyIdx({companyIdx: idx}));
         dispatch(setCompany(res[0]));
@@ -468,7 +468,7 @@ const CompanyList = () => {
 
     useEffect(() => {
         const changeOrderBy = "idx";
-        console.log("[] orderBy: ", changeOrderBy);
+        // console.log("[] orderBy: ", changeOrderBy);
         dispatch(pagingChangeOrderByWithReset({orderBy: changeOrderBy}));
     }, []);
 
@@ -486,7 +486,7 @@ const CompanyList = () => {
     }, [rowsPerPage, pageBeginRow, orderBy, order]);
 
     useEffect(() => {
-        console.log("useEffect: searchParam ", searchParam);
+        // console.log("useEffect: searchParam ", searchParam);
         getPageData();
     }, [searchParam]);
 
@@ -532,16 +532,16 @@ const CompanyList = () => {
     };
 
     const handleDeleteSelectedCompany = (idx) => {
-        console.log("delete company: ", idx);
+        // console.log("delete company: ", idx);
         const delList = [];
         delList.push(idx);
         deleteCompanies(delList);
     };
 
     const handleModifySelectedCompany = (idx) => {
-        console.log("modify company: ", idx);
+        // console.log("modify company: ", idx);
         const res = data.filter(item => item.idx === idx);
-        console.log("res: ", res);
+        // console.log("res: ", res);
         setModifyData(res[0]);
         handleOpenModifyCompany();
     };

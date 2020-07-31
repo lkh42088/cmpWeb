@@ -8,12 +8,11 @@ import BusinessIcon from '@material-ui/icons/Business';
 import WriteCompanyFrom from "./WriteCompanyForm";
 
 const ModifyCompanyPage = (props) => {
-    /** props */
     const {
         open, handleClose, handleSubmit, data,
     } = props;
 
-    console.log("Register Company Page..");
+    // console.log("Register Company Page..");
     return (
         <Dialog
             open={open}

@@ -44,7 +44,6 @@ import CommonTableHead from "../../../Common/CommonTableHead";
 import RegisterUserPage from "./RegisterUserPage";
 import {modifyUser, registerUser, unregisterUser} from "../../../../lib/api/users";
 import UserTableToolbar from "./UserTableToolbar";
-// eslint-disable-next-line import/named
 import {limitLongString} from "../../../../lib/utils/utils";
 import ModifyUserPage from "./ModifyUserPage";
 
@@ -121,13 +120,9 @@ const useStyles = makeStyles(theme => ({
             theme.palette.type === 'light'
                 ? {
                     boxShadow: "4px 2px 3px #999999",
-                    // border: "1px solid #e0e0e0",
-                    // borderRight: "1px solid #e0e0e0",
                 }
                 : {
                     boxShadow: "4px 2px 3px #000000",
-                    // border: "1px solid #000000",
-                    // borderRight: "1px solid #e0e0e0",
                 },
     },
     spanSubject: {
@@ -136,7 +131,6 @@ const useStyles = makeStyles(theme => ({
     },
     spanContents: {
         display: 'inline-block',
-        // width: '200px',
     },
     grid: {
         flexGrow: 1,
@@ -179,7 +173,6 @@ const UserList = () => {
         currentPage,
         totalCount,
         displayRowsList,
-        dense,
         orderBy,
         order,
     } = useSelector(({pagingRd}) => ({
@@ -190,7 +183,6 @@ const UserList = () => {
         totalPage: pagingRd.totalPage,
         totalCount: pagingRd.totalCount,
         displayRowsList: pagingRd.displayRowsList,
-        dense: pagingRd.dense,
         orderBy: pagingRd.orderBy,
         order: pagingRd.order,
     }));
@@ -538,23 +530,6 @@ const UserList = () => {
     }, [searchParam]);
 
     /************************************************************************************
-     * Component
-     ************************************************************************************/
-    const paginationBar = (
-        <TablePagination
-            component="div"
-            className="material-table__pagination"
-            count={totalCount}
-            rowsPerPage={rowsPerPage}
-            page={currentPage}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-            rowsPerPageOptions={displayRowsList}
-
-        />
-    );
-
-    /************************************************************************************
      * JSX Template
      ************************************************************************************/
     const getAddress = (row) => {
@@ -652,7 +627,6 @@ const UserList = () => {
                             setOpenCollapse(false);
                         }}
                     >
-                        {/*{row.userId}*/}
                         <b className="text_cor_green mouse_over_list">
                             <div className="assets_add_modal_div"
                                  onClick={event => handleUserPage(row.idx)}
@@ -877,13 +851,6 @@ const UserList = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                        {/*{paginationBar}*/}
-                        {/*Block dense padding button */}
-                        {/*<FormControlLabel*/}
-                        {/*    className="cb-material-table__padding"*/}
-                        {/*    control={<Switch checked={dense} onChange={handleChangeDense} />}*/}
-                        {/*    label="Dense padding"*/}
-                        {/*/>*/}
                     </div>
                     <ModifyUserPage
                         open={openModifyUser}

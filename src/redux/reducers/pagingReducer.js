@@ -38,8 +38,8 @@ const initialState = {
 
 const pagingReducer = handleActions(
     {
-        [PAGING_DUMP]: (state) => {
-            console.log("[pagination dump]-------------");
+        // [PAGING_DUMP]: (state) => {
+        //     console.log("[pagination dump]-------------");
             /*console.log("rowsPerPage:", state.rowsPerPage);
             console.log("currentPage:", state.currentPage);
             console.log("totalPage:", state.totalPage);
@@ -50,10 +50,10 @@ const pagingReducer = handleActions(
             console.log("dense:", state.dense);
             console.log("orderBy:", state.orderBy);
             console.log("order:", state.order);*/
-            return {
-                ...state,
-            };
-        },
+        //     return {
+        //         ...state,
+        //     };
+        // },
         [PAGING_SETUP]: (state, {payload}) => ({
             ...state,
             rowsPerPage: payload.rowsPerPage,

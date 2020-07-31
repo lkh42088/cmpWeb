@@ -64,11 +64,11 @@ const LookupCompany = (props) => {
      * Function
      ************************************************************************************/
     const getCompanyByCpName = async () => {
-        console.log("getCompanyByCpName() ");
+        // console.log("getCompanyByCpName() ");
         try {
             const response = await getCompaniesByName({cpName});
             setSearchMsg(response.data);
-            console.log("getCompanyByCpName() data ", response.data);
+            // console.log("getCompanyByCpName() data ", response.data);
             if (response.data.length < 1) {
                 setListHeight(10);
             } else if (response.data.length < 10) {
@@ -104,7 +104,7 @@ const LookupCompany = (props) => {
     const formClassName = "cb-material-form";
     const labelClassName = "cb-material-form__label";
     const fieldClassName = "cb-material-form__field";
-    console.log("LookupCompany...");
+    // console.log("LookupCompany...");
     return (
         <Dialog
             open={open}
@@ -142,7 +142,7 @@ const LookupCompany = (props) => {
                                     variant={variant}
                                     size={fieldSize}
                                     onKeyDown={(event) => {
-                                        console.log("key: ", event.keyCode);
+                                        // console.log("key: ", event.keyCode);
                                         if (event.keyCode === 13) {
                                             handleSend();
                                         }
