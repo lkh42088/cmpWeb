@@ -16,9 +16,9 @@ const ProfileDetail = () => {
     };
 
     const {
-        user,
-    } = useSelector(({usersRd}) => ({
-        user: usersRd.user,
+        company,
+    } = useSelector(({companiesRd}) => ({
+        company: companiesRd.company,
     }));
 
 
@@ -42,7 +42,7 @@ const ProfileDetail = () => {
         return address;
     };
 
-    const address = getAddress(user);
+    const address = getAddress(company);
 
     return (
         <div>
@@ -51,10 +51,10 @@ const ProfileDetail = () => {
                     <div className="col-md-6">
                         <div className={classNameMap.rowFormItem}>
                             <div className={classNameMap.itemContainer}>
-                                <div className={classNameMap.formInforLabel}>소속회사</div>
+                                <div className={classNameMap.formInforLabel}>회사명</div>
                             </div>
                             <div className="col-lg-6 col-md-6">
-                                {common.textValueCut(user.cpName, undefined)}
+                                {common.textValueCut(company.name, undefined)}
                             </div>
                         </div>
                     </div>
@@ -75,14 +75,14 @@ const ProfileDetail = () => {
                     <div className="col-md-6">
                         <div className={classNameMap.rowFormItem}>
                             <div className={classNameMap.itemContainer}>
-                                <div className={classNameMap.formInforLabel}>ID
+                                <div className={classNameMap.formInforLabel}>대표 계정
                                 </div>
                             </div>
                             <div className="col-lg-8 col-md-12">
                             <textarea
                                 className={classNameMap.textareaPreCont}
                                 rows="1"
-                                value={common.textValueCut(user.userId, undefined)}
+                                value={common.textValueCut(company.cpUserId, undefined)}
                                 disabled/>
                             </div>
                         </div>
@@ -90,104 +90,81 @@ const ProfileDetail = () => {
                     <div className="col-md-6">
                         <div className={classNameMap.rowFormItem}>
                             <div className={classNameMap.itemContainer}>
-                                <div className={classNameMap.formInforLabel}>이름</div>
+                                <div className={classNameMap.formInforLabel}>홈페이지</div>
                             </div>
                             <div className="col-lg-8 col-md-12">
                             <textarea
                                 className={classNameMap.textareaPreCont}
                                 rows="1"
-                                value={common.textValueCut(user.name, undefined)}
+                                value={common.textValueCut(company.homepage, undefined)}
                                 disabled/>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <div className="row">
                     <div className="col-md-6">
                         <div className={classNameMap.rowFormItem}>
                             <div className={classNameMap.itemContainer}>
-                                <div className={classNameMap.formInforLabel}>이메일</div>
-                            </div>
-                            <div className="col-lg-8 col-md-12">
-                            <textarea
-                                className={classNameMap.textareaPreCont}
-                                rows="1"
-                                value={common.textValueCut(user.email, undefined)}
-                                disabled/>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className={classNameMap.rowFormItem}>
-                            <div className={classNameMap.itemContainer}>
-                                <div className={classNameMap.formInforLabel}>전화번호
+                                <div className={classNameMap.formInforLabel}>이메일
                                 </div>
                             </div>
                             <div className="col-lg-8 col-md-12">
                             <textarea
                                 className={classNameMap.textareaPreCont}
                                 rows="1"
-                                value={common.textValueCut(user.tel, undefined)}
+                                value={common.textValueCut(company.email, undefined)}
                                 disabled/>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div className="row">
                     <div className="col-md-6">
                         <div className={classNameMap.rowFormItem}>
                             <div className={classNameMap.itemContainer}>
-                                <div className={classNameMap.formInforLabel}>인증</div>
+                                <div className={classNameMap.formInforLabel}>전화번호</div>
                             </div>
                             <div className="col-lg-8 col-md-12">
                             <textarea
                                 className={classNameMap.textareaPreCont}
                                 rows="1"
-                                value={
-                                    /* eslint-disable-next-line no-nested-ternary */
-                                    user.emailAuth === true ? "개인 이메일 인증" : (user.groupEmailAuth === true ? "그룹 이메일 인증" : "사용 안함")
-                                }
+                                value={common.textValueCut(company.tel, undefined)}
                                 disabled/>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div className="row">
                     <div className="col-md-6">
                         <div className={classNameMap.rowFormItem}>
                             <div className={classNameMap.itemContainer}>
-                                <div className={classNameMap.formInforLabel}>휴대폰번호
+                                <div className={classNameMap.formInforLabel}>등록일
                                 </div>
                             </div>
                             <div className="col-lg-8 col-md-12">
                             <textarea
                                 className={classNameMap.textareaPreCont}
                                 rows="1"
-                                value={common.textValueCut(user.hp, undefined)}
+                                value={moment(company.registerDate)
+                                    .format('YYYY-MM-DD')}
+                                disabled/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className={classNameMap.rowFormItem}>
+                            <div className={classNameMap.itemContainer}>
+                                <div className={classNameMap.formInforLabel}>휴대폰번호</div>
+                            </div>
+                            <div className="col-lg-8 col-md-12">
+                            <textarea
+                                className={classNameMap.textareaPreCont}
+                                rows="1"
+                                value={common.textValueCut(company.hp, undefined)}
                                 disabled/>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div className="row">
-                    <div className="col-md-12">
-                        <div className={classNameMap.rowFormItem}>
-                            <div className={classNameMap.itemContainer}>
-                                <div className={classNameMap.formInforLabel}>등록일</div>
-                            </div>
-                            <div className="col-lg-10 col-md-12">
-                                    <textarea
-                                        className={classNameMap.textareaPreCont}
-                                        rows="1"
-                                        value={moment(user.registerDate)
-                                            .format('YYYY-MM-DD')}
-                                        disabled/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div className="row form-infor__item_etc">
                     <div className={classNameMap.itemContainer}>
                         <div className={classNameMap.formInforLabel}>주소</div>
@@ -206,25 +183,11 @@ const ProfileDetail = () => {
                     <div className="col-lg-10">
                         <textarea
                             className={classNameMap.textareaPreCont}
-                            value={user.memo} rows="4"
+                            value={company.memo} rows="4"
                             disabled/>
                     </div>
                 </div>
             </div>
-            {/*<div className="form-group float-right button-handle-form">
-                <MatButton
-                    variant="contained"
-                    color="primary"
-                    endIcon={<SendIcon/>}>
-                    수정
-                </MatButton>
-                <MatButton
-                    variant="contained"
-                    color="default"
-                    startIcon={<EditIcon/>}>
-                    댓글 작성
-                </MatButton>
-            </div>*/}
         </div>
     );
 };

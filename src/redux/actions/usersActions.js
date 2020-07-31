@@ -11,6 +11,7 @@ export const INITIALIZE_REGISTER_USER = 'user/INITIALIZE';
 export const CHANGE_USER_REGISTER_FIELD = 'user/CHANGE_USER_REGISTER_FIELD';
 export const CHANGE_USER_FIELD = 'user/CHANGE_USER_FIELD';
 export const CHECK_USER_REGISTER_FIELD = 'user/CHECK_USER_REGISTER_FIELD';
+
 export const SET_USER_PAGE = 'user/SET_USER_PAGE';
 export const SET_USER_IDX = 'user/SET_USER_IDX';
 export const SET_USER = 'user/SET_USER';
@@ -18,12 +19,12 @@ export const SET_USER = 'user/SET_USER';
 /** SAGA Action Type */
 export const [CHECK_DUP_USER, CHECK_DUP_USER_SUCCESS, CHECK_DUP_USER_FAILURE] = createRequestActionTypes('user/CHECK_DUP_USER');
 export const [GET_USER_LIST, GET_USER_LIST_SUCCESS, GET_USER_LIST_FAILURE] = createRequestActionTypes('user/USERLIST');
-export const [SET_USER_BY_ID] = createRequestActionTypes('user/SET_USER_BY_ID');
 export const [
     GET_USER_LIST_WITH_SEARCH_PARAM,
     GET_USER_LIST_WITH_SEARCH_PARAM_SUCCESS,
     GET_USER_LIST_WITH_SEARCH_PARAM_FAILURE,
 ] = createRequestActionTypes('user/USERLIST_WITH_SEARCH_PARAM');
+export const [SET_USER_BY_ID] = createRequestActionTypes('user/SET_USER_BY_ID');
 
 /******************************************************************************
  * 2. Action Function

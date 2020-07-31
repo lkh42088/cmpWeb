@@ -34,10 +34,12 @@ import {
     toggleTopNavigation,
     changeDensePadding, toggleHybridCloud,
 } from '../../redux/actions/customizerActions';
+import {logout} from "../../redux/actions/loginActions";
 import {
     CustomizerProps, SidebarProps, ThemeProps, RTLProps, UserProps, MenuTitleProps,
 } from '../../shared/prop-types/ReducerProps';
-import {logout} from "../../redux/actions/loginActions";
+import {setUserPage} from "../../redux/actions/usersActions";
+import {setCompanyPage} from "../../redux/actions/companiesActions";
 
 let notification = null;
 
@@ -139,6 +141,8 @@ class Layout extends Component {
     changeMenuTitle = (title, subTitle, val) => {
         const { dispatch } = this.props;
         dispatch(changeMenuTitle(title, subTitle));
+        dispatch(setUserPage('list'));
+        dispatch(setCompanyPage('list'));
 
         // 자산관리 메뉴 선택 시
         if (title === 'SERVER' || title === 'NETWORK') {

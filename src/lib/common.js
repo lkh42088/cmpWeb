@@ -8,7 +8,6 @@ export function setIgnoredYellowBox() {
     ];
 }
 
-
 export function textDateCut(val, type) {
     let returnVal = '';
     let valArray = '';
@@ -48,9 +47,9 @@ export function textLengthOverCut(txt, len, lastTxt) {
     return txt;
 }
 
-export function textValueCut(val, compareTxt) {
+export function textValueCut(val, compareTxt, reVal) {
     if (val === compareTxt) {
-        val = '';
+        val = reVal;
     }
     return val;
 }

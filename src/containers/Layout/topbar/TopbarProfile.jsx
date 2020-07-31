@@ -13,6 +13,7 @@ import {
     setUserIdx,
     setUserPage,
 } from "../../../redux/actions/usersActions";
+import {setCompanyPage} from "../../../redux/actions/companiesActions";
 
 import TopbarMenuLink from "./TopbarMenuLink";
 import {getUserById, modifyUser} from "../../../lib/api/users";
@@ -60,6 +61,13 @@ const TopbarProfile = (props) => {
         } catch {
             console.log("topbar profile error");
         }
+    };
+
+    const logoutToggle = () => {
+        //dispatch(setUserPage('list'));
+        logout();
+        dispatch(setUserPage('list'));
+        dispatch(setCompanyPage('list'));
     };
 
     //console.log("TopbarProfile ....  user : ", user);
@@ -133,7 +141,7 @@ const TopbarProfile = (props) => {
                         title="Log Out"
                         icon="exit"
                         path="/login"
-                        onClick={logout}
+                        onClick={logoutToggle}
                     />
                 </div>
             </Collapse>
