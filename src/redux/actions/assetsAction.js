@@ -2,7 +2,7 @@ import axios from 'axios';
 import React from "react";
 import {Map} from "immutable";
 
-import API_ROUTE from "../../shared/apiRoute";
+import {API_ROUTE} from "../../lib/api/client";
 
 export const GET_DEVICES = 'GET_DEVICES';
 export const GET_DEVICES_CHECKCOUNT = 'GET_DEVICES_CHECKCOUNT';
