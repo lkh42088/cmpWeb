@@ -1,4 +1,4 @@
-import client from './client';
+import client, {googleClient, SECRET_KEY, SITE_KEY} from './client';
 
 export const login = ({
     username,
@@ -34,3 +34,8 @@ export const checkPassword = ({
 }) => client.post('/v1/auth/check-password', {
     id, password,
 });
+
+// Not used
+export const checkCaptcha = () => googleClient.post(
+    `secret=${SECRET_KEY}&response=${SITE_KEY}`,
+).then(response => response);

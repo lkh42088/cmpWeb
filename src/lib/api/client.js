@@ -28,3 +28,9 @@ export const WEB_SERVER_ADDR = `http://${API_SERVER_IP}:${API_SERVER_PORT}`;
 export const API_ROUTE = `${WEB_SERVER_ADDR}${API_PREFIX}`;
 
 export default client;
+
+// For ReCAPTCHA
+export const googleClient = axios.create();
+googleClient.defaults.baseURL = "http://www.google.com/recaptcha/api/siteverify";
+export const SITE_KEY = "6LdrobkZAAAAAOj0wFKiNfmHpJJsoEyu_eqWwptq";
+export const SECRET_KEY = "6LdrobkZAAAAAHmavqXT7wztFLOBgZXCMKdiy79Z";

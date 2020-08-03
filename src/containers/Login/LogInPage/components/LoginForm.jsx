@@ -13,16 +13,33 @@ import {
 } from "../../../../redux/actions/loginActions";
 import {login} from "../../../../lib/api/login";
 import {GV_LOGIN_PAGE_CONFIRM_EMAIL, GV_LOGIN_PAGE_INPUT_EMAIL} from "../../../../lib/globalVariable";
+import GoogleRecaptcha from "../../Captcha/components/GoogleRecaptcha";
 
 const LoginForm = () => {
     const typeFieldUser = 'text';
+    const defaultErrMsg = "* ID 또는 Password가 일치하지 않습니다!";
+    const captchaErrMsg = "* ReCAPTCHA 확인이 필요합니다!";
     const [showPassword, setShowPassword] = useState(false);
     const [resultError, setResultError] = useState(false);
+    // For ReCAPTCHA
+    const [loginFailCount, setLoginFailCount] = useState(1);
+    const [captchaVisible, setCaptchaVisible] = useState(false);
+    const [captchaOk, setCaptchaOk] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(defaultErrMsg);
 
     const dispatch = useDispatch();
     const { form } = useSelector(({ accountRd }) => ({
         form: accountRd.login,
     }));
+
+    const checkReCaptcha = () => {
+        if (!captchaOk) {
+            setResultError(true);
+            return false;
+        }
+        setCaptchaOk(true);
+        return true;
+    };
 
     const onChange = (e) => {
         const { value, name } = e.target;
@@ -44,6 +61,10 @@ const LoginForm = () => {
              * */
             console.log("response: ", response);
             if (response.data.success) {
+                if (loginFailCount >= 3 && checkReCaptcha() === false) {
+                    setErrorMessage(captchaErrMsg);
+                    return;
+                }
                 dispatch(checkLoginUser());
             } else if (response.data.msg.result === 251) {
                 console.log("email: ", response.data.msg.email);
@@ -65,6 +86,11 @@ const LoginForm = () => {
         } catch (e) {
             console.log("doLogin: error! ", e);
             setResultError(true);
+            // Captcha
+            setLoginFailCount(loginFailCount + 1);
+            if (loginFailCount >= 3) {
+                setCaptchaVisible(true);
+            }
         }
     };
 
@@ -126,6 +152,12 @@ const LoginForm = () => {
                 </div>
             </div>
             <div className="form__form-group">
+                <GoogleRecaptcha
+                    visible={captchaVisible}
+                    setCaptchaOk={setCaptchaOk}
+                />
+            </div>
+            <div className="form__form-group">
                 <ButtonToolbar>
                     <Button className="account__btn btn btn-primary" color="white">로그인</Button>
                 </ButtonToolbar>
@@ -134,7 +166,7 @@ const LoginForm = () => {
                 <div>
                     <span style={{
                         color: "red",
-                    }} >* ID 또는 Password가 일치하지 않습니다!</span>
+                    }} >{errorMessage}</span>
                 </div>
             ) : <div/>}
         </Form>
