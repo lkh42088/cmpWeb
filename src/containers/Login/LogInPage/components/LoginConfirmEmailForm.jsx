@@ -6,7 +6,7 @@ import {
     changeLoginPage,
     checkLoginUser,
 } from "../../../../redux/actions/loginActions";
-import {GV_LOGIN_PAGE_FIRST} from "../../../../lib/globalVariable";
+import {GV_LOGIN_PAGE_FIRST} from "../../../../lib/var/globalVariable";
 import {loginConfirm} from "../../../../lib/api/login";
 
 const LoginConfirmEmailForm = () => {

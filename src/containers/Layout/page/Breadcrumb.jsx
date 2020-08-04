@@ -16,7 +16,7 @@ import monitorDashboard from '@iconify/icons-mdi/monitor-dashboard';
 import usersIcon from '@iconify/icons-fa-solid/users';
 import listAlt from '@iconify/icons-el/list-alt';
 import {themes} from "../../../shared/helpers";
-import {API_SERVER_IP, SERVER_PORT} from "../../../lib/api/client";
+import {SEPARATION_URL} from "../../../lib/var/commonVariables";
 
 const StyledBreadcrumb = withStyles(theme => ({
     root: {
@@ -69,8 +69,6 @@ const PAGE_URL = {
     setting: {title: "SETTING", subTitle: "", icon: monitorDashboard},
 };
 
-const SEP_STRING = `http://${API_SERVER_IP}:${SERVER_PORT}/`;
-
 const LinkRouter = props => <Link {...props} component={RouterLink} />;
 
 export default function RouterBreadcrumbs(props) {
@@ -82,7 +80,7 @@ export default function RouterBreadcrumbs(props) {
 
     const seperateUrl = (tmpUrl) => {
         let tmp = tmpUrl;
-        tmp = tmp.replace(SEP_STRING, "");
+        tmp = tmp.replace(SEPARATION_URL, "");
         if (tmp && tmp.length > 1 && PAGE_URL[tmp]) {
             return tmp;
         }

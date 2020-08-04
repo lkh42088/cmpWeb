@@ -7,7 +7,7 @@ import {
     CHECK_USER_FAILURE,
     LOGOUT, CHANGE_LOGIN_PAGE,
 } from "../actions/loginActions";
-import {GV_LOGIN_PAGE_FIRST} from "../../lib/globalVariable";
+import {GV_LOGIN_PAGE_FIRST} from "../../lib/var/globalVariable";
 
 const initialState = {
     pageNum: GV_LOGIN_PAGE_FIRST,

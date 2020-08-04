@@ -12,7 +12,7 @@ import {
     changeLoginPage,
 } from "../../../../redux/actions/loginActions";
 import {login} from "../../../../lib/api/login";
-import {GV_LOGIN_PAGE_CONFIRM_EMAIL, GV_LOGIN_PAGE_INPUT_EMAIL} from "../../../../lib/globalVariable";
+import {GV_LOGIN_PAGE_CONFIRM_EMAIL, GV_LOGIN_PAGE_INPUT_EMAIL} from "../../../../lib/var/globalVariable";
 import GoogleRecaptcha from "../../Captcha/components/GoogleRecaptcha";
 
 const LoginForm = () => {
