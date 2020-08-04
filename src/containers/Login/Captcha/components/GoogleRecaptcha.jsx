@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import ReCAPTCHA from "react-google-recaptcha";
 import {checkCaptcha} from "../../../../lib/api/login";
-import {SITE_KEY} from "../../../../lib/api/client";
+import SITE_KEY from "../../../../lib/var/commonVariables";
 
 const GoogleRecaptcha = (props) => {
     const recaptchaRef = React.createRef();
