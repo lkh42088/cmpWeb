@@ -7,23 +7,24 @@ const GoogleRecaptcha = (props) => {
     const recaptchaRef = React.createRef();
     const {visible, setCaptchaOk} = props;
 
-    // Not used
-    const axiosCaptcha = async () => {
+    const axiosCaptcha = async (value) => {
         try {
-            const response = await checkCaptcha();
-            console.log("Captcha response:", response);
-            return response;
+            const response = await checkCaptcha({humanKey: value});
+            if (response.data.includes("true")) {
+                return true;
+            }
         } catch {
+            console.log("ReCAPCHA verifing failed");
             recaptchaRef.current.reset();
-            return null;
         }
+        return false;
     };
 
     // Chaptcha is successfully
     const handleChange = (value) => {
-        console.log("Captcha value:", value);
-        setCaptchaOk(true);
-        // axiosCaptcha();
+        if (axiosCaptcha(value)) {
+            setCaptchaOk(true);
+        }
     };
     
     // Chaptcha is errored
