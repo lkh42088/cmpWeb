@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 import {SnackbarProvider} from 'notistack';
 import CompanyList from "./components/CompanyList";
 import CompanyView from "./components/CompanyView";
-import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
+import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
 
 const CompaniesModule = () => {
     const {page} = useSelector(({companiesRd}) => ({

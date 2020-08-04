@@ -15,7 +15,7 @@ import AssetsList from './components/AssetsList';
 import AssetsSearch from './components/AssetsSearch';
 import AssetsView from "./components/AssetsView";
 
-import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
+import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
 import Loading from '../../../shared/components/Loading';
 
 //TODO DIR ProductList 폴터 제거

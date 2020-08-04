@@ -2,7 +2,7 @@ import React from 'react';
 import {SnackbarProvider} from "notistack";
 import { Container, Row } from 'reactstrap';
 import VmTable from "./components/VmTable";
-import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
+import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
 
 const MicroCloudVmTable = () => (
         <Container fluid>

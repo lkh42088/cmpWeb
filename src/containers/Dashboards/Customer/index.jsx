@@ -12,7 +12,7 @@ import CustomerBilling from "./components/CustomerBilling";
 import InternetStatistics from "./components/InternetStatistics";
 import CpuUsage from "./components/CpuUsage";
 import DeviceTotal from "./components/DeviceTotal";
-import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
+import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
 
 const dataAlarm = [
     { name: 'Alarm A', amt: 3 },
