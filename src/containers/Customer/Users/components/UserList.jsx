@@ -329,9 +329,9 @@ const UserList = () => {
         }
     };
 
-    const deleteUsers = async (users) => {
+    const deleteUsers = async (users, avatas) => {
         try {
-            const response = await unregisterUser({idx: users});
+            const response = await unregisterUser({idx: users, avata: avatas});
             getPageData();
             handleSnackbarSuccess("계정 삭제에 성공하였습니다.");
         } catch (error) {
@@ -343,20 +343,29 @@ const UserList = () => {
     /** Pagination */
     const handleDeleteSelected = () => {
         let copyUser = [...data];
-        //console.log("deleted Selected:");
-        //console.log("copyUser:", copyUser);
+        console.log("deleted Selected:");
+        console.log("copyUser:", copyUser);
         //console.log("SELECTED:", selected);
         const delList = [];
+        const delAvataList = [];
         if (selected !== null) {
             selected.forEach((value, key, mapObject) => {
                 //console.log("selected: key ", key, ", value ", value);
                 if (value) {
                     delList.push(key);
+
+                    copyUser.forEach((valueSub, keySub) => {
+                        //console.log("copyUser: key ", key, ", valueSub.idx ", valueSub.idx);
+                        if (key === valueSub.idx) {
+                            //console.log("valueSub avata : ", valueSub.avata);
+                            delAvataList.push(valueSub.avata);
+                        }
+                    });
                 }
             });
         }
-        //console.log("delList: ", delList);
-        deleteUsers(delList);
+        //console.log("★★★ delList: ", delList);
+        deleteUsers(delList, delAvataList);
 
         for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
             copyUser = copyUser.filter(obj => obj.id !== selected[i]);
@@ -389,7 +398,7 @@ const UserList = () => {
         const {
             cpIdx, cpName, id, password, name, email,
             cellPhone, tel, level, userZip, userAddr, userAddrDetail,
-            emailAuthValue, emailAuthGroupList, memo,
+            emailAuthValue, emailAuthGroupList, memo, avata,
         } = user;
         try {
             const response = await registerUser({
@@ -409,6 +418,7 @@ const UserList = () => {
                 emailAuthGroupFlag: emailAuthValue === "2",
                 emailAuthGroupList,
                 memo,
+                avata,
             });
             handleSnackbarSuccess("계정 등록에 성공하였습니다.");
             getPageData();
@@ -421,7 +431,7 @@ const UserList = () => {
         const {
             cpIdx, cpName, id, password, name, email,
             cellPhone, tel, level, userZip, userAddr, userAddrDetail,
-            emailAuthValue, emailAuthGroupList, memo,
+            emailAuthValue, emailAuthGroupList, memo, avata,
         } = user;
         try {
             const response = await modifyUser({
@@ -441,7 +451,9 @@ const UserList = () => {
                 emailAuthGroupFlag: emailAuthValue === "2",
                 emailAuthGroupList,
                 memo,
+                avata,
             });
+
             handleSnackbarSuccess("계정 수정이 성공하였습니다.");
             getPageData();
         } catch {
@@ -468,11 +480,13 @@ const UserList = () => {
         handleCloseModifyUser();
     };
 
-    const handleDeleteSelectedUser = (idx) => {
-        // console.log("delete user: ", idx);
+    const handleDeleteSelectedUser = (idx, avata) => {
         const delList = [];
+        const delAvataList = [];
         delList.push(idx);
-        deleteUsers(delList);
+        delAvataList.push(avata);
+
+        deleteUsers(delList, delAvataList);
     };
 
     const handleModifySelectedUser = (idx) => {
@@ -634,13 +648,20 @@ const UserList = () => {
                         className={cellClassName}
                         style={{width: "5%"}}
                     >
-                        <Avatar
-                            className="topbar__avatar-img-list"
-                            name={row.userId}
-                            size="40"
-                        />
-                        {/*<Avatar className="topbar__avatar-img-list" alt={row.userId} size="40" />*/}
-                        {/*<Avatar alt={row.userId} size="40" src="/static/images/avatar/1.jpg"/>*/}
+                        {row.avata == null || row.avata === "" ? (
+                            <Avatar
+                                className="topbar__avatar-img-list"
+                                name={row.userId}
+                                size="40"
+                            />
+                        ) : (
+                            <Avatar
+                                className="topbar__avatar-img-list"
+                                name={row.userId}
+                                size="40"
+                                src={`http://127.0.0.1:8081/image/${row.avata}`}
+                            />
+                        )}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
@@ -706,7 +727,7 @@ const UserList = () => {
                                     <IconButton
                                         onClick={(e) => {
                                             e.stopPropagation();
-                                            handleDeleteSelectedUser(row.idx);
+                                            handleDeleteSelectedUser(row.idx, row.avata);
                                         }}
                                     >
                                         <DeleteIcon color="secondary"/>
@@ -851,6 +872,8 @@ const UserList = () => {
                         onChangeRowsPerPage={handleChangeRowsPerPage}
                         rowsPerPageOptions={displayRowsList}
                     />
+                    {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
+                    {/*★<img src="http://127.0.0.1:8081/image/brain.jpg" alt="image"/>★*/}
                     <div className="cb-material-table__wrap">
                         <TableContainer>
                             <Table

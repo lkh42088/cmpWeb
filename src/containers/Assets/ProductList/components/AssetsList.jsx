@@ -3,6 +3,8 @@ import {
     Card,
     CardBody,
 } from 'reactstrap';
+import PropTypes, {string} from 'prop-types';
+import moment from "moment";
 
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from '@material-ui/core/Table';
@@ -12,8 +14,6 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 import LoadingIcon from "mdi-react/LoadingIcon";
-import PropTypes, {string} from 'prop-types';
-import moment from "moment";
 import {
     getDeviceByIdx, getDeviceOriByIdx,
     postDeviceComment,

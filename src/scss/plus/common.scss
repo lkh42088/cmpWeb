@@ -6,8 +6,8 @@
 
 .search_card_body {
   /*padding: 8px;*/
-  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
-  font-size: 9px;  // [22June2020,khlee]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif; // [21July2020,khlee]
+  font-size: 9px; // [22June2020,khlee]
 
   input.search_input::placeholder {
     color: $color-black-dep3;
@@ -41,11 +41,11 @@
 
   input.search_checkbox {
     /* Double-sized Checkboxes */
-/*    -ms-transform: scale(1.5); !* IE *!
-    -moz-transform: scale(1.5); !* FF *!
-    -webkit-transform: scale(1.5); !* Safari and Chrome *!
-    -o-transform: scale(1.5); !* Opera *!
-    transform: scale(1.5);*/
+    /*    -ms-transform: scale(1.5); !* IE *!
+        -moz-transform: scale(1.5); !* FF *!
+        -webkit-transform: scale(1.5); !* Safari and Chrome *!
+        -o-transform: scale(1.5); !* Opera *!
+        transform: scale(1.5);*/
     /*padding: 10px;*/
     top: 1.5px;
     position: relative;
@@ -81,6 +81,7 @@
       background: themed('colorBackgroundBody');
       border: 1px solid themed('colorFieldsBorder');
     }
+
     option {
       //color: $color-black-dep1;   // Origin
       // Modify for Dark Theme [2020.06.11 LKH]
@@ -388,6 +389,7 @@
     text-decoration: underline;
   }
 }
+
 /*assets----------------------------------------------------------------------------------------------assets*/
 
 /*common----------------------------------------------------------------------------------------------common*/
@@ -642,6 +644,7 @@
       /*background: themed('colorBackgroundBody');*/
     }
   }
+
   button {
     display: none; // prevent being able to tab to it
     position: absolute;
@@ -655,13 +658,16 @@
       background: themed('colorHeaderDataPicker');
     }
   }
+
   input:not(:placeholder-shown) {
     border-radius: var(--rad) 0 0 var(--rad);
     width: calc(100% - var(--btn-width));
+
     + button {
       display: block;
     }
   }
+
   label {
     position: absolute;
     height: 1px;
@@ -670,8 +676,51 @@
   }
 }
 
+.filebox {
+  input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
 
+  label {
+    font-size: 10px;
+    display: inline-block;
+    padding: .8em .75em;
+    margin: 5px;
+    color: #999;
+    /*font-size: inherit;*/
+    line-height: normal;
+    /*vertical-align: middle;*/
+    background-color: #fdfdfd;
+    cursor: pointer;
+    border: 1px solid #ebebeb;
+    border-bottom-color: #e2e2e2;
+    border-radius: .25em;
+  }
 
+  .upload-name {
+    display: inline-block;
+    padding: 1em .75em; /* label의 패딩값과 일치 */
+    font-size: inherit;
+    font-family: inherit;
+    line-height: normal;
+    /*vertical-align: middle;*/
+    background-color: #f5f5f5;
+    border: 1px solid #ebebeb;
+    border-bottom-color: #e2e2e2;
+    border-radius: .25em;
+    -webkit-appearance: none; /* 네이티브 외형 감추기 */
+    -moz-appearance: none;
+    appearance: none;
+    width: calc(100% - 15%);
+  }
+}
 
 /*common-------------------------------------------------------------------------------------------common*/
 

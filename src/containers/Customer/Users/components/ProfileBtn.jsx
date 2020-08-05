@@ -69,7 +69,7 @@ const ProfileBtn = () => {
         const {
             cpIdx, cpName, id, password, name, email,
             cellPhone, tel, level, userZip, userAddr, userAddrDetail,
-            emailAuthValue, emailAuthGroupList, memo,
+            emailAuthValue, emailAuthGroupList, memo, avata,
         } = val;
         try {
             const response = await modifyUser({
@@ -89,6 +89,7 @@ const ProfileBtn = () => {
                 emailAuthGroupFlag: emailAuthValue === "2",
                 emailAuthGroupList,
                 memo,
+                avata,
             });
             const submitData = ({
                 companyIdx: cpIdx,
@@ -107,6 +108,7 @@ const ProfileBtn = () => {
                 emailAuthGroupFlag: emailAuthValue === "2",
                 emailAuthGroupList,
                 memo,
+                avata,
             });
 
             dispatch(setUser(submitData));
@@ -123,7 +125,6 @@ const ProfileBtn = () => {
      *******************/
 
     const handleSubmitModifyUser = (val) => {
-        // console.log("handleSubmitModifyUser: ", user);
         asyncModifyUser(val);
         handleCloseModifyUser();
     };

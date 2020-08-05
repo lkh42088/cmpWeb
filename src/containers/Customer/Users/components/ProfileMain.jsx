@@ -25,11 +25,25 @@ const ProfileMain = () => {
                             borderRadius: "0",
                         }}>
                             {/*<img src={Ava} alt="avatar"/>*/}
-                            <Avatar
+                            {/*<Avatar
                                 className="topbar__avatar-img-list"
                                 name={user.userId}
                                 size="120"
-                            />
+                            />*/}
+                            {user.avata == null || user.avata === "" ? (
+                                <Avatar
+                                    className="topbar__avatar-img-list"
+                                    name={user.userId}
+                                    size="120"
+                                />
+                            ) : (
+                                <Avatar
+                                    className="topbar__avatar-img-list"
+                                    name={user.userId}
+                                    size="120"
+                                    src={`http://127.0.0.1:8081/image/${user.avata}`}
+                                />
+                            )}
                         </div>
                         <div className="profile__data">
                             <p className="profile__name">{user.name} [{user.userId}]</p>

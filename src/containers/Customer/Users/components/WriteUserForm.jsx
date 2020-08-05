@@ -24,6 +24,9 @@ import Chip from "@material-ui/core/Chip";
 import Avatar from "@material-ui/core/Avatar";
 import SendIcon from "@material-ui/icons/Send";
 import {makeStyles} from "@material-ui/core/styles";
+
+import moment from "moment";
+
 import {checkId, checkPasswordPattern} from "../../../../lib/utils/utils";
 import {checkDuplicateUser, getAuthList} from "../../../../lib/api/users";
 import {getCompanies, getUsersByCpIdx} from "../../../../lib/api/company";
@@ -80,6 +83,8 @@ const MenuProps = {
 };
 
 const WriteUserForm = (props) => {
+    // const upload = multer({ dest: 'uploads/' });
+    // console.log("?? : ", upload);
     /************************************************************************************
      * Props
      ************************************************************************************/
@@ -111,6 +116,7 @@ const WriteUserForm = (props) => {
         emailAuthValue: "0",
         emailAuthGroupList: [],
         memo: '',
+        avata: '',
     });
 
     /*******************
@@ -198,6 +204,13 @@ const WriteUserForm = (props) => {
     });
 
     /*******************
+     * IMAGE AVATA
+     *******************/
+    const [pictures, setPictures] = useState([]);
+    const [selectedFile, setSelectedFileFile] = useState(null);
+    const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
+
+    /*******************
      * Etc.
      *******************/
     const [companyList, setCompanyList] = useState([]);
@@ -215,6 +228,40 @@ const WriteUserForm = (props) => {
     /************************************************************************************
      * Function
      ************************************************************************************/
+    const fileChangedHandler = (event) => {
+        setSelectedFileFile(event.target.files[0]);
+
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            setImagePreviewUrl(reader.result);
+        };
+
+        reader.readAsDataURL(event.target.files[0]);
+        const imgName = moment(new Date())
+            .format("DDhhmmss") + event.target.files[0].name;
+
+        setFields({
+            ...fields,
+            avata: imgName,
+        });
+    };
+
+
+    const onDrop = (picture) => {
+        console.log("onDrop click....");
+        setPictures([...pictures, picture]);
+
+        setFields({
+            ...fields,
+            avata: picture[0].name,
+        });
+
+        console.log("pictures : ", pictures);
+
+        // ajax
+    };
+
     const dumpFields = () => {
         console.log("cpName: ", fields.cpName, fields.cpName.length);
         console.log("cpIdx: ", fields.cpIdx);
@@ -352,6 +399,7 @@ const WriteUserForm = (props) => {
             emailAuthValue: "0",
             emailAuthGroupList: [],
             memo: '',
+            avata: '',
         });
         setHelpers({
             cpName: '',
@@ -369,6 +417,7 @@ const WriteUserForm = (props) => {
             emailAuthValue: '',
             emailAuthGroupList: '',
             memo: '',
+            avata: '',
         });
         setErrors({
             cpName: false,
@@ -386,24 +435,44 @@ const WriteUserForm = (props) => {
             emailAuthValue: false,
             emailAuthGroupList: false,
             memo: false,
+            avata: false,
         });
         setShowPassword(false);
         setConfirmUser(false);
     };
 
     const handleCancel = () => {
-        // console.log("handleCancel() ");
         reset();
         handleClose();
     };
 
     const handleSubmitInternal = () => {
-        // console.log("handleSubmitInternal() fields", fields);
         if (!checkValidation()) {
-            // console.log("handleSubmitInternal() failed");
             return;
         }
-        // console.log("handleSubmitInternal() success");
+
+        if (fields.avata !== null && fields.avata !== "") {
+            const fd = new FormData();
+
+            const imgName = fields.avata;
+            console.log("★★★★★ imgName : ", imgName);
+
+            fd.append('file', selectedFile, imgName);
+
+            const request = new XMLHttpRequest();
+
+            // eslint-disable-next-line func-names
+            request.onreadystatechange = function () {
+                // eslint-disable-next-line react/no-this-in-sfc
+                if (this.readyState === 4 || this.status === 200) {
+                    console.log("Uploaded !! ");
+                }
+            };
+
+            request.open("POST", "http://127.0.0.1:8081/v1/users/fileUpload", true);
+            request.send(fd);
+        }
+
         handleSubmit(fields);
         reset();
     };
@@ -439,10 +508,8 @@ const WriteUserForm = (props) => {
     };
 
     const getCompanyList = async () => {
-        // console.log("getCompanyList()-----------------------");
         try {
             const response = await getCompanies();
-            // console.log("getCompanyList() data: ", response.data);
             setCompanyList(response.data);
         } catch (error) {
             setCompanyList([]);
@@ -450,10 +517,8 @@ const WriteUserForm = (props) => {
     };
 
     const getUserList = async (cpIdx) => {
-        // console.log("getUserList()-----------------------");
         try {
             const response = await getUsersByCpIdx({cpIdx});
-            // console.log("getUserList() data: ", response.data);
             setUserList(response.data);
         } catch (error) {
             setUserList([]);
@@ -461,7 +526,6 @@ const WriteUserForm = (props) => {
     };
 
     const handleClickCheckUser = () => {
-        // console.log("handleClickCheckUser: ");
         if (isRegister === false) {
             return;
         }
@@ -629,6 +693,7 @@ const WriteUserForm = (props) => {
                 emailAuthValue: eva,
                 // emailAuthGroupList: [],
                 memo: data.memo,
+                avata: data.avata,
             });
             setDisables({
                 ...disables,
@@ -655,10 +720,34 @@ const WriteUserForm = (props) => {
     const labelClassName = "cb-material-form__label";
     const fieldClassName = "cb-material-form__field";
     // console.log("RegisterUserPage...");
+    // encType="multipart/form-data"
+
+    let $imagePreview = (
+        <div className="previewText image-container">Please select an Image for Preview</div>
+    );
+    if (imagePreviewUrl) {
+        $imagePreview = (
+            <div className="profile__avatar" style={{
+                borderRadius: "0",
+                padding: "10px 0 0 0",
+            }}>
+                <Avatar
+                    className="topbar__avatar-img-list"
+                    name="img"
+                    size="120"
+                    src={imagePreviewUrl}
+                    style={{
+                        width: "100%",
+                        height: "100%",
+                    }}
+                />
+            </div>
+        );
+    }
 
     return (
         <React.Fragment>
-            <form className={formClassName}>
+            <form className={formClassName} encType="multipart/form-data">
                 <Grid container spacing={1}>
                     <Grid item xs={6}>
                         <div>
@@ -668,17 +757,17 @@ const WriteUserForm = (props) => {
                                 className={fieldClassName}
                                 variant="filled"
                                 error={errors.cpIdx}
-                                disabled={disables.cpIdx}
-                            >
+                                disabled={disables.cpIdx}>
                                 <Select
                                     required={requires.cpIdx}
                                     name="cpIdx"
                                     value={fields.cpIdx}
                                     error={errors.cpIdx}
-                                    onChange={(e) => { handleChangeField("cpIdx", e.target.value); }}
+                                    onChange={(e) => {
+                                        handleChangeField("cpIdx", e.target.value);
+                                    }}
                                     onClick={handleMenuCompany}
-                                    MenuProps={MenuProps}
-                                >
+                                    MenuProps={MenuProps}>
                                     <MenuItem key={0} value={0}>
                                         <em>None</em>
                                     </MenuItem>
@@ -714,8 +803,7 @@ const WriteUserForm = (props) => {
                                 minWidth: '105px',
                                 minHeight: '45px',
                                 margin: '20px 0px 0px 0px',
-                            }}
-                        >
+                            }}>
                             검색
                         </Button>
                     </Grid>
@@ -737,7 +825,9 @@ const WriteUserForm = (props) => {
                                     error={errors.id}
                                     name="id"
                                     value={fields.id}
-                                    onChange={(e) => { handleChangeField("id", e.target.value); }}
+                                    onChange={(e) => {
+                                        handleChangeField("id", e.target.value);
+                                    }}
                                     endAdornment={(
                                         <InputAdornment position="end">
                                             <IconButton
@@ -769,7 +859,9 @@ const WriteUserForm = (props) => {
                                     required={requires.password}
                                     name="password"
                                     value={fields.password}
-                                    onChange={(e) => { handleChangeField("password", e.target.value); }}
+                                    onChange={(e) => {
+                                        handleChangeField("password", e.target.value);
+                                    }}
                                     type={showPassword ? 'text' : 'password'}
                                     endAdornment={(
                                         <InputAdornment position="end">
@@ -779,7 +871,7 @@ const WriteUserForm = (props) => {
                                                 onMouseDown={handleMouseDownPassword}
                                                 edge="end"
                                             >
-                                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                {showPassword ? <Visibility/> : <VisibilityOff/>}
                                             </IconButton>
                                         </InputAdornment>
                                     )}
@@ -830,7 +922,9 @@ const WriteUserForm = (props) => {
                                 helperText={helpers.name}
                                 name="name"
                                 value={fields.name}
-                                onChange={(e) => { handleChangeField("name", e.target.value); }}
+                                onChange={(e) => {
+                                    handleChangeField("name", e.target.value);
+                                }}
                                 variant={variant}
                                 size={fieldSize}
                             />
@@ -847,7 +941,9 @@ const WriteUserForm = (props) => {
                                 helperText={helpers.email}
                                 name="email"
                                 value={fields.email}
-                                onChange={(e) => { handleChangeField("email", e.target.value); }}
+                                onChange={(e) => {
+                                    handleChangeField("email", e.target.value);
+                                }}
                                 variant={variant}
                                 size={fieldSize}
                             />
@@ -864,7 +960,9 @@ const WriteUserForm = (props) => {
                                 helperText={helpers.cellPhone}
                                 name="cellPhone"
                                 value={fields.cellPhone}
-                                onChange={(e) => { handleChangeField("cellPhone", e.target.value); }}
+                                onChange={(e) => {
+                                    handleChangeField("cellPhone", e.target.value);
+                                }}
                                 variant={variant}
                                 size={fieldSize}
                             />
@@ -881,7 +979,9 @@ const WriteUserForm = (props) => {
                                 helperText={helpers.tel}
                                 name="tel"
                                 value={fields.tel}
-                                onChange={(e) => { handleChangeField("tel", e.target.value); }}
+                                onChange={(e) => {
+                                    handleChangeField("tel", e.target.value);
+                                }}
                                 variant={variant}
                                 size={fieldSize}
                             />
@@ -902,7 +1002,9 @@ const WriteUserForm = (props) => {
                                     disabled={disables.level}
                                     name="level"
                                     value={fields.level}
-                                    onChange={(e) => { handleChangeField("level", e.target.value); }}
+                                    onChange={(e) => {
+                                        handleChangeField("level", e.target.value);
+                                    }}
                                     MenuProps={MenuProps}
                                 >
                                     <MenuItem key={0} value={0}>
@@ -936,7 +1038,9 @@ const WriteUserForm = (props) => {
                                     name="userZip"
                                     value={fields.userZip}
                                     disabled={disables.userZip}
-                                    onChange={(e) => { handleChangeField("userZip", e.target.value); }}
+                                    onChange={(e) => {
+                                        handleChangeField("userZip", e.target.value);
+                                    }}
                                     endAdornment={(
                                         <InputAdornment position="end">
                                             <IconButton
@@ -969,7 +1073,9 @@ const WriteUserForm = (props) => {
                                 helperText={helpers.userAddr}
                                 name="userAddr"
                                 value={fields.userAddr}
-                                onChange={(e) => { handleChangeField("userAddr", e.target.value); }}
+                                onChange={(e) => {
+                                    handleChangeField("userAddr", e.target.value);
+                                }}
                                 variant={variant}
                                 size={fieldSize}
                             />
@@ -986,7 +1092,9 @@ const WriteUserForm = (props) => {
                                 helperText={helpers.userAddrDetail}
                                 name="userAddrDetail"
                                 value={fields.userAddrDetail}
-                                onChange={(e) => { handleChangeField("userAddrDetail", e.target.value); }}
+                                onChange={(e) => {
+                                    handleChangeField("userAddrDetail", e.target.value);
+                                }}
                                 variant={variant}
                                 size={fieldSize}
                             />
@@ -1000,16 +1108,16 @@ const WriteUserForm = (props) => {
                                 className={fieldClassName}
                                 variant="filled"
                                 error={errors.emailAuthValue}
-                                disabled={disables.emailAuthValue}
-                            >
+                                disabled={disables.emailAuthValue}>
                                 <Select
                                     required={errors.emailAuthValue}
                                     disabled={disables.emailAuthValue}
                                     name="emailAuthValue"
                                     value={fields.emailAuthValue}
-                                    onChange={(e) => { handleChangeField("emailAuthValue", e.target.value); }}
-                                    MenuProps={MenuProps}
-                                >
+                                    onChange={(e) => {
+                                        handleChangeField("emailAuthValue", e.target.value);
+                                    }}
+                                    MenuProps={MenuProps}>
                                     <MenuItem key={0} value="0">
                                         <em>None</em>
                                     </MenuItem>
@@ -1029,18 +1137,19 @@ const WriteUserForm = (props) => {
                                         <FormControl
                                             size={fieldSize}
                                             className={fieldClassName}
-                                            variant="filled"
-                                        >
+                                            variant="filled">
                                             <Select>
                                                 <List className={classes.list}>
                                                     {userList && userList.map((item, index) => {
                                                         const key = index;
                                                         return (
-                                                            <ListItem key={key} button onClick={() => { handleClickEmailAuthUser(item); }}>
+                                                            <ListItem key={key} button onClick={() => {
+                                                                handleClickEmailAuthUser(item);
+                                                            }}>
                                                                 <ListItemAvatar>
-                                                                    <ReactAvatar className="topbar__avatar-img-list" name={item.id} size={40} />
+                                                                    <ReactAvatar className="topbar__avatar-img-list" name={item.id} size={40}/>
                                                                 </ListItemAvatar>
-                                                                <ListItemText primary={item.name} secondary={item.email} />
+                                                                <ListItemText primary={item.name} secondary={item.email}/>
                                                             </ListItem>
                                                         );
                                                     })}
@@ -1053,21 +1162,23 @@ const WriteUserForm = (props) => {
                                     fields.emailAuthGroupList.length > 0 ? (
                                         <React.Fragment>
                                             <Grid item xs={12}>
-                                                <Paper className={classes.paper} variant="outlined" />
-                                                { fields.emailAuthGroupList && fields.emailAuthGroupList.map((item, index) => {
+                                                <Paper className={classes.paper} variant="outlined"/>
+                                                {fields.emailAuthGroupList && fields.emailAuthGroupList.map((item, index) => {
                                                     const key = index;
                                                     return (
                                                         <Chip
                                                             key={key}
                                                             variant="outlined"
                                                             size="small"
-                                                            avatar={<Avatar alt={item.id} src="/static/images/avatar/1.jpg" />}
+                                                            avatar={<Avatar alt={item.id} src="/static/images/avatar/1.jpg"/>}
                                                             label={item.email}
-                                                            onDelete={() => { handleDeleteEmailAuthGroupItem(item); }}
+                                                            onDelete={() => {
+                                                                handleDeleteEmailAuthGroupItem(item);
+                                                            }}
                                                         />
                                                     );
                                                 })}
-                                                <Paper variant="outlined" square />
+                                                <Paper variant="outlined" square/>
                                             </Grid>
                                         </React.Fragment>
                                     ) : (<React.Fragment/>)
@@ -1085,7 +1196,9 @@ const WriteUserForm = (props) => {
                             helperText={helpers.memo}
                             name="memo"
                             value={fields.memo}
-                            onChange={(e) => { handleChangeField("memo", e.target.value); }}
+                            onChange={(e) => {
+                                handleChangeField("memo", e.target.value);
+                            }}
                             variant={variant}
                             size={fieldSize}
                             multiline
@@ -1093,12 +1206,52 @@ const WriteUserForm = (props) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
+                        <span className={labelClassName}>아바타 이미지 업로드</span>
+                        {/*<ImageUploader
+                            withIcon
+                            withPreview
+                            singleImage
+                            onChange={onDrop}
+                            imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+                            maxFileSize={5242880}
+                            fileSizeError=" file size is too big"
+                        />*/}
+                        <br/>
+                        <div className="filebox">
+                            <input className="upload-name" value={fields.avata === "" ? "파일 찾기" : fields.avata} disabled="disabled"/>
+                            <label className="upload-name-span" htmlFor="ex_filename">업로드</label>
+                            <input type="file" id="ex_filename" className="upload-hidden" name="avatar" onChange={fileChangedHandler}/>
+                        </div>
+                        {/*<input type="file" name="avatar" onChange={fileChangedHandler}/>*/}
+                        {/*<button type="button" onClick={submit}> Upload </button>*/}
+                        {!imagePreviewUrl && fields.avata !== "" ? (
+                            <div>
+                                <div className="profile__avatar" style={{
+                                    borderRadius: "0",
+                                    padding: "10px 0 0 0",
+                                }}>
+                                    <Avatar
+                                        className="topbar__avatar-img-list"
+                                        name="img"
+                                        size="120"
+                                        src={`http://127.0.0.1:8081/image/${fields.avata}`}
+                                        style={{
+                                            width: "100%",
+                                            height: "100%",
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        ) : (
+                            $imagePreview
+                        )}
+                    </Grid>
+                    <Grid item xs={12}>
                         <div>
                             <Button
                                 variant="contained"
                                 size={buttonSize}
-                                onClick={handleCancel}
-                            >
+                                onClick={handleCancel}>
                                 취소
                             </Button>
                             <Button
@@ -1107,14 +1260,20 @@ const WriteUserForm = (props) => {
                                 color="primary"
                                 size={buttonSize}
                                 onClick={handleSubmitInternal}
-                                endIcon={<SendIcon/>}
-                            >
+                                endIcon={<SendIcon/>}>
                                 전송
                             </Button>
                         </div>
                     </Grid>
                 </Grid>
             </form>
+            {/*<form
+                action="http://127.0.0.1:8081/v1/users/fileUpload"
+                method="post"
+                encType="multipart/form-data">
+                    upload file: <input type="file" name="file"/>
+                    <input type="submit" value="Submit"/>
+            </form>*/}
         </React.Fragment>
     );
 };
