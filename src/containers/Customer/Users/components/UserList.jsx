@@ -47,6 +47,8 @@ import UserTableToolbar from "./UserTableToolbar";
 import {limitLongString} from "../../../../lib/utils/utils";
 import ModifyUserPage from "./ModifyUserPage";
 
+import {API_ROUTE, API_ROUTE_SERVER_IMAGE} from "../../../../lib/api/client";
+
 const headRows = [
     {
         id: 'idx',
@@ -309,7 +311,7 @@ const UserList = () => {
         }
         if (enableLogNormal) {
             console.log("getPageData: rows ", rowsPerPage, ", offset ", offset,
-            ", orderBy ", orderBy, ", order ", order, ", searchParam ", searchParam);
+                ", orderBy ", orderBy, ", order ", order, ", searchParam ", searchParam);
         }
         if (searchParam !== null) {
             dispatch(getUserListWithSearchParam({
@@ -331,7 +333,10 @@ const UserList = () => {
 
     const deleteUsers = async (users, avatas) => {
         try {
-            const response = await unregisterUser({idx: users, avata: avatas});
+            const response = await unregisterUser({
+                idx: users,
+                avata: avatas,
+            });
             getPageData();
             handleSnackbarSuccess("계정 삭제에 성공하였습니다.");
         } catch (error) {
@@ -658,7 +663,7 @@ const UserList = () => {
                                 className="topbar__avatar-img-list"
                                 name={row.userId}
                                 size="40"
-                                src={`http://127.0.0.1:8081/image/${row.avata}`}
+                                src={`${API_ROUTE_SERVER_IMAGE}/${row.avata}`}
                             />
                         )}
                     </TableCell>
@@ -870,8 +875,6 @@ const UserList = () => {
                         onChangeRowsPerPage={handleChangeRowsPerPage}
                         rowsPerPageOptions={displayRowsList}
                     />
-                    {/* eslint-disable-next-line jsx-a11y/img-redundant-alt */}
-                    {/*★<img src="http://127.0.0.1:8081/image/brain.jpg" alt="image"/>★*/}
                     <div className="cb-material-table__wrap">
                         <TableContainer>
                             <Table

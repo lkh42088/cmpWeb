@@ -23,6 +23,8 @@ import Paper from "@material-ui/core/Paper";
 import Chip from "@material-ui/core/Chip";
 import Avatar from "@material-ui/core/Avatar";
 import SendIcon from "@material-ui/icons/Send";
+import DeleteIcon from "@material-ui/icons/Delete";
+import CloseIcon from '@material-ui/icons/Close';
 import {makeStyles} from "@material-ui/core/styles";
 
 import moment from "moment";
@@ -33,6 +35,8 @@ import {getCompanies, getUsersByCpIdx} from "../../../../lib/api/company";
 import LookupCompany from "../../../Common/LookupCompany";
 import LookupZipcode from "../../../Common/LookupZipcode";
 import ChangePasswordDialog from "../../Company/components/ChangePasswordDialog";
+
+import {API_ROUTE, API_ROUTE_SERVER_IMAGE} from "../../../../lib/api/client";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -247,21 +251,6 @@ const WriteUserForm = (props) => {
         });
     };
 
-
-    const onDrop = (picture) => {
-        console.log("onDrop click....");
-        setPictures([...pictures, picture]);
-
-        setFields({
-            ...fields,
-            avata: picture[0].name,
-        });
-
-        console.log("pictures : ", pictures);
-
-        // ajax
-    };
-
     const dumpFields = () => {
         console.log("cpName: ", fields.cpName, fields.cpName.length);
         console.log("cpIdx: ", fields.cpIdx);
@@ -283,6 +272,21 @@ const WriteUserForm = (props) => {
         }
 
         return helperUserId;
+    };
+
+    const avataDelete = (division) => {
+        if (division === 'web') {
+            setImagePreviewUrl('');
+            setFields({
+                ...fields,
+                avata: "",
+            });
+        } else if (division === 'server') {
+            setFields({
+                ...fields,
+                avata: "",
+            });
+        }
     };
 
     /*******************
@@ -332,7 +336,7 @@ const WriteUserForm = (props) => {
         }
 
         /** email */
-        // eslint-disable-next-line no-useless-escape
+            // eslint-disable-next-line no-useless-escape
         const checkEmail = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
         let errorEmail = false;
         let helperEmail = '';
@@ -455,7 +459,6 @@ const WriteUserForm = (props) => {
             const fd = new FormData();
 
             const imgName = fields.avata;
-            console.log("★★★★★ imgName : ", imgName);
 
             fd.append('file', selectedFile, imgName);
 
@@ -469,7 +472,7 @@ const WriteUserForm = (props) => {
                 }
             };
 
-            request.open("POST", "http://127.0.0.1:8081/v1/users/fileUpload", true);
+            request.open("POST", `${API_ROUTE}/users/fileUpload`, true);
             request.send(fd);
         }
 
@@ -727,10 +730,20 @@ const WriteUserForm = (props) => {
     );
     if (imagePreviewUrl) {
         $imagePreview = (
-            <div className="profile__avatar" style={{
-                borderRadius: "0",
-                padding: "10px 0 0 0",
-            }}>
+            <div className="profile__avatar">
+                <div
+                    style={{
+                        width: "inherit",
+                        textAlign: "end",
+                        position: "absolute",
+                    }}
+                >
+                    <CloseIcon
+                        role="button" tabIndex="0"
+                        onClick={event => avataDelete('web')}
+                        onKeyDown={event => avataDelete('web')}
+                    />
+                </div>
                 <Avatar
                     className="topbar__avatar-img-list"
                     name="img"
@@ -1226,15 +1239,25 @@ const WriteUserForm = (props) => {
                         {/*<button type="button" onClick={submit}> Upload </button>*/}
                         {!imagePreviewUrl && fields.avata !== "" ? (
                             <div>
-                                <div className="profile__avatar" style={{
-                                    borderRadius: "0",
-                                    padding: "10px 0 0 0",
-                                }}>
+                                <div className="profile__avatar">
+                                    <div
+                                        style={{
+                                            width: "inherit",
+                                            textAlign: "end",
+                                            position: "absolute",
+                                        }}
+                                    >
+                                        <CloseIcon
+                                            role="button" tabIndex="0"
+                                            onClick={event => avataDelete('server')}
+                                            onKeyDown={event => avataDelete('server')}
+                                        />
+                                    </div>
                                     <Avatar
                                         className="topbar__avatar-img-list"
                                         name="img"
                                         size="120"
-                                        src={`http://127.0.0.1:8081/image/${fields.avata}`}
+                                        src={`${API_ROUTE_SERVER_IMAGE}/${fields.avata}`}
                                         style={{
                                             width: "100%",
                                             height: "100%",

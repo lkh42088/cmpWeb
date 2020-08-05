@@ -7,6 +7,8 @@ import Avatar from "react-avatar";
 
 import * as common from "../../../../lib/common";
 
+import {API_ROUTE, API_ROUTE_SERVER_IMAGE} from "../../../../lib/api/client";
+
 const ProfileMain = () => {
     const {
         user,
@@ -21,9 +23,12 @@ const ProfileMain = () => {
             <Card>
                 <CardBody className="profile__card">
                     <div className="profile__information">
-                        <div className="profile__avatar" style={{
-                            borderRadius: "0",
-                        }}>
+                        <div className="profile__avatar"
+                             style={{
+                                 /*borderRadius: "0",*/
+                                 borderRadius: "0",
+                             }}
+                        >
                             {/*<img src={Ava} alt="avatar"/>*/}
                             {/*<Avatar
                                 className="topbar__avatar-img-list"
@@ -41,7 +46,7 @@ const ProfileMain = () => {
                                     className="topbar__avatar-img-list"
                                     name={user.userId}
                                     size="120"
-                                    src={`http://127.0.0.1:8081/image/${user.avata}`}
+                                    src={`${API_ROUTE_SERVER_IMAGE}/${user.avata}`}
                                 />
                             )}
                         </div>

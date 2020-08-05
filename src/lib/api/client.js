@@ -24,7 +24,9 @@ axios.interceptors.response.use(
 );
 
 const API_PREFIX = '/v1';
+const API_PREFIX_IMG = '/image';
 export const WEB_SERVER_ADDR = `http://${API_SERVER_IP}:${API_SERVER_PORT}`;
 export const API_ROUTE = `${WEB_SERVER_ADDR}${API_PREFIX}`;
+export const API_ROUTE_SERVER_IMAGE = `http://${API_SERVER_IP}:${API_SERVER_PORT}${API_PREFIX_IMG}`;
 
 export default client;

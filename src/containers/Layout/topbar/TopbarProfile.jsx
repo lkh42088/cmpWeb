@@ -5,7 +5,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import {blue} from '@material-ui/core/colors';
 import DownIcon from "mdi-react/ChevronDownIcon";
 import {Collapse} from "reactstrap";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 
 import {
@@ -17,6 +17,8 @@ import {setCompanyPage} from "../../../redux/actions/companiesActions";
 
 import TopbarMenuLink from "./TopbarMenuLink";
 import {getUserById, modifyUser} from "../../../lib/api/users";
+
+import {API_ROUTE, API_ROUTE_SERVER_IMAGE} from "../../../lib/api/client";
 
 // const Ava = `${process.env.PUBLIC_URL}/img/ava.png`;
 
@@ -33,14 +35,19 @@ const TopbarProfile = (props) => {
     const classes = useStyles();
     const [collapse, setCollapse] = useState(false);
     const {user, logout} = props;
+    const [avata, setAvata] = useState(user.avata);
     const dispatch = useDispatch();
-
 
     const {
         data,
     } = useSelector(({usersRd}) => ({
         data: usersRd.data,
     }));
+    let copyUser = [...data];
+
+    for (let i = 0; i < [...data].filter(el => el[1]).length; i += 1) {
+        copyUser = copyUser.filter(obj => obj.userId === data[i].id);
+    }
 
     const toggle = () => {
         setCollapse(!collapse);
@@ -48,9 +55,6 @@ const TopbarProfile = (props) => {
 
     const profile = async () => {
         setCollapse(!collapse);
-        /*const res = data.filter(item => item.userId === user.id);
-        console.log("handleUserPage res[0] : ..... : ", res[0]);
-        console.log("handleUserPage data : ..... : ", data);*/
         dispatch(setUserPage({userPage: 'view'}));
         try {
             const response = await getUserById({
@@ -71,18 +75,48 @@ const TopbarProfile = (props) => {
         dispatch(setCompanyPage('list'));
     };
 
+    console.log("avata : ", avata);
+
+    useEffect(() => {
+        data.forEach((value, key) => {
+            if (value.userId === user.id) {
+                setAvata(value.avata);
+            }
+        });
+    }, [data]);
+
     //console.log("TopbarProfile ....  user : ", user);
     //console.log("TopbarProfile ....  data : ", data);
 
     return (
         <div className="topbar__profile">
             <button className="topbar__avatar" type="button" onClick={toggle}>
-                {(user && user.id) ? (
+                {/*{(user && user.id) ? (
                     <Avatar className="topbar__avatar-img" name={user.id} size="40"/>
                 ) : (
                     <MuAvatar className={classes.avatar}>
                         <PersonIcon/>
                     </MuAvatar>
+                )}*/}
+                {avata == null || avata === "" ? (
+                    <Avatar
+                        className="topbar__avatar-img-list"
+                        name={user.id}
+                        size="40"
+                        style={{
+                            margin: "7px",
+                        }}
+                    />
+                ) : (
+                    <Avatar
+                        className="topbar__avatar-img-list"
+                        name={user.id}
+                        size="40"
+                        src={`${API_ROUTE_SERVER_IMAGE}/${avata}`}
+                        style={{
+                            margin: "7px",
+                        }}
+                    />
                 )}
                 <p className="topbar__avatar-name">
                     {user != null && user.name != null ? user.name : ""}
