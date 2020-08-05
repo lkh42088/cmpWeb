@@ -16,13 +16,13 @@ export default function createRequestSaga(type, request) {
         yield put(startLoading(type));
         try {
             const response = yield call(request, action.payload);
-            console.log("Saga success:", SUCCESS, ", payload(data): ", response.data);
+            // console.log("Saga success:", SUCCESS, ", payload(data): ", response.data);
             yield put({
                 type: SUCCESS,
                 payload: response.data,
             });
         } catch (e) {
-            console.log('Saga fail: ', FAILURE, 'payload(e):', e);
+            // console.log('Saga fail: ', FAILURE, 'payload(e):', e);
             yield put({
                 type: FAILURE,
                 payload: e,

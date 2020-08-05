@@ -146,6 +146,7 @@ const WriteCompanyFrom = (props) => {
     const [passwordGridSize, setPasswordGridSize] = useState(6);
     const [openZip, setOpenZip] = useState(false);
     const [openChangePassword, setOpenChangePassword] = useState(false);
+
     /************************************************************************************
      * Function
      ************************************************************************************/
@@ -214,7 +215,7 @@ const WriteCompanyFrom = (props) => {
     };
 
     const handleCompleteZip = (zip, address) => {
-        console.log("handleCompleteZip() ", zip, address);
+        // console.log("handleCompleteZip() ", zip, address);
         setFields({
             ...fields,
             cpZip: zip,
@@ -239,7 +240,7 @@ const WriteCompanyFrom = (props) => {
 
     const handleCompleteChangePassword = (res) => {
         setOpenChangePassword(false);
-        console.log("change password: ", res);
+        // console.log("change password: ", res);
         setFields({
             ...fields,
             userPassword: res,
@@ -307,7 +308,7 @@ const WriteCompanyFrom = (props) => {
         let errorAddress = false;
         const helperAddress = checkAddress(fields.cpAddr);
         if (helperAddress !== "") {
-            console.log("error");
+            // console.log("error");
             errorAddress = true;
         }
 
@@ -346,19 +347,19 @@ const WriteCompanyFrom = (props) => {
     };
 
     const handleSubmitWrap = () => {
-        console.log("handleSubmitWrap...");
+        // console.log("handleSubmitWrap...");
         if (!checkCompanyValidation()) {
-            console.log("fail!");
+            // console.log("fail!");
             return;
         }
-        console.log("success!");
+        // console.log("success!");
         handleSubmit(fields);
         reset();
     };
 
     const handleChangeFields = (e) => {
         const { name, value } = e.target;
-        console.log("change: name ", name, ", value: ", value);
+        // console.log("change: name ", name, ", value: ", value);
         setFields({
             ...fields,
             [name]: value,
@@ -388,13 +389,13 @@ const WriteCompanyFrom = (props) => {
     const checkCompany = async (name) => {
         try {
             const response = await checkDupCompany({cpName: name});
-            console.log("checkCompany... true");
+            // console.log("checkCompany... true");
             setValues({
                 ...values,
                 confirmCompany: true,
             });
         } catch (e) {
-            console.log("checkCompany... false");
+            // console.log("checkCompany... false");
             setValues({
                 ...values,
                 confirmCompany: false,
@@ -414,7 +415,7 @@ const WriteCompanyFrom = (props) => {
         if (isRegister === false) {
             return;
         }
-        console.log("check dup company ", fields.cpName);
+        // console.log("check dup company ", fields.cpName);
         const helperCpName = checkCompanyName(fields.cpName);
         if (helperCpName !== "") {
             setErrors({
@@ -443,13 +444,13 @@ const WriteCompanyFrom = (props) => {
                 ...errors,
                 userId: false,
             });
-            console.log("checkUser: success", response.data);
+            // console.log("checkUser: success", response.data);
             setHelpers({
                 ...helpers,
                 userId: "* 사용 가능한 ID 입니다.",
             });
         } catch (error) {
-            console.log("checkUser: error ", error);
+            // console.log("checkUser: error ", error);
             setValues({
                 ...values,
                 confirmUser: false,
@@ -469,7 +470,7 @@ const WriteCompanyFrom = (props) => {
         if (isRegister === false) {
             return;
         }
-        console.log("handleCheckUser: ");
+        // console.log("handleCheckUser: ");
         const res = checkId(fields.userId);
         if (res !== "") {
             setErrors({
@@ -485,8 +486,11 @@ const WriteCompanyFrom = (props) => {
         checkUser();
     };
 
+    /************************************************************************************
+     * useEffect
+     ************************************************************************************/
     useEffect(() => {
-        console.log("init useEffect: data ", data);
+        // console.log("init useEffect: data ", data);
         if (isRegister === false && data) {
             setFields({
                 ...fields,

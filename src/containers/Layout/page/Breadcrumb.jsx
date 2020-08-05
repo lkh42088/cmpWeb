@@ -16,7 +16,7 @@ import monitorDashboard from '@iconify/icons-mdi/monitor-dashboard';
 import usersIcon from '@iconify/icons-fa-solid/users';
 import listAlt from '@iconify/icons-el/list-alt';
 import {themes} from "../../../shared/helpers";
-import {WEB_SERVER_ADDR} from "../../../shared/apiRoute";
+import {SEPARATION_URL} from "../../../lib/var/commonVariables";
 
 const StyledBreadcrumb = withStyles(theme => ({
     root: {
@@ -54,19 +54,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const PAGE_URL = {
-    "/dashboards/manager": {title: "관리자 대시보드", subTitle: null, icon: outlineDashboard},
-    "/dashboards/customer": {title: "사용자 대시보드", subTitle: null, icon: outlineDashboard},
-    "/micro/servers": {title: "MICRO CLOUD", subTitle: "SERVER", icon: serverOutlineBadged},
-    "/micro/vms": {title: "MICRO CLOUD", subTitle: "VM", icon: serverOutlineBadged},
-    "/assets/server": {title: "SERVER", subTitle: "온프레미스", icon: serverOutlineBadged},
-    "/assets/network": {title: "NETWORK", subTitle: "네트워크", icon: routerNetwork},
-    "/assets/part": {title: "NETWORK", subTitle: "파트 & 기타", icon: routerNetwork},
-    "/billing": {title: "BILLING", subTitle: "", icon: fileInvoiceDollar},
-    "/board": {title: "BOARD", subTitle: "", icon: listAlt},
-    "/customers/users": {title: "MANAGER", subTitle: "계정 관리", icon: usersIcon},
-    "/customers/companies": {title: "MANAGER", subTitle: "고객사 관리", icon: usersIcon},
-    "/subnet": {title: "MANAGER", subTitle: "서브넷 관리", icon: usersIcon},
-    "/setting": {title: "SETTING", subTitle: "", icon: monitorDashboard},
+    "dashboards/manager": {title: "관리자 대시보드", subTitle: null, icon: outlineDashboard},
+    "dashboards/customer": {title: "사용자 대시보드", subTitle: null, icon: outlineDashboard},
+    "micro/servers": {title: "MICRO CLOUD", subTitle: "SERVER", icon: serverOutlineBadged},
+    "micro/vms": {title: "MICRO CLOUD", subTitle: "VM", icon: serverOutlineBadged},
+    "assets/server": {title: "SERVER", subTitle: "온프레미스", icon: serverOutlineBadged},
+    "assets/network": {title: "NETWORK", subTitle: "네트워크", icon: routerNetwork},
+    "assets/part": {title: "NETWORK", subTitle: "파트 & 기타", icon: routerNetwork},
+    billing: {title: "BILLING", subTitle: "", icon: fileInvoiceDollar},
+    board: {title: "BOARD", subTitle: "", icon: listAlt},
+    "customers/users": {title: "MANAGER", subTitle: "계정 관리", icon: usersIcon},
+    "customers/companies": {title: "MANAGER", subTitle: "고객사 관리", icon: usersIcon},
+    subnet: {title: "MANAGER", subTitle: "서브넷 관리", icon: usersIcon},
+    setting: {title: "SETTING", subTitle: "", icon: monitorDashboard},
 };
 
 const LinkRouter = props => <Link {...props} component={RouterLink} />;
@@ -80,7 +80,7 @@ export default function RouterBreadcrumbs(props) {
 
     const seperateUrl = (tmpUrl) => {
         let tmp = tmpUrl;
-        tmp = tmp.replace(WEB_SERVER_ADDR, "");
+        tmp = tmp.replace(SEPARATION_URL, "");
         if (tmp && tmp.length > 1 && PAGE_URL[tmp]) {
             return tmp;
         }
@@ -88,6 +88,7 @@ export default function RouterBreadcrumbs(props) {
     };
 
     const getTitle = (tmpUrl) => {
+        // console.log("■", tmpUrl, SEP_STRING);
         const tmp = seperateUrl(tmpUrl);
         if (tmp) {
             const pageTitle = PAGE_URL[tmp].title;

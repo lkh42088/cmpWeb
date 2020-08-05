@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import MailRuIcon from "mdi-react/MailRuIcon";
 import {changeLoginField, changeLoginPage } from "../../../../redux/actions/loginActions";
 import {loginEmail} from "../../../../lib/api/login";
-import {GV_LOGIN_PAGE_CONFIRM_EMAIL} from "../../../../lib/globalVariable";
+import {GV_LOGIN_PAGE_CONFIRM_EMAIL} from "../../../../lib/var/globalVariable";
 
 // eslint-disable-next-line react/prop-types
 const LoginInputEmailForm = ({ history, secret }) => {

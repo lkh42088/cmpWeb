@@ -8,9 +8,6 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import WriteUserForm from "./WriteUserForm";
 
 const RegisterUserPage = (props) => {
-    /************************************************************************************
-     * Props
-     ************************************************************************************/
     const {
         open, handleClose, handleSubmit,
     } = props;

@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Container, Row} from 'reactstrap';
 import UserList from "./components/UserList";
 import UserView from "./components/UserView";
-import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
+import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
 import AssetsList from "../../Assets/ProductList/components/AssetsList";
 import AssetsView from "../../Assets/ProductList/components/AssetsView";
 

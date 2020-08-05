@@ -6,9 +6,6 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import WriteUserForm from "./WriteUserForm";
 
 const ModifyUserPage = (props) => {
-    /************************************************************************************
-     * Props
-     ************************************************************************************/
     const {
         open, handleClose, handleSubmit, data,
     } = props;

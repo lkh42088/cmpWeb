@@ -33,7 +33,7 @@ import {
     pagingChangeRowsPerPage,
     pagingChangeSelected,
     pagingChangeTotalCount,
-    pagingDump,
+    pagingDump, pagingSetLog,
 } from "../../../../redux/actions/pagingActions";
 import {
     getUserList, getUserListWithSearchParam, initRegisterUser,
@@ -44,7 +44,6 @@ import CommonTableHead from "../../../Common/CommonTableHead";
 import RegisterUserPage from "./RegisterUserPage";
 import {modifyUser, registerUser, unregisterUser} from "../../../../lib/api/users";
 import UserTableToolbar from "./UserTableToolbar";
-// eslint-disable-next-line import/named
 import {limitLongString} from "../../../../lib/utils/utils";
 import ModifyUserPage from "./ModifyUserPage";
 
@@ -121,13 +120,9 @@ const useStyles = makeStyles(theme => ({
             theme.palette.type === 'light'
                 ? {
                     boxShadow: "4px 2px 3px #999999",
-                    // border: "1px solid #e0e0e0",
-                    // borderRight: "1px solid #e0e0e0",
                 }
                 : {
                     boxShadow: "4px 2px 3px #000000",
-                    // border: "1px solid #000000",
-                    // borderRight: "1px solid #e0e0e0",
                 },
     },
     spanSubject: {
@@ -136,7 +131,6 @@ const useStyles = makeStyles(theme => ({
     },
     spanContents: {
         display: 'inline-block',
-        // width: '200px',
     },
     grid: {
         flexGrow: 1,
@@ -179,7 +173,6 @@ const UserList = () => {
         currentPage,
         totalCount,
         displayRowsList,
-        dense,
         orderBy,
         order,
     } = useSelector(({pagingRd}) => ({
@@ -190,14 +183,19 @@ const UserList = () => {
         totalPage: pagingRd.totalPage,
         totalCount: pagingRd.totalCount,
         displayRowsList: pagingRd.displayRowsList,
-        dense: pagingRd.dense,
         orderBy: pagingRd.orderBy,
         order: pagingRd.order,
     }));
 
     /** Dense Padding */
-    const {densePadding} = useSelector(({customizer}) => ({
+    const {
+        densePadding,
+        enableLogNormal,
+        enableLogDetail,
+    } = useSelector(({customizer}) => ({
         densePadding: customizer.densePadding,
+        enableLogNormal: customizer.enableLogNormal,
+        enableLogDetail: customizer.enableLogDetail,
     }));
 
     const [modifyData, setModifyData] = React.useState(null);
@@ -309,8 +307,10 @@ const UserList = () => {
         if (currentPage > 0) {
             offset = rowsPerPage * currentPage;
         }
-        // console.log("get Page Data: rows ", rowsPerPage, ", offset ", offset,
-            //", orderBy ", orderBy, ", order ", order, ", searchParam ", searchParam);
+        if (enableLogNormal) {
+            console.log("getPageData: rows ", rowsPerPage, ", offset ", offset,
+            ", orderBy ", orderBy, ", order ", order, ", searchParam ", searchParam);
+        }
         if (searchParam !== null) {
             dispatch(getUserListWithSearchParam({
                 rows: rowsPerPage,
@@ -469,13 +469,17 @@ const UserList = () => {
      * Event
      *******************/
     const handleSubmitAddUser = (user) => {
-        // console.log("handleSubmit() : user ", user);
+        if (enableLogNormal) {
+            console.log("handleSubmit() : user ", user);
+        }
         asyncAddUser(user);
         handleCloseAddUser();
     };
 
     const handleSubmitModifyUser = (user) => {
-        // console.log("handleSubmitModifyUser: ", user);
+        if (enableLogNormal) {
+            console.log("handleSubmitModifyUser: user ", user);
+        }
         asyncModifyUser(user);
         handleCloseModifyUser();
     };
@@ -514,7 +518,9 @@ const UserList = () => {
     }, []);
 
     useEffect(() => {
-        dispatch(pagingDump());
+        if (enableLogDetail) {
+            dispatch(pagingDump());
+        }
     }, [totalCount]);
 
     useEffect(() => {
@@ -551,22 +557,15 @@ const UserList = () => {
         getPageData();
     }, [searchParam]);
 
-    /************************************************************************************
-     * Component
-     ************************************************************************************/
-    const paginationBar = (
-        <TablePagination
-            component="div"
-            className="material-table__pagination"
-            count={totalCount}
-            rowsPerPage={rowsPerPage}
-            page={currentPage}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-            rowsPerPageOptions={displayRowsList}
+    useEffect(() => {
+        dispatch(pagingSetLog({enableLog: enableLogDetail}));
+    }, [enableLogDetail]);
 
-        />
-    );
+    useEffect(() => {
+        if (enableLogDetail && data) {
+            console.log("update data: ", data);
+        }
+    }, [data]);
 
     /************************************************************************************
      * JSX Template
@@ -673,7 +672,6 @@ const UserList = () => {
                             setOpenCollapse(false);
                         }}
                     >
-                        {/*{row.userId}*/}
                         <b className="text_cor_green mouse_over_list">
                             <div className="assets_add_modal_div"
                                  onClick={event => handleUserPage(row.idx)}
@@ -900,13 +898,6 @@ const UserList = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                        {/*{paginationBar}*/}
-                        {/*Block dense padding button */}
-                        {/*<FormControlLabel*/}
-                        {/*    className="cb-material-table__padding"*/}
-                        {/*    control={<Switch checked={dense} onChange={handleChangeDense} />}*/}
-                        {/*    label="Dense padding"*/}
-                        {/*/>*/}
                     </div>
                     <ModifyUserPage
                         open={openModifyUser}

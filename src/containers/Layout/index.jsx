@@ -32,7 +32,7 @@ import {
     changeToSidebarDropdown,
     toggleBoxShadow,
     toggleTopNavigation,
-    changeDensePadding, toggleHybridCloud,
+    changeDensePadding, toggleHybridCloud, enableLogNormal, enableLogDetail,
 } from '../../redux/actions/customizerActions';
 import {logout} from "../../redux/actions/loginActions";
 import {
@@ -239,6 +239,16 @@ class Layout extends Component {
         dispatch(toggleHybridCloud());
     };
 
+    changeLogNormal = () => {
+        const {dispatch} = this.props;
+        dispatch(enableLogNormal());
+    }
+
+    changeLogDetail = () => {
+        const {dispatch} = this.props;
+        dispatch(enableLogDetail());
+    }
+
     logout = () => {
         const {dispatch} = this.props;
         localStorage.removeItem('user');
@@ -274,6 +284,8 @@ class Layout extends Component {
                     changeToSidebarDropdown={this.changeToSidebarDropdown}
                     changeDensePadding={this.changeDensePadding}
                     toggleHybridCloud={this.toggleHybridCloud}
+                    changeLogNormal={this.changeLogNormal}
+                    changeLogDetail={this.changeLogDetail}
                 />
                 {customizer.topNavigation
                     ? (

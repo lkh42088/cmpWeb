@@ -9,10 +9,12 @@ const CpuUsage = ({ t, data }) => (
             <p style={{fontSize: "1vmin", paddingBottom: 20}}>CPU USAGE AVERAGE</p>
             {
                 data.map((entry, index) => (
-                    <div className="progress-wrap progress-wrap--middle">
+                    <div className="progress-wrap progress-wrap--middle"
+                         key={entry.name}
+                    >
                         <p>{entry.name}</p>
                         <Progress
-                            animated="progress-bar-animated"
+                            animated
                             className={(entry.use >= 80) ? "progress-wrap--pink" : null}
                             value={entry.use}>
                             {entry.use}%

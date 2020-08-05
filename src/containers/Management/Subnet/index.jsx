@@ -2,7 +2,7 @@ import React from 'react';
 import {Col, Container, Row} from 'reactstrap';
 import {SnackbarProvider} from "notistack";
 import SubnetList from "./components/SubnetList";
-import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
+import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
 
 const SubnetListCard = () => (
     <Container fluid>

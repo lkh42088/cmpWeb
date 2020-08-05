@@ -13,7 +13,7 @@ import RandomAnimatedBars from './components/RandomAnimatedBars';
 import { deleteCryptoTableData } from '../../../redux/actions/cryptoTableActions';
 import { CryptoTableProps } from '../../../shared/prop-types/TablesProps';
 import { ThemeProps, RTLProps } from '../../../shared/prop-types/ReducerProps';
-import RouterBreadcrumbs from "../../Layout/sidebar/Breadcrumb";
+import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
 
 class CryptoDashboard extends PureComponent {
   static propTypes = {

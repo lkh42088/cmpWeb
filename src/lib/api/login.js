@@ -34,3 +34,9 @@ export const checkPassword = ({
 }) => client.post('/v1/auth/check-password', {
     id, password,
 });
+
+export const checkCaptcha = ({
+    humanKey,
+}) => client.post('/v1/captcha', {
+    humanKey,
+}).then(response => response);

@@ -34,14 +34,12 @@ const SidebarLink = ({
 
 SidebarLink.propTypes = {
     title: PropTypes.string.isRequired,
-    icon: PropTypes.string,
     newLink: PropTypes.bool,
     route: PropTypes.string,
     onClick: PropTypes.func,
 };
 
 SidebarLink.defaultProps = {
-    icon: '',
     newLink: false,
     route: '/',
     onClick: () => {},

@@ -19,6 +19,7 @@ import {
     PAGING_CHANGE_SELECTED,
     PAGING_CHANGE_TOTAL_COUNT,
     PAGING_DUMP,
+    PAGING_SET_LOG,
     PAGING_SETUP,
 } from "../actions/pagingActions";
 
@@ -34,26 +35,33 @@ const initialState = {
     dense: false,
     orderBy: '',
     order: 'desc', // asc, desc
+    enableLog: false,
 };
 
 const pagingReducer = handleActions(
     {
         [PAGING_DUMP]: (state) => {
-            console.log("[pagination dump]-------------");
-            /*console.log("rowsPerPage:", state.rowsPerPage);
-            console.log("currentPage:", state.currentPage);
-            console.log("totalPage:", state.totalPage);
-            console.log("totalCount:", state.totalCount);
-            console.log("pageBeginRow:", state.pageBeginRow);
-            console.log("pageEndRow:", state.pageEndRow);
-            console.log("selected:", state.selected);
-            console.log("dense:", state.dense);
-            console.log("orderBy:", state.orderBy);
-            console.log("order:", state.order);*/
+            if (state.enableLog) {
+                console.log("[pagination dump]-------------");
+                console.log("rowsPerPage:", state.rowsPerPage);
+                console.log("currentPage:", state.currentPage);
+                console.log("totalPage:", state.totalPage);
+                console.log("totalCount:", state.totalCount);
+                console.log("pageBeginRow:", state.pageBeginRow);
+                console.log("pageEndRow:", state.pageEndRow);
+                console.log("selected:", state.selected);
+                console.log("dense:", state.dense);
+                console.log("orderBy:", state.orderBy);
+                console.log("order:", state.order);
+            }
             return {
                 ...state,
             };
         },
+        [PAGING_SET_LOG]: (state, {payload}) => ({
+            ...state,
+            enableLog: payload.enableLog,
+        }),
         [PAGING_SETUP]: (state, {payload}) => ({
             ...state,
             rowsPerPage: payload.rowsPerPage,

@@ -65,6 +65,7 @@ const TopbarProfile = (props) => {
 
     const logoutToggle = () => {
         //dispatch(setUserPage('list'));
+        localStorage.removeItem('user');
         logout();
         dispatch(setUserPage('list'));
         dispatch(setCompanyPage('list'));

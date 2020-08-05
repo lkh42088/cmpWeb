@@ -1,5 +1,4 @@
-
-import {WEB_SERVER_ADDR} from "../shared/apiRoute";
+import {SEPARATION_URL} from "./var/commonVariables";
 
 // eslint-disable-next-line import/prefer-default-export
 export function setIgnoredYellowBox() {
@@ -61,8 +60,9 @@ export function checkIP(strIP) {
 /** ----------------------------------------------------assets 에서만 사용 start **/
 export function assetsSeperateUrl(tmpUrl) {
     let tmp = tmpUrl;
-    tmp = tmp.replace(WEB_SERVER_ADDR, "");
-    return tmp.split("/")[2];
+    tmp = tmp.replace(SEPARATION_URL, "");
+    // console.log(tmpUrl, SEPARATION_URL, tmp, tmp.split("/")[1]);
+    return tmp.split("/")[1];
 }
 
 export function assetsGetUrlMenu(tmpUrl) {

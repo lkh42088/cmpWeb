@@ -1,4 +1,4 @@
-import {WEB_SERVER_ADDR} from "../../shared/apiRoute";
+import {SEPARATION_URL} from "../../lib/var/commonVariables";
 
 export const IsChrome = window.navigator.userAgent.indexOf("Chrome") > -1;
 export const IsFirefox = window.navigator.userAgent.indexOf("Firefox") > -1;
@@ -21,7 +21,7 @@ export const CheckIE = () => {
 
 export const ChromeLaunch = () => {
     const chromeFile = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
-    const chromeExe = chromeFile.concat(" ").concat(WEB_SERVER_ADDR);
+    const chromeExe = chromeFile.concat(" ").concat(SEPARATION_URL);
     const shell = new window.ActiveXObject("WScript.Shell");
 
     /** Chrome browser check */
@@ -43,7 +43,7 @@ export const ChromeLaunch = () => {
 
 const EdgeLaunch = () => {
     const edgeFile = "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe";
-    const edgeExe = edgeFile.concat(" ").concat(WEB_SERVER_ADDR);
+    const edgeExe = edgeFile.concat(" ").concat(SEPARATION_URL);
     const shell = new window.ActiveXObject("WScript.Shell");
 
     /** Chrome browser check */

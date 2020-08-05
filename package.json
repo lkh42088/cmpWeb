@@ -1,5 +1,5 @@
 {
-  "name": "easydev",
+  "name": "CMP",
   "version": "2.4.1",
   "private": true,
   "homepage": "https://easydev-react.qa.aspirity.com",
@@ -24,7 +24,7 @@
     "chart.js": "^2.7.3",
     "classnames": "^2.2.6",
     "clsx": "^1.1.1",
-    "dotenv": "^6.2.0",
+    "dotenv": "^8.2.0",
     "dotenv-expand": "4.2.0",
     "draft-js": "^0.10.5",
     "draft-js-buttons": "^2.0.1",
@@ -91,6 +91,7 @@
     "react-ga": "^2.5.7",
     "react-google-login": "^5.0.5",
     "react-google-maps": "^9.4.5",
+    "react-google-recaptcha": "^2.1.0",
     "react-highcharts": "^16.0.2",
     "react-highlight": "^0.12.0",
     "react-i18next": "^10.2.0",
