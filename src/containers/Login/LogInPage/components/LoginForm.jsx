@@ -10,6 +10,7 @@ import {
     changeLoginField,
     initLoginForm,
     changeLoginPage,
+    logout,
 } from "../../../../redux/actions/loginActions";
 import {login} from "../../../../lib/api/login";
 import {GV_LOGIN_PAGE_CONFIRM_EMAIL, GV_LOGIN_PAGE_INPUT_EMAIL} from "../../../../lib/var/globalVariable";
@@ -59,10 +60,12 @@ const LoginForm = () => {
              * response.data.success : {false, true}
              * response.data.msg : {id, password, email, result}
              * */
-            console.log("response: ", response);
             if (response.data.success) {
                 if (loginFailCount >= 3 && checkReCaptcha() === false) {
                     setErrorMessage(captchaErrMsg);
+                    // logout on captcha failed
+                    localStorage.removeItem('user');
+                    dispatch(logout());
                     return;
                 }
                 dispatch(checkLoginUser());
