@@ -251,7 +251,7 @@ class Layout extends Component {
 
     logout = () => {
         const {dispatch} = this.props;
-        localStorage.removeItem('user');
+        // localStorage.removeItem('user');
         dispatch(logout());
     };
 

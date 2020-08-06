@@ -64,7 +64,7 @@ const LoginForm = () => {
                 if (loginFailCount >= 3 && checkReCaptcha() === false) {
                     setErrorMessage(captchaErrMsg);
                     // logout on captcha failed
-                    localStorage.removeItem('user');
+                    // localStorage.removeItem('user');
                     dispatch(logout());
                     return;
                 }

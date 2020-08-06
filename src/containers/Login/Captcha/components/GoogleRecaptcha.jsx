@@ -15,7 +15,6 @@ const GoogleRecaptcha = (props) => {
             }
         } catch {
             console.log("ReCAPCHA verifing failed");
-            recaptchaRef.current.reset();
         }
         return false;
     };
