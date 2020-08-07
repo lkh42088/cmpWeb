@@ -49,18 +49,6 @@ export default class Customizer extends PureComponent {
     this.setState(prevState => ({ open: !prevState.open }));
   };
 
-  removeStorage = () => {
-    console.log("removeStorage : start");
-    const {history} = this.props;
-    console.log("In : ", localStorage.getItem('user'));
-    localStorage.removeItem('user');
-    // eslint-disable-next-line no-undef
-    console.log("---> document.cookie : ", document.cookie);
-    console.log("Out : ", localStorage.getItem('user'));
-    localStorage.removeItem('user');
-    console.log("removeStorage : end");
-  };
-
   render() {
     const { open } = this.state;
     const customizerClass = classNames({
@@ -100,7 +88,6 @@ export default class Customizer extends PureComponent {
             <button className="customizer__close-btn" type="button" onClick={this.handleOpen}>
               <CloseIcon />
             </button>
-            {/*<button type="button" onClick={this.removeStorage}>removeStorage</button>*/}
           </div>
           {/*<p className="customizer__caption">This customizer allows you to see the different variations of the EasyDev.*/}
           {/*  Create your own visual style for every project you do!*/}
