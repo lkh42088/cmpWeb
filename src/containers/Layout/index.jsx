@@ -1,5 +1,5 @@
 /* eslint-disable no-return-assign */
-import React, {Component, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect, useSelector, useDispatch} from "react-redux";
 import {withRouter} from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -56,90 +56,36 @@ const showNotification = (rtl) => {
     });
 };
 
-
-class Layout extends Component {
-    static propTypes = {
-        //assetState: PropTypes.object.isRequired,
-        dispatch: PropTypes.func.isRequired,
-        sidebar: SidebarProps.isRequired,
-        customizer: CustomizerProps.isRequired,
-        theme: ThemeProps.isRequired,
-        rtl: RTLProps.isRequired,
-        // user: UserProps.isRequired,
-        menuTitle: MenuTitleProps.isRequired,
-    };
-
-    // (23jun2020,bhjung)
-    state = {
-        user: null,
-    };
-
-
-    // (10july2020,ebjee)
-    // eslint-disable-next-line consistent-return
-    static getDerivedStateFromProps = (nextProps, prevState) => {
+const Layout = ({
+    customizer, sidebar, theme, rtl,
+}) => {
+    const dispatch = useDispatch();
+    const [user, setUser] = useState('');
+    const getUser = () => {
         const xuser = localStorage.getItem('user');
         if (xuser !== null) {
-            let initVal;
-
             if (typeof xuser === "string") {
-                initVal = JSON.parse(xuser);
-            } else {
-                initVal = xuser;
+                setUser(JSON.parse(xuser));
+                return;
             }
-
-            return {
-                user: initVal,
-            };
+            setUser(xuser);
         }
-        return {
-            user: '',
-        };
     };
 
-    /* componentWillMount() {
-
-         // (23jun2020,bhjung)
-         // 여기서는 setState를 사용해선 안됩니다. (ebjee)
-         /!*const xuser = localStorage.getItem('user');
-         if (xuser != null) {
-             const jsonUser = JSON.parse(xuser);
-             this.setState({user: jsonUser});
-         }*!/
-     }*/
-
-    componentDidMount() {
-        //const {rtl} = this.props;
+    useEffect(() => {
         NotificationSystem.newInstance({style: {top: 65}}, n => notification = n);
-        //dispatch(changeMenuTitle('SERVER', '온프레미스'));
-        // [09July2020, khlee]
-        //setTimeout(() => showNotification(rtl.direction), 700);
+        getUser();
+    }, []);
 
-        /*const xuser = localStorage.getItem('user');
-        console.log("😡😡😡😡 xuser : ", xuser);
-        if (xuser != null) {
-            const jsonUser = JSON.parse(xuser);
-            this.setState({user: jsonUser});
-        }*/
-    }
-
-    componentWillUnmount() {
-        // notification.destroy();
-    }
-
-    changeSidebarVisibility = () => {
-        const {dispatch} = this.props;
+    const changeSidebarVisibilityFunc = () => {
         dispatch(changeSidebarVisibility());
     };
 
-    changeMobileSidebarVisibility = () => {
-        const {dispatch} = this.props;
+    const changeMobileSidebarVisibilityFunc = () => {
         dispatch(changeMobileSidebarVisibility());
     };
 
-
-    changeMenuTitle = (title, subTitle, val) => {
-        const { dispatch } = this.props;
+    const changeMenuTitleFunc = (title, subTitle, val) => {
         dispatch(changeMenuTitle(title, subTitle));
         dispatch(setUserPage('list'));
         dispatch(setCompanyPage('list'));
@@ -189,146 +135,131 @@ class Layout extends Component {
         }
     };
 
-    changeToDark = () => {
-        const {dispatch} = this.props;
+    const changeToDarkFunc = () => {
         dispatch(changeThemeToDark());
     };
 
-    changeToLight = () => {
-        const {dispatch} = this.props;
+    const changeToLightFunc = () => {
         dispatch(changeThemeToLight());
     };
 
-    changeToRTL = () => {
-        const {dispatch} = this.props;
+    const changeToRTLFunc = () => {
         dispatch(changeDirectionToRTL());
     };
 
-    changeToLTR = () => {
-        const {dispatch} = this.props;
+    const changeToLTRFunc = () => {
         dispatch(changeDirectionToLTR());
     };
 
-    toggleTopNavigation = () => {
-        const {dispatch} = this.props;
+    const toggleTopNavigationFunc = () => {
         dispatch(toggleTopNavigation());
     };
 
-    changeBorderRadius = () => {
-        const {dispatch} = this.props;
+    const changeBorderRadiusFunc = () => {
         dispatch(changeBorderRadius());
     };
 
-    toggleBoxShadow = () => {
-        const {dispatch} = this.props;
+    const toggleBoxShadowFunc = () => {
         dispatch(toggleBoxShadow());
     };
 
-    changeToSidebarDropdown = () => {
-        const {dispatch} = this.props;
+    const changeToSidebarDropdownFunc = () => {
         dispatch(changeToSidebarDropdown());
     };
 
-    changeDensePadding = () => {
-        const {dispatch} = this.props;
+    const changeDensePaddingFunc = () => {
         dispatch(changeDensePadding());
     };
 
-    toggleHybridCloud = () => {
-        const {dispatch} = this.props;
+    const toggleHybridCloudFunc = () => {
         dispatch(toggleHybridCloud());
     };
 
-    changeLogNormal = () => {
-        const {dispatch} = this.props;
+    const changeLogNormalFunc = () => {
         dispatch(enableLogNormal());
-    }
+    };
 
-    changeLogDetail = () => {
-        const {dispatch} = this.props;
+    const changeLogDetailFunc = () => {
         dispatch(enableLogDetail());
-    }
+    };
 
-    logout = () => {
-        const {dispatch} = this.props;
-        // localStorage.removeItem('user');
+    const logoutFunc = () => {
         dispatch(logout());
     };
 
-    render() {
-        const {
-            customizer, sidebar, theme, rtl, menuTitle,
-        } = this.props;
-        const {user} = this.state;
-        const layoutClass = classNames({
-            layout: true,
-            'layout--collapse': sidebar.collapse,
-            'layout--top-navigation': customizer.topNavigation,
-        });
+    const layoutClass = classNames({
+        layout: true,
+        'layout--collapse': sidebar.collapse,
+        'layout--top-navigation': customizer.topNavigation,
+    });
 
-        return (
-            <div className={layoutClass}>
-                <Customizer
-                    customizer={customizer}
-                    sidebar={sidebar}
-                    theme={theme}
-                    rtl={rtl}
-                    changeSidebarVisibility={this.changeSidebarVisibility}
-                    toggleTopNavigation={this.toggleTopNavigation}
-                    changeToDark={this.changeToDark}
-                    changeToLight={this.changeToLight}
-                    changeToRTL={this.changeToRTL}
-                    changeToLTR={this.changeToLTR}
-                    changeBorderRadius={this.changeBorderRadius}
-                    toggleBoxShadow={this.toggleBoxShadow}
-                    changeToSidebarDropdown={this.changeToSidebarDropdown}
-                    changeDensePadding={this.changeDensePadding}
-                    toggleHybridCloud={this.toggleHybridCloud}
-                    changeLogNormal={this.changeLogNormal}
-                    changeLogDetail={this.changeLogDetail}
-                />
-                {customizer.topNavigation
-                    ? (
-                        <TopbarWithNavigation
-                            changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
-                        />
-                    )
-                    : (
-                        <Topbar
-                            changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
-                            changeSidebarVisibility={this.changeSidebarVisibility}
-                            user={user}
-                            logout={this.logout}
-                        />
-                    )
-                }
-                {customizer.topNavigation
-                    ? (
-                        <SidebarMobile
-                            sidebar={sidebar}
-                            changeToDark={this.changeToDark}
-                            changeToLight={this.changeToLight}
-                            changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
-                            user={user}
-                            logout={this.logout}
-                        />
-                    )
-                    : (
-                        <Sidebar
-                            sidebar={sidebar}
-                            changeToDark={this.changeToDark}
-                            changeToLight={this.changeToLight}
-                            changeMobileSidebarVisibility={this.changeMobileSidebarVisibility}
-                            changeMenuTitle={this.changeMenuTitle}
-                            user={user}
-                            logout={this.logout}
-                        />
-                    )
-                }
-            </div>
-        );
-    }
-}
+    return (
+        <div className={layoutClass}>
+            <Customizer
+                customizer={customizer}
+                sidebar={sidebar}
+                theme={theme}
+                rtl={rtl}
+                changeSidebarVisibility={changeSidebarVisibilityFunc}
+                toggleTopNavigation={toggleTopNavigationFunc}
+                changeToDark={changeToDarkFunc}
+                changeToLight={changeToLightFunc}
+                changeToRTL={changeToRTLFunc}
+                changeToLTR={changeToLTRFunc}
+                changeBorderRadius={changeBorderRadiusFunc}
+                toggleBoxShadow={toggleBoxShadowFunc}
+                changeToSidebarDropdown={changeToSidebarDropdownFunc}
+                changeDensePadding={changeDensePaddingFunc}
+                toggleHybridCloud={toggleHybridCloudFunc}
+                changeLogNormal={changeLogNormalFunc}
+                changeLogDetail={changeLogDetailFunc}
+            />
+            {customizer.topNavigation
+                ? (
+                    <TopbarWithNavigation
+                        changeMobileSidebarVisibility={changeMobileSidebarVisibilityFunc}
+                    />
+                )
+                : (
+                    <Topbar
+                        changeMobileSidebarVisibility={changeSidebarVisibilityFunc}
+                        changeSidebarVisibility={changeSidebarVisibilityFunc}
+                        user={user}
+                        logout={logoutFunc}
+                    />
+                )
+            }
+            {customizer.topNavigation
+                ? (
+                    <SidebarMobile
+                        sidebar={sidebar}
+                        changeToDark={changeToDarkFunc}
+                        changeToLight={changeToLightFunc}
+                        changeMobileSidebarVisibility={changeMobileSidebarVisibilityFunc}
+                        user={user}
+                    />
+                )
+                : (
+                    <Sidebar
+                        sidebar={sidebar}
+                        changeToDark={changeToDarkFunc}
+                        changeToLight={changeToLightFunc}
+                        changeMobileSidebarVisibility={changeMobileSidebarVisibilityFunc}
+                        changeMenuTitle={changeMenuTitleFunc}
+                        user={user}
+                    />
+                )
+            }
+        </div>
+    );
+};
+
+Layout.propTypes = {
+    sidebar: SidebarProps.isRequired,
+    customizer: CustomizerProps.isRequired,
+    theme: ThemeProps.isRequired,
+    rtl: RTLProps.isRequired,
+};
 
 export default withRouter(connect(state => ({
     customizer: state.customizer,

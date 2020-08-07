@@ -5,7 +5,8 @@ import {
     INITIALIZE_FORM,
     CHECK_USER_SUCCESS,
     CHECK_USER_FAILURE,
-    LOGOUT, CHANGE_LOGIN_PAGE,
+    LOGOUT,
+    CHANGE_LOGIN_PAGE,
 } from "../actions/loginActions";
 import {GV_LOGIN_PAGE_FIRST} from "../../lib/var/globalVariable";
 

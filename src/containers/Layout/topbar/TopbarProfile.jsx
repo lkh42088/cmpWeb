@@ -67,10 +67,17 @@ const TopbarProfile = (props) => {
         }
     };
 
-    const logoutToggle = () => {
-        //dispatch(setUserPage('list'));
-        // localStorage.removeItem('user');
+    const logoutToggle = (e) => {
+        /**
+         *  Logout 시 LoginBase.jsx 의 checkLoginUser() 동작으로 Re-Login 현상 발생
+         *  1. Link tag 를 통한 페이지 이동을 block
+         *  2. localStorage 삭제, cookie 기한 만료, accountRd.user remove 완료 후
+         *  3. 로그인 페이지로 이동 하도록 수정
+         *  ※ 문제 수정에 의해 Logout 동작 느려짐 (추후 수정 필요)
+         */
+        e.preventDefault();
         logout();
+        window.location.href = "/login";
         dispatch(setUserPage('list'));
         dispatch(setCompanyPage('list'));
     };
