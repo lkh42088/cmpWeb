@@ -38,7 +38,7 @@ const headRows = [
     {id: 'cpu', disablePadding: false, label: 'CPU'},
     {id: 'ram', disablePadding: false, label: 'RAM'},
     {id: 'hdd', disablePadding: false, label: 'HDD'},
-    // {id: 'status', disablePadding: false, label: 'Status'},
+    {id: 'status', disablePadding: false, label: 'Status'},
     {id: 'ipAddr', disablePadding: false, label: 'IP Address'},
 ];
 
@@ -418,12 +418,12 @@ const VmTable = () => {
                     >
                         {row.hdd}
                     </TableCell>
-                    {/*<TableCell*/}
-                    {/*    className={cellClassName}*/}
-                    {/*    style={{width: "10%"}}*/}
-                    {/*>*/}
-                    {/*    {row.status}*/}
-                    {/*</TableCell>*/}
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "10%"}}
+                    >
+                        {row.status}
+                    </TableCell>
                     <TableCell
                         className={cellClassName}
                         style={{width: "20%"}}

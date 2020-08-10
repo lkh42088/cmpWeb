@@ -15,7 +15,8 @@ import {setUserPage} from "../../../redux/actions/usersActions";
 import {setCompanyPage} from "../../../redux/actions/companiesActions";
 
 const SidebarContent = ({
-    changeToLight, changeToDark, changeMenuTitle, onClick, user, dropdown, changeHybridCloud,
+    changeToLight, changeToDark, changeMenuTitle, onClick,
+    user, dropdown, changeHybridCloud,
 }) => {
     const dispatch = useDispatch();
     const hideSidebar = () => {
@@ -90,7 +91,7 @@ const SidebarContent = ({
             : (
                 <div className="cb_sidebar__content">
                     <ul className="cb_sidebar__block">
-                        <SidebarLink title="DASHBOARD" icon={outlineDashboard} route={getDashBoardLink}
+                        <SidebarLink title="DASHBOARD" icon={outlineDashboard} route={getDashBoardLink()}
                                      onClick={() => changeMenuTitle('DASHBOARD', '', '')}/>
                         {hybridCloud && (
                             <SidebarCategory title="MICRO CLOUD" icon={serverOutlineBadged} dropdown={dropdown}>
