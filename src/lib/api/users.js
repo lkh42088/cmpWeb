@@ -3,7 +3,7 @@ import client from "./client";
 export const modifyUser = ({
     cpIdx, cpName, id, password, name,
     email, authLevel, hp, tel, zipCode, address,
-    addressDetail, emailAuthFlag, emailAuthGroupFlag, emailAuthGroupList, memo, avata,
+    addressDetail, emailAuthFlag, emailAuthGroupFlag, emailAuthGroupList, memo, avata, avataFile,
 }) => client.post('/v1/users/modify', {
     cpIdx,
     cpName,
@@ -22,12 +22,13 @@ export const modifyUser = ({
     emailAuthGroupList,
     memo,
     avata,
+    avataFile,
 });
 
 export const registerUser = ({
     cpIdx, cpName, id, password, name,
     email, authLevel, hp, tel, zipCode, address,
-    addressDetail, emailAuthFlag, emailAuthGroupFlag, emailAuthGroupList, memo, avata,
+    addressDetail, emailAuthFlag, emailAuthGroupFlag, emailAuthGroupList, memo, avata, avataFile,
 }) => client.post('/v1/users/register', {
     cpIdx,
     cpName,
@@ -46,6 +47,7 @@ export const registerUser = ({
     emailAuthGroupList,
     memo,
     avata,
+    avataFile,
 });
 
 export const unregisterUser = ({

@@ -82,8 +82,6 @@ const TopbarProfile = (props) => {
         dispatch(setCompanyPage('list'));
     };
 
-    console.log("avata : ", avata);
-
     useEffect(() => {
         data.forEach((value, key) => {
             if (value.userId === user.id) {
