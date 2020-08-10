@@ -28,6 +28,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import {makeStyles} from "@material-ui/core/styles";
 
 import moment from "moment";
+import ImageUploader from 'react-images-upload';
 
 import {checkId, checkPasswordPattern} from "../../../../lib/utils/utils";
 import {checkDuplicateUser, getAuthList} from "../../../../lib/api/users";
@@ -121,6 +122,7 @@ const WriteUserForm = (props) => {
         emailAuthGroupList: [],
         memo: '',
         avata: '',
+        avataFile: '',
     });
 
     /*******************
@@ -211,7 +213,7 @@ const WriteUserForm = (props) => {
      * IMAGE AVATA
      *******************/
     const [pictures, setPictures] = useState([]);
-    const [selectedFile, setSelectedFileFile] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
     const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
 
     /*******************
@@ -232,10 +234,19 @@ const WriteUserForm = (props) => {
     /************************************************************************************
      * Function
      ************************************************************************************/
+    const onDrop = (pictureFiles, pictureBase64) => {
+        // picutreFiles에 boundery 정보가 return 되고,
+        // pictureBase64 에 base64 정보가 return 된다. 기본 array로 return
+
+        console.log("pictureFiles : ", pictureFiles);
+        // 여기에 ajax를 넣을 수 있다.
+    };
+
     const fileChangedHandler = (event) => {
-        setSelectedFileFile(event.target.files[0]);
+        setSelectedFile(event.target.files[0]);
 
         const reader = new FileReader();
+        const fd = new FormData();
 
         reader.onloadend = () => {
             setImagePreviewUrl(reader.result);
@@ -245,9 +256,14 @@ const WriteUserForm = (props) => {
         const imgName = moment(new Date())
             .format("DDhhmmss") + event.target.files[0].name;
 
+        fd.append('file', event.target.files[0], imgName);
+
+        console.log("fileChangedHandler fd : ", fd);
+
         setFields({
             ...fields,
             avata: imgName,
+            avataFile: fd,
         });
     };
 
@@ -276,15 +292,17 @@ const WriteUserForm = (props) => {
 
     const avataDelete = (division) => {
         if (division === 'web') {
-            setImagePreviewUrl('');
+            setImagePreviewUrl(null);
             setFields({
                 ...fields,
                 avata: "",
+                avataFile: "",
             });
         } else if (division === 'server') {
             setFields({
                 ...fields,
                 avata: "",
+                avataFile: "",
             });
         }
     };
@@ -404,6 +422,7 @@ const WriteUserForm = (props) => {
             emailAuthGroupList: [],
             memo: '',
             avata: '',
+            avataFile: '',
         });
         setHelpers({
             cpName: '',
@@ -422,6 +441,7 @@ const WriteUserForm = (props) => {
             emailAuthGroupList: '',
             memo: '',
             avata: '',
+            avataFile: '',
         });
         setErrors({
             cpName: false,
@@ -440,6 +460,7 @@ const WriteUserForm = (props) => {
             emailAuthGroupList: false,
             memo: false,
             avata: false,
+            avataFile: false,
         });
         setShowPassword(false);
         setConfirmUser(false);
@@ -454,6 +475,8 @@ const WriteUserForm = (props) => {
         if (!checkValidation()) {
             return;
         }
+
+        //console.log("handleSubmitInternal avataFile : ", fields.avataFile);
 
         if (fields.avata !== null && fields.avata !== "") {
             const fd = new FormData();
@@ -474,7 +497,13 @@ const WriteUserForm = (props) => {
 
             request.open("POST", `${API_ROUTE}/users/fileUpload`, true);
             request.send(fd);
+
+            //console.log("handleSubmitInternal fd : ", fd);
         }
+
+        // todo image file db store
+        /*console.log("handleSubmitInternal fields : ", fields);
+        console.log("handleSubmitInternal avataFile : ", fields.avataFile);*/
 
         handleSubmit(fields);
         reset();
@@ -697,6 +726,7 @@ const WriteUserForm = (props) => {
                 // emailAuthGroupList: [],
                 memo: data.memo,
                 avata: data.avata,
+                avataFile: data.avataFile,
             });
             setDisables({
                 ...disables,
@@ -1228,16 +1258,21 @@ const WriteUserForm = (props) => {
                             imgExtension={[".jpg", ".gif", ".png", ".gif"]}
                             maxFileSize={5242880}
                             fileSizeError=" file size is too big"
-                        />*/}
-                        <br/>
+                        />
+                        <br/>*/}
                         <div className="filebox">
                             <input className="upload-name" value={fields.avata === "" ? "파일 찾기" : fields.avata} disabled="disabled"/>
                             <label className="upload-name-span" htmlFor="ex_filename">업로드</label>
-                            <input type="file" id="ex_filename" className="upload-hidden" name="avatar" onChange={fileChangedHandler}/>
+                            <input type="file"
+                                   accept="image/*"
+                                   id="ex_filename"
+                                   className="upload-hidden"
+                                   name="avatar"
+                                   onChange={fileChangedHandler}/>
                         </div>
                         {/*<input type="file" name="avatar" onChange={fileChangedHandler}/>*/}
                         {/*<button type="button" onClick={submit}> Upload </button>*/}
-                        {!imagePreviewUrl && fields.avata !== "" ? (
+                        {!isRegister && fields.avata !== "" ? (
                             <div>
                                 <div className="profile__avatar">
                                     <div
@@ -1257,7 +1292,8 @@ const WriteUserForm = (props) => {
                                         className="topbar__avatar-img-list"
                                         name="img"
                                         size="120"
-                                        src={`${API_ROUTE_SERVER_IMAGE}/${fields.avata}`}
+                                        /*src={`${API_ROUTE_SERVER_IMAGE}/${fields.avata}`}*/
+                                        src={selectedFile !== null ? imagePreviewUrl : `${API_ROUTE_SERVER_IMAGE}/${fields.avata}`}
                                         style={{
                                             width: "100%",
                                             height: "100%",
