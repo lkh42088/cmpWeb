@@ -113,6 +113,7 @@
     "react-text-mask": "^5.4.3",
     "react-tooltip": "^4.2.7",
     "react-vis": "^1.11.6",
+    "react-vnc-display": "^2.0.1",
     "react-window": "^1.8.5",
     "react-yandex-metrika": "^2.4.2",
     "reactstrap": "^7.1.0",
