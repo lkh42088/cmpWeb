@@ -9,7 +9,10 @@ const MicroCloudVnc = () => (
             <RouterBreadcrumbs url={window.location.href}/>
         </Row>
         <Row>
-            <VncDisplayPanel />
+            <VncDisplayPanel
+                // target="192.168.0.73"
+                // port="5900"
+            />
         </Row>
     </Container>
 );
