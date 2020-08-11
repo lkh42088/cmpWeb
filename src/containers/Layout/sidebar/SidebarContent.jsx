@@ -57,6 +57,10 @@ const SidebarContent = ({
                                 <SidebarCategory title="MICRO CLOUD" icon={serverOutlineBadged} dropdown={dropdown}>
                                     <SidebarLink title="SERVER" route="/micro/servers"
                                                  onClick={() => changeMenuTitle('MICRO CLOUD', 'SERVER', '')}/>
+                                    <SidebarLink title="NETWORK" route="/micro/networks"
+                                                 onClick={() => changeMenuTitle('MICRO CLOUD', 'NETWORK', '')}/>
+                                    <SidebarLink title="IMAGE" route="/micro/images"
+                                                 onClick={() => changeMenuTitle('MICRO CLOUD', 'IMAGE', '')}/>
                                     <SidebarLink title="VM" route="/micro/vms"
                                                  onClick={() => changeMenuTitle('MICRO CLOUD', 'VM', '')}/>
                                     <SidebarLink title="VNC" route="/micro/vnc"
@@ -99,6 +103,10 @@ const SidebarContent = ({
                             <SidebarCategory title="MICRO CLOUD" icon={serverOutlineBadged} dropdown={dropdown}>
                                 <SidebarLink title="SERVER" route="/micro/servers"
                                              onClick={() => changeMenuTitle('MICRO CLOUD', 'SERVER', '')}/>
+                                <SidebarLink title="NETWORK" route="/micro/networks"
+                                             onClick={() => changeMenuTitle('MICRO CLOUD', 'NETWORK', '')}/>
+                                <SidebarLink title="IMAGE" route="/micro/images"
+                                             onClick={() => changeMenuTitle('MICRO CLOUD', 'IMAGE', '')}/>
                                 <SidebarLink title="VM" route="/micro/servers"
                                              onClick={() => changeMenuTitle('MICRO CLOUD', 'VM', '')}/>
                                 <SidebarLink title="VNC" route="/micro/vnc"

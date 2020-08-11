@@ -23,21 +23,21 @@ import {
     pagingChangeSelected,
     pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
+import NetworkTableToolbar from "./NetworkTableToolbar";
 import CommonTableHead from "../../../Common/CommonTableHead";
-import ServerTableToolbar from "./ServerTableToolbar";
-import RegisterServer from "./RegisterServer";
 import {
-    getMcServers, registerMcServer, unregisterMcServer,
+    getMcNetworks,
 } from "../../../../lib/api/microCloud";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
-    {id: 'sn', disablePadding: false, label: '시리얼넘버'},
-    {id: 'type', disablePadding: false, label: '장비 타입'},
-    {id: 'company', disablePadding: false, label: '회사명'},
-    {id: 'status', disablePadding: false, label: '상태'},
-    {id: 'vms', disablePadding: false, label: 'VM 개수'},
-    {id: 'ipaddr', disablePadding: false, label: 'IP Address'},
+    {id: 'cpName', disablePadding: false, label: '회사명'},
+    {id: 'serialNumber', disablePadding: false, label: '서버 SN'},
+    {id: 'name', disablePadding: false, label: 'Network 이름'},
+    {id: 'bridge', disablePadding: false, label: 'Bridge 이름'},
+    {id: 'mode', disablePadding: false, label: 'Forward mode'},
+    {id: 'ip', disablePadding: false, label: 'IP Address'},
+    {id: 'netmask', disablePadding: false, label: 'Netmask'},
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -70,9 +70,13 @@ const useStyles = makeStyles(theme => ({
             theme.palette.type === 'light'
                 ? {
                     boxShadow: "4px 2px 3px #999999",
+                    // border: "1px solid #e0e0e0",
+                    // borderRight: "1px solid #e0e0e0",
                 }
                 : {
                     boxShadow: "4px 2px 3px #000000",
+                    // border: "1px solid #000000",
+                    // borderRight: "1px solid #e0e0e0",
                 },
     },
     spanSubject: {
@@ -88,12 +92,12 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ServerTable = () => {
+const NetworkTable = () => {
     const classes = useStyles();
 
     const [data, setData] = useState([]);
     const [paging, setPaging] = useState(null);
-    const [openAddServer, setOpenAddServer] = useState(false);
+    const [openAddVm, setOpenAddVm] = useState(false);
     const [searchParam, setSearchParam] = useState(null);
     const { enqueueSnackbar } = useSnackbar();
 
@@ -207,23 +211,16 @@ const ServerTable = () => {
             offset = rowsPerPage * currentPage;
         }
         try {
-            const response = await getMcServers({
+            const response = await getMcNetworks({
                 rows: rowsPerPage, offset, orderBy, order,
             });
-            console.log("response:", response.data.data);
+            console.log("response: data ", response.data.data);
+            console.log("response: page ", response.data.page);
             setData(response.data.data);
             setPaging(response.data.page);
         } catch (e) {
             console.log("getPageData error!");
         }
-    };
-
-    const handleOpenAddServer = () => {
-        setOpenAddServer(true);
-    };
-
-    const handleCloseAddServer = () => {
-        setOpenAddServer(false);
     };
 
     const handleSnackbarFailure = (snackMsg) => {
@@ -234,27 +231,6 @@ const ServerTable = () => {
         enqueueSnackbar(snackMsg, { variant: "success" });
     };
 
-    const asyncAddServer = async (server) => {
-        const {
-            cpIdx, cpName, serialNumber, type, ipAddr,
-        } = server;
-        try {
-            const response = await registerMcServer({
-                cpIdx, cpName, serialNumber, type, ipAddr,
-            });
-            handleSnackbarSuccess("서버 등록에 성공하였습니다.");
-            getPageData();
-        } catch (e) {
-            handleSnackbarFailure("서버 등록에 실패하였습니다.");
-        }
-    };
-
-    const handleSubmitAddServer = (server) => {
-        console.log("handleSubmit() : server", server);
-        asyncAddServer(server);
-        handleCloseAddServer();
-    };
-
     const handleSubmitSearch = (params) => {
         console.log("handleSubmitSearch() params ", params);
         setSearchParam(params);
@@ -263,17 +239,6 @@ const ServerTable = () => {
     /** Pagination */
     const handleRefresh = () => {
         getPageData();
-    };
-
-    const deleteData = async (items) => {
-        try {
-            const response = await unregisterMcServer({idx: items});
-            getPageData();
-            handleSnackbarSuccess("Server 삭제에 성공하였습니다.");
-        } catch (error) {
-            getPageData();
-            handleSnackbarFailure("Server 삭제에 실패하였습니다.");
-        }
     };
 
     const handleDeleteSelected = () => {
@@ -291,7 +256,6 @@ const ServerTable = () => {
             });
         }
         console.log("delList: ", delList);
-        deleteData(delList);
 
         for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
             copyData = copyData.filter(obj => obj.id !== selected[i]);
@@ -361,21 +325,9 @@ const ServerTable = () => {
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "5%"}}
+                        style={{width: "10%"}}
                     >
                         {row.idx}
-                    </TableCell>
-                    <TableCell
-                        className={cellClassName}
-                        style={{width: "20%"}}
-                    >
-                        {row.serialNumber}
-                    </TableCell>
-                    <TableCell
-                        className={cellClassName}
-                        style={{width: "15%"}}
-                    >
-                        {row.type}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
@@ -387,19 +339,37 @@ const ServerTable = () => {
                         className={cellClassName}
                         style={{width: "15%"}}
                     >
-                        {row.status ? "Active" : "InActive"}
+                        {row.serialNumber}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "15%"}}
+                        style={{width: "10%"}}
                     >
-                        {row.vmCount}
+                        {row.name}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "15%"}}
+                        style={{width: "10%"}}
                     >
-                        {row.ipAddr}
+                        {row.bridge}
+                    </TableCell>
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "10%"}}
+                    >
+                        {row.mode}
+                    </TableCell>
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "10%"}}
+                    >
+                        {row.ip}
+                    </TableCell>
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "10%"}}
+                    >
+                        {row.netmask}
                     </TableCell>
                 </TableRow>
             </React.Fragment>
@@ -410,15 +380,15 @@ const ServerTable = () => {
         <Col md={12} lg={12}>
             <Card className="cb-card">
                 <CardBody className="cb-card-body">
-                    <ServerTableToolbar
+                    <NetworkTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
-                        handleDeleteSelected={handleDeleteSelected}
+                        // handleDeleteSelected={handleDeleteSelected}
                         handleRefresh={handleRefresh}
                         onRequestSort={handleRequestSort}
                         rows={headRows}
-                        handleOpen={handleOpenAddServer}
+                        // handleOpen={handleOpenAddVm}
                         handleSubmitSearch={handleSubmitSearch}
-                        contents="서버"
+                        contents="VM"
                         count={totalCount}
                         rowsPerPage={rowsPerPage}
                         page={currentPage}
@@ -453,15 +423,10 @@ const ServerTable = () => {
                             </Table>
                         </TableContainer>
                     </div>
-                    <RegisterServer
-                        open={openAddServer}
-                        handleClose={handleCloseAddServer}
-                        handleSubmit={handleSubmitAddServer}
-                    />
                 </CardBody>
             </Card>
         </Col>
     );
 };
 
-export default ServerTable;
+export default NetworkTable;
