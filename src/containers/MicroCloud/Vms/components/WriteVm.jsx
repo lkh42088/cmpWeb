@@ -11,7 +11,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import SendIcon from "@material-ui/icons/Send";
 import {getCompanies} from "../../../../lib/api/company";
 import LookupCompany from "../../../Common/LookupCompany";
-import {getMcServersByCpIdx} from "../../../../lib/api/microCloud";
+import {getMcServersByCpIdx, getMcImagesByServerIdx} from "../../../../lib/api/microCloud";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -61,10 +61,10 @@ const MenuProps = {
     },
 };
 
-const imageList = [
-    { value: 1, name: "Windows 10" },
-    { value: 2, name: "Ubuntu 18.04" },
-];
+// const imageList = [
+//     { value: 1, name: "Windows 10" },
+//     { value: 2, name: "Ubuntu 18.04" },
+// ];
 
 const WriteVm = (props) => {
     /************************************************************************************
@@ -81,6 +81,7 @@ const WriteVm = (props) => {
 
     const [companyList, setCompanyList] = useState([]);
     const [serverList, setServerList] = useState([]);
+    const [imageList, setImageList] = useState([]);
     const [menuCompany, setMenuCompany] = useState(false);
     const [openSearchCompany, setOpenSearchCompany] = useState(false);
 
@@ -123,7 +124,7 @@ const WriteVm = (props) => {
         image: false,
         cpu: false,
         ram: false,
-        hdd: false,
+        hdd: true,
         ipAddr: false,
     });
 
@@ -224,12 +225,30 @@ const WriteVm = (props) => {
      * Change
      *******************/
     const handleChangeField = (name, value) => {
+        console.log("change field: name ", name, ", value", value);
         if (name === "cpIdx") {
             setFields({
                 ...fields,
                 serverIdx: 0,
                 serialNumber: "",
+                image: 0,
+                imageName: "",
                 [name]: value,
+            });
+        } else if (name === "serverIdx") {
+            setFields({
+                ...fields,
+                [name]: value,
+                serialNumber: serverList.find(item => item.idx === value),
+                image: 0,
+                imageName: "",
+            });
+        } else if (name === "image") {
+            const img = imageList.find(item => item.idx === value);
+            setFields({
+                ...fields,
+                [name]: value,
+                imageName: img ? img.name : "",
             });
         } else {
             setFields({
@@ -295,9 +314,47 @@ const WriteVm = (props) => {
         }
     };
 
+    const getMcImages = async () => {
+        try {
+            console.log("cpIdx.. ", fields.serverIdx);
+            const response = await getMcImagesByServerIdx({
+                serverIdx: fields.serverIdx,
+            });
+            console.log("get.. ", response);
+            setImageList(response.data);
+        } catch (e) {
+            console.log("fail.. ");
+            setImageList([]);
+        }
+    };
+
     useEffect(() => {
         console.log("change cpIdx: ", fields.cpIdx);
-        getMcServers();
+        if (fields.serverIdx > 0) {
+            getMcImages();
+        } else {
+            setImageList([]);
+        }
+    }, [fields.serverIdx]);
+
+    useEffect(() => {
+        console.log("change image: ", fields.image);
+        if (fields.image > 0) {
+            const entry = imageList.find(item => item.idx === fields.image);
+            handleChangeField("hdd", entry ? entry.hdd : 0);
+        } else {
+            handleChangeField("hdd", 0);
+        }
+    }, [fields.image]);
+
+    useEffect(() => {
+        console.log("change cpIdx: ", fields.cpIdx);
+        if (fields.cpIdx > 0) {
+            getMcServers();
+        } else {
+            setServerList([]);
+            setImageList([]);
+        }
     }, [fields.cpIdx]);
 
     useEffect(() => {
@@ -399,7 +456,6 @@ const WriteVm = (props) => {
                                     onChange={(e) => {
                                         console.log("serverIdx: ", e.target);
                                         console.log("serverIdx: value ", e.target.value);
-                                        handleChangeField("serialNumber", serverList.find(item => item.idx === e.target.value));
                                         handleChangeField("serverIdx", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -437,7 +493,7 @@ const WriteVm = (props) => {
                     </Grid>
                     <Grid item xs={6}>
                         <div>
-                            <span className={labelClassName}>* Type</span>
+                            <span className={labelClassName}>* Image </span>
                             <FormControl
                                 size={fieldSize}
                                 className={fieldClassName}
@@ -451,8 +507,8 @@ const WriteVm = (props) => {
                                     name="image"
                                     value={fields.image}
                                     onChange={(e) => {
+                                        console.log("event:", e.target.value);
                                         handleChangeField("image", e.target.value);
-                                        handleChangeField("imageName", imageList.find(item => item.value === e.target.value).name);
                                     }}
                                     MenuProps={MenuProps}
                                 >
@@ -462,12 +518,29 @@ const WriteVm = (props) => {
                                     {imageList.map((item, index) => {
                                         const key = index;
                                         return (
-                                            <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                            <MenuItem key={key} value={item.idx}>{item.name}</MenuItem>
                                         );
                                     })}
                                 </Select>
                                 <FormHelperText>{helpers.image}</FormHelperText>
                             </FormControl>
+                        </div>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <div>
+                            <span className={labelClassName}>* HDD (G)</span>
+                            <TextField
+                                className={fieldClassName}
+                                error={errors.hdd}
+                                required={requires.hdd}
+                                disabled={disables.hdd}
+                                helperText={helpers.hdd}
+                                name="hdd"
+                                value={fields.hdd}
+                                onChange={(e) => { handleChangeField("hdd", e.target.value); }}
+                                variant={variant}
+                                size={fieldSize}
+                            />
                         </div>
                     </Grid>
                     <Grid item xs={6}>
@@ -489,7 +562,7 @@ const WriteVm = (props) => {
                     </Grid>
                     <Grid item xs={6}>
                         <div>
-                            <span className={labelClassName}>* RAM</span>
+                            <span className={labelClassName}>* RAM (M)</span>
                             <TextField
                                 className={fieldClassName}
                                 error={errors.ram}
@@ -504,40 +577,6 @@ const WriteVm = (props) => {
                             />
                         </div>
                     </Grid>
-                    <Grid item xs={6}>
-                        <div>
-                            <span className={labelClassName}>* HDD</span>
-                            <TextField
-                                className={fieldClassName}
-                                error={errors.hdd}
-                                required={requires.hdd}
-                                disabled={disables.hdd}
-                                helperText={helpers.hdd}
-                                name="hdd"
-                                value={fields.hdd}
-                                onChange={(e) => { handleChangeField("hdd", e.target.value); }}
-                                variant={variant}
-                                size={fieldSize}
-                            />
-                        </div>
-                    </Grid>
-                    {/*<Grid item xs={6}>*/}
-                    {/*    <div>*/}
-                    {/*        <span className={labelClassName}>* IP Address</span>*/}
-                    {/*        <TextField*/}
-                    {/*            className={fieldClassName}*/}
-                    {/*            error={errors.ipAddr}*/}
-                    {/*            required={requires.ipAddr}*/}
-                    {/*            disabled={disables.ipAddr}*/}
-                    {/*            helperText={helpers.ipAddr}*/}
-                    {/*            name="ipAddr"*/}
-                    {/*            value={fields.ipAddr}*/}
-                    {/*            onChange={(e) => { handleChangeField("ipAddr", e.target.value); }}*/}
-                    {/*            variant={variant}*/}
-                    {/*            size={fieldSize}*/}
-                    {/*        />*/}
-                    {/*    </div>*/}
-                    {/*</Grid>*/}
                     <Grid item xs={12}>
                         <div>
                             <Button

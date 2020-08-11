@@ -45,3 +45,7 @@ export const getMcNetworks = ({
 export const getMcImages = ({
     rows, offset, orderBy, order,
 }) => client.get(`/v1/micro/images-paging/${rows}/${offset}/${orderBy}/${order}`);
+
+export const getMcImagesByServerIdx = ({
+    serverIdx,
+}) => client.get(`/v1/micro/images/${serverIdx}`);
