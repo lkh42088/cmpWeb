@@ -375,7 +375,8 @@ const ServerTable = () => {
                         className={cellClassName}
                         style={{width: "15%"}}
                     >
-                        {row.type}
+                        {/*{row.type}*/}
+                        Standard
                     </TableCell>
                     <TableCell
                         className={cellClassName}
