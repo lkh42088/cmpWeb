@@ -1,5 +1,6 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
+import {Card, CardBody, Col} from "reactstrap";
 import MainWrapper from '../MainWrapper';
 import WrappedRoutes from './WrappedRoutes';
 import CbWrappedRoutes from './CbWrappedRoutes';
@@ -7,12 +8,21 @@ import MicroWrappedRoutes from './MicroWrappedRoutes';
 import LogInPage from "../../Login/LogInPage";
 import LogInEmailAuth from "../../Login/AuthFromEmail";
 import EdgeLaunch, {CheckIE} from "../../Common/BrowserCheck";
+import BrowserWarring from "../../Common/BrowserWarring";
+import RegisterUserPage from "../../Customer/Users/components/RegisterUserPage";
 
-const Router = () => {
-    /** IE is right, Open 1.Edge 2.Chrome */
+/*const Router = () => {
+    /!** IE is right, Open 1.Edge 2.Chrome *!/
     if (CheckIE() === true) {
-        EdgeLaunch();
-    } else {
+        //EdgeLaunch();
+        return (
+            <MainWrapper>
+                <main>
+                    <BrowserWarring/>
+                </main>
+            </MainWrapper>
+        );
+    } 
         return (
             <MainWrapper>
                 <main>
@@ -27,8 +37,12 @@ const Router = () => {
                 </main>
             </MainWrapper>
         );
-    }
-    return null;
-};
+    
+    //return null;
+};*/
+
+const Router = () => (
+    <BrowserWarring/>
+);
 
 export default Router;

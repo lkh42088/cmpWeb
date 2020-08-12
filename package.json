@@ -104,6 +104,7 @@
     "react-scroll-to-component": "^1.0.2",
     "react-select": "^2.3.0",
     "react-slick": "^0.23.2",
+    "react-script": "3.0.0",
     "react-smooth-scrollbar": "^8.0.6",
     "react-spring": "^8.0.27",
     "react-sticky": "^6.0.3",
@@ -155,6 +156,7 @@
     "babel-runtime": "6.26.0",
     "case-sensitive-paths-webpack-plugin": "^2.2.0",
     "css-loader": "^2.1.0",
+    "core-js": "^3.6.5",
     "eslint": "^5.15.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-react-app": "^3.0.7",
@@ -178,14 +180,14 @@
     "production": [
       ">0.2%",
       "not dead",
-      "not op_mini all"
+      "not op_mini all",
+      "ie 9-11"
     ],
     "development": [
-      ">0.2%",
-      "ie 11",
       "last 1 chrome version",
       "last 1 firefox version",
-      "last 1 safari version"
+      "last 1 safari version",
+      "ie 9-11"
     ]
   },
   "jest": {

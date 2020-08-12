@@ -5,7 +5,6 @@ import {I18nextProvider} from 'react-i18next';
 import i18next from 'i18next';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {hot} from 'react-hot-loader';
-
 import 'bootstrap/dist/css/bootstrap.css';
 import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
 import '../../scss/app.scss';
