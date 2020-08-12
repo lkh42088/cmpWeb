@@ -73,6 +73,8 @@ $themes: (
   @return map-get($theme-map, $key);
 }
 
+$explorer-img: url(../shared/img/explorer.png);
+
 //$color-accent: #55967e; // ori -> #4ce1b6
 $color-accent: #4ce1b6;
 $color-accent-hover: darken($color-accent, 10%);

@@ -28,7 +28,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import {makeStyles} from "@material-ui/core/styles";
 
 import moment from "moment";
-import ImageUploader from 'react-images-upload';
 
 import {checkId, checkPasswordPattern} from "../../../../lib/utils/utils";
 import {checkDuplicateUser, getAuthList} from "../../../../lib/api/users";

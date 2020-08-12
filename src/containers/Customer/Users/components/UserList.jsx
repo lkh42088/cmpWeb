@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Card, CardBody, Col} from 'reactstrap';
 import Avatar from "react-avatar";
-
+import {Link} from "react-router-dom";
 import moment from "moment";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
