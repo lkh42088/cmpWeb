@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit">
+<!-- Safari 페이지 load 문제로 shrink-to-fit 기능 삭제 -->
+<!--  <meta name="viewport" content="width=device-width, initial-scale=1">-->
   <meta name="theme-color" content="#000000">
   <!--
     manifest.json provides metadata used when your web app is added to the
@@ -16,6 +18,18 @@
 
   <!-- (21jun2020,bhjung) -->
   <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
+  <script>
+    let isIE = false;
+    if (/MSIE 10/i.test(navigator.userAgent)) {
+      // This is internet Explorer 10
+      window.location.href("guide-page.html");
+    }
+
+    if (/MSIE 9/i.test(navigator.userAgent) || /rv:11.0/i.test(navigator.userAgent)) {
+      // This is internet Explorer 9 or 11
+      window.location.href("guide-page.html");
+    }
+  </script>
 
   <!-- (11aug2020,ebjee) -->
   <!--<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>-->
