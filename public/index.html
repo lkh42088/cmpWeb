@@ -18,6 +18,18 @@
 
   <!-- (21jun2020,bhjung) -->
   <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
+  <script>
+    let isIE = false;
+    if (/MSIE 10/i.test(navigator.userAgent)) {
+      // This is internet Explorer 10
+      window.location.href("guide-page.html");
+    }
+
+    if (/MSIE 9/i.test(navigator.userAgent) || /rv:11.0/i.test(navigator.userAgent)) {
+      // This is internet Explorer 9 or 11
+      window.location.href("guide-page.html");
+    }
+  </script>
 
   <!--
     Notice the use of %PUBLIC_URL% in the tags above.
