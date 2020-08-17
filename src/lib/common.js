@@ -1,4 +1,4 @@
-import {SEPARATION_URL} from "./var/commonVariables";
+import {SEPARATION_URL} from "./var/globalVariable";
 
 // eslint-disable-next-line import/prefer-default-export
 export function setIgnoredYellowBox() {
@@ -57,6 +57,7 @@ export function checkIP(strIP) {
     const expUrl = /^(1|2)?\d?\d([.](1|2)?\d?\d){3}$/;
     return expUrl.test(strIP);
 }
+
 /** ----------------------------------------------------assets 에서만 사용 start **/
 export function assetsSeperateUrl(tmpUrl) {
     let tmp = tmpUrl;

@@ -1,13 +1,5 @@
 import axios from 'axios';
-
-const dotenv = require('dotenv');
-
-dotenv.config();
-
-const SERVER_IP = process.env.HOST || '127.0.0.1';
-export const SERVER_PORT = process.env.PORT || '4000';
-export const API_SERVER_IP = process.env.API_SERVER_IP || '127.0.0.1';
-const API_SERVER_PORT = process.env.API_SERVER_PORT || '8081';
+import {API_SERVER_IP, API_SERVER_PORT} from "../var/globalVariable";
 
 const client = axios.create();
 
