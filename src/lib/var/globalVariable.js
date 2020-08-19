@@ -14,4 +14,4 @@ export const API_SERVER_PORT = process.env.API_SERVER_PORT || '8081';
 export const SITE_KEY = process.env.RECAPTCHA_SITE_KEY || "";
 
 // For Assets and Breadcrumbs
-export const SEPARATION_URL = `http://${API_SERVER_IP}:${API_SERVER_PORT}/`;
+export const SEPARATION_URL = `http://${API_SERVER_IP}:${SERVER_PORT}/`;
