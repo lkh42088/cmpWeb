@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, { Image } from 'react';
 import {
     Card, CardBody, Col, Button,
 } from 'reactstrap';
 import {useSelector} from "react-redux";
+import FileSaver from "file-saver";
 import Avatar from "react-avatar";
 
 import * as common from "../../../../lib/common";
@@ -18,6 +19,25 @@ const ProfileMain = () => {
         userPage: usersRd.userPage,
     }));
 
+    /*const handleFileSave = () => {
+        //FileSaver.saveAs(user.avataFile, user.avata);
+        console.log("type .... : ", typeof user.avataFile);
+        console.log("avatafile...length : ", user.avataFile.length);
+        //console.log("avatafile... : ", user.avataFile);
+
+        /!*const url = URL.createObjectURL(user.avataFile);
+        const url = window.srcObject(user.avataFile);
+        console.log("url : ", url);
+        document.getElementById('image').src = url;*!/
+
+        //url.src = URL.createObjectURL(user.avataFile);
+        //url.srcObject = user.avataFile;
+        //document.getElementById('image').src = user.avataFile;
+
+        const blobSupported = new Blob(['ä']).size === 2;
+        console.log("blobSupported : ", blobSupported);
+    };*/
+
     return (
         <Col md={12} lg={12} xl={12}>
             <Card>
@@ -29,12 +49,24 @@ const ProfileMain = () => {
                                  borderRadius: "0",
                              }}
                         >
+                            {/*todo image file db store*/}
                             {/*<img src={Ava} alt="avatar"/>*/}
                             {/*<Avatar
                                 className="topbar__avatar-img-list"
                                 name={user.userId}
                                 size="120"
                             />*/}
+                            {/*★-- {user.avataFile} --★*/}
+                            {/*<Image source={{uri: user.avataFile}}/>
+                            <Image source={user.avataFile} style={{ height: 200, width: null, flex: 1 }} />*/}
+                            {/*<img src={user.avataFile} alt=""/>*/}
+                            {/*<img src="" alt="엥~~~" id="image"/>
+                            <img src={`blob:http://127.0.0.1:8081/${user.avataFile}`} alt="두번째~"/>
+                            <img src={`blob:http://127.0.0.1:4000/${user.avataFile}`} alt="세번째~"/>
+                            <img src="blob:10110758배경-독수리.jfif" alt="네번째~"/>
+                            <img src="blob:http://127.0.0.1:4000/10110758배경-독수리.jfif" alt="다섯번째~"/>
+                            <img src="blob:http://127.0.0.1:8081/10110758배경-독수리.jfif" alt="여섯번째~"/>*/}
+                            {/*10110758배경-독수리.jfif*/}
                             {user.avata == null || user.avata === "" ? (
                                 <Avatar
                                     className="topbar__avatar-img-list"
@@ -51,6 +83,10 @@ const ProfileMain = () => {
                             )}
                         </div>
                         <div className="profile__data">
+                            {/*<p className="profile__contact">
+                                 eslint-disable-next-line react/button-has-type
+                                다운로드 : <button onClick={handleFileSave}>down</button>
+                            </p>*/}
                             <p className="profile__name">{user.name} [{user.userId}]</p>
                             <p className="profile__contact">level: {common.textValueCut(user.authLevelTag, '', '-')}</p>
                             <p className="profile__contact">email: {common.textValueCut(user.email, '', '-')}</p>

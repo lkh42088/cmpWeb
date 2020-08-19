@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ERROR</title>
+</head>
+<body>
+<div class="body">
+    <div class="warring-explorer">
+        <div class="warring-explorer__content">
+            <div class="error-number">
+                <svg class="warring-explorer__bg-title"
+                     alignment-baseline="middle">
+                    <defs>
+                        <clipPath id="clip2">
+                            <path d="M 0 0 L 600 0 L 600 80 L 0 80 L 0 0 L 0 125 L 600 125 L 600 200 L 0 200 Z"></path>
+                        </clipPath>
+                    </defs>
+                    <text x="325" y="155"
+                          class="warring-explorer__bg-title-text"
+                          text-anchor="middle" font-family="Lato"
+                          font-weight="700" font-size="250"
+                          fill="#505458" clip-path="url(#clip2)">
+                        so
+                        <tspan fill="#35b8e0">
+                            rr
+                        </tspan>
+                        y
+                    </text>
+                </svg>
+                <div class="warring-explorer__title">
+                    Do not support
+                </div>
+            </div>
+            <div class="subContent">
+                ※ You're using a web browser we don't support.
+                <br>
+                ※ 지원하지 않는 웹 브라우저를 사용하고 있습니다.
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    body {
+        overflow: hidden;
+        background-color: #EAF2F9;
+        font-family: 'Noto Sans KR R', Roboto, sans-serif;
+    }
+
+    .error-number {
+        /*position: relative;*/
+    }
+
+    .warring-explorer {
+        text-align: center;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        background: url("/img/explorer.png") no-repeat center;
+    }
+
+    .subContent{
+        padding: 1em .75em;
+        color: #f8b24f;
+        background-color: #303960;
+        border-radius: .25em;
+        display: inline-block;
+        font-size: inherit;
+        font-weight: bold;
+        line-height: normal;
+    }
+
+    .warring-explorer__content {
+        margin: auto;
+        padding: 10px;
+    }
+
+    .warring-explorer .warring-explorer__info {
+        color: #0f4c81;
+        margin-bottom: 20px;
+        margin-top: 90px;
+        font-weight: bold;
+        text-shadow: 0 1px 0 #777, 0 -1px 0 #000;
+    }
+
+    .warring-explorer__image {
+        max-width: 500px;
+        width: 100%;
+    }
+
+    .warring-explorer__bg-title {
+        width: 600px;
+        height: 200px;
+        position: absolute;
+        top: 51%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
+    .warring-explorer__title {
+        overflow: hidden;
+        text-transform: uppercase;
+        font-weight: 900;
+        font-size: 35px;
+        line-height: 40px;
+        letter-spacing: 2px;
+        position: absolute;
+        top: 51%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
+        color: #ffffff;
+    }
+
+    .warring-explorer__bg-title-text {
+        width:600px;
+        height:200px;
+        letter-spacing: -20px;
+        position: absolute;
+    }
+</style>
+</body>
+</html>

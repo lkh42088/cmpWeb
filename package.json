@@ -107,7 +107,6 @@
     "react-scroll-to-component": "^1.0.2",
     "react-select": "^2.3.0",
     "react-slick": "^0.23.2",
-    "react-script": "3.0.0",
     "react-smooth-scrollbar": "^8.0.6",
     "react-spring": "^8.0.27",
     "react-sticky": "^6.0.3",
@@ -138,7 +137,9 @@
     "styled-components": "^5.1.1",
     "terser-webpack-plugin": "^1.2.3",
     "text-mask-addons": "^3.8.0",
-    "url-loader": "^1.1.2"
+    "url-loader": "^1.1.2",
+    "file-saver": "latest",
+    "css-to-react-native": "latest"
   },
   "scripts": {
     "start": "node scripts/start.js",

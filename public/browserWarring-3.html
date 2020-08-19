@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ERROR</title>
+</head>
+<body>
+<div class="body">
+    <div class="container">
+        <div class="title">
+            <span style="color:white;">DO</span>
+            <span style="color:red;">&nbsp;NOT&nbsp;</span>
+            <span style="color:white;">SUPPORT !</span>
+        </div>
+        <div>
+            <p class="description">
+                You're using a web browser we don't support.
+            </p>
+            <p>
+                지원하지 않는 브라우저입니다.<br>
+                Internet Explorer을 제외한 브라우저를 사용하세요.
+            </p>
+        </div>
+    </div>
+</div>
+<style>
+    body {
+        background: #393e46;
+        display: flex;
+        font-family: 'Noto Sans KR R', Roboto, sans-serif;
+        height: 100vh;
+        line-height: 1.5;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    .container {
+        position: absolute;
+        width:100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .title {
+        /*margin: 1.5em auto 0 auto;*/
+        text-align: center;
+    }
+
+    .title span {
+        font-size: 5em;
+        display: inline-block;
+        font-weight: bold;
+        vertical-align: middle;
+        text-shadow: 0.25rem 0.25rem 0.5rem #222;
+    }
+
+    .description {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 0.25em;
+    }
+
+    p {
+        font-size: 1.75em;
+        color: #fff;
+        text-align: center;
+    }
+</style>
+</body>
+</html>

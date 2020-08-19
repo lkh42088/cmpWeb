@@ -8,7 +8,7 @@ import MicroWrappedRoutes from './MicroWrappedRoutes';
 import LogInPage from "../../Login/LogInPage";
 import LogInEmailAuth from "../../Login/AuthFromEmail";
 import EdgeLaunch, {CheckIE} from "../../Common/BrowserCheck";
-import BrowserWarring from "../../Common/BrowserWarring";
+import _BrowserWarring from "../../Common/_BrowserWarring";
 
 const Router = () => (
         <MainWrapper>

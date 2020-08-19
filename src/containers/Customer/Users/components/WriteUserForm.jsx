@@ -122,6 +122,7 @@ const WriteUserForm = (props) => {
         memo: '',
         avata: '',
         avataFile: '',
+        avataFlag: false,
     });
 
     /*******************
@@ -263,6 +264,7 @@ const WriteUserForm = (props) => {
             ...fields,
             avata: imgName,
             avataFile: fd,
+            avataFlag: true,
         });
     };
 
@@ -296,12 +298,14 @@ const WriteUserForm = (props) => {
                 ...fields,
                 avata: "",
                 avataFile: "",
+                avataFlag: false,
             });
         } else if (division === 'server') {
             setFields({
                 ...fields,
                 avata: "",
                 avataFile: "",
+                avataFlag: false,
             });
         }
     };
@@ -475,29 +479,28 @@ const WriteUserForm = (props) => {
             return;
         }
 
-        //console.log("handleSubmitInternal avataFile : ", fields.avataFile);
+        if (fields.avataFlag) {
+            if (fields.avata !== null && fields.avata !== "") {
+                const fd = new FormData();
 
-        if (fields.avata !== null && fields.avata !== "") {
-            const fd = new FormData();
+                const imgName = fields.avata;
 
-            const imgName = fields.avata;
+                fd.append('file', selectedFile, imgName);
+                //fd.append('id', fields.id);
 
-            fd.append('file', selectedFile, imgName);
+                const request = new XMLHttpRequest();
 
-            const request = new XMLHttpRequest();
+                // eslint-disable-next-line func-names
+                request.onreadystatechange = function () {
+                    // eslint-disable-next-line react/no-this-in-sfc
+                    if (this.readyState === 4 || this.status === 200) {
+                        console.log("Uploaded !! ");
+                    }
+                };
 
-            // eslint-disable-next-line func-names
-            request.onreadystatechange = function () {
-                // eslint-disable-next-line react/no-this-in-sfc
-                if (this.readyState === 4 || this.status === 200) {
-                    console.log("Uploaded !! ");
-                }
-            };
-
-            request.open("POST", `${API_ROUTE}/users/fileUpload`, true);
-            request.send(fd);
-
-            //console.log("handleSubmitInternal fd : ", fd);
+                request.open("POST", `${API_ROUTE}/users/fileUpload`, true);
+                request.send(fd);
+            }
         }
 
         // todo image file db store
@@ -1248,7 +1251,7 @@ const WriteUserForm = (props) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <span className={labelClassName}>아바타 이미지 업로드</span>
+                        <span className={labelClassName}>아바타 이미지 업로드 : {fields.avataFlag}</span>
                         {/*<ImageUploader
                             withIcon
                             withPreview

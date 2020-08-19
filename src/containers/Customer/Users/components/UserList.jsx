@@ -797,15 +797,18 @@ const UserList = () => {
                                                     <span className={classes.spanContents}> {address} </span>
                                                 </li>
                                                 <li>
-                                                    <span className={classes.spanSubject}> 등록일 </span>
-                                                    <span className={classes.spanContents}> {moment(row.registerDate)
-                                                        .format('YYYY-MM-DD')} </span>
+                                                    <span className={classes.spanSubject}> 등록일</span>
+                                                    <span className={classes.spanContents}>
+                                                        {row.registerDate !== "0001-01-01T00:00:00Z" ? moment(row.registerDate)
+                                                            .format('YYYY년 MM월 DD일 ') : ""}
+                                                    </span>
                                                 </li>
                                                 <li>
                                                     <span className={classes.spanSubject}> 인증 </span>
                                                     <span className={classes.spanContents}>
                                                         {/* eslint-disable-next-line no-nested-ternary */}
-                                                        {row.emailAuth === true ? "개인 이메일 인증" : (row.groupEmailAuth === true ? "그룹 이메일 인증" : "사용 안함")}
+                                                        {row.emailAuth === true ? "개인 이메일 인증" : (
+                                                            row.groupEmailAuth === true ? "그룹 이메일 인증" : "사용 안함")}
                                                     </span>
                                                 </li>
                                             </ul>

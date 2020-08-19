@@ -1,7 +1,5 @@
 import React from "react";
-import {
-    Card, CardBody,
-} from "reactstrap";
+import {Card, CardBody} from "reactstrap";
 import Dialog from "@material-ui/core/Dialog";
 import Grid from "@material-ui/core/Grid";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";

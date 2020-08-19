@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ERROR</title>
+</head>
+<body>
+<div class="body">
+    <div class="post-module hover">
+        <div class="thumbnail">
+            <img src='/img/explorer.png'>
+        </div>
+        <div class="post-content">
+            <div class="category">Do not support</div>
+            <h4 class="title">
+                You're using a web browser we don't support.
+            </h4>
+            <p class="sub_title">
+                지원하지 않는 브라우저입니다.
+            </p>
+            <p class="description">
+                Internet Explorer을 제외한 브라우저를 사용하세요.
+            </p>
+        </div>
+    </div>
+</div>
+<style>
+    body {
+        background-color: #ffffff;
+        font-family: 'Noto Sans KR R', Roboto, sans-serif;
+        font-size: 16px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow: hidden;
+    }
+
+    .post-module {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        z-index: 1;
+        display: block;
+        background: #ffffff;
+        min-width: 270px;
+        width: 700px;
+        height: 570px;
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.15);
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .post-module:hover,
+    .hover {
+        -webkit-box-shadow: 0px 1px 35px 0px rgba(0, 0, 0, 0.3);
+        -moz-box-shadow: 0px 1px 35px 0px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 1px 35px 0px rgba(0, 0, 0, 0.3);
+    }
+
+    .post-module:hover .thumbnail img,
+    .hover .thumbnail img {
+        -webkit-transform: scale(1.1);
+        -moz-transform: scale(1.1);
+        transform: scale(1.1);
+        opacity: 1;
+    }
+
+    .post-module .thumbnail {
+        background: #000000;
+        height: 400px;
+        overflow: hidden;
+    }
+
+    .post-module .thumbnail img {
+        display: block;
+        width: 105%;
+        -webkit-transition: all 0.3s linear 0s;
+        -moz-transition: all 0.3s linear 0s;
+        -ms-transition: all 0.3s linear 0s;
+        -o-transition: all 0.3s linear 0s;
+        transition: all 0.3s linear 0s;
+    }
+
+    .post-module .post-content {
+        position: absolute;
+        bottom: 0;
+        background: #eeeeee;
+        width: 100%;
+        padding: 30px;
+        -webkti-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-transition: all 0.3s cubic-bezier(0.37, 0.75, 0.61, 1.05) 0s;
+        -moz-transition: all 0.3s cubic-bezier(0.37, 0.75, 0.61, 1.05) 0s;
+        -ms-transition: all 0.3s cubic-bezier(0.37, 0.75, 0.61, 1.05) 0s;
+        -o-transition: all 0.3s cubic-bezier(0.37, 0.75, 0.61, 1.05) 0s;
+        transition: all 0.3s cubic-bezier(0.37, 0.75, 0.61, 1.05) 0s;
+    }
+
+    .post-module .post-content .category {
+        position: absolute;
+        top: -20px;
+        left: 0;
+        background: #d92027;
+        padding: 10px 15px;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .post-module .post-content .title {
+        margin: 0;
+        padding: 0 0 10px;
+        color: #333333;
+        font-size: 25px;
+        font-weight: 700;
+    }
+
+    .post-module .post-content .sub_title {
+        margin: 0;
+        padding: 0 0 0;
+        color: #d92027;
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .post-module .post-content .description {
+        display: none;
+        color: #666666;
+        font-size: 14px;
+        line-height: 1.8em;
+        font-weight: bold;
+    }
+
+    .post-module .post-content {
+        margin: 30px 0 0;
+        color: #ebecf1;
+    }
+
+    .post-module .post-content .post-meta {
+        margin: 0 16px 0 0;
+    }
+
+    .post-module .post-content .post-meta a {
+        color: #ebecf1;
+        text-decoration: none;
+    }
+
+    .hover .post-content .description {
+        display: block !important;
+        height: auto !important;
+        opacity: 1 !important;
+    }
+
+</style>
+</body>
+</html>
