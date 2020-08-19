@@ -11,7 +11,11 @@ import {makeStyles} from "@material-ui/core/styles";
 import SendIcon from "@material-ui/icons/Send";
 import {getCompanies} from "../../../../lib/api/company";
 import LookupCompany from "../../../Common/LookupCompany";
-import {getMcServersByCpIdx, getMcImagesByServerIdx} from "../../../../lib/api/microCloud";
+import {
+    getMcServersByCpIdx,
+    getMcImagesByServerIdx,
+    getMcNetworksByServerIdx,
+} from "../../../../lib/api/microCloud";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -82,6 +86,7 @@ const WriteVm = (props) => {
     const [companyList, setCompanyList] = useState([]);
     const [serverList, setServerList] = useState([]);
     const [imageList, setImageList] = useState([]);
+    const [networkList, setNetworkList] = useState([]);
     const [menuCompany, setMenuCompany] = useState(false);
     const [openSearchCompany, setOpenSearchCompany] = useState(false);
 
@@ -96,6 +101,9 @@ const WriteVm = (props) => {
         name: '',
         image: 0,
         imageName: '',
+        network: 0,
+        networkName: '',
+        os: '',
         cpu: 0,
         ram: 0,
         hdd: 0,
@@ -109,6 +117,7 @@ const WriteVm = (props) => {
         serialNumber: true,
         name: true,
         image: true,
+        network: true,
         cpu: true,
         ram: true,
         hdd: true,
@@ -122,6 +131,7 @@ const WriteVm = (props) => {
         serialNumber: false,
         name: false,
         image: false,
+        network: false,
         cpu: false,
         ram: false,
         hdd: true,
@@ -135,6 +145,7 @@ const WriteVm = (props) => {
         serialNumber: "",
         name: "",
         image: "",
+        network: "",
         cpu: "",
         ram: "",
         hdd: "",
@@ -148,6 +159,7 @@ const WriteVm = (props) => {
         serialNumber: false,
         name: false,
         image: false,
+        network: false,
         cpu: false,
         ram: false,
         hdd: false,
@@ -171,7 +183,9 @@ const WriteVm = (props) => {
             serverIdx: 0,
             serialNumber: '',
             name: '',
-            image: '0',
+            image: 0,
+            network: '',
+            networkName: '',
             cpu: 0,
             ram: 0,
             hdd: 0,
@@ -184,6 +198,7 @@ const WriteVm = (props) => {
             serialNumber: "",
             name: '',
             image: "",
+            network: '',
             cpu: "",
             ram: "",
             hdd: "",
@@ -196,6 +211,7 @@ const WriteVm = (props) => {
             serialNumber: false,
             name: false,
             image: false,
+            network: false,
             cpu: false,
             ram: false,
             hdd: false,
@@ -233,6 +249,9 @@ const WriteVm = (props) => {
                 serialNumber: "",
                 image: 0,
                 imageName: "",
+                os: "",
+                network: 0,
+                networkName: "",
                 [name]: value,
             });
         } else if (name === "serverIdx") {
@@ -242,6 +261,9 @@ const WriteVm = (props) => {
                 serialNumber: serverList.find(item => item.idx === value),
                 image: 0,
                 imageName: "",
+                os: "",
+                network: 0,
+                networkName: "",
             });
         } else if (name === "image") {
             const img = imageList.find(item => item.idx === value);
@@ -249,6 +271,14 @@ const WriteVm = (props) => {
                 ...fields,
                 [name]: value,
                 imageName: img ? img.name : "",
+                os: img ? img.variant : "",
+            });
+        } else if (name === "network") {
+            const net = networkList.find(item => item.idx === value);
+            setFields({
+                ...fields,
+                [name]: value,
+                networkName: net ? net.name : "",
             });
         } else {
             setFields({
@@ -314,9 +344,23 @@ const WriteVm = (props) => {
         }
     };
 
+    const getMcNetworks = async () => {
+        try {
+            console.log("serverIdx.. ", fields.serverIdx);
+            const response = await getMcNetworksByServerIdx({
+                serverIdx: fields.serverIdx,
+            });
+            console.log("get.. ", response);
+            setNetworkList(response.data);
+        } catch (e) {
+            console.log("fail.. ");
+            setNetworkList([]);
+        }
+    };
+
     const getMcImages = async () => {
         try {
-            console.log("cpIdx.. ", fields.serverIdx);
+            console.log("serverIdx.. ", fields.serverIdx);
             const response = await getMcImagesByServerIdx({
                 serverIdx: fields.serverIdx,
             });
@@ -332,8 +376,10 @@ const WriteVm = (props) => {
         console.log("change cpIdx: ", fields.cpIdx);
         if (fields.serverIdx > 0) {
             getMcImages();
+            getMcNetworks();
         } else {
             setImageList([]);
+            setNetworkList([]);
         }
     }, [fields.serverIdx]);
 
@@ -354,6 +400,7 @@ const WriteVm = (props) => {
         } else {
             setServerList([]);
             setImageList([]);
+            setNetworkList([]);
         }
     }, [fields.cpIdx]);
 
@@ -523,6 +570,41 @@ const WriteVm = (props) => {
                                     })}
                                 </Select>
                                 <FormHelperText>{helpers.image}</FormHelperText>
+                            </FormControl>
+                        </div>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <div>
+                            <span className={labelClassName}>* Network</span>
+                            <FormControl
+                                size={fieldSize}
+                                className={fieldClassName}
+                                variant="filled"
+                                error={errors.network}
+                                disabled={disables.network}
+                            >
+                                <Select
+                                    required={errors.network}
+                                    disabled={disables.network}
+                                    name="network"
+                                    value={fields.network}
+                                    onChange={(e) => {
+                                        console.log("event:", e.target.value);
+                                        handleChangeField("network", e.target.value);
+                                    }}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem key={0} value={0}>
+                                        <em>None</em>
+                                    </MenuItem>
+                                    {networkList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <MenuItem key={key} value={item.idx}>{item.name}</MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                                <FormHelperText>{helpers.network}</FormHelperText>
                             </FormControl>
                         </div>
                     </Grid>

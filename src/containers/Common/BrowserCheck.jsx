@@ -1,4 +1,4 @@
-import {SEPARATION_URL} from "../../lib/var/commonVariables";
+import {SEPARATION_URL} from "../../lib/var/globalVariable";
 
 export const IsChrome = window.navigator.userAgent.indexOf("Chrome") > -1;
 export const IsFirefox = window.navigator.userAgent.indexOf("Firefox") > -1;

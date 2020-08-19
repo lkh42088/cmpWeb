@@ -1,5 +1,3 @@
-'use strict';
-
 const path = require('path');
 const webpack = require('webpack');
 const PnpWebpackPlugin = require('pnp-webpack-plugin');
@@ -9,11 +7,11 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getCSSModuleLocalIdent = require('react-dev-utils/getCSSModuleLocalIdent');
-const getClientEnvironment = require('./env');
-const paths = require('./paths');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
+const paths = require('./paths');
+const getClientEnvironment = require('./env');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -24,6 +22,8 @@ const publicPath = '/';
 const publicUrl = '';
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl);
+
+console.log("env:", env);
 
 // style files regexes
 const cssRegex = /\.css$/;
@@ -49,7 +49,9 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
         // https://github.com/facebook/create-react-app/issues/2677
         ident: 'postcss',
         plugins: () => [
+          // eslint-disable-next-line global-require
           require('postcss-flexbugs-fixes'),
+          // eslint-disable-next-line global-require
           require('postcss-preset-env')({
             autoprefixer: {
               flexbox: 'no-2009',
@@ -104,10 +106,9 @@ module.exports = {
     // There are also additional JS chunk files if you use code splitting.
     chunkFilename: 'static/js/[name].chunk.js',
     // This is the URL that app is served from. We use "/" in development.
-    publicPath: publicPath,
+    publicPath,
     // Point sourcemap entries to original disk location (format as URL on Windows)
-    devtoolModuleFilenameTemplate: info =>
-      path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
+    devtoolModuleFilenameTemplate: info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
   },
   optimization: {
     // Automatically split vendor and commons
@@ -128,7 +129,7 @@ module.exports = {
     // https://github.com/facebook/create-react-app/issues/253
     modules: ['node_modules'].concat(
       // It is guaranteed to exist because we tweak it in `env.js`
-      process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
+      process.env.NODE_PATH.split(path.delimiter).filter(Boolean),
     ),
     // These are the reasonable defaults supported by the Node ecosystem.
     // We also include JSX as a common component filename extension to support
@@ -218,7 +219,7 @@ module.exports = {
             loader: require.resolve('babel-loader'),
             options: {
               customize: require.resolve(
-                'babel-preset-react-app/webpack-overrides'
+                'babel-preset-react-app/webpack-overrides',
               ),
               
               plugins: [
@@ -311,7 +312,7 @@ module.exports = {
                 modules: true,
                 getLocalIdent: getCSSModuleLocalIdent,
               },
-              'sass-loader'
+              'sass-loader',
             ),
           },
           // "file" loader makes sure those assets get served by WebpackDevServer.
@@ -375,7 +376,7 @@ module.exports = {
     // having to parse `index.html`.
     new ManifestPlugin({
       fileName: 'asset-manifest.json',
-      publicPath: publicPath,
+      publicPath,
     }),
   ],
 

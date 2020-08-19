@@ -23,9 +23,9 @@ export const getMcServersByCpIdx = ({
 
 // VMs
 export const registerMcVm = ({
-    name, cpIdx, serialNumber, serverIdx, image, cpu, ram, hdd,
+    name, cpIdx, serialNumber, serverIdx, os, image, cpu, ram, hdd, network,
 }) => client.post('/v1/micro/vms/register', {
-    name, cpIdx, serialNumber, serverIdx, os: image, cpu, ram, hdd,
+    name, cpIdx, serialNumber, serverIdx, os, image, cpu, ram, hdd, network,
 });
 
 export const getMcVms = ({
@@ -45,6 +45,10 @@ export const getMcNetworks = ({
 export const getMcImages = ({
     rows, offset, orderBy, order,
 }) => client.get(`/v1/micro/images-paging/${rows}/${offset}/${orderBy}/${order}`);
+
+export const getMcNetworksByServerIdx = ({
+    serverIdx,
+}) => client.get(`/v1/micro/networks/${serverIdx}`);
 
 export const getMcImagesByServerIdx = ({
     serverIdx,

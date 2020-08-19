@@ -39,7 +39,9 @@ const headRows = [
     {id: 'ram', disablePadding: false, label: 'RAM'},
     {id: 'hdd', disablePadding: false, label: 'HDD'},
     {id: 'status', disablePadding: false, label: 'Status'},
+    {id: 'network', disablePadding: false, label: 'Network'},
     {id: 'ipAddr', disablePadding: false, label: 'IP Address'},
+    {id: 'remoteAddr', disablePadding: false, label: 'Remote RDP'},
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -243,7 +245,7 @@ const VmTable = () => {
 
     const asyncAddVm = async (vm) => {
         const {
-            name, cpIdx, serialNumber, serverIdx, cpu, ram, hdd, image, imageName,
+            name, cpIdx, serialNumber, serverIdx, cpu, ram, hdd, image, imageName, os, networkName,
         } = vm;
         try {
             const response = await registerMcVm({
@@ -258,6 +260,8 @@ const VmTable = () => {
                 // eslint-disable-next-line radix
                 hdd: parseInt(hdd),
                 image: imageName,
+                os,
+                network: networkName,
             });
             handleSnackbarSuccess("VM 등록에 성공하였습니다.");
             getPageData();
@@ -422,13 +426,25 @@ const VmTable = () => {
                         className={cellClassName}
                         style={{width: "10%"}}
                     >
-                        {row.status}
+                        {row.currentStatus}
+                    </TableCell>
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "20%"}}
+                    >
+                        {row.network}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
                         style={{width: "20%"}}
                     >
                         {row.ipAddr}
+                    </TableCell>
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "20%"}}
+                    >
+                        {row.remoteAddr}
                     </TableCell>
                 </TableRow>
             </React.Fragment>

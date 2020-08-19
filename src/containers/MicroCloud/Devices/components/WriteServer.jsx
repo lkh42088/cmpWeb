@@ -319,35 +319,35 @@ const WriteServer = (props) => {
                             />
                         </div>
                     </Grid>
-                    <Grid item xs={6}>
-                        <div>
-                            <span className={labelClassName}>* Type</span>
-                            <FormControl
-                                size={fieldSize}
-                                className={fieldClassName}
-                                variant="filled"
-                                error={errors.type}
-                                disabled={disables.type}
-                            >
-                                <Select
-                                    required={errors.type}
-                                    disabled={disables.type}
-                                    name="type"
-                                    value={fields.type}
-                                    onChange={(e) => { handleChangeField("type", e.target.value); }}
-                                    MenuProps={MenuProps}
-                                >
-                                    <MenuItem key={0} value="0">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem key={1} value="1">Light</MenuItem>
-                                    <MenuItem key={2} value="1">Standard</MenuItem>
-                                    <MenuItem key={3} value="2">Advance</MenuItem>
-                                </Select>
-                                <FormHelperText>{helpers.type}</FormHelperText>
-                            </FormControl>
-                        </div>
-                    </Grid>
+                    {/*<Grid item xs={6}>*/}
+                    {/*    <div>*/}
+                    {/*        <span className={labelClassName}>* Type</span>*/}
+                    {/*        <FormControl*/}
+                    {/*            size={fieldSize}*/}
+                    {/*            className={fieldClassName}*/}
+                    {/*            variant="filled"*/}
+                    {/*            error={errors.type}*/}
+                    {/*            disabled={disables.type}*/}
+                    {/*        >*/}
+                    {/*            <Select*/}
+                    {/*                required={errors.type}*/}
+                    {/*                disabled={disables.type}*/}
+                    {/*                name="type"*/}
+                    {/*                value={fields.type}*/}
+                    {/*                onChange={(e) => { handleChangeField("type", e.target.value); }}*/}
+                    {/*                MenuProps={MenuProps}*/}
+                    {/*            >*/}
+                    {/*                <MenuItem key={0} value="0">*/}
+                    {/*                    <em>None</em>*/}
+                    {/*                </MenuItem>*/}
+                    {/*                <MenuItem key={1} value="1">Light</MenuItem>*/}
+                    {/*                <MenuItem key={2} value="1">Standard</MenuItem>*/}
+                    {/*                <MenuItem key={3} value="2">Advance</MenuItem>*/}
+                    {/*            </Select>*/}
+                    {/*            <FormHelperText>{helpers.type}</FormHelperText>*/}
+                    {/*        </FormControl>*/}
+                    {/*    </div>*/}
+                    {/*</Grid>*/}
                     <Grid item xs={6}>
                         <div>
                             <span className={labelClassName}>* IP Address</span>

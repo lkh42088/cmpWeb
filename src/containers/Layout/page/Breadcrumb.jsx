@@ -16,7 +16,7 @@ import monitorDashboard from '@iconify/icons-mdi/monitor-dashboard';
 import usersIcon from '@iconify/icons-fa-solid/users';
 import listAlt from '@iconify/icons-el/list-alt';
 import {themes} from "../../../shared/helpers";
-import {SEPARATION_URL} from "../../../lib/var/commonVariables";
+import {SEPARATION_URL} from "../../../lib/var/globalVariable";
 
 const StyledBreadcrumb = withStyles(theme => ({
     root: {
