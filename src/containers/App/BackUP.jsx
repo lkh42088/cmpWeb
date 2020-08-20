@@ -1,62 +1,90 @@
-import React, {Component} from 'react';
+import React, { PureComponent } from 'react';
+import PieChart from '@bit/recharts.recharts.pie-chart';
+import Pie from '@bit/recharts.recharts.pie';
+import Sector from '@bit/recharts.recharts.sector';
 
-class App extends Component {
+const data = [
+    { name: 'Group A', value: 400 },
+    { name: 'Group B', value: 300 },
+    { name: 'Group C', value: 300 },
+    { name: 'Group D', value: 200 },
+];
+
+const renderActiveShape = (props) => {
+    const RADIAN = Math.PI / 180;
+    const {
+        cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
+        fill, payload, percent, value,
+    } = props;
+    const sin = Math.sin(-RADIAN * midAngle);
+    const cos = Math.cos(-RADIAN * midAngle);
+    const sx = cx + (outerRadius + 10) * cos;
+    const sy = cy + (outerRadius + 10) * sin;
+    const mx = cx + (outerRadius + 30) * cos;
+    const my = cy + (outerRadius + 30) * sin;
+    const ex = mx + (cos >= 0 ? 1 : -1) * 22;
+    const ey = my;
+    const textAnchor = cos >= 0 ? 'start' : 'end';
+
+    return (
+        <g>
+            <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
+            <Sector
+                cx={cx}
+                cy={cy}
+                innerRadius={innerRadius}
+                outerRadius={outerRadius}
+                startAngle={startAngle}
+                endAngle={endAngle}
+                fill={fill}
+            />
+            <Sector
+                cx={cx}
+                cy={cy}
+                startAngle={startAngle}
+                endAngle={endAngle}
+                innerRadius={outerRadius + 6}
+                outerRadius={outerRadius + 10}
+                fill={fill}
+            />
+            <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
+            <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+            <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`PV ${value}`}</text>
+            <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+                {`(Rate ${(percent * 100).toFixed(2)}%)`}
+            </text>
+        </g>
+    );
+};
+
+
+export default class Example extends PureComponent {
     state = {
-        selectedFile: null,
-        imagePreviewUrl: null,
+        activeIndex: 0,
     };
 
-    fileChangedHandler = (event) => {
+    onPieEnter = (data, index) => {
         this.setState({
-            selectedFile: event.target.files[0],
+            activeIndex: index,
         });
-
-        const reader = new FileReader();
-
-        reader.onloadend = () => {
-            this.setState({
-                imagePreviewUrl: reader.result,
-            });
-        };
-
-        reader.readAsDataURL(event.target.files[0]);
-    };
-
-    submit = () => {
-        const fd = new FormData();
-
-        // eslint-disable-next-line react/destructuring-assignment
-        fd.append('file', this.state.selectedFile);
-
-        const request = new XMLHttpRequest();
-
-        // eslint-disable-next-line func-names
-        request.onreadystatechange = function () {
-            if (this.readyState === 4 || this.status === 200) {
-                console.log("Uploaded !! ");
-            }
-        };
-        console.log("★ fd : ", fd);
-        request.open("POST", "http://127.0.0.1:8081/v1/users/fileUpload", true);
-        request.send(fd);
     };
 
     render() {
-        let $imagePreview = (<div className="previewText image-container">Please select an Image for Preview</div>);
-        // eslint-disable-next-line react/destructuring-assignment
-        if (this.state.imagePreviewUrl) {
-            // eslint-disable-next-line react/destructuring-assignment
-            $imagePreview = (<div className="image-container"><img src={this.state.imagePreviewUrl} alt="icon" width="200"/></div>);
-        }
-
         return (
-            <div className="App">
-                <input type="file" name="avatar" onChange={this.fileChangedHandler}/>
-                <button type="button" onClick={this.submit}> Upload</button>
-                {$imagePreview}
-            </div>
+            <PieChart width={400} height={400}>
+                <Pie
+                    activeIndex={this.state.activeIndex}
+                    activeShape={renderActiveShape}
+                    data={data}
+                    cx={200}
+                    cy={200}
+                    innerRadius={60}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                    onMouseEnter={this.onPieEnter}
+                />
+            </PieChart>
         );
     }
 }
-
-export default App;

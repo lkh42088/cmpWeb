@@ -725,7 +725,7 @@ export const setDeviceSelected = dispatchVal => async (dispatch) => {
 // deviceType 저장
 export const setDeviceType = dispatchVal => async (dispatch) => {
     try {
-        console.log("💎 setDeviceType start"); //SET_DEVICE_TYPE
+        console.log("💎 setDeviceType start : ", dispatchVal); //SET_DEVICE_TYPE
 
         dispatch({
             type: SET_DEVICE_TYPE,

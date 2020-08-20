@@ -8,6 +8,7 @@ import DefaultPages from './DefaultPages';
 import Subnet from "./Subnet";
 import Dashboards from "./Dashboards";
 import Account from "./Account";
+import Test from "./Test";
 
 export default () => {
     const existSession = localStorage.getItem("user");
@@ -24,6 +25,7 @@ export default () => {
                     <Route path="/404" component={DefaultPages}/>
                     <Route path="/dashboards" component={Dashboards}/>
                     <Route path="/account" component={Account}/>
+                    <Route path="/test" component={Test}/>
                 </div>
             </div>
         );

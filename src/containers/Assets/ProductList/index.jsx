@@ -90,7 +90,7 @@ const MaterialTable = () => {
             )}*/}
             <Col sm={12} md={12} xs={12} xl={12} lg={12}>
                 <Row>
-                    {/*▶ {window.location.href}*/}
+                    ▶ {window.location.href}
                     <RouterBreadcrumbs url={window.location.href}/>
                 </Row>
                 {assetState.assetsPage === 'list' ? (

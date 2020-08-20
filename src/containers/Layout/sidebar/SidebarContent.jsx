@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import emojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import fileInvoiceDollar from '@iconify/icons-fa-solid/file-invoice-dollar';
 import outlineDashboard from '@iconify/icons-ic/outline-dashboard';
 import serverOutlineBadged from '@iconify/icons-clarity/server-outline-badged';
@@ -50,6 +51,13 @@ const SidebarContent = ({
             ? (
                 <div className="cb_sidebar__content">
                     <ul className="cb_sidebar__block">
+                        {/*test menu*/}
+                        {user.id === 'ebjee' && (
+                            <SidebarCategory title="TEST" icon={emojiPeopleIcon} dropdown={dropdown}>
+                                <SidebarLink title="CHART" route="/test/chart"
+                                             onClick={() => changeMenuTitle('TEST', 'CHART', '')}/>
+                            </SidebarCategory>
+                        )}
                         <Link to={getDashBoardLink()} onClick={() => changeMenuTitle('DASHBOARD', '', '')} >
                             <SidebarCategory title="DASHBOARD" icon={outlineDashboard} />
                         </Link>
