@@ -981,7 +981,7 @@ const AssetsSearch = ({ assetState, user, theme }) => {
                                                 </Select>
                                             </FormControl>
                                             <FormControl className={classes.formControl}>
-                                                <InputLabel id="text-select-label">SelectField</InputLabel>
+                                                <InputLabel id="text-select-label">선택</InputLabel>
                                                 <Select
                                                     labelId="text-select-label"
                                                     open={open.schSelectOpen}
@@ -999,7 +999,7 @@ const AssetsSearch = ({ assetState, user, theme }) => {
                                             </FormControl>
                                             <TextField
                                                 id="input-with-icon-textfield"
-                                                label="TextField"
+                                                label="Search"
                                                 name="schText"
                                                 value={schValue.schText || ''}
                                                 style={{margin: 5}}
