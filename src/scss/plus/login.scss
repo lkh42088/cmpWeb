@@ -1,0 +1,21 @@
+.login {
+  text-align: center;
+  height: 100vh;
+  overflow: auto;
+  display: flex;
+  background: url(../shared/img/cb_main.jpg) no-repeat center;
+  background-size: cover;
+
+  button {
+    margin: 0;
+  }
+
+  .account__logo-area {
+  }
+
+  .account__logo-img {
+    max-width: 200px;
+    width: 100%;
+    margin-left: 300px;
+  }
+}

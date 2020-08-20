@@ -1,3 +1,14 @@
+
+// (20aug2020,ebjee)
+.theme-light .form__form-group-icon {
+  background: transparent;
+}
+
+.theme-light .form input, .theme-light .form textarea{
+  color: white;
+  border-left: none;
+}
+
 .account {
   height: 100vh;
   width: 100%;
@@ -9,6 +20,10 @@
     @include themify($themes) {
       background: themed('colorBackgroundBody');
     }
+  }
+
+  .logo {
+
   }
 
   &.account--photo {
@@ -74,11 +89,18 @@
 
 .account__card {
 
-  @include themify($themes) {
+  /*@include themify($themes) {
     background-color: themed('colorBackground');
   }
 
   background-color: #ffffff;
+  padding: 50px 60px;
+  max-width: 520px;
+  width: 100%;*/
+
+  // (20aug2020,ebjee)
+  background-color: rgba(0,10,16,.8);
+  color: #fff;
   padding: 50px 60px;
   max-width: 520px;
   width: 100%;
@@ -268,7 +290,7 @@
 }
 
 .account__logo {
-  color: $color-cb-logo;
+  color: $color-blue;
   font-weight: 700;
   margin-top: 20px;
 }
@@ -307,3 +329,5 @@
     flex-wrap: wrap;
   }
 }
+
+

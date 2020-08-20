@@ -8,6 +8,7 @@ import {
 import {checkLoginUser, logout} from "../../../../redux/actions/loginActions";
 import LoginConfirmEmailForm from "./LoginConfirmEmailForm";
 import LoginForm from "./LoginForm";
+import ImageCBLogo from '../../../../shared/img/logo/cb_logo_light.png';
 
 const LoginBase = ({history}) => {
     const dispatch = useDispatch();
@@ -43,19 +44,22 @@ const LoginBase = ({history}) => {
     console.log("LoginBase: current pageNum ", pageNum);
     return (
         <div className="account__wrapper">
+            <div className="account__logo-area">
+                <img className="account__logo-img" src={ImageCBLogo} alt="Contents Bridge"/>
+            </div>
             <div className="account__card">
                 <div className="account__head">
-                    <h3 className="account__title">Welcome to
-                        <span className="account__logo"> 콘텐츠
-                            <span className="account__logo-accent"> 브릿지</span>
-                        </span>
+                    <h3 className="account__title" style={{
+                        color: "white",
+                    }}>Welcome to
+                        <span className="account__logo"> Contents Bridge</span>
                     </h3>
                     <h4 className="account__subhead subhead">통합플랫폼</h4>
                 </div>
                 {/* eslint-disable-next-line no-nested-ternary */}
-                { pageNum === GV_LOGIN_PAGE_INPUT_EMAIL ? <LoginInputEmailFormWrap form="log_in_email_input_form"/>
+                {pageNum === GV_LOGIN_PAGE_INPUT_EMAIL ? <LoginInputEmailFormWrap form="log_in_email_input_form"/>
                     : (pageNum === GV_LOGIN_PAGE_CONFIRM_EMAIL ? <LoginConfirmEmailForm form="log_in_confirm_form"/>
-                        : <LoginForm form="log_in_form" />)
+                        : <LoginForm form="log_in_form"/>)
                 }
             </div>
         </div>

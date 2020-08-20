@@ -154,6 +154,9 @@ const LoginForm = () => {
                 </div>
             </div>
             <div className="form__form-group">
+                <div className="account__or"><p style={{
+                    color: "#ffffff",
+                }}>&nbsp;대표 이메일: idc@conbridge.co.kr&nbsp;</p></div>
                 <GoogleRecaptcha
                     visible={captchaVisible}
                     setCaptchaOk={setCaptchaOk}
