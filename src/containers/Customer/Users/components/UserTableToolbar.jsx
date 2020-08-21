@@ -267,11 +267,11 @@ const UserTableToolbar = (props) => {
                                         <AddIcon/>
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title="더보기" aria-label="more">
+                                {/*<Tooltip title="더보기" aria-label="more">
                                     <IconButton type="button" onClick={handleOpen}>
                                         <MoreVertIcon/>
                                     </IconButton>
-                                </Tooltip>
+                                </Tooltip>*/}
                             </Grid>
                             <Grid item md={4} zeroMinWidth>
                                 <Paper component="div" className={classes.paper}>
@@ -319,10 +319,10 @@ const UserTableToolbar = (props) => {
                                     >
                                         <SearchIcon />
                                     </IconButton>
-                                    <Divider className={classes.divider} orientation="vertical" />
-                                    <IconButton color="primary" className={classes.iconButton} aria-label="directions">
+                                    {/*<Divider className={classes.divider} orientation="vertical" />*/}
+                                    {/*<IconButton color="primary" className={classes.iconButton} aria-label="directions">
                                         <DirectionsIcon />
-                                    </IconButton>
+                                    </IconButton>*/}
                                 </Paper>
                             </Grid>
                             <Grid item md={5} zeroMinWidth>
