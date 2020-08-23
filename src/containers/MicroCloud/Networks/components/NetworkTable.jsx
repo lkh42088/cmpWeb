@@ -28,6 +28,7 @@ import CommonTableHead from "../../../Common/CommonTableHead";
 import {
     getMcNetworks,
 } from "../../../../lib/api/microCloud";
+import RegisterNet from "./RegisterNet";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -97,7 +98,7 @@ const NetworkTable = () => {
 
     const [data, setData] = useState([]);
     const [paging, setPaging] = useState(null);
-    const [openAddVm, setOpenAddVm] = useState(false);
+    const [openAddNet, setOpenAddNet] = useState(false);
     const [searchParam, setSearchParam] = useState(null);
     const { enqueueSnackbar } = useSnackbar();
 
@@ -223,12 +224,37 @@ const NetworkTable = () => {
         }
     };
 
+    const handleOpenAddNet = () => {
+        setOpenAddNet(true);
+    };
+
+    const handleCloseAddNet = () => {
+        setOpenAddNet(false);
+    };
+
     const handleSnackbarFailure = (snackMsg) => {
         enqueueSnackbar(snackMsg);
     };
 
     const handleSnackbarSuccess = (snackMsg) => {
         enqueueSnackbar(snackMsg, { variant: "success" });
+    };
+
+    const asyncAddNet = async (net) => {
+        const {
+            name, cpIdx, serialNumber, serverIdx, bridge, subnet, netmask,
+        } = net;
+        try {
+            handleSnackbarSuccess("Network 등록에 성공하였습니다.");
+            getPageData();
+        } catch (e) {
+            handleSnackbarFailure("Network 등록에 실패하였습니다.");
+        }
+    };
+
+    const handleSubmitAddNet = (net) => {
+        console.log("handleSubmit() : ", net);
+        handleCloseAddNet();
     };
 
     const handleSubmitSearch = (params) => {
@@ -382,13 +408,13 @@ const NetworkTable = () => {
                 <CardBody className="cb-card-body">
                     <NetworkTableToolbar
                         numSelected={[...selected].filter(el => el[1]).length}
-                        // handleDeleteSelected={handleDeleteSelected}
+                        handleDeleteSelected={handleDeleteSelected}
                         handleRefresh={handleRefresh}
                         onRequestSort={handleRequestSort}
                         rows={headRows}
-                        // handleOpen={handleOpenAddVm}
+                        handleOpen={handleOpenAddNet}
                         handleSubmitSearch={handleSubmitSearch}
-                        contents="VM"
+                        contents="Network"
                         count={totalCount}
                         rowsPerPage={rowsPerPage}
                         page={currentPage}
@@ -423,6 +449,11 @@ const NetworkTable = () => {
                             </Table>
                         </TableContainer>
                     </div>
+                    <RegisterNet
+                        open={openAddNet}
+                        handleClose={handleCloseAddNet}
+                        handleSubmit={handleSubmitAddNet}
+                    />
                 </CardBody>
             </Card>
         </Col>

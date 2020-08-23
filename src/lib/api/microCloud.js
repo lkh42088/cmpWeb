@@ -38,18 +38,26 @@ export const unregisterMcVm = ({
     idx,
 });
 
-export const getMcNetworks = ({
-    rows, offset, orderBy, order,
-}) => client.get(`/v1/micro/networks-paging/${rows}/${offset}/${orderBy}/${order}`);
-
+// Images
 export const getMcImages = ({
     rows, offset, orderBy, order,
 }) => client.get(`/v1/micro/images-paging/${rows}/${offset}/${orderBy}/${order}`);
 
-export const getMcNetworksByServerIdx = ({
-    serverIdx,
-}) => client.get(`/v1/micro/networks/${serverIdx}`);
-
 export const getMcImagesByServerIdx = ({
     serverIdx,
 }) => client.get(`/v1/micro/images/${serverIdx}`);
+
+// Virtual Network
+export const registerMcNetwork = ({
+    name, cpIdx, serialNumber, serverIdx, os, image, cpu, ram, hdd, network,
+}) => client.post('/v1/micro/networks/register', {
+    name, cpIdx, serialNumber, serverIdx, os, image, cpu, ram, hdd, network,
+});
+
+export const getMcNetworks = ({
+    rows, offset, orderBy, order,
+}) => client.get(`/v1/micro/networks-paging/${rows}/${offset}/${orderBy}/${order}`);
+
+export const getMcNetworksByServerIdx = ({
+    serverIdx,
+}) => client.get(`/v1/micro/networks/${serverIdx}`);

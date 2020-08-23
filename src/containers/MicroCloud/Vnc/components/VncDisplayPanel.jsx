@@ -7,7 +7,7 @@ const VncDisplayPanel = (props) => {
 
     return (
         <>
-            <VncDisplay url="ws://127.0.0.1:5000" />
+            <VncDisplay url="ws://192.168.0.72:6080" />
         </>
     );
 };
