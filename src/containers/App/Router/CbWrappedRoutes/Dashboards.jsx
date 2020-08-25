@@ -5,11 +5,13 @@ import DashboardManager from '../../../Dashboards/Manager/index';
 import DashboardCustomer from '../../../Dashboards/Customer/index';
 import MicroDashboardManager from '../../../MicroDashboards/Manager/index';
 import MicroDashboardCustomer from '../../../MicroDashboards/Customer/index';
+import MicroCloudDashboard from "../../../Dashboards/MicroCloud";
 
 export default () => (
     <Switch>
         <Route path="/dashboards/customer" component={DashboardCustomer} />
         <Route path="/dashboards/manager" component={DashboardManager} />
+        <Route path="/dashboards/micro" component={MicroCloudDashboard} />
         <Route path="/dashboards/micro-customer" component={MicroDashboardCustomer} />
         <Route path="/dashboards/micro-manager" component={MicroDashboardManager} />
     </Switch>
