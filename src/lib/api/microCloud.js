@@ -64,4 +64,4 @@ export const getMcNetworksByServerIdx = ({
 
 export const getVmInterfaceTraffic = ({
     mac,
-}) => client.get(`/vms/interface/traffic/${mac}`);
+}) => client.get(`/v1/micro/monitor/stats/${mac}`).then(response => response);

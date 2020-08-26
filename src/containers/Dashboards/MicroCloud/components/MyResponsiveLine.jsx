@@ -57,30 +57,43 @@ const data = [
     },
 ];
 
-
 const MyResponsiveLine = (props) => {
     const {
         title, height, mac,
     } = props;
 
-    const [state, setState] = useState([]);
+    const [state, setState] = useState({
+        id: "RX",
+        data: [{
+            x: Date(),
+            y: 0,
+        }],
+    });
+    // const [state, setState] = useState([{
+    //     time: null,
+    //     hostname: "",
+    //     ifDescr: "",
+    //     ifPhysAddress: "",
+    //     ifInOctets: 0,
+    //     ifOutOctets: 0,
+    // }]);
 
     /**************************************************************
      * Axios Function
      **************************************************************/
     const getData = async () => {
-        console.log("★★★★★★★★", "get Interface Traffic! mac:", mac);
+        // console.log("★★★★★★★★", "get Interface Traffic! mac:", mac);
         try {
-            const response = await getVmInterfaceTraffic({
-                mac,
-            });
+            const response = await getVmInterfaceTraffic({mac});
             setState({
-                ...state,
                 data: (
-                    response.data.data.map(val => ({
-                        ...val,
-                    }))),
+                    response.data.stats.map(val => ({
+                        x: Date.parse(val.time),
+                        y: val.ifInOctets,
+                    }))
+                ),
             });
+            console.log(state.stats);
         } catch {
             setState({
                 ...state,
@@ -100,7 +113,7 @@ const MyResponsiveLine = (props) => {
             <CardBody className="cb-card-body">
                 <p>{title}</p>
                 <ResponsiveLine
-                    data={data}
+                    data={state.data}
                     height={height}
                     margin={{
                         top: 50, right: 110, bottom: 50, left: 60,
