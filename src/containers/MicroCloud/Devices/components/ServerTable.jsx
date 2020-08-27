@@ -400,7 +400,7 @@ const ServerTable = () => {
                         className={cellClassName}
                         style={{width: "15%"}}
                     >
-                        {row.ipAddr}
+                        {row.ip}
                     </TableCell>
                 </TableRow>
             </React.Fragment>
