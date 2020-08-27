@@ -3,7 +3,7 @@ import {Route, Switch} from 'react-router-dom';
 import {Card, CardBody, Col} from "reactstrap";
 import MainWrapper from '../MainWrapper';
 import WrappedRoutes from './WrappedRoutes';
-import CbWrappedRoutes from './CbWrappedRoutes';
+import NbWrappedRoutes from './NbWrappedRoutes';
 import MicroWrappedRoutes from './MicroWrappedRoutes';
 import LogInPage from "../../Login/LogInPage";
 import LogInEmailAuth from "../../Login/AuthFromEmail";
@@ -19,7 +19,7 @@ const Router = () => (
                     <Route path="/login" component={LogInPage}/>
                     <Route path="/org" component={WrappedRoutes}/>
                     <Route path="/micro" component={MicroWrappedRoutes}/>
-                    <Route path="/" component={CbWrappedRoutes}/>
+                    <Route path="/" component={NbWrappedRoutes}/>
                 </Switch>
             </main>
         </MainWrapper>

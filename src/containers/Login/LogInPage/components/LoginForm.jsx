@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Button, ButtonToolbar } from 'reactstrap';
+import React, {useEffect, useState} from 'react';
+import {Button, ButtonToolbar} from 'reactstrap';
 import {Field, Form, reduxForm} from 'redux-form';
 import EyeIcon from 'mdi-react/EyeIcon';
 import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
 import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
     checkLoginUser,
     changeLoginField,
@@ -29,7 +29,7 @@ const LoginForm = () => {
     const [errorMessage, setErrorMessage] = useState(defaultErrMsg);
 
     const dispatch = useDispatch();
-    const { form } = useSelector(({ accountRd }) => ({
+    const {form} = useSelector(({accountRd}) => ({
         form: accountRd.login,
     }));
 
@@ -43,7 +43,7 @@ const LoginForm = () => {
     };
 
     const onChange = (e) => {
-        const { value, name } = e.target;
+        const {value, name} = e.target;
         dispatch(
             changeLoginField({
                 key: name,
@@ -55,7 +55,10 @@ const LoginForm = () => {
     const doLogin = async (username, password) => {
         console.log("doLogin: username: ", username, ", password ", password);
         try {
-            const response = await login({username, password});
+            const response = await login({
+                username,
+                password,
+            });
             /**
              * response.data.success : {false, true}
              * response.data.msg : {id, password, email, result}
@@ -98,7 +101,7 @@ const LoginForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const { username, password } = form;
+        const {username, password} = form;
         console.log('>>>>>> onSubmit: username ', username, ", password ", password);
         doLogin(username, password);
     };
@@ -154,9 +157,13 @@ const LoginForm = () => {
                 </div>
             </div>
             <div className="form__form-group">
-                <div className="account__or"><p style={{
-                    color: "#ffffff",
-                }}>&nbsp;대표 이메일: idc@conbridge.co.kr&nbsp;</p></div>
+                <div className="account__or">
+                    <p style={{
+                        color: "#ffffff",
+                    }}><a href="http://nubes-bridge.com" target="_parent">
+                        &nbsp;http://nubes-bridge.com&nbsp;
+                    </a></p>
+                </div>
                 <GoogleRecaptcha
                     visible={captchaVisible}
                     setCaptchaOk={setCaptchaOk}
@@ -167,11 +174,11 @@ const LoginForm = () => {
                     <Button className="account__btn btn btn-primary" color="white">로그인</Button>
                 </ButtonToolbar>
             </div>
-            { resultError ? (
+            {resultError ? (
                 <div>
                     <span style={{
                         color: "red",
-                    }} >{errorMessage}</span>
+                    }}>{errorMessage}</span>
                 </div>
             ) : <div/>}
         </Form>

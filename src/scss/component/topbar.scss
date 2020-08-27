@@ -51,16 +51,18 @@
 .topbar__logo {
   width: 150px;
   height: 38px;
-  margin: auto 15px;
+  margin: 8px 15px;
   background-repeat: no-repeat;
   background-position-y: center;
   background-position-x: left;
   background-size: contain;
   display: none;
-
+  font-size: x-large;
+  font-weight: bold;
+/*
   @include themify($themes) {
     background-image: themed('logoImg');
-  }
+  }*/
 
   @media screen and (min-width: 768px) {
     display: block;

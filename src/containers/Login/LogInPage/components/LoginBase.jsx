@@ -44,15 +44,15 @@ const LoginBase = ({history}) => {
     console.log("LoginBase: current pageNum ", pageNum);
     return (
         <div className="account__wrapper">
-            <div className="account__logo-area">
+            {/*<div className="account__logo-area">
                 <img className="account__logo-img" src={ImageCBLogo} alt="Contents Bridge"/>
-            </div>
+            </div>*/}
             <div className="account__card">
                 <div className="account__head">
                     <h3 className="account__title" style={{
                         color: "white",
                     }}>Welcome to
-                        <span className="account__logo"> Contents Bridge</span>
+                        <span className="account__logo"> Nubes Bridge</span>
                     </h3>
                     <h4 className="account__subhead subhead">통합플랫폼</h4>
                 </div>
