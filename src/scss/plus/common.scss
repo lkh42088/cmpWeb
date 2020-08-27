@@ -394,6 +394,18 @@
 
 /*common----------------------------------------------------------------------------------------------common*/
 
+.font_7 {
+  font-size: 7px;
+}
+
+.font_8 {
+  font-size: 8px;
+}
+
+.font_9 {
+  font-size: 9px;
+}
+
 .input_col_1 {
   width: 10%
 }
@@ -511,6 +523,7 @@
 }
 
 .mouse_over_list {
+  color: #646777;
   &:hover {
     color: $color-materal-secondary;
     background-color: #f6eedf;

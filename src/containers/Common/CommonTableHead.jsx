@@ -8,15 +8,18 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 function CommonTableHead(props) {
     const {
         classes, order, orderBy, numSelected, rowCount, rows,
-        onRequestSort, onSelectAllClick,
+        onRequestSort, onSelectAllClick, checkboxFlag,
     } = props;
     const createSortHandler = property => (event) => {
         onRequestSort(event, property);
     };
+    
+    /*checkboxFlag -> 코드관리*/
+    
     return (
         <TableHead>
             <TableRow>
-                <TableCell padding="checkbox">
+                <TableCell padding="checkbox" style={checkboxFlag ? {display: "none"} : {}}>
                     <Checkbox
                         className={`cb-material-table__checkbox ${numSelected === rowCount && 'cb-material-table__checkbox--checked'}`}
                         indeterminate={numSelected > 0 && numSelected < rowCount}

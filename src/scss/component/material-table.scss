@@ -90,6 +90,12 @@ td.material-table__cell {
   font-size: 12px;
 }
 
+th.material-table__cell .font-small {
+  /*border: 1px solid red;*/
+  //padding: 0 0 0 4px;
+  font-size: 9px;
+}
+
 .material-table__cell-right{
   @include directify($directions) {
     text-align: directed('left');

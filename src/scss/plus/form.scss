@@ -620,7 +620,7 @@
   margin-right: 0px;
   height: 45px;
   @include themify($themes) {
-    border-bottom: 1px solid themed('colorFieldsBorder');
+    /*border-bottom: 1px solid themed('colorFieldsBorder');*/
   }
 }
 

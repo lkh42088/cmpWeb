@@ -21,10 +21,12 @@ import {
     usersReducer,
     pagingReducer,
     companiesReducer,
+    codeReducer,
 } from '../../redux/reducers/index';
 import {checkLoginUser, userSaga} from "../../redux/actions/loginActions";
 import {usersSaga} from "../../redux/actions/usersActions";
 import {companiesSaga} from "../../redux/actions/companiesActions";
+import {codeSaga} from "../../redux/actions/codeActions";
 
 const rootReducer = combineReducers({
     form: reduxFormReducer, // mounted under "form",
@@ -42,6 +44,7 @@ const rootReducer = combineReducers({
     usersRd: usersReducer,
     pagingRd: pagingReducer,
     companiesRd: companiesReducer,
+    codeRd: codeReducer,
 });
 
 export function* rootSaga() {
@@ -49,6 +52,7 @@ export function* rootSaga() {
         userSaga(),
         usersSaga(),
         companiesSaga(),
+        codeSaga(),
     ]);
 }
 

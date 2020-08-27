@@ -12,6 +12,7 @@ import loadingReducer from "./loadingReducer";
 import usersReducer from "./usersReducer";
 import pagingReducer from "./pagingReducer";
 import companiesReducer from "./companiesReducer";
+import codeReducer from "./codeReducer";
 
 export {
     themeReducer,
@@ -28,4 +29,5 @@ export {
     usersReducer,
     pagingReducer,
     companiesReducer,
+    codeReducer,
 };

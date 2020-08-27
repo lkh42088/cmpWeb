@@ -56,6 +56,8 @@ const SidebarContent = ({
                             <SidebarCategory title="TEST" icon={emojiPeopleIcon} dropdown={dropdown}>
                                 <SidebarLink title="CHART" route="/test/chart"
                                              onClick={() => changeMenuTitle('TEST', 'CHART', '')}/>
+                                <SidebarLink title="CODE" route="/test/code"
+                                             onClick={() => changeMenuTitle('TEST', 'CODE', '')}/>
                             </SidebarCategory>
                         )}
                         <Link to={getDashBoardLink()} onClick={() => changeMenuTitle('DASHBOARD', '', '')} >
