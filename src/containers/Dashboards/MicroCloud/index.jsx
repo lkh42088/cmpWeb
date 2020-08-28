@@ -43,7 +43,7 @@ const MicroCloudDashboard = ({t}) => {
         direction: rtl.direction,
     }));
 
-    const mac = "fe:54:00:d9:f7:6c";
+    const mac = "52:54:00:01:b5:b7";
 
     return (
         <Container fluid>
