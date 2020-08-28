@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { ResponsiveLine } from '@nivo/line';
 import {Card, CardBody} from "reactstrap";
-import {readSubnet} from "../../../../lib/api/subnet";
 import {getVmInterfaceTraffic} from "../../../../lib/api/microCloud";
 
 const data1 = [
@@ -65,10 +64,10 @@ const MyResponsiveLine = (props) => {
     const [data, setData] = useState({
         stats: [{
                 id: "RX",
-                data: [{ x: new Date("00:00:00"), y: 0 }],
+                data: [{ x: new Date("00:00:00").getDate(), y: 0 }],
             }, {
                 id: "TX",
-                data: [{ x: new Date("00:00:00"), y: 0 }],
+                data: [{ x: new Date("00:00:00").getDate(), y: 0 }],
             },
         ],
     });
@@ -85,18 +84,6 @@ const MyResponsiveLine = (props) => {
 
         try {
             const response = await getVmInterfaceTraffic({mac});
-            const rxData = data.slice(1);
-            const txData = data.slice(2);
-            rxData.push({
-                // eslint-disable-next-line no-undef
-                x: time.timeMinute.offset(response.data.stats[0].data[0].x, 30),
-                y: 10 + Math.round(Math.random() * 20),
-            });
-            txData.push({
-                // eslint-disable-next-line no-undef
-                x: time.timeMinute.offset(response.data.stats[0].data[0].x, 30),
-                y: 10 + Math.round(Math.random() * 20),
-            });
             // console.log("TEST RESPONSE1: ", response.data.stats[0].data);
             // setData({
             //     stats: (
@@ -109,7 +96,6 @@ const MyResponsiveLine = (props) => {
             //             })),
             //         }))),
             // });
-            setData({rxData, txData});
             setHostname(response.data.hostname);
             console.log("TEST RESPONSE2: ", hostname);
             console.log("TEST RESPONSE3: ", data.stats);
@@ -130,8 +116,8 @@ const MyResponsiveLine = (props) => {
     }, [data.stats]);
 
     useEffect(() => {
-        // const timer = setInterval(getData, 3000);
-        getData();
+        const timer = setInterval(getData, 3000);
+        // getData();
     }, []);
 
     return (
@@ -144,7 +130,7 @@ const MyResponsiveLine = (props) => {
                     margin={{
                         top: 50, right: 110, bottom: 50, left: 60,
                     }}
-                    xScale={{ type: 'time', format: 'native' }}
+                    xScale={{ type: 'point' }}
                     yScale={{
                         type: 'linear', min: 'auto', max: 'auto', stacked: false, reverse: false,
                     }}
@@ -159,7 +145,7 @@ const MyResponsiveLine = (props) => {
                         legend: 'transportation',
                         legendOffset: 36,
                         legendPosition: 'middle',
-                        format: "%H:%M:%S",
+                        // format: "%H:%M:%S",
                         // tickValue: "every 5 minutes",
                     }}
                     axisLeft={{
@@ -184,6 +170,7 @@ const MyResponsiveLine = (props) => {
                     areaOpacity={0.15}
                     useMesh
                     enableSlices="x" //todo
+                    interactive="false"
                     legends={[
                         {
                             anchor: 'bottom-right',
