@@ -1,60 +1,8 @@
 import React, {useState, useEffect} from "react";
 import { ResponsiveLine } from '@nivo/line';
 import {Card, CardBody} from "reactstrap";
+import AxisTicks from "react-vis/es/plot/axis/axis-ticks";
 import {getVmInterfaceTraffic} from "../../../../lib/api/microCloud";
-
-const data1 = [
-    {
-        id: "RX",
-        data: [
-            {
-                x: "20:00:00",
-                y: 596685,
-            },
-            {
-                x: "21:00:00",
-                y: 592929,
-            },
-            {
-                x: "22:00:00",
-                y: 394994,
-            },
-            {
-                x: "23:00:00",
-                y: 494944,
-            },
-            {
-                x: "24:00:00",
-                y: 4938494,
-            },
-        ],
-    },
-    {
-        id: "TX",
-        data: [
-            {
-                x: "20:00:00",
-                y: 1829839,
-            },
-            {
-                x: "21:00:00",
-                y: 629348,
-            },
-            {
-                x: "22:00:00",
-                y: 3298843,
-            },
-            {
-                x: "23:00:00",
-                y: 939494,
-            },
-            {
-                x: "24:00:00",
-                y: 3294393,
-            },
-        ],
-    },
-];
 
 const MyResponsiveLine = (props) => {
     const {
@@ -64,10 +12,10 @@ const MyResponsiveLine = (props) => {
     const [data, setData] = useState({
         stats: [{
                 id: "RX",
-                data: [{ x: new Date("00:00:00").getDate(), y: 0 }],
+                data: [],
             }, {
                 id: "TX",
-                data: [{ x: new Date("00:00:00").getDate(), y: 0 }],
+                data: [],
             },
         ],
     });
@@ -84,19 +32,19 @@ const MyResponsiveLine = (props) => {
 
         try {
             const response = await getVmInterfaceTraffic({mac});
-            console.log("TEST RESPONSE1: ", response.data.stats[0].data);
+            // console.log("TEST RESPONSE1: ", response.data.stats[0].data);
             setData({
                 stats: (
                     response.data.stats.map(val => ({
                         id: val.id,
                         data: val.data.map(s => ({
-                            ...s,
+                            // ...s,
+                            x: s.x,
+                            y: s.y,
                         })),
                     }))),
             });
             setHostname(response.data.hostname);
-            console.log("TEST RESPONSE2: ", hostname);
-            console.log("TEST RESPONSE3: ", data.stats);
         } catch {
             setData({
                 ...data,
@@ -105,16 +53,13 @@ const MyResponsiveLine = (props) => {
         }
     };
 
-    const test = () => {
-        console.log(data.stats);
-    };
-
     useEffect(() => {
-        test();
+        // console.log(data.stats);
     }, [data.stats]);
 
     useEffect(() => {
-        const timer = setInterval(getData, 5000);
+        getData();
+        const timer = setInterval(getData, 3000);
         return () => clearInterval(timer);
     }, []);
 
@@ -128,6 +73,12 @@ const MyResponsiveLine = (props) => {
                     margin={{
                         top: 50, right: 110, bottom: 50, left: 60,
                     }}
+                    // xScale={{
+                    //     type: 'time',
+                    //     format: "%Y-%m-%d %I:%M:%S",
+                    //     // format: "UTC",
+                    //     // precision: "hour",
+                    // }}
                     xScale={{ type: 'point' }}
                     yScale={{
                         type: 'linear', min: 'auto', max: 'auto', stacked: false, reverse: false,
@@ -135,13 +86,22 @@ const MyResponsiveLine = (props) => {
                     curve="monotoneX"
                     axisTop={null}
                     axisRight={null}
+                    // axisBottom={{
+                    //     useUTC: true,
+                    //     legend: 'Time',
+                    //     legendOffset: 36,
+                    //     legendPosition: 'middle',
+                    //     format: "%I:%M:%S",
+                    //     tickValues: "every 10 minutes",
+                    // }}
                     axisBottom={{
                         orient: 'bottom',
                         tickSize: 5,
                         tickPadding: 5,
                         tickRotation: 0,
+                        // format: "%I:%M:%S",
                         tickValues: "every 10 minutes",
-                        legend: 'Time Line (1Hour)',
+                        legend: 'Time',
                         legendOffset: 36,
                         legendPosition: 'middle',
                     }}
@@ -150,8 +110,8 @@ const MyResponsiveLine = (props) => {
                         tickSize: 5,
                         tickPadding: 5,
                         tickRotation: 0,
-                        legend: '',
-                        legendOffset: -40,
+                        legend: 'Bytes',
+                        legendOffset: -55,
                         legendPosition: 'middle',
                     }}
                     colors={{ scheme: 'category10' }}
@@ -195,7 +155,6 @@ const MyResponsiveLine = (props) => {
                         },
                     ]}
                     motionStiffness={100}
-                    onClick={test}
                 />
             </CardBody>
         </Card>
