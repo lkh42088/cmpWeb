@@ -84,18 +84,16 @@ const MyResponsiveLine = (props) => {
 
         try {
             const response = await getVmInterfaceTraffic({mac});
-            // console.log("TEST RESPONSE1: ", response.data.stats[0].data);
-            // setData({
-            //     stats: (
-            //         response.data.stats.map(val => ({
-            //             id: val.id,
-            //             data: val.data.map(s => ({
-            //                 ...s,
-            //                 // x: s.x,
-            //                 // y: s.y,
-            //             })),
-            //         }))),
-            // });
+            console.log("TEST RESPONSE1: ", response.data.stats[0].data);
+            setData({
+                stats: (
+                    response.data.stats.map(val => ({
+                        id: val.id,
+                        data: val.data.map(s => ({
+                            ...s,
+                        })),
+                    }))),
+            });
             setHostname(response.data.hostname);
             console.log("TEST RESPONSE2: ", hostname);
             console.log("TEST RESPONSE3: ", data.stats);
@@ -112,12 +110,12 @@ const MyResponsiveLine = (props) => {
     };
 
     useEffect(() => {
-
+        test();
     }, [data.stats]);
 
     useEffect(() => {
-        const timer = setInterval(getData, 3000);
-        // getData();
+        const timer = setInterval(getData, 5000);
+        return () => clearInterval(timer);
     }, []);
 
     return (
@@ -125,7 +123,7 @@ const MyResponsiveLine = (props) => {
             <CardBody className="cb-card-body">
                 <p>{title} <b>({hostname})</b></p>
                 <ResponsiveLine
-                    data={data1}
+                    data={data.stats}
                     height={height}
                     margin={{
                         top: 50, right: 110, bottom: 50, left: 60,
@@ -142,11 +140,10 @@ const MyResponsiveLine = (props) => {
                         tickSize: 5,
                         tickPadding: 5,
                         tickRotation: 0,
-                        legend: 'transportation',
+                        tickValues: "every 10 minutes",
+                        legend: 'Time Line (1Hour)',
                         legendOffset: 36,
                         legendPosition: 'middle',
-                        // format: "%H:%M:%S",
-                        // tickValue: "every 5 minutes",
                     }}
                     axisLeft={{
                         orient: 'left',
