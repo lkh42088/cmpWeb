@@ -1,90 +1,207 @@
-import React, { PureComponent } from 'react';
-import PieChart from '@bit/recharts.recharts.pie-chart';
-import Pie from '@bit/recharts.recharts.pie';
-import Sector from '@bit/recharts.recharts.sector';
+import React, {useEffect, useState} from "react";
+import {ResponsivePie} from '@nivo/pie';
+import {Card, CardBody} from "reactstrap";
+import {
+    PieChart, Pie, Sector, ResponsiveContainer,
+} from 'recharts';
+import {getMcNetworksCpu} from "../../../../lib/api/microCloudCpu";
 
-const data = [
-    { name: 'Group A', value: 400 },
-    { name: 'Group B', value: 300 },
-    { name: 'Group C', value: 300 },
-    { name: 'Group D', value: 200 },
+const dataTemp = [
+    {
+        name: 'Group A',
+        value: 400,
+        fillColor: '#f3c623',
+    }, {
+        name: 'Group B',
+        value: 300,
+        fillColor: '#1eb2a6',
+    },
+    {
+        name: 'Group C',
+        value: 300,
+        fillColor: '#cfd186',
+    }, {
+        name: 'Group D',
+        value: 200,
+        fillColor: '#f4f6ff',
+    },
 ];
 
-const renderActiveShape = (props) => {
-    const RADIAN = Math.PI / 180;
+const MyResponsivePie = (props) => {
     const {
-        cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
-        fill, payload, percent, value,
+        height, title, color, mac,
     } = props;
-    const sin = Math.sin(-RADIAN * midAngle);
-    const cos = Math.cos(-RADIAN * midAngle);
-    const sx = cx + (outerRadius + 10) * cos;
-    const sy = cy + (outerRadius + 10) * sin;
-    const mx = cx + (outerRadius + 30) * cos;
-    const my = cy + (outerRadius + 30) * sin;
-    const ex = mx + (cos >= 0 ? 1 : -1) * 22;
-    const ey = my;
-    const textAnchor = cos >= 0 ? 'start' : 'end';
+
+    const tempData = "x";
+
+    const [data, setData] = useState([]);
+
+    const getData = async () => {
+        try {
+            const response = await getMcNetworksCpu({tempData});
+            console.log("👿👿 TEST response: ", response);
+            console.log("👽👽 TEST response: ", response.data);
+            console.log("💎💎 TEST response: ", response.data[0]);
+            const idle = response.data[0].usage_idle;
+            const idleVaule = 100 - Number(idle);
+
+            console.log("한번 테스트 해봅시다~~~~ : ", 100 - Number(idle));
+            console.log("소수점 자르기 ~~~~ : ", idleVaule.toFixed(2));
+
+            const cpdata = [
+                {
+                    id: "use",
+                    label: "use",
+                    value: Number(idleVaule.toFixed(2)),
+                    color: "hsl(92, 70%, 50%)",
+                },
+                {
+                    id: "free",
+                    label: "free",
+                    value: Number(idle.toFixed(2)),
+                    color: "hsl(92, 70%, 50%)",
+                },
+            ];
+            setData(data.concat(cpdata));
+
+            /*setData({
+                ...data,
+                value: Number(idleVaule.toFixed(2)),
+            });*/
+
+            console.log("💂💂 idle : ", idle);
+        } catch {
+            console.log("👿👿 TEST error ~ ");
+        }
+    };
+
+    useEffect(() => {
+        getData();
+    }, []);
 
     return (
-        <g>
-            <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
-            <Sector
-                cx={cx}
-                cy={cy}
-                innerRadius={innerRadius}
-                outerRadius={outerRadius}
-                startAngle={startAngle}
-                endAngle={endAngle}
-                fill={fill}
-            />
-            <Sector
-                cx={cx}
-                cy={cy}
-                startAngle={startAngle}
-                endAngle={endAngle}
-                innerRadius={outerRadius + 6}
-                outerRadius={outerRadius + 10}
-                fill={fill}
-            />
-            <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
-            <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-            <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`PV ${value}`}</text>
-            <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
-                {`(Rate ${(percent * 100).toFixed(2)}%)`}
-            </text>
-        </g>
+        <Card className="cb-card">
+            <CardBody className="cb-card-body">
+                <p>{title}</p>
+                <ResponsivePie
+                    data={data}
+                    height={height}
+                    margin={{
+                        top: 40, right: 80, bottom: 80, left: 80,
+                    }}
+                    innerRadius={0.3}
+                    padAngle={0.7}
+                    cornerRadius={1}
+                    colors={{scheme: color}}
+                    borderWidth={1}
+                    borderColor={{from: 'color', modifiers: [['darker', 1.2]]}}
+                    radialLabelsSkipAngle={10}
+                    radialLabelsTextXOffset={6}
+                    radialLabelsTextColor="#333333"
+                    radialLabelsLinkOffset={0}
+                    radialLabelsLinkDiagonalLength={16}
+                    radialLabelsLinkHorizontalLength={24}
+                    radialLabelsLinkStrokeWidth={1}
+                    radialLabelsLinkColor={{from: 'color'}}
+                    slicesLabelsSkipAngle={10}
+                    slicesLabelsTextColor="#333333"
+                    animate="true"
+                    motionStiffness={90}
+                    motionDamping={15}
+                    defs={[
+                        {
+                            id: 'dots',
+                            type: 'patternDots',
+                            background: 'inherit',
+                            color: 'rgba(255, 255, 255, 0.3)',
+                            size: 4,
+                            padding: 1,
+                            stagger: true,
+                        },
+                        {
+                            id: 'lines',
+                            type: 'patternLines',
+                            background: 'inherit',
+                            color: 'rgba(255, 255, 255, 0.3)',
+                            rotation: -45,
+                            lineWidth: 6,
+                            spacing: 10,
+                        },
+                    ]}
+                    fill={[
+                        {
+                            match: {
+                                id: 'ruby',
+                            },
+                            id: 'dots',
+                        },
+                        {
+                            match: {
+                                id: 'c',
+                            },
+                            id: 'dots',
+                        },
+                        {
+                            match: {
+                                id: 'go',
+                            },
+                            id: 'dots',
+                        },
+                        {
+                            match: {
+                                id: 'python',
+                            },
+                            id: 'dots',
+                        },
+                        {
+                            match: {
+                                id: 'scala',
+                            },
+                            id: 'lines',
+                        },
+                        {
+                            match: {
+                                id: 'lisp',
+                            },
+                            id: 'lines',
+                        },
+                        {
+                            match: {
+                                id: 'elixir',
+                            },
+                            id: 'lines',
+                        },
+                        {
+                            match: {
+                                id: 'javascript',
+                            },
+                            id: 'lines',
+                        },
+                    ]}
+                    legends={[
+                        {
+                            anchor: 'bottom',
+                            direction: 'row',
+                            translateY: 56,
+                            itemWidth: 70,
+                            itemHeight: 18,
+                            itemTextColor: '#999',
+                            symbolSize: 18,
+                            symbolShape: 'circle',
+                            effects: [
+                                {
+                                    on: 'hover',
+                                    style: {
+                                        itemTextColor: '#000',
+                                    },
+                                },
+                            ],
+                        },
+                    ]}
+                />
+            </CardBody>
+        </Card>
     );
 };
 
-
-export default class Example extends PureComponent {
-    state = {
-        activeIndex: 0,
-    };
-
-    onPieEnter = (data, index) => {
-        this.setState({
-            activeIndex: index,
-        });
-    };
-
-    render() {
-        return (
-            <PieChart width={400} height={400}>
-                <Pie
-                    activeIndex={this.state.activeIndex}
-                    activeShape={renderActiveShape}
-                    data={data}
-                    cx={200}
-                    cy={200}
-                    innerRadius={60}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                    onMouseEnter={this.onPieEnter}
-                />
-            </PieChart>
-        );
-    }
-}
+export default MyResponsivePie;

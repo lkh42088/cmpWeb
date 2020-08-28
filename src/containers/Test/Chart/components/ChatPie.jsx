@@ -137,7 +137,7 @@ const ChatPie = () => {
                         <h5 className="bold-text">CustomActiveShapePieChart</h5>
                     </div>
                     <div >
-                        <ResponsiveContainer height={400}>
+                        <ResponsiveContainer height={400} width="30%">
                             <PieChart width={400} height={400}>
                                 <Pie
                                     activeIndex={activeIndex}
@@ -161,6 +161,5 @@ const ChatPie = () => {
         </Col>
     );
 };
-
 
 export default ChatPie;

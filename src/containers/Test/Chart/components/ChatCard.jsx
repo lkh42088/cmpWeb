@@ -20,6 +20,11 @@ const ChatCard = () => (
         </Row>
         <Row>
             <CustomActiveShapePieChart/>
+            <CustomActiveShapePieChart/>
+            <CustomActiveShapePieChart/>
+            <CustomActiveShapePieChart/>
+        </Row>
+        <Row>
             <LineChartWithReferenceLines/>
         </Row>
     </Container>
