@@ -1,8 +1,24 @@
 import React, {useState, useEffect} from "react";
 import { ResponsiveLine } from '@nivo/line';
 import {Card, CardBody} from "reactstrap";
-import AxisTicks from "react-vis/es/plot/axis/axis-ticks";
+import {fade, makeStyles} from "@material-ui/core/styles";
 import {getVmInterfaceTraffic} from "../../../../lib/api/microCloud";
+
+const lineTheme = ({
+    axis: {
+        ticks: {
+            text: {
+                fontSize: 10,
+                fill: "#8f8f9f",
+            },
+        },
+        legend: {
+            text: {
+                fill: "#8f8f9f",
+            },
+        },
+    },
+});
 
 const MyResponsiveLine = (props) => {
     const {
@@ -73,7 +89,7 @@ const MyResponsiveLine = (props) => {
                     data={data.stats}
                     height={height}
                     margin={{
-                        top: 50, right: 110, bottom: 50, left: 60,
+                        top: 40, right: 90, bottom: 60, left: 70,
                     }}
                     xScale={{
                         type: 'time',
@@ -81,7 +97,7 @@ const MyResponsiveLine = (props) => {
                     }}
                     yScale={{
                         type: 'linear',
-                        min: 'auto',
+                        min: '0',
                         max: 'auto',
                         stacked: false,
                         reverse: false,
@@ -92,12 +108,12 @@ const MyResponsiveLine = (props) => {
                     axisBottom={{
                         orient: 'bottom',
                         tickSize: 5,
-                        tickPadding: 5,
+                        tickPadding: 10,
                         tickRotation: 0,
                         format: "%H:%M:%S",
-                        tickValues: "every 5 minutes",
+                        tickValues: "every 10 minutes",
                         legend: 'Time',
-                        legendOffset: 36,
+                        legendOffset: 50,
                         legendPosition: 'middle',
                     }}
                     axisLeft={{
@@ -106,7 +122,7 @@ const MyResponsiveLine = (props) => {
                         tickPadding: 5,
                         tickRotation: 0,
                         legend: 'KBytes',
-                        legendOffset: -55,
+                        legendOffset: -65,
                         legendPosition: 'middle',
                         format: v => `${Number(v) / 1000}`,
                     }}
@@ -127,6 +143,7 @@ const MyResponsiveLine = (props) => {
                     legends={[
                         {
                             anchor: 'bottom-right',
+                            fill: '#8f8f9f',
                             direction: 'column',
                             justify: false,
                             translateX: 100,
@@ -151,6 +168,7 @@ const MyResponsiveLine = (props) => {
                         },
                     ]}
                     motionStiffness={100}
+                    theme={lineTheme}
                 />
             </CardBody>
         </Card>

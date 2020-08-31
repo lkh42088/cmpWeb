@@ -2,12 +2,8 @@ import React from 'react';
 import {
   Col, Container, Row,
 } from 'reactstrap';
-import { withTranslation } from 'react-i18next';
-import {connect, useDispatch, useSelector} from 'react-redux';
 import {makeStyles} from "@material-ui/core/styles";
-import PropTypes from 'prop-types';
 import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
-import MyResponsivePie from "./components/MyResponsivePie";
 import MyResponsiveLine from "./components/MyResponsiveLine";
 import MyResponsiveCpu from "./components/MyResponsiveCpu";
 import MyResponsiveMem from "./components/MyResponsiveMem";
