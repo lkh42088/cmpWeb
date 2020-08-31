@@ -83,7 +83,7 @@ const MyResponsiveLine = (props) => {
                         type: 'linear',
                         min: 'auto',
                         max: 'auto',
-                        stacked: true,
+                        stacked: false,
                         reverse: false,
                     }}
                     curve="monotoneX"
@@ -95,7 +95,7 @@ const MyResponsiveLine = (props) => {
                         tickPadding: 5,
                         tickRotation: 0,
                         format: "%H:%M:%S",
-                        tickValues: "every 10 minutes",
+                        tickValues: "every 5 minutes",
                         legend: 'Time',
                         legendOffset: 36,
                         legendPosition: 'middle',

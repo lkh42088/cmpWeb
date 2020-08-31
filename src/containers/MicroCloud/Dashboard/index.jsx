@@ -6,10 +6,8 @@ import { withTranslation } from 'react-i18next';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {makeStyles} from "@material-ui/core/styles";
 import PropTypes from 'prop-types';
-import {Link} from "react-router-dom";
 import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
 import MyResponsivePie from "./components/MyResponsivePie";
-import MyResponsiveBump from "./components/MyResponsiveBump";
 import MyResponsiveLine from "./components/MyResponsiveLine";
 
 const useStyles = makeStyles(theme => ({
@@ -36,14 +34,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const MicroCloudDashboard = ({t}) => {
+const MicroCloudDashboard = () => {
     const classes = useStyles();
-    const dispatch = useDispatch();
-    const {direction} = useSelector(({rtl}) => ({
-        direction: rtl.direction,
-    }));
 
-    const mac = "52:54:00:01:b5:b7";
+    const mac = "52:54:00:01:b5:b7"; //todo: need to fix
 
     return (
         <Container fluid>
@@ -70,11 +64,4 @@ const MicroCloudDashboard = ({t}) => {
     );
 };
 
-MicroCloudDashboard.propTypes = {
-  t: PropTypes.func.isRequired,
-};
-
-export default connect(state => ({
-  rtl: state.rtl,
-  theme: state.theme,
-}))(withTranslation('common')(MicroCloudDashboard));
+export default MicroCloudDashboard;

@@ -6,6 +6,7 @@ import MicroCloudVms from '../../../MicroCloud/Vms/index';
 import MicroCloudImages from '../../../MicroCloud/Images/index';
 import MicroCloudNetworks from '../../../MicroCloud/Networks/index';
 import MicroCloudVnc from "../../../MicroCloud/Vnc/index";
+import MicroCloudDashboard from "../../../MicroCloud/Dashboard/index";
 
 export default () => (
     <div>
@@ -16,6 +17,7 @@ export default () => (
             <Route path="/micro/networks" component={MicroCloudNetworks} />
             <Route path="/micro/vms" component={MicroCloudVms} />
             <Route path="/micro/vnc" component={MicroCloudVnc} />
+            <Route path="/micro/dashboard" component={MicroCloudDashboard} />
         </div>
     </div>
 );
