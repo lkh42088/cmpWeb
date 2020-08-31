@@ -87,8 +87,8 @@ const SidebarContent = ({
                             <SidebarLink title="파트/기타" route="/assets/part"
                                          onClick={() => changeMenuTitle('NETWORK', '파트/기타', 'part')}/>
                         </SidebarCategory>
-                        <SidebarCategory title="BILLING" icon={fileInvoiceDollar}/>
-                        <SidebarCategory title="BOARD" icon={listAlt}/>
+                        {/*<SidebarCategory title="BILLING" icon={fileInvoiceDollar}/>*/}
+                        {/*<SidebarCategory title="BOARD" icon={listAlt}/>*/}
                         <SidebarCategory title="MANAGER" icon={usersIcon} dropdown={dropdown}>
                             <SidebarLink title="계정 관리" route="/customers/users"
                                 // onClick={() => changeMenuTitle('MANAGER', '계정 관리', '')}/>
@@ -133,10 +133,10 @@ const SidebarContent = ({
                             <SidebarLink title="파트/기타" route="/assets/part"
                                          onClick={() => changeMenuTitle('NETWORK', '파트/기타', 'part')}/>
                         </SidebarCategory>
-                        <SidebarLink title="BILLING" icon={fileInvoiceDollar} route="/billing"
+                        {/*<SidebarLink title="BILLING" icon={fileInvoiceDollar} route="/billing"
                                      onClick={() => changeMenuTitle('BILLING', '', '')}/>
                         <SidebarLink title="BOARD" icon={listAlt} route="/board"
-                                     onClick={() => changeMenuTitle('BOARD', '', '')}/>
+                                     onClick={() => changeMenuTitle('BOARD', '', '')}/>*/}
                         <SidebarCategory title="MANAGER" icon={usersIcon} dropdown={dropdown}>
                             <SidebarLink title="계정 관리" route="/customers/usersBackup"
                                          onClick={hideSidebar}/>

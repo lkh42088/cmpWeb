@@ -13,9 +13,9 @@ const initialState = {
     squaredCorners: false,
     withBoxShadow: false,
     topNavigation: false,
-    sidebarDropdown: false,
+    sidebarDropdown: true,
     densePadding: false,
-    hybridCloud: false,
+    hybridCloud: true,
     enableLogNormal: false,
     enableLogDetail: false,
 };

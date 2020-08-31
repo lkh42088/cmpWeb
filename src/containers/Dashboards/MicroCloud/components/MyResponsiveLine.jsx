@@ -39,7 +39,7 @@ const MyResponsiveLine = (props) => {
                         id: val.id,
                         data: val.data.map(s => ({
                             // ...s,
-                            x: s.x,
+                            x: new Date(s.x),
                             y: s.y,
                         })),
                     }))),
@@ -53,9 +53,11 @@ const MyResponsiveLine = (props) => {
         }
     };
 
-    useEffect(() => {
-        // console.log(data.stats);
-    }, [data.stats]);
+    // useEffect(() => {
+    //     if (data.stats[0].data.length > 1) {
+    //         console.log(data.stats[0].data[0].x);
+    //     }
+    // }, [data.stats]);
 
     useEffect(() => {
         getData();
@@ -73,33 +75,26 @@ const MyResponsiveLine = (props) => {
                     margin={{
                         top: 50, right: 110, bottom: 50, left: 60,
                     }}
-                    // xScale={{
-                    //     type: 'time',
-                    //     format: "%Y-%m-%d %I:%M:%S",
-                    //     // format: "UTC",
-                    //     // precision: "hour",
-                    // }}
-                    xScale={{ type: 'point' }}
+                    xScale={{
+                        type: 'time',
+                        format: "native",
+                    }}
                     yScale={{
-                        type: 'linear', min: 'auto', max: 'auto', stacked: false, reverse: false,
+                        type: 'linear',
+                        min: 'auto',
+                        max: 'auto',
+                        stacked: true,
+                        reverse: false,
                     }}
                     curve="monotoneX"
                     axisTop={null}
                     axisRight={null}
-                    // axisBottom={{
-                    //     useUTC: true,
-                    //     legend: 'Time',
-                    //     legendOffset: 36,
-                    //     legendPosition: 'middle',
-                    //     format: "%I:%M:%S",
-                    //     tickValues: "every 10 minutes",
-                    // }}
                     axisBottom={{
                         orient: 'bottom',
                         tickSize: 5,
                         tickPadding: 5,
                         tickRotation: 0,
-                        // format: "%I:%M:%S",
+                        format: "%H:%M:%S",
                         tickValues: "every 10 minutes",
                         legend: 'Time',
                         legendOffset: 36,
@@ -110,9 +105,10 @@ const MyResponsiveLine = (props) => {
                         tickSize: 5,
                         tickPadding: 5,
                         tickRotation: 0,
-                        legend: 'Bytes',
+                        legend: 'KBytes',
                         legendOffset: -55,
                         legendPosition: 'middle',
+                        format: v => `${Number(v) / 1000}`,
                     }}
                     colors={{ scheme: 'category10' }}
                     lineWidth={1}
