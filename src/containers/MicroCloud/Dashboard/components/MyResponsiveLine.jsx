@@ -167,7 +167,8 @@ const MyResponsiveLine = (props) => {
                             ],
                         },
                     ]}
-                    motionStiffness={100}
+                    motionStiffness={300}
+                    motionDamping={40}
                     theme={lineTheme}
                 />
             </CardBody>
