@@ -9,6 +9,9 @@ import PropTypes from 'prop-types';
 import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
 import MyResponsivePie from "./components/MyResponsivePie";
 import MyResponsiveLine from "./components/MyResponsiveLine";
+import MyResponsiveCpu from "./components/MyResponsiveCpu";
+import MyResponsiveMem from "./components/MyResponsiveMem";
+import MyResponsiveDisk from "./components/MyResponsiveDisk";
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -46,13 +49,13 @@ const MicroCloudDashboard = () => {
             </Row>
             <Row className="classes.row">
                 <Col md={6} lg={4} xs={12} sm={12} xl={4} style={{padding: 10}}>
-                    <MyResponsivePie height={300} title="CPU" color="nivo" />
+                    <MyResponsiveCpu height={300} title="CPU" color="nivo" />
                 </Col>
                 <Col md={6} lg={4} xs={12} sm={12} xl={4} style={{padding: 10}}>
-                    <MyResponsivePie height={300} title="MEM" color="greys" />
+                    <MyResponsiveMem height={300} title="MEM" color="greys" />
                 </Col>
                 <Col md={6} lg={4} xs={12} sm={12} xl={4} style={{padding: 10}}>
-                    <MyResponsivePie height={300} title="DISK" color="yellow_green_blue" />
+                    <MyResponsiveDisk height={300} title="DISK" color="yellow_green_blue" />
                 </Col>
             </Row>
             <Row>

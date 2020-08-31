@@ -1,0 +1,32 @@
+
+.pieColor {
+  fill: red;
+}
+
+.pieColorStroke {
+  stroke: blue;
+}
+
+text.graph_label {
+  font-size: medium;
+  @include themify($themes) {
+    fill: themed('colorText');
+  }
+}
+
+text.graph_label {
+  font-size: small;
+  @include themify($themes) {
+    fill: themed('colorText');
+  }
+}
+
+/*common-------------------------------------------------------------------------------------------common*/
+
+@media screen and (max-width: 768px) {
+
+}
+
+@media screen and (max-width: 420px) {
+
+}

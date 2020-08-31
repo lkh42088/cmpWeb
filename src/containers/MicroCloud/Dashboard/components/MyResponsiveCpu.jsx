@@ -5,8 +5,6 @@ import {
     PieChart, Pie, Sector, ResponsiveContainer,
 } from 'recharts';
 import {getMcNetworksCpu} from "../../../../lib/api/microCloudCpu";
-import {getMcNetworksMem} from "../../../../lib/api/microCloudMem";
-import {getMcNetworksDisk} from "../../../../lib/api/microCloudDisk";
 
 const defaultColor = {
     pieColor: '#d4d7dd',
@@ -20,16 +18,6 @@ const warringColor = {
 const cpuColor = {
     use: '#5e62e6',
     free: '#4ea1d3',
-};
-
-const memColor = {
-    use: '#81b214',
-    free: '#2fc4b2',
-};
-
-const diskColor = {
-    use: '#95adbe',
-    free: '#574f7d',
 };
 
 const GraphPie = (props) => {
@@ -59,10 +47,7 @@ const GraphPie = (props) => {
                 {`${(percent * 100).toFixed(2)}%`}
             </text>
             <text x={cx} y={cy + 20} dy={8} textAnchor="middle"
-                  fill={defaultColor.textColor}
-                  style={{
-                      fontSize: "medium",
-                  }}>
+                  className="graph_label">
                 {payload.label}
             </text>
             <Sector
@@ -85,9 +70,7 @@ const GraphPie = (props) => {
             />
             <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>
             <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none"/>
-            <text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} textAnchor={textAnchor} fill="#333" style={{
-                fontSize: "small",
-            }}>
+            <text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} textAnchor={textAnchor} className="graph_label">
                 {`${payload.label}`}
             </text>
             {/*<text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
@@ -128,79 +111,25 @@ const MyResponsivePie = (props) => {
 
     const getData = async () => {
         try {
-            let response;
-            let value;
-            let valueCompare;
             let cpData = "";
-            let use;
-            let free;
-            let useColor;
-            let freeColor;
             let subContent;
 
             const marker = 1024; // Change to 1000 if required
             const decimal = 2; // Change as required
             const megaBytes = marker * marker; // One MB is 1024 KB
+            const response = await getMcNetworksCpu({tempData});
+            const value = response.data[0].usage_idle;
 
-            switch (title) {
-                case "CPU":
-                    response = await getMcNetworksCpu({tempData});
-                    value = response.data[0].usage_idle;
+            const valueCompare = 100 - Number(value);
+            const use = Number(valueCompare.toFixed(2));
+            const free = Number(value.toFixed(2));
 
-                    valueCompare = 100 - Number(value);
-                    use = Number(valueCompare.toFixed(2));
-                    free = Number(value.toFixed(2));
+            let useColor = cpuColor.use;
+            let freeColor = cpuColor.free;
 
-                    useColor = cpuColor.use;
-                    freeColor = cpuColor.free;
-
-                    if (use >= 80) {
-                        useColor = warringColor.value;
-                        freeColor = warringColor.value;
-                    }
-                    break;
-                case "MEM":
-                    response = await getMcNetworksMem({tempData});
-                    value = response.data[0].available_percent;
-
-                    valueCompare = 100 - Number(value);
-                    use = Number(valueCompare.toFixed(2));
-                    free = Number(value.toFixed(2));
-
-                    useColor = memColor.use;
-                    freeColor = memColor.free;
-
-                    if (use >= 80) {
-                        useColor = warringColor.value;
-                        freeColor = warringColor.value;
-                    }
-
-                    subContent = `(Memory : ${(Number(response.data[0].available) / megaBytes).toFixed(decimal)} MB)`;
-
-                    setMem(subContent);
-                    break;
-                case "DISK":
-                    response = await getMcNetworksDisk({tempData});
-                    value = response.data[0].used_percent;
-
-                    valueCompare = 100 - Number(value);
-                    use = Number(valueCompare.toFixed(2));
-                    free = Number(value.toFixed(2));
-
-                    useColor = diskColor.use;
-                    freeColor = diskColor.free;
-
-                    if (use >= 80) {
-                        useColor = warringColor.value;
-                        freeColor = warringColor.value;
-                    }
-
-                    subContent = `(Disk : ${(Number(response.data[0].total) / megaBytes).toFixed(decimal)} MB)`;
-
-                    setDisk(subContent);
-                    break;
-                default:
-                    break;
+            if (use >= 80) {
+                useColor = warringColor.value;
+                freeColor = warringColor.value;
             }
 
             cpData = [
@@ -251,7 +180,6 @@ const MyResponsivePie = (props) => {
                         />
                     </PieChart>
                 </ResponsiveContainer>
-                {mem}{disk}
             </CardBody>
         </Card>
     );
