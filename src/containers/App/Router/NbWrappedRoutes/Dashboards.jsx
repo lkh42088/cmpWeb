@@ -5,7 +5,7 @@ import DashboardManager from '../../../Dashboards/Manager/index';
 import DashboardCustomer from '../../../Dashboards/Customer/index';
 import MicroDashboardManager from '../../../MicroDashboards/Manager/index';
 import MicroDashboardCustomer from '../../../MicroDashboards/Customer/index';
-import MicroCloudDashboard from "../../../Dashboards/MicroCloud";
+import MicroCloudDashboard from "../../../MicroCloud/Dashboard";
 
 export default () => (
     <Switch>

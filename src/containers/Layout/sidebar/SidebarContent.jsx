@@ -65,6 +65,8 @@ const SidebarContent = ({
                         </Link>
                         {hybridCloud && (
                                 <SidebarCategory title="MICRO CLOUD" icon={serverOutlineBadged} dropdown={dropdown}>
+                                    <SidebarLink title="DASHBOARD" route="/micro/dashboard"
+                                                 onClick={() => changeMenuTitle('MICRO CLOUD', 'DASHBOARD', '')}/>
                                     <SidebarLink title="SERVER" route="/micro/servers"
                                                  onClick={() => changeMenuTitle('MICRO CLOUD', 'SERVER', '')}/>
                                     <SidebarLink title="NETWORK" route="/micro/networks"
@@ -87,8 +89,8 @@ const SidebarContent = ({
                             <SidebarLink title="파트/기타" route="/assets/part"
                                          onClick={() => changeMenuTitle('NETWORK', '파트/기타', 'part')}/>
                         </SidebarCategory>
-                        <SidebarCategory title="BILLING" icon={fileInvoiceDollar}/>
-                        <SidebarCategory title="BOARD" icon={listAlt}/>
+                        {/*<SidebarCategory title="BILLING" icon={fileInvoiceDollar}/>*/}
+                        {/*<SidebarCategory title="BOARD" icon={listAlt}/>*/}
                         <SidebarCategory title="MANAGER" icon={usersIcon} dropdown={dropdown}>
                             <SidebarLink title="계정 관리" route="/customers/users"
                                 // onClick={() => changeMenuTitle('MANAGER', '계정 관리', '')}/>
@@ -111,13 +113,15 @@ const SidebarContent = ({
                                      onClick={() => changeMenuTitle('DASHBOARD', '', '')}/>
                         {hybridCloud && (
                             <SidebarCategory title="MICRO CLOUD" icon={serverOutlineBadged} dropdown={dropdown}>
+                                <SidebarLink title="DASHBOARD" route="/micro/dashboard"
+                                             onClick={() => changeMenuTitle('MICRO CLOUD', 'DASHBOARD', '')}/>
                                 <SidebarLink title="SERVER" route="/micro/servers"
                                              onClick={() => changeMenuTitle('MICRO CLOUD', 'SERVER', '')}/>
                                 <SidebarLink title="NETWORK" route="/micro/networks"
                                              onClick={() => changeMenuTitle('MICRO CLOUD', 'NETWORK', '')}/>
                                 <SidebarLink title="IMAGE" route="/micro/images"
                                              onClick={() => changeMenuTitle('MICRO CLOUD', 'IMAGE', '')}/>
-                                <SidebarLink title="VM" route="/micro/servers"
+                                <SidebarLink title="VM" route="/micro/vms"
                                              onClick={() => changeMenuTitle('MICRO CLOUD', 'VM', '')}/>
                                 <SidebarLink title="VNC" route="/micro/vnc"
                                              onClick={hideSidebar}/>
@@ -133,10 +137,10 @@ const SidebarContent = ({
                             <SidebarLink title="파트/기타" route="/assets/part"
                                          onClick={() => changeMenuTitle('NETWORK', '파트/기타', 'part')}/>
                         </SidebarCategory>
-                        <SidebarLink title="BILLING" icon={fileInvoiceDollar} route="/billing"
+                        {/*<SidebarLink title="BILLING" icon={fileInvoiceDollar} route="/billing"
                                      onClick={() => changeMenuTitle('BILLING', '', '')}/>
                         <SidebarLink title="BOARD" icon={listAlt} route="/board"
-                                     onClick={() => changeMenuTitle('BOARD', '', '')}/>
+                                     onClick={() => changeMenuTitle('BOARD', '', '')}/>*/}
                         <SidebarCategory title="MANAGER" icon={usersIcon} dropdown={dropdown}>
                             <SidebarLink title="계정 관리" route="/customers/usersBackup"
                                          onClick={hideSidebar}/>
