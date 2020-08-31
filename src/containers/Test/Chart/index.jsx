@@ -12,7 +12,7 @@ const Chat = ({ t }) => (
             </Col>
         </Row>
         <Row>
-            <ChatCard />
+            <ChatCard/>
         </Row>
     </Container>
 );

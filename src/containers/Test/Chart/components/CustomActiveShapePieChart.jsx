@@ -36,10 +36,10 @@ const GraphPie = (props) => {
     const sin = Math.sin(-RADIAN * midAngle);
     const cos = Math.cos(-RADIAN * midAngle);
     const sx = cx + (outerRadius + 10) * cos;
-    const sy = cy + (outerRadius + 10) * sin;
-    const mx = cx + (outerRadius + 30) * cos;
-    const my = cy + (outerRadius + 30) * sin;
-    const ex = mx + (cos >= 0 ? 1 : -1) * 22;
+    const sy = cy + (outerRadius + 5) * sin;
+    const mx = cx + (outerRadius + 5) * cos;
+    const my = cy + (outerRadius + 15) * sin;
+    const ex = mx + (cos >= 0 ? 1 : -1) * 11;
     const ey = my;
     const textAnchor = cos >= 0 ? 'start' : 'end';
 
@@ -64,7 +64,7 @@ const GraphPie = (props) => {
                 outerRadius={outerRadius + 10}
                 fill={fill}
             />
-            <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>
+            {/*<path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>*/}
             <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none"/>
             <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`PV ${value}`}</text>
             <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
@@ -99,9 +99,14 @@ const CustomActiveShapePieChart = () => {
                     <div className="card__title">
                         <h5 className="bold-text">CustomActiveShapePieChart</h5>
                     </div>
-                    <div >
-                        <ResponsiveContainer height={400}>
-                            <PieChart width={400} height={400}>
+                    <div>
+                        <ResponsiveContainer height={400} width="100%" style={{
+                            border: "1px solid green",
+                        }}>
+                            <PieChart height={400} style={{
+                                border: "1px solid red",
+                                padding: "5%",
+                            }}>
                                 <Pie
                                     activeIndex={activeIndex}
                                     fill={fill}
@@ -109,10 +114,10 @@ const CustomActiveShapePieChart = () => {
                                     activeShape={GraphPie}
                                     data={data}
                                     paddingAngle={0}
-                                    cx={200}
+                                    /*cx={200}*/
                                     cy={200}
-                                    innerRadius={60}
-                                    outerRadius={80}
+                                    innerRadius="50%"
+                                    outerRadius="60%"
                                     onMouseEnter={onPieEnter}
                                     onMouseLeave={onPieLeave}
                                 />

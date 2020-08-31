@@ -105,7 +105,7 @@ const ChatPie = () => {
     };
 
     const onPieLeave = () => {
-        //console.log("out");
+        console.log("out");
     };
 
     useEffect(() => {
@@ -137,7 +137,7 @@ const ChatPie = () => {
                         <h5 className="bold-text">CustomActiveShapePieChart</h5>
                     </div>
                     <div >
-                        <ResponsiveContainer height={400} width="30%">
+                        <ResponsiveContainer height={400}>
                             <PieChart width={400} height={400}>
                                 <Pie
                                     activeIndex={activeIndex}
@@ -146,7 +146,7 @@ const ChatPie = () => {
                                     activeShape={GraphPie}
                                     data={data}
                                     paddingAngle={0}
-                                    cx={200}
+                                    /*cx={200}*/
                                     cy={200}
                                     innerRadius={60}
                                     outerRadius={80}
