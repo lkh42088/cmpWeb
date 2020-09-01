@@ -1,24 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {ResponsivePie} from '@nivo/pie';
 import {Card, CardBody} from "reactstrap";
 import {
     PieChart, Pie, Sector, ResponsiveContainer,
 } from 'recharts';
 import {getMcNetworksDisk} from "../../../../lib/api/microCloudDisk";
-
-const defaultColor = {
-    pieColor: '#d4d7dd',
-    textColor: '#414141',
-};
-
-const warringColor = {
-    value: '#ec0101',
-};
-
-const diskColor = {
-    use: '#ffba5a',
-    free: '#7acfdf',
-};
 
 const GraphPie = (props) => {
     const RADIAN = Math.PI / 180;
@@ -70,8 +55,14 @@ const GraphPie = (props) => {
             />
             <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>
             <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none"/>
-            <text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} textAnchor={textAnchor} className="graph_label">
+            <text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} textAnchor={textAnchor} className="graph_label"
+                  style={{
+                      fontSize: "larger",
+                  }}>
                 {`${payload.label}`}
+            </text>
+            <text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+                {`${payload.labelVal}`}
             </text>
             {/*<text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
                 {`${value}`}
@@ -85,12 +76,10 @@ const GraphPie = (props) => {
 
 const MyResponsivePie = (props) => {
     const {
-        height, title, color, mac,
+        height, title, pieColor, mac, warringUsed,
     } = props;
     const [activeIndex, setActiveIndex] = useState(0);
-    const [fill, setFill] = useState(defaultColor.pieColor);
-
-    const tempData = "x"; /*임시 데이터*/
+    const [fill, setFill] = useState(pieColor.defaultColor);
 
     const [data, setData] = useState([]);
     const [mem, setMem] = useState();
@@ -123,23 +112,25 @@ const MyResponsivePie = (props) => {
             const megaBytes = marker * marker; // One MB is 1024 KB
             const gigaBytes = marker * marker * marker; // One GB is 1024 MB
 
-            const response = await getMcNetworksDisk({tempData});
+            //used -> FREE 값 가져옴
+            const response = await getMcNetworksDisk({});
             const value = response.data[0].used_percent;
 
             const valueCompare = 100 - Number(value);
             const use = Number(valueCompare.toFixed(2));
             const free = Number(value.toFixed(2));
 
-            let useColor = diskColor.use;
-            let freeColor = diskColor.free;
+            let useColor = pieColor.diskColor.use;
+            let freeColor = pieColor.diskColor.free;
 
-            if (use >= 80) {
-                useColor = warringColor.value;
-                freeColor = warringColor.value;
+            if (use >= Number(warringUsed)) {
+                useColor = pieColor.warringColor;
+                freeColor = pieColor.warringColor;
             }
 
             //console.log("Number(response.data[0].total) : ", Number(response.data[0].total));
             const subContent = `(Total : ${(Number(response.data[0].total) / gigaBytes).toFixed(decimal)} GB)`;
+            const labelVal = `${(Number(response.data[0].used) / gigaBytes).toFixed(decimal)} GB`;
 
             setDisk({
                 total: subContent,
@@ -150,23 +141,29 @@ const MyResponsivePie = (props) => {
 
             cpData = [
                 {
-                    id: "use",
-                    label: "use",
+                    id: "used",
+                    label: "used",
+                    labelVal: "",
                     value: use,
                     fillColor: useColor,
                 },
                 {
-                    id: "free",
-                    label: "free",
+                    id: "available", /*free*/
+                    label: "available",
+                    labelVal,
                     value: free,
                     fillColor: freeColor,
                 },
             ];
             setData(data.concat(cpData));
         } catch {
-            console.log("😁😁 MyResponsivePie response error");
+            console.log("disk MyResponsivePie response error");
         }
     };
+
+    useEffect(() => {
+        getData();
+    }, []);
 
     useEffect(() => {
         //getData();
@@ -177,7 +174,7 @@ const MyResponsivePie = (props) => {
     return (
         <Card className="cb-card">
             <CardBody className="cb-card-body">
-                <p>{title} {disk.device} (path : {disk.path})</p>
+                <p>{title} {disk.device}</p>
                 <ResponsiveContainer height={height + 100} width="100%">
                     <PieChart height={height}>
                         <Pie

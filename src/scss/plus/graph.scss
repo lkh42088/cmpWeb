@@ -14,13 +14,6 @@ text.graph_label {
   }
 }
 
-text.graph_label {
-  font-size: small;
-  @include themify($themes) {
-    fill: themed('colorText');
-  }
-}
-
 /*common-------------------------------------------------------------------------------------------common*/
 
 @media screen and (max-width: 768px) {
