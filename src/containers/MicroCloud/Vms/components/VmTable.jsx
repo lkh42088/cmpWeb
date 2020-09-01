@@ -29,6 +29,7 @@ import RegisterVm from "./RegisterVm";
 import {
     getMcVms, registerMcVm, unregisterMcVm,
 } from "../../../../lib/api/microCloud";
+import {changeVmPage} from "../../../../redux/actions/vmsActions";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -320,6 +321,12 @@ const VmTable = () => {
         console.log("after copyData:", copyData);
     };
 
+    const handleVmPage = (idx) => {
+        const res = data.filter(item => item.idx === idx);
+        console.log(`idx:${idx}, res:${res}`);
+        dispatch(changeVmPage({ pageType: 'page', data: res[0]}));
+    };
+
     useEffect(() => {
         /** Pagination */
         getPageData();
@@ -402,7 +409,13 @@ const VmTable = () => {
                         className={cellClassName}
                         style={{width: "10%"}}
                     >
-                        {row.name}
+                        <b className="text_cor_green mouse_over_list">
+                            <div className="assets_add_modal_div"
+                                 onClick={event => handleVmPage(row.idx)}
+                                 onKeyDown={event => handleVmPage(row.idx)}
+                                 role="button" tabIndex="0"><span className="circle__ste"/>
+                                {row.name} </div>
+                        </b>
                     </TableCell>
                     <TableCell
                         className={cellClassName}

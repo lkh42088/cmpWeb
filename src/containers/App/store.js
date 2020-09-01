@@ -22,6 +22,7 @@ import {
     pagingReducer,
     companiesReducer,
     codeReducer,
+    vmsReducer,
 } from '../../redux/reducers/index';
 import {checkLoginUser, userSaga} from "../../redux/actions/loginActions";
 import {usersSaga} from "../../redux/actions/usersActions";
@@ -45,6 +46,7 @@ const rootReducer = combineReducers({
     pagingRd: pagingReducer,
     companiesRd: companiesReducer,
     codeRd: codeReducer,
+    vmsRd: vmsReducer,
 });
 
 export function* rootSaga() {

@@ -86,6 +86,7 @@ function getClientEnvironment(publicUrl) {
         PORT: process.env.PORT,
         API_SERVER_IP: process.env.API_SERVER_IP,
         API_SERVER_PORT: process.env.API_SERVER_PORT,
+        API_SERVER_WEBSOCK_PORT: process.env.API_SERVER_WEBSOCK_PORT,
         RECAPTCHA_SITE_KEY: process.env.RECAPTCHA_SITE_KEY,
       },
     );
