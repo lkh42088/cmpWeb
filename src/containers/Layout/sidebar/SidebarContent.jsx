@@ -52,12 +52,18 @@ const SidebarContent = ({
                 <div className="cb_sidebar__content">
                     <ul className="cb_sidebar__block">
                         {/*test menu*/}
+                        <SidebarCategory title="TEST" icon={emojiPeopleIcon} dropdown={dropdown}>
+                            <SidebarLink title="TEMP" route="/test/temp"
+                                         onClick={() => changeMenuTitle('TEST', 'TEMP', '')}/>
+                        </SidebarCategory>
                         {user.id === 'ebjee' && (
-                            <SidebarCategory title="TEST" icon={emojiPeopleIcon} dropdown={dropdown}>
+                            <SidebarCategory title="EBJEE" icon={emojiPeopleIcon} dropdown={dropdown}>
                                 <SidebarLink title="CHART" route="/test/chart"
                                              onClick={() => changeMenuTitle('TEST', 'CHART', '')}/>
                                 <SidebarLink title="CODE" route="/test/code"
                                              onClick={() => changeMenuTitle('TEST', 'CODE', '')}/>
+                                <SidebarLink title="TEMP" route="/test/temp"
+                                             onClick={() => changeMenuTitle('TEST', 'TEMP', '')}/>
                             </SidebarCategory>
                         )}
                         <Link to={getDashBoardLink()} onClick={() => changeMenuTitle('DASHBOARD', '', '')} >
@@ -109,6 +115,20 @@ const SidebarContent = ({
             : (
                 <div className="cb_sidebar__content">
                     <ul className="cb_sidebar__block">
+                        <SidebarCategory title="TEST" icon={emojiPeopleIcon} dropdown={dropdown}>
+                            <SidebarLink title="TEMP" route="/test/temp"
+                                         onClick={() => changeMenuTitle('TEST', 'TEMP', '')}/>
+                        </SidebarCategory>
+                        {user.id === 'ebjee' && (
+                            <SidebarCategory title="EBJEE" icon={emojiPeopleIcon} dropdown={dropdown}>
+                                <SidebarLink title="CHART" route="/test/chart"
+                                             onClick={() => changeMenuTitle('TEST', 'CHART', '')}/>
+                                <SidebarLink title="CODE" route="/test/code"
+                                             onClick={() => changeMenuTitle('TEST', 'CODE', '')}/>
+                                <SidebarLink title="TEMP" route="/test/temp"
+                                             onClick={() => changeMenuTitle('TEST', 'TEMP', '')}/>
+                            </SidebarCategory>
+                        )}
                         <SidebarLink title="DASHBOARD" icon={outlineDashboard} route={getDashBoardLink()}
                                      onClick={() => changeMenuTitle('DASHBOARD', '', '')}/>
                         {hybridCloud && (
@@ -142,7 +162,7 @@ const SidebarContent = ({
                         <SidebarLink title="BOARD" icon={listAlt} route="/board"
                                      onClick={() => changeMenuTitle('BOARD', '', '')}/>*/}
                         <SidebarCategory title="MANAGER" icon={usersIcon} dropdown={dropdown}>
-                            <SidebarLink title="계정 관리" route="/customers/usersBackup"
+                            <SidebarLink title="계정 관리" route="/customers/users"
                                          onClick={hideSidebar}/>
                             <SidebarLink title="고객사 관리" route="/customers/companies"
                                          onClick={hideSidebar}/>

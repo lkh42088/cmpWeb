@@ -1,9 +1,13 @@
-import React, { Image } from 'react';
+import React, {Image} from 'react';
 import {
     Card, CardBody, Col, Button,
 } from 'reactstrap';
 import {useSelector} from "react-redux";
 import FileSaver from "file-saver";
+import MatButton from '@material-ui/core/Button';
+import SendIcon from "@material-ui/icons/Send";
+import TocIcon from '@material-ui/icons/Toc';
+import EditIcon from '@material-ui/icons/Edit';
 import Avatar from "react-avatar";
 
 import * as common from "../../../../lib/common";
@@ -41,11 +45,15 @@ const ProfileMain = () => {
     return (
         <Col md={12} lg={12} xl={12}>
             <Card>
-                <CardBody className="profile__card">
+                <CardBody className="profile__card"
+                          style={{
+                              /*border: "2px dotted #318fb5",*/
+                              /*background: "#8d93ab",*/
+                              /*opacity: "0.9",*/
+                          }}>
                     <div className="profile__information">
                         <div className="profile__avatar"
                              style={{
-                                 /*borderRadius: "0",*/
                                  borderRadius: "0",
                              }}
                         >
@@ -108,10 +116,32 @@ const ProfileMain = () => {
                         </div>
                     </div>
                     <div className="profile__stats">
-                        <div className="profile__stat">
-                            <p className="profile__stat-number">
-                                {user.cpName}
-                            </p>
+                        <div className="profile__stat" style={{
+                            width: "100%",
+                            padding: "5px",
+                        }}>
+                            <div style={{
+                                float: "left",
+                            }}>{user.cpName}</div>
+                            <div style={{
+                                float: "right",
+                            }}>
+                                <EditIcon style={{
+                                    background: "pink",
+                                    color: "red",
+                                    borderRadios: "5px",
+                                }}/>
+                                <TocIcon/>
+                            </div>
+                            {/*<p className="profile__stat-number">
+                                <SendIcon/>
+                                <TocIcon/>
+                                <span style={{
+                                    float: "left",
+                                }}>
+                                    {user.cpName}
+                                </span>
+                            </p>*/}
                         </div>
                     </div>
                     {/*<div className="profile__stats">

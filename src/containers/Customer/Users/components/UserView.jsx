@@ -14,7 +14,7 @@ const UserView = () => (
                         <Row>
                             <ProfileMain/>
                             <ProfileBtn />
-                            <ProfileTasks />
+                            {/*<ProfileTasks />*/}
                         </Row>
                     </Col>
                     <ProfileTabs />

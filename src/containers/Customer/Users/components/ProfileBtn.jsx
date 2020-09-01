@@ -1,10 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Card, CardBody, Col} from 'reactstrap';
+import {
+    Card, CardBody, Col, Container, Row,
+} from 'reactstrap';
 import {useDispatch, useSelector} from "react-redux";
 
 import MatButton from '@material-ui/core/Button';
 import SendIcon from "@material-ui/icons/Send";
 import TocIcon from '@material-ui/icons/Toc';
+import TargetIcon from "mdi-react/TargetIcon";
 import {useSnackbar} from "notistack";
 
 import {
@@ -13,6 +16,10 @@ import {
 
 import ModifyUserPage from "./ModifyUserPage";
 import {modifyUser, registerUser} from "../../../../lib/api/users";
+import Panel from "../../../../shared/components/Panel";
+import OurMission from "../../../Dashboards/Booking/components/OurMission";
+
+const todoSidebarImg = `${process.env.PUBLIC_URL}/img/sidebar_img.svg`;
 
 const ProfileBtn = () => {
     const dispatch = useDispatch();
@@ -129,11 +136,31 @@ const ProfileBtn = () => {
         handleCloseModifyUser();
     };
 
-
     return (
         <Col md={12} lg={12} xl={12}>
             <Card>
+                <CardBody className="profile__card">
+                    <Container className="dashboard">
+                        <Row>
+                            <div style={{
+                                width: "100%",
+                            }}>
+                                <div className="dashboard__booking-our-mission" style={{
+                                    background: "#8d93ab",
+                                }}>
+                                    <TargetIcon/>
+                                    <p className="dashboard__booking-our-mission-title">Profile Edit</p>
+                                </div>
+                            </div>
+                        </Row>
+                    </Container>
+                </CardBody>
+            </Card>
+        </Col>
+        /*<Col md={12} lg={12} xl={12}>
+            <Card>
                 <CardBody className="profile__card--calendar">
+                    <img className="todo_sidebar-image" src={todoSidebarImg} alt="sidebar-img" />
                     <MatButton
                         variant="contained"
                         color="primary"
@@ -158,7 +185,7 @@ const ProfileBtn = () => {
                     />
                 </CardBody>
             </Card>
-        </Col>
+        </Col>*/
     );
 };
 
