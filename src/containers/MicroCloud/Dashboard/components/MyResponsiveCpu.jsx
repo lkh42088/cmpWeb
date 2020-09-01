@@ -1,24 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {ResponsivePie} from '@nivo/pie';
 import {Card, CardBody} from "reactstrap";
 import {
     PieChart, Pie, Sector, ResponsiveContainer,
 } from 'recharts';
 import {getMcNetworksCpu} from "../../../../lib/api/microCloudCpu";
-
-const defaultColor = {
-    pieColor: '#d4d7dd',
-    textColor: '#414141',
-};
-
-const warringColor = {
-    value: '#ec0101',
-};
-
-const cpuColor = {
-    use: '#5e62e6',
-    free: '#4ea1d3',
-};
 
 const GraphPie = (props) => {
     const RADIAN = Math.PI / 180;
@@ -70,7 +55,10 @@ const GraphPie = (props) => {
             />
             <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>
             <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none"/>
-            <text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} textAnchor={textAnchor} className="graph_label">
+            <text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} textAnchor={textAnchor} className="graph_label"
+                  style={{
+                      fontSize: "larger",
+                  }}>
                 {`${payload.label}`}
             </text>
             {/*<text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
@@ -85,16 +73,12 @@ const GraphPie = (props) => {
 
 const MyResponsivePie = (props) => {
     const {
-        height, title, color, mac,
+        height, title, pieColor, mac, warringUsed,
     } = props;
     const [activeIndex, setActiveIndex] = useState(0);
-    const [fill, setFill] = useState(defaultColor.pieColor);
-
-    const tempData = "x"; /*임시 데이터*/
+    const [fill, setFill] = useState(pieColor.defaultColor);
 
     const [data, setData] = useState([]);
-    const [mem, setMem] = useState();
-    const [disk, setDisk] = useState();
 
     // eslint-disable-next-line no-shadow
     const onPieEnter = (data, index) => {
@@ -117,40 +101,44 @@ const MyResponsivePie = (props) => {
             const marker = 1024; // Change to 1000 if required
             const decimal = 2; // Change as required
             const megaBytes = marker * marker; // One MB is 1024 KB
-            const response = await getMcNetworksCpu({tempData});
+            const response = await getMcNetworksCpu({});
             const value = response.data[0].usage_idle;
 
             const valueCompare = 100 - Number(value);
             const use = Number(valueCompare.toFixed(2));
             const free = Number(value.toFixed(2));
 
-            let useColor = cpuColor.use;
-            let freeColor = cpuColor.free;
+            let useColor = pieColor.cpuColor.use;
+            let freeColor = pieColor.cpuColor.free;
 
-            if (use >= 80) {
-                useColor = warringColor.value;
-                freeColor = warringColor.value;
+            if (use >= Number(warringUsed)) {
+                useColor = pieColor.warringColor;
+                freeColor = pieColor.warringColor;
             }
 
             cpData = [
                 {
-                    id: "use",
-                    label: "use",
+                    id: "used",
+                    label: "used",
                     value: use,
                     fillColor: useColor,
                 },
                 {
-                    id: "free",
-                    label: "free",
+                    id: "available", /*free*/
+                    label: "available",
                     value: free,
                     fillColor: freeColor,
                 },
             ];
             setData(data.concat(cpData));
         } catch {
-            console.log("😁😁 MyResponsivePie response error");
+            console.log("cpu MyResponsivePie response error");
         }
     };
+
+    useEffect(() => {
+        getData();
+    }, []);
 
     useEffect(() => {
         //getData();

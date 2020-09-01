@@ -32,6 +32,23 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const pieColor = {
+    defaultColor: '#d4d7dd',
+    textColor: '#414141',
+    warringColor: '#ec0101',
+    cpuColor: {
+        use: '#26baee',
+        free: '#63686e',
+    },
+    memColor: {
+        use: '#2fc4b2',
+        free: '#63686e',
+    },
+    diskColor: {
+        use: '#ff8364',
+        free: '#63686e',
+    },
+};
 
 const MicroCloudDashboard = () => {
     const classes = useStyles();
@@ -45,13 +62,13 @@ const MicroCloudDashboard = () => {
             </Row>
             <Row className="classes.row">
                 <Col md={6} lg={4} xs={12} sm={12} xl={4} style={{padding: 10}}>
-                    <MyResponsiveCpu height={300} title="CPU" color="nivo" />
+                    <MyResponsiveCpu height={300} title="CPU" pieColor={pieColor} warringUsed={80}/>
                 </Col>
                 <Col md={6} lg={4} xs={12} sm={12} xl={4} style={{padding: 10}}>
-                    <MyResponsiveMem height={300} title="MEM" color="greys" />
+                    <MyResponsiveMem height={300} title="MEMORY" pieColor={pieColor} warringUsed={80}/>
                 </Col>
                 <Col md={6} lg={4} xs={12} sm={12} xl={4} style={{padding: 10}}>
-                    <MyResponsiveDisk height={300} title="DISK" color="yellow_green_blue" />
+                    <MyResponsiveDisk height={300} title="DISK" pieColor={pieColor} warringUsed={80}/>
                 </Col>
             </Row>
             <Row>
