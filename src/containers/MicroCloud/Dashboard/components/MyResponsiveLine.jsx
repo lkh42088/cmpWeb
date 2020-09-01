@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { ResponsiveLine } from '@nivo/line';
+import {Defs, linearGradientDef} from '@nivo/core';
 import {Card, CardBody} from "reactstrap";
 import {fade, makeStyles} from "@material-ui/core/styles";
 import {getVmInterfaceTraffic} from "../../../../lib/api/microCloud";
@@ -95,13 +96,6 @@ const MyResponsiveLine = (props) => {
                         type: 'time',
                         format: "native",
                     }}
-                    yScale={{
-                        type: 'linear',
-                        min: '0',
-                        max: 'auto',
-                        stacked: false,
-                        reverse: false,
-                    }}
                     curve="monotoneX"
                     axisTop={null}
                     axisRight={null}
@@ -170,6 +164,13 @@ const MyResponsiveLine = (props) => {
                     motionStiffness={300}
                     motionDamping={40}
                     theme={lineTheme}
+                    defs={[
+                        linearGradientDef('gradientA', [
+                            { offset: 0, color: 'inherit' },
+                            { offset: 100, color: 'inherit', opacity: 0.2 },
+                        ]),
+                    ]}
+                    fill={[{ match: '*', id: 'gradientA' }]}
                 />
             </CardBody>
         </Card>

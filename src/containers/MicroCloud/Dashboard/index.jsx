@@ -56,7 +56,7 @@ const MicroCloudDashboard = () => {
             </Row>
             <Row>
                 <Col md={12} style={{padding: 10}}>
-                    <MyResponsiveLine height={400} title="VM Interface RX/TX" mac={mac} />
+                    <MyResponsiveLine height={400} title="BareMetal Out Interface" mac={mac} />
                 </Col>
             </Row>
         </Container>
