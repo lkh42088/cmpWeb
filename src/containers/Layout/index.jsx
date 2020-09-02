@@ -40,6 +40,7 @@ import {
 } from '../../shared/prop-types/ReducerProps';
 import {setUserPage} from "../../redux/actions/usersActions";
 import {setCompanyPage} from "../../redux/actions/companiesActions";
+import {changeVmPage, initVmPage} from "../../redux/actions/vmsActions";
 
 let notification = null;
 
@@ -89,6 +90,7 @@ const Layout = ({
         dispatch(changeMenuTitle(title, subTitle));
         dispatch(setUserPage('list'));
         dispatch(setCompanyPage('list'));
+        dispatch(changeVmPage({pageType: 'list', data: null}));
 
         // 자산관리 메뉴 선택 시
         if (title === 'SERVER' || title === 'NETWORK') {

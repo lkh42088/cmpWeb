@@ -14,6 +14,7 @@ import SidebarCategory from './SidebarCategory';
 import SidebarLink from './SidebarLink';
 import {setUserPage} from "../../../redux/actions/usersActions";
 import {setCompanyPage} from "../../../redux/actions/companiesActions";
+import {initVmPage} from "../../../redux/actions/vmsActions";
 
 const SidebarContent = ({
     changeToLight, changeToDark, changeMenuTitle, onClick,
@@ -85,8 +86,6 @@ const SidebarContent = ({
                                                  onClick={() => changeMenuTitle('MICRO CLOUD', 'IMAGE', '')}/>
                                     <SidebarLink title="VM" route="/micro/vms"
                                                  onClick={() => changeMenuTitle('MICRO CLOUD', 'VM', '')}/>
-                                    <SidebarLink title="VNC" route="/micro/vnc"
-                                                 onClick={hideSidebar}/>
                                 </SidebarCategory>
                         )}
                         <SidebarCategory title="SERVER" icon={serverOutlineBadged} dropdown={dropdown}>
@@ -151,8 +150,6 @@ const SidebarContent = ({
                                              onClick={() => changeMenuTitle('MICRO CLOUD', 'IMAGE', '')}/>
                                 <SidebarLink title="VM" route="/micro/vms"
                                              onClick={() => changeMenuTitle('MICRO CLOUD', 'VM', '')}/>
-                                <SidebarLink title="VNC" route="/micro/vnc"
-                                             onClick={hideSidebar}/>
                             </SidebarCategory>
                         )}
                         <SidebarCategory title="SERVER" icon={serverOutlineBadged} dropdown={dropdown}>
