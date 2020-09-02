@@ -37,7 +37,7 @@ const pieColor = {
     textColor: '#414141',
     warringColor: '#ec0101',
     cpuColor: {
-        use: '#26baee',
+        use: '#3f51b5',
         free: '#63686e',
     },
     memColor: {

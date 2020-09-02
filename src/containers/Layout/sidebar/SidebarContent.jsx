@@ -55,6 +55,8 @@ const SidebarContent = ({
                         <SidebarCategory title="TEST" icon={emojiPeopleIcon} dropdown={dropdown}>
                             <SidebarLink title="TEMP" route="/test/temp"
                                          onClick={() => changeMenuTitle('TEST', 'TEMP', '')}/>
+                            <SidebarLink title="UI" route="/test/ui"
+                                         onClick={() => changeMenuTitle('TEST', 'UI', '')}/>
                         </SidebarCategory>
                         {user.id === 'ebjee' && (
                             <SidebarCategory title="EBJEE" icon={emojiPeopleIcon} dropdown={dropdown}>
@@ -64,6 +66,8 @@ const SidebarContent = ({
                                              onClick={() => changeMenuTitle('TEST', 'CODE', '')}/>
                                 <SidebarLink title="TEMP" route="/test/temp"
                                              onClick={() => changeMenuTitle('TEST', 'TEMP', '')}/>
+                                <SidebarLink title="UI" route="/test/ui"
+                                             onClick={() => changeMenuTitle('TEST', 'UI', '')}/>
                             </SidebarCategory>
                         )}
                         <Link to={getDashBoardLink()} onClick={() => changeMenuTitle('DASHBOARD', '', '')} >
@@ -118,6 +122,8 @@ const SidebarContent = ({
                         <SidebarCategory title="TEST" icon={emojiPeopleIcon} dropdown={dropdown}>
                             <SidebarLink title="TEMP" route="/test/temp"
                                          onClick={() => changeMenuTitle('TEST', 'TEMP', '')}/>
+                            <SidebarLink title="UI" route="/test/ui"
+                                         onClick={() => changeMenuTitle('TEST', 'UI', '')}/>
                         </SidebarCategory>
                         {user.id === 'ebjee' && (
                             <SidebarCategory title="EBJEE" icon={emojiPeopleIcon} dropdown={dropdown}>
@@ -127,6 +133,8 @@ const SidebarContent = ({
                                              onClick={() => changeMenuTitle('TEST', 'CODE', '')}/>
                                 <SidebarLink title="TEMP" route="/test/temp"
                                              onClick={() => changeMenuTitle('TEST', 'TEMP', '')}/>
+                                <SidebarLink title="UI" route="/test/ui"
+                                             onClick={() => changeMenuTitle('TEST', 'UI', '')}/>
                             </SidebarCategory>
                         )}
                         <SidebarLink title="DASHBOARD" icon={outlineDashboard} route={getDashBoardLink()}

@@ -2,26 +2,149 @@ import React, {Image} from 'react';
 import {
     Card, CardBody, Col, Button,
 } from 'reactstrap';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import FileSaver from "file-saver";
 import MatButton from '@material-ui/core/Button';
 import SendIcon from "@material-ui/icons/Send";
-import TocIcon from '@material-ui/icons/Toc';
+import ListIcon from '@material-ui/icons/List';
 import EditIcon from '@material-ui/icons/Edit';
+import {IconButton, Tooltip} from "@material-ui/core";
 import Avatar from "react-avatar";
+import {useSnackbar} from "notistack";
 
 import * as common from "../../../../lib/common";
 
 import {API_ROUTE, API_ROUTE_SERVER_IMAGE} from "../../../../lib/api/client";
+import {setUser, setUserIdx, setUserPage} from "../../../../redux/actions/usersActions";
+import {modifyUser} from "../../../../lib/api/users";
+import ModifyUserPage from "./ModifyUserPage";
 
 const ProfileMain = () => {
     const {
         user,
         userPage,
+        userIdx,
     } = useSelector(({usersRd}) => ({
         user: usersRd.user,
         userPage: usersRd.userPage,
+        userIdx: usersRd.userIdx,
     }));
+
+
+    const dispatch = useDispatch();
+    const {enqueueSnackbar} = useSnackbar();
+
+    /*
+        const {
+            userIdx,
+            user,
+        } = useSelector(({usersRd}) => ({
+            userIdx: usersRd.userIdx,
+            user: usersRd.user,
+        }));
+    */
+    const [modifyData, setModifyData] = React.useState(null);
+    const [openModifyUser, setOpenModifyUser] = React.useState(false);
+
+    /*******************
+     * Function
+     *******************/
+
+    const handleOpenModifyUser = () => {
+        setOpenModifyUser(true);
+    };
+
+    const handleUserPage = () => {
+        dispatch(setUserPage('list'));
+        dispatch(setUserIdx({userIdx: ''}));
+        dispatch(setUser({}));
+    };
+
+    const handleModifySelectedUser = (idx) => {
+        // console.log("modify user: ", idx);
+        setModifyData(user);
+        handleOpenModifyUser();
+    };
+
+    const handleCloseModifyUser = () => {
+        setOpenModifyUser(false);
+    };
+
+    const handleSnackbarSuccess = (snackMsg) => {
+        enqueueSnackbar(snackMsg, {variant: "success"});
+    };
+
+    const handleSnackbarFailure = (snackMsg) => {
+        enqueueSnackbar(snackMsg);
+    };
+
+    /*******************
+     * Axios
+     *******************/
+
+    const asyncModifyUser = async (val) => {
+        const {
+            cpIdx, cpName, id, password, name, email,
+            cellPhone, tel, level, userZip, userAddr, userAddrDetail,
+            emailAuthValue, emailAuthGroupList, memo, avata,
+        } = val;
+        try {
+            const response = await modifyUser({
+                cpIdx,
+                cpName,
+                id,
+                password,
+                name,
+                email,
+                authLevel: Number(level),
+                hp: cellPhone,
+                tel,
+                zipCode: userZip,
+                address: userAddr,
+                addressDetail: userAddrDetail,
+                emailAuthFlag: emailAuthValue === "1",
+                emailAuthGroupFlag: emailAuthValue === "2",
+                emailAuthGroupList,
+                memo,
+                avata,
+            });
+            const submitData = ({
+                companyIdx: cpIdx,
+                cpName,
+                userId: id,
+                password,
+                name,
+                email,
+                authLevel: Number(level),
+                hp: cellPhone,
+                tel,
+                zipCode: userZip,
+                address: userAddr,
+                addressDetail: userAddrDetail,
+                emailAuthFlag: emailAuthValue === "1",
+                emailAuthGroupFlag: emailAuthValue === "2",
+                emailAuthGroupList,
+                memo,
+                avata,
+            });
+
+            dispatch(setUser(submitData));
+            handleSnackbarSuccess("계정 수정이 성공하였습니다.");
+
+            //getPageData();
+        } catch {
+            handleSnackbarFailure("계정 수정이 실패하였습니다.");
+        }
+    };
+
+    /*******************
+     * Event
+     *******************/
+
+    const handleSubmitModifyUser = (val) => {
+        asyncModifyUser(val);
+        handleCloseModifyUser();
+    };
 
     /*const handleFileSave = () => {
         //FileSaver.saveAs(user.avataFile, user.avata);
@@ -51,6 +174,14 @@ const ProfileMain = () => {
                               /*background: "#8d93ab",*/
                               /*opacity: "0.9",*/
                           }}>
+
+                    <div className="profile__stats-bottom">
+                        <div className="profile__stat">
+                            <p className="profile__stat-number">
+                                {user.cpName}
+                            </p>
+                        </div>
+                    </div>
                     <div className="profile__information">
                         <div className="profile__avatar"
                              style={{
@@ -121,17 +252,40 @@ const ProfileMain = () => {
                             padding: "5px",
                         }}>
                             <div style={{
-                                float: "left",
-                            }}>{user.cpName}</div>
-                            <div style={{
                                 float: "right",
                             }}>
-                                <EditIcon style={{
+                                {/*<EditIcon style={{
                                     background: "pink",
                                     color: "red",
                                     borderRadios: "5px",
                                 }}/>
-                                <TocIcon/>
+                                <TocIcon/>*/}
+
+                                <ul className="social-icons">
+                                    <li>
+                                        <Tooltip title="목록">
+                                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                            <a href="#"><i><ListIcon style={{
+                                                fontSize: "1.3rem",
+                                            }} onClick={handleUserPage}/></i></a>
+                                        </Tooltip>
+                                    </li>
+                                    <li>
+                                        <Tooltip title="수정">
+                                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                            <a href="#"><i><EditIcon style={{
+                                                fontSize: "1.3rem",
+                                            }} onClick={event => handleModifySelectedUser(userIdx)}/></i></a>
+                                        </Tooltip>
+                                    </li>
+                                </ul>
+
+                                <ModifyUserPage
+                                    open={openModifyUser}
+                                    handleClose={handleCloseModifyUser}
+                                    handleSubmit={handleSubmitModifyUser}
+                                    data={modifyData}
+                                />
                             </div>
                             {/*<p className="profile__stat-number">
                                 <SendIcon/>

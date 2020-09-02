@@ -15,7 +15,7 @@
   font-weight: 700;
   font-size: 20px;
   line-height: 24px;
-  padding: 5px;
+  /*padding: 5px;*/
 }
 
 .vm__stats {
@@ -32,12 +32,43 @@
   text-align: center;
   padding-top: 15px;
   padding-bottom: 15px;
-  /*border-right: 1px solid #f6f5f5;*/
   width: 100%;
   @include themify($themes) {
     border-right: 1px solid themed('colorBorder');
     color: themed('colorText');
   }
+  line-height: 50px;
+  height: 50px;
+
+  &:last-child {
+    border-right: 0;
+  }
+}
+
+.vm__stats_border-none {
+  display: flex;
+  justify-content: space-around;
+  @include themify($themes) {
+    color: themed('colorText');
+  }
+}
+
+.last-border {
+  @include themify($themes) {
+    border-bottom: 1px solid themed('colorBorder');
+  }
+}
+
+.vm__stat_border-none {
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  width: 100%;
+  @include themify($themes) {
+    color: themed('colorText');
+  }
+  line-height: 50px;
+  height: 50px;
 
   &:last-child {
     border-right: 0;
@@ -48,5 +79,21 @@
   margin: 0;
   color: $color-additional;
   font-size: 12px;
-  line-height: 14px;
+  line-height: 1.5;
+/*  display: inline-block;
+  vertical-align: middle;*/
+}
+
+.vm__stat-graph {
+  color: $color-additional;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-bottom:15px;
+  padding: 2px;
+}
+
+.vm__os-img {
+  height: 25px;
+  width: 25px;
+  line-height: 1.5;
 }

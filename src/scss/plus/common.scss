@@ -821,3 +821,67 @@ img.bg { /* Set rules to fill background */
 @media screen and (max-width: 420px) {
 
 }
+
+
+// (02Sep2020,ebjee)
+.social-icons li {
+  display: inline-block;
+  margin: 0.15em;
+  position: relative;
+  /*font-size: 1em;*/
+}
+
+.social-icons i {
+  /*color: #3f51b5;*/
+  @include themify($themes) {
+    color: themed('colorText');
+  }
+  position: absolute;
+  top: 0.80em;
+  left: 0.80em;
+  transition: all 265ms ease-out;
+}
+
+.social-icons a {
+  display: inline-block;
+}
+
+.social-icons a:before {
+  content: " ";
+  width: 35px;
+  height: 35px;
+  border-radius: 0.5rem;
+  display: block;
+  @include themify($themes) {
+    background: themed('inboxButtonBackground');
+  }
+  background: linear-gradient(45deg, #f2f4f7, #f2f4f7);
+  /*transform: scale(1);
+  -ms-transform: scale(1);
+  -webkit-transform: scale(1);
+  transition: all 265ms ease-out;*/
+}
+.social-icons a:hover:before {
+  //transform: scale(0);
+  //transition: all 265ms ease-in;
+  @include themify($themes) {
+    background: themed('inboxButtonBackgroundHover');
+  }
+}
+/*
+
+.social-icons a:hover i {
+  transform: scale(2.2);
+  -ms-transform: scale(2.2);
+  -webkit-transform: scale(2.2);
+  @include themify($themes) {
+    color: themed('colorMateralPrimaryText');
+    !*background: -webkit-linear-gradient(45deg, themed('colorBackgroundBody'), themed('colorBackgroundBody'));*!
+  }
+  //background: -webkit-linear-gradient(45deg, #f2f4f7, #f2f4f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 265ms ease-in;
+}
+*/
+

@@ -16,8 +16,8 @@ const CompanyView = () => {
                     <Col md={12} lg={12} xl={4}>
                         <Row>
                             <ProfileMain/>
-                            <ProfileBtn />
-                            <ProfileTasks />
+                            {/*<ProfileBtn />
+                            <ProfileTasks />*/}
                         </Row>
                     </Col>
                     <ProfileTabs />

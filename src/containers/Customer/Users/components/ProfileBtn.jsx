@@ -137,7 +137,7 @@ const ProfileBtn = () => {
     };
 
     return (
-        <Col md={12} lg={12} xl={12}>
+        /*<Col md={12} lg={12} xl={12}>
             <Card>
                 <CardBody className="profile__card">
                     <Container className="dashboard">
@@ -156,8 +156,8 @@ const ProfileBtn = () => {
                     </Container>
                 </CardBody>
             </Card>
-        </Col>
-        /*<Col md={12} lg={12} xl={12}>
+        </Col>*/
+        <Col md={12} lg={12} xl={12}>
             <Card>
                 <CardBody className="profile__card--calendar">
                     <img className="todo_sidebar-image" src={todoSidebarImg} alt="sidebar-img" />
@@ -185,7 +185,7 @@ const ProfileBtn = () => {
                     />
                 </CardBody>
             </Card>
-        </Col>*/
+        </Col>
     );
 };
 
