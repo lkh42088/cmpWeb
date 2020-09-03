@@ -102,14 +102,16 @@ const VmSidebar = ({vm}) => {
                             <p className="vm__stat-title"> 외부접속 119.1.1.10:15001</p>
                         </div>
                     </div>
+
                     <div className="vm__stats">
-                        <div className="vm__stat">
-                            <SmallTrafficMonitor data={rx} id="small_flow_rx" dataKey="y" hostname="RX (Kbytes)" />
+                        <div className="vm__stat_graph">
+                            <SmallTrafficMonitor data={rx} hostname="RX (Kbytes)" />
                         </div>
                     </div>
+
                     <div className="vm__stats">
-                        <div className="vm__stat">
-                            <SmallTrafficMonitor data={tx} id="small_flow_tx" dataKey="y" hostname="TX (Kbytes)" />
+                        <div className="vm__stat_graph">
+                            <SmallTrafficMonitor data={tx} hostname="TX (Kbytes)" />
                         </div>
                     </div>
                 </CardBody>

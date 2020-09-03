@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
     Area, AreaChart, linearGradient, Tooltip, XAxis, YAxis,
 } from "recharts";
@@ -8,13 +8,10 @@ const SmallTrafficMonitor = (props) => {
         data, hostname,
     } = props;
 
-    useEffect(() => {
-    }, [data]);
-
     return (
-        <>
+        <div>
             <p><b>{hostname}</b></p>
-            <AreaChart data={data} width={220} height={80}
+            <AreaChart data={data} width={200} height={70}
                        margin={{
                            top: 0, right: 15, left: 15, bottom: 0,
                        }}>
@@ -27,11 +24,11 @@ const SmallTrafficMonitor = (props) => {
                 {/*<XAxis dataKey="x" height={0} tickLine={false} tick={false}/>*/}
                 {/*<YAxis tickLine={false} tick={false} width={0}/>*/}
                 <XAxis dataKey="x" height={15} tickLine={false}/>
-                <YAxis tickLine={false} width={15}/>
+                <YAxis dataKey="y" tickLine={false} width={15}/>
                 <Tooltip />
                 <Area type="monotone" dataKey="y" stroke="#1999ff" fillOpacity={1} fill="url(#first)" />
             </AreaChart>
-        </>
+        </div>
     );
 };
 
