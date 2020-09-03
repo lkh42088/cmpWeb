@@ -95,13 +95,13 @@ const MicroCloudDashboard = () => {
             });
             setRx(
                response.data.stats[0].data.map(val => ({
-                    x: new Date(val.x).toLocaleTimeString().substring(3, 8),
+                    x: new Date(val.x).toLocaleTimeString().split(" ")[1],
                     y: val.y,
                 })),
             );
             setTx(
                 response.data.stats[1].data.map(val => ({
-                    x: new Date(val.x).toLocaleTimeString().substring(3, 8),
+                    x: new Date(val.x).toLocaleTimeString().split(" ")[1],
                     y: val.y,
                 })),
             );
