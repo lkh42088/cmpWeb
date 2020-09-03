@@ -23,64 +23,64 @@ const lineTheme = ({
 
 const MyResponsiveLine = (props) => {
     const {
-        title, height, mac,
+        title, height, mac, data, hostname,
     } = props;
 
-    const [data, setData] = useState({
-        stats: [{
-                id: "RX",
-                data: [],
-            }, {
-                id: "TX",
-                data: [],
-            },
-        ],
-    });
-    const [hostname, setHostname] = useState("");
+    // const [data, setData] = useState({
+    //     stats: [{
+    //             id: "RX",
+    //             data: [],
+    //         }, {
+    //             id: "TX",
+    //             data: [],
+    //         },
+    //     ],
+    // });
+    // const [hostname, setHostname] = useState("");
 
     /**************************************************************
      * Axios Function
      **************************************************************/
-    const getData = async () => {
-        // console.log("★★★★★★★★", "get Interface Traffic! mac:", mac);
-        if (!mac) {
-            return;
-        }
-
-        try {
-            const response = await getVmInterfaceTraffic({mac});
-            // console.log("TEST RESPONSE1: ", response.data.stats[0].data);
-            setData({
-                stats: (
-                    response.data.stats.map(val => ({
-                        id: val.id,
-                        data: val.data.map(s => ({
-                            // ...s,
-                            x: new Date(s.x),
-                            y: s.y,
-                        })),
-                    }))),
-            });
-            setHostname(response.data.hostname);
-        } catch {
-            setData({
-                ...data,
-                data: [],
-            });
-        }
-    };
-
-    // useEffect(() => {
-    //     if (data.stats[0].data.length > 1) {
-    //         console.log(data.stats[0].data[0].x);
+    // const getData = async () => {
+    //     // console.log("★★★★★★★★", "get Interface Traffic! mac:", mac);
+    //     if (!mac) {
+    //         return;
     //     }
-    // }, [data.stats]);
+    //
+    //     try {
+    //         const response = await getVmInterfaceTraffic({mac});
+    //         // console.log("TEST RESPONSE1: ", response.data.stats[0].data);
+    //         setData({
+    //             stats: (
+    //                 response.data.stats.map(val => ({
+    //                     id: val.id,
+    //                     data: val.data.map(s => ({
+    //                         // ...s,
+    //                         x: new Date(s.x),
+    //                         y: s.y,
+    //                     })),
+    //                 }))),
+    //         });
+    //         setHostname(response.data.hostname);
+    //     } catch {
+    //         setData({
+    //             ...data,
+    //             data: [],
+    //         });
+    //     }
+    // };
 
     useEffect(() => {
-        getData();
-        const timer = setInterval(getData, 3000);
-        return () => clearInterval(timer);
-    }, []);
+        if (data.stats[0].data.length > 1) {
+            console.log(data.stats[0].data[0].x);
+        }
+    }, [data]);
+
+    // useEffect(() => {
+    //     getData();
+    //     const timer = setInterval(getData, 3000);
+    //     return () => clearInterval(timer);
+    // }, []);
 
     return (
         <Card className="cb-card">
