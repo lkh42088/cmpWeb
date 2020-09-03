@@ -13,7 +13,7 @@ const UserView = () => (
                     <Col md={12} lg={12} xl={4}>
                         <Row>
                             <ProfileMain/>
-                            <ProfileBtn />
+                            {/*<ProfileBtn />*/}
                             {/*<ProfileTasks />*/}
                         </Row>
                     </Col>

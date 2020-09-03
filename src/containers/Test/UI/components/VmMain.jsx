@@ -1,37 +1,77 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     Card, CardBody, Col, Progress, Row,
 } from 'reactstrap';
 import {
-    Area, AreaChart, Bar, BarChart, Cell, ResponsiveContainer, Tooltip, XAxis,
+    Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis,
 } from "recharts";
+import Panel from "../../../../shared/components/Panel";
+import getTooltipStyles from "../../../../shared/helpers";
 
-const todoSidebarImg = `${process.env.PUBLIC_URL}/img/OS_Windows.ico`;
+const OsImg = `${process.env.PUBLIC_URL}/img/OS_Windows.ico`;
 
 const data = [
-    { name: 'Page A', pv: 25 },
-    { name: 'Page B', pv: 30 },
-    { name: 'Page C', pv: 55 },
-    { name: 'Page D', pv: 42 },
-    { name: 'Page E', pv: 85 },
-    { name: 'Page F', pv: 45 },
-    { name: 'Page G', pv: 21 },
-    { name: 'Page H', pv: 56 },
-    { name: 'Page I', pv: 68 },
-    { name: 'Page J', pv: 32 },
+    {
+        name: '12',
+        uv: 4000,
+    },
+    {
+        name: '13',
+        uv: 3000,
+    },
+    {
+        name: '14.03',
+        uv: 2000,
+    },
+    {
+        name: '15.03',
+        uv: 2780,
+    },
+    {
+        name: '16.03',
+        uv: 1890,
+    },
+    {
+        name: '17.03',
+        uv: 2390,
+    },
+    {
+        name: '18.03',
+        uv: 3490,
+    },
+    {
+        name: '19.03',
+        uv: 3490,
+    },
+    {
+        name: '20',
+        uv: 3490,
+    },
+    {
+        name: '21.5',
+        uv: 3490,
+    },
 ];
 
-const CustomTooltip = ({active, payload}) => {
-    if (active) {
-        return (
-            <div className="dashboard__total-tooltip">
-                <p className="label">{`$${payload[0].value}`}</p>
-            </div>
-        );
-    }
-
-    return null;
-};
+const BounceRateArea = ({themeName}) => (
+    <ResponsiveContainer height={150}>
+        <AreaChart
+            data={data}
+            margin={{
+                top: 0,
+                right: 0,
+                left: -15,
+                bottom: 0,
+            }}
+        >
+            <XAxis dataKey="name" tickLine={false}/>
+            <YAxis tickLine={false}/>
+            <CartesianGrid vertical={false}/>
+            <Tooltip {...getTooltipStyles(themeName, 'defaultItems')} />
+            <Area type="monotone" dataKey="uv" stroke="#5ca0d3" fill="#5ca0d3" fillOpacity={0.2}/>
+        </AreaChart>
+    </ResponsiveContainer>
+);
 
 const VmMain = () => (
     <Col md={12} lg={12} xl={12}>
@@ -40,7 +80,7 @@ const VmMain = () => (
                 <div className="vm__stats">
                     <div className="vm__stat">
                         <p className="vm__stat-mainTitle">
-                            <img className="vm__os-img" src={todoSidebarImg} alt="os" />
+                            <img className="vm__os-img" src={OsImg} alt="os"/>
                             &nbsp;VM 이름
                         </p>
                     </div>
@@ -90,49 +130,12 @@ const VmMain = () => (
 
                 <div className="vm__stats">
                     <div className="vm__stat" style={{
-                        height: "103px",
+                        height: "180px",
                     }}>
                         <p className="vm__stat-title">
                             Traffic
                         </p>
-                        <p className="vm__stat-title">
-                            <ResponsiveContainer height={70}>
-                                <AreaChart data={data} margin={{
-                                    top: 0,
-                                    left: 0,
-                                    bottom: 0,
-                                }}>
-                                    <Tooltip content={<CustomTooltip/>}/>
-                                    <XAxis
-                                        hide
-                                    />
-                                    <Area
-                                        name="BCH"
-                                        type="monotone"
-                                        dataKey="bch"
-                                        fill="#6faae1"
-                                        stroke="#6faae1"
-                                        fillOpacity={0.2}
-                                    />
-                                </AreaChart>
-                            </ResponsiveContainer>
-
-                            <ResponsiveContainer height={50}>
-                                <BarChart data={data}>
-                                    <Bar dataKey="pv" onClick={this.handleClick}>
-                                        {
-                                            data.map((entry, index) => (
-                                                <Cell
-                                                    cursor="pointer"
-                                                    fill={index === activeIndex ? '#4ce1b6' : '#f6da6e'}
-                                                    key={`cell-${index}`}
-                                                />
-                                            ))
-                                        }
-                                    </Bar>
-                                </BarChart>
-                            </ResponsiveContainer>
-                        </p>
+                        <BounceRateArea/>
                     </div>
                 </div>
 

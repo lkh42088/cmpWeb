@@ -25,6 +25,8 @@ $themes: (
                 colorFresh: #63a4ff,
                 colorMateralPrimaryText: #3f51b5, // (03july2020,ebjee)
                 colorMateralSecondaryText: #f50057, // (03july2020,ebjee)
+                colorIconButtonBackground: #f2f4f7,
+                colorIconButtonBackfroundHover: darken(#f2f4f7, 5%),
         ),
         dark: (
                 colorBackground: #232329,
@@ -52,6 +54,8 @@ $themes: (
                 colorFresh: #ffff72,
                 colorMateralPrimaryText: white, // (03july2020,ebjee)
                 colorMateralSecondaryText: white, // (03july2020,ebjee)
+                colorIconButtonBackground: #f2f4f7,
+                colorIconButtonBackfroundHover: darken(#f2f4f7, 5%),
         )
 );
 

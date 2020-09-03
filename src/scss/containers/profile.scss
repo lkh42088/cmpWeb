@@ -107,10 +107,21 @@
   justify-content: space-around;
 }
 
+.profile__stats-bottom {
+  display: flex;
+  justify-content: space-around;
+  padding: 3px;
+
+  @include themify($themes) {
+    border-bottom: 1px solid themed('colorFieldsBorder');
+  }
+}
+
 .profile__stat {
   text-align: center;
-  padding-top: 5px;
-  padding-bottom: 15px;
+  padding: 5px;
+  /*padding-top: 5px;*/
+  /*padding-bottom: 15px;*/
 }
 
 .profile__stat-number {
