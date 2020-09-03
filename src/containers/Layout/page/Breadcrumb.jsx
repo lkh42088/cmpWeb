@@ -61,6 +61,7 @@ const PAGE_URL = {
     "micro/networks": {title: "MICRO CLOUD", subTitle: "NETWORK", icon: null},
     "micro/images": {title: "MICRO CLOUD", subTitle: "IMAGE", icon: null},
     "micro/vms": {title: "MICRO CLOUD", subTitle: "VM", icon: null},
+    "micro/vmsCard": {title: "MICRO CLOUD", subTitle: "VM", icon: null},
     "micro/vnc": {title: "MICRO CLOUD", subTitle: "VNC", icon: null},
     "assets/server": {title: "SERVER", subTitle: "온프레미스", icon: serverOutlineBadged},
     "assets/network": {title: "NETWORK", subTitle: "네트워크", icon: routerNetwork},

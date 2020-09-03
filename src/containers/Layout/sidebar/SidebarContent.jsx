@@ -86,6 +86,8 @@ const SidebarContent = ({
                                                  onClick={() => changeMenuTitle('MICRO CLOUD', 'IMAGE', '')}/>
                                     <SidebarLink title="VM" route="/micro/vms"
                                                  onClick={() => changeMenuTitle('MICRO CLOUD', 'VM', '')}/>
+                                    <SidebarLink title="VM-CARD" route="/micro/vmsCard"
+                                                 onClick={() => changeMenuTitle('MICRO CLOUD', 'VM-CARD', 'card')}/>
                                 </SidebarCategory>
                         )}
                         <SidebarCategory title="SERVER" icon={serverOutlineBadged} dropdown={dropdown}>
@@ -150,6 +152,8 @@ const SidebarContent = ({
                                              onClick={() => changeMenuTitle('MICRO CLOUD', 'IMAGE', '')}/>
                                 <SidebarLink title="VM" route="/micro/vms"
                                              onClick={() => changeMenuTitle('MICRO CLOUD', 'VM', '')}/>
+                                <SidebarLink title="VM-CARD" route="/micro/vmsCard"
+                                             onClick={() => changeMenuTitle('MICRO CLOUD', 'VM', 'card')}/>
                             </SidebarCategory>
                         )}
                         <SidebarCategory title="SERVER" icon={serverOutlineBadged} dropdown={dropdown}>

@@ -15,9 +15,10 @@ export default () => (
             <Route path="/micro/servers" component={MicroCloudDevices} />
             <Route path="/micro/images" component={MicroCloudImages} />
             <Route path="/micro/networks" component={MicroCloudNetworks} />
-            <Route path="/micro/vms" component={MicroCloudVms} />
             <Route path="/micro/vnc" component={MicroCloudVnc} />
             <Route path="/micro/dashboard" component={MicroCloudDashboard} />
+            <Route path="/micro/vms" component={MicroCloudVms} />
+            <Route path="/micro/vmsCard" component={MicroCloudVms} />
         </div>
     </div>
 );

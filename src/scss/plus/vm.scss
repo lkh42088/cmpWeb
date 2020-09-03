@@ -1,20 +1,71 @@
 
+.vm__card-main {
+  padding-bottom: 0px;
+}
+
+.vm__card-main:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.vm__card_header {
+  font-size: medium;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  @include themify($themes) {
+    background-color: themed('colorBubble');
+    color: themed('colorText');
+  }
+}
+
+.vm__card_header-running {
+  font-size: medium;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px 4px $color-black;
+  background-color: $color-accent;
+ /* @include themify($themes) {
+    !*background-color: themed('colorMateralSecondaryText');*!
+    color: themed('colorEmoji');
+  }*/
+
+}
+
+.vm__card_i {
+  top: 0.70em;
+  left: 0.60em;
+  float: right;
+  @include themify($themes) {
+    color: themed('colorText');
+  }
+}
+
+.vm__card_i:hover {
+  color: #2a2a31;
+  /*transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;*/
+}
+
 .vm__card {
   height: 100%;
-  padding: 0;
+  /*padding: 0;*/
   border-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 
   @include themify($themes) {
     background-color: themed('colorBackground');
     border: 1px solid themed('colorBorder');
     color: themed('colorText');
   }
+  /*:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }*/
 }
 
 .vm__stat-mainTitle {
   font-weight: 700;
-  font-size: 20px;
-  line-height: 24px;
+  font-size: 10px;
+  line-height: 20px;
   /*padding: 5px;*/
 }
 
@@ -30,15 +81,15 @@
 
 .vm__stat {
   text-align: center;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   width: 100%;
   @include themify($themes) {
     border-right: 1px solid themed('colorBorder');
     color: themed('colorText');
   }
   line-height: 50px;
-  height: 50px;
+  /*height: 50px;*/
 
   &:last-child {
     border-right: 0;
@@ -61,14 +112,15 @@
 
 .vm__stat_border-none {
   text-align: center;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  /*padding-top: 5px;
+  padding-bottom: 5px;*/
   width: 100%;
   @include themify($themes) {
     color: themed('colorText');
   }
-  line-height: 50px;
-  height: 50px;
+  padding: 2px;
+  //line-height: 50px;
+  //height: 50px;
 
   &:last-child {
     border-right: 0;
@@ -78,7 +130,7 @@
 .vm__stat-title {
   margin: 0;
   color: $color-additional;
-  font-size: 12px;
+  font-size: 8px;
   line-height: 1.5;
 /*  display: inline-block;
   vertical-align: middle;*/
@@ -86,14 +138,14 @@
 
 .vm__stat-graph {
   color: $color-additional;
-  font-size: 12px;
+  font-size: 8px;
   line-height: 1.5;
-  margin-bottom:15px;
-  padding: 2px;
+  //margin-bottom:5px;
+  //padding: 2px;
 }
 
 .vm__os-img {
-  height: 25px;
-  width: 25px;
+  height: 20px;
+  width: 20px;
   line-height: 1.5;
 }

@@ -91,7 +91,6 @@ const Layout = ({
         dispatch(changeMenuTitle(title, subTitle));
         dispatch(setUserPage('list'));
         dispatch(setCompanyPage('list'));
-        dispatch(changeVmPage({pageType: 'list', data: null}));
 
         // 자산관리 메뉴 선택 시
         if (title === 'SERVER' || title === 'NETWORK') {
@@ -135,6 +134,12 @@ const Layout = ({
             dispatch(setApiPage(submitDataPage));
             dispatch(setSearch(submitDataSearch));
             dispatch(setDeviceByDeviceCode(''));
+        }
+
+        if (val === "card") {
+            dispatch(changeVmPage({pageType: 'card', data: null}));
+        } else {
+            dispatch(changeVmPage({pageType: 'list', data: null}));
         }
     };
 
@@ -198,7 +203,7 @@ const Layout = ({
 
     return (
         <div className={layoutClass}>
-            <CustomUI/>
+            <CustomUI/> {/*20200903 보류 - ebjee*/}
             <Customizer
                 customizer={customizer}
                 sidebar={sidebar}

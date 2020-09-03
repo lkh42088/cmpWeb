@@ -16,8 +16,8 @@ const GraphPie = (props) => {
     const cos = Math.cos(-RADIAN * midAngle);
     const sx = cx + (outerRadius + 10) * cos;
     const sy = cy + (outerRadius + 10) * sin;
-    const mx = cx + (outerRadius + 15) * cos;
-    const my = cy + (outerRadius + 15) * sin;
+    const mx = cx + (outerRadius + 5) * cos;
+    const my = cy + (outerRadius + 5) * sin;
     const ex = mx + (cos >= 0 ? 1 : -1) * 11;
     const ey = my;
     const textAnchor = cos >= 0 ? 'start' : 'end';
@@ -53,11 +53,11 @@ const GraphPie = (props) => {
                 outerRadius={outerRadius + 10}
                 fill={fill}
             />
-            <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>
+            {/*<path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>*/}
             <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none"/>
             <text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} textAnchor={textAnchor} className="graph_label"
                   style={{
-                      fontSize: "larger",
+                      fontSize: "x-small",
                   }}>
                 {`${payload.label}`}
             </text>
@@ -117,8 +117,8 @@ const MyResponsivePie = (props) => {
             const value = response.data[0].used_percent;
 
             const valueCompare = 100 - Number(value);
-            const use = Number(valueCompare.toFixed(2));
-            const free = Number(value.toFixed(2));
+            const use = Number(value.toFixed(2));
+            const free = Number(valueCompare.toFixed(2));
 
             let useColor = pieColor.diskColor.use;
             let freeColor = pieColor.diskColor.free;
