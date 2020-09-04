@@ -9,11 +9,12 @@ const NBSmallAreaChart = (props) => {
         data, hostname, gridCount,
     } = props;
     const [width, setWidth] = useState();
+    const ref = useRef();
 
     const division = 12 / gridCount; // grid area
     const SIDEBAR_WIDTH = 420;
     const updateSize = () => {
-        setWidth((window.innerWidth - SIDEBAR_WIDTH) / division);
+        setWidth(ref.current.clientWidth - 20);
     };
 
     useEffect(() => {
@@ -22,11 +23,11 @@ const NBSmallAreaChart = (props) => {
     });
 
     useEffect(() => {
-        setWidth((window.innerWidth - SIDEBAR_WIDTH) / division);
+        setWidth(ref.current.clientWidth - 20);
     }, []);
 
     return (
-        <Card className="cb-card" >
+        <Card className="cb-card" id="base" innerRef={ref}>
             <CardBody className="cb-card-body" >
                 <p><b>{hostname}</b></p>
                 <AreaChart data={data} width={width} height={100}
@@ -39,7 +40,7 @@ const NBSmallAreaChart = (props) => {
                             <stop offset="95%" stopColor="#86daff" stopOpacity={0.2}/>
                         </linearGradient>
                     </defs>
-                    <XAxis dataKey="x" height={15} tickLine={false}/>
+                    <XAxis dataKey="x" height={15} tickLine={false} />
                     <YAxis tickLine={false} width={35}/>
                     <Tooltip />
                     <Area type="monotone" dataKey="y" stroke="#1999ff" fillOpacity={1} fill="url(#first)" />
