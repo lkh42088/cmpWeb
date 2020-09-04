@@ -7,28 +7,68 @@ import Management from "./Management";
 import DefaultPages from './DefaultPages';
 import Subnet from "./Subnet";
 import Dashboards from "./Dashboards";
-import Account from "./Account";
+//import Account from "./_Account";
 import Test from "./Test";
+import RouteIf from '../RouteIf';
 
-export default () => {
+const menuLevel = [
+    {
+        path: '/assets',
+        level: 1,
+        component: Assets,
+    },
+    {
+        path: '/customers',
+        level: 1,
+        component: Customer,
+    },
+    {
+        path: '/management',
+        level: 1,
+        component: Management,
+    },
+    {
+        path: '/subnet',
+        level: 1,
+        component: Subnet,
+    },
+    {
+        path: '/default_pages',
+        level: 1,
+        component: DefaultPages,
+    },
+    {
+        path: '/dashboards',
+        level: 2,
+        component: Dashboards,
+    },
+    {
+        path: '/test',
+        level: 1,
+        component: Test,
+    },
+];
+
+export default ({history}) => {
     const existSession = localStorage.getItem("user");
     if (existSession) {
         return (
             <div>
                 <Layout/>
                 <div className="container__wrap">
-                    <Route path="/assets" component={Assets}/>
-                    <Route path="/customers" component={Customer}/>
-                    <Route path="/management" component={Management}/>
-                    <Route path="/subnet" component={Subnet}/>
-                    <Route path="/default_pages" component={DefaultPages}/>
-                    <Route path="/404" component={DefaultPages}/>
-                    <Route path="/dashboards" component={Dashboards}/>
-                    <Route path="/account" component={Account}/>
-                    <Route path="/test" component={Test}/>
+                    {menuLevel && menuLevel.map((row, index) => {
+                        const keyId = index;
+                        return (
+                            <RouteIf
+                                key={keyId}
+                                path={row.path} role={JSON.parse(existSession)}
+                                menuLevel={row} history={history}
+                            />
+                        );
+                    })}
                 </div>
             </div>
         );
     }
-    return (<Redirect to="/" />);
+    return (<Redirect to="/"/>);
 };

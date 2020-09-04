@@ -203,7 +203,7 @@ const Layout = ({
 
     return (
         <div className={layoutClass}>
-            <CustomUI/> {/*20200903 보류 - ebjee*/}
+            {/*<CustomUI/>*/} {/*20200903 보류 - ebjee*/}
             <Customizer
                 customizer={customizer}
                 sidebar={sidebar}

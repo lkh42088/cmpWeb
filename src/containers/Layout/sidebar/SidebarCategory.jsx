@@ -8,9 +8,13 @@ import {Icon, InlineIcon} from '@iconify/react';
 import {useDispatch, useSelector} from "react-redux";
 import {clearSidebarWindows} from "../../../redux/actions/sidebarActions";
 
+const flexStyle = {
+    display: "flex",
+};
+
 const SidebarCategory = ({
-    title, icon, isNew, children, dropdown,
-}) => {
+                             title, icon, isNew, children, dropdown, style,
+                         }) => {
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
     const [hover, setHover] = useState(false);
@@ -20,7 +24,7 @@ const SidebarCategory = ({
     // }));
     const {collapse} = state;
     const {clearWindow} = useSelector(({sidebar}) => ({
-       clearWindow: sidebar.clearWindow,
+        clearWindow: sidebar.clearWindow,
     }));
     const categoryClass = classNames({
         'cb_sidebar__category-wrap': true,
@@ -84,14 +88,14 @@ const SidebarCategory = ({
     }, [clearWindow]);
 
     const toggleDropdown = () => {
-        setState({ collapse: !collapse });
+        setState({collapse: !collapse});
     };
 
     return (
         // sidebar toggle : dropdown
         (sidebarDropdown)
             ? (
-                <div>
+                <div style={style}>
                     <button className={categoryClass} type="button" onClick={toggleDropdown} style={{zIndex: "120"}}>
                         {icon ? <span className="cb_sidebar__link-icon"><Icon icon={icon}/></span> : ''}
                         <p className="cb_sidebar__link-title">
@@ -111,7 +115,9 @@ const SidebarCategory = ({
             )
             : (
                 // sidebar toggle window
-                <div style={{display: "flex"}} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} >
+            /*<input className={`form-control round-lg ${this.state.valid ? '' : 'error'}`} />*/
+                <div style={style}
+                     onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                     <button className={categoryClass} type="button" onClick={handleClick} style={{zIndex: "120"}}>
                         {icon ? <span className="cb_sidebar__link-icon"><Icon icon={icon}/></span> : ''}
                         <p className="cb_sidebar__link-title">
@@ -122,7 +128,11 @@ const SidebarCategory = ({
                     </button>
                     <Collapse isOpen={show} id={`collapseId_${title}`} name="collapseName"
                               className="cb_sidebar__submenu-wrap"
-                              style={{position: "absolute", zIndex: "110", display: "none"}}>
+                              style={{
+                                  position: "absolute",
+                                  zIndex: "110",
+                                  display: "none",
+                              }}>
                         {/** Collapse Sidebar hover window * */}
                         <ul className="cb_sidebar__submenu">
                             <div className="cb_sidebar__submenu-wrap-border">

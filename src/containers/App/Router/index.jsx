@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Route, Switch} from 'react-router-dom';
 import {Card, CardBody, Col} from "reactstrap";
 import MainWrapper from '../MainWrapper';
@@ -9,6 +9,7 @@ import LogInPage from "../../Login/LogInPage";
 import LogInEmailAuth from "../../Login/AuthFromEmail";
 import EdgeLaunch, {CheckIE} from "../../Common/BrowserCheck";
 import _BrowserWarring from "../../Common/_BrowserWarring";
+import RouteIf from './RouteIf';
 
 const Router = () => (
         <MainWrapper>
@@ -20,6 +21,12 @@ const Router = () => (
                     <Route path="/org" component={WrappedRoutes}/>
                     <Route path="/micro" component={MicroWrappedRoutes}/>
                     <Route path="/" component={NbWrappedRoutes}/>
+                    {/*<RouteIf
+                        path="/test/temp"
+                        exact
+                        component={NbWrappedRoutes}
+                        role={JSON.parse(localStorage.getItem('user'))}
+                    />*/}
                 </Switch>
             </main>
         </MainWrapper>

@@ -30,7 +30,6 @@ const ProfileMain = () => {
         userIdx: usersRd.userIdx,
     }));
 
-
     const dispatch = useDispatch();
     const {enqueueSnackbar} = useSnackbar();
 
