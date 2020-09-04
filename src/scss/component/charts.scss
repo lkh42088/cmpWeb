@@ -2,7 +2,7 @@
   @include themify($themes) {
     fill: themed('colorText');
   }
-  opacity: 1;
+  opacity: 0.8;   // 1 => 0.8 [04Sep2020,khlee]
 }
 
 .recharts-tooltip-wrapper {

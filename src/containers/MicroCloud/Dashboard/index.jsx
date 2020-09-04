@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Col, Container, Row,
 } from 'reactstrap';
@@ -137,11 +137,11 @@ const MicroCloudDashboard = () => {
                 </Col>
             </Row>
             <Row>
-                <Col md={3} style={{padding: 10}} >
-                    <NBSmallAreaChart data={rx} hostname="RX" gridCount={3} />
+                <Col md={3} sm={12} style={{padding: 10}} >
+                    <NBSmallAreaChart data={rx} hostname="RX"/>
                 </Col>
-                <Col md={3} style={{padding: 10}} >
-                    <NBSmallAreaChart data={tx} hostname="TX" gridCount={3}/>
+                <Col md={3} sm={12} style={{padding: 10}} >
+                    <NBSmallAreaChart data={tx} hostname="TX"/>
                 </Col>
             </Row>
             <Row>

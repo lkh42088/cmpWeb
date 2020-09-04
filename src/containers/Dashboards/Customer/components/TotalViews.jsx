@@ -36,7 +36,7 @@ const TotalViews = (props) => {
 
     return (
         <Card className="cb-card">
-            <CardBody className="cb-card-body" >
+            <CardBody className="cb-card-body" style={{padding: 20}}>
                 <div className="cb-card__title">
                     <div style={{float: "left"}}>
                         <p>{cardTitle}</p>
@@ -49,7 +49,7 @@ const TotalViews = (props) => {
                     </div>
                     <div>
                         <div className="dashboard__chart-container">
-                            <ResponsiveContainer height={90}>
+                            <ResponsiveContainer height={50}>
                                 <BarChart data={data}>
                                     <Bar dataKey="amt" onClick={handleClick}>
                                         {
