@@ -263,7 +263,7 @@ const VmCardContent = (props) => {
                         </div>
                         <div className="vm__stat">
                             <div className="vm__stat-title">
-                                {row.os}&nbsp;
+                                {row.os}&nbsp;&nbsp;&nbsp;
                                 {dpOsImage(row.os)}
                             </div>
                         </div>
