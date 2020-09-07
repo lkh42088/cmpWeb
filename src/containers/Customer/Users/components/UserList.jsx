@@ -507,7 +507,7 @@ const UserList = () => {
 
     const handleUserPage = (idx) => {
         const res = data.filter(item => item.idx === idx);
-        console.log("handleUserPage : ..... : ", data);
+        //console.log("handleUserPage : ..... : ", data);
         dispatch(setUserPage('view'));
         dispatch(setUserIdx({userIdx: idx}));
         dispatch(setUser(res[0]));

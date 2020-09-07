@@ -1,4 +1,4 @@
-import React, {Image} from 'react';
+import React, {useEffect, useState} from "react";
 import {
     Card, CardBody, Col, Button,
 } from 'reactstrap';
@@ -16,7 +16,7 @@ import * as common from "../../../../lib/common";
 
 import {API_ROUTE, API_ROUTE_SERVER_IMAGE} from "../../../../lib/api/client";
 import {setUser, setUserIdx, setUserPage} from "../../../../redux/actions/usersActions";
-import {modifyUser} from "../../../../lib/api/users";
+import {getAuthList, modifyUser} from "../../../../lib/api/users";
 import ModifyUserPage from "./ModifyUserPage";
 
 const ProfileMain = () => {
@@ -42,8 +42,10 @@ const ProfileMain = () => {
             user: usersRd.user,
         }));
     */
-    const [modifyData, setModifyData] = React.useState(null);
-    const [openModifyUser, setOpenModifyUser] = React.useState(false);
+    const [authList, setAuthList] = useState([]);
+    const [authTag, setAuthTag] = useState('');
+    const [modifyData, setModifyData] = useState(null);
+    const [openModifyUser, setOpenModifyUser] = useState(false);
 
     /*******************
      * Function
@@ -145,6 +147,19 @@ const ProfileMain = () => {
         handleCloseModifyUser();
     };
 
+    const getAuth = async () => {
+        try {
+            const response = await getAuthList();
+            setAuthList(response.data);
+
+            setAuthTag(
+                response.data.map(d => (d.level === user.authLevel ? d.tag : '')),
+            );
+        } catch (error) {
+            setAuthList([]);
+        }
+    };
+
     /*const handleFileSave = () => {
         //FileSaver.saveAs(user.avataFile, user.avata);
         console.log("type .... : ", typeof user.avataFile);
@@ -163,6 +178,14 @@ const ProfileMain = () => {
         const blobSupported = new Blob(['ä']).size === 2;
         console.log("blobSupported : ", blobSupported);
     };*/
+    /*useEffect(() => {
+        //Auth
+        getAuth();
+    }, []);*/
+
+    useEffect(() => {
+        getAuth();
+    }, [user]);
 
     return (
         <Col md={12} lg={12} xl={12}>
@@ -173,7 +196,7 @@ const ProfileMain = () => {
                               /*background: "#8d93ab",*/
                               /*opacity: "0.9",*/
                           }}>
-
+                    {/*◀{authList}*/}
                     <div className="profile__stats-bottom">
                         <div className="profile__stat">
                             <p className="profile__stat-number">
@@ -226,7 +249,8 @@ const ProfileMain = () => {
                                 다운로드 : <button onClick={handleFileSave}>down</button>
                             </p>*/}
                             <p className="profile__name">{user.name} [{user.userId}]</p>
-                            <p className="profile__contact">level: {common.textValueCut(user.authLevelTag, '', '-')}</p>
+                            <p className="profile__contact">level: {authTag}
+                                {/*{common.textValueCut(user.authLevelTag, '', '-')}*/}</p>
                             <p className="profile__contact">email: {common.textValueCut(user.email, '', '-')}</p>
                             <p className="profile__contact" dir="ltr">hp: {common.textValueCut(user.hp, '', '-')}</p>
                             <p className="profile__contact">

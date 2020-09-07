@@ -848,6 +848,7 @@ const WriteUserForm = (props) => {
                                 minWidth: '105px',
                                 minHeight: '45px',
                                 margin: '20px 0px 0px 0px',
+                                fontSize: 'small',
                             }}>
                             검색
                         </Button>

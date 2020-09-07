@@ -163,6 +163,7 @@ const LookupCompany = (props) => {
                                         minWidth: '100px',
                                         minHeight: '45px',
                                         margin: '0px',
+                                        fontSize: 'small',
                                     }}
                                 >
                                     검색
