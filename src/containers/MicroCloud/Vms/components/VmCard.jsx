@@ -21,6 +21,7 @@ import Link from "@material-ui/core/Link";
 import getTooltipStyles from "../../../../shared/helpers";
 import {getMcVms} from "../../../../lib/api/microCloud";
 import {changeVmPage} from "../../../../redux/actions/vmsActions";
+import {OPERATOR} from "../../../../lib/var/globalVariable";
 
 const WindowsImg = `${process.env.PUBLIC_URL}/img/OS_Windows.ico`;
 const LinuxImg = `${process.env.PUBLIC_URL}/img/OS_Linux.ico`;
@@ -276,6 +277,7 @@ const VmCardContent = (props) => {
 
 const VmCard = () => {
     const [data, setData] = useState([]);
+    const user = JSON.parse(localStorage.getItem("user"));
     const {
         selected,
         pageBeginRow,
@@ -304,12 +306,19 @@ const VmCard = () => {
         if (currentPage > 0) {
             offset = rowsPerPage * currentPage;
         }
+        let companyName;
+        if (user.level <= OPERATOR) { //관리자
+            companyName = "all";
+        } else {
+            companyName = user.cpName;
+        }
         try {
             const response = await getMcVms({
                 rows: rowsPerPage,
                 offset,
                 orderBy,
                 order,
+                cpName: companyName,
             });
             console.log("response: data ", response.data.data);
             setData(response.data.data);

@@ -16,3 +16,12 @@ export const SITE_KEY = process.env.RECAPTCHA_SITE_KEY || "";
 
 // For Assets and Breadcrumbs
 export const SEPARATION_URL = `http://${API_SERVER_IP}:${SERVER_PORT}/`;
+
+// User level
+export const TOP_MANAGER = 1;
+export const NB_MANAGER = 2;
+export const OPERATOR = 4;
+export const CUSTOMER_MANAGER = 5;
+export const CUSTOMER_USER = 6;
+export const TEMP_USER = 9;
+export const UNREGISTERED_USER = 10;

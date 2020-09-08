@@ -14,8 +14,8 @@ export const unregisterMcServer = ({
 });
 
 export const getMcServers = ({
-    rows, offset, orderBy, order,
-}) => client.get(`/v1/micro/servers-paging/${rows}/${offset}/${orderBy}/${order}`);
+    rows, offset, orderBy, order, cpName,
+}) => client.get(`/v1/micro/servers-paging/${rows}/${offset}/${orderBy}/${order}/${cpName}`);
 
 export const getMcServersByCpIdx = ({
     cpIdx,
@@ -29,8 +29,8 @@ export const registerMcVm = ({
 });
 
 export const getMcVms = ({
-    rows, offset, orderBy, order,
-}) => client.get(`/v1/micro/vms-paging/${rows}/${offset}/${orderBy}/${order}`);
+    rows, offset, orderBy, order, cpName,
+}) => client.get(`/v1/micro/vms-paging/${rows}/${offset}/${orderBy}/${order}/${cpName}`);
 
 export const unregisterMcVm = ({
     idx,
