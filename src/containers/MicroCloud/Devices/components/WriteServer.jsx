@@ -11,6 +11,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import SendIcon from "@material-ui/icons/Send";
 import {getCompanies} from "../../../../lib/api/company";
 import LookupCompany from "../../../Common/LookupCompany";
+import {CUSTOMER_MANAGER} from "../../../../lib/var/globalVariable";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -65,7 +66,7 @@ const WriteServer = (props) => {
      * Props
      ************************************************************************************/
     const {
-        handleClose, handleSubmit, isRegister, data,
+        handleClose, handleSubmit, isRegister, data, user,
     } = props;
 
     /************************************************************************************
@@ -227,6 +228,16 @@ const WriteServer = (props) => {
         if (companyList === null || companyList.length === 0) {
             getCompanyList();
         }
+        if (user) {
+            const {level, cpIdx, cpName} = user;
+            if (level >= CUSTOMER_MANAGER) {
+                setFields({
+                    ...fields,
+                    cpIdx,
+                    cpName,
+                });
+            }
+        }
     }, []);
 
     const variant = "filled";
@@ -240,68 +251,72 @@ const WriteServer = (props) => {
         <React.Fragment>
             <form className={formClassName}>
                 <Grid container spacing={1}>
-                    <Grid item xs={6}>
-                        <div>
-                            <span className={labelClassName}>* 회사</span>
-                            <FormControl
-                                size={fieldSize}
-                                className={fieldClassName}
-                                variant="filled"
-                                error={errors.cpIdx}
-                                disabled={disables.cpIdx}
-                            >
-                                <Select
-                                    required={requires.cpIdx}
-                                    name="cpIdx"
-                                    value={fields.cpIdx}
-                                    error={errors.cpIdx}
-                                    onChange={(e) => { handleChangeField("cpIdx", e.target.value); }}
-                                    onClick={handleMenuCompany}
-                                    MenuProps={MenuProps}
+                    { user && user.level < CUSTOMER_MANAGER && (
+                        <React.Fragment>
+                            <Grid item xs={6}>
+                                <div>
+                                    <span className={labelClassName}>* 회사</span>
+                                    <FormControl
+                                        size={fieldSize}
+                                        className={fieldClassName}
+                                        variant="filled"
+                                        error={errors.cpIdx}
+                                        disabled={disables.cpIdx}
+                                    >
+                                        <Select
+                                            required={requires.cpIdx}
+                                            name="cpIdx"
+                                            value={fields.cpIdx}
+                                            error={errors.cpIdx}
+                                            onChange={(e) => { handleChangeField("cpIdx", e.target.value); }}
+                                            onClick={handleMenuCompany}
+                                            MenuProps={MenuProps}
+                                        >
+                                            <MenuItem key={0} value={0}>
+                                                <em>None</em>
+                                            </MenuItem>
+                                            {companyList && companyList.map((item, index) => {
+                                                const key = index;
+                                                return (
+                                                    <MenuItem key={key} value={item.idx}>{item.name}</MenuItem>
+                                                );
+                                            })}
+                                        </Select>
+                                        <FormHelperText>{helpers.cpIdx}</FormHelperText>
+                                        <LookupCompany
+                                            open={openSearchCompany}
+                                            handleClose={handleCloseSearchCompany}
+                                            handleComplete={handleCompleteSearchCompany}
+                                        />
+                                    </FormControl>
+                                </div>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <span className={labelClassName}/>
+                                <Button
+                                    disabled={disables.cpIdx}
+                                    className={classes.margin}
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleOpenSearchCompany}
+                                    size={buttonSize}
+                                    endIcon={<SearchIcon/>}
+                                    style={{
+                                        maxWidth: '105px',
+                                        maxHeight: '45px',
+                                        minWidth: '105px',
+                                        minHeight: '45px',
+                                        margin: '20px 0px 0px 0px',
+                                    }}
                                 >
-                                    <MenuItem key={0} value={0}>
-                                        <em>None</em>
-                                    </MenuItem>
-                                    {companyList && companyList.map((item, index) => {
-                                        const key = index;
-                                        return (
-                                            <MenuItem key={key} value={item.idx}>{item.name}</MenuItem>
-                                        );
-                                    })}
-                                </Select>
-                                <FormHelperText>{helpers.cpIdx}</FormHelperText>
-                                <LookupCompany
-                                    open={openSearchCompany}
-                                    handleClose={handleCloseSearchCompany}
-                                    handleComplete={handleCompleteSearchCompany}
-                                />
-                            </FormControl>
-                        </div>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <span className={labelClassName}/>
-                        <Button
-                            disabled={disables.cpIdx}
-                            className={classes.margin}
-                            variant="contained"
-                            color="primary"
-                            onClick={handleOpenSearchCompany}
-                            size={buttonSize}
-                            endIcon={<SearchIcon/>}
-                            style={{
-                                maxWidth: '105px',
-                                maxHeight: '45px',
-                                minWidth: '105px',
-                                minHeight: '45px',
-                                margin: '20px 0px 0px 0px',
-                            }}
-                        >
-                            검색
-                        </Button>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <div/>
-                    </Grid>
+                                    검색
+                                </Button>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <div/>
+                            </Grid>
+                        </React.Fragment>
+                    )}
                     <Grid item xs={6}>
                         <div>
                             <span className={labelClassName}>* 시리얼넘버</span>
