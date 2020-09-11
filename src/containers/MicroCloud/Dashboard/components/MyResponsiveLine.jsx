@@ -24,6 +24,8 @@ const MyResponsiveLine = (props) => {
         title, height, mac, data, hostname,
     } = props;
 
+    //console.log("MyResponsiveLine data : ", data);
+
     return (
         <Card className="cb-card">
             <CardBody className="cb-card-body">

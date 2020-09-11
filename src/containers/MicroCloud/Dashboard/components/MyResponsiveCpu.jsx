@@ -4,8 +4,9 @@ import {
     PieChart, Pie, Sector, ResponsiveContainer,
 } from 'recharts';
 import {getMcNetworksCpu} from "../../../../lib/api/microCloudCpu";
+import GraphPie from "./GraphPie";
 
-const GraphPie = (props) => {
+/*const GraphPie = (props) => {
     const RADIAN = Math.PI / 180;
     const {
         cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
@@ -16,14 +17,15 @@ const GraphPie = (props) => {
     const cos = Math.cos(-RADIAN * midAngle);
     const sx = cx + (outerRadius + 10) * cos;
     const sy = cy + (outerRadius + 10) * sin;
-    const mx = cx + (outerRadius + 10) * cos;
-    const my = cy + (outerRadius + 10) * sin;
+    const mx = cx + (outerRadius + 5) * cos;
+    const my = cy + (outerRadius + 5) * sin;
     const ex = mx + (cos >= 0 ? 1 : -1) * 11;
     const ey = my;
     const textAnchor = cos >= 0 ? 'start' : 'end';
 
     return (
         <g>
+            {/!*공통으로 뺄 수 있을듯*!/}
             <text x={cx} y={cy} dy={8} textAnchor="middle"
                   fill={payload.fillColor}
                   style={{
@@ -49,27 +51,28 @@ const GraphPie = (props) => {
                 cy={cy}
                 startAngle={startAngle}
                 endAngle={endAngle}
-                innerRadius={outerRadius + 6}
+                innerRadius={outerRadius + 5}
                 outerRadius={outerRadius + 10}
                 fill={fill}
             />
-            {/*<path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>*/}
+            {/!*<path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>*!/}
             <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none"/>
-            <text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} textAnchor={textAnchor} className="graph_label"
+            <text x={ex + (cos >= 0 ? 1 : -1) * 5} y={ey} textAnchor={textAnchor}
+                  className="graph_label"
                   style={{
                       fontSize: "x-small",
                   }}>
                 {`${payload.label}`}
             </text>
-            {/*<text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+            {/!*<text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
                 {`${value}`}
-            </text>*/}
-            {/*<text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+            </text>*!/}
+            {/!*<text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
                 {`Rate ${(percent * 100).toFixed(2)}%`}
-            </text>*/}
+            </text>*!/}
         </g>
     );
-};
+};*/
 
 const MyResponsivePie = (props) => {
     const {
@@ -141,7 +144,6 @@ const MyResponsivePie = (props) => {
     }, []);
 
     useEffect(() => {
-        //getData();
         const timer = setInterval(getData, 5000);
         return () => clearInterval(timer);
     }, []);
@@ -162,7 +164,7 @@ const MyResponsivePie = (props) => {
                             /*cx={200}*/
                             cy={200}
                             innerRadius="50%"
-                            outerRadius="60%"
+                            outerRadius="59%"
                             onMouseEnter={onPieEnter}
                             onMouseLeave={onPieLeave}
                         />

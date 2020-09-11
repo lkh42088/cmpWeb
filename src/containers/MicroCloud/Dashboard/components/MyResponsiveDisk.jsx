@@ -4,8 +4,9 @@ import {
     PieChart, Pie, Sector, ResponsiveContainer,
 } from 'recharts';
 import {getMcNetworksDisk} from "../../../../lib/api/microCloudDisk";
+import GraphPie from "./GraphPie";
 
-const GraphPie = (props) => {
+/*const GraphPie = (props) => {
     const RADIAN = Math.PI / 180;
     const {
         cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
@@ -53,7 +54,7 @@ const GraphPie = (props) => {
                 outerRadius={outerRadius + 10}
                 fill={fill}
             />
-            {/*<path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>*/}
+            {/!*<path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>*!/}
             <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none"/>
             <text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} textAnchor={textAnchor} className="graph_label"
                   style={{
@@ -64,15 +65,15 @@ const GraphPie = (props) => {
             <text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
                 {`${payload.labelVal}`}
             </text>
-            {/*<text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+            {/!*<text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
                 {`${value}`}
-            </text>*/}
-            {/*<text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+            </text>*!/}
+            {/!*<text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
                 {`Rate ${(percent * 100).toFixed(2)}%`}
-            </text>*/}
+            </text>*!/}
         </g>
     );
-};
+};*/
 
 const MyResponsivePie = (props) => {
     const {
@@ -187,9 +188,10 @@ const MyResponsivePie = (props) => {
                             /*cx={200}*/
                             cy={200}
                             innerRadius="50%"
-                            outerRadius="60%"
+                            outerRadius="59%"
                             onMouseEnter={onPieEnter}
                             onMouseLeave={onPieLeave}
+                            name="DISK"
                         />
                     </PieChart>
                 </ResponsiveContainer>
