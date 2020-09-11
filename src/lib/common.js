@@ -58,6 +58,41 @@ export function checkIP(strIP) {
     return expUrl.test(strIP);
 }
 
+export function formatBytes(bytes, formatType) {
+    const marker = 1024; // Change to 1000 if required
+    const decimal = 2; // Change as required
+    const kiloBytes = marker; // One Kilobyte is 1024 bytes
+    const megaBytes = marker * marker; // One MB is 1024 KB
+    const gigaBytes = marker * marker * marker; // One GB is 1024 MB
+    const teraBytes = marker * marker * marker * marker; // One TB is 1024 GB
+    let returnVal = 0;
+
+    /*// return bytes if less than a KB
+    if(bytes < kiloBytes) return bytes + " Bytes";
+    // return KB if less than a MB
+    else if(bytes < megaBytes) return(bytes / kiloBytes).toFixed(decimal) + " KB";
+    // return MB if less than a GB
+    else if(bytes < gigaBytes) return(bytes / megaBytes).toFixed(decimal) + " MB";
+    // return GB if less than a TB
+    else return(bytes / gigaBytes).toFixed(decimal) + " GB";*/
+
+    switch (formatType) {
+        case "KB":
+            returnVal = (bytes / kiloBytes).toFixed(decimal);
+            break;
+        case "MB":
+            returnVal = (bytes / megaBytes).toFixed(decimal);
+            break;
+        case "GB":
+            returnVal = (bytes / gigaBytes).toFixed(decimal);
+            break;
+        default:
+            break;
+    }
+
+    return returnVal;
+}
+
 /** ----------------------------------------------------assets 에서만 사용 start **/
 export function assetsSeperateUrl(tmpUrl) {
     let tmp = tmpUrl;

@@ -74,14 +74,13 @@ const MicroCloudDashboard = () => {
      * Axios Function
      **************************************************************/
     const getData = async () => {
-        // console.log("★★★★★★★★", "get Interface Traffic! mac:", mac);
         if (!mac) {
             return;
         }
 
         try {
             const response = await getVmInterfaceTraffic({mac});
-            // console.log("TEST RESPONSE1: ", response.data.stats[0].data);
+            //console.log("TEST RESPONSE1: ", response.data.stats[0].data);
             setData({
                 stats: (
                     response.data.stats.map(val => ({
@@ -116,12 +115,14 @@ const MicroCloudDashboard = () => {
 
     useEffect(() => {
         getData();
-        const timer = setInterval(getData, 3000);
+        const timer = setInterval(getData, 5000);
         return () => clearInterval(timer);
     }, []);
 
     return (
-        <Container fluid>
+        <Container fluid style={{
+            overflowY: "hidden",
+        }}>
             <Row className={classes.row}>
                 <RouterBreadcrumbs url={window.location.href}/>
             </Row>
