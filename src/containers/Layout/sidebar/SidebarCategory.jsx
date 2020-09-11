@@ -13,8 +13,8 @@ const flexStyle = {
 };
 
 const SidebarCategory = ({
-                             title, icon, isNew, children, dropdown, style,
-                         }) => {
+    title, icon, isNew, children, dropdown, style,
+}) => {
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
     const [hover, setHover] = useState(false);

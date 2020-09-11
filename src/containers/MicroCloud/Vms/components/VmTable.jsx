@@ -30,8 +30,9 @@ import {
     getMcVms, registerMcVm, unregisterMcVm,
 } from "../../../../lib/api/microCloud";
 import {changeVmPage} from "../../../../redux/actions/vmsActions";
+import {OPERATOR} from "../../../../lib/var/globalVariable";
 
-const headRows = [
+let headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
     {id: 'cpName', disablePadding: false, label: '회사명'},
     {id: 'serialNumber', disablePadding: false, label: '서버 SN'},
@@ -99,6 +100,7 @@ const useStyles = makeStyles(theme => ({
 
 const VmTable = () => {
     const classes = useStyles();
+    const user = JSON.parse(localStorage.getItem("user"));
 
     const [data, setData] = useState([]);
     const [paging, setPaging] = useState(null);
@@ -215,9 +217,15 @@ const VmTable = () => {
         if (currentPage > 0) {
             offset = rowsPerPage * currentPage;
         }
+        let companyName;
+        if (user.level <= OPERATOR) { //관리자
+            companyName = "all";
+        } else {
+            companyName = user.cpName;
+        }
         try {
             const response = await getMcVms({
-                rows: rowsPerPage, offset, orderBy, order,
+                rows: rowsPerPage, offset, orderBy, order, cpName: companyName,
             });
             console.log("response: data ", response.data.data);
             console.log("response: page ", response.data.page);
@@ -340,6 +348,12 @@ const VmTable = () => {
         }
     }, [paging]);
 
+    useEffect(() => {
+        if (user.level >= OPERATOR) {
+            headRows = headRows.slice(0, headRows.length - 1);
+        }
+    }, []);
+
     const ContentsRow = (props) => {
         const {row} = props;
         const isSelected = getSelected(row.idx);
@@ -453,12 +467,14 @@ const VmTable = () => {
                     >
                         {row.ipAddr}
                     </TableCell>
-                    <TableCell
-                        className={cellClassName}
-                        style={{width: "20%"}}
-                    >
-                        {row.remoteAddr}
-                    </TableCell>
+                    {user && user.level < OPERATOR && (
+                        <TableCell
+                            className={cellClassName}
+                            style={{width: "20%"}}
+                        >
+                            {row.remoteAddr}
+                        </TableCell>
+                    )}
                 </TableRow>
             </React.Fragment>
         );

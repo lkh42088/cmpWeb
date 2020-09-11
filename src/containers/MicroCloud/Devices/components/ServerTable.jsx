@@ -29,6 +29,7 @@ import RegisterServer from "./RegisterServer";
 import {
     getMcServers, registerMcServer, unregisterMcServer,
 } from "../../../../lib/api/microCloud";
+import {OPERATOR} from "../../../../lib/var/globalVariable";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -90,6 +91,7 @@ const useStyles = makeStyles(theme => ({
 
 const ServerTable = () => {
     const classes = useStyles();
+    const user = JSON.parse(localStorage.getItem("user"));
 
     const [data, setData] = useState([]);
     const [paging, setPaging] = useState(null);
@@ -207,8 +209,14 @@ const ServerTable = () => {
             offset = rowsPerPage * currentPage;
         }
         try {
+            let companyName;
+            if (user.level <= OPERATOR) { //관리자 & 운영자
+                companyName = "all";
+            } else {
+                companyName = user.cpName;
+            }
             const response = await getMcServers({
-                rows: rowsPerPage, offset, orderBy, order,
+                rows: rowsPerPage, offset, orderBy, order, cpName: companyName,
             });
             console.log("response:", response.data.data);
             setData(response.data.data);

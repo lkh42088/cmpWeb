@@ -14,32 +14,32 @@ import RouteIf from '../RouteIf';
 const menuLevel = [
     {
         path: '/assets',
-        level: 1,
+        level: 4,
         component: Assets,
     },
     {
         path: '/customers',
-        level: 1,
+        level: 4,
         component: Customer,
     },
     {
         path: '/management',
-        level: 1,
+        level: 4,
         component: Management,
     },
     {
         path: '/subnet',
-        level: 1,
+        level: 4,
         component: Subnet,
     },
     {
         path: '/default_pages',
-        level: 1,
+        level: 4,
         component: DefaultPages,
     },
     {
         path: '/dashboards',
-        level: 2,
+        level: 10,
         component: Dashboards,
     },
     {

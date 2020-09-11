@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import LoginInputEmailFormWrap from "./LoginInputEmailForm";
 import {
     GV_LOGIN_PAGE_INPUT_EMAIL,
-    GV_LOGIN_PAGE_CONFIRM_EMAIL,
+    GV_LOGIN_PAGE_CONFIRM_EMAIL, OPERATOR, UNREGISTERED_USER, TOP_MANAGER,
 } from "../../../../lib/var/globalVariable";
 import {checkLoginUser, logout} from "../../../../redux/actions/loginActions";
 import LoginConfirmEmailForm from "./LoginConfirmEmailForm";
@@ -19,14 +19,23 @@ const LoginBase = ({history}) => {
         pageNum: accountRd.pageNum,
         user: accountRd.user,
     }));
+    const {
+        hybridCloud,
+    } = useSelector(({customizer}) => ({
+        hybridCloud: customizer.hybridCloud,
+    }));
 
     useEffect(() => {
         if (user) {
             /********************************************************************
              * 로그인 성공!
              ********************************************************************/
-            console.log('useEffect: check API 성공 Level : ', user.level);
-            if (user.level > 0 && user.level <= 5) {
+            console.log('useEffect: check API 성공 Level : ', user);
+            if (hybridCloud) {
+                if (user.level >= TOP_MANAGER) {
+                    history.push('/micro/dashboard');
+                }
+            } else if (user.level <= OPERATOR) {
                 history.push('/dashboards/manager');
             } else {
                 history.push('/dashboards/customer');

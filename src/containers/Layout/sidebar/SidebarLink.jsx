@@ -7,7 +7,7 @@ import {useDispatch} from "react-redux";
 import {clearSidebarWindows} from "../../../redux/actions/sidebarActions";
 
 const SidebarLink = ({
-    title, icon, newLink, route, onClick,
+    title, icon, newLink, route, onClick, style,
 }) => {
     const dispatch = useDispatch();
     const handleClick = () => {
@@ -20,6 +20,7 @@ const SidebarLink = ({
             to={route}
             onClick={handleClick}
             activeClassName="cb_sidebar__link-active"
+            style={style}
         >
             <button className="cb_sidebar__link" type="button">
                 {icon ? <span className="cb_sidebar__link-icon"><Icon icon={icon}/></span> : ''}
