@@ -43,8 +43,10 @@ const BounceRateArea = (props) => {
                     <YAxis tickLine={false}/>
                     <CartesianGrid vertical={false}/>
                     <Tooltip {...getTooltipStyles(data, 'defaultItems')} />
-                    <Area type="monotone" dataKey="rx" stroke="#1b6ca8" fill="#1b6ca8" fillOpacity={0.2}/>
-                    <Area type="monotone" dataKey="tx" stroke="#fa1616" fill="#fa1616" fillOpacity={0.2}/>
+                    {/*<Area type="monotone" dataKey="rx" stroke="#ffc93c" fill="#ffc93c" fillOpacity={0.2}/>
+                    <Area type="monotone" dataKey="tx" stroke="#07689f" fill="#07689f" fillOpacity={0.2}/>*/}
+                    <Area type="monotone" dataKey="rx" stroke="#ffacb7" fill="ffacb7" fillOpacity={0.2}/>
+                    <Area type="monotone" dataKey="tx" stroke="#6886c5" fill="#6886c5" fillOpacity={0.2}/>
                 </AreaChart>
             </ResponsiveContainer>
         );
@@ -159,7 +161,7 @@ const VmCardContent = (props) => {
                     <div className="vm__stats_border-none">
                         <div className="vm__stat_border-none">
                             <div className="vm__stat-title">
-                                CPU
+                                <p>CPU</p>
                                 {/*{graphData.cpu.map((tempRow, index) => {
                                     const tempKey = index;
                                     return (
@@ -187,7 +189,8 @@ const VmCardContent = (props) => {
 
                     <div className="vm__stats_border-none">
                         <div className="vm__stat_border-none">
-                            <div className="vm__stat-title">RAM</div>
+                            <div className="vm__stat-title">
+                                <p>RAM</p></div>
                         </div>
                         <div className="vm__stat_border-none">
                             <div className="vm__stat-title">{row.ram} MB</div>
@@ -205,7 +208,8 @@ const VmCardContent = (props) => {
 
                     <div className="vm__stats_border-none last-border">
                         <div className="vm__stat_border-none">
-                            <div className="vm__stat-title">HDD</div>
+                            <div className="vm__stat-title">
+                                <p>HDD</p></div>
                         </div>
                         <div className="vm__stat_border-none">
                             <div className="vm__stat-title">{row.hdd} GB</div>
@@ -234,7 +238,7 @@ const VmCardContent = (props) => {
 
                     <div className="vm__stats">
                         <div className="vm__stat">
-                            <div className="vm__stat-title">VM IP</div>
+                            <div className="vm__stat-title"><p>VM IP</p></div>
                         </div>
                         <div className="vm__stat">
                             <div className="vm__stat-title">{row.ipAddr}</div>
@@ -243,7 +247,7 @@ const VmCardContent = (props) => {
 
                     <div className="vm__stats">
                         <div className="vm__stat">
-                            <div className="vm__stat-title">내부접속 IP</div>
+                            <div className="vm__stat-title"><p>내부접속 IP</p></div>
                         </div>
                         <div className="vm__stat">
                             <div className="vm__stat-title">{row.remoteAddr}</div>
@@ -252,7 +256,7 @@ const VmCardContent = (props) => {
 
                     <div className="vm__stats">
                         <div className="vm__stat">
-                            <div className="vm__stat-title">외부접속 IP</div>
+                            <div className="vm__stat-title"><p>외부접속 IP</p></div>
                         </div>
                         <div className="vm__stat">
                             <div className="vm__stat-title">-</div>
@@ -261,7 +265,7 @@ const VmCardContent = (props) => {
 
                     <div className="vm__stats">
                         <div className="vm__stat">
-                            <div className="vm__stat-title">OS</div>
+                            <div className="vm__stat-title"><p>OS</p></div>
                         </div>
                         <div className="vm__stat">
                             <div className="vm__stat-title">

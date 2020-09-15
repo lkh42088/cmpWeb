@@ -24,7 +24,8 @@
   font-weight: bold;
   color: white;
   text-shadow: 2px 2px 4px $color-black;
-  background-color: $color-accent;
+  /*background-color: $color-accent;*/
+  background-color: #00bcd4;
  /* @include themify($themes) {
     !*background-color: themed('colorMateralSecondaryText');*!
     color: themed('colorEmoji');
@@ -49,7 +50,9 @@
 .vm__card {
   height: 100%;
   /*padding: 0;*/
-  border-radius: 5px;
+  /*border-radius: 5px;*/
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 
   @include themify($themes) {
