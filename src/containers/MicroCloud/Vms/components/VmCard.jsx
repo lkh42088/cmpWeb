@@ -145,7 +145,7 @@ const VmCardContent = (props) => {
     }, [props]);
 
     return (
-        <Col md={12} lg={12} xl={3} style={{padding: "0 10px 20px 10px"}}>
+        <Col xs={12} sm={12} md={6} lg={4} xl={3} style={{padding: "0 10px 20px 10px"}}>
             <Card className="vm__card-main">
                 <CardHeader
                     className={row.currentStatus === 'running'
