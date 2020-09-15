@@ -67,4 +67,4 @@ export const getVmInterfaceTraffic = ({
 }) => client.get(`/v1/micro/monitor/stats/${mac}`).then(response => response);
 
 /* "/v1/micro/vms-graph/undefined" */
-export const getMcVmsGraph = mac => client.get(`/v1/micro/vms-graph/${mac}`);
+export const getMcVmsGraph = (mac, currentStatus) => client.get(`/v1/micro/vms-graph/${mac}/${currentStatus}`);
