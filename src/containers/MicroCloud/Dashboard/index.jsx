@@ -1,15 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {
-  Col, Container, Row,
+    Col, Container, Row,
 } from 'reactstrap';
 import {makeStyles} from "@material-ui/core/styles";
+
 import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
 import MyResponsiveLine from "./components/MyResponsiveLine";
 import MyResponsiveCpu from "./components/MyResponsiveCpu";
 import MyResponsiveMem from "./components/MyResponsiveMem";
 import MyResponsiveDisk from "./components/MyResponsiveDisk";
-import {getVmInterfaceTraffic} from "../../../lib/api/microCloud";
 import NBSmallAreaChart from "./components/NBSmallAreaChart";
+import MyResponsiveInfo from "./components/MyResponsiveInfo";
+
+import {getVmInterfaceTraffic} from "../../../lib/api/microCloud";
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -93,14 +96,16 @@ const MicroCloudDashboard = () => {
                     }))),
             });
             setRx(
-               response.data.stats[0].data.map(val => ({
-                    x: new Date(val.x).toLocaleTimeString().split(" ")[1],
+                response.data.stats[0].data.map(val => ({
+                    x: new Date(val.x).toLocaleTimeString()
+                        .split(" ")[1],
                     y: val.y,
                 })),
             );
             setTx(
                 response.data.stats[1].data.map(val => ({
-                    x: new Date(val.x).toLocaleTimeString().split(" ")[1],
+                    x: new Date(val.x).toLocaleTimeString()
+                        .split(" ")[1],
                     y: val.y,
                 })),
             );
@@ -126,22 +131,37 @@ const MicroCloudDashboard = () => {
             <Row className={classes.row}>
                 <RouterBreadcrumbs url={window.location.href}/>
             </Row>
+            {/*<Row>
+                <div>test</div>
+            </Row>*/}
             <Row className="classes.row">
-                <Col md={6} lg={4} xs={12} sm={12} xl={4} style={{padding: 10}}>
-                    <MyResponsiveCpu height={300} title="CPU" pieColor={pieColor} warringUsed={80}/>
+                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <MyResponsiveCpu
+                        height={150}
+                        title="CPU" pieColor={pieColor} warringUsed={80}/>
                 </Col>
-                <Col md={6} lg={4} xs={12} sm={12} xl={4} style={{padding: 10}}>
-                    <MyResponsiveMem height={300} title="MEMORY" pieColor={pieColor} warringUsed={80}/>
+                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <MyResponsiveMem
+                        height={150}
+                        title="MEMORY" pieColor={pieColor} warringUsed={80}/>
                 </Col>
-                <Col md={6} lg={4} xs={12} sm={12} xl={4} style={{padding: 10}}>
-                    <MyResponsiveDisk height={300} title="DISK" pieColor={pieColor} warringUsed={80}/>
+                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <MyResponsiveDisk
+                        height={150}
+                        title="DISK" pieColor={pieColor} warringUsed={80}/>
+                </Col>
+                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <MyResponsiveInfo
+                        height={150}
+                        title="HOSTNAME"
+                    />
                 </Col>
             </Row>
             <Row>
-                <Col md={3} sm={12} style={{padding: 10}} >
+                <Col md={3} sm={12} style={{padding: 10}}>
                     <NBSmallAreaChart data={rx} hostname="RX"/>
                 </Col>
-                <Col md={3} sm={12} style={{padding: 10}} >
+                <Col md={3} sm={12} style={{padding: 10}}>
                     <NBSmallAreaChart data={tx} hostname="TX"/>
                 </Col>
             </Row>
