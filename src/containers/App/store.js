@@ -23,6 +23,7 @@ import {
     companiesReducer,
     codeReducer,
     vmsReducer,
+    microReducer,
 } from '../../redux/reducers/index';
 import {checkLoginUser, userSaga} from "../../redux/actions/loginActions";
 import {usersSaga} from "../../redux/actions/usersActions";
@@ -47,6 +48,7 @@ const rootReducer = combineReducers({
     companiesRd: companiesReducer,
     codeRd: codeReducer,
     vmsRd: vmsReducer,
+    microRd: microReducer,
 });
 
 export function* rootSaga() {

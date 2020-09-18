@@ -224,6 +224,7 @@ const VmTable = () => {
             companyName = user.cpName;
         }
         try {
+            console.log("companyName : ", companyName);
             const response = await getMcVms({
                 rows: rowsPerPage, offset, orderBy, order, cpName: companyName,
             });
