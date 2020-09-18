@@ -32,7 +32,7 @@ import {
 import {changeVmPage} from "../../../../redux/actions/vmsActions";
 import {OPERATOR} from "../../../../lib/var/globalVariable";
 
-let headRows = [
+const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
     {id: 'cpName', disablePadding: false, label: '회사명'},
     {id: 'serialNumber', disablePadding: false, label: '서버 SN'},
@@ -348,12 +348,6 @@ const VmTable = () => {
         }
     }, [paging]);
 
-    useEffect(() => {
-        if (user.level >= OPERATOR) {
-            headRows = headRows.slice(0, headRows.length - 1);
-        }
-    }, []);
-
     const ContentsRow = (props) => {
         const {row} = props;
         const isSelected = getSelected(row.idx);
@@ -467,14 +461,12 @@ const VmTable = () => {
                     >
                         {row.ipAddr}
                     </TableCell>
-                    {user && user.level < OPERATOR && (
-                        <TableCell
-                            className={cellClassName}
-                            style={{width: "20%"}}
-                        >
-                            {row.remoteAddr}
-                        </TableCell>
-                    )}
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "20%"}}
+                    >
+                        {row.remoteAddr}
+                    </TableCell>
                 </TableRow>
             </React.Fragment>
         );
