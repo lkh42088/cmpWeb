@@ -7,7 +7,7 @@ import WriteVm from "./WriteVm";
 
 const RegisterVm = (props) => {
     const {
-        open, handleClose, handleSubmit,
+        open, handleClose, handleSubmit, user,
     } = props;
 
     return (
@@ -28,6 +28,7 @@ const RegisterVm = (props) => {
                     </div>
                     <WriteVm
                         open={open}
+                        user={user}
                         handleClose={handleClose}
                         handleSubmit={handleSubmit}
                         isRegister

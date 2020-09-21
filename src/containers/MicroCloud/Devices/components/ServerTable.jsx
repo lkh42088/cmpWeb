@@ -469,6 +469,7 @@ const ServerTable = () => {
                     </div>
                     <RegisterServer
                         open={openAddServer}
+                        user={user}
                         handleClose={handleCloseAddServer}
                         handleSubmit={handleSubmitAddServer}
                     />

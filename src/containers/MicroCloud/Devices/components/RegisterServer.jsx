@@ -7,7 +7,7 @@ import WriteServer from "./WriteServer";
 
 const RegisterServer = (props) => {
     const {
-        open, handleClose, handleSubmit,
+        open, handleClose, handleSubmit, user,
     } = props;
 
     return (
@@ -28,6 +28,7 @@ const RegisterServer = (props) => {
                     </div>
                     <WriteServer
                         open={open}
+                        user={user}
                         handleClose={handleClose}
                         handleSubmit={handleSubmit}
                         isRegister

@@ -126,13 +126,6 @@ const SidebarContent = ({
     return (
         <div className="cb_sidebar__content">
             <ul className="cb_sidebar__block">
-                <SidebarCategory title="TEST" icon={emojiPeopleIcon}
-                                 dropdown={dropdown} style={handleAuthMenuDisplay(user, false)}>
-                    <SidebarLink title="TEMP" route="/test/temp"
-                                 onClick={() => changeMenuTitle('TEST', 'TEMP', '')}/>
-                    <SidebarLink title="UI" route="/test/ui"
-                                 onClick={() => changeMenuTitle('TEST', 'UI', '')}/>
-                </SidebarCategory>
                 {user.id === 'ebjee' && (
                     <SidebarCategory title="EBJEE" icon={emojiPeopleIcon} dropdown={dropdown}
                                      style={handleAuthMenuDisplay(user, false)}>

@@ -105,7 +105,8 @@ const VmCardContent = (props) => {
             const memFree = common.formatBytes(response.data.Mem.availableBytes, "GB");
             const diskFree = common.formatBytes(response.data.Disk.freeMegabytes * 1024 * 1024, "GB");
 
-            //console.log(mac, " : cpu percentIdleTime : ", response.data.Cpu.percentIdleTime.toFixed(1));
+            // console.log(mac, " : cpu percentIdleTime : ", response.data.Cpu.percentIdleTime.toFixed(1));
+            // console.log(mac, " : disk percentIdleTime : ", response.data.Disk.freeMegabytes);
 
             setGraphData({
                 cpu: { /*이 값은 percent로 되어있음*/

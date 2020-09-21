@@ -16,6 +16,7 @@ import {
     getMcImagesByServerIdx,
     getMcNetworksByServerIdx,
 } from "../../../../lib/api/microCloud";
+import {CUSTOMER_MANAGER} from "../../../../lib/var/globalVariable";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -65,17 +66,17 @@ const MenuProps = {
     },
 };
 
-// const imageList = [
-//     { value: 1, name: "Windows 10" },
-//     { value: 2, name: "Ubuntu 18.04" },
-// ];
+const snapTypeList = [
+    { value: 1, name: "Windows 10" },
+    { value: 2, name: "Ubuntu 18.04" },
+];
 
 const WriteVm = (props) => {
     /************************************************************************************
      * Props
      ************************************************************************************/
     const {
-        handleClose, handleSubmit, isRegister, data,
+        handleClose, handleSubmit, isRegister, data, user,
     } = props;
 
     /************************************************************************************
@@ -108,6 +109,10 @@ const WriteVm = (props) => {
         ram: 0,
         hdd: 0,
         ipAddr: '',
+        snapType: '',
+        snapDays: 0,
+        snapHours: 0,
+        snapMinutes: 0,
     });
 
     const [requires, setRequireds] = useState({
@@ -122,6 +127,10 @@ const WriteVm = (props) => {
         ram: true,
         hdd: true,
         ipAddr: true,
+        snapType: false,
+        snapDays: false,
+        snapHours: false,
+        snapMinutes: false,
     });
 
     const [disables, setDisables] = useState({
@@ -136,6 +145,10 @@ const WriteVm = (props) => {
         ram: false,
         hdd: true,
         ipAddr: false,
+        snapType: false,
+        snapDays: false,
+        snapHours: false,
+        snapMinutes: false,
     });
 
     const [helpers, setHelpers] = useState({
@@ -150,6 +163,10 @@ const WriteVm = (props) => {
         ram: "",
         hdd: "",
         ipAddr: "",
+        snapType: "",
+        snapDays: "",
+        snapHours: "",
+        snapMinutes: "",
     });
 
     const [errors, setErrors] = useState({
@@ -164,6 +181,10 @@ const WriteVm = (props) => {
         ram: false,
         hdd: false,
         ipAddr: false,
+        snapType: false,
+        snapDays: false,
+        snapHours: false,
+        snapMinutes: false,
     });
 
     /*******************
@@ -190,6 +211,10 @@ const WriteVm = (props) => {
             ram: 0,
             hdd: 0,
             ipAddr: '',
+            snapType: '',
+            snapDays: 0,
+            snapHours: 0,
+            snapMinutes: 0,
         });
         setHelpers({
             cpName: "",
@@ -203,6 +228,10 @@ const WriteVm = (props) => {
             ram: "",
             hdd: "",
             ipAddr: "",
+            snapType: "",
+            snapDays: "",
+            snapHours: "",
+            snapMinutes: "",
         });
         setErrors({
             cpName: false,
@@ -216,6 +245,10 @@ const WriteVm = (props) => {
             ram: false,
             hdd: false,
             ipAddr: false,
+            snapType: false,
+            snapDays: false,
+            snapHours: false,
+            snapMinutes: false,
         });
         setServerList([]);
     };
@@ -408,6 +441,16 @@ const WriteVm = (props) => {
         if (companyList === null || companyList.length === 0) {
             getCompanyList();
         }
+        if (user) {
+            const {level, cpIdx, cpName} = user;
+            if (level >= CUSTOMER_MANAGER) {
+                setFields({
+                        ...fields,
+                        cpIdx,
+                        cpName,
+                });
+            }
+        }
     }, []);
 
     const variant = "filled";
@@ -421,70 +464,74 @@ const WriteVm = (props) => {
         <React.Fragment>
             <form className={formClassName}>
                 <Grid container spacing={1}>
-                    <Grid item xs={6}>
-                        <div>
-                            <span className={labelClassName}>* 회사</span>
-                            <FormControl
-                                size={fieldSize}
-                                className={fieldClassName}
-                                variant="filled"
-                                error={errors.cpIdx}
-                                disabled={disables.cpIdx}
-                            >
-                                <Select
-                                    required={requires.cpIdx}
-                                    name="cpIdx"
-                                    value={fields.cpIdx}
-                                    error={errors.cpIdx}
-                                    onChange={(e) => {
-                                        handleChangeField("cpIdx", e.target.value);
+                    { user && user.level < CUSTOMER_MANAGER && (
+                        <React.Fragment>
+                            <Grid item xs={6}>
+                                <div>
+                                    <span className={labelClassName}>* 회사</span>
+                                    <FormControl
+                                        size={fieldSize}
+                                        className={fieldClassName}
+                                        variant="filled"
+                                        error={errors.cpIdx}
+                                        disabled={disables.cpIdx}
+                                    >
+                                        <Select
+                                            required={requires.cpIdx}
+                                            name="cpIdx"
+                                            value={fields.cpIdx}
+                                            error={errors.cpIdx}
+                                            onChange={(e) => {
+                                                handleChangeField("cpIdx", e.target.value);
+                                            }}
+                                            onClick={handleMenuCompany}
+                                            MenuProps={MenuProps}
+                                        >
+                                            <MenuItem key={0} value={0}>
+                                                <em>None</em>
+                                            </MenuItem>
+                                            {companyList && companyList.map((item, index) => {
+                                                const key = index;
+                                                return (
+                                                    <MenuItem key={key} value={item.idx}>{item.name}</MenuItem>
+                                                );
+                                            })}
+                                        </Select>
+                                        <FormHelperText>{helpers.cpIdx}</FormHelperText>
+                                        <LookupCompany
+                                            open={openSearchCompany}
+                                            handleClose={handleCloseSearchCompany}
+                                            handleComplete={handleCompleteSearchCompany}
+                                        />
+                                    </FormControl>
+                                </div>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <span className={labelClassName}/>
+                                <Button
+                                    disabled={disables.cpIdx}
+                                    className={classes.margin}
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleOpenSearchCompany}
+                                    size={buttonSize}
+                                    endIcon={<SearchIcon/>}
+                                    style={{
+                                        maxWidth: '105px',
+                                        maxHeight: '45px',
+                                        minWidth: '105px',
+                                        minHeight: '45px',
+                                        margin: '20px 0px 0px 0px',
                                     }}
-                                    onClick={handleMenuCompany}
-                                    MenuProps={MenuProps}
                                 >
-                                    <MenuItem key={0} value={0}>
-                                        <em>None</em>
-                                    </MenuItem>
-                                    {companyList && companyList.map((item, index) => {
-                                        const key = index;
-                                        return (
-                                            <MenuItem key={key} value={item.idx}>{item.name}</MenuItem>
-                                        );
-                                    })}
-                                </Select>
-                                <FormHelperText>{helpers.cpIdx}</FormHelperText>
-                                <LookupCompany
-                                    open={openSearchCompany}
-                                    handleClose={handleCloseSearchCompany}
-                                    handleComplete={handleCompleteSearchCompany}
-                                />
-                            </FormControl>
-                        </div>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <span className={labelClassName}/>
-                        <Button
-                            disabled={disables.cpIdx}
-                            className={classes.margin}
-                            variant="contained"
-                            color="primary"
-                            onClick={handleOpenSearchCompany}
-                            size={buttonSize}
-                            endIcon={<SearchIcon/>}
-                            style={{
-                                maxWidth: '105px',
-                                maxHeight: '45px',
-                                minWidth: '105px',
-                                minHeight: '45px',
-                                margin: '20px 0px 0px 0px',
-                            }}
-                        >
-                            검색
-                        </Button>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <div/>
-                    </Grid>
+                                    검색
+                                </Button>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <div/>
+                            </Grid>
+                        </React.Fragment>
+                    )}
                     <Grid item xs={6}>
                         <div>
                             <span className={labelClassName}>* Micro Cloud Server</span>
@@ -657,6 +704,149 @@ const WriteVm = (props) => {
                                 variant={variant}
                                 size={fieldSize}
                             />
+                        </div>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <div>
+                            <span className={labelClassName}>* Snapshot / type </span>
+                            <FormControl
+                                size={fieldSize}
+                                className={fieldClassName}
+                                variant="filled"
+                                error={errors.snapType}
+                                disabled={disables.snapType}
+                            >
+                                <Select
+                                    required={errors.snapType}
+                                    disabled={disables.snapType}
+                                    name="snapType"
+                                    value={fields.snapType}
+                                    onChange={(e) => {
+                                        console.log("event target:", e.target);
+                                        console.log("event value:", e.target.value);
+                                        const res = snapTypeList.filter(item => item.value === e.target.value);
+                                        console.log("name:", res[0].name);
+                                        handleChangeField("snapType", e.target.value);
+                                    }}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem key={0} value={0}>
+                                        <em>None</em>
+                                    </MenuItem>
+                                    {snapTypeList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                                <FormHelperText>{helpers.snapType}</FormHelperText>
+                            </FormControl>
+                        </div>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <div>
+                            <span className={labelClassName}>* Snapshot / days </span>
+                            <FormControl
+                                size={fieldSize}
+                                className={fieldClassName}
+                                variant="filled"
+                                error={errors.snapDays}
+                                disabled={disables.snapDays}
+                            >
+                                <Select
+                                    required={errors.snapDays}
+                                    disabled={disables.snapDays}
+                                    name="snapDays"
+                                    value={fields.snapDays}
+                                    onChange={(e) => {
+                                        console.log("event:", e.target.value);
+                                        handleChangeField("snapDays", e.target.value);
+                                    }}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem key={0} value={0}>
+                                        <em>None</em>
+                                    </MenuItem>
+                                    {networkList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <MenuItem key={key} value={item.idx}>{item.name}</MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                                <FormHelperText>{helpers.snapDays}</FormHelperText>
+                            </FormControl>
+                        </div>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <div>
+                            <span className={labelClassName}>* Snapshot / hours </span>
+                            <FormControl
+                                size={fieldSize}
+                                className={fieldClassName}
+                                variant="filled"
+                                error={errors.snapHours}
+                                disabled={disables.snapHours}
+                            >
+                                <Select
+                                    required={errors.snapHours}
+                                    disabled={disables.snapHours}
+                                    name="snapHours"
+                                    value={fields.snapHours}
+                                    onChange={(e) => {
+                                        console.log("event:", e.target.value);
+                                        handleChangeField("snapHours", e.target.value);
+                                    }}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem key={0} value={0}>
+                                        <em>None</em>
+                                    </MenuItem>
+                                    {networkList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <MenuItem key={key} value={item.idx}>{item.name}</MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                                <FormHelperText>{helpers.snapHours}</FormHelperText>
+                            </FormControl>
+                        </div>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <div>
+                            <span className={labelClassName}>* Snapshot / minutes </span>
+                            <FormControl
+                                size={fieldSize}
+                                className={fieldClassName}
+                                variant="filled"
+                                error={errors.snapMinutes}
+                                disabled={disables.snapMinutes}
+                            >
+                                <Select
+                                    required={errors.snapMinutes}
+                                    disabled={disables.snapMinutes}
+                                    name="snapMinutes"
+                                    value={fields.snapMinutes}
+                                    onChange={(e) => {
+                                        console.log("event:", e.target.value);
+                                        handleChangeField("snapMinutes", e.target.value);
+                                    }}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem key={0} value={0}>
+                                        <em>None</em>
+                                    </MenuItem>
+                                    {networkList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <MenuItem key={key} value={item.idx}>{item.name}</MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                                <FormHelperText>{helpers.snapMinutes}</FormHelperText>
+                            </FormControl>
                         </div>
                     </Grid>
                     <Grid item xs={12}>

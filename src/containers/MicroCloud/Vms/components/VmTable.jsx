@@ -32,7 +32,7 @@ import {
 import {changeVmPage} from "../../../../redux/actions/vmsActions";
 import {OPERATOR} from "../../../../lib/var/globalVariable";
 
-let headRows = [
+const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
     {id: 'cpName', disablePadding: false, label: '회사명'},
     {id: 'serialNumber', disablePadding: false, label: '서버 SN'},
@@ -44,6 +44,7 @@ let headRows = [
     {id: 'network', disablePadding: false, label: 'Network'},
     {id: 'ipAddr', disablePadding: false, label: 'IP Address'},
     {id: 'remoteAddr', disablePadding: false, label: 'Remote RDP'},
+    {id: 'snapshot', disablePadding: false, label: 'Snapshot'},
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -350,9 +351,7 @@ const VmTable = () => {
     }, [paging]);
 
     useEffect(() => {
-        if (user.level >= OPERATOR) {
-            headRows = headRows.slice(0, headRows.length - 1);
-        }
+        console.log("user:", user);
     }, []);
 
     const ContentsRow = (props) => {
@@ -468,14 +467,18 @@ const VmTable = () => {
                     >
                         {row.ipAddr}
                     </TableCell>
-                    {user && user.level < OPERATOR && (
-                        <TableCell
-                            className={cellClassName}
-                            style={{width: "20%"}}
-                        >
-                            {row.remoteAddr}
-                        </TableCell>
-                    )}
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "20%"}}
+                    >
+                        {row.remoteAddr}
+                    </TableCell>
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "20%"}}
+                    >
+                        -
+                    </TableCell>
                 </TableRow>
             </React.Fragment>
         );
@@ -530,6 +533,7 @@ const VmTable = () => {
                     </div>
                     <RegisterVm
                         open={openAddVm}
+                        user={user}
                         handleClose={handleCloseAddVm}
                         handleSubmit={handleSubmitAddVm}
                     />
