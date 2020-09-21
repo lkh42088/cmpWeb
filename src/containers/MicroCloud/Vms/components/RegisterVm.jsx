@@ -3,6 +3,8 @@ import Dialog from "@material-ui/core/Dialog";
 import {Card, CardBody} from "reactstrap";
 import Grid from "@material-ui/core/Grid";
 import DnsRoundedIcon from '@material-ui/icons/DnsRounded';
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 import WriteVm from "./WriteVm";
 
 const RegisterVm = (props) => {

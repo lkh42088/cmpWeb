@@ -9,6 +9,9 @@ import SearchIcon from "@material-ui/icons/Search";
 import TextField from "@material-ui/core/TextField";
 import {makeStyles} from "@material-ui/core/styles";
 import SendIcon from "@material-ui/icons/Send";
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import {getCompanies} from "../../../../lib/api/company";
 import LookupCompany from "../../../Common/LookupCompany";
 import {
@@ -67,8 +70,79 @@ const MenuProps = {
 };
 
 const snapTypeList = [
-    { value: 1, name: "Windows 10" },
-    { value: 2, name: "Ubuntu 18.04" },
+    { value: true, name: "Enable" },
+];
+
+const snapDayList = [
+    { value: 2, name: "2 days" },
+    { value: 3, name: "3 days" },
+    { value: 4, name: "4 days" },
+    { value: 5, name: "5 days" },
+    { value: 6, name: "6 days" },
+    { value: 7, name: "1 week" },
+    { value: 30, name: "1 month" },
+];
+
+const snapHourList = [
+    { value: 1, name: "1" },
+    { value: 2, name: "2" },
+    { value: 3, name: "3" },
+    { value: 4, name: "4" },
+    { value: 5, name: "5" },
+    { value: 6, name: "6" },
+    { value: 7, name: "7" },
+    { value: 8, name: "8" },
+    { value: 9, name: "9" },
+    { value: 10, name: "10" },
+    { value: 11, name: "11" },
+    { value: 12, name: "12" },
+    { value: 13, name: "13" },
+    { value: 14, name: "14" },
+    { value: 15, name: "15" },
+    { value: 16, name: "16" },
+    { value: 17, name: "17" },
+    { value: 18, name: "18" },
+    { value: 19, name: "19" },
+    { value: 20, name: "20" },
+    { value: 21, name: "21" },
+    { value: 22, name: "22" },
+    { value: 23, name: "23" },
+];
+
+const snapMinList = [
+    { value: 5, name: "5" },
+    { value: 10, name: "10" },
+    { value: 15, name: "15" },
+    { value: 20, name: "20" },
+    { value: 25, name: "25" },
+    { value: 30, name: "30" },
+    { value: 35, name: "35" },
+    { value: 40, name: "40" },
+    { value: 45, name: "45" },
+    { value: 50, name: "50" },
+    { value: 55, name: "55" },
+];
+
+const cpuList = [
+    { value: 2, name: "2" },
+    { value: 4, name: "4" },
+    { value: 6, name: "6" },
+    { value: 8, name: "8" },
+    { value: 10, name: "10" },
+    { value: 12, name: "12" },
+    { value: 14, name: "14" },
+    { value: 16, name: "16" },
+];
+
+const ramList = [
+    { value: 2048, name: "2" },
+    { value: 4096, name: "4" },
+    { value: 6144, name: "6" },
+    { value: 8192, name: "8" },
+    { value: 10240, name: "10" },
+    { value: 12288, name: "12" },
+    { value: 14336, name: "14" },
+    { value: 16384, name: "16" },
 ];
 
 const WriteVm = (props) => {
@@ -105,12 +179,12 @@ const WriteVm = (props) => {
         network: 0,
         networkName: '',
         os: '',
-        cpu: 0,
-        ram: 0,
+        cpu: 1,
+        ram: 1024,
         hdd: 0,
         ipAddr: '',
-        snapType: '',
-        snapDays: 0,
+        snapType: false,
+        snapDays: 1,
         snapHours: 0,
         snapMinutes: 0,
     });
@@ -146,9 +220,9 @@ const WriteVm = (props) => {
         hdd: true,
         ipAddr: false,
         snapType: false,
-        snapDays: false,
-        snapHours: false,
-        snapMinutes: false,
+        snapDays: true,
+        snapHours: true,
+        snapMinutes: true,
     });
 
     const [helpers, setHelpers] = useState({
@@ -207,15 +281,34 @@ const WriteVm = (props) => {
             image: 0,
             network: '',
             networkName: '',
-            cpu: 0,
-            ram: 0,
+            cpu: 1,
+            ram: 1024,
             hdd: 0,
             ipAddr: '',
-            snapType: '',
-            snapDays: 0,
+            snapType: false,
+            snapDays: 1,
             snapHours: 0,
             snapMinutes: 0,
         });
+
+        setDisables({
+            cpName: false,
+            cpIdx: false,
+            serverIdx: false,
+            serialNumber: false,
+            name: false,
+            image: false,
+            network: false,
+            cpu: false,
+            ram: false,
+            hdd: true,
+            ipAddr: false,
+            snapType: false,
+            snapDays: true,
+            snapHours: true,
+            snapMinutes: true,
+        });
+
         setHelpers({
             cpName: "",
             cpIdx: "",
@@ -233,6 +326,7 @@ const WriteVm = (props) => {
             snapHours: "",
             snapMinutes: "",
         });
+
         setErrors({
             cpName: false,
             cpIdx: false,
@@ -312,6 +406,20 @@ const WriteVm = (props) => {
                 ...fields,
                 [name]: value,
                 networkName: net ? net.name : "",
+            });
+        } else if (name === "snapType") {
+            setFields({
+                ...fields,
+                [name]: value,
+                snapDays: 1,
+                snapHours: 0,
+                snapMinutes: 0,
+            });
+            setDisables({
+                ...disables,
+                snapDays: !value,
+                snapHours: !value,
+                snapMinutes: !value,
             });
         } else {
             setFields({
@@ -655,60 +763,106 @@ const WriteVm = (props) => {
                             </FormControl>
                         </div>
                     </Grid>
-                    <Grid item xs={6}>
-                        <div>
-                            <span className={labelClassName}>* HDD (G)</span>
-                            <TextField
-                                className={fieldClassName}
-                                error={errors.hdd}
-                                required={requires.hdd}
-                                disabled={disables.hdd}
-                                helperText={helpers.hdd}
-                                name="hdd"
-                                value={fields.hdd}
-                                onChange={(e) => { handleChangeField("hdd", e.target.value); }}
-                                variant={variant}
-                                size={fieldSize}
-                            />
-                        </div>
-                    </Grid>
+                    {/*<Grid item xs={4}>*/}
+                    {/*    <div>*/}
+                    {/*        <span className={labelClassName}>* HDD (G)</span>*/}
+                    {/*        <TextField*/}
+                    {/*            className={fieldClassName}*/}
+                    {/*            error={errors.hdd}*/}
+                    {/*            required={requires.hdd}*/}
+                    {/*            disabled={disables.hdd}*/}
+                    {/*            helperText={helpers.hdd}*/}
+                    {/*            name="hdd"*/}
+                    {/*            value={fields.hdd}*/}
+                    {/*            onChange={(e) => { handleChangeField("hdd", e.target.value); }}*/}
+                    {/*            variant={variant}*/}
+                    {/*            size={fieldSize}*/}
+                    {/*        />*/}
+                    {/*    </div>*/}
+                    {/*</Grid>*/}
                     <Grid item xs={6}>
                         <div>
                             <span className={labelClassName}>* CPU</span>
-                            <TextField
+                            <FormControl
+                                size={fieldSize}
                                 className={fieldClassName}
+                                variant="filled"
                                 error={errors.cpu}
-                                required={requires.cpu}
                                 disabled={disables.cpu}
-                                helperText={helpers.cpu}
-                                name="cpu"
-                                value={fields.cpu}
-                                onChange={(e) => { handleChangeField("cpu", e.target.value); }}
-                                variant={variant}
-                                size={fieldSize}
-                            />
+                            >
+                                <Select
+                                    required={errors.cpu}
+                                    disabled={disables.cpu}
+                                    name="cpu"
+                                    value={fields.cpu}
+                                    onChange={(e) => {
+                                        const res = cpuList.filter(item => item.value === e.target.value);
+                                        if (res.length === 0) {
+                                            handleChangeField("cpu", 1);
+                                        } else {
+                                            // console.log("name:", res[0].name);
+                                            handleChangeField("cpu", e.target.value);
+                                        }
+                                    }}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem key={1} value={1}>
+                                        <em>1</em>
+                                    </MenuItem>
+                                    {cpuList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                                <FormHelperText>{helpers.cpu}</FormHelperText>
+                            </FormControl>
                         </div>
                     </Grid>
                     <Grid item xs={6}>
                         <div>
-                            <span className={labelClassName}>* RAM (M)</span>
-                            <TextField
+                            <span className={labelClassName}>* RAM (G)</span>
+                            <FormControl
+                                size={fieldSize}
                                 className={fieldClassName}
+                                variant="filled"
                                 error={errors.ram}
-                                required={requires.ram}
                                 disabled={disables.ram}
-                                helperText={helpers.ram}
-                                name="ram"
-                                value={fields.ram}
-                                onChange={(e) => { handleChangeField("ram", e.target.value); }}
-                                variant={variant}
-                                size={fieldSize}
-                            />
+                            >
+                                <Select
+                                    required={errors.ram}
+                                    disabled={disables.ram}
+                                    name="ram"
+                                    value={fields.ram}
+                                    onChange={(e) => {
+                                        const res = ramList.filter(item => item.value === e.target.value);
+                                        if (res.length === 0) {
+                                            handleChangeField("ram", 1024);
+                                        } else {
+                                            console.log("name:", res[0].name);
+                                            handleChangeField("ram", e.target.value);
+                                        }
+                                    }}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem key={1} value={1024}>
+                                        <em>1</em>
+                                    </MenuItem>
+                                    {ramList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                                <FormHelperText>{helpers.ram}</FormHelperText>
+                            </FormControl>
                         </div>
                     </Grid>
                     <Grid item xs={6}>
                         <div>
-                            <span className={labelClassName}>* Snapshot / type </span>
+                            <span className={labelClassName}>* Snapshot </span>
                             <FormControl
                                 size={fieldSize}
                                 className={fieldClassName}
@@ -725,13 +879,17 @@ const WriteVm = (props) => {
                                         console.log("event target:", e.target);
                                         console.log("event value:", e.target.value);
                                         const res = snapTypeList.filter(item => item.value === e.target.value);
-                                        console.log("name:", res[0].name);
-                                        handleChangeField("snapType", e.target.value);
+                                        if (res.length === 0) {
+                                            handleChangeField("snapType", false);
+                                        } else {
+                                            console.log("name:", res[0].name);
+                                            handleChangeField("snapType", e.target.value);
+                                        }
                                     }}
                                     MenuProps={MenuProps}
                                 >
-                                    <MenuItem key={0} value={0}>
-                                        <em>None</em>
+                                    <MenuItem key={0} value={false}>
+                                        <em>Disable</em>
                                     </MenuItem>
                                     {snapTypeList.map((item, index) => {
                                         const key = index;
@@ -744,9 +902,9 @@ const WriteVm = (props) => {
                             </FormControl>
                         </div>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={2}>
                         <div>
-                            <span className={labelClassName}>* Snapshot / days </span>
+                            <span className={labelClassName}>* Days </span>
                             <FormControl
                                 size={fieldSize}
                                 className={fieldClassName}
@@ -765,23 +923,23 @@ const WriteVm = (props) => {
                                     }}
                                     MenuProps={MenuProps}
                                 >
-                                    <MenuItem key={0} value={0}>
-                                        <em>None</em>
+                                    <MenuItem key={1} value={1}>
+                                        <em>1 day</em>
                                     </MenuItem>
-                                    {networkList.map((item, index) => {
+                                    {snapDayList.map((item, index) => {
                                         const key = index;
                                         return (
-                                            <MenuItem key={key} value={item.idx}>{item.name}</MenuItem>
-                                        );
+                                            <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                    );
                                     })}
                                 </Select>
                                 <FormHelperText>{helpers.snapDays}</FormHelperText>
                             </FormControl>
                         </div>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={2}>
                         <div>
-                            <span className={labelClassName}>* Snapshot / hours </span>
+                            <span className={labelClassName}>* Hours </span>
                             <FormControl
                                 size={fieldSize}
                                 className={fieldClassName}
@@ -801,12 +959,12 @@ const WriteVm = (props) => {
                                     MenuProps={MenuProps}
                                 >
                                     <MenuItem key={0} value={0}>
-                                        <em>None</em>
+                                        <em>0</em>
                                     </MenuItem>
-                                    {networkList.map((item, index) => {
+                                    {snapHourList.map((item, index) => {
                                         const key = index;
                                         return (
-                                            <MenuItem key={key} value={item.idx}>{item.name}</MenuItem>
+                                            <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
                                         );
                                     })}
                                 </Select>
@@ -814,9 +972,9 @@ const WriteVm = (props) => {
                             </FormControl>
                         </div>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={2}>
                         <div>
-                            <span className={labelClassName}>* Snapshot / minutes </span>
+                            <span className={labelClassName}>* Minutes </span>
                             <FormControl
                                 size={fieldSize}
                                 className={fieldClassName}
@@ -836,12 +994,12 @@ const WriteVm = (props) => {
                                     MenuProps={MenuProps}
                                 >
                                     <MenuItem key={0} value={0}>
-                                        <em>None</em>
+                                        <em>0</em>
                                     </MenuItem>
-                                    {networkList.map((item, index) => {
+                                    {snapMinList.map((item, index) => {
                                         const key = index;
                                         return (
-                                            <MenuItem key={key} value={item.idx}>{item.name}</MenuItem>
+                                            <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
                                         );
                                     })}
                                 </Select>

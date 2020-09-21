@@ -257,6 +257,7 @@ const VmTable = () => {
     const asyncAddVm = async (vm) => {
         const {
             name, cpIdx, serialNumber, serverIdx, cpu, ram, hdd, image, imageName, os, networkName,
+            snapType, snapDays, snapHours, snapMinutes,
         } = vm;
         try {
             const response = await registerMcVm({
@@ -273,6 +274,10 @@ const VmTable = () => {
                 image: imageName,
                 os,
                 network: networkName,
+                snapType,
+                snapDays,
+                snapHours,
+                snapMinutes,
             });
             handleSnackbarSuccess("VM 등록에 성공하였습니다.");
             getPageData();
