@@ -298,14 +298,14 @@ const MicroCloudDashboard = () => {
                     />
                 </Col>
             </Row>
-            <Row>
-                <Col md={3} sm={12} style={{padding: 10}}>
-                    <NBSmallAreaChart data={rx} hostname="RX"/>
-                </Col>
-                <Col md={3} sm={12} style={{padding: 10}}>
-                    <NBSmallAreaChart data={tx} hostname="TX"/>
-                </Col>
-            </Row>
+            {/*<Row>*/}
+            {/*    <Col md={3} sm={12} style={{padding: 10}}>*/}
+            {/*        <NBSmallAreaChart data={rx} hostname="RX"/>*/}
+            {/*    </Col>*/}
+            {/*    <Col md={3} sm={12} style={{padding: 10}}>*/}
+            {/*        <NBSmallAreaChart data={tx} hostname="TX"/>*/}
+            {/*    </Col>*/}
+            {/*</Row>*/}
             <Row>
                 <Col md={12} style={{padding: 10}}>
                     <MyResponsiveLine height={400}
