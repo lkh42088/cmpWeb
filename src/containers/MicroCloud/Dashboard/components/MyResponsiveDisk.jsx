@@ -186,7 +186,7 @@ const MyResponsivePie = (props) => {
                             data={data}
                             paddingAngle={0}
                             /*cx={200}*/
-                            cy={200}
+                            cy={130}
                             innerRadius="50%"
                             outerRadius="59%"
                             onMouseEnter={onPieEnter}
@@ -195,7 +195,7 @@ const MyResponsivePie = (props) => {
                         />
                     </PieChart>
                 </ResponsiveContainer>
-                <p>{disk.total}</p>
+                {/*<p>{disk.total}</p>*/}
             </CardBody>
         </Card>
     );

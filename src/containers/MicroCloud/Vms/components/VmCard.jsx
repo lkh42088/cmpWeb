@@ -27,26 +27,32 @@ const BounceRateArea = (props) => {
         title, height, mac, data, hostname,
     } = props;
 
-    return (
-        <ResponsiveContainer height={150}>
-            <AreaChart
-                data={data}
-                margin={{
-                    top: 0,
-                    right: 0,
-                    left: -15,
-                    bottom: 0,
-                }}
-            >
-                <XAxis dataKey="time" tickLine={false}/>
-                <YAxis tickLine={false}/>
-                <CartesianGrid vertical={false}/>
-                <Tooltip {...getTooltipStyles(data, 'defaultItems')} />
-                <Area type="monotone" dataKey="rx" stroke="#5ca0d3" fill="#5ca0d3" fillOpacity={0.2}/>
-                <Area type="monotone" dataKey="tx" stroke="red" fill="red" fillOpacity={0.2}/>
-            </AreaChart>
-        </ResponsiveContainer>
-    );
+    if (data.length > 1) {
+        return (
+            <ResponsiveContainer height={150}>
+                <AreaChart
+                    data={data}
+                    margin={{
+                        top: 0,
+                        right: 0,
+                        left: -15,
+                        bottom: 0,
+                    }}
+                >
+                    <XAxis dataKey="time" tickLine={false}/>
+                    <YAxis tickLine={false}/>
+                    <CartesianGrid vertical={false}/>
+                    <Tooltip {...getTooltipStyles(data, 'defaultItems')} />
+                    {/*<Area type="monotone" dataKey="rx" stroke="#ffc93c" fill="#ffc93c" fillOpacity={0.2}/>
+                    <Area type="monotone" dataKey="tx" stroke="#07689f" fill="#07689f" fillOpacity={0.2}/>*/}
+                    <Area type="monotone" dataKey="rx" stroke="#ffacb7" fill="ffacb7" fillOpacity={0.2}/>
+                    <Area type="monotone" dataKey="tx" stroke="#6886c5" fill="#6886c5" fillOpacity={0.2}/>
+                </AreaChart>
+            </ResponsiveContainer>
+        );
+    }
+
+    return "";
 };
 
 const VmCardContent = (props) => {
@@ -85,46 +91,35 @@ const VmCardContent = (props) => {
         return (x / (y / 100)).toFixed(0);
     };
 
-    const getGraphData = async (mac) => {
-        try {
-            const response = await getMcVmsGraph(mac);
-            //setGraphData(response.data);
-            /*console.log("💌💌💌💌💌💌💌💌💌💌💌💌💌💌💌💌💌💌💌💌💌💌💌💌");
-            console.log("💌💌 response.data : ", response.data);
-            console.log("💌💌 response.data.Cpu : ", response.data.Cpu.percentIdleTime.toFixed(1));
-            console.log("💌💌 response.data.Mem : ", response.data.Mem.availableBytes);
-            console.log("💌💌 response.data.Disk : ", response.data.Disk.freeMegabytes);
-            console.log("💌💌 response.data.Traffic : ", response.data.Traffic);
-            console.log("💌💌 response.data.Traffic.Stats : ", response.data.Traffic.stats[0].data);*/
+    const reCheckNone = (val) => {
+        if (val === "100") {
+            return 0;
+        }
 
+        return val;
+    };
+
+    const getGraphData = async (mac, currentStatus) => {
+        try {
+            const response = await getMcVmsGraph(mac, currentStatus);
             const memFree = common.formatBytes(response.data.Mem.availableBytes, "GB");
             const diskFree = common.formatBytes(response.data.Disk.freeMegabytes * 1024 * 1024, "GB");
-            //const traffic = response.data.Traffic.stats[0].data;
-            //const diskFreeByte = diskFree * 1024 * 1024;
-            /*console.log("MEMORY FREE 값 : ", memFree, "GB");
-            console.log("MEMORY USE 값 : ", (1 - memFree), "GB");
-            console.log("MEMORY ---> : ", funcPercent(1, (1 - memFree)));
 
-            console.log("DISK diskFree : ", diskFree);
-            console.log("DISK FREE 값 : ", diskFree, "GB");
-            console.log("DISK USE 값 : ", (40 - diskFree), "GB");
-            console.log("DISK ---> : ", funcPercent(40, (40 - diskFree)));*/
-            //console.log("DISK diskFreeByte ---> : ", diskFreeByte);
-
-            //console.log("---------------------------------");
+            // console.log(mac, " : cpu percentIdleTime : ", response.data.Cpu.percentIdleTime.toFixed(1));
+            // console.log(mac, " : disk percentIdleTime : ", response.data.Disk.freeMegabytes);
 
             setGraphData({
                 cpu: { /*이 값은 percent로 되어있음*/
                     percentIdleTime: response.data.Cpu.percentIdleTime.toFixed(1),
-                    graphVal: (100 - response.data.Cpu.percentIdleTime).toFixed(1),
+                    graphVal: reCheckNone((100 - response.data.Cpu.percentIdleTime).toFixed(0)),
                 },
                 mem: {
                     availableBytes: response.data.Mem.availableBytes.toFixed(1),
-                    graphVal: funcPercent(1, (1 - memFree)), /*total 1GB*/
+                    graphVal: reCheckNone(funcPercent(1, (1 - memFree))), /*total 1GB*/
                 },
                 disk: {
                     freeMegabytes: response.data.Disk.freeMegabytes.toFixed(1),
-                    graphVal: funcPercent(40, (40 - diskFree)), /*total 40GB*/
+                    graphVal: reCheckNone(funcPercent(40, (40 - diskFree))), /*total 40GB*/
                 },
                 traffic: (
                     response.data.Traffic.map(val => ({
@@ -140,12 +135,11 @@ const VmCardContent = (props) => {
     };
 
     useEffect(() => {
-        getGraphData(row.mac);
-        //setInterval(() => setCompleted(Math.floor(Math.random() * 100) + 1), 2000);
+        getGraphData(row.mac, row.currentStatus);
     }, [props]);
 
     return (
-        <Col md={12} lg={12} xl={3} style={{padding: "0 10px 20px 10px"}}>
+        <Col xs={12} sm={12} md={6} lg={4} xl={3} style={{padding: "0 10px 20px 10px"}}>
             <Card className="vm__card-main">
                 <CardHeader
                     className={row.currentStatus === 'running'
@@ -168,7 +162,7 @@ const VmCardContent = (props) => {
                     <div className="vm__stats_border-none">
                         <div className="vm__stat_border-none">
                             <div className="vm__stat-title">
-                                CPU
+                                <p>CPU</p>
                                 {/*{graphData.cpu.map((tempRow, index) => {
                                     const tempKey = index;
                                     return (
@@ -187,15 +181,17 @@ const VmCardContent = (props) => {
                                 <div className="text-right">
                                     {graphData.cpu.graphVal}%
                                 </div>
-                                <Progress animated
-                                          value={graphData.cpu.graphVal}/>
+                                <Progress animated value={graphData.cpu.graphVal}
+                                          color={graphData.cpu.graphVal > 80 ? "danger" : ""}
+                                />
                             </div>
                         </div>
                     </div>
 
                     <div className="vm__stats_border-none">
                         <div className="vm__stat_border-none">
-                            <div className="vm__stat-title">RAM</div>
+                            <div className="vm__stat-title">
+                                <p>RAM</p></div>
                         </div>
                         <div className="vm__stat_border-none">
                             <div className="vm__stat-title">{row.ram} MB</div>
@@ -203,14 +199,18 @@ const VmCardContent = (props) => {
                         <div className="vm__stat_border-none">
                             <div className="vm__stat-graph">
                                 <div className="text-right">{graphData.mem.graphVal}%</div>
-                                <Progress animated value={graphData.mem.graphVal}/>
+                                <Progress
+                                    animated value={graphData.mem.graphVal}
+                                    color={graphData.mem.graphVal > 80 ? "danger" : ""}
+                                />
                             </div>
                         </div>
                     </div>
 
                     <div className="vm__stats_border-none last-border">
                         <div className="vm__stat_border-none">
-                            <div className="vm__stat-title">HDD</div>
+                            <div className="vm__stat-title">
+                                <p>HDD</p></div>
                         </div>
                         <div className="vm__stat_border-none">
                             <div className="vm__stat-title">{row.hdd} GB</div>
@@ -218,7 +218,10 @@ const VmCardContent = (props) => {
                         <div className="vm__stat_border-none">
                             <div className="vm__stat-graph">
                                 <div className="text-right">{graphData.disk.graphVal}%</div>
-                                <Progress animated value={graphData.disk.graphVal}/>
+                                <Progress
+                                    animated value={graphData.disk.graphVal}
+                                    color={graphData.disk.graphVal > 80 ? "danger" : ""}
+                                />
                             </div>
                         </div>
                     </div>
@@ -236,7 +239,7 @@ const VmCardContent = (props) => {
 
                     <div className="vm__stats">
                         <div className="vm__stat">
-                            <div className="vm__stat-title">VM IP</div>
+                            <div className="vm__stat-title"><p>VM IP</p></div>
                         </div>
                         <div className="vm__stat">
                             <div className="vm__stat-title">{row.ipAddr}</div>
@@ -245,7 +248,7 @@ const VmCardContent = (props) => {
 
                     <div className="vm__stats">
                         <div className="vm__stat">
-                            <div className="vm__stat-title">내부접속 IP</div>
+                            <div className="vm__stat-title"><p>내부접속 IP</p></div>
                         </div>
                         <div className="vm__stat">
                             <div className="vm__stat-title">{row.remoteAddr}</div>
@@ -254,7 +257,7 @@ const VmCardContent = (props) => {
 
                     <div className="vm__stats">
                         <div className="vm__stat">
-                            <div className="vm__stat-title">외부접속 IP</div>
+                            <div className="vm__stat-title"><p>외부접속 IP</p></div>
                         </div>
                         <div className="vm__stat">
                             <div className="vm__stat-title">-</div>
@@ -263,7 +266,7 @@ const VmCardContent = (props) => {
 
                     <div className="vm__stats">
                         <div className="vm__stat">
-                            <div className="vm__stat-title">OS</div>
+                            <div className="vm__stat-title"><p>OS</p></div>
                         </div>
                         <div className="vm__stat">
                             <div className="vm__stat-title">
@@ -282,24 +285,14 @@ const VmCard = () => {
     const [data, setData] = useState([]);
     const user = JSON.parse(localStorage.getItem("user"));
     const {
-        selected,
-        pageBeginRow,
         rowsPerPage,
         currentPage,
-        totalCount,
-        displayRowsList,
-        dense,
         orderBy,
         order,
     } = useSelector(({pagingRd}) => ({
-        selected: pagingRd.selected,
-        pageBeginRow: pagingRd.pageBeginRow,
         rowsPerPage: pagingRd.rowsPerPage,
         currentPage: pagingRd.currentPage,
         totalPage: pagingRd.totalPage,
-        totalCount: pagingRd.totalCount,
-        displayRowsList: pagingRd.displayRowsList,
-        dense: pagingRd.dense,
         orderBy: pagingRd.orderBy,
         order: pagingRd.order,
     }));
@@ -324,7 +317,7 @@ const VmCard = () => {
                 cpName: companyName,
             });
             setData(response.data.data);
-            console.log("getPageData try! : ", response.data.data);
+            // console.log("getPageData try! : ", response.data.data);
         } catch (e) {
             console.log("getPageData error!");
         }
@@ -340,22 +333,6 @@ const VmCard = () => {
     }, []);
 
     return (
-        /*<Fragment>
-            {data && data.map((row, index) => {
-                const keyId = index;
-
-                if (keyId === 0) {
-                    return (
-                        <VmCardContent key={keyId} row={row}/>
-                    );
-                }
-                return (
-                    <div key={keyId}>
-                        test
-                    </div>
-                );
-            })}
-        </Fragment>*/
         <Fragment>
             {data && data.map((row, index) => {
                 const keyId = index;
@@ -365,14 +342,6 @@ const VmCard = () => {
                 );
             })}
         </Fragment>
-        /*<Col md={12} lg={12} style={paddingCol}>
-            {data && data.map((row, index) => {
-                const keyId = index;
-                return (
-                    <Row><VmCardContent key={keyId} row={row}/></Row>
-                );
-            })}
-        </Col>*/
     );
 };
 

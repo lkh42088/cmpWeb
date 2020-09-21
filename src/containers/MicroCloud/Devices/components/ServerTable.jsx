@@ -218,7 +218,12 @@ const ServerTable = () => {
             const response = await getMcServers({
                 rows: rowsPerPage, offset, orderBy, order, cpName: companyName,
             });
-            console.log("response:", response.data.data);
+            console.log("getPageData response:", response.data.data);
+            console.log("getPageData rowsPerPage:", rowsPerPage);
+            console.log("getPageData offset:", offset);
+            console.log("getPageData orderBy:", orderBy);
+            console.log("getPageData order:", order);
+            console.log("getPageData companyName:", companyName);
             setData(response.data.data);
             setPaging(response.data.page);
         } catch (e) {

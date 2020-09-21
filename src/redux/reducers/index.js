@@ -14,6 +14,7 @@ import pagingReducer from "./pagingReducer";
 import companiesReducer from "./companiesReducer";
 import codeReducer from "./codeReducer";
 import vmsReducer from "./vmsReducer";
+import microReducer from "./microReducer";
 
 export {
     themeReducer,
@@ -32,4 +33,5 @@ export {
     companiesReducer,
     codeReducer,
     vmsReducer,
+    microReducer,
 };
