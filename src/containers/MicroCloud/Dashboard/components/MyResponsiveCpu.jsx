@@ -78,6 +78,8 @@ const MyResponsivePie = (props) => {
     const {
         height, title, pieColor, mac, warringUsed,
     } = props;
+    console.log("props : ", props);
+    console.log("mac : ", mac);
     const [activeIndex, setActiveIndex] = useState(0);
     const [fill, setFill] = useState(pieColor.defaultColor);
 
@@ -98,13 +100,15 @@ const MyResponsivePie = (props) => {
 
     const getData = async () => {
         try {
+            console.log("mac temp : ", props);
             let cpData = "";
             let subContent;
+            console.log("myresponseive cpu mac : ", mac);
 
             const marker = 1024; // Change to 1000 if required
             const decimal = 2; // Change as required
             const megaBytes = marker * marker; // One MB is 1024 KB
-            const response = await getMcNetworksCpu({});
+            const response = await getMcNetworksCpu(mac);
             const value = response.data[0].usage_idle;
 
             const valueCompare = 100 - Number(value);
@@ -125,12 +129,14 @@ const MyResponsivePie = (props) => {
                     label: "used",
                     value: use,
                     fillColor: useColor,
+                    err: response.data[0].err,
                 },
                 {
                     id: "available", /*free*/
                     label: "available",
                     value: free,
                     fillColor: freeColor,
+                    err: response.data[0].err,
                 },
             ];
             setData(data.concat(cpData));
@@ -144,8 +150,8 @@ const MyResponsivePie = (props) => {
     }, []);
 
     useEffect(() => {
-        const timer = setInterval(getData, 5000);
-        return () => clearInterval(timer);
+        /*const timer = setInterval(getData, 5000);
+        return () => clearInterval(timer);*/
     }, []);
 
     return (

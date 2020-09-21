@@ -6,75 +6,6 @@ import {
 import {getMcNetworksDisk} from "../../../../lib/api/microCloudDisk";
 import GraphPie from "./GraphPie";
 
-/*const GraphPie = (props) => {
-    const RADIAN = Math.PI / 180;
-    const {
-        cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
-        fill, payload, percent, value,
-    } = props;
-
-    const sin = Math.sin(-RADIAN * midAngle);
-    const cos = Math.cos(-RADIAN * midAngle);
-    const sx = cx + (outerRadius + 10) * cos;
-    const sy = cy + (outerRadius + 10) * sin;
-    const mx = cx + (outerRadius + 5) * cos;
-    const my = cy + (outerRadius + 5) * sin;
-    const ex = mx + (cos >= 0 ? 1 : -1) * 11;
-    const ey = my;
-    const textAnchor = cos >= 0 ? 'start' : 'end';
-
-    return (
-        <g>
-            <text x={cx} y={cy} dy={8} textAnchor="middle"
-                  fill={payload.fillColor}
-                  style={{
-                      fontSize: "large",
-                  }}>
-                {`${(percent * 100).toFixed(2)}%`}
-            </text>
-            <text x={cx} y={cy + 20} dy={8} textAnchor="middle"
-                  className="graph_label">
-                {payload.label}
-            </text>
-            <Sector
-                cx={cx}
-                cy={cy}
-                innerRadius={innerRadius}
-                outerRadius={outerRadius}
-                startAngle={startAngle}
-                endAngle={endAngle}
-                fill={payload.fillColor}
-            />
-            <Sector
-                cx={cx}
-                cy={cy}
-                startAngle={startAngle}
-                endAngle={endAngle}
-                innerRadius={outerRadius + 6}
-                outerRadius={outerRadius + 10}
-                fill={fill}
-            />
-            {/!*<path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>*!/}
-            <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none"/>
-            <text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} textAnchor={textAnchor} className="graph_label"
-                  style={{
-                      fontSize: "x-small",
-                  }}>
-                {`${payload.label}`}
-            </text>
-            <text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
-                {`${payload.labelVal}`}
-            </text>
-            {/!*<text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
-                {`${value}`}
-            </text>*!/}
-            {/!*<text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
-                {`Rate ${(percent * 100).toFixed(2)}%`}
-            </text>*!/}
-        </g>
-    );
-};*/
-
 const MyResponsivePie = (props) => {
     const {
         height, title, pieColor, mac, warringUsed,
@@ -114,7 +45,7 @@ const MyResponsivePie = (props) => {
             const gigaBytes = marker * marker * marker; // One GB is 1024 MB
 
             //used -> FREE 값 가져옴
-            const response = await getMcNetworksDisk({});
+            const response = await getMcNetworksDisk(mac);
             const value = response.data[0].used_percent;
 
             const valueCompare = 100 - Number(value);
@@ -147,6 +78,7 @@ const MyResponsivePie = (props) => {
                     labelVal: "",
                     value: use,
                     fillColor: useColor,
+                    err: response.data[0].err,
                 },
                 {
                     id: "available", /*free*/
@@ -154,6 +86,7 @@ const MyResponsivePie = (props) => {
                     labelVal,
                     value: free,
                     fillColor: freeColor,
+                    err: response.data[0].err,
                 },
             ];
             setData(data.concat(cpData));
@@ -168,8 +101,8 @@ const MyResponsivePie = (props) => {
 
     useEffect(() => {
         //getData();
-        const timer = setInterval(getData, 5000);
-        return () => clearInterval(timer);
+        /*const timer = setInterval(getData, 5000);
+        return () => clearInterval(timer);*/
     }, []);
 
     return (

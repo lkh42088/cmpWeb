@@ -125,8 +125,8 @@ const VmCardContent = (props) => {
                     response.data.Traffic.map(val => ({
                         time: new Date(val.time).toLocaleTimeString()
                             .split(" ")[1],
-                        rx: val.bytesReceivedPersec.toFixed(2),
-                        tx: val.bytesSentPersec.toFixed(2),
+                        rx: (val.bytesReceivedPersec / 1000).toFixed(2),
+                        tx: (val.bytesSentPersec / 1000).toFixed(2),
                     }))),
             });
         } catch (e) {
