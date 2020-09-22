@@ -61,7 +61,9 @@ const VmCardContent = (props) => {
     const [graphData, setGraphData] = useState({
         cpu: '',
         mem: '',
+        memTotal: '',
         disk: '',
+        diskTotal: '',
         traffic: [],
     });
 
@@ -103,10 +105,14 @@ const VmCardContent = (props) => {
         try {
             const response = await getMcVmsGraph(mac, currentStatus);
             const memFree = common.formatBytes(response.data.Mem.availableBytes, "GB");
+            const memTotal = common.formatBytes(response.data.Mem.total * 1024 * 1024, "GB");
             const diskFree = common.formatBytes(response.data.Disk.freeMegabytes * 1024 * 1024, "GB");
+            const diskTotal = common.formatBytes(response.data.Disk.total * 1024 * 1024 * 1024, "GB");
 
             // console.log(mac, " : cpu percentIdleTime : ", response.data.Cpu.percentIdleTime.toFixed(1));
             // console.log(mac, " : disk percentIdleTime : ", response.data.Disk.freeMegabytes);
+            // console.log(mac, " mem: ", memTotal, " disk: ", diskTotal);
+            // console.log(mac, " mem: ", response.data.Mem.total, " disk: ", response.data.Disk.total);
 
             setGraphData({
                 cpu: { /*이 값은 percent로 되어있음*/
@@ -115,11 +121,11 @@ const VmCardContent = (props) => {
                 },
                 mem: {
                     availableBytes: response.data.Mem.availableBytes.toFixed(1),
-                    graphVal: reCheckNone(funcPercent(1, (1 - memFree))), /*total 1GB*/
+                    graphVal: reCheckNone(funcPercent(memTotal, (memTotal - memFree))),
                 },
                 disk: {
                     freeMegabytes: response.data.Disk.freeMegabytes.toFixed(1),
-                    graphVal: reCheckNone(funcPercent(40, (40 - diskFree))), /*total 40GB*/
+                    graphVal: reCheckNone(funcPercent(diskTotal, (diskTotal - diskFree))),
                 },
                 traffic: (
                     response.data.Traffic.map(val => ({
