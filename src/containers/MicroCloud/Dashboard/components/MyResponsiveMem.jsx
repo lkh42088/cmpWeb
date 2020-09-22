@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {Card, CardBody} from "reactstrap";
 import {
     PieChart, Pie, Sector, ResponsiveContainer,
@@ -15,8 +15,7 @@ const MyResponsivePie = (props) => {
     const [fill, setFill] = useState(pieColor.defaultColor);
 
     const [data, setData] = useState([]);
-    const [mem, setMem] = useState();
-    const [disk, setDisk] = useState();
+    const [state, setState] = useState();
 
     // eslint-disable-next-line no-shadow
     const onPieEnter = (data, index) => {
@@ -59,9 +58,11 @@ const MyResponsivePie = (props) => {
             const subContent = `(Total : ${(Number(response.data[0].total) / gigaBytes).toFixed(decimal)} GB)`;
             const labelVal = `${(Number(response.data[0].available) / gigaBytes).toFixed(decimal)} GB`;
 
-            setMem(subContent);
-
-            console.log("MEM response.data[0].err : ", response.data[0].err);
+            /*console.log("response : ", response);
+            console.log("available_percent : ", value);
+            console.log("valueCompare : ", valueCompare);
+            console.log("use : ", use);
+            console.log("free : ", free);*/
 
             cpData = [
                 {
@@ -81,7 +82,9 @@ const MyResponsivePie = (props) => {
                     err: response.data[0].err,
                 },
             ];
-            setData(data.concat(cpData));
+
+            setData(cpData);
+            setState(response.data[0].err);
         } catch {
             console.log("memory MyResponsivePie response error");
         }
@@ -89,36 +92,56 @@ const MyResponsivePie = (props) => {
 
     useEffect(() => {
         getData();
-    }, []);
-
-    useEffect(() => {
-        /*const timer = setInterval(getData, 5000);
-        return () => clearInterval(timer);*/
-    }, []);
+        const timer = setInterval(getData, 5000);
+        return () => clearInterval(timer);
+    }, [mac]);
 
     return (
         <Card className="cb-card">
             <CardBody className="cb-card-body">
                 <p>{title}</p>
-                <ResponsiveContainer height={height + 100} width="100%">
-                    <PieChart height={height}>
-                        <Pie
-                            activeIndex={activeIndex}
-                            fill={fill}
-                            dataKey="value"
-                            activeShape={GraphPie}
-                            data={data}
-                            paddingAngle={0}
-                            /*cx={200}*/
-                            cy={130}
-                            innerRadius="50%"
-                            outerRadius="59%"
-                            onMouseEnter={onPieEnter}
-                            onMouseLeave={onPieLeave}
-                        />
-                    </PieChart>
-                </ResponsiveContainer>
-                {/*<p>{mem}</p>*/}
+                {state === "nodata" ? (
+                    <Fragment>
+                        <ResponsiveContainer height={height + 100} width="100%">
+                            <PieChart height={height}>
+                                <g>
+                                    <text x={133} y={130} dy={8} textAnchor="middle"
+                                          fill="red"
+                                          style={{
+                                              fontSize: "1.3rem",
+                                          }}>
+                                        no data
+                                    </text>
+                                    <text x={133} y={130 + 20} dy={8} textAnchor="middle"
+                                          className="graph_label"
+                                          style={{
+                                              fontSize: "0.8rem",
+                                          }}>
+                                        데이터가 없습니다.
+                                    </text>
+                                </g>
+                            </PieChart>
+                        </ResponsiveContainer>
+                    </Fragment>
+                ) : (
+                    <ResponsiveContainer height={height + 100} width="100%">
+                        <PieChart height={height}>
+                            <Pie
+                                activeIndex={activeIndex}
+                                fill={fill}
+                                dataKey="value"
+                                activeShape={GraphPie}
+                                data={data}
+                                paddingAngle={0}
+                                cy={130}
+                                innerRadius="50%"
+                                outerRadius="59%"
+                                onMouseEnter={onPieEnter}
+                                onMouseLeave={onPieLeave}
+                            />
+                        </PieChart>
+                    </ResponsiveContainer>
+                )}
             </CardBody>
         </Card>
     );

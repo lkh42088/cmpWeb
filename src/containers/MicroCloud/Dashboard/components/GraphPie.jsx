@@ -11,7 +11,7 @@ const GraphPie = (props) => {
     const RADIAN = Math.PI / 180;
     const {
         cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
-        fill, payload, percent, value,
+        fill, payload, percent,
     } = props;
 
     const sin = Math.sin(-RADIAN * midAngle);
@@ -24,9 +24,8 @@ const GraphPie = (props) => {
     const ey = my;
     const textAnchor = cos >= 0 ? 'start' : 'end';
 
-    let component;
-    if (payload.err !== "nodata") {
-        component = (
+    return (
+        <Fragment>
             <g>
                 <text x={cx} y={cy} dy={8} textAnchor="middle"
                       fill={payload.fillColor}
@@ -57,10 +56,6 @@ const GraphPie = (props) => {
                     outerRadius={outerRadius + 10}
                     fill={fill}
                 />
-                {/*<path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none"/>*/}
-                {/*<circle cx={ex} cy={ey} r={2} fill={fill} stroke="none"/>*/}
-                {/*<text dx="50%" x="10%" y="10%" textAnchor={textAnchor}*/}
-
                 {window.innerWidth < 1450 && window.innerWidth > 700 ? (
                     <Fragment>
                         &nbsp;
@@ -81,38 +76,7 @@ const GraphPie = (props) => {
                         ) : false}
                     </Fragment>
                 )}
-                {/*<text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
-                {`${value}`}
-            </text>*/}
-                {/*<text x={ex + (cos >= 0 ? 1 : -1) * 10} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
-                {`Rate ${(percent * 100).toFixed(2)}%`}
-            </text>*/}
             </g>
-        );
-    } else {
-        component = (
-            <g>
-                <text x={cx} y={cy} dy={8} textAnchor="middle"
-                      fill={payload.fillColor}
-                      style={{
-                          fontSize: "1.3rem",
-                      }}>
-                    {payload.err}
-                </text>
-                <text x={cx} y={cy + 20} dy={8} textAnchor="middle"
-                      className="graph_label"
-                      style={{
-                          fontSize: "0.8rem",
-                      }}>
-                    데이터가 없습니다.
-                </text>
-            </g>
-        );
-    }
-
-    return (
-        <Fragment>
-            {component}
         </Fragment>
     );
 };

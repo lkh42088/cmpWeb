@@ -5,12 +5,6 @@ import {
 import {makeStyles} from "@material-ui/core/styles";
 
 import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
-import MyResponsiveLine from "./components/MyResponsiveLine";
-import MyResponsiveCpu from "./components/MyResponsiveCpu";
-import MyResponsiveMem from "./components/MyResponsiveMem";
-import MyResponsiveDisk from "./components/MyResponsiveDisk";
-import NBSmallAreaChart from "./components/NBSmallAreaChart";
-import MyResponsiveInfo from "./components/MyResponsiveInfo";
 
 import {
     getVmInterfaceTraffic, getServeries, unregisterMcServer, getMcServers,
@@ -19,6 +13,9 @@ import {getCompanies} from "../../../lib/api/company";
 import {
     NB_MANAGER, TOP_MANAGER, UNREGISTERED_USER,
 } from "../../../lib/var/globalVariable";
+
+import TopManagerMain from "./components/TopManagerMain";
+import BaremetalMain from "./components/BaremetalMain";
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -42,24 +39,6 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: 15,
     },
 }));
-
-const pieColor = {
-    defaultColor: '#d4d7dd',
-    textColor: '#414141',
-    warringColor: '#ec0101',
-    cpuColor: {
-        use: '#3f51b5',
-        free: '#63686e',
-    },
-    memColor: {
-        use: '#2fc4b2',
-        free: '#63686e',
-    },
-    diskColor: {
-        use: '#ff8364',
-        free: '#63686e',
-    },
-};
 
 const MicroCloudDashboard = () => {
     const classes = useStyles();
@@ -85,12 +64,14 @@ const MicroCloudDashboard = () => {
      *******************/
     const [companyList, setCompanyList] = useState([]);
     const [serverList, setServerList] = useState([]);
-    const [mac, setMac] = useState("52:54:00:01:b5:b7");
+    const [mac, setMac] = useState(""); //52:54:00:01:b5:b7
+    const [dashDp, setDashDp] = useState("all");
+    const [schCompany, setSchCompany] = useState("all");
 
     /**************************************************************
      * Axios Function
      **************************************************************/
-    const getData = async () => {
+    /*const getData = async () => {
         if (!mac) {
             return;
         }
@@ -130,18 +111,19 @@ const MicroCloudDashboard = () => {
                 data: [],
             });
         }
-    };
+    };*/
 
     const getCompanyList = async () => {
         try {
             const response = await getCompanies();
             setCompanyList(response.data);
+            //console.log("response.data : ", response.data);
         } catch (error) {
             setCompanyList([]);
         }
     };
 
-    const getServerList = async (company) => {
+    const getServerMac = async (val) => {
         try {
             //"/v1/micro/servers-paging/10/0//desc/신용회복위원회"
             const response = await getMcServers({
@@ -149,10 +131,16 @@ const MicroCloudDashboard = () => {
                 offset: 0,
                 orderBy: '',
                 order: 'desc',
-                cpName: company,
+                cpName: val,
             });
-            setServerList(response.data.data);
-            // console.log("server response : ", response.data.data);
+
+            if (response.data.data[0] === undefined) {
+                setServerList([]);
+                setMac("nodata");
+            } else {
+                setServerList(response.data.data);
+                setMac(response.data.data[0].mac);
+            }
         } catch (error) {
             setServerList([]);
         }
@@ -163,16 +151,12 @@ const MicroCloudDashboard = () => {
      **************************************************************/
 
     const handleChangeCompany = (e) => {
-        getServerList(e.target.value);
+        setSchCompany(e.target.value);
+        getServerMac(e.target.value);
     };
 
-    const handleChangeServer = (e) => {
-        setMac(e.target.value);
-    };
-
-    const handleAuthMenuDisplay = (val, flag) => {
+    const handleAuthSelectDisplay = (val, flag) => {
         let topSelect;
-        console.log("user -> val : ", val);
         if (val) {
             const {level} = user;
             switch (level) {
@@ -181,19 +165,11 @@ const MicroCloudDashboard = () => {
                         <Row>
                             <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
                             <select name="company" onChange={handleChangeCompany}>
+                                <option key="all" value="all">:: ALL DATA ::</option>
                                 {companyList && companyList.map((item, index) => {
                                     const key = index;
                                     return (
                                         <option key={key} value={item.name}>{item.name}</option>
-                                    );
-                                })}
-                            </select>
-                            &nbsp;
-                            <select onChange={handleChangeServer}>
-                                {serverList && serverList.map((item, index) => {
-                                    const key = index;
-                                    return (
-                                        <option key={key} value={item.mac}>{item.serialNumber} / {item.mac}</option>
                                     );
                                 })}
                             </select>
@@ -206,19 +182,11 @@ const MicroCloudDashboard = () => {
                         <Row>
                             <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
                             <select name="company" onChange={handleChangeCompany}>
+                                <option key="all" value="all">:: ALL DATA ::</option>
                                 {companyList && companyList.map((item, index) => {
                                     const key = index;
                                     return (
                                         <option key={key} value={item.name}>{item.name}</option>
-                                    );
-                                })}
-                            </select>
-                            &nbsp;
-                            <select onChange={handleChangeServer}>
-                                {serverList && serverList.map((item, index) => {
-                                    const key = index;
-                                    return (
-                                        <option key={key} value={item.mac}>{item.serialNumber} / {item.mac}</option>
                                     );
                                 })}
                             </select>
@@ -227,22 +195,6 @@ const MicroCloudDashboard = () => {
                     );
                     break;
                 case UNREGISTERED_USER:
-                    //console.log("serverList : ", serverList); //cpName
-                    /*topSelect = (
-                        <Fragment>
-                            <select
-                                onChange={handleChangeServer}
-                                defaultValue={user.cpName} /!*여기 작업중이었음 이 부분 ~ 20200921 2020년도까지 server 1*!/
-                            >
-                                {serverList && serverList.map((item, index) => {
-                                    const key = index;
-                                    return (
-                                        <option key={key} value={item.mac}>{item.serialNumber} / {item.mac}</option>
-                                    );
-                                })}
-                            </select>
-                        </Fragment>
-                    );*/
                     topSelect = "";
                     break;
                 default:
@@ -255,13 +207,11 @@ const MicroCloudDashboard = () => {
     /**************************************************************
      * useEffect
      **************************************************************/
-
     useEffect(() => {
-        getData();
+        //getData();
         getCompanyList();
-        getServerList('all');
-        const timer = setInterval(getData, 5000);
-        return () => clearInterval(timer);
+        /*const timer = setInterval(getData, 5000);
+        return () => clearInterval(timer);*/
     }, []);
 
     return (
@@ -271,50 +221,11 @@ const MicroCloudDashboard = () => {
             <Row className={classes.row}>
                 <RouterBreadcrumbs url={window.location.href}/>
             </Row>
-            {handleAuthMenuDisplay(user)}
-            <Row className="classes.row">
-                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <MyResponsiveCpu
-                        height={150}
-                        mac={mac}
-                        title="CPU" pieColor={pieColor} warringUsed={80}/>
-                </Col>
-                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <MyResponsiveMem
-                        height={150}
-                        mac={mac}
-                        title="MEMORY" pieColor={pieColor} warringUsed={80}/>
-                </Col>
-                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <MyResponsiveDisk
-                        height={150}
-                        mac={mac}
-                        title="DISK" pieColor={pieColor} warringUsed={80}/>
-                </Col>
-                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <MyResponsiveInfo
-                        height={150}
-                        title="HOSTNAME"
-                    />
-                </Col>
-            </Row>
-            <Row>
-                <Col md={3} sm={12} style={{padding: 10}}>
-                    <NBSmallAreaChart data={rx} hostname="RX"/>
-                </Col>
-                <Col md={3} sm={12} style={{padding: 10}}>
-                    <NBSmallAreaChart data={tx} hostname="TX"/>
-                </Col>
-            </Row>
-            <Row>
-                <Col md={12} style={{padding: 10}}>
-                    <MyResponsiveLine height={400}
-                                      title="BareMetal Out Interface"
-                                      data={data}
-                                      hostname={hostname}
-                    />
-                </Col>
-            </Row>
+            {handleAuthSelectDisplay(user)}
+            {/* eslint-disable-next-line no-nested-ternary */}
+            {schCompany === "all" ? (
+                <TopManagerMain/>
+            ) : mac ? (<BaremetalMain mac={mac}/>) : false}
         </Container>
     );
 };
