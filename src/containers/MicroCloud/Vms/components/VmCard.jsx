@@ -237,7 +237,7 @@ const VmCardContent = (props) => {
                             height: "180px",
                         }}>
                             <div className="vm__stat-title">
-                                Traffic
+                                Traffic (Kbytes)
                             </div>
                             <BounceRateArea data={graphData.traffic}/>
                         </div>
