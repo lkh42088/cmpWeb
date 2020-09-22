@@ -53,20 +53,11 @@ const MicroCloudDashboard = () => {
     const [serverList, setServerList] = useState([]);
     const [mac, setMac] = useState(""); //52:54:00:01:b5:b7
     const [schCompany, setSchCompany] = useState("all");
+    const [selectCompany, setSelectCompany] = useState();
 
     /**************************************************************
      * Axios Function
      **************************************************************/
-
-    const getCompanyList = async () => {
-        try {
-            const response = await getCompanies();
-            setCompanyList(response.data);
-            //console.log("response.data : ", response.data);
-        } catch (error) {
-            setCompanyList([]);
-        }
-    };
 
     const getServerMac = async (val) => {
         try {
@@ -85,9 +76,19 @@ const MicroCloudDashboard = () => {
             } else {
                 setServerList(response.data.data);
                 setMac(response.data.data[0].mac);
+                setSchCompany(val);
             }
         } catch (error) {
             setServerList([]);
+        }
+    };
+
+    const getCompanyList = async () => {
+        try {
+            const response = await getCompanies();
+            setCompanyList(response.data);
+        } catch (error) {
+            setCompanyList([]);
         }
     };
 
@@ -100,9 +101,9 @@ const MicroCloudDashboard = () => {
         getServerMac(e.target.value);
     };
 
-    const handleAuthSelectDisplay = (val, flag) => {
+    const handleAuthSelectDisplay = () => {
         let topSelect;
-        if (val) {
+        if (user) {
             const {level} = user;
             switch (level) {
                 case TOP_MANAGER:
@@ -140,13 +141,15 @@ const MicroCloudDashboard = () => {
                     );
                     break;
                 case UNREGISTERED_USER:
+                    getServerMac(user.cpName);
                     topSelect = "";
                     break;
                 default:
                     break;
             }
         }
-        return topSelect;
+        setSelectCompany(topSelect);
+        //return topSelect;
     };
 
     /**************************************************************
@@ -156,6 +159,10 @@ const MicroCloudDashboard = () => {
         getCompanyList();
     }, []);
 
+    useEffect(() => {
+        handleAuthSelectDisplay();
+    }, [companyList]);
+
     return (
         <Container fluid style={{
             overflowY: "hidden",
@@ -164,7 +171,8 @@ const MicroCloudDashboard = () => {
                 <RouterBreadcrumbs url={window.location.href}/>
             </Row>
 
-            {handleAuthSelectDisplay(user)}
+            {/*{handleAuthSelectDisplay(user)}*/}
+            {selectCompany}
             {/* eslint-disable-next-line no-nested-ternary */}
             {schCompany === "all" ? (
                 <TopManagerMain/>
