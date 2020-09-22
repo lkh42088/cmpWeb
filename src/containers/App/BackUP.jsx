@@ -1,196 +1,381 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import emojiPeopleIcon from '@material-ui/icons/EmojiPeople';
-import fileInvoiceDollar from '@iconify/icons-fa-solid/file-invoice-dollar';
-import outlineDashboard from '@iconify/icons-ic/outline-dashboard';
-import serverOutlineBadged from '@iconify/icons-clarity/server-outline-badged';
-import routerNetwork from '@iconify/icons-mdi/router-network';
-import monitorDashboard from '@iconify/icons-mdi/monitor-dashboard';
-import usersIcon from '@iconify/icons-fa-solid/users';
-import {Link} from "react-router-dom";
-import listAlt from '@iconify/icons-el/list-alt';
-import {useDispatch, useSelector} from "react-redux";
-import SidebarCategory from './SidebarCategory';
-import SidebarLink from './SidebarLink';
-import {setUserPage} from "../../../redux/actions/usersActions";
-import {setCompanyPage} from "../../../redux/actions/companiesActions";
-import {initVmPage} from "../../../redux/actions/vmsActions";
+import React, {useEffect, useState, Fragment} from 'react';
+import {
+    Col, Container, Row,
+} from 'reactstrap';
+import {makeStyles} from "@material-ui/core/styles";
 
-const SidebarContent = ({
-                            changeToLight, changeToDark, changeMenuTitle, onClick,
-                            user, dropdown, changeHybridCloud,
-                        }) => {
-    const dispatch = useDispatch();
-    const hideSidebar = () => {
-        onClick();
-        dispatch(setUserPage('list'));
-        dispatch(setCompanyPage('list'));
+import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
+import MyResponsiveLine from "./components/MyResponsiveLine";
+import MyResponsiveCpu from "./components/MyResponsiveCpu";
+import MyResponsiveMem from "./components/MyResponsiveMem";
+import MyResponsiveDisk from "./components/MyResponsiveDisk";
+import NBSmallAreaChart from "./components/NBSmallAreaChart";
+import MyResponsiveInfo from "./components/MyResponsiveInfo";
+
+import {
+    getVmInterfaceTraffic, getServeries, unregisterMcServer, getMcServers,
+} from "../../../lib/api/microCloud";
+import {getCompanies} from "../../../lib/api/company";
+import {
+    NB_MANAGER, TOP_MANAGER, UNREGISTERED_USER,
+} from "../../../lib/var/globalVariable";
+
+const useStyles = makeStyles(theme => ({
+    container: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(12, 1fr)',
+        gridGap: theme.spacing(2),
+        color: 'red',
+        marginBottom: theme.spacing(10),
+    },
+    paper: {
+        padding: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+        whiteSpace: 'nowrap',
+        marginBottom: theme.spacing(10),
+    },
+    divider: {
+        margin: theme.spacing(2, 0),
+    },
+    row: {
+        paddingBottom: 15,
+    },
+}));
+
+const pieColor = {
+    defaultColor: '#d4d7dd',
+    textColor: '#414141',
+    warringColor: '#ec0101',
+    cpuColor: {
+        use: '#3f51b5',
+        free: '#63686e',
+    },
+    memColor: {
+        use: '#2fc4b2',
+        free: '#63686e',
+    },
+    diskColor: {
+        use: '#ff8364',
+        free: '#63686e',
+    },
+};
+
+const MicroCloudDashboard = () => {
+    const classes = useStyles();
+
+    //const mac = "52:54:00:01:b5:b7"; //todo: need to fix
+    const user = JSON.parse(localStorage.getItem("user"));
+    const [data, setData] = useState({
+        stats: [{
+            id: "RX",
+            data: [],
+        }, {
+            id: "TX",
+            data: [],
+        },
+        ],
+    });
+    const [rx, setRx] = useState([]);
+    const [tx, setTx] = useState([]);
+    const [hostname, setHostname] = useState("");
+
+    /*******************
+     * Etc.
+     *******************/
+    const [companyList, setCompanyList] = useState([]);
+    const [serverList, setServerList] = useState([]);
+    const [mac, setMac] = useState("52:54:00:01:b5:b7");
+    const [dashDp, setDashDp] = useState("all");
+    const [schCompany, setSchCompany] = useState("all");
+
+    /**************************************************************
+     * Axios Function
+     **************************************************************/
+    const getData = async () => {
+        if (!mac) {
+            return;
+        }
+
+        try {
+            const response = await getVmInterfaceTraffic({mac});
+            //console.log("TEST RESPONSE1: ", response.data.stats[0].data);
+            setData({
+                stats: (
+                    response.data.stats.map(val => ({
+                        id: val.id,
+                        data: val.data.map(s => ({
+                            // ...s,
+                            x: new Date(s.x),
+                            y: s.y,
+                        })),
+                    }))),
+            });
+            setRx(
+                response.data.stats[0].data.map(val => ({
+                    x: new Date(val.x).toLocaleTimeString()
+                        .split(" ")[1],
+                    y: val.y,
+                })),
+            );
+            setTx(
+                response.data.stats[1].data.map(val => ({
+                    x: new Date(val.x).toLocaleTimeString()
+                        .split(" ")[1],
+                    y: val.y,
+                })),
+            );
+            setHostname(response.data.hostname);
+        } catch {
+            setData({
+                ...data,
+                data: [],
+            });
+        }
     };
-    const {
-        sidebarDropdown,
-        hybridCloud,
-    } = useSelector(({customizer}) => ({
-        sidebarDropdown: customizer.sidebarDropdown,
-        hybridCloud: customizer.hybridCloud,
-    }));
 
-    let link = "/dashboards/customer";
-    const getDashBoardLink = () => {
-        if (user) {
+    const getCompanyList = async () => {
+        try {
+            const response = await getCompanies();
+            setCompanyList(response.data);
+        } catch (error) {
+            setCompanyList([]);
+        }
+    };
+
+    /*연관된 코드 주석처리 됨*/
+    const getServerList = async (company) => {
+        try {
+            //"/v1/micro/servers-paging/10/0//desc/신용회복위원회"
+            const response = await getMcServers({
+                rows: 0,
+                offset: 0,
+                orderBy: '',
+                order: 'desc',
+                cpName: company,
+            });
+            setServerList(response.data.data);
+            // console.log("server response : ", response.data.data);
+        } catch (error) {
+            setServerList([]);
+        }
+    };
+
+    /**************************************************************
+     * Handle Function
+     **************************************************************/
+
+    const handleChangeCompany = (e) => {
+        //getServerList(e.target.value);
+        setSchCompany(e.target.value);
+    };
+
+    const handleChangeServer = (e) => {
+        setMac(e.target.value);
+    };
+
+    const handleAuthSelectDisplay = (val, flag) => {
+        let topSelect;
+        console.log("👲👲👲 user -> val : ", val);
+        if (val) {
             const {level} = user;
-            if (level >= 1 && level <= 5) {
-                link = "/dashboards/manager";
-            } else {
-                link = "/dashboards/customer";
+            console.log("👲👲👲 companyList -> companyList : ", companyList);
+            switch (level) {
+                case TOP_MANAGER:
+                    topSelect = (
+                        <Row>
+                            <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                                <select name="company" onChange={handleChangeCompany}>
+                                    <option key="all" value="all">:: ALL DATA ::</option>
+                                    {companyList && companyList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <option key={key} value={item.name}>{item.name}</option>
+                                        );
+                                    })}
+                                </select>
+                                {/*&nbsp;
+                            <select onChange={handleChangeServer}>
+                                {serverList && serverList.map((item, index) => {
+                                    const key = index;
+                                    return (
+                                        <option key={key} value={item.mac}>{item.serialNumber} / {item.mac}</option>
+                                    );
+                                })}
+                            </select>*/}
+                            </Col>
+                        </Row>
+                    );
+                    break;
+                case NB_MANAGER:
+                    topSelect = (
+                        <Row>
+                            <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                                <select name="company" onChange={handleChangeCompany}>
+                                    <option key="all" value="all">:: ALL DATA ::</option>
+                                    {companyList && companyList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <option key={key} value={item.name}>{item.name}</option>
+                                        );
+                                    })}
+                                </select>
+                                {/*&nbsp;
+                            <select onChange={handleChangeServer}>
+                                {serverList && serverList.map((item, index) => {
+                                    const key = index;
+                                    return (
+                                        <option key={key} value={item.mac}>{item.serialNumber} / {item.mac}</option>
+                                    );
+                                })}
+                            </select>*/}
+                            </Col>
+                        </Row>
+                    );
+                    break;
+                case UNREGISTERED_USER:
+                    //console.log("serverList : ", serverList); //cpName
+                    /*topSelect = (
+                        <Fragment>
+                            <select
+                                onChange={handleChangeServer}
+                                defaultValue={user.cpName} /!*여기 작업중이었음 이 부분 ~ 20200921 2020년도까지 server 1*!/
+                            >
+                                {serverList && serverList.map((item, index) => {
+                                    const key = index;
+                                    return (
+                                        <option key={key} value={item.mac}>{item.serialNumber} / {item.mac}</option>
+                                    );
+                                })}
+                            </select>
+                        </Fragment>
+                    );*/
+                    topSelect = "";
+                    break;
+                default:
+                    break;
             }
         }
-        return link;
+        return topSelect;
     };
 
+
+    const handleAuthDisplay = (val) => {
+        let component;
+        const allComponent = (
+            <Fragment>
+                {handleAuthSelectDisplay(user)}
+                All DASHBOARD
+            </Fragment>
+        );
+        const schComponent = (
+            <Fragment>
+                {handleAuthSelectDisplay(user)}
+                <Row className="classes.row">
+                    <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                        <MyResponsiveCpu
+                            height={150}
+                            mac={mac}
+                            title="CPU" pieColor={pieColor} warringUsed={80}/>
+                    </Col>
+                    <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                        <MyResponsiveMem
+                            height={150}
+                            mac={mac}
+                            title="MEMORY" pieColor={pieColor} warringUsed={80}/>
+                    </Col>
+                    <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                        <MyResponsiveDisk
+                            height={150}
+                            mac={mac}
+                            title="DISK" pieColor={pieColor} warringUsed={80}/>
+                    </Col>
+                    <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                        <MyResponsiveInfo
+                            height={150}
+                            title="HOSTNAME"
+                        />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={3} sm={12} style={{padding: 10}}>
+                        <NBSmallAreaChart data={rx} hostname="RX"/>
+                    </Col>
+                    <Col md={3} sm={12} style={{padding: 10}}>
+                        <NBSmallAreaChart data={tx} hostname="TX"/>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={12} style={{padding: 10}}>
+                        <MyResponsiveLine height={400}
+                                          title="BareMetal Out Interface"
+                                          data={data}
+                                          hostname={hostname}
+                        />
+                    </Col>
+                </Row>
+            </Fragment>
+        );
+
+        console.log("😤😤😤 schCompany : ", schCompany);
+        if (val) {
+            const {level} = user;
+            switch (level) {
+                case TOP_MANAGER:
+                    component = (
+                        <Fragment>
+                            {schCompany === "all" ? allComponent : schComponent}
+                        </Fragment>
+                    );
+                    break;
+                case NB_MANAGER:
+                    component = (
+                        <Fragment>
+                            {schCompany === "all" ? allComponent : schComponent}
+                        </Fragment>
+                    );
+                    break;
+                case UNREGISTERED_USER:
+                    component = (
+                        <Fragment>
+                            UNREGISTERED_USER
+                            {schComponent}
+                        </Fragment>
+                    );
+                    break;
+                default:
+                    break;
+            }
+        }
+        setDashDp(component);
+    };
+
+    /**************************************************************
+     * useEffect
+     **************************************************************/
+
+    useEffect(() => {
+        handleAuthDisplay(user);
+    }, []);
+
+    useEffect(() => {
+        getData();
+        getCompanyList();
+        getServerList('all');
+        const timer = setInterval(getData, 5000);
+        return () => clearInterval(timer);
+    }, []);
+
     return (
-        (!sidebarDropdown)
-            ? (
-                <div className="cb_sidebar__content">
-                    <ul className="cb_sidebar__block">
-                        {/*test menu*/}
-                        <SidebarCategory title="TEST" icon={emojiPeopleIcon} dropdown={dropdown}>
-                            <SidebarLink title="TEMP" route="/test/temp"
-                                         onClick={() => changeMenuTitle('TEST', 'TEMP', '')}/>
-                            <SidebarLink title="UI" route="/test/ui"
-                                         onClick={() => changeMenuTitle('TEST', 'UI', '')}/>
-                        </SidebarCategory>
-                        {user.id === 'ebjee' && (
-                            <SidebarCategory title="EBJEE" icon={emojiPeopleIcon} dropdown={dropdown}>
-                                <SidebarLink title="CHART" route="/test/chart"
-                                             onClick={() => changeMenuTitle('TEST', 'CHART', '')}/>
-                                <SidebarLink title="CODE" route="/test/code"
-                                             onClick={() => changeMenuTitle('TEST', 'CODE', '')}/>
-                                <SidebarLink title="TEMP" route="/test/temp"
-                                             onClick={() => changeMenuTitle('TEST', 'TEMP', '')}/>
-                                <SidebarLink title="UI" route="/test/ui"
-                                             onClick={() => changeMenuTitle('TEST', 'UI', '')}/>
-                            </SidebarCategory>
-                        )}
-                        <Link to={getDashBoardLink()} onClick={() => changeMenuTitle('DASHBOARD', '', '')}>
-                            <SidebarCategory title="DASHBOARD" icon={outlineDashboard}/>
-                        </Link>
-                        {hybridCloud && (
-                            <SidebarCategory title="MICRO CLOUD" icon={serverOutlineBadged} dropdown={dropdown}>
-                                <SidebarLink title="DASHBOARD" route="/micro/dashboard"
-                                             onClick={() => changeMenuTitle('MICRO CLOUD', 'DASHBOARD', '')}/>
-                                <SidebarLink title="SERVER" route="/micro/servers"
-                                             onClick={() => changeMenuTitle('MICRO CLOUD', 'SERVER', '')}/>
-                                <SidebarLink title="NETWORK" route="/micro/networks"
-                                             onClick={() => changeMenuTitle('MICRO CLOUD', 'NETWORK', '')}/>
-                                <SidebarLink title="IMAGE" route="/micro/images"
-                                             onClick={() => changeMenuTitle('MICRO CLOUD', 'IMAGE', '')}/>
-                                <SidebarLink title="VM" route="/micro/vms"
-                                             onClick={() => changeMenuTitle('MICRO CLOUD', 'VM', '')}/>
-                                <SidebarLink title="VM-CARD" route="/micro/vmsCard"
-                                             onClick={() => changeMenuTitle('MICRO CLOUD', 'VM-CARD', 'card')}/>
-                            </SidebarCategory>
-                        )}
-                        <SidebarCategory title="SERVER" icon={serverOutlineBadged} dropdown={dropdown}>
-                            <SidebarLink title="온프레미스" route="/assets/server"
-                                         onClick={() => changeMenuTitle('SERVER', '온프레미스', 'server')}/>
-                        </SidebarCategory>
-                        <SidebarCategory title="NETWORK" icon={routerNetwork} dropdown={dropdown}>
-                            <SidebarLink title="네트워크" route="/assets/network"
-                                         onClick={() => changeMenuTitle('NETWORK', '네트워크', 'network')}/>
-                            <SidebarLink title="파트/기타" route="/assets/part"
-                                         onClick={() => changeMenuTitle('NETWORK', '파트/기타', 'part')}/>
-                        </SidebarCategory>
-                        {/*<SidebarCategory title="BILLING" icon={fileInvoiceDollar}/>*/}
-                        {/*<SidebarCategory title="BOARD" icon={listAlt}/>*/}
-                        <SidebarCategory title="MANAGER" icon={usersIcon} dropdown={dropdown}>
-                            <SidebarLink title="계정 관리" route="/customers/users"
-                                // onClick={() => changeMenuTitle('MANAGER', '계정 관리', '')}/>
-                                         onClick={hideSidebar}/>
-                            <SidebarLink title="고객사 관리" route="/customers/companies"
-                                // onClick={() => changeMenuTitle('MANAGER', '고객사 관리', '')}/>
-                                         onClick={hideSidebar}/>
-                            <SidebarLink title="서브넷 관리" route="/subnet"
-                                //onClick={() => changeMenuTitle('MANAGER', '서브넷 관리', '')}/>
-                                         onClick={hideSidebar}/>
-                        </SidebarCategory>
-                        <SidebarCategory title="SETTING" icon={monitorDashboard}/>
-                    </ul>
-                </div>
-            )
-            : (
-                <div className="cb_sidebar__content">
-                    <ul className="cb_sidebar__block">
-                        <SidebarCategory title="TEST" icon={emojiPeopleIcon} dropdown={dropdown}>
-                            <SidebarLink title="TEMP" route="/test/temp"
-                                         onClick={() => changeMenuTitle('TEST', 'TEMP', '')}/>
-                            <SidebarLink title="UI" route="/test/ui"
-                                         onClick={() => changeMenuTitle('TEST', 'UI', '')}/>
-                        </SidebarCategory>
-                        {user.id === 'ebjee' && (
-                            <SidebarCategory title="EBJEE" icon={emojiPeopleIcon} dropdown={dropdown}>
-                                <SidebarLink title="CHART" route="/test/chart"
-                                             onClick={() => changeMenuTitle('TEST', 'CHART', '')}/>
-                                <SidebarLink title="CODE" route="/test/code"
-                                             onClick={() => changeMenuTitle('TEST', 'CODE', '')}/>
-                                <SidebarLink title="TEMP" route="/test/temp"
-                                             onClick={() => changeMenuTitle('TEST', 'TEMP', '')}/>
-                                <SidebarLink title="UI" route="/test/ui"
-                                             onClick={() => changeMenuTitle('TEST', 'UI', '')}/>
-                            </SidebarCategory>
-                        )}
-                        <SidebarLink title="DASHBOARD" icon={outlineDashboard} route={getDashBoardLink()}
-                                     onClick={() => changeMenuTitle('DASHBOARD', '', '')}/>
-                        {hybridCloud && (
-                            <SidebarCategory title="MICRO CLOUD" icon={serverOutlineBadged} dropdown={dropdown}>
-                                <SidebarLink title="DASHBOARD" route="/micro/dashboard"
-                                             onClick={() => changeMenuTitle('MICRO CLOUD', 'DASHBOARD', '')}/>
-                                <SidebarLink title="SERVER" route="/micro/servers"
-                                             onClick={() => changeMenuTitle('MICRO CLOUD', 'SERVER', '')}/>
-                                <SidebarLink title="NETWORK" route="/micro/networks"
-                                             onClick={() => changeMenuTitle('MICRO CLOUD', 'NETWORK', '')}/>
-                                <SidebarLink title="IMAGE" route="/micro/images"
-                                             onClick={() => changeMenuTitle('MICRO CLOUD', 'IMAGE', '')}/>
-                                <SidebarLink title="VM" route="/micro/vms"
-                                             onClick={() => changeMenuTitle('MICRO CLOUD', 'VM', '')}/>
-                                <SidebarLink title="VM-CARD" route="/micro/vmsCard"
-                                             onClick={() => changeMenuTitle('MICRO CLOUD', 'VM', 'card')}/>
-                            </SidebarCategory>
-                        )}
-                        <SidebarCategory title="SERVER" icon={serverOutlineBadged} dropdown={dropdown}>
-                            <SidebarLink title="온프레미스" route="/assets/server"
-                                         onClick={() => changeMenuTitle('SERVER', '온프레미스', 'server')}/>
-                        </SidebarCategory>
-                        <SidebarCategory title="NETWORK" icon={routerNetwork} dropdown={dropdown}>
-                            <SidebarLink title="네트워크" route="/assets/network"
-                                         onClick={() => changeMenuTitle('NETWORK', '네트워크', 'network')}/>
-                            <SidebarLink title="파트/기타" route="/assets/part"
-                                         onClick={() => changeMenuTitle('NETWORK', '파트/기타', 'part')}/>
-                        </SidebarCategory>
-                        {/*<SidebarLink title="BILLING" icon={fileInvoiceDollar} route="/billing"
-                                     onClick={() => changeMenuTitle('BILLING', '', '')}/>
-                        <SidebarLink title="BOARD" icon={listAlt} route="/board"
-                                     onClick={() => changeMenuTitle('BOARD', '', '')}/>*/}
-                        <SidebarCategory title="MANAGER" icon={usersIcon} dropdown={dropdown}>
-                            <SidebarLink title="계정 관리" route="/customers/users"
-                                         onClick={hideSidebar}/>
-                            <SidebarLink title="고객사 관리" route="/customers/companies"
-                                         onClick={hideSidebar}/>
-                            <SidebarLink title="서브넷 관리" route="/subnet"
-                                         onClick={hideSidebar}/>
-                        </SidebarCategory>
-                        <SidebarLink title="SETTING" icon={monitorDashboard} route="/setting"
-                                     onClick={() => changeMenuTitle('SETTING', '', '')}/>
-                    </ul>
-                </div>
-            )
+        <Container fluid style={{
+            overflowY: "hidden",
+        }}>
+            <Row className={classes.row}>
+                <RouterBreadcrumbs url={window.location.href}/>
+            </Row>
+            {dashDp}
+        </Container>
     );
 };
 
-SidebarContent.propTypes = {
-    changeToDark: PropTypes.func.isRequired,
-    changeToLight: PropTypes.func.isRequired,
-    onClick: PropTypes.func.isRequired,
-    changeMenuTitle: PropTypes.func.isRequired,
-};
-
-export default SidebarContent;
+export default MicroCloudDashboard;
