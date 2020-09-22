@@ -2,9 +2,9 @@
 
 // Do this as the first thing so that any code reading it knows the right env.
 // import websockify from "@maximegris/node-websockify";
-const websockify = require("@maximegris/node-websockify");
+// const websockify = require("@maximegris/node-websockify");
 // websocket todo need to fix
-websockify({ source: '127.0.0.1:5000', target: '192.168.0.89:5900'});
+// websockify({ source: '127.0.0.1:5000', target: '192.168.0.89:5900'});
 
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';

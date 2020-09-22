@@ -45,19 +45,6 @@ const MicroCloudDashboard = () => {
 
     //const mac = "52:54:00:01:b5:b7"; //todo: need to fix
     const user = JSON.parse(localStorage.getItem("user"));
-    const [data, setData] = useState({
-        stats: [{
-            id: "RX",
-            data: [],
-        }, {
-            id: "TX",
-            data: [],
-        },
-        ],
-    });
-    const [rx, setRx] = useState([]);
-    const [tx, setTx] = useState([]);
-    const [hostname, setHostname] = useState("");
 
     /*******************
      * Etc.
@@ -65,53 +52,11 @@ const MicroCloudDashboard = () => {
     const [companyList, setCompanyList] = useState([]);
     const [serverList, setServerList] = useState([]);
     const [mac, setMac] = useState(""); //52:54:00:01:b5:b7
-    const [dashDp, setDashDp] = useState("all");
     const [schCompany, setSchCompany] = useState("all");
 
     /**************************************************************
      * Axios Function
      **************************************************************/
-    /*const getData = async () => {
-        if (!mac) {
-            return;
-        }
-
-        try {
-            const response = await getVmInterfaceTraffic({mac});
-            //console.log("TEST RESPONSE1: ", response.data.stats[0].data);
-            setData({
-                stats: (
-                    response.data.stats.map(val => ({
-                        id: val.id,
-                        data: val.data.map(s => ({
-                            // ...s,
-                            x: new Date(s.x),
-                            y: s.y,
-                        })),
-                    }))),
-            });
-            setRx(
-                response.data.stats[0].data.map(val => ({
-                    x: new Date(val.x).toLocaleTimeString()
-                        .split(" ")[1],
-                    y: val.y,
-                })),
-            );
-            setTx(
-                response.data.stats[1].data.map(val => ({
-                    x: new Date(val.x).toLocaleTimeString()
-                        .split(" ")[1],
-                    y: val.y,
-                })),
-            );
-            setHostname(response.data.hostname);
-        } catch {
-            setData({
-                ...data,
-                data: [],
-            });
-        }
-    };*/
 
     const getCompanyList = async () => {
         try {
@@ -208,10 +153,7 @@ const MicroCloudDashboard = () => {
      * useEffect
      **************************************************************/
     useEffect(() => {
-        //getData();
         getCompanyList();
-        /*const timer = setInterval(getData, 5000);
-        return () => clearInterval(timer);*/
     }, []);
 
     return (
@@ -221,6 +163,7 @@ const MicroCloudDashboard = () => {
             <Row className={classes.row}>
                 <RouterBreadcrumbs url={window.location.href}/>
             </Row>
+
             {handleAuthSelectDisplay(user)}
             {/* eslint-disable-next-line no-nested-ternary */}
             {schCompany === "all" ? (
