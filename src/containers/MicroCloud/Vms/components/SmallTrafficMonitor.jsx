@@ -9,11 +9,11 @@ const SmallTrafficMonitor = (props) => {
     } = props;
 
     return (
-        <div>
+        <div style={{border: `1px solid ${stroke}`}}>
             <p><b>{hostname}</b></p>
             <AreaChart data={data} width={200} height={80}
                        margin={{
-                           top: 0, right: 15, left: 0, bottom: 0,
+                           top: 0, right: 25, left: 0, bottom: 0,
                        }}>
                 <defs>
                     <linearGradient id="first" x1="0" y1="0" x2="0" y2="1">
