@@ -122,54 +122,23 @@ const MicroCloudDashboard = () => {
                 topSelect = (
                     <Row>
                         <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                            {/*<select name="company" onChange={handleChangeCompany}>
-                                <option key="all" value="all">:: ALL DATA ::</option>
-                                {companyList && companyList.map((item, index) => {
-                                    const key = index;
-                                    return (
-                                        <option key={key} value={item.name}>{item.name}</option>
-                                    );
-                                })}
-                            </select>*/}
                             <div>
-                                {/*<FormControl variant="outlined"
-                                             className={classes.formControl}
-                                             style={{
-                                                 height: "20px",
-                                                 fontSize: "0.5rem",
-                                             }}>
-                                    <InputLabel id="demo-simple-select-outlined-label">customer</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-outlined-label"
-                                        id="demo-simple-select-outlined"
-                                        onChange={handleChangeCompany}
-                                        style={{
-                                            height: "30px",
-                                            fontSize: "0.7rem",
-                                        }}
-                                    >
-                                        <MenuItem key="all" value="all">:: ALL DATA ::</MenuItem>
-                                        <MenuItem key="all" value="all">
-                                            <em>:: ALL DATA ::</em>
-                                        </MenuItem>
-                                        {companyList && companyList.map((item, index) => {
-                                            const key = index;
-                                            return (
-                                                <MenuItem key={key} value={item.name}>{item.name}</MenuItem>
-                                            );
-                                        })}
-                                    </Select>
-                                </FormControl>*/}
                                 <FormControl className={classes.formControl}>
-                                    <InputLabel id="demo-simple-select-autowidth-label">customer</InputLabel>
+                                    <InputLabel id="demo-simple-select-autowidth-label"
+                                                style={{
+                                                    fontSize: "0.7rem",
+                                                }}>customer</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-autowidth-label"
                                         id="demo-simple-select-autowidth"
-                                        name="company" onChange={handleChangeCompany}
+                                        name="company"
+                                        onChange={handleChangeCompany}
                                         autoWidth
-                                        value="all"
+                                        label="customer"
+                                        value={schCompany}
                                         style={{
                                             fontSize: "0.7rem",
+                                            width: "100px",
                                         }}
                                     >
                                         <MenuItem key="all" value="all">
@@ -192,49 +161,6 @@ const MicroCloudDashboard = () => {
                 getServerMac(user.cpName);
                 topSelect = "";
             }
-
-            /*switch (level) {
-                case TOP_MANAGER:
-                    topSelect = (
-                        <Row>
-                            <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                            <select name="company" onChange={handleChangeCompany}>
-                                <option key="all" value="all">:: ALL DATA ::</option>
-                                {companyList && companyList.map((item, index) => {
-                                    const key = index;
-                                    return (
-                                        <option key={key} value={item.name}>{item.name}</option>
-                                    );
-                                })}
-                            </select>
-                            </Col>
-                        </Row>
-                    );
-                    break;
-                case NB_MANAGER:
-                    topSelect = (
-                        <Row>
-                            <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                            <select name="company" onChange={handleChangeCompany}>
-                                <option key="all" value="all">:: ALL DATA ::</option>
-                                {companyList && companyList.map((item, index) => {
-                                    const key = index;
-                                    return (
-                                        <option key={key} value={item.name}>{item.name}</option>
-                                    );
-                                })}
-                            </select>
-                            </Col>
-                        </Row>
-                    );
-                    break;
-                case UNREGISTERED_USER:
-                    getServerMac(user.cpName);
-                    topSelect = "";
-                    break;
-                default:
-                    break;
-            }*/
         }
         setSelectCompany(topSelect);
         //return topSelect;
