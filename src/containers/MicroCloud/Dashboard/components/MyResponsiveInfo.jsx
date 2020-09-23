@@ -151,26 +151,27 @@ const MyResponsiveInfo = (props) => {
                             textDecoration: "solid overline #ffc93c",
                             /*textDecoration: "overline #ffc93c",*/
                         }}>{title}</p>
-                        <ResponsiveContainer height={height + 150} width="100%">
-                            <PieChart height={height}>
-                                <g>
-                                    <text x={133} y={130} dy={8} textAnchor="middle"
-                                          fill="red"
-                                          style={{
-                                              fontSize: "1.3rem",
-                                          }}>
-                                        NO DATA
-                                    </text>
-                                    <text x={133} y={130 + 20} dy={8} textAnchor="middle"
-                                          className="graph_label"
-                                          style={{
-                                              fontSize: "0.8rem",
-                                          }}>
-                                        데이터가 없습니다.
-                                    </text>
-                                </g>
-                            </PieChart>
-                        </ResponsiveContainer>
+
+                        <Fragment>
+                            <p style={{
+                                textAlign: "center",
+                                margin: "110px auto",
+                            }}>
+                                <span style={{
+                                    fontSize: "1.3rem",
+                                    color: "red",
+                                }}>
+                                    NO DATA
+                                </span>
+                                <br/>
+                                <span textAnchor="middle"
+                                      style={{
+                                          fontSize: "0.8rem",
+                                      }}>
+                                    데이터가 없습니다.
+                                </span>
+                            </p>
+                        </Fragment>
                     </CardBody>
                 </Fragment>
             )}

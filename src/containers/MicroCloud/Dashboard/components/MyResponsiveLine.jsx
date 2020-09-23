@@ -112,20 +112,20 @@ const MyResponsiveLine = (props) => {
                         <p style={{
                             textAlign: "center",
                         }}>
-                            <text style={{
+                            <span style={{
                                 fontSize: "1.3rem",
                                 color: "red",
                             }}>
                                 NO DATA
-                            </text>
+                            </span>
                             <br/>
-                            <text x={133} y={130 + 20} dy={8} textAnchor="middle"
+                            <span x={133} y={130 + 20} dy={8} textAnchor="middle"
                                   className="graph_label"
                                   style={{
                                       fontSize: "0.8rem",
                                   }}>
                                 데이터가 없습니다.
-                            </text>
+                            </span>
                         </p>
                     </Fragment>
                 ) : (
