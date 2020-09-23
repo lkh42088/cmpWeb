@@ -58,8 +58,10 @@ const VmSidebar = ({vm}) => {
     };
 
     useEffect(() => {
-        getData();
-        const timer = setInterval(getData, 3000);
+        if (vm.os.includes("win")) {
+            getData();
+        }
+        const timer = setInterval(getData, 10000);
         return () => clearInterval(timer);
     }, []);
 
