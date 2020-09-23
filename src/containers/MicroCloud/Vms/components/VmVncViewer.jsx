@@ -14,14 +14,17 @@ const VmVncViewer = ({vm}) => {
         <Col md={12} lg={12} xl={8} style={{
             paddingLeft: "0",
         }}>
-            <Card style={{
+{/*
+               <Card style={{
                 height: "auto",
             }}>
                 <CardBody>
-                    {/*<VncDisplay url="ws://192.168.0.89:8083/vnc/192.168.0.89/5900" />*/}
+                    <VncDisplay url="ws://192.168.0.89:8083/vnc/192.168.0.89/5900" />
                     <VncDisplay url={vncurl} />
                 </CardBody>
             </Card>
+*/}
+            <VncDisplay url={vncurl} />
         </Col>
     );
 };
