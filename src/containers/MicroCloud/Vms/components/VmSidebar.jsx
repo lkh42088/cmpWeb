@@ -25,31 +25,31 @@ const VmSidebar = ({vm}) => {
             setCpu(
                 response.data.cpu.data.map(val => ({
                     x: new Date(val.x).toLocaleTimeString().split(" ")[1],
-                    y: 100 - val.y,
+                    y: (100 - val.y).toFixed(1),
                 })),
             );
             setMem(
                 response.data.mem.data.map(val => ({
                     x: new Date(val.x).toLocaleTimeString().split(" ")[1],
-                    y: val.y / 1024 / 1024,
+                    y: (val.y / 1024 / 1024).toFixed(1),
                 })),
             );
             setDisk(
                 response.data.disk.data.map(val => ({
                     x: new Date(val.x).toLocaleTimeString().split(" ")[1],
-                    y: vm.hdd - (val.y / 1024),
+                    y: (vm.hdd - (val.y / 1024)).toFixed(1),
                 })),
             );
             setRx(
                 response.data.rx.data.map(val => ({
                     x: new Date(val.x).toLocaleTimeString().split(" ")[1],
-                    y: (val.y * INTERVAL) / 1024,
+                    y: ((val.y * INTERVAL) / 1024).toFixed(1),
                 })),
             );
             setTx(
                 response.data.tx.data.map(val => ({
                     x: new Date(val.x).toLocaleTimeString().split(" ")[1],
-                    y: (val.y * INTERVAL) / 1024,
+                    y: ((val.y * INTERVAL) / 1024).toFixed(1),
                 })),
             );
         } catch {
