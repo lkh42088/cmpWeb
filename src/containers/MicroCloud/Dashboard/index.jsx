@@ -3,6 +3,11 @@ import {
     Col, Container, Row,
 } from 'reactstrap';
 import {makeStyles} from "@material-ui/core/styles";
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
 
@@ -37,6 +42,13 @@ const useStyles = makeStyles(theme => ({
     },
     row: {
         paddingBottom: 15,
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+    },
+    selectEmpty: {
+        marginTop: theme.spacing(2),
     },
 }));
 
@@ -105,47 +117,49 @@ const MicroCloudDashboard = () => {
         let topSelect;
         if (user) {
             const {level} = user;
-            switch (level) {
-                case TOP_MANAGER:
-                    topSelect = (
-                        <Row>
-                            <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                            <select name="company" onChange={handleChangeCompany}>
-                                <option key="all" value="all">:: ALL DATA ::</option>
-                                {companyList && companyList.map((item, index) => {
-                                    const key = index;
-                                    return (
-                                        <option key={key} value={item.name}>{item.name}</option>
-                                    );
-                                })}
-                            </select>
-                            </Col>
-                        </Row>
-                    );
-                    break;
-                case NB_MANAGER:
-                    topSelect = (
-                        <Row>
-                            <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                            <select name="company" onChange={handleChangeCompany}>
-                                <option key="all" value="all">:: ALL DATA ::</option>
-                                {companyList && companyList.map((item, index) => {
-                                    const key = index;
-                                    return (
-                                        <option key={key} value={item.name}>{item.name}</option>
-                                    );
-                                })}
-                            </select>
-                            </Col>
-                        </Row>
-                    );
-                    break;
-                case UNREGISTERED_USER:
-                    getServerMac(user.cpName);
-                    topSelect = "";
-                    break;
-                default:
-                    break;
+
+            if (level < 5) {
+                topSelect = (
+                    <Row>
+                        <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                            <div>
+                                <FormControl className={classes.formControl}>
+                                    <InputLabel id="demo-simple-select-autowidth-label"
+                                                style={{
+                                                    fontSize: "0.7rem",
+                                                }}>customer</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-autowidth-label"
+                                        id="demo-simple-select-autowidth"
+                                        name="company"
+                                        onChange={handleChangeCompany}
+                                        autoWidth
+                                        label="customer"
+                                        value={schCompany}
+                                        style={{
+                                            fontSize: "0.7rem",
+                                            width: "100px",
+                                        }}
+                                    >
+                                        <MenuItem key="all" value="all">
+                                            <em>:: ALL DATA ::</em>
+                                        </MenuItem>
+                                        {companyList && companyList.map((item, index) => {
+                                            const key = index;
+                                            return (
+                                                <MenuItem key={key} value={item.name}>{item.name}</MenuItem>
+                                            );
+                                        })}
+                                    </Select>
+                                    {/*<FormHelperText>Auto width</FormHelperText>*/}
+                                </FormControl>
+                            </div>
+                        </Col>
+                    </Row>
+                );
+            } else {
+                getServerMac(user.cpName);
+                topSelect = "";
             }
         }
         setSelectCompany(topSelect);

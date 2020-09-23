@@ -21,10 +21,6 @@ const MyResponsivePie = (props) => {
         setActiveIndex(index);
     };
 
-    useEffect(() => {
-        setActiveIndex(activeIndex);
-    }, [activeIndex]);
-
     const getData = async () => {
         try {
             let cpData = "";
@@ -78,6 +74,13 @@ const MyResponsivePie = (props) => {
         }
     };
 
+    /**************************************************************
+     * useEffect
+     **************************************************************/
+    useEffect(() => {
+        setActiveIndex(activeIndex);
+    }, [activeIndex]);
+
     useEffect(() => {
         getData();
         const timer = setInterval(getData, 5000);
@@ -90,26 +93,24 @@ const MyResponsivePie = (props) => {
                 <p>{title}</p>
                 {state === "nodata" ? (
                     <Fragment>
-                        <ResponsiveContainer height={height + 100} width="100%">
-                            <PieChart height={height}>
-                                <g>
-                                    <text x={133} y={130} dy={8} textAnchor="middle"
-                                          fill="red"
-                                          style={{
-                                              fontSize: "1.3rem",
-                                          }}>
-                                        no data
-                                    </text>
-                                    <text x={133} y={130 + 20} dy={8} textAnchor="middle"
-                                          className="graph_label"
-                                          style={{
-                                              fontSize: "0.8rem",
-                                          }}>
-                                        데이터가 없습니다.
-                                    </text>
-                                </g>
-                            </PieChart>
-                        </ResponsiveContainer>
+                        <p style={{
+                            textAlign: "center",
+                            margin: "110px auto",
+                        }}>
+                            <span style={{
+                                fontSize: "1.3rem",
+                                color: "red",
+                            }}>
+                                NO DATA
+                            </span>
+                            <br/>
+                            <span textAnchor="middle"
+                                  style={{
+                                      fontSize: "0.8rem",
+                                  }}>
+                                데이터가 없습니다.
+                            </span>
+                        </p>
                     </Fragment>
                 ) : (
                     <ResponsiveContainer height={height + 100} width="100%">
@@ -121,7 +122,7 @@ const MyResponsivePie = (props) => {
                                 activeShape={GraphPie}
                                 data={data}
                                 paddingAngle={0}
-                                cy={130}
+                                 cy={130}
                                 innerRadius="50%"
                                 outerRadius="59%"
                                 onMouseEnter={onPieEnter}
