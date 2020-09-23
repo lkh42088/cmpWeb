@@ -21,10 +21,6 @@ const MyResponsivePie = (props) => {
         setActiveIndex(index);
     };
 
-    useEffect(() => {
-        setActiveIndex(activeIndex);
-    }, [activeIndex]);
-
     const getData = async () => {
         try {
             let cpData = "";
@@ -78,6 +74,13 @@ const MyResponsivePie = (props) => {
         }
     };
 
+    /**************************************************************
+     * useEffect
+     **************************************************************/
+    useEffect(() => {
+        setActiveIndex(activeIndex);
+    }, [activeIndex]);
+
     useEffect(() => {
         getData();
         const timer = setInterval(getData, 5000);
@@ -90,7 +93,7 @@ const MyResponsivePie = (props) => {
                 <p>{title}</p>
                 {state === "nodata" ? (
                     <Fragment>
-                        <ResponsiveContainer height={height + 100} width="100%">
+                        <ResponsiveContainer height={height + 150} width="100%">
                             <PieChart height={height}>
                                 <g>
                                     <text x={133} y={130} dy={8} textAnchor="middle"
@@ -98,7 +101,7 @@ const MyResponsivePie = (props) => {
                                           style={{
                                               fontSize: "1.3rem",
                                           }}>
-                                        no data
+                                        NO DATA
                                     </text>
                                     <text x={133} y={130 + 20} dy={8} textAnchor="middle"
                                           className="graph_label"
@@ -121,7 +124,7 @@ const MyResponsivePie = (props) => {
                                 activeShape={GraphPie}
                                 data={data}
                                 paddingAngle={0}
-                                cy={130}
+                                 cy={130}
                                 innerRadius="50%"
                                 outerRadius="59%"
                                 onMouseEnter={onPieEnter}

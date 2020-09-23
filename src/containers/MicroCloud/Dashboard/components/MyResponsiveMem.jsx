@@ -102,7 +102,7 @@ const MyResponsivePie = (props) => {
                 <p>{title}</p>
                 {state === "nodata" ? (
                     <Fragment>
-                        <ResponsiveContainer height={height + 100} width="100%">
+                        <ResponsiveContainer height={height + 150} width="100%">
                             <PieChart height={height}>
                                 <g>
                                     <text x={133} y={130} dy={8} textAnchor="middle"
@@ -110,7 +110,7 @@ const MyResponsivePie = (props) => {
                                           style={{
                                               fontSize: "1.3rem",
                                           }}>
-                                        no data
+                                        NO DATA
                                     </text>
                                     <text x={133} y={130 + 20} dy={8} textAnchor="middle"
                                           className="graph_label"

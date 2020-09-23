@@ -2,6 +2,7 @@ import React, {useState, useEffect, Fragment} from "react";
 import {ResponsiveLine} from '@nivo/line';
 import {linearGradientDef} from '@nivo/core';
 import {Card, CardBody} from "reactstrap";
+import {PieChart, ResponsiveContainer} from "recharts";
 
 import {
     getVmInterfaceTraffic, getServeries, unregisterMcServer, getMcServers,
@@ -108,7 +109,24 @@ const MyResponsiveLine = (props) => {
                 {state === "nodata" ? (
                     <Fragment>
                         <p>{title}</p>
-                        noData
+                        <p style={{
+                            textAlign: "center",
+                        }}>
+                            <text style={{
+                                fontSize: "1.3rem",
+                                color: "red",
+                            }}>
+                                NO DATA
+                            </text>
+                            <br/>
+                            <text x={133} y={130 + 20} dy={8} textAnchor="middle"
+                                  className="graph_label"
+                                  style={{
+                                      fontSize: "0.8rem",
+                                  }}>
+                                데이터가 없습니다.
+                            </text>
+                        </p>
                     </Fragment>
                 ) : (
                     <Fragment>
@@ -213,7 +231,7 @@ const MyResponsiveLine = (props) => {
                             }]}
                         />
                     </Fragment>
-                )};
+                )}
             </CardBody>
         </Card>
     );

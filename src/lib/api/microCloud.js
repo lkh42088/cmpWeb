@@ -71,3 +71,5 @@ export const getMcVmsGraph = (mac, currentStatus) => client.get(`/v1/micro/vms-g
 
 
 export const getServeries = () => client.get(`/v1/micro/monitor/stats/`).then(response => response);
+
+export const getSystemInfoByMac = mac => client.get(`/v1/micro/dashboard/system/${mac}`).then(response => response);
