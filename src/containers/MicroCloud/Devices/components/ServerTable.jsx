@@ -361,9 +361,10 @@ const ServerTable = () => {
                     }}
                 >
                     <TableCell
-                        className={cellClassName}
+                        className="cb-material-table__checkbox"
                         padding="checkbox"
                         onClick={event => handleClick(event, row.idx)}
+                        style={{width: "5%"}}
                     >
                         <Checkbox checked={isSelected}
                                   className="cb-material-table__checkbox"

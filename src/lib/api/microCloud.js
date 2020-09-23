@@ -28,6 +28,12 @@ export const registerMcVm = ({
     name, cpIdx, serialNumber, serverIdx, os, image, cpu, ram, hdd, network, snapType, snapDays, snapHours, snapMinutes,
 });
 
+export const sendVmAction = ({
+    idx, vmAction,
+}) => client.post('/v1/micro/vms/action', {
+    idx, vmAction,
+});
+
 export const getMcVms = ({
     rows, offset, orderBy, order, cpName,
 }) => client.get(`/v1/micro/vms-paging/${rows}/${offset}/${orderBy}/${order}/${cpName}`);

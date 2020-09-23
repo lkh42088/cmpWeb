@@ -8,11 +8,20 @@ import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import {useDispatch, useSelector} from "react-redux";
 import TableBody from "@material-ui/core/TableBody";
-import {TableRow} from "@material-ui/core";
+import {Button, TableRow} from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import TableCell from "@material-ui/core/TableCell";
-import {makeStyles} from "@material-ui/core/styles";
+import {makeStyles, withStyles} from "@material-ui/core/styles";
 import {useSnackbar} from "notistack";
+import FormControl from "@material-ui/core/FormControl";
+import NativeSelect from '@material-ui/core/NativeSelect';
+import Select from '@material-ui/core/Select';
+import MenuItem from "@material-ui/core/MenuItem";
+import InputBase from '@material-ui/core/InputBase';
+import FormHelperText from "@material-ui/core/FormHelperText";
+import SendIcon from "@material-ui/icons/Send";
+import IconButton from "@material-ui/core/IconButton";
+import Grid from "@material-ui/core/Grid";
 import {
     pagingChangeCurrentPage,
     pagingChangeCurrentPageNext,
@@ -27,10 +36,10 @@ import VmTableToolbar from "./VmTableToolbar";
 import CommonTableHead from "../../../Common/CommonTableHead";
 import RegisterVm from "./RegisterVm";
 import {
-    getMcVms, registerMcVm, unregisterMcVm,
+    getMcVms, registerMcVm, sendVmAction, unregisterMcVm,
 } from "../../../../lib/api/microCloud";
 import {changeVmPage} from "../../../../redux/actions/vmsActions";
-import {OPERATOR} from "../../../../lib/var/globalVariable";
+import {CUSTOMER_MANAGER, OPERATOR, TOP_MANAGER} from "../../../../lib/var/globalVariable";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -44,8 +53,44 @@ const headRows = [
     {id: 'network', disablePadding: false, label: 'Network'},
     {id: 'ipAddr', disablePadding: false, label: 'IP Address'},
     {id: 'remoteAddr', disablePadding: false, label: 'Remote RDP'},
-    {id: 'snapshot', disablePadding: false, label: 'Snapshot'},
+    // {id: 'snapshot', disablePadding: false, label: 'Snapshot'},
+    {id: 'action', disablePadding: false, label: 'Action'},
 ];
+
+const BootstrapInput = withStyles(theme => ({
+    root: {
+        'label + &': {
+            marginTop: theme.spacing(3),
+        },
+    },
+    input: {
+        borderRadius: 4,
+        position: 'relative',
+        backgroundColor: theme.palette.background.paper,
+        border: '1px solid #ced4da',
+        fontSize: 16,
+        padding: '10px 26px 10px 12px',
+        transition: theme.transitions.create(['border-color', 'box-shadow']),
+        // Use the system font instead of the default Roboto font.
+        fontFamily: [
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+        ].join(','),
+        '&:focus': {
+            borderRadius: 4,
+            borderColor: '#80bdff',
+            boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+        },
+    },
+}))(InputBase);
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -97,7 +142,27 @@ const useStyles = makeStyles(theme => ({
     grid: {
         flexGrow: 1,
     },
+    margin: {
+        margin: theme.spacing(0),
+    },
 }));
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
+
+const actionList = [
+    { value: 1, name: "Shutdown" },
+    { value: 2, name: "Start" },
+    { value: 3, name: "Restart" },
+];
 
 const VmTable = () => {
     const classes = useStyles();
@@ -107,6 +172,7 @@ const VmTable = () => {
     const [paging, setPaging] = useState(null);
     const [openAddVm, setOpenAddVm] = useState(false);
     const [searchParam, setSearchParam] = useState(null);
+    const [adminLevel, setAdminLevel] = useState(true);
     const { enqueueSnackbar } = useSnackbar();
 
     const dispatch = useDispatch();
@@ -254,6 +320,18 @@ const VmTable = () => {
         enqueueSnackbar(snackMsg, { variant: "success" });
     };
 
+    const asyncSendVmAction = async (idx, vmAction) => {
+        try {
+            const response = await sendVmAction({
+               idx,
+               vmAction,
+            });
+            handleSnackbarSuccess("VM Action 성공하였습니다.");
+        } catch (e) {
+            handleSnackbarFailure("VM Action 실패하였습니다.");
+        }
+    };
+
     const asyncAddVm = async (vm) => {
         const {
             name, cpIdx, serialNumber, serverIdx, cpu, ram, hdd, image, imageName, os, networkName,
@@ -342,6 +420,13 @@ const VmTable = () => {
         dispatch(changeVmPage({ pageType: 'page', data: res[0]}));
     };
 
+    const handleSendVmAction = (vm, vmAction) => {
+        console.log("handleSendVmAction:", vm);
+        console.log("handleSendVmAction: vmAction", vmAction);
+        // vm.idx, vmAction
+        asyncSendVmAction(vm.idx, vmAction);
+    };
+
     useEffect(() => {
         /** Pagination */
         getPageData();
@@ -357,7 +442,32 @@ const VmTable = () => {
 
     useEffect(() => {
         console.log("user:", user);
+        if (user) {
+            const {level} = user;
+            if (level >= CUSTOMER_MANAGER) {
+                let idx = headRows.findIndex(item => item.id === 'idx');
+                if (idx > -1) {
+                    headRows.splice(idx, 1);
+                }
+                idx = headRows.findIndex(item => item.id === 'cpName');
+                if (idx > -1) {
+                    headRows.splice(idx, 1);
+                }
+                idx = headRows.findIndex(item => item.id === 'serialNumber');
+                if (idx > -1) {
+                    headRows.splice(idx, 1);
+                }
+                setAdminLevel(false);
+            }
+        }
     }, []);
+
+    const variant = "filled";
+    const fieldSize = "small";
+    const buttonSize = "small";
+    const formClassName = "cb-material-form";
+    const labelClassName = "cb-material-form__label";
+    const fieldClassName = "cb-material-form__field";
 
     const ContentsRow = (props) => {
         const {row} = props;
@@ -366,6 +476,8 @@ const VmTable = () => {
         const cellIcon = isSelected ? "cb-material-table__cell-right" : cellClassName;
         const [openCollapse, setOpenCollapse] = useState(false);
         const [checkboxColor, setCheckboxColor] = useState('');
+        const [vmAction, setVmAction] = useState(0);
+        const [spacing, setSpacing] = useState(0);
         return (
             <React.Fragment>
                 <TableRow
@@ -395,9 +507,10 @@ const VmTable = () => {
                     }}
                 >
                     <TableCell
-                        className={cellClassName}
+                        className="cb-material-table__checkbox"
                         padding="checkbox"
                         onClick={event => handleClick(event, row.idx)}
+                        style={{width: "5%"}}
                     >
                         <Checkbox checked={isSelected}
                                   className="cb-material-table__checkbox"
@@ -406,27 +519,31 @@ const VmTable = () => {
                                   }}
                         />
                     </TableCell>
+                    {adminLevel && (
+                        <React.Fragment>
+                            <TableCell
+                                className={cellClassName}
+                                style={{width: "5%"}}
+                            >
+                                {row.idx}
+                            </TableCell>
+                            <TableCell
+                                className={cellClassName}
+                                style={{width: "10%"}}
+                            >
+                                {row.cpName}
+                            </TableCell>
+                            <TableCell
+                                className={cellClassName}
+                                style={{width: "5%"}}
+                            >
+                                {row.serialNumber}
+                            </TableCell>
+                        </React.Fragment>
+                    )}
                     <TableCell
                         className={cellClassName}
-                        style={{width: "10%"}}
-                    >
-                        {row.idx}
-                    </TableCell>
-                    <TableCell
-                        className={cellClassName}
-                        style={{width: "15%"}}
-                    >
-                        {row.cpName}
-                    </TableCell>
-                    <TableCell
-                        className={cellClassName}
-                        style={{width: "15%"}}
-                    >
-                        {row.serialNumber}
-                    </TableCell>
-                    <TableCell
-                        className={cellClassName}
-                        style={{width: "10%"}}
+                        style={{width: "5%"}}
                     >
                         <b className="text_cor_green mouse_over_list">
                             <div className="assets_add_modal_div"
@@ -438,51 +555,119 @@ const VmTable = () => {
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "10%"}}
+                        style={{width: "5%"}}
                     >
                         {row.cpu}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "10%"}}
+                        style={{width: "5%"}}
                     >
                         {row.ram}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "10%"}}
+                        style={{width: "5%"}}
                     >
                         {row.hdd}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "10%"}}
+                        style={{width: "5%"}}
                     >
                         {row.currentStatus}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "20%"}}
+                        style={{width: "5%"}}
                     >
                         {row.network}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "20%"}}
+                        style={{width: "10%"}}
                     >
                         {row.ipAddr}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "20%"}}
+                        style={{width: "10%"}}
                     >
                         {row.remoteAddr}
                     </TableCell>
+                    {/*<TableCell*/}
+                    {/*    className={cellClassName}*/}
+                    {/*    style={{width: "20%"}}*/}
+                    {/*>*/}
+                    {/*    -*/}
+                    {/*</TableCell>*/}
                     <TableCell
                         className={cellClassName}
                         style={{width: "20%"}}
                     >
-                        -
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <Grid container justify="center" spacing={spacing}>
+                                    <Grid item>
+                                        <FormControl
+                                            // size={fieldSize}
+                                            className={classes.margin}
+                                            // variant="filled"
+                                        >
+                                            <Select
+                                                name="vmAction"
+                                                value={vmAction}
+                                                onChange={(e) => {
+                                                    console.log("action value ", e.target.value);
+                                                    setVmAction(e.target.value);
+                                                }}
+                                                MenuProps={MenuProps}
+                                                input={<BootstrapInput />}
+                                            >
+                                                <MenuItem value={0}>
+                                                    <em>Select</em>
+                                                </MenuItem>
+                                                {actionList && actionList.map((item, index) => {
+                                                    const key = index;
+                                                    return (
+                                                        <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                                    );
+                                                })}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item>
+                                        {/*<Button*/}
+                                        {/*    className={classes.margin}*/}
+                                        {/*    variant="contained"*/}
+                                        {/*    color="primary"*/}
+                                        {/*    // onClick={handleOpenSearchCompany}*/}
+                                        {/*    endIcon={<SendIcon fontSize="small" />}*/}
+                                        {/*    style={{*/}
+                                        {/*        maxWidth: '40px',*/}
+                                        {/*        maxHeight: '40px',*/}
+                                        {/*        minWidth: '40px',*/}
+                                        {/*        minHeight: '40px',*/}
+                                        {/*        margin: '0px 0px 0px 3px',*/}
+                                        {/*    }}*/}
+                                        {/*/>*/}
+                                        <IconButton
+                                            onClick={() => handleSendVmAction(row, vmAction)}
+                                            color="primary"
+                                                style={{
+                                                    maxWidth: '40px',
+                                                    maxHeight: '40px',
+                                                    minWidth: '40px',
+                                                    minHeight: '40px',
+                                                    margin: '0px 0px 0px 3px',
+                                                }}
+                                        >
+                                            <SendIcon/>
+                                        </IconButton>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
                     </TableCell>
                 </TableRow>
             </React.Fragment>
