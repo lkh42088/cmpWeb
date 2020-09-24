@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {
-    Card, CardBody, Col,
+    Card, CardBody, CardHeader, Col,
 } from 'reactstrap';
-import {getVmInfo} from "../../../../lib/api/microCloud";
 import SmallTrafficMonitor from "./SmallTrafficMonitor";
+import {getVmInfo} from "../../../../lib/api/microCloud";
 
 const VmSidebar = ({vm}) => {
     const INTERVAL = 5;
@@ -13,6 +13,11 @@ const VmSidebar = ({vm}) => {
     const [disk, setDisk] = useState([]);
     const [rx, setRx] = useState([]);
     const [tx, setTx] = useState([]);
+    const [cpuTitle, setCpuTitle] = useState("CPU (%)");
+    const [memTitle, setMemTitle] = useState("MEM (Mbytes)");
+    const [diskTitle, setDiskTitle] = useState("DISK (Gbytes)");
+    const [rxTitle, setRxTitle] = useState("RX (Kbytes)");
+    const [txTitle, setTxTitle] = useState("TX (Kbytes)");
 
     const getData = async () => {
         if (!mac) {
@@ -58,6 +63,24 @@ const VmSidebar = ({vm}) => {
     };
 
     useEffect(() => {
+        if (cpu.length > 0) {
+            setCpuTitle(`CPU (${cpu[cpu.length - 1].y} %)`);
+        }
+        if (mem.length > 0) {
+            setMemTitle(`MEM (${mem[mem.length - 1].y} Mbytes)`);
+        }
+        if (disk.length > 0) {
+            setDiskTitle(`DISK (${disk[disk.length - 1].y} Gbytes)`);
+        }
+        if (rx.length > 0) {
+            setRxTitle(`RX (${rx[rx.length - 1].y} Kbytes)`);
+        }
+        if (tx.length > 0) {
+            setTxTitle(`TX (${tx[tx.length - 1].y} Kbytes)`);
+        }
+    }, [cpu, mem, disk, rx, tx]);
+
+    useEffect(() => {
         if (vm.os.includes("win")) {
             getData();
         }
@@ -72,13 +95,14 @@ const VmSidebar = ({vm}) => {
             // height: "90vh",
         }}>
             <Card>
+                <CardHeader
+                    className={vm.currentStatus === 'running'
+                        ? "vm__card_header-running" : "vm__card_header"}
+                    style={{textAlign: "center"}}
+                >
+                    {vm.name}
+                </CardHeader>
                 <CardBody className="vm__card">
-                    <div className="vm__stats">
-                        <div className="vm__stat">
-                            <p className="vm__stat-mainTitle">{vm.name}</p>
-                        </div>
-                    </div>
-
                     <div className="vm__stats">
                         <div className="vm__stat">
                             <p className="vm__stat-title">CPU</p>
@@ -129,27 +153,27 @@ const VmSidebar = ({vm}) => {
 
                     <div className="vm__stats">
                         <div className="vm__stat_graph">
-                            <SmallTrafficMonitor data={cpu} hostname="CPU (%)" stroke="#fdd835"/>
+                            <SmallTrafficMonitor data={cpu} hostname={cpuTitle} stroke="#fdd835"/>
                         </div>
                     </div>
                     <div className="vm__stats">
                         <div className="vm__stat_graph">
-                            <SmallTrafficMonitor data={mem} hostname="MEM (Mbytes)" stroke="#00e5ff"/>
+                            <SmallTrafficMonitor data={mem} hostname={memTitle} stroke="#00e5ff"/>
                         </div>
                     </div>
                     <div className="vm__stats">
                         <div className="vm__stat_graph">
-                            <SmallTrafficMonitor data={disk} hostname="DISK (Gbytes)" stroke="#546e7a"/>
+                            <SmallTrafficMonitor data={disk} hostname={diskTitle} stroke="#546e7a"/>
                         </div>
                     </div>
                     <div className="vm__stats">
                         <div className="vm__stat_graph">
-                            <SmallTrafficMonitor data={rx} hostname="RX (Kbytes)" stroke="#1565c0"/>
+                            <SmallTrafficMonitor data={rx} hostname={rxTitle} stroke="#1565c0"/>
                         </div>
                     </div>
                     <div className="vm__stats">
                         <div className="vm__stat_graph">
-                            <SmallTrafficMonitor data={tx} hostname="TX (Kbytes)" stroke="#ff8a65"/>
+                            <SmallTrafficMonitor data={tx} hostname={txTitle} stroke="#ff8a65"/>
                         </div>
                     </div>
                 </CardBody>
