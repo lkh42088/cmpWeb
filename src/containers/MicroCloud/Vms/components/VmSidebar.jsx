@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {
-    Card, CardBody, Col,
+    Card, CardBody, CardHeader, Col,
 } from 'reactstrap';
-import {getVmInfo} from "../../../../lib/api/microCloud";
 import SmallTrafficMonitor from "./SmallTrafficMonitor";
+import {getVmInfo} from "../../../../lib/api/microCloud";
 
 const VmSidebar = ({vm}) => {
     const INTERVAL = 5;
@@ -95,13 +95,14 @@ const VmSidebar = ({vm}) => {
             // height: "90vh",
         }}>
             <Card>
+                <CardHeader
+                    className={vm.currentStatus === 'running'
+                        ? "vm__card_header-running" : "vm__card_header"}
+                    style={{textAlign: "center"}}
+                >
+                    {vm.name}
+                </CardHeader>
                 <CardBody className="vm__card">
-                    <div className="vm__stats">
-                        <div className="vm__stat">
-                            <p className="vm__stat-mainTitle">{vm.name}</p>
-                        </div>
-                    </div>
-
                     <div className="vm__stats">
                         <div className="vm__stat">
                             <p className="vm__stat-title">CPU</p>
