@@ -111,6 +111,8 @@ const MicroCloudDashboard = () => {
     const handleChangeCompany = (e) => {
         setSchCompany(e.target.value);
         getServerMac(e.target.value);
+
+        //console.log("e.target.value : ", e.target.value);
     };
 
     const handleAuthSelectDisplay = () => {
@@ -132,10 +134,9 @@ const MicroCloudDashboard = () => {
                                         labelId="demo-simple-select-autowidth-label"
                                         id="demo-simple-select-autowidth"
                                         name="company"
-                                        onChange={handleChangeCompany}
                                         autoWidth
-                                        label="customer"
                                         value={schCompany}
+                                        onChange={handleChangeCompany}
                                         style={{
                                             fontSize: "0.7rem",
                                             width: "100px",
@@ -147,7 +148,9 @@ const MicroCloudDashboard = () => {
                                         {companyList && companyList.map((item, index) => {
                                             const key = index;
                                             return (
-                                                <MenuItem key={key} value={item.name}>{item.name}</MenuItem>
+                                                <MenuItem key={key} value={item.name}>
+                                                    {item.name}
+                                                </MenuItem>
                                             );
                                         })}
                                     </Select>

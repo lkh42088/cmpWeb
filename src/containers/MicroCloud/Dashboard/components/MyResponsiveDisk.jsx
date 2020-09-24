@@ -93,7 +93,7 @@ const MyResponsivePie = (props) => {
 
     useEffect(() => {
         getData();
-        const timer = setInterval(getData, 5000);
+        const timer = setInterval(getData, 10000);
         return () => clearInterval(timer);
     }, [mac]);
 
