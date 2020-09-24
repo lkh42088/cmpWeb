@@ -2,10 +2,9 @@ import React, {useState, useEffect, Fragment} from "react";
 import {ResponsiveLine} from '@nivo/line';
 import {linearGradientDef} from '@nivo/core';
 import {Card, CardBody} from "reactstrap";
-import {PieChart, ResponsiveContainer} from "recharts";
 
 import {
-    getVmInterfaceTraffic, getServeries, unregisterMcServer, getMcServers,
+    getVmInterfaceTraffic,
 } from "../../../../lib/api/microCloud";
 
 const lineTheme = ({
@@ -168,7 +167,7 @@ const MyResponsiveLine = (props) => {
                                 legendPosition: 'middle',
                                 format: v => `${Number(v) / 1000}`,
                             }}
-                            colors={{scheme: 'category10'}}
+                            colors={{scheme: 'paired'}}
                             lineWidth={1}
                             enablePoints={false}
                             pointSize={10}

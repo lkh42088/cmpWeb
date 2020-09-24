@@ -17,6 +17,9 @@ const MyResponsivePie = (props) => {
     const [data, setData] = useState([]);
     const [state, setState] = useState();
 
+    /**************************************************************
+     * Handle Function
+     **************************************************************/
     // eslint-disable-next-line no-shadow
     const onPieEnter = (data, index) => {
         setActiveIndex(index);
@@ -26,10 +29,9 @@ const MyResponsivePie = (props) => {
         //console.log("out");
     };
 
-    useEffect(() => {
-        setActiveIndex(activeIndex);
-    }, [activeIndex]);
-
+    /**************************************************************
+     * Axios Function
+     **************************************************************/
     const getData = async () => {
         try {
             let cpData = "";
@@ -55,14 +57,7 @@ const MyResponsivePie = (props) => {
                 freeColor = pieColor.warringColor;
             }
 
-            const subContent = `(Total : ${(Number(response.data[0].total) / gigaBytes).toFixed(decimal)} GB)`;
             const labelVal = `${(Number(response.data[0].available) / gigaBytes).toFixed(decimal)} GB`;
-
-            /*console.log("response : ", response);
-            console.log("available_percent : ", value);
-            console.log("valueCompare : ", valueCompare);
-            console.log("use : ", use);
-            console.log("free : ", free);*/
 
             cpData = [
                 {
@@ -89,6 +84,13 @@ const MyResponsivePie = (props) => {
             console.log("memory MyResponsivePie response error");
         }
     };
+
+    /**************************************************************
+     * useEffect
+     **************************************************************/
+    useEffect(() => {
+        setActiveIndex(activeIndex);
+    }, [activeIndex]);
 
     useEffect(() => {
         getData();

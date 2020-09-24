@@ -57,6 +57,7 @@ const MicroCloudDashboard = () => {
 
     //const mac = "52:54:00:01:b5:b7"; //todo: need to fix
     const user = JSON.parse(localStorage.getItem("user"));
+    const {level} = user;
 
     /*******************
      * Etc.
@@ -64,7 +65,7 @@ const MicroCloudDashboard = () => {
     const [companyList, setCompanyList] = useState([]);
     const [serverList, setServerList] = useState([]);
     const [mac, setMac] = useState(""); //52:54:00:01:b5:b7
-    const [schCompany, setSchCompany] = useState("all");
+    const [schCompany, setSchCompany] = useState("");
     const [selectCompany, setSelectCompany] = useState();
 
     /**************************************************************
@@ -73,7 +74,6 @@ const MicroCloudDashboard = () => {
 
     const getServerMac = async (val) => {
         try {
-            //"/v1/micro/servers-paging/10/0//desc/신용회복위원회"
             const response = await getMcServers({
                 rows: 0,
                 offset: 0,
@@ -82,9 +82,12 @@ const MicroCloudDashboard = () => {
                 cpName: val,
             });
 
+            console.log("response.data.data[0] : ", response.data.data[0]);
+
             if (response.data.data[0] === undefined) {
                 setServerList([]);
                 setMac("nodata");
+                setSchCompany(user.cpName);
             } else {
                 setServerList(response.data.data);
                 setMac(response.data.data[0].mac);
@@ -116,57 +119,11 @@ const MicroCloudDashboard = () => {
     };
 
     const handleAuthSelectDisplay = () => {
-        let topSelect;
-        if (user) {
-            const {level} = user;
-
-            if (level < 5) {
-                topSelect = (
-                    <Row>
-                        <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                            <div>
-                                <FormControl className={classes.formControl}>
-                                    <InputLabel id="demo-simple-select-autowidth-label"
-                                                style={{
-                                                    fontSize: "0.7rem",
-                                                }}>customer</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-autowidth-label"
-                                        id="demo-simple-select-autowidth"
-                                        name="company"
-                                        autoWidth
-                                        value={schCompany}
-                                        onChange={handleChangeCompany}
-                                        style={{
-                                            fontSize: "0.7rem",
-                                            width: "100px",
-                                        }}
-                                    >
-                                        <MenuItem key="all" value="all">
-                                            <em>:: ALL DATA ::</em>
-                                        </MenuItem>
-                                        {companyList && companyList.map((item, index) => {
-                                            const key = index;
-                                            return (
-                                                <MenuItem key={key} value={item.name}>
-                                                    {item.name}
-                                                </MenuItem>
-                                            );
-                                        })}
-                                    </Select>
-                                    {/*<FormHelperText>Auto width</FormHelperText>*/}
-                                </FormControl>
-                            </div>
-                        </Col>
-                    </Row>
-                );
-            } else {
-                getServerMac(user.cpName);
-                topSelect = "";
-            }
+        if (level > 5) {
+            getServerMac(user.cpName);
+        } else {
+            setSchCompany("all");
         }
-        setSelectCompany(topSelect);
-        //return topSelect;
     };
 
     /**************************************************************
@@ -188,8 +145,46 @@ const MicroCloudDashboard = () => {
                 <RouterBreadcrumbs url={window.location.href}/>
             </Row>
 
-            {/*{handleAuthSelectDisplay(user)}*/}
-            {selectCompany}
+            {level < 5 ? (
+                <Row>
+                    <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                        <div>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel id="demo-simple-select-autowidth-label"
+                                            style={{
+                                                fontSize: "0.7rem",
+                                            }}>customer</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-autowidth-label"
+                                    id="demo-simple-select-autowidth"
+                                    name="company"
+                                    autoWidth
+                                    value={schCompany}
+                                    onChange={handleChangeCompany}
+                                    style={{
+                                        fontSize: "0.7rem",
+                                        width: "100%",
+                                    }}
+                                >
+                                    <MenuItem key="all" value="all">
+                                        <em>:: ALL DATA ::</em>
+                                    </MenuItem>
+                                    {companyList && companyList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <MenuItem key={key} value={item.name}>
+                                                {item.name}
+                                            </MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                                {/*<FormHelperText>Auto width</FormHelperText>*/}
+                            </FormControl>
+                        </div>
+                    </Col>
+                </Row>
+            ) : false}
+
             {/* eslint-disable-next-line no-nested-ternary */}
             {schCompany === "all" ? (
                 <TopManagerMain/>

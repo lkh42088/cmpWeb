@@ -16,11 +16,17 @@ const MyResponsivePie = (props) => {
     const [data, setData] = useState([]);
     const [state, setState] = useState();
 
+    /**************************************************************
+     * Handle Function
+     **************************************************************/
     // eslint-disable-next-line no-shadow
     const onPieEnter = (data, index) => {
         setActiveIndex(index);
     };
 
+    /**************************************************************
+     * Axios Function
+     **************************************************************/
     const getData = async () => {
         try {
             let cpData = "";
@@ -42,12 +48,6 @@ const MyResponsivePie = (props) => {
                 useColor = pieColor.warringColor;
                 freeColor = pieColor.warringColor;
             }
-
-            /*console.log("response : ", response);
-            console.log("usage_idle : ", value);
-            console.log("valueCompare : ", valueCompare);
-            console.log("use : ", use);
-            console.log("free : ", free);*/
 
             cpData = [
                 {

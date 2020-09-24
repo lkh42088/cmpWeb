@@ -22,15 +22,17 @@ const MyResponsivePie = (props) => {
         fstype: '',
     });
 
+    /**************************************************************
+     * Handle Function
+     **************************************************************/
     // eslint-disable-next-line no-shadow
     const onPieEnter = (data, index) => {
         setActiveIndex(index);
     };
 
-    useEffect(() => {
-        setActiveIndex(activeIndex);
-    }, [activeIndex]);
-
+    /**************************************************************
+     * Axios Function
+     **************************************************************/
     const getData = async () => {
         try {
             let cpData = "";
@@ -90,6 +92,13 @@ const MyResponsivePie = (props) => {
             console.log("disk MyResponsivePie response error");
         }
     };
+
+    /**************************************************************
+     * useEffect
+     **************************************************************/
+    useEffect(() => {
+        setActiveIndex(activeIndex);
+    }, [activeIndex]);
 
     useEffect(() => {
         getData();
