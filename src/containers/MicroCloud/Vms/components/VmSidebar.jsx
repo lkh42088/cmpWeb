@@ -104,8 +104,8 @@ const VmSidebar = ({vm}) => {
                 </CardHeader>
                 <CardBody className="vm__card">
                     <div className="vm__stats">
-                        <div className="vm__stat">
-                            <p className="vm__stat-title">CPU</p>
+                        <div className="vm__stat" style={{width: "60%"}}>
+                            <p className="vm__stat-title"><b>CPU</b></p>
                         </div>
                         <div className="vm__stat">
                             <p className="vm__stat-title">{vm.cpu} cores</p>
@@ -113,8 +113,8 @@ const VmSidebar = ({vm}) => {
                     </div>
 
                     <div className="vm__stats">
-                        <div className="vm__stat">
-                            <p className="vm__stat-title">RAM</p>
+                        <div className="vm__stat" style={{width: "60%"}}>
+                            <p className="vm__stat-title"><b>RAM</b></p>
                         </div>
                         <div className="vm__stat">
                             <p className="vm__stat-title">{vm.ram} MB</p>
@@ -122,8 +122,8 @@ const VmSidebar = ({vm}) => {
                     </div>
 
                     <div className="vm__stats">
-                        <div className="vm__stat">
-                            <p className="vm__stat-title">HDD</p>
+                        <div className="vm__stat" style={{width: "60%"}}>
+                            <p className="vm__stat-title"><b>HDD</b></p>
                         </div>
                         <div className="vm__stat">
                             <p className="vm__stat-title">{vm.hdd} GB</p>
@@ -131,8 +131,8 @@ const VmSidebar = ({vm}) => {
                     </div>
 
                     <div className="vm__stats">
-                        <div className="vm__stat">
-                            <p className="vm__stat-title">IP</p>
+                        <div className="vm__stat" style={{width: "60%"}}>
+                            <p className="vm__stat-title"><b>IP</b></p>
                         </div>
                         <div className="vm__stat">
                             <p className="vm__stat-title">{vm.ipAddr}</p>
@@ -140,14 +140,20 @@ const VmSidebar = ({vm}) => {
                     </div>
 
                     <div className="vm__stats">
+                        <div className="vm__stat" style={{width: "60%"}}>
+                            <p className="vm__stat-title"><b>내부접속</b></p>
+                        </div>
                         <div className="vm__stat">
-                            <p className="vm__stat-title">내부접속 {vm.remoteAddr}</p>
+                            <p className="vm__stat-title">{vm.remoteAddr}</p>
                         </div>
                     </div>
 
-                    <div className="vm__stats">
+                    <div className="vm__stats" style={{borderBottom: "0px"}}>
+                        <div className="vm__stat" style={{width: "60%"}}>
+                            <p className="vm__stat-title"><b>외부접속</b> </p>
+                        </div>
                         <div className="vm__stat">
-                            <p className="vm__stat-title"> 외부접속 119.1.1.10:15001</p>
+                            <p className="vm__stat-title">-</p>
                         </div>
                     </div>
 
