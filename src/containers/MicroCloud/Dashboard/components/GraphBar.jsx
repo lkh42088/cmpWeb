@@ -50,7 +50,8 @@ const options = {
     },
 };
 
-const GraphBar = () => {
+const GraphBar = (prop) => {
+    const {height} = prop;
     console.log("TopManagerBar test");
     return (
         <Fragment>
@@ -59,7 +60,7 @@ const GraphBar = () => {
                     <div className="card__title">
                         <h5 className="bold-text">[___] Usage Top 5</h5>
                     </div>
-                    <Bar data={initialState} options={options} />
+                    <Bar data={initialState} options={options} height={height}/>
                 </CardBody>
             </Card>
         </Fragment>

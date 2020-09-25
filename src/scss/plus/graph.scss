@@ -14,12 +14,27 @@ text.graph_label {
   }
 }
 
+.sideInfo {
+  font-size: medium;
+}
+
 /*common-------------------------------------------------------------------------------------------common*/
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 992px) {
+  .sideInfo {
+    font-size: xx-small;
+  }
+}
 
+@media screen and (max-width: 768px) {
+  .sideInfo {
+    font-size: small;
+  }
 }
 
 @media screen and (max-width: 420px) {
+  .sideInfo {
+    font-size: xx-small;
+  }
 
 }

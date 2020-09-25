@@ -83,11 +83,12 @@ const MicroCloudDashboard = () => {
             });
 
             console.log("response.data.data[0] : ", response.data.data[0]);
+            console.log("val : ", val);
 
             if (response.data.data[0] === undefined) {
                 setServerList([]);
                 setMac("nodata");
-                setSchCompany(user.cpName);
+                //setSchCompany(user.cpName);
             } else {
                 setServerList(response.data.data);
                 setMac(response.data.data[0].mac);
@@ -119,7 +120,7 @@ const MicroCloudDashboard = () => {
     };
 
     const handleAuthSelectDisplay = () => {
-        if (level > 5) {
+        if (level >= 5) {
             getServerMac(user.cpName);
         } else {
             setSchCompany("all");
@@ -140,19 +141,25 @@ const MicroCloudDashboard = () => {
     return (
         <Container fluid style={{
             overflowY: "hidden",
+            board: "1px solid red",
         }}>
-            <Row className={classes.row}>
+            {/*<Row className={classes.row}>
                 <RouterBreadcrumbs url={window.location.href}/>
-            </Row>
+            </Row>*/}
+            {/*★schCompany : {schCompany}
+            <br/>
+            ★mac  :{mac}*/}
 
             {level < 5 ? (
-                <Row>
-                    <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                <Row style={{
+                    marginTop: "-8px",
+                }}>
+                    <Col md={6} lg={3} xs={12} sm={12} xl={3}>
                         <div>
                             <FormControl className={classes.formControl}>
                                 <InputLabel id="demo-simple-select-autowidth-label"
                                             style={{
-                                                fontSize: "0.7rem",
+                                                fontSize: "1rem",
                                             }}>customer</InputLabel>
                                 <Select
                                     labelId="demo-simple-select-autowidth-label"

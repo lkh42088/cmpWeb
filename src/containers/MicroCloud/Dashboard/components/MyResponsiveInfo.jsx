@@ -44,6 +44,8 @@ const MyResponsiveInfo = (props) => {
                 const subContentDisk = `${(Number(responseDisk.data[0].total) / gigaBytes).toFixed(decimal)}`;
                 const subContentMem = `${(Number(responseMem.data[0].total) / gigaBytes).toFixed(decimal)}`;
 
+                console.log("responseSys.data : ", responseSys.data);
+
                 setData(responseSys.data);
                 setDisk(subContentDisk);
                 setMem(subContentMem);
@@ -63,22 +65,18 @@ const MyResponsiveInfo = (props) => {
             {data ? (
                 <Fragment>
                     <CardBody className="cb-card-body">
-                        <p style={{
-                            textDecoration: "solid overline #ffc93c",
-                            /*textDecoration: "overline #ffc93c",*/
-                        }}>{title} [{data.hostname}]</p>
+                        <p>{title} [{data.hostname}]</p>
                         <Container
                             className="dashboard"
                             style={{
                                 padding: "10px",
-                                /*height: "100%",*/
                             }}
                         >
                             <Table responsive striped>
                                 <tbody>
                                 <tr>
                                     <td><p className="bold-text dashboard__btc">OS</p></td>
-                                    <td colSpan={2}>{data.os}</td>
+                                    <td colSpan={2}>{data.platform}&nbsp;{data.platformVersion}</td>
                                 </tr>
                                 <tr>
                                     <td><p className="bold-text dashboard__btc">CPU Model</p></td>
@@ -89,29 +87,43 @@ const MyResponsiveInfo = (props) => {
                                     <td colSpan={2}>{data.cpuCore} cores</td>
                                 </tr>
                                 <tr>
-                                    <td><p className="bold-text dashboard__ste">Platform</p></td>
-                                    <td colSpan={2}>{data.platform}&nbsp;{data.platformVersion}</td>
-                                </tr>
-                                <tr>
-                                    <td><p className="bold-text dashboard__ste">Kernel</p></td>
+                                    <td><p className="bold-text dashboard__ste">Architecture</p></td>
                                     <td colSpan={2}>{data.kernelArch}</td>
                                 </tr>
                                 <tr>
-                                    <td><p className="bold-text dashboard__eth">If Name</p></td>
-                                    <td colSpan={2}>{data.ifName}</td>
+                                    <td><p className="bold-text dashboard__ste">Kernel</p></td>
+                                    <td colSpan={2}>{data.kernelVersion}</td>
+                                </tr>
+                                <tr>
+                                    <td><p className="bold-text dashboard__eth">Interface</p></td>
+                                    <td colSpan={2}>{data.ifName}&nbsp;{data.ifMac}</td>
                                 </tr>
                                 <tr>
                                     <td><p className="bold-text dashboard__eth">IP</p></td>
                                     <td colSpan={2}>{data.ip}</td>
                                 </tr>
+                                {/*<tr>
+                                    <td><p className="bold-text dashboard__lit">Total Memory</p></td>
+                                    <td colSpan={2}>{mem}GB</td>
+                                </tr>
+                                <tr>
+                                    <td><p className="bold-text dashboard__lit">Total Disk</p></td>
+                                    <td colSpan={2}>{disk}GB</td>
+                                </tr>*/}
+                                <tr>
+                                    <td rowSpan={3}><p className="bold-text dashboard__lit">Total</p></td>
+                                    <td colSpan={2}>{mem}GB (Memory)</td>
+                                </tr>
+                                <tr>
+                                    <td colSpan={2}>{disk}GB (Disk)</td>
+                                </tr>
                                 </tbody>
                             </Table>
                         </Container>
-                        <Container
+                        {/*<Container
                             className="dashboard"
                             style={{
                                 padding: "0",
-                                /*height: "100%",*/
                             }}
                         >
                             <div>
@@ -124,33 +136,29 @@ const MyResponsiveInfo = (props) => {
                                          borderBottomLeftRadius: "5px",
                                      }}>
                                     <InfoIcon/>
-                                    {/*<p className="dashboard__booking-our-mission-title">Our mission</p>*/}
                                     <p style={{
                                         fontSize: "x-small",
                                         fontWeight: "800",
-                                    }}>Memory Total : <span style={{
+                                    }}>Total Memory : <span style={{
                                         fontSize: "x-small",
                                         fontWeight: "100",
                                     }}>{mem}GB</span></p>
                                     <p style={{
                                         fontSize: "x-small",
                                         fontWeight: "800",
-                                    }}>Disk Total : <span style={{
+                                    }}>Total Disk : <span style={{
                                         fontSize: "x-small",
                                         fontWeight: "100",
                                     }}>{disk}GB</span></p>
                                 </div>
                             </div>
-                        </Container>
+                        </Container>*/}
                     </CardBody>
                 </Fragment>
             ) : (
                 <Fragment>
                     <CardBody className="cb-card-body">
-                        <p style={{
-                            textDecoration: "solid overline #ffc93c",
-                            /*textDecoration: "overline #ffc93c",*/
-                        }}>{title}</p>
+                        <p>{title}</p>
 
                         <Fragment>
                             <p style={{

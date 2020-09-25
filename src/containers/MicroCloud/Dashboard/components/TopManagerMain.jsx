@@ -134,16 +134,16 @@ const TopManagerMain = () => {
             </Row>
             <Row>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphBar/>
+                    <GraphBar height={190}/>
                 </Col>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphBar/>
+                    <GraphBar height={190}/>
                 </Col>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphBar/>
+                    <GraphBar height={190}/>
                 </Col>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphBar/>
+                    <GraphBar height={190}/>
                 </Col>
             </Row>
         </Fragment>
