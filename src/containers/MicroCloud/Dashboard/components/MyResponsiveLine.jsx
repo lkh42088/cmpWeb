@@ -167,7 +167,7 @@ const MyResponsiveLine = (props) => {
                                 legendPosition: 'middle',
                                 format: v => `${Number(v) / 1000}`,
                             }}
-                            colors={{scheme: 'paired'}}
+                            colors={{scheme: 'category10'}}
                             lineWidth={1}
                             enablePoints={false}
                             pointSize={10}

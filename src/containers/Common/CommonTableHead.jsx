@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Fragment} from "react";
 import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -13,9 +13,11 @@ function CommonTableHead(props) {
     const createSortHandler = property => (event) => {
         onRequestSort(event, property);
     };
-    
+
+    console.log("props : ", props);
+
     /*checkboxFlag -> 코드관리*/
-    
+
     return (
         <TableHead>
             <TableRow>
@@ -28,7 +30,7 @@ function CommonTableHead(props) {
                         inputProps={{ 'aria-label': 'select all desserts' }}
                     />
                 </TableCell>
-                {rows.map(row => (
+                {rows.map((row, index) => (
                     <TableCell
                         className="cb-material-table__cell cb-material-table__cell--sort cb-material-table__cell-right"
                         key={row.id}
@@ -36,6 +38,7 @@ function CommonTableHead(props) {
                         padding={row.disablePadding ? 'none' : 'default'}
                         sortDirection={orderBy === row.id ? order : false}
                         style={{minWidth: row.minWidth}}
+                        colSpan={row.id === "colspan" ? 2 : 1}
                     >
                         <TableSortLabel
                             active={orderBy === row.id}

@@ -13,25 +13,25 @@ const MyResponsivePie = (props) => {
                 <p>Micro Cloud</p>
 
                 <Row>
-                    <Col md={2} lg={2} xs={12} sm={12} xl={2}
+                    <Col md={3} lg={3} xs={12} sm={12} xl={3}
                          style={{
                              /*padding: 10,*/
                          }}>
                         <div style={{
                             position: "relative",
-                            top: "40%",
+                            top: "35%",
                             width: "100%",
                             margin: "auto 0",
                             /*left: "15%",*/
                         }} className="sideInfo">
                             <ul className="sideInfo">
-                                <h4 className="text-center"><b>총 대수 : 500</b></h4>
-                                <h5 className="text-center">On : 400</h5>
-                                <h5 className="text-center">Off : 100</h5>
+                                <li className="text-center"><b>총 대수 : 500</b></li>
+                                <li className="text-center">On : 400</li>
+                                <li className="text-center">Off : 100</li>
                             </ul>
                         </div>
                     </Col>
-                    <Col md={10} lg={10} xs={12} sm={12} xl={10}
+                    <Col md={9} lg={9} xs={12} sm={12} xl={9}
                          style={{
                              /*padding: 10,*/
                              /*border: "1px solid red",*/

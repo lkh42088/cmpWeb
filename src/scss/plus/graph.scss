@@ -15,7 +15,8 @@ text.graph_label {
 }
 
 .sideInfo {
-  font-size: medium;
+  font-size: small;
+  list-style:none;
 }
 
 /*common-------------------------------------------------------------------------------------------common*/
@@ -28,7 +29,7 @@ text.graph_label {
 
 @media screen and (max-width: 768px) {
   .sideInfo {
-    font-size: small;
+    font-size: xx-small;
   }
 }
 
