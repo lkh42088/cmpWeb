@@ -110,6 +110,7 @@ const MyResponsiveLine = (props) => {
                         <p>{title}</p>
                         <p style={{
                             textAlign: "center",
+                            margin: "100px auto",
                         }}>
                             <span style={{
                                 fontSize: "1.3rem",

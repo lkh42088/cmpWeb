@@ -14,8 +14,6 @@ function CommonTableHead(props) {
         onRequestSort(event, property);
     };
 
-    console.log("props : ", props);
-
     /*checkboxFlag -> 코드관리*/
 
     return (

@@ -29,7 +29,7 @@ const MyResponsiveInfo = (props) => {
 
     const getData = async () => {
         try {
-            console.log("mac : ", mac);
+            //console.log("mac : ", mac);
             const marker = 1024; // Change to 1000 if required
             const decimal = 2; // Change as required
             const gigaBytes = marker * marker * marker; // One GB is 1024 MB
