@@ -83,27 +83,25 @@ const data = [
 
 const initialState = {
     labels: [],
-    datasets:
+    datasets: [
         {
-            label: '',
+            label: 'NO DATA',
             backgroundColor: '#a2d5f2',
             borderColor: '#a2d5f2',
             borderWidth: 1,
             hoverBackgroundColor: '#07689f',
             hoverBorderColor: '#07689f',
+            data: [],
         },
+    ],
 };
 
 const TopManagerMain = () => {
     const classes = useStyles();
     const [cpu, setCpu] = useState(initialState);
-    const [mem, setMem] = useState([]);
-    const [disk, setDisk] = useState([]);
-    const [traffic, setTraffic] = useState([]);
-    const [cpuTitle, setCpuTitle] = useState("CPU (%)");
-    const [memTitle, setMemTitle] = useState("MEM (Mbytes)");
-    const [diskTitle, setDiskTitle] = useState("DISK (Gbytes)");
-    const [trafficTitle, setTrafficTitle] = useState("RX (Kbytes)");
+    const [mem, setMem] = useState(initialState);
+    const [disk, setDisk] = useState(initialState);
+    const [traffic, setTraffic] = useState(initialState);
 
     /**************************************************************
      * Axios Function
@@ -111,33 +109,43 @@ const TopManagerMain = () => {
     const getData = async () => {
         try {
             const response = await getRankingData();
-            console.log("TEST RESPONSE: ", response.data.cpu[0].avg);
-            const tmpLabels = response.data.cpu.map(val => (val.serial_number));
-            const tmpData = response.data.cpu.map(val => (val.avg.toFixed(1)));
-            initialState.datasets.data = tmpData;
+            // console.log("TEST RESPONSE: ", response.data.cpu[0].avg);
+
             setCpu({
-                    labels: response.data.cpu.map(val => (val.serial_number)),
-                    datasets: {
-                        ...cpu.datasets,
-                        data: response.data.cpu.map(val => (val.avg.toFixed(1))),
-                    },
+                labels: response.data.cpu.map(val => (val.serial_number)),
+                datasets: [{
+                    ...initialState.datasets[0],
+                    label: "CPU(%)",
+                    data: response.data.cpu.map(val => val.avg.toFixed(1)),
+                }],
             });
 
-            // setMem(
-            //     response.data.mem.data.map(val => ({
-            //         y: (val.y / 1024 / 1024).toFixed(1),
-            //     })),
-            // );
-            // setDisk(
-            //     response.data.disk.data.map(val => ({
-            //         y: (vm.hdd - (val.y / 1024)).toFixed(1),
-            //     })),
-            // );
-            // setTraffic(
-            //     response.data.rx.data.map(val => ({
-            //         y: ((val.y * INTERVAL) / 1024).toFixed(1),
-            //     })),
-            // );
+            setMem({
+                labels: response.data.mem.map(val => (val.serial_number)),
+                datasets: [{
+                    ...initialState.datasets[0],
+                    label: "MEM(%)",
+                    data: response.data.mem.map(val => val.avg.toFixed(1)),
+                }],
+            });
+
+            setDisk({
+                labels: response.data.disk.map(val => (val.serial_number)),
+                datasets: [{
+                    ...initialState.datasets[0],
+                    label: "DISK(%)",
+                    data: response.data.disk.map(val => val.avg.toFixed(1)),
+                }],
+            });
+
+            setTraffic({
+                labels: response.data.traffic.map(val => (val.serial_number)),
+                datasets: [{
+                    ...initialState.datasets[0],
+                    label: "TRAFFIC(Mb)",
+                    data: response.data.traffic.map(val => (val.avg / 1024 / 1024).toFixed(0)),
+                }],
+            });
         } catch {
             console.log("No data!");
         }
@@ -150,25 +158,8 @@ const TopManagerMain = () => {
     /**************************************************************
      * useEffect
      **************************************************************/
-
-
-    // useEffect(() => {
-    //     if (cpu.length > 0) {
-    //         setCpuTitle(`CPU (${cpu[cpu.length - 1].y} %)`);
-    //     }
-    //     if (mem.length > 0) {
-    //         setMemTitle(`MEM (${mem[mem.length - 1].y} Mbytes)`);
-    //     }
-    //     if (disk.length > 0) {
-    //         setDiskTitle(`DISK (${disk[disk.length - 1].y} Gbytes)`);
-    //     }
-    //     if (traffic.length > 0) {
-    //         setTrafficTitle(`RX (${traffic[traffic.length - 1].y} Kbytes)`);
-    //     }
-    // }, [cpu, mem, disk, traffic]);
-
     useEffect(() => {
-        getRankingData();
+        getData();
         const timer = setInterval(getData, 10000);
         return () => clearInterval(timer);
     }, []);
@@ -198,13 +189,13 @@ const TopManagerMain = () => {
                     <GraphBar height={190} data={cpu}/>
                 </Col>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphBar height={190}/>
+                    <GraphBar height={190} data={mem}/>
                 </Col>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphBar height={190}/>
+                    <GraphBar height={190} data={disk}/>
                 </Col>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphBar height={190}/>
+                    <GraphBar height={190} data={traffic}/>
                 </Col>
             </Row>
         </Fragment>
