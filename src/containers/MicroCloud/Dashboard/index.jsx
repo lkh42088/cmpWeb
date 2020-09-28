@@ -82,9 +82,6 @@ const MicroCloudDashboard = () => {
                 cpName: val,
             });
 
-            console.log("response.data.data[0] : ", response.data.data[0]);
-            console.log("val : ", val);
-
             if (response.data.data[0] === undefined) {
                 setServerList([]);
                 setMac("nodata");
@@ -195,7 +192,7 @@ const MicroCloudDashboard = () => {
             {/* eslint-disable-next-line no-nested-ternary */}
             {schCompany === "all" ? (
                 <TopManagerMain/>
-            ) : mac ? (<BaremetalMain mac={mac}/>) : false}
+            ) : mac ? (<BaremetalMain mac={mac} company={schCompany}/>) : false}
         </Container>
     );
 };

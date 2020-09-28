@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, Fragment} from "react";
 import {
     Card,
     CardBody,
@@ -54,7 +54,8 @@ const headRows = [
     {id: 'ipAddr', disablePadding: false, label: 'IP Address'},
     {id: 'remoteAddr', disablePadding: false, label: 'Remote RDP'},
     // {id: 'snapshot', disablePadding: false, label: 'Snapshot'},
-    {id: 'action', disablePadding: false, label: 'Action'},
+    {id: 'colspan', disablePadding: false, label: 'Action'},
+    /*{id: 'action', disablePadding: false, label: 'Action'},*/
 ];
 
 const BootstrapInput = withStyles(theme => ({
@@ -441,7 +442,6 @@ const VmTable = () => {
     }, [paging]);
 
     useEffect(() => {
-        console.log("user:", user);
         if (user) {
             const {level} = user;
             if (level >= CUSTOMER_MANAGER) {
@@ -603,40 +603,46 @@ const VmTable = () => {
                     {/*</TableCell>*/}
                     <TableCell
                         className={cellClassName}
-                        style={{width: "20%"}}
+                        style={{width: "5%"}}
                     >
-                        <Grid container>
+                        <FormControl
+                            // size={fieldSize}
+                            /*className={classes.margin}*/
+                            // variant="filled"
+                        >
+                            <Select
+                                name="vmAction"
+                                value={vmAction}
+                                onChange={(e) => {
+                                    console.log("action value ", e.target.value);
+                                    setVmAction(e.target.value);
+                                }}
+                                MenuProps={MenuProps}
+                                input={<BootstrapInput />}
+                            >
+                                <MenuItem value={0}>
+                                    <em>Select</em>
+                                </MenuItem>
+                                {actionList && actionList.map((item, index) => {
+                                    const key = index;
+                                    return (
+                                        <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                    );
+                                })}
+                            </Select>
+                        </FormControl>
+                    </TableCell>
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "5%"}}
+                        /*style={{width: "20%"}}*/
+                    >
+                        {/*<Grid container>
                             <Grid item xs={12}>
                                 <Grid container justify="center" spacing={spacing}>
-                                    <Grid item>
-                                        <FormControl
-                                            // size={fieldSize}
-                                            className={classes.margin}
-                                            // variant="filled"
-                                        >
-                                            <Select
-                                                name="vmAction"
-                                                value={vmAction}
-                                                onChange={(e) => {
-                                                    console.log("action value ", e.target.value);
-                                                    setVmAction(e.target.value);
-                                                }}
-                                                MenuProps={MenuProps}
-                                                input={<BootstrapInput />}
-                                            >
-                                                <MenuItem value={0}>
-                                                    <em>Select</em>
-                                                </MenuItem>
-                                                {actionList && actionList.map((item, index) => {
-                                                    const key = index;
-                                                    return (
-                                                        <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
-                                                    );
-                                                })}
-                                            </Select>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item>
+                                    <Grid item>*/}
+                                    {/*</Grid>
+                                    <Grid item>*/}
                                         {/*<Button*/}
                                         {/*    className={classes.margin}*/}
                                         {/*    variant="contained"*/}
@@ -664,10 +670,10 @@ const VmTable = () => {
                                         >
                                             <SendIcon/>
                                         </IconButton>
-                                    </Grid>
+                                    {/*</Grid>
                                 </Grid>
                             </Grid>
-                        </Grid>
+                        </Grid>*/}
                     </TableCell>
                 </TableRow>
             </React.Fragment>

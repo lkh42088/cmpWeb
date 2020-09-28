@@ -95,7 +95,7 @@ const MyResponsivePie = (props) => {
                     <Fragment>
                         <p style={{
                             textAlign: "center",
-                            margin: "110px auto",
+                            margin: "120px auto",
                         }}>
                             <span style={{
                                 fontSize: "1.3rem",

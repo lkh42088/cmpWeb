@@ -110,6 +110,7 @@ const MyResponsiveLine = (props) => {
                         <p>{title}</p>
                         <p style={{
                             textAlign: "center",
+                            margin: "100px auto",
                         }}>
                             <span style={{
                                 fontSize: "1.3rem",
@@ -167,7 +168,7 @@ const MyResponsiveLine = (props) => {
                                 legendPosition: 'middle',
                                 format: v => `${Number(v) / 1000}`,
                             }}
-                            colors={{scheme: 'paired'}}
+                            colors={{scheme: 'category10'}}
                             lineWidth={1}
                             enablePoints={false}
                             pointSize={10}

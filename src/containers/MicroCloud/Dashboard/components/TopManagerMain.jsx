@@ -1,17 +1,11 @@
 import React, {useEffect, useState, Fragment} from 'react';
 import {
-    Card, CardBody,
     Col, Container, Row,
 } from 'reactstrap';
 import {makeStyles} from "@material-ui/core/styles";
-
-import {
-    NB_MANAGER, TOP_MANAGER, UNREGISTERED_USER,
-} from "../../../../lib/var/globalVariable";
-
 import MyResponsivePie from "./MyResponsivePie";
-import MyResponsiveCpu from "./MyResponsiveCpu";
 import GraphBar from "./GraphBar";
+import {getRankingData, getVmInfo} from "../../../../lib/api/microCloud";
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -87,19 +81,75 @@ const data = [
     },
 ];
 
+const initialState = {
+    labels: [],
+    datasets: [
+        {
+            label: 'NO DATA',
+            backgroundColor: '#a2d5f2',
+            borderColor: '#a2d5f2',
+            borderWidth: 1,
+            hoverBackgroundColor: '#07689f',
+            hoverBorderColor: '#07689f',
+            data: [],
+        },
+    ],
+};
+
 const TopManagerMain = () => {
     const classes = useStyles();
-
-    //const mac = "52:54:00:01:b5:b7"; //todo: need to fix
-    const user = JSON.parse(localStorage.getItem("user"));
-
-    /*******************
-     * Etc.
-     *******************/
+    const [cpu, setCpu] = useState(initialState);
+    const [mem, setMem] = useState(initialState);
+    const [disk, setDisk] = useState(initialState);
+    const [traffic, setTraffic] = useState(initialState);
 
     /**************************************************************
      * Axios Function
      **************************************************************/
+    const getData = async () => {
+        try {
+            const response = await getRankingData();
+            // console.log("TEST RESPONSE: ", response.data.cpu[0].avg);
+
+            setCpu({
+                labels: response.data.cpu.map(val => (val.serial_number)),
+                datasets: [{
+                    ...initialState.datasets[0],
+                    label: "CPU(%)",
+                    data: response.data.cpu.map(val => val.avg.toFixed(1)),
+                }],
+            });
+
+            setMem({
+                labels: response.data.mem.map(val => (val.serial_number)),
+                datasets: [{
+                    ...initialState.datasets[0],
+                    label: "MEM(%)",
+                    data: response.data.mem.map(val => val.avg.toFixed(1)),
+                }],
+            });
+
+            setDisk({
+                labels: response.data.disk.map(val => (val.serial_number)),
+                datasets: [{
+                    ...initialState.datasets[0],
+                    label: "DISK(%)",
+                    data: response.data.disk.map(val => val.avg.toFixed(1)),
+                }],
+            });
+
+            setTraffic({
+                labels: response.data.traffic.map(val => (val.serial_number)),
+                datasets: [{
+                    ...initialState.datasets[0],
+                    label: "TRAFFIC(Mb)",
+                    data: response.data.traffic.map(val => (val.avg / 1024 / 1024).toFixed(0)),
+                }],
+            });
+        } catch {
+            console.log("No data!");
+        }
+    };
 
     /**************************************************************
      * Handle Function
@@ -108,8 +158,10 @@ const TopManagerMain = () => {
     /**************************************************************
      * useEffect
      **************************************************************/
-
     useEffect(() => {
+        getData();
+        const timer = setInterval(getData, 10000);
+        return () => clearInterval(timer);
     }, []);
 
     return (
@@ -134,16 +186,16 @@ const TopManagerMain = () => {
             </Row>
             <Row>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphBar height={190}/>
+                    <GraphBar height={190} data={cpu}/>
                 </Col>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphBar height={190}/>
+                    <GraphBar height={190} data={mem}/>
                 </Col>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphBar height={190}/>
+                    <GraphBar height={190} data={disk}/>
                 </Col>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphBar height={190}/>
+                    <GraphBar height={190} data={traffic}/>
                 </Col>
             </Row>
         </Fragment>
