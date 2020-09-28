@@ -170,24 +170,24 @@ const SidebarContent = ({
                 {/*sidebar-dropdown true*/}
                 <SidebarLink title="DASHBOARD" icon={outlineDashboard}
                              route="/micro/dashboard"
-                             onClick={() => changeMenuTitle('MICRO CLOUD', 'DASHBOARD', '')}
+                             onClick={() => changeMenuTitle('HYBRID CLOUD', 'DASHBOARD', '')}
                              style={authMenuDisplay(true, true, UNREGISTERED_USER)}
                 />
-                <SidebarCategory title="MICRO CLOUD" icon={serverOutlineBadged}
+                <SidebarCategory title="HYBRID CLOUD" icon={serverOutlineBadged}
                                  dropdown={dropdown}
                                  style={authMenuDisplay(sidebarDropdown, true, UNREGISTERED_USER)}>
                     <SidebarLink title="SERVER" route="/micro/servers"
-                                 onClick={() => changeMenuTitle('MICRO CLOUD', 'SERVER', '')}/>
+                                 onClick={() => changeMenuTitle('HYBRID CLOUD', 'SERVER', '')}/>
                     <SidebarLink title="NETWORK" route="/micro/networks"
-                                  onClick={() => changeMenuTitle('MICRO CLOUD', 'NETWORK', '')}
+                                  onClick={() => changeMenuTitle('HYBRID CLOUD', 'NETWORK', '')}
                                   style={authMenuDisplay(sidebarDropdown, true, NB_MANAGER)}/>
                     <SidebarLink title="IMAGE" route="/micro/images"
-                                 onClick={() => changeMenuTitle('MICRO CLOUD', 'IMAGE', '')}
+                                 onClick={() => changeMenuTitle('HYBRID CLOUD', 'IMAGE', '')}
                                  style={authMenuDisplay(sidebarDropdown, true, NB_MANAGER)}/>
                     <SidebarLink title="VM" route="/micro/vms"
-                                 onClick={() => changeMenuTitle('MICRO CLOUD', 'VM', '')}/>
+                                 onClick={() => changeMenuTitle('HYBRID CLOUD', 'VM', '')}/>
                     <SidebarLink title="VM-CARD" route="/micro/vmsCard"
-                                 onClick={() => changeMenuTitle('MICRO CLOUD', 'VM', 'card')}/>
+                                 onClick={() => changeMenuTitle('HYBRID CLOUD', 'VM', 'card')}/>
                 </SidebarCategory>
                 <SidebarCategory title="SERVER" icon={serverOutlineBadged}
                                  dropdown={dropdown}
