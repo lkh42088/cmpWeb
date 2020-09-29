@@ -77,13 +77,13 @@ const MyResponsivePie = (props) => {
                                 motionDamping={15}
                                 defs={[
                                     linearGradientDef('gradientB', [
-                                        { offset: 0, color: '#FFF' },
+                                        { offset: 0, color: '#EEE' },
                                         { offset: 90, color: 'inherit', opacity: 0.8 },
                                     ]),
                                 ]}
-                                // fill={[
-                                //     { match: '*', id: 'gradientB' },
-                                // ]}
+                                fill={[
+                                    { match: '*', id: 'gradientB' },
+                                ]}
                                 legends={[
                                     {
                                         anchor: 'bottom',

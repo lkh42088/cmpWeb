@@ -62,11 +62,15 @@ const initialState = {
     datasets: [
         {
             label: 'NO DATA',
-            backgroundColor: '#a2d5f2',
-            borderColor: '#a2d5f2',
+            // backgroundColor: '#a2d5f2',
+            backgroundColor: "rgba(204, 0, 0, 0.5)",
+            borderColor: '#ff5722',
             borderWidth: 1,
             hoverBackgroundColor: '#07689f',
             hoverBorderColor: '#07689f',
+            categoryPercentage: 0.6,
+            barPercentage: 0.8,
+            minBarLength: 2,
             data: [],
         },
     ],
@@ -203,16 +207,16 @@ const TopManagerMain = () => {
             </Row>
             <Row>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphBar height={190} data={cpu}/>
+                    <GraphBar height={220} data={cpu}/>
                 </Col>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphBar height={190} data={mem}/>
+                    <GraphBar height={220} data={mem}/>
                 </Col>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphBar height={190} data={disk}/>
+                    <GraphBar height={220} data={disk}/>
                 </Col>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphBar height={190} data={traffic}/>
+                    <GraphBar height={220} data={traffic}/>
                 </Col>
             </Row>
         </Fragment>
