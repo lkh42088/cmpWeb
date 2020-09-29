@@ -21,9 +21,9 @@ import {
 } from "../../../lib/var/globalVariable";
 
 const SidebarContent = ({
-    changeToLight, changeToDark, changeMenuTitle, onClick,
-    user, dropdown, changeHybridCloud,
-}) => {
+                            changeToLight, changeToDark, changeMenuTitle, onClick,
+                            user, dropdown, changeHybridCloud,
+                        }) => {
     const dispatch = useDispatch();
 
     const hideSidebar = () => {
@@ -99,7 +99,7 @@ const SidebarContent = ({
         return authMenuDisplay;
     };
 
-    const authMenuDisplay = (dropFlag, hybridFlag, userLevel) => {
+    const authMenuDisplay = (dropFlag, hybridFlag, userLevel, levelFlag) => {
         const menuDisplay = {display: "none"};
         if (user) {
             const {level} = user;
@@ -117,9 +117,28 @@ const SidebarContent = ({
             if (hybridCloud === hybridFlag) {
                 if (level > userLevel) {
                     menuDisplay.display = "none";
+                } else {
+                    menuDisplay.display = "block";
+                }
+            }
+
+            // user level display
+            if (levelFlag) {
+/*
+                if (level === userLevel) {
+                    menuDisplay.display = "block";
+                } else {
+                    menuDisplay.display = "none";
+                }
+*/
+                if (level <= UNREGISTERED_USER && level >= CUSTOMER_MANAGER) {
+                    menuDisplay.display = "block";
+                } else {
+                    menuDisplay.display = "none";
                 }
             }
         }
+
         return menuDisplay;
     };
 
@@ -142,14 +161,14 @@ const SidebarContent = ({
 
                 {/*COMMON DASHBOARD*/}
                 {/*sidebar-dropdown false*/}
-                <Link to={getDashBoardLink()}
+               {/* <Link to={getDashBoardLink()}
                       onClick={() => changeMenuTitle('DASHBOARD', '', '')}
                 >
-                    <SidebarCategory title="DASHBOARD"
+                    <SidebarCategory title="DASHBOARD00"
                                      icon={outlineDashboard}
                                      style={authMenuDisplay(false, false, UNREGISTERED_USER)}
                     />
-                </Link>
+                </Link>*/}
                 {/*sidebar-dropdown true*/}
                 <SidebarLink title="DASHBOARD" icon={outlineDashboard} route={getDashBoardLink()}
                              onClick={() => changeMenuTitle('DASHBOARD', '', '')}
@@ -159,28 +178,29 @@ const SidebarContent = ({
 
                 {/*HYBRID CLOUD DASHBOARD*/}
                 {/*sidebar-dropdown false*/}
-                <Link to={getMCDashBoardLink()}
+               {/* <Link to={getMCDashBoardLink()}
                       onClick={() => changeMenuTitle('MICRO CLOUD', 'DASHBOARD', '')}
                 >
-                    <SidebarCategory title="DASHBOARD"
+                    <SidebarCategory title="DASHBOARD22"
                                      icon={outlineDashboard}
                                      style={authMenuDisplay(false, true, UNREGISTERED_USER)}
                     />
-                </Link>
+                </Link>*/}
                 {/*sidebar-dropdown true*/}
                 <SidebarLink title="DASHBOARD" icon={outlineDashboard}
                              route="/micro/dashboard"
                              onClick={() => changeMenuTitle('HYBRID CLOUD', 'DASHBOARD', '')}
                              style={authMenuDisplay(true, true, UNREGISTERED_USER)}
                 />
+                {/*before : UNREGISTERED_USER , after : OPERATOR*/}
                 <SidebarCategory title="HYBRID CLOUD" icon={serverOutlineBadged}
                                  dropdown={dropdown}
-                                 style={authMenuDisplay(sidebarDropdown, true, UNREGISTERED_USER)}>
+                                 style={authMenuDisplay(sidebarDropdown, true, OPERATOR)}>
                     <SidebarLink title="SERVER" route="/micro/servers"
                                  onClick={() => changeMenuTitle('HYBRID CLOUD', 'SERVER', '')}/>
                     <SidebarLink title="NETWORK" route="/micro/networks"
-                                  onClick={() => changeMenuTitle('HYBRID CLOUD', 'NETWORK', '')}
-                                  style={authMenuDisplay(sidebarDropdown, true, NB_MANAGER)}/>
+                                 onClick={() => changeMenuTitle('HYBRID CLOUD', 'NETWORK', '')}
+                                 style={authMenuDisplay(sidebarDropdown, true, NB_MANAGER)}/>
                     <SidebarLink title="IMAGE" route="/micro/images"
                                  onClick={() => changeMenuTitle('HYBRID CLOUD', 'IMAGE', '')}
                                  style={authMenuDisplay(sidebarDropdown, true, NB_MANAGER)}/>
@@ -226,6 +246,24 @@ const SidebarContent = ({
                     <SidebarLink title="SETTING" route="/setting"
                                  onClick={() => changeMenuTitle('SETTING', '', '')}/>
                 </SidebarCategory>
+
+                <SidebarLink title="VM CARD" icon={outlineDashboard}
+                             route="/micro/vmsCard"
+                             onClick={() => changeMenuTitle('VM CARD', '', '')}
+                             style={authMenuDisplay(sidebarDropdown, true, UNREGISTERED_USER, true)}
+                />
+
+                <SidebarLink title="VM VNC(개발중)" icon={outlineDashboard}
+                             route="/micro/dashboard"
+                             onClick={() => changeMenuTitle('VM VNC', '', '')}
+                             style={authMenuDisplay(sidebarDropdown, true, UNREGISTERED_USER, true)}
+                />
+
+                <SidebarLink title="VM Inventory" icon={outlineDashboard}
+                             route="/micro/vms"
+                             onClick={() => changeMenuTitle('VM Inventory', '', '')}
+                             style={authMenuDisplay(sidebarDropdown, true, UNREGISTERED_USER, true)}
+                />
             </ul>
         </div>
     );
