@@ -88,3 +88,7 @@ export const getMcVmsCountByCpName = cpName => client.get(`/v1/micro/dashboard/v
 
 // 관리자 대시보드를 위한 Resource data 조회
 export const getRankingData = () => client.get(`/v1/micro/dashboard/rank`).then(response => response);
+
+export const getMcVmSnapshot = ({
+    rows, offset, orderBy, order, cpName,
+}) => client.get(`/v1/micro/snapshot-paging/${rows}/${offset}/${orderBy}/${order}/${cpName}`);
