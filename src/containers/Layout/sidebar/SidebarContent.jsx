@@ -259,6 +259,9 @@ const SidebarContent = ({
                              style={authMenuDisplay(sidebarDropdown, true, UNREGISTERED_USER, true)}
                 />
 
+                <SidebarLink title="SNAPSHOT(개발중)" icon={outlineDashboard}
+                             route="/micro/snapshot"
+                             onClick={() => changeMenuTitle('SNAPSHOT', '', '')}/>
                 <SidebarLink title="VM Inventory" icon={outlineDashboard}
                              route="/micro/vms"
                              onClick={() => changeMenuTitle('VM Inventory', '', '')}
