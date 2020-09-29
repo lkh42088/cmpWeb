@@ -187,6 +187,10 @@ const WriteVm = (props) => {
         snapDays: 1,
         snapHours: 0,
         snapMinutes: 0,
+        backupType: false,
+        backupDays: 1,
+        backupHours: 0,
+        backupMinutes: 0,
     });
 
     const [requires, setRequireds] = useState({
@@ -205,6 +209,10 @@ const WriteVm = (props) => {
         snapDays: false,
         snapHours: false,
         snapMinutes: false,
+        backupType: false,
+        backupDays: false,
+        backupHours: false,
+        backupMinutes: false,
     });
 
     const [disables, setDisables] = useState({
@@ -223,6 +231,10 @@ const WriteVm = (props) => {
         snapDays: true,
         snapHours: true,
         snapMinutes: true,
+        backupType: false,
+        backupDays: true,
+        backupHours: true,
+        backupMinutes: true,
     });
 
     const [helpers, setHelpers] = useState({
@@ -241,6 +253,10 @@ const WriteVm = (props) => {
         snapDays: "",
         snapHours: "",
         snapMinutes: "",
+        backupType: "",
+        backupDays: "",
+        backupHours: "",
+        backupMinutes: "",
     });
 
     const [errors, setErrors] = useState({
@@ -259,6 +275,10 @@ const WriteVm = (props) => {
         snapDays: false,
         snapHours: false,
         snapMinutes: false,
+        backupType: false,
+        backupDays: false,
+        backupHours: false,
+        backupMinutes: false,
     });
 
     /*******************
@@ -289,6 +309,10 @@ const WriteVm = (props) => {
             snapDays: 1,
             snapHours: 0,
             snapMinutes: 0,
+            backupType: false,
+            backupDays: 1,
+            backupHours: 0,
+            backupMinutes: 0,
         });
 
         setDisables({
@@ -307,6 +331,10 @@ const WriteVm = (props) => {
             snapDays: true,
             snapHours: true,
             snapMinutes: true,
+            backupType: false,
+            backupDays: true,
+            backupHours: true,
+            backupMinutes: true,
         });
 
         setHelpers({
@@ -325,6 +353,10 @@ const WriteVm = (props) => {
             snapDays: "",
             snapHours: "",
             snapMinutes: "",
+            backupType: "",
+            backupDays: "",
+            backupHours: "",
+            backupMinutes: "",
         });
 
         setErrors({
@@ -343,6 +375,10 @@ const WriteVm = (props) => {
             snapDays: false,
             snapHours: false,
             snapMinutes: false,
+            backupType: false,
+            backupDays: false,
+            backupHours: false,
+            backupMinutes: false,
         });
         setServerList([]);
     };
@@ -420,6 +456,20 @@ const WriteVm = (props) => {
                 snapDays: !value,
                 snapHours: !value,
                 snapMinutes: !value,
+            });
+        } else if (name === "backupType") {
+            setFields({
+                ...fields,
+                [name]: value,
+                backupDays: 1,
+                backupHours: 0,
+                backupMinutes: 0,
+            });
+            setDisables({
+                ...disables,
+                backupDays: !value,
+                backupHours: !value,
+                backupMinutes: !value,
             });
         } else {
             setFields({
@@ -930,7 +980,7 @@ const WriteVm = (props) => {
                                         const key = index;
                                         return (
                                             <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
-                                    );
+                                        );
                                     })}
                                 </Select>
                                 <FormHelperText>{helpers.snapDays}</FormHelperText>
@@ -1004,6 +1054,153 @@ const WriteVm = (props) => {
                                     })}
                                 </Select>
                                 <FormHelperText>{helpers.snapMinutes}</FormHelperText>
+                            </FormControl>
+                        </div>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <div>
+                            <span className={labelClassName}>* Backup</span>
+                            <FormControl
+                                size={fieldSize}
+                                className={fieldClassName}
+                                variant="filled"
+                                error={errors.backupType}
+                                disabled={disables.backupType}
+                            >
+                                <Select
+                                    required={errors.backupType}
+                                    disabled={disables.backupType}
+                                    name="backupType"
+                                    value={fields.backupType}
+                                    onChange={(e) => {
+                                        console.log("event target:", e.target);
+                                        console.log("event value:", e.target.value);
+                                        const res = snapTypeList.filter(item => item.value === e.target.value);
+                                        if (res.length === 0) {
+                                            handleChangeField("backupType", false);
+                                        } else {
+                                            console.log("name:", res[0].name);
+                                            handleChangeField("backupType", e.target.value);
+                                        }
+                                    }}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem key={0} value={false}>
+                                        <em>Disable</em>
+                                    </MenuItem>
+                                    {snapTypeList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                                <FormHelperText>{helpers.backupType}</FormHelperText>
+                            </FormControl>
+                        </div>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <div>
+                            <span className={labelClassName}>* Days </span>
+                            <FormControl
+                                size={fieldSize}
+                                className={fieldClassName}
+                                variant="filled"
+                                error={errors.backupDays}
+                                disabled={disables.backupDays}
+                            >
+                                <Select
+                                    required={errors.backupDays}
+                                    disabled={disables.backupDays}
+                                    name="backupDays"
+                                    value={fields.backupDays}
+                                    onChange={(e) => {
+                                        console.log("event:", e.target.value);
+                                        handleChangeField("backupDays", e.target.value);
+                                    }}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem key={1} value={1}>
+                                        <em>1 day</em>
+                                    </MenuItem>
+                                    {snapDayList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                    );
+                                    })}
+                                </Select>
+                                <FormHelperText>{helpers.backupDays}</FormHelperText>
+                            </FormControl>
+                        </div>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <div>
+                            <span className={labelClassName}>* Hours </span>
+                            <FormControl
+                                size={fieldSize}
+                                className={fieldClassName}
+                                variant="filled"
+                                error={errors.backupHours}
+                                disabled={disables.backupHours}
+                            >
+                                <Select
+                                    required={errors.backupHours}
+                                    disabled={disables.backupHours}
+                                    name="backupHours"
+                                    value={fields.backupHours}
+                                    onChange={(e) => {
+                                        console.log("event:", e.target.value);
+                                        handleChangeField("backupHours", e.target.value);
+                                    }}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem key={0} value={0}>
+                                        <em>0</em>
+                                    </MenuItem>
+                                    {snapHourList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                                <FormHelperText>{helpers.backupHours}</FormHelperText>
+                            </FormControl>
+                        </div>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <div>
+                            <span className={labelClassName}>* Minutes </span>
+                            <FormControl
+                                size={fieldSize}
+                                className={fieldClassName}
+                                variant="filled"
+                                error={errors.backupMinutes}
+                                disabled={disables.backupMinutes}
+                            >
+                                <Select
+                                    required={errors.backupMinutes}
+                                    disabled={disables.backupMinutes}
+                                    name="backupMinutes"
+                                    value={fields.backupMinutes}
+                                    onChange={(e) => {
+                                        console.log("event:", e.target.value);
+                                        handleChangeField("backupMinutes", e.target.value);
+                                    }}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem key={0} value={0}>
+                                        <em>0</em>
+                                    </MenuItem>
+                                    {snapMinList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                                <FormHelperText>{helpers.backupMinutes}</FormHelperText>
                             </FormControl>
                         </div>
                     </Grid>
