@@ -125,7 +125,7 @@ const TopManagerMain = () => {
                 labels: response.data.cpu.map(val => (val.serial_number)),
                 datasets: [{
                     ...initialState.datasets[0],
-                    label: "CPU(%)",
+                    label: "CPU (%)",
                     data: response.data.cpu.map(val => val.avg.toFixed(1)),
                 }],
             });
@@ -134,7 +134,7 @@ const TopManagerMain = () => {
                 labels: response.data.mem.map(val => (val.serial_number)),
                 datasets: [{
                     ...initialState.datasets[0],
-                    label: "MEM(%)",
+                    label: "MEM (%)",
                     data: response.data.mem.map(val => val.avg.toFixed(1)),
                 }],
             });
@@ -143,7 +143,7 @@ const TopManagerMain = () => {
                 labels: response.data.disk.map(val => (val.serial_number)),
                 datasets: [{
                     ...initialState.datasets[0],
-                    label: "DISK(%)",
+                    label: "DISK (%)",
                     data: response.data.disk.map(val => val.avg.toFixed(1)),
                 }],
             });
@@ -152,7 +152,7 @@ const TopManagerMain = () => {
                 labels: response.data.traffic.map(val => (val.serial_number)),
                 datasets: [{
                     ...initialState.datasets[0],
-                    label: "TRAFFIC(Mb)",
+                    label: "TRAFFIC (MB)",
                     data: response.data.traffic.map(val => (val.avg / 1024 / 1024).toFixed(0)),
                 }],
             });
