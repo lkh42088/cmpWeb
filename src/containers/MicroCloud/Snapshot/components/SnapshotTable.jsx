@@ -24,6 +24,7 @@ const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
     {id: 'cpName', disablePadding: false, label: '회사명'},
     {id: 'serialNumber', disablePadding: false, label: '서버 SN'},
+    {id: 'vmName', disablePadding: false, label: 'VM Name'},
     {id: 'name', disablePadding: false, label: 'Snapshot Name'},
 ];
 
@@ -356,6 +357,12 @@ const SnapshotTable = () => {
                                 className={cellClassName}
                                 style={{width: "5%"}}
                             >
+                                {row.vmName}
+                            </TableCell>
+                            <TableCell
+                                className={cellClassName}
+                                style={{width: "5%"}}
+                            >
                                 {row.name}
                             </TableCell>
                         </React.Fragment>
@@ -376,9 +383,7 @@ const SnapshotTable = () => {
                         handleRefresh={handleRefresh}
                         onRequestSort={handleRequestSort}
                         rows={headRows}
-                        // handleOpen={handleOpenAddVm}
-                        // handleSubmitSearch={handleSubmitSearch}
-                        contents="VM"
+                        contents="Snapshot"
                         count={totalCount}
                         rowsPerPage={rowsPerPage}
                         page={currentPage}

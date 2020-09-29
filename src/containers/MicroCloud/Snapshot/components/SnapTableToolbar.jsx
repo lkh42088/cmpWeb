@@ -99,18 +99,9 @@ const useToolbarStyles = makeStyles(theme => ({
     },
 }));
 
-const searchConditions = [
-    '아이디',
-    '이름',
-    '회사명',
-];
-
-const ITEM_HEIGHT = 48;
-
 const TableFilterButton = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const { rows, onRequestSort } = props;
-
 
     const handleClick = (event) => {
         console.log("TableFilterButton: handleClick");
@@ -166,69 +157,11 @@ const SnapTableToolbar = (props) => {
     const classes = useToolbarStyles();
     const {
         rows, numSelected, handleDeleteSelected, onRequestSort,
-        handleOpen, contents, handleRefresh, handleSubmitSearch,
+        contents, handleRefresh,
         count, rowsPerPage, page, onChangePage, onChangeRowsPerPage, rowsPerPageOptions,
     } = props;
-    const addComment = contents.concat(" 추가");
-    const deleteComment = `선택한 ${contents} 삭제`;
-
-    const [anchorMenu, setAnchorMenu] = React.useState(null);
-    const openMenu = Boolean(anchorMenu);
-    const [selectSearch, setSelectSearch] = useState("아이디");
-    const [searchPlaceHolder, setSearchPlaceHolder] = useState("");
-    const [searchContent, setSearchContent] = useState("");
-
-    const handleClickMenu = (event) => {
-        setAnchorMenu(event.currentTarget);
-    };
-
-    const handleCloseMenu = () => {
-        setAnchorMenu(null);
-    };
-
-    const handleSelectItem = (item) => {
-        setSelectSearch(item);
-        setSearchPlaceHolder(`${item} 검색`);
-        setSearchContent("");
-        setAnchorMenu(null);
-    };
-
-    const handleChangeSearch = (e) => {
-        console.log("handleChangeSearch: ", e.target.value);
-        setSearchContent(e.target.value);
-    };
-
-    const convertSearchType = () => {
-        switch (selectSearch) {
-            case "이름":
-                return "name";
-            case "회사명":
-                return "cpName";
-            default:
-                return "id";
-        }
-    };
-
-    const handleClickSearchIcon = (e) => {
-        if (searchContent.trim().length > 0) {
-            handleSubmitSearch({
-                searchType: convertSearchType(),
-                searchContent,
-            });
-        } else {
-            handleSubmitSearch(null);
-        }
-    };
-
-    const handleDelete = () => {
-        console.log("handleDelete...");
-    };
-
-    const handleChange = () => {
-    };
 
     useEffect(() => {
-        setSearchPlaceHolder(`${selectSearch} 검색`);
     }, []);
 
     return (
@@ -269,69 +202,6 @@ const SnapTableToolbar = (props) => {
                                         <RefreshIcon/>
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title={addComment} aria-label="add">
-                                    <IconButton type="button" onClick={handleOpen}>
-                                        <AddIcon/>
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="더보기" aria-label="more">
-                                    <IconButton type="button" onClick={handleOpen}>
-                                        <MoreVertIcon/>
-                                    </IconButton>
-                                </Tooltip>
-                            </Grid>
-                            <Grid item md={4} zeroMinWidth>
-                                <Paper component="div" className={classes.paper}>
-                                    <Tooltip title="검색조건" aria-label="searchCondition">
-                                        <IconButton
-                                            className={classes.iconButton}
-                                            aria-label="menu"
-                                            onClick={handleClickMenu}
-                                        >
-                                            <MenuIcon />
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Menu
-                                        id="long-menu"
-                                        anchorEl={anchorMenu}
-                                        keepMounted
-                                        open={openMenu}
-                                        onClose={handleCloseMenu}
-                                        PaperProps={{
-                                            style: {
-                                                maxHeight: ITEM_HEIGHT * 4.5,
-                                                width: '20ch',
-                                            },
-                                        }}
-                                     >
-                                        {searchConditions.map(condition => (
-                                            <MenuItem key={condition}
-                                                      selected={condition === selectSearch}
-                                                      onClick={() => handleSelectItem(condition)}>
-                                                {condition}
-                                            </MenuItem>
-                                        ))}
-                                    </Menu>
-                                    <InputBase
-                                        className={classes.input}
-                                        placeholder={searchPlaceHolder}
-                                        inputProps={{ 'aria-label': `search google maps` }}
-                                        value={searchContent}
-                                        onChange={handleChangeSearch}
-                                    />
-                                    <IconButton
-                                        // type="submit"
-                                        className={classes.iconButton}
-                                        aria-label="search"
-                                        onClick={handleClickSearchIcon}
-                                    >
-                                        <SearchIcon />
-                                    </IconButton>
-                                    <Divider className={classes.divider} orientation="vertical" />
-                                    <IconButton color="primary" className={classes.iconButton} aria-label="directions">
-                                        <DirectionsIcon />
-                                    </IconButton>
-                                </Paper>
                             </Grid>
                             <Grid item md={5} zeroMinWidth>
                             <TablePagination
