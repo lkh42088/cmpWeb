@@ -111,7 +111,7 @@ const TopManagerMain = () => {
     const getData = async () => {
         try {
             const response = await getRankingData();
-            console.log("TEST RESPONSE: ", response.data.cpu[0].avg);
+            //console.log("TEST RESPONSE: ", response.data.cpu[0].avg);
             const tmpLabels = response.data.cpu.map(val => (val.serial_number));
             const tmpData = response.data.cpu.map(val => (val.avg.toFixed(1)));
             initialState.datasets.data = tmpData;

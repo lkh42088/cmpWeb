@@ -1,5 +1,7 @@
 import React, {useEffect, useState, Fragment} from "react";
 import {Card, CardBody} from "reactstrap";
+import NumberFormat from "react-number-format";
+
 import {
     PieChart, Pie, Sector, ResponsiveContainer,
 } from 'recharts';
@@ -14,7 +16,6 @@ const CountInfo = (props) => {
     /**************************************************************
      * Handle Function
      **************************************************************/
-
 
     /**************************************************************
      * Axios Function
@@ -44,7 +45,8 @@ const CountInfo = (props) => {
                             <span style={{
                                 fontSize: "1.3rem",
                             }}>
-                                {count}
+                                {/*{Number(count)}*/}
+                                <NumberFormat value={count} displayType="text" thousandSeparator/>
                             </span>
                     </p>
                 </Fragment>
