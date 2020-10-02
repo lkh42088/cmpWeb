@@ -63,8 +63,9 @@ const initialState = {
         {
             label: 'NO DATA',
             // backgroundColor: '#a2d5f2',
-            backgroundColor: "rgba(204, 0, 0, 0.5)",
+            backgroundColor: "rgba(204, 0, 0, 0.2)",
             borderColor: '#ff5722',
+            opacity: '0.5',
             borderWidth: 1,
             hoverBackgroundColor: '#07689f',
             hoverBorderColor: '#07689f',

@@ -43,7 +43,7 @@ const GraphBar = (prop) => {
     return (
         <Fragment>
             <Card className="cb-card">
-                <CardBody className="cb-card-body" style={{backgroundColor: "black", opacity: "0.7"}}>
+                <CardBody className="cb-card-body">
                     <Bar data={data} options={options} height={height}/>
                 </CardBody>
             </Card>
