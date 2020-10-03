@@ -13,6 +13,9 @@ import {OPERATOR} from "../../../../lib/var/globalVariable";
 import {
     getMcServers, getMcVms, getMcVmsCountByCpName,
 } from "../../../../lib/api/microCloud";
+import NBGaugeGraph from "./NBGaugeGraph";
+import NBGaugeLiquid from "./NBGaugeLiquid";
+import NBGaugeSvg from "./NBGaugeSvg";
 
 const pieColor = {
     defaultColor: '#d4d7dd',
@@ -79,6 +82,27 @@ const BaremetalMain = (props) => {
 
     return (
         <Fragment>
+            <Row className="classes.row">
+                {/*TEST CODE : todo (need to remove)*/}
+                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <NBGaugeGraph
+                    height={150}
+                    mac={mac}
+                    title="CPU" pieColor={pieColor} warringUsed={80}/>
+                </Col>
+                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <NBGaugeLiquid
+                        height={150}
+                        mac={mac}
+                        title="MEMORY" pieColor={pieColor} warringUsed={80}/>
+                </Col>
+                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <NBGaugeSvg
+                        height={150}
+                        mac={mac}
+                        title="DISK" pieColor={pieColor} warringUsed={80}/>
+                </Col>
+            </Row>
             <Row className="classes.row">
                 <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
                     <MyResponsiveInfo
