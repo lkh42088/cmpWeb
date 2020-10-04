@@ -4,9 +4,12 @@ import {
     Card, CardBody, Col, Row,
 } from "reactstrap";
 import {ResponsiveContainer} from "recharts";
+import { linearGradientDef } from '@nivo/core';
 
 const MyResponsivePie = (props) => {
-    const {data, height} = props;
+    const {count, data, height} = props;
+    // console.log(count, data);
+
     return (
         <Card className="cb-card">
             <CardBody className="cb-card-body">
@@ -25,9 +28,9 @@ const MyResponsivePie = (props) => {
                             /*left: "15%",*/
                         }} className="sideInfo">
                             <ul className="sideInfo">
-                                <li className="text-center"><b>총 대수 : 500</b></li>
-                                <li className="text-center">On : 400</li>
-                                <li className="text-center">Off : 100</li>
+                                <li className="text-center"><b>총 대수 : {count ? count.total : 0}</b></li>
+                                <li className="text-center">On : {count ? count.operate : 0}</li>
+                                <li className="text-center">Off : {count ? (count.total - count.operate) : 0}</li>
                             </ul>
                         </div>
                     </Col>
@@ -49,103 +52,44 @@ const MyResponsivePie = (props) => {
                                     left: 80,
                                 }}
                                 startAngle={-180}
-                                innerRadius={0.65}
+                                innerRadius={0.35}
                                 padAngle={2}
-                                colors={{scheme: 'blues'}}
-                                borderWidth={1}
+                                colors={{scheme: 'category10'}}
+                                borderWidth={3}
                                 borderColor={{
                                     from: 'color',
-                                    modifiers: [['darker', 0.2]],
+                                    modifiers: [['darker', 0.5]],
                                 }}
-                                radialLabelsSkipAngle={10}
-                                radialLabelsTextXOffset={6}
+                                enableRadialLabels={false}
+                                radialLabelsSkipAngle={0}
+                                radialLabelsTextXOffset={1}
                                 radialLabelsTextColor="#333333"
-                                radialLabelsLinkOffset={0}
+                                radialLabelsLinkOffset={-5}
                                 radialLabelsLinkDiagonalLength={16}
                                 radialLabelsLinkHorizontalLength={24}
                                 radialLabelsLinkStrokeWidth={1}
                                 radialLabelsLinkColor={{from: 'color'}}
+                                sliceLabel={e => (`${e.id} (${e.value})`)}
                                 slicesLabelsSkipAngle={10}
                                 slicesLabelsTextColor="#333333"
                                 animate="true"
                                 motionStiffness={90}
                                 motionDamping={15}
                                 defs={[
-                                    {
-                                        id: 'dots',
-                                        type: 'patternDots',
-                                        background: 'inherit',
-                                        color: 'rgba(255, 255, 255, 0.3)',
-                                        size: 4,
-                                        padding: 1,
-                                        stagger: true,
-                                    },
-                                    {
-                                        id: 'lines',
-                                        type: 'patternLines',
-                                        background: 'inherit',
-                                        color: 'rgba(255, 255, 255, 0.3)',
-                                        rotation: -45,
-                                        lineWidth: 6,
-                                        spacing: 10,
-                                    },
+                                    linearGradientDef('gradientB', [
+                                        { offset: 0, color: '#EEE' },
+                                        { offset: 90, color: 'inherit', opacity: 0.8 },
+                                    ]),
                                 ]}
                                 fill={[
-                                    {
-                                        match: {
-                                            id: 'ruby',
-                                        },
-                                        id: 'dots',
-                                    },
-                                    {
-                                        match: {
-                                            id: 'c',
-                                        },
-                                        id: 'dots',
-                                    },
-                                    {
-                                        match: {
-                                            id: 'go',
-                                        },
-                                        id: 'dots',
-                                    },
-                                    {
-                                        match: {
-                                            id: 'python',
-                                        },
-                                        id: 'dots',
-                                    },
-                                    {
-                                        match: {
-                                            id: 'scala',
-                                        },
-                                        id: 'lines',
-                                    },
-                                    {
-                                        match: {
-                                            id: 'lisp',
-                                        },
-                                        id: 'lines',
-                                    },
-                                    {
-                                        match: {
-                                            id: 'elixir',
-                                        },
-                                        id: 'lines',
-                                    },
-                                    {
-                                        match: {
-                                            id: 'javascript',
-                                        },
-                                        id: 'lines',
-                                    },
+                                    { match: '*', id: 'gradientB' },
                                 ]}
                                 legends={[
                                     {
                                         anchor: 'bottom',
                                         direction: 'row',
                                         translateY: 56,
-                                        itemWidth: 70,
+                                        itemWidth: 120,
                                         itemHeight: 15,
                                         itemTextColor: '#999',
                                         symbolSize: 10,

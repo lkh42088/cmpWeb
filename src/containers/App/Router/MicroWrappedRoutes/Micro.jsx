@@ -7,6 +7,7 @@ import MicroCloudImages from '../../../MicroCloud/Images/index';
 import MicroCloudNetworks from '../../../MicroCloud/Networks/index';
 import MicroCloudVnc from "../../../MicroCloud/Vnc/index";
 import MicroCloudDashboard from "../../../MicroCloud/Dashboard/index";
+import MicroCloudSnapshot from "../../../MicroCloud/Snapshot/index";
 
 export default () => (
     <Switch>
@@ -17,5 +18,6 @@ export default () => (
         <Route path="/micro/dashboard" component={MicroCloudDashboard} />
         <Route path="/micro/vms" component={MicroCloudVms} />
         <Route path="/micro/vmsCard" component={MicroCloudVms} />
+        <Route path="/micro/snapshot" component={MicroCloudSnapshot} />
     </Switch>
 );

@@ -13,6 +13,13 @@ import {OPERATOR} from "../../../../lib/var/globalVariable";
 import {
     getMcServers, getMcVms, getMcVmsCountByCpName,
 } from "../../../../lib/api/microCloud";
+import NBGaugeGraph from "./NBGaugeGraph";
+import NBGaugeLiquid from "./NBGaugeLiquid";
+import NBGaugeSvg from "./NBGaugeSvg";
+import {getMcNetworksMem} from "../../../../lib/api/microCloudMem";
+import {getMcNetworksCpu} from "../../../../lib/api/microCloudCpu";
+import {getMcNetworksDisk} from "../../../../lib/api/microCloudDisk";
+import NBCarousel from "./NBCarousel";
 
 const pieColor = {
     defaultColor: '#d4d7dd',
@@ -41,6 +48,10 @@ const BaremetalMain = (props) => {
     const [vmCount, setVmCount] = useState(0);
     const [snapshotCount, setSnapshotCount] = useState(0);
     const [backupCount, setBackupCount] = useState(0);
+    // Resource data
+    const [cpu, setCpu] = useState();
+    const [mem, setMem] = useState();
+    const [disk, setDisk] = useState();
 
 
     /**************************************************************
@@ -67,12 +78,30 @@ const BaremetalMain = (props) => {
         }
     };
 
+    const getResourceData = async () => {
+        try {
+            // cpu
+            const cpuVal = await getMcNetworksCpu(mac);
+            const value = (100 - cpuVal.data[0].usage_idle).toFixed(0);
+            setCpu(value);
+            // mem
+            const memVal = await getMcNetworksMem(mac);
+            setMem(100 - memVal.data[0].available_percent.toFixed(0));
+            // disk
+            const diskVal = await getMcNetworksDisk(mac);
+            setDisk(diskVal.data[0].used_percent.toFixed(0));
+        } catch (e) {
+            console.log("getPageData error!");
+        }
+    };
+
 
     /**************************************************************
      * useEffect
      **************************************************************/
     useEffect(() => {
         getData();
+        getResourceData();
         const timer = setInterval(getData, 10000);
         return () => clearInterval(timer);
     }, [mac]);
@@ -127,6 +156,57 @@ const BaremetalMain = (props) => {
                                       title="BareMetal Out Interface"
                                       mac={mac}
                     />
+                </Col>
+            </Row>
+            <Row className="classes.row">
+                {/*TEST CODE : todo (need to remove)*/}
+                {/*<Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>*/}
+                {/*    <NBGaugeGraph*/}
+                {/*    height={150}*/}
+                {/*    mac={mac}*/}
+                {/*    title="CPU" pieColor={pieColor} warringUsed={80}/>*/}
+                {/*</Col>*/}
+                {/*<Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>*/}
+                {/*    <NBGaugeSvg*/}
+                {/*        height={150}*/}
+                {/*        mac={mac}*/}
+                {/*        title="DISK" pieColor={pieColor} warringUsed={80}/>*/}
+                {/*</Col>*/}
+                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <NBCarousel
+                        itemVal={3}
+                        activeVal={1}
+                        vmCount={vmCount}
+                        snapshotCount={snapshotCount}
+                        backupCount={backupCount}
+                    />
+                </Col>
+                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <NBGaugeLiquid
+                        height={150}
+                        mac={mac}
+                        title="CPU"
+                        data={cpu}
+                        pieColor={pieColor}
+                        warringUsed={80}/>
+                </Col>
+                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <NBGaugeLiquid
+                        height={150}
+                        mac={mac}
+                        title="MEMORY"
+                        data={mem}
+                        pieColor={pieColor}
+                        warringUsed={80}/>
+                </Col>
+                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <NBGaugeLiquid
+                        height={150}
+                        mac={mac}
+                        title="DISK"
+                        data={disk}
+                        pieColor={pieColor}
+                        warringUsed={80}/>
                 </Col>
             </Row>
         </Fragment>

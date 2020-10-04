@@ -17,6 +17,9 @@
 
   @include themify($themes) {
     background: themed('colorBackground');
+    //background: #232329; //[04Oct2020,khlee]
+    //background: -webkit-linear-gradient(to right, #232329, #333339);  /* Chrome 10-25, Safari 5.1-6 */
+    //background: linear-gradient(to right, #232329, #333339); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 
   a {
@@ -156,6 +159,7 @@
 
   @include themify($themes) {
     color: themed('colorText');
+    //color: #dddddd; //[04Oct2020,khlee]
   }
 
   // 사이드바 mouse over 시 color-bar 생성 [23June2020,khlee]
@@ -186,6 +190,7 @@
 
     @include themify($themes) {
       color: themed('colorText');
+      //color: #dddddd; //[04Oct2020,khlee]
     }
   }
 

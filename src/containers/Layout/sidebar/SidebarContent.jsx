@@ -208,6 +208,8 @@ const SidebarContent = ({
                                  onClick={() => changeMenuTitle('HYBRID CLOUD', 'VM', '')}/>
                     <SidebarLink title="VM-CARD" route="/micro/vmsCard"
                                  onClick={() => changeMenuTitle('HYBRID CLOUD', 'VM', 'card')}/>
+                    <SidebarLink title="Snapshot" route="/micro/snapshot"
+                                 onClick={() => changeMenuTitle('HYBRID CLOUD', 'VM', 'snapshot')}/>
                 </SidebarCategory>
                 <SidebarCategory title="SERVER" icon={serverOutlineBadged}
                                  dropdown={dropdown}
@@ -257,6 +259,9 @@ const SidebarContent = ({
                              style={authMenuDisplay(sidebarDropdown, true, UNREGISTERED_USER, true)}
                 />
 
+                <SidebarLink title="SNAPSHOT(개발중)" icon={outlineDashboard}
+                             route="/micro/snapshot"
+                             onClick={() => changeMenuTitle('SNAPSHOT', '', '')}/>
                 <SidebarLink title="VM Inventory" icon={outlineDashboard}
                              route="/micro/vms"
                              onClick={() => changeMenuTitle('VM Inventory', '', '')}
