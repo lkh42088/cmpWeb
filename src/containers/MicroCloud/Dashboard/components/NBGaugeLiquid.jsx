@@ -1,26 +1,26 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, {
+    Fragment, useEffect, useRef, useState,
+} from "react";
 import {Card, CardBody} from "reactstrap";
 import { color } from 'd3-color';
 import { interpolateRgb } from 'd3-interpolate';
 import LiquidFillGauge from 'react-liquid-gauge';
 import {getMcNetworksMem} from "../../../../lib/api/microCloudMem";
+import {themes} from "../../../../shared/helpers";
 
 const NBGaugeLiquid = (props) => {
+    const ref = useRef();
     const {
-        height, title, pieColor, mac, warringUsed,
+        height, title, pieColor, mac, warringUsed, data,
     } = props;
-
-    const [activeIndex, setActiveIndex] = useState(0);
-
-    const [data, setData] = useState([]);
     const [state, setState] = useState();
+    const [radius, setRadius] = useState();
 
     /**************************************************************
      * Handle Function
      **************************************************************/
     const startColor = '#6495ed'; // cornflowerblue
     const endColor = '#dc143c'; // crimson
-    const radius = 100;
     const interpolate = interpolateRgb(startColor, endColor);
     const fillColor = interpolate(data / 100);
     const gradientStops = [
@@ -47,32 +47,26 @@ const NBGaugeLiquid = (props) => {
     /**************************************************************
      * Axios Function
      **************************************************************/
-    const getData = async () => {
-        try {
-            const response = await getMcNetworksMem(mac);
-            setData(100 - response.data[0].available_percent);
-        } catch {
-            console.log("memory MyResponsivePie response error");
-        }
-    };
-
     /**************************************************************
      * useEffect
      **************************************************************/
-    useEffect(() => {
-        setActiveIndex(activeIndex);
-    }, [activeIndex]);
+    const updateSize = () => {
+        setRadius(ref.current.clientWidth / 2 - 50);
+    };
 
     useEffect(() => {
-        getData();
-        const timer = setInterval(getData, 10000);
-        return () => clearInterval(timer);
-    }, [mac]);
+        window.addEventListener("resize", updateSize);
+        return () => window.removeEventListener("resize", updateSize);
+    });
+
+    useEffect(() => {
+        setRadius(ref.current.clientWidth / 2 - 50);
+    }, []);
 
     return (
-        <Card className="cb-card">
+        <Card className="cb-card" innerRef={ref}>
             <CardBody className="cb-card-body">
-                <p>{title}</p>
+                <div className="nb-card-body-graph-title">{title}</div>
                 {state === "nodata" ? (
                     <Fragment>
                         <p style={{
