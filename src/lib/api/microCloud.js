@@ -95,3 +95,9 @@ export const getRankingData = () => client.get(`/v1/micro/dashboard/rank`).then(
 export const getMcVmSnapshot = ({
     rows, offset, orderBy, order, cpName,
 }) => client.get(`/v1/micro/snapshot-paging/${rows}/${offset}/${orderBy}/${order}/${cpName}`);
+
+export const deleteSnapshotList = ({
+    idx,
+}) => client.post('/v1/micro/vms/snapshot/delete-entry-list', {
+    idx,
+});

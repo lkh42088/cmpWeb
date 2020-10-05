@@ -17,7 +17,7 @@ import {
     pagingChangeCurrentPagePrev, pagingChangeOrder, pagingChangeOrderBy, pagingChangeRowsPerPage, pagingChangeSelected,
     pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
-import {getMcVmSnapshot, unregisterMcVm} from "../../../../lib/api/microCloud";
+import {deleteSnapshotList, getMcVmSnapshot, unregisterMcVm} from "../../../../lib/api/microCloud";
 import {OPERATOR} from "../../../../lib/var/globalVariable";
 
 const headRows = [
@@ -236,7 +236,7 @@ const SnapshotTable = () => {
 
     const deleteData = async (items) => {
         try {
-            const response = await unregisterMcVm({idx: items});
+            const response = await deleteSnapshotList({idx: items});
             getPageData();
             handleSnackbarSuccess("VM 삭제에 성공하였습니다.");
         } catch (error) {
