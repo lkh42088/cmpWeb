@@ -104,7 +104,7 @@ const MyResponsiveLine = (props) => {
 
     return (
         <Card className="cb-card">
-            <CardBody className="cb-card-body">
+            <CardBody className="nb-card-body-graph">
                 {state === "nodata" ? (
                     <Fragment>
                         <p>{title}</p>

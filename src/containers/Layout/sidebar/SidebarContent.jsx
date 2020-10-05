@@ -1,7 +1,6 @@
 import React, {Component, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import emojiPeopleIcon from '@material-ui/icons/EmojiPeople';
-import fileInvoiceDollar from '@iconify/icons-fa-solid/file-invoice-dollar';
 import outlineDashboard from '@iconify/icons-ic/outline-dashboard';
 import serverOutlineBadged from '@iconify/icons-clarity/server-outline-badged';
 import routerNetwork from '@iconify/icons-mdi/router-network';
@@ -10,20 +9,27 @@ import usersIcon from '@iconify/icons-fa-solid/users';
 import {Link} from "react-router-dom";
 import listAlt from '@iconify/icons-el/list-alt';
 import {useDispatch, useSelector} from "react-redux";
-import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
-import SidebarCategory from './SidebarCategory';
-import SidebarLink from './SidebarLink';
-import {setUserPage} from "../../../redux/actions/usersActions";
-import {setCompanyPage} from "../../../redux/actions/companiesActions";
-import {initVmPage} from "../../../redux/actions/vmsActions";
+//vm card
+import gridChartSolid from '@iconify/icons-clarity/grid-chart-solid';
+//vm vnc
+import monitorMultiple from '@iconify/icons-mdi/monitor-multiple';
+//vm inventory
+import thList from '@iconify/icons-fa-solid/th-list';
+//snapshot
+import outlineRestore from '@iconify/icons-ic/outline-restore';
 import {
     TOP_MANAGER, CUSTOMER_MANAGER, NB_MANAGER, OPERATOR, UNREGISTERED_USER,
 } from "../../../lib/var/globalVariable";
+import {initVmPage} from "../../../redux/actions/vmsActions";
+import {setCompanyPage} from "../../../redux/actions/companiesActions";
+import {setUserPage} from "../../../redux/actions/usersActions";
+import SidebarLink from './SidebarLink';
+import SidebarCategory from './SidebarCategory';
 
 const SidebarContent = ({
-                            changeToLight, changeToDark, changeMenuTitle, onClick,
-                            user, dropdown, changeHybridCloud,
-                        }) => {
+    changeToLight, changeToDark, changeMenuTitle, onClick,
+    user, dropdown, changeHybridCloud,
+}) => {
     const dispatch = useDispatch();
 
     const hideSidebar = () => {
@@ -247,22 +253,20 @@ const SidebarContent = ({
                                  onClick={() => changeMenuTitle('SETTING', '', '')}/>
                 </SidebarCategory>
 
-                <SidebarLink title="VM CARD" icon={outlineDashboard}
+                <SidebarLink title="VM CARD" icon={gridChartSolid}
                              route="/micro/vmsCard"
                              onClick={() => changeMenuTitle('VM CARD', '', '')}
                              style={authMenuDisplay(sidebarDropdown, true, UNREGISTERED_USER, true)}
                 />
-
-                <SidebarLink title="VM VNC(개발중)" icon={outlineDashboard}
+                <SidebarLink title="VM VNC(개발중)" icon={monitorMultiple}
                              route="/micro/dashboard"
                              onClick={() => changeMenuTitle('VM VNC', '', '')}
                              style={authMenuDisplay(sidebarDropdown, true, UNREGISTERED_USER, true)}
                 />
-
-                <SidebarLink title="SNAPSHOT(개발중)" icon={outlineDashboard}
+                <SidebarLink title="SNAPSHOT(개발중)" icon={outlineRestore}
                              route="/micro/snapshot"
                              onClick={() => changeMenuTitle('SNAPSHOT', '', '')}/>
-                <SidebarLink title="VM Inventory" icon={outlineDashboard}
+                <SidebarLink title="VM Inventory" icon={thList}
                              route="/micro/vms"
                              onClick={() => changeMenuTitle('VM Inventory', '', '')}
                              style={authMenuDisplay(sidebarDropdown, true, UNREGISTERED_USER, true)}

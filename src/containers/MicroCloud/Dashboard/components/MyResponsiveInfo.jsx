@@ -64,7 +64,7 @@ const MyResponsiveInfo = (props) => {
               style={data ? {} : {height: "calc(100%)"}}>
             {data ? (
                 <Fragment>
-                    <CardBody className="cb-card-body">
+                    <CardBody className="nb-card-body-graph">
                         <p>{title} [{data.hostname}]</p>
                         <Container
                             className="dashboard"

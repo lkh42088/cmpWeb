@@ -30,7 +30,7 @@ const CountInfo = (props) => {
         <Card className="cb-card"
               style={title !== "Backup 개수" ? {marginBottom: "10px"} : {marginBottom: "0"}}
         >
-            <CardBody className="cb-card-body" style={{
+            <CardBody className="nb-card-body-graph" style={{
                 background: color,
             }}>
                 <p style={{

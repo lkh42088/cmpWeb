@@ -65,7 +65,7 @@ const NBGaugeLiquid = (props) => {
 
     return (
         <Card className="cb-card" innerRef={ref}>
-            <CardBody className="cb-card-body">
+            <CardBody className="nb-card-body-graph">
                 <div className="nb-card-body-graph-title">{title}</div>
                 {state === "nodata" ? (
                     <Fragment>
@@ -90,7 +90,7 @@ const NBGaugeLiquid = (props) => {
                     </Fragment>
                 ) : (
                     <LiquidFillGauge
-                        style={{ margin: '0 auto' }}
+                        style={{ margin: '0 auto', marginBottom: 20 }}
                         width={radius * 2}
                         height={radius * 2}
                         value={data}
