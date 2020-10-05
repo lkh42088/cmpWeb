@@ -7,6 +7,8 @@ import {TableRow} from "@material-ui/core";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
 import {makeStyles} from "@material-ui/core/styles";
+import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import {useSnackbar} from "notistack";
 import {useDispatch, useSelector} from "react-redux";
 import SnapTableToolbar from "./SnapTableToolbar";
@@ -26,6 +28,7 @@ const headRows = [
     {id: 'serialNumber', disablePadding: false, label: '서버 SN'},
     {id: 'vmName', disablePadding: false, label: 'VM Name'},
     {id: 'name', disablePadding: false, label: 'Snapshot Name'},
+    {id: 'current', disablePadding: false, label: 'Current Snapshot'},
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -364,6 +367,12 @@ const SnapshotTable = () => {
                                 style={{width: "5%"}}
                             >
                                 {row.name}
+                            </TableCell>
+                            <TableCell
+                                className={cellClassName}
+                                style={{width: "5%"}}
+                            >
+                                {row.current ? <RadioButtonCheckedIcon color="Secondary"/> : <RadioButtonUncheckedIcon/>}
                             </TableCell>
                         </React.Fragment>
                     )}
