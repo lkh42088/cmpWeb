@@ -70,9 +70,7 @@ const BaremetalMain = (props) => {
             companyName = user.cpName;
         }
         try {
-            console.log("companyName : ", companyName);
             const vm = await getMcVmsCountByCpName(companyName);
-            console.log("BAREMETAL response: ", vm.data);
             setVmCount(vm.data.vm);
         } catch (e) {
             console.log("getPageData error!");
