@@ -286,7 +286,7 @@ const MicroCloudVmTable = () => {
                 {/*{page && page === 'page'}*/}
                 {pageType && pageType === 'vmsPage' ? (
                     <div style={{
-                        margin: "-19px 0px 0px -270px",
+                        margin: "-19px 0px 0px -240px",
                         /*margin: "-19px 0px 0px 210px",
                         position: "absolute",*/
                     }}>
