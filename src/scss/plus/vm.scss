@@ -205,18 +205,29 @@
 
   .title {
     border-bottom: 1px solid transparentize(white, 0.9);
-    padding-bottom: 5px;
+    padding: 5px 0 5px 0;
     font-weight: bold;
+    color: white;
+  }
+
+  .content {
+    margin: 5px auto;
+    text-align: center;
     color: transparentize(white, 0.5);
+    height: 50px;
+
+    li {
+
+    }
   }
 }
 
-.nb-carousel-card-back-off {
-  background: #fff;
+.nb-carousel-card-back-on {
+  background: #40a8c4;
 }
 
-.nb-carousel-card-back-on {
-  background: #449db7;
+.nb-carousel-card-back-off {
+  background: #393b44;
 }
 
 /* ***************************************************************************************** */

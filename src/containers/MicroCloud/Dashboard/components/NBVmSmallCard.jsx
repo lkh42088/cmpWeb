@@ -39,14 +39,10 @@ const NBVmSmallCard = (props) => {
                     <p className="title">
                         &nbsp;&nbsp;&nbsp;{vm.name}
                     </p>
-                    <div style={{
-                        textAlign: "center",
-                        margin: "5px auto",
-                        color: "white",
-                    }}>
-                        <p style={{fontSize: "0.8rem", color: "white"}}>{vm.ipAddr}</p>
-                        <p style={{fontSize: "0.8rem", color: "white"}}>{vm.remoteAddr}</p>
-                    </div>
+                    <p className="content">
+                        <li>{vm.ipAddr}</li>
+                        <li>{vm.remoteAddr}</li>
+                    </p>
                 </div>
             {/*<div className={vm.currentStatus.toString() === "running"
                 ? "nb-card nb-carousel-card-back-on"
