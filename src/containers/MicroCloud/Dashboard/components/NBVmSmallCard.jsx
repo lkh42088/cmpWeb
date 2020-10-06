@@ -25,15 +25,33 @@ const NBVmSmallCard = (props) => {
      **************************************************************/
 
     return (
-        <Card className="nb-card-carousel">
+        <Card className="nb-card-carousel" style={{
+            borderRadius: "10px",
+        }}>
             {/*<CardBody className="nb-carousel-card" style={{*/}
             {/*    background: color(),*/}
             {/*}}>*/}
-            <CardBody className={vm.currentStatus === "running"
-                ? "nb-carousel-card nb-carousel-card-back-on"
-                : "nb-carousel-card nb-carousel-card-back-off"
+
+                <div className={vm.currentStatus.toString() === "running"
+                    ? "nb-card nb-carousel-card-back-on"
+                    : "nb-card nb-carousel-card-back-off"
+                }>
+                    <p className="title">
+                        &nbsp;&nbsp;&nbsp;{vm.name}
+                    </p>
+                    <div style={{
+                        textAlign: "center",
+                        margin: "5px auto",
+                        color: "white",
+                    }}>
+                        <p style={{fontSize: "0.8rem", color: "white"}}>{vm.ipAddr}</p>
+                        <p style={{fontSize: "0.8rem", color: "white"}}>{vm.remoteAddr}</p>
+                    </div>
+                </div>
+            {/*<div className={vm.currentStatus.toString() === "running"
+                ? "nb-card nb-carousel-card-back-on"
+                : "nb-card nb-carousel-card-back-off"
             }>
-                {/*title*/}
                 <p style={{
                     color: "white",
                     fontWeight: "bold",
@@ -42,7 +60,6 @@ const NBVmSmallCard = (props) => {
                 }}>
                     &nbsp;&nbsp;&nbsp;{vm.name}
                 </p>
-                {/*ip contents*/}
                 <div style={{
                     textAlign: "center",
                     margin: "5px auto",
@@ -51,7 +68,7 @@ const NBVmSmallCard = (props) => {
                     <p style={{fontSize: "0.8rem", color: "white"}}>{vm.ipAddr}</p>
                     <p style={{fontSize: "0.8rem", color: "white"}}>{vm.remoteAddr}</p>
                 </div>
-            </CardBody>
+            </div>*/}
         </Card>
     );
 };
