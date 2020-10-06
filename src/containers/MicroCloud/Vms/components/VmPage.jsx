@@ -26,7 +26,7 @@ const VmPage = ({schVm}) => {
     return (
         <Container>
             <div>
-                {data !== null ? (
+                {data !== null && data !== undefined ? (
                     <Row>
                         <Col style={{
                             flexGrow: "0",

@@ -42,6 +42,11 @@ const MicroCloudVmTable = () => {
     const [schVm, setSchVm] = useState("");
     const [vmCom, setVmCom] = useState(<span className="cautionStyle">※ company를 선택하세요.</span>);
 
+    const [vmFirstIndex, setVmFirstIndex] = useState("");
+
+
+    //const br = vmList.slice(0, vmList.length - 1);
+
     /**************************************************************
      * Axios Function
      **************************************************************/
@@ -64,8 +69,19 @@ const MicroCloudVmTable = () => {
                 order: 'desc',
                 cpName: company,
             });
-            setVmList(response.data.data);
-            // console.log("server response : ", response.data.data);
+
+            const reData = response.data.data;
+            const reDataCompany = reData.filter(item => item.cpName === user.cpName);
+
+            setVmList(reData);
+
+            if (reDataCompany.length > 0) {
+                const temp = reDataCompany.slice(0, reDataCompany.length - (reDataCompany.length - 1));
+
+                setVmFirstIndex(temp[0].idx);
+                setSchVm(temp[0].idx);
+                dispatch(changeVmPage({ pageType: 'page', data: temp[0]}));
+            }
         } catch (error) {
             setVmList([]);
         }
@@ -188,8 +204,8 @@ const MicroCloudVmTable = () => {
                                 id="demo-simple-select-autowidth"
                                 name="vm"
                                 autoWidth
-                                defaultValue={schVm}
-                                value={schVm || ""}
+                                defaultValue={vmFirstIndex}
+                                value={schVm || vmFirstIndex}
                                 onChange={handleChangeVm}
                                 style={{
                                     fontSize: "0.7rem",
@@ -202,7 +218,10 @@ const MicroCloudVmTable = () => {
                                 {vmList && vmList
                                     .map((item, index) => (item.cpName === schCompany) && (
                                         // eslint-disable-next-line react/no-array-index-key
-                                        <MenuItem key={index} value={item.idx}>
+                                        <MenuItem key={index}
+                                                  value={item.idx}
+                                                  selected={index === 1 ? "selected" : ""}
+                                        >
                                             {item.name}{/* : {item.idx}*/}
                                         </MenuItem>
                                     ))}
@@ -243,9 +262,14 @@ const MicroCloudVmTable = () => {
 
     useEffect(() => {
         getCompanyList();
-        getVmList("all");
+        //getVmList("all");
     }, []);
 
+    useEffect(() => {
+        if (page === "page") {
+            getVmList("all");
+        }
+    }, [window.location.href]);
 
     useEffect(() => {
         setSchVm("");
