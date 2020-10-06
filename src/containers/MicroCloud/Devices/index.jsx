@@ -1,6 +1,6 @@
 import React from 'react';
 import {SnackbarProvider} from "notistack";
-import { Container, Row } from 'reactstrap';
+import { Card, Container, Row } from 'reactstrap';
 import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
 import ServerTable from "./components/ServerTable";
 
