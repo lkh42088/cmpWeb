@@ -31,7 +31,8 @@ const headRows = [
     {id: 'serialNumber', disablePadding: false, label: '서버 SN'},
     {id: 'vmName', disablePadding: false, label: 'VM Name'},
     {id: 'name', disablePadding: false, label: 'Snapshot Name'},
-    {id: 'current', disablePadding: false, label: 'Current Snapshot'},
+    {id: 'name', disablePadding: false, label: 'Snapshot 날짜'},
+    {id: 'current', disablePadding: false, label: '현재 Snapshot 위치'},
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -246,10 +247,10 @@ const SnapshotTable = () => {
         try {
             const response = await deleteSnapshotList({idx: items});
             getPageData();
-            handleSnackbarSuccess("VM 삭제에 성공하였습니다.");
+            handleSnackbarSuccess("Snapshot 삭제에 성공하였습니다.");
         } catch (error) {
             getPageData();
-            handleSnackbarFailure("VM 삭제에 실패하였습니다.");
+            handleSnackbarFailure("Snapshot 삭제에 실패하였습니다.");
         }
     };
 
@@ -292,7 +293,7 @@ const SnapshotTable = () => {
               vmName: obj.vmName,
               name: obj.name,
           });
-          handleSnackbarSuccess("Snapshot 복구에 등록에 성공하였습니다.");
+          handleSnackbarSuccess("Snapshot 복구에 성공하였습니다.");
           getPageData();
       } catch (e) {
           handleSnackbarFailure("Snapshot 복구에 실패하였습니다.");
@@ -405,6 +406,12 @@ const SnapshotTable = () => {
                         style={{width: "5%"}}
                     >
                         {row.name}
+                    </TableCell>
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "5%"}}
+                    >
+                        {row.year}년 {row.month}월 {row.day}일 {row.hour}시{row.minute}분{row.second}초
                     </TableCell>
                     <TableCell
                         className={cellClassName}
