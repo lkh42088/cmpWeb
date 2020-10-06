@@ -101,3 +101,9 @@ export const deleteSnapshotList = ({
 }) => client.post('/v1/micro/vms/snapshot/delete-entry-list', {
     idx,
 });
+
+export const recoveryMcVm = ({
+    idx, serverIdx, vmName, name,
+}) => client.post('/v1/micro/vms/snapshot/recovery', {
+    idx, serverIdx, vmName, name,
+});
