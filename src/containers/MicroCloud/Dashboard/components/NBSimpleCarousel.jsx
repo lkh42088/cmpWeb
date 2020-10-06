@@ -106,6 +106,7 @@ const NBSimpleCarousel = (props) => {
                 {vms.map(vm => (
                     <NavLink
                         to="/micro/vms"
+                        key={vm.name}
                         onClick={e => handleView(vm)}
                     >
                         <NBVmSmallCard vm={vm}/>
