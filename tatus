@@ -1,0 +1,3281 @@
+[33mcommit 03acda6527ecb976d18aba66615dc71bdbd54f18[m[33m ([m[1;36mHEAD -> [m[1;32mdevelop[m[33m, [m[1;31morigin/develop[m[33m)[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Sep 4 09:27:45 2020 +0900
+
+    vm card 작업 완료 (그래프 미작업)
+
+[33mcommit 7bdd140959564374236e22f29a62a877bfda6ec4[m
+Merge: 4a289a3 3967de7
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Sep 3 19:37:29 2020 +0900
+
+    Merge branch 'develop' of http://221.148.133.88:7000/source/hcmpweb into develop
+
+[33mcommit 4a289a35508d8a19c7015194f9067ae80a0226cd[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Sep 3 19:37:20 2020 +0900
+
+    vm card 작업중
+
+[33mcommit 3967de77f4730b394e4679b0d77b8533cf9e890b[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Sep 3 14:01:56 2020 +0900
+
+    fix to missing string bug
+
+[33mcommit 1e88f1ae4c1b507090696bb392fc9500deb5c1ce[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Sep 3 12:06:25 2020 +0900
+
+    Modify VM description sidebar
+
+[33mcommit 59bcb1ade1a435eb8b51e6c5b48b402ec06716fe[m
+Merge: 074e9d4 1cec385
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Sep 3 11:38:39 2020 +0900
+
+    Merge branch 'develop' of http://221.148.133.88:7000/source/hcmpweb into develop
+
+[33mcommit 074e9d4389b0cc6db86764f3c256242cb1ac2b66[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Sep 3 11:38:32 2020 +0900
+
+    Add to vm traffic mini graph
+
+[33mcommit 1cec3854d140496c836f73398a39897e2e425851[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Sep 3 08:47:49 2020 +0900
+
+    custom network ui 작업중
+
+[33mcommit bd0d8b1c74cbe61fec7ff0f253b031e212a587e3[m
+Merge: 17b40f2 79844e6
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Sep 2 16:56:17 2020 +0900
+
+    Merge branch 'develop' of http://221.148.133.88:7000/source/hcmpweb into develop
+
+[33mcommit 17b40f22d9924e83d3252c40e00b11cac26d3d87[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Sep 2 16:56:06 2020 +0900
+
+    vm ui add
+
+[33mcommit 79844e6d6977ff0e48971768b4f3b84c0dc92ed5[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Sep 2 00:37:32 2020 +0900
+
+    on vm page, binding data
+
+[33mcommit 12a891aa12042a53093976c1e23c0c627571301b[m
+Merge: 8aba585 999df44
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Tue Sep 1 16:25:05 2020 +0900
+
+    Merge branch 'develop' of http://221.148.133.88:7000/source/hcmpweb into develop
+
+[33mcommit 8aba585ccdf1c152340bbd6ac1ed1be38bc8bb4a[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Tue Sep 1 16:24:57 2020 +0900
+
+    vm 임시 페이지./src/containers/Test/Temp
+
+[33mcommit 999df44e0273348a01c7e2e768008fe4a2a1be29[m
+Merge: 9e1ba8d 1ac9ab6
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Sep 1 13:07:22 2020 +0900
+
+    Merge branch 'develop' of http://221.148.133.88:7000/source/hcmpweb into develop
+
+[33mcommit 9e1ba8d0caf20d239616995f0df7e7b4f99861f8[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Sep 1 13:07:13 2020 +0900
+
+    Add to gradient color with line graph
+
+[33mcommit 1ac9ab67361eff5ddfba93a9953e52ee7921f434[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Tue Sep 1 11:44:49 2020 +0900
+
+    microCloud cpu, memory, disk pie graph commit
+
+[33mcommit a2fa782c48b74048d474272c95eaf4d1cf8af5b3[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Aug 31 18:11:28 2020 +0900
+
+    modify to line damping on graph
+
+[33mcommit f003250411bb3add2fc58263d803ada18a607223[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Aug 31 18:03:49 2020 +0900
+
+    Customizing to VM traffic graph
+
+[33mcommit 5569a397ccab928213e93fe2ecbf04bed2f583c3[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Aug 31 16:27:51 2020 +0900
+
+    microCloud cpu, memory, disk 작업 완료
+
+[33mcommit 13f0f9a7a7f67d1ba79987fe609e7dddb85f5234[m
+Merge: 8901101 9f80637
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Aug 31 14:28:43 2020 +0900
+
+    Merge branch 'develop' of http://221.148.133.88:7000/source/hcmpweb into develop
+
+[33mcommit 89011011ede7e3fabac180f05dac8949c3e98cb1[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Aug 31 14:28:33 2020 +0900
+
+    microCloud cpu, memory, disk 작업중
+
+[33mcommit 9f80637138e343e582b26badee75ea88ec956137[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Aug 31 14:23:29 2020 +0900
+
+    Fix to code directory for micro-cloud dashboard
+
+[33mcommit b42f32d2e41b0a4ea7813c6d31ef7dfb3d4f7965[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Aug 31 13:36:23 2020 +0900
+
+    Modify code to VM traffic graph's xaxis data type.(and customizor init value)
+
+[33mcommit 1b7a04ace3de18ef444014795615cfc58edaed82[m
+Merge: 3476b89 a4c749c
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Aug 28 17:23:52 2020 +0900
+
+    Merge branch 'develop' of http://221.148.133.88:7000/source/hcmpweb into develop
+
+[33mcommit 3476b89931c3db1903bbeb08c9d9628dc02f9b23[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Aug 28 17:23:43 2020 +0900
+
+    Modify to VM Traffic code
+
+[33mcommit a4c749c4899b1c171dcbee9204ae5efa2b6072a4[m
+Merge: 3bb1026 59aa3e0
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Aug 28 15:50:25 2020 +0900
+
+    Merge branch 'develop' of http://221.148.133.88:7000/source/hcmpweb into develop
+
+[33mcommit 3bb10269a26b67480b176a82b8d49501341685e3[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Aug 28 15:50:12 2020 +0900
+
+    microCloudCpu.... 작업중
+
+[33mcommit 59aa3e015b76c5a9d26a9266d7799baf01d779f7[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Aug 28 15:47:34 2020 +0900
+
+    Add to function VM interface traffic graph
+
+[33mcommit 5b0ab46117d038009266d167f4ffd10709626f55[m
+Merge: 9be8e3f 06f1489
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Aug 28 11:00:47 2020 +0900
+
+    Merge branch 'develop' of http://221.148.133.88:7000/source/hcmpweb into develop
+
+[33mcommit 9be8e3fc824ad47275d960eafd0b3f1cb7196750[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Aug 28 11:00:41 2020 +0900
+
+    login background img edit
+
+[33mcommit 06f1489d3ace941d3d0e12520915165685fe49b7[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Aug 28 10:36:41 2020 +0900
+
+    fix to conflict
+
+[33mcommit a2d1a9397e54b111fecc7efe9800fe898fbf915a[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Aug 27 16:37:53 2020 +0900
+
+    nubes edit
+
+[33mcommit 9152a8eb6a8882702d42446327ed90ca06415efd[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Aug 27 13:57:09 2020 +0900
+
+    VM traffic monitoring code
+
+[33mcommit 21c50dc833b3676dcf89cbee03b2bf7fdcdcc0a3[m
+Merge: 33413e2 f8d9ce0
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Aug 27 13:55:30 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 33413e20a7c5013b6578bf6b0083a1a82e3706d2[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Aug 27 13:55:21 2020 +0900
+
+    코드관리 작업중
+
+[33mcommit f8d9ce0e3d3fa18c78fa268992ed5773783a72e8[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Aug 27 09:27:34 2020 +0900
+
+    mc: server ip 수정
+
+[33mcommit c1f5ff745329abbe1458265ab9ad5f82c1af3785[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Aug 26 20:15:53 2020 +0900
+
+    VM traffic monitoring function
+
+[33mcommit 8f94095b9574fedb60de8070432151bae387558f[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Aug 25 19:39:22 2020 +0900
+
+    micro cloud vm traffic graph code
+
+[33mcommit cdc9b584d71440a6e0cf421a01bae385f0dbb704[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Aug 24 08:55:26 2020 +0900
+
+    Modify to env file
+
+[33mcommit d1392dc9b3456e9d859f9058906b2e59116bb88a[m
+Author: byeonghwa jung <bhjung@nubes-bridge.com>
+Date:   Sun Aug 23 08:16:38 2020 +0000
+
+    mc: add/del network
+
+[33mcommit 7c9471227a26bc520a5e2dfc8d0c1b81f3d06b09[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Aug 21 14:24:07 2020 +0900
+
+    자산 오류 수정 및 계정관리 아이콘 주석
+
+[33mcommit ca0ac516461b3d5cad058d4db7656ab6429f772c[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Aug 20 17:05:52 2020 +0900
+
+    login form 디자인 수정
+
+[33mcommit cc8c75bf65c04af4fb84ef194322ec55c35dd39c[m
+Merge: 58678c5 f0440ff
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Aug 20 14:34:45 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 58678c5986cf9f421051f9c016a739c0e5d5464e[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Aug 20 14:34:38 2020 +0900
+
+    charts 작업중...
+
+[33mcommit f0440ff62e94b75b168931298c00aef1e3c35fcb[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Aug 20 11:25:50 2020 +0900
+
+    검색 레이블 변경
+
+[33mcommit 45055cb4acc4ac56ca9efab50e2df5a2e5a7ca74[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Aug 19 19:48:19 2020 +0900
+
+    Fix to bug
+
+[33mcommit fd839e3955ba2e280f2e2ce1f381d94e65a2cdad[m
+Merge: 52985e9 5257a9d
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Aug 19 10:04:14 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 52985e9233e22646e241402c408636af546ef36f[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Aug 19 10:04:01 2020 +0900
+
+    계정관리 오류 수정 및 보류 (todo image file db store)
+
+[33mcommit 5257a9d199d76a8a980382bf6158d3339ce2ace5[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Aug 18 00:14:57 2020 +0900
+
+    .gitignore 수정
+
+[33mcommit 5661e93bc84a79215e4186734e66b9af2625e3ed[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Aug 18 00:13:55 2020 +0900
+
+    .env 추가
+
+[33mcommit 2e2d865fa7ca2bd122d1ea30ee6719c0ad48e721[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Aug 18 00:08:26 2020 +0900
+
+    gitignore: .env 추가
+
+[33mcommit 707db18054ca96f4679150e4ff8b5a00cc16251c[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Aug 18 00:04:52 2020 +0900
+
+    .env 환경변수 적용
+
+[33mcommit c3d027f0ee2ce01c0056658c49df72ce9c808c50[m
+Merge: 72aa4e2 16bdbd2
+Author: byeonghwa jung <bhjung@nubes-bridge.com>
+Date:   Wed Aug 12 03:48:20 2020 +0000
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 72aa4e266f2dc051c7c677ee2b175a3ecdb3e76f[m
+Author: byeonghwa jung <bhjung@nubes-bridge.com>
+Date:   Wed Aug 12 03:48:12 2020 +0000
+
+    mc: modify vm table
+
+[33mcommit 16bdbd2e5b8da2af72bc523d4307efce098ffd47[m
+Merge: 057436e a2ecca4
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Aug 12 09:45:58 2020 +0900
+
+    browser warring page add - 수정중
+
+[33mcommit 057436e23c281432460d9fe9382288667f0d30b5[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Aug 12 09:44:21 2020 +0900
+
+    browser warring page add - 수정중
+
+[33mcommit a2ecca4c7ef60aab4bf639181e073023aaf43146[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Aug 12 09:43:32 2020 +0900
+
+    IE 를 위한 가이드 페이지 구현 중
+
+[33mcommit d5fa13f46b4917343f4ecc82fc1d44f6d22d0f2e[m
+Merge: 80f4757 e6f7001
+Author: byeonghwa jung <bhjung@nubes-bridge.com>
+Date:   Tue Aug 11 14:08:33 2020 +0000
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 80f4757cf0265b19e303c1374d7face70289b64c[m
+Author: byeonghwa jung <bhjung@nubes-bridge.com>
+Date:   Tue Aug 11 14:08:24 2020 +0000
+
+    mc: modified writeVm
+
+[33mcommit e6f7001b4f6709086dbd147ad362d9be8aed3b8c[m
+Merge: c29003d 40a1166
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Aug 11 19:43:25 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit c29003d1ac7619b9f44ecfc44918d35fdaf07a6d[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Aug 11 19:43:12 2020 +0900
+
+    VNC 기능을 위한 코드 추가
+
+[33mcommit 40a11662c21bda3de0ff5a778a4e720e5d5158cf[m
+Merge: b622033 6a240b4
+Author: byeonghwa jung <bhjung@nubes-bridge.com>
+Date:   Tue Aug 11 06:48:08 2020 +0000
+
+    fix conflict
+
+[33mcommit b6220337bb4eca1481ada2e74ca9e057a27bd04f[m
+Author: byeonghwa jung <bhjung@nubes-bridge.com>
+Date:   Tue Aug 11 06:46:44 2020 +0000
+
+    mc: image/network page
+
+[33mcommit 6a240b459eebdd008e6f982d196d177be3241db5[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Aug 10 20:47:24 2020 +0900
+
+    VNC 지원을 위한 code 추가
+
+[33mcommit 33667505b1e7af9797377cf9504046ae48599541[m
+Merge: 31062ca 6afde36
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Aug 10 15:05:48 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 31062cacb629684397f4b3de1d3ba7adec16d58e[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Aug 10 15:05:33 2020 +0900
+
+    사파리 브라우저를 위한 테스트 코드 추가
+
+[33mcommit 6afde3605585e856cc063ee29746bed7c6159043[m
+Merge: a4e4122 863c141
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Aug 10 11:25:11 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit a4e4122ea9832fee91d0d12bb106afa14271bf7e[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Aug 10 11:25:00 2020 +0900
+
+    계정관리 front error edit
+
+[33mcommit 863c14161853d1e156652ccc1affc6a1aefc7305[m
+Merge: 48acd4e 62a7cb3
+Author: byeonghwa jung <bhjung@nubes-bridge.com>
+Date:   Fri Aug 7 02:29:28 2020 +0000
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 48acd4e38008a2405772b0fa6dbc6c4da1b71152[m
+Author: byeonghwa jung <bhjung@nubes-bridge.com>
+Date:   Fri Aug 7 02:29:21 2020 +0000
+
+    mc: add status cell
+
+[33mcommit 62a7cb35abf97209f7d367685645a5001f1556ef[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Aug 7 10:55:09 2020 +0900
+
+    Logout 문제 수정
+
+[33mcommit 57e8ea63e30b4fc1fb419bffe0359bab6afa5462[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Aug 6 09:22:49 2020 +0900
+
+    1.logout 문제 수정 2.sidebarlink route porps 문제 수정
+
+[33mcommit 2fd303ddf92e1bb93c590d32211c553327819c9c[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Aug 5 19:58:10 2020 +0900
+
+    ReCAPCHA 실패 시 logout action 을 Back-side 로 보내야함
+
+[33mcommit 3bcf844c48e3318e2da6636e1d5dd038e698112f[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Aug 5 14:05:44 2020 +0900
+
+    계정관리 이미지 등록 완료
+
+[33mcommit 7324162ea5cc44d1789adcc1ba7aa36702b29e87[m
+Merge: f4ce487 afb938a
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Aug 5 09:44:25 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit f4ce4870db0722021398fddf888e5e4fad4755c3[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Aug 5 09:44:18 2020 +0900
+
+    계정관리 이미지 업로드 수정중
+
+[33mcommit afb938af9129491c27389123dcb289fc6432e674[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Aug 5 08:37:01 2020 +0900
+
+    Fix to re-login problem after logout
+
+[33mcommit cadcdb6d13a87ee56414ea7d9608c65452ec105a[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Aug 4 15:07:42 2020 +0900
+
+    자산관리 상세페이지 미표시 오류 수정
+
+[33mcommit f68fd63bece9a03cee92136ce9ac309f8ca7d965[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Aug 4 13:52:50 2020 +0900
+
+    Move variables for ReCAPTCHA
+
+[33mcommit edce2d6aafa2e68efd3372a54776550eedf13e4f[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Aug 4 12:17:49 2020 +0900
+
+    apiRoute 변경에 의한 Breadcrumb 미표시 현상 수정
+
+[33mcommit 07a5fc7269b709cd2fb15fa250cf1e479a1a333d[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Aug 4 11:52:36 2020 +0900
+
+    Modify to ReCAPTCHA code
+
+[33mcommit df04065047d316bf56eb4dd8809f671bf963016f[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Aug 3 19:41:36 2020 +0900
+
+    Fix to error (data type error, properties error...)
+
+[33mcommit 03cea9bb50447e03b46be499e2b7e358c220ec82[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Aug 3 19:17:50 2020 +0900
+
+    Add code to check ReCAPCHA on login
+
+[33mcommit a189f52d9edbd4eaf8630aea933f614cd6d5ec8f[m
+Author: byeonghwa jung <bhjung@nubes-bridge.com>
+Date:   Sun Aug 2 15:36:17 2020 +0000
+
+    env 설정 수정
+
+[33mcommit 1336d27ea6b6fc0aaa597a79d3c2d3022f51dbe2[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jul 31 23:19:41 2020 +0900
+
+    log normal/detail toggle 구현
+
+[33mcommit 774b76571f6a9570a1b74587a278ba8e13774836[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jul 31 22:33:00 2020 +0900
+
+    로그 출력 주석처리
+
+[33mcommit db8e59b85146dea23971ed373140cdb1a7c8f20c[m
+Merge: b69ec5c 2c0cc6f
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jul 31 17:22:22 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit b69ec5c455e1a732b4c20cb7bed757dde8983153[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jul 31 17:22:09 2020 +0900
+
+    Change to host url
+
+[33mcommit 2c0cc6fc0f759d73a95e2c2c59e652720e6661fb[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jul 31 16:29:53 2020 +0900
+
+    계정 및 고객사 관리 상세 페이지 수정사항 완료
+
+[33mcommit de592782c7da856f93489f89c6cc5a312e8b259a[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jul 31 15:48:11 2020 +0900
+
+    고객사관리 상세페이지 완료
+
+[33mcommit 1069d1f306a8665c2e922b500f74826275c186cf[m
+Merge: c67baf1 6c5e065
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jul 30 20:20:57 2020 +0900
+
+    계정관리 conflict
+
+[33mcommit c67baf10d5876aea6bff8f1808cdc6af5240d817[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jul 30 20:19:51 2020 +0900
+
+    계정관리 상세페이지 완료 - TabPan 오류
+
+[33mcommit 6c5e065549421919fc626ceab2aebbdf8a8da634[m
+Merge: 86bab2b d51eeaf
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 30 19:19:56 2020 +0900
+
+    fix to conflict
+
+[33mcommit 86bab2b3b1b57a06483b27f6fe6c2694f855523a[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 30 19:17:58 2020 +0900
+
+    Userlist join with Auth table
+
+[33mcommit d51eeaf197f84b832c203a242bb6eac77aabfbe1[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jul 30 17:16:21 2020 +0900
+
+    계정관리 수정중
+
+[33mcommit ac65f53a4c5d8d04fb3c3ca7017a8b0d7f251fb1[m
+Merge: 3ebbff3 5e1b0dd
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jul 30 16:03:22 2020 +0900
+
+    계정관리 수정중conflict
+
+[33mcommit 3ebbff386884f691b222986db09f8352254b3f21[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jul 30 16:01:28 2020 +0900
+
+    계정관리 수정중
+
+[33mcommit 5e1b0dd3f0e306b7861f361086ebc0a8c9314b39[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 30 14:50:33 2020 +0900
+
+    로그아웃 시 재접속 되는 현상 수정
+
+[33mcommit 26640af7dd4f47b34bc65936f15395f4c082bc65[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 30 14:49:54 2020 +0900
+
+    Fix to notification error
+
+[33mcommit 0c6b546622c2f93464d5a9d49dd6e74f4cb420d5[m
+Merge: 2d190c8 6534b49
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 30 14:49:17 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 2d190c84672a2b38b0a7fce6d020c4e7ff5aa1c1[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 30 14:48:59 2020 +0900
+
+    비로그인 시 url 로 페이지 접근 차단 코드 추가
+
+[33mcommit 6534b49957df9a9c18c4c424ec747fcf80ac01b5[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 30 12:07:56 2020 +0900
+
+    vm count 및 border 수정
+
+[33mcommit 7462b796bae2b51870060dc9cd8eebcd7b4bfd23[m
+Merge: 8bbbe57 d7ac07c
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 30 10:35:17 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 8bbbe57619dbc537ab216e979c9698e6159d43b6[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 30 10:35:01 2020 +0900
+
+    고객사/계정 table row border 삭제
+
+[33mcommit d7ac07c5aa426fb5963d3c79a3b2c996704aeeaf[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 30 10:29:34 2020 +0900
+
+    modify subnet error
+
+[33mcommit ef189b2b7232a61ae165cafb03789a891e3597c8[m
+Merge: 547299d dc34a7e
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 29 21:24:55 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 547299d3ce13296dd5789ccba6c4ea2e5165bdcb[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 29 21:24:43 2020 +0900
+
+    subnet ip rect 추가
+
+[33mcommit dc34a7ebdf7e53368b8a6582ea0ccbe7a73fb5de[m[33m ([m[1;31morigin/micro[m[33m)[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jul 29 20:14:51 2020 +0900
+
+    add hybridCloud toggle
+
+[33mcommit 83cd533ee954fb9db32bd12d9905f3fd374bf851[m
+Merge: 193061e 6f02a22
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jul 29 17:19:05 2020 +0900
+
+    Merge branch 'develop' into micro
+
+[33mcommit 193061ef3935ecbea41dd8134d7840ba28bf3281[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jul 29 17:17:14 2020 +0900
+
+    micro cloud server/vm 구현중
+
+[33mcommit 6f02a222a50d7dba88e7ea4646aec80cb2532e1c[m
+Merge: ac340e7 78633fc
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jul 29 13:53:20 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit ac340e7cdbfbf1c01afa88506638b13f97101a6b[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jul 29 13:53:07 2020 +0900
+
+    자산관리 css 수정
+
+[33mcommit 78633fc186d8e7b6bd23c57af18c2cc862c9e7a1[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 29 12:14:09 2020 +0900
+
+    Add to subnet table row bottom line
+
+[33mcommit 2f47819ea08b648dbb670b45b9f23aa70c18947f[m
+Merge: 12de7bc 0563e11
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jul 29 11:51:31 2020 +0900
+
+    자산관리 error 수정
+
+[33mcommit 12de7bc0df75dda6e2be7cda41ff7e7d896fe556[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jul 29 11:49:59 2020 +0900
+
+    자산관리 error 수정
+
+[33mcommit 0563e117015adc366cedbcc53eebe3d01633b795[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 29 11:48:43 2020 +0900
+
+    subnet code refactoring
+
+[33mcommit b35a8fa6f6e0087b27ee95b1726212cb09baf5be[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 29 11:28:50 2020 +0900
+
+    subnet list 검색 기능 추가 및 불필요 코드 삭제
+
+[33mcommit 210c95e1e81ff59f3524bba33a4d5c85868282d8[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jul 28 20:58:33 2020 +0900
+
+    micro cloud server/vm 구현중
+
+[33mcommit c487e51d4cd1492d6fad39a685322f23c78eb6f9[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jul 28 20:50:11 2020 +0900
+
+    subnet list 기능 추가
+
+[33mcommit b10c2b407e85e8a4f0409e21b5dad6ebd58b6000[m
+Merge: 47804f5 c07dce0
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jul 28 09:06:15 2020 +0900
+
+    Merge branch 'develop' into micro
+
+[33mcommit c07dce0c6c9657c2d87015b4bd64ca204a208ea6[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jul 27 20:16:15 2020 +0900
+
+    subnet add/update 기능 수정
+
+[33mcommit 3979a4e6f22d6928375cdc196b0164e6a496ac18[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jul 27 18:02:51 2020 +0900
+
+    modify to test code
+
+[33mcommit 26774a52b07fa9818762d62c63148317ef94f7b9[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jul 27 17:44:53 2020 +0900
+
+    자산관리 검색 통계 추가 개발중 return value
+
+[33mcommit 770b553d0da2c4942392ffc9e64d0162a3cf7265[m
+Merge: a8ff456 8940bd6
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jul 27 15:12:25 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit a8ff456633162cae343cc50e5189a3dbe3e4ced6[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jul 27 15:12:17 2020 +0900
+
+    자산관리 검색 통계 추가 개발중
+
+[33mcommit 8940bd680156439306f2ad87cc7ba820479a886b[m
+Author: lkh42088 <lkh42088@gmail.com>
+Date:   Sun Jul 26 23:03:21 2020 +0900
+
+    modify to subnet list column head
+
+[33mcommit 67d05d9a54bfadc72adef54beb722f9e9e9e168b[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jul 24 17:52:38 2020 +0900
+
+    subnet list 수정 중
+
+[33mcommit 1efb954cfeb47bc705b6fd8169e94d8d315e3fa9[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jul 24 15:23:15 2020 +0900
+
+    Block IE browser and Open to Edge, Chrome browser.
+
+[33mcommit 76dc6695e9dc464c21f8d3a35426c2608cd8db0c[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 23 13:21:42 2020 +0900
+
+    fix to bug
+
+[33mcommit 03a42db28f8893a900c47b2eff843619f3806d4b[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 23 13:18:14 2020 +0900
+
+    subnet list 수정 중
+
+[33mcommit 2120c46f25bdd54d1ec5975a45841f4c0d54cba1[m
+Merge: 7f70352 1d24aff
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jul 22 18:01:04 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 7f70352e869b63d5e8ad78ce286bc44ac7dc9f21[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jul 22 18:00:56 2020 +0900
+
+    router edit
+
+[33mcommit 1d24aff99ddd91bdd7031a61ebceef861553453a[m
+Merge: 4f642cc d061a0e
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 22 17:59:57 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 4f642cc17c02a931d26a5dfc83dc57a502260d28[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 22 17:59:01 2020 +0900
+
+    [sidebar & IE] IE 지원을 위한 코드 추가 (IE 이슈 일부 수정)
+
+[33mcommit d061a0ed34ed137523f639d4f70b7a47adc73c63[m
+Merge: 0976cb1 58653fe
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jul 22 15:00:55 2020 +0900
+
+    conflict edit
+
+[33mcommit 0976cb1dd74ae93c5ea468a1fe7467bcb169ffd0[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jul 22 14:58:03 2020 +0900
+
+    자산관리 수정
+
+[33mcommit 58653fe375684ea8b201b7340dfd494a0339a9b5[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jul 21 21:07:20 2020 +0900
+
+    subnet list pagination 수정
+
+[33mcommit 4adbb36a7fa0f46be17b8359a4ec2d7bb534a58e[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jul 21 20:45:34 2020 +0900
+
+    subnet list 수정
+
+[33mcommit 1633dc5a615c44e6ce49df5f2b18d434669c714c[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jul 21 20:12:28 2020 +0900
+
+    [dashboard] Dashboard 에 Grid 적용
+
+[33mcommit 1639a6d259f99a99e755531bf793a534a0d11527[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jul 21 16:34:36 2020 +0900
+
+    [CSS][font] 폰트 변경 (Nanum Square -> Noto Sans)
+
+[33mcommit 03acfcde4a7fd1b65fd3c95b1fd1f13b16a79360[m
+Merge: 4b7c305 250b6a5
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jul 21 09:57:07 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 4b7c3052439e87084b2a21b4507bc0480795abab[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jul 21 09:56:51 2020 +0900
+
+    [customizer] Dense padding toggle 추가
+
+[33mcommit 250b6a512471506e311cd5a03673c0e9beecbcd8[m
+Merge: ced6875 64c739b
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Tue Jul 21 09:13:51 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit ced68758659c46adfe345d15d6177641e203e7e8[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Tue Jul 21 09:13:45 2020 +0900
+
+    자산관리 오류 수정중
+
+[33mcommit 64c739ba2170fc19740935e10253aef411dfa81d[m
+Author: lkh42088 <lkh42088@gmail.com>
+Date:   Tue Jul 21 00:56:47 2020 +0900
+
+    [sidebar] modify to collapse animation
+
+[33mcommit 47804f56a6aef0063a9d8e88d8b2cc95d17e6faa[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 20 22:25:34 2020 +0900
+
+    micro dashboard
+
+[33mcommit 2c3c6e54feb36b7d1fd8529bb87162ea53825dd7[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 20 22:25:14 2020 +0900
+
+    micro dashboard
+
+[33mcommit b4513aac11114a1b2d07ea1efac36f5005df97a3[m
+Merge: 52b9a5a fe30d9e
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jul 20 20:29:05 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 52b9a5ac4fd0a6cdfcf06b9f359623fa37aeebea[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jul 20 20:28:08 2020 +0900
+
+    [dashboard] 관리자 대시보드 auto-layout 구현 중
+
+[33mcommit fe30d9eddda96c9f3f4a74ab5c6aadc20b8bf952[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 20 17:28:57 2020 +0900
+
+    고객사/계정 툴바 Grid size 조정
+
+[33mcommit 6764810bdcf208d92fe6d48dd3ad9deb7ed2f5e0[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 20 17:05:36 2020 +0900
+
+    고객사 리스트 css 적용
+
+[33mcommit b72c60545a4258db1ad627fae7281eab7a8b556c[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 20 16:56:56 2020 +0900
+
+    고객사 검색 구현
+
+[33mcommit feba5f02ec0ac20d11734523c44e7ed559161e42[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 20 15:42:59 2020 +0900
+
+    계정관리 검색 구현
+
+[33mcommit 4edbb7feaf23a4afae2cd563b76752b4723fdc5b[m
+Merge: 946f34c 7b5c5cb
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 20 15:40:05 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 946f34ca90ab908ee848e1d8350815e654416294[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 20 15:39:59 2020 +0900
+
+    계정관리 검색 구현
+
+[33mcommit 7b5c5cbda4314d96fb38fe84976a043aeba3664b[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jul 20 14:38:24 2020 +0900
+
+    자산관리 미팅 후 수정 사항 완료
+
+[33mcommit c1298da21e05630b3329cd455bec1a023f0245cf[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Sat Jul 18 21:27:44 2020 +0900
+
+    계정관리 backup
+
+[33mcommit d74a7b6c27999e2acaa4c6e06c5daa515f209112[m
+Merge: 9fd9196 9e80bf1
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jul 17 15:57:17 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 9e80bf1c4c073dd6ae8360902d5058af36955e00[m
+Merge: d22275a 9b137ee
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jul 17 15:45:48 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit d22275aec0707a47b5e1e00df147cd6d91cba094[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jul 17 15:45:38 2020 +0900
+
+    자산관리 임대기간 검색 수정중
+
+[33mcommit 9b137ee7e7e5534f00d9170b67ccacad2cb91239[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jul 17 15:45:16 2020 +0900
+
+    dashboard 수정 중
+
+[33mcommit 9fd919679d21653942f3bc0830f23546a630858e[m
+Merge: 42a5ce4 576bd1e
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jul 17 14:49:39 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 42a5ce44632d051b455c64b0817d175925ca04d0[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jul 17 14:48:21 2020 +0900
+
+    고객 수정 페이지 구현
+
+[33mcommit 576bd1efebe80e3eb381a57c4bac7a7b2b2d3dbc[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jul 17 12:21:41 2020 +0900
+
+    [dashboard] 관리자 대시보드 디자인 수정 중
+
+[33mcommit 4a55e665ce8e3c08169a37ebb53ba9393e43fd9f[m
+Merge: 6d2b351 afc441c
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jul 17 08:28:55 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit afc441c0cd488ebbbf8a816d24fb9252c64aea28[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 16 21:03:28 2020 +0900
+
+    계정 수정 페이지 구현중
+
+[33mcommit 6d2b351e895381d6ea82865a34178ab21bcb14d1[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 16 20:57:12 2020 +0900
+
+    subnet list table 디자인 변경 중
+
+[33mcommit cf8754c7500654865a44de9b1d90882dcbd5b796[m
+Merge: 8947765 43dabab
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 16 18:52:39 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 894776586ebdf08b307caf53bf9414ec2ca92d7d[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 16 18:52:22 2020 +0900
+
+    고객사 수정 구현
+
+[33mcommit 43dabab990bf5025a69d292903e4abe4b636310a[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jul 16 17:55:12 2020 +0900
+
+    자산관리 오류 및 반입,반출 기능 추가
+
+[33mcommit 63052098bc155d532444ff203926ed02c0ec2864[m
+Merge: bdfe581 fb3f61c
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 16 09:50:47 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit bdfe5819baa25751faefecfd14f0aaa287bebecd[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 16 09:50:42 2020 +0900
+
+    fix to warning
+
+[33mcommit fb3f61c0e60c706cf132675bdb2929ea63c1e981[m
+Merge: 471332c e0301a8
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jul 16 09:37:26 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 471332c21a0cac613e3a9c38f49a0453e62966b6[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jul 16 09:37:20 2020 +0900
+
+    자산관리 head error 수정
+
+[33mcommit e0301a86d2597741d7e5d02037909b5dc29f461b[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 16 09:25:41 2020 +0900
+
+    fix to bug
+
+[33mcommit 62282c9dd13c40a9682b3bc8bbd9af9fafb2b298[m
+Merge: 4593664 21da48e
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 15 20:52:41 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 21da48ec957273a05ff216fcb2f9956d44c639ce[m
+Merge: acd3b12 2e7f8bb
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jul 15 20:56:15 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit acd3b1209861be23c4e356d8b4305019a97fcb22[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jul 15 20:56:06 2020 +0900
+
+    고객사 수정 페이지 구현중
+
+[33mcommit 4593664f34590230cc0479cd12da5739afcde93e[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 15 20:52:30 2020 +0900
+
+    Subnet list table 디자인 중
+
+[33mcommit 2e7f8bbf4c3c51326eafe41c3d6468474e2cbcf4[m
+Merge: 84dadfd c29698e
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jul 15 18:37:51 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 84dadfd359fb79e948c920adc79bf5fd7c6c4ec7[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jul 15 18:37:39 2020 +0900
+
+    자산관리 오류 및 UI 수정
+
+[33mcommit c29698ee67741aeaf5f1489969a0445c282ebe48[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jul 15 09:16:17 2020 +0900
+
+    고객사 등록시 memo, hp 필드 추가
+
+[33mcommit e160177bee590f47d1b0ac8a6f4da0defcc7dd73[m
+Merge: ce141a3 2671e68
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 15 08:22:11 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 2671e689c9fa76ab39974c78fb8c3c21e4eda363[m
+Merge: 6c2aa19 3afa37d
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jul 14 21:00:42 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 6c2aa19529ca60cd11adf6672791ece7424d8860[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jul 14 21:00:33 2020 +0900
+
+    고객사/계정 등록에 메모 입력 추가함
+
+[33mcommit ce141a3c7bd01aebabe0071e76cccf11bc6b1b8a[m
+Merge: 077e8d0 3afa37d
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jul 14 16:45:18 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 3afa37d3fc8145fe85651f9904aa2030772b2366[m
+Merge: bfaf661 8fbd2ef
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Tue Jul 14 16:44:46 2020 +0900
+
+    자산관리 로그 수정 완료
+
+[33mcommit bfaf6611c55aa348b79e0f07e765480778d52353[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Tue Jul 14 16:41:10 2020 +0900
+
+    자산관리 로그 수정 완료
+
+[33mcommit 077e8d0f39373e65e19138e29cb1f5c709285310[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jul 14 16:40:45 2020 +0900
+
+    subnet list 테이블 변경 중
+
+[33mcommit 8fbd2efd735a3f7c9786628473db93610ef0af49[m
+Merge: 49b5c6b f1a1d13
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jul 14 10:43:33 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 49b5c6bced10f3a30e4e1a4eeba4dd76f0979432[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jul 14 10:43:17 2020 +0900
+
+    [sidebar] dropdown sidebar 를 위한 toggle button 추가
+
+[33mcommit f1a1d13565386bc59bb39e86d0af3302bb63f599[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 13 20:54:24 2020 +0900
+
+    고객사/계정 테이블: mouseover action - collapse open 기능 구현
+
+[33mcommit 948372621e7728bb5227e0ab44b864946c5aba27[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 13 17:45:50 2020 +0900
+
+    테이블 에러 수정
+
+[33mcommit c103d8e4f79a233f7e54543d96c893cb10165ff3[m
+Merge: f4861d0 9df90b3
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 13 15:42:37 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit f4861d01661b52f5e1d181916531a1d5d032b631[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 13 15:42:27 2020 +0900
+
+    고객사 등록 리펙토링
+
+[33mcommit 9df90b34f56d7713b9759ce354c80a75818a5dea[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jul 13 14:21:13 2020 +0900
+
+    subnet list code 정리
+
+[33mcommit 738a04056514685df8e59edf86a69cf4094b2718[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Sat Jul 11 21:54:37 2020 +0900
+
+    리펙토링 진행중
+
+[33mcommit c0bedacd0a5f8d65c411df6321c67152e79bc543[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Sat Jul 11 21:08:17 2020 +0900
+
+    로그인 관련 리펙토링
+
+[33mcommit 47b8ba8ffdc4a65ceb63f517e20535b7bca69c0d[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Sat Jul 11 20:07:03 2020 +0900
+
+    초기에 reducer user에 잘못된 값는 넣는 문제 수정
+    리펙토링 진행중
+
+[33mcommit 276c1ddca7e2bc43a766d132a15f893da5e56aed[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Sat Jul 11 12:30:52 2020 +0900
+
+    easydev 소스코드를 EasyDev 폴더로 이동시킴
+
+[33mcommit e6d5d009690c299638789c7cf11429d9f34a6399[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jul 10 16:31:06 2020 +0900
+
+    login error ... authRouter
+
+[33mcommit 0d6e6fea386e88cf356b205491ff6c5b18e7f8df[m
+Merge: 3f570b0 d5501bc
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jul 10 14:48:15 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 3f570b02171756434bff3eaf881ce0ac72747bd6[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jul 10 14:48:06 2020 +0900
+
+    login f5 error and localstorage edit....
+
+[33mcommit d5501bc7c44ccc5582518f093f1b216c0310e738[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jul 10 12:21:50 2020 +0900
+
+    refs #83 subnet list get data 방식 변경 (redux=>state)
+
+[33mcommit cd224dfa4cb94a708babf96c541f7ffa15a0d5ca[m
+Merge: 09b5e1f 89d5e64
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 9 13:15:48 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 09b5e1f85e1fefab17835ccbc50388dff55995c0[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 9 13:15:37 2020 +0900
+
+    권한 에러 수정
+
+[33mcommit 89d5e64c94dacbf2d2031ca8fe5a3d6b664bf7d6[m
+Merge: 1f40842 ba0f87f
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jul 9 13:10:17 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 1f40842fe9bb28eefa04dc08eba1f0f1cb2e578d[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jul 9 13:10:05 2020 +0900
+
+    자산 리스트 checkbox ui 수정
+
+[33mcommit ba0f87fb014e320e491dec51b9d66ab2742e95c8[m
+Merge: cdc19c5 29fc3d6
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 9 12:14:58 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit cdc19c5dc16629f44d096ab75e3540ea58d5c71c[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 9 12:14:50 2020 +0900
+
+    고객사 등록시 snackbar 에러 수정
+
+[33mcommit 29fc3d654dc3396d785ae284ca2c176fa292c9d4[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jul 9 11:48:00 2020 +0900
+
+    자산 리스트 오류 수정
+
+[33mcommit 3e10775092da1e498ed8ab70b9dd466329e2840e[m
+Merge: d5bcfb5 696db25
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jul 9 10:35:56 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit d5bcfb5a9d7afd99c4470ae7387f56aedbd511f4[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jul 9 10:35:47 2020 +0900
+
+    topbar search 주석처리
+
+[33mcommit 696db2532bc0f3c4a27b50f0cb8d1e63fb69d6bf[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 9 10:23:18 2020 +0900
+
+    remove event window
+
+[33mcommit 6301f11ef00a6fd5c4d4fd62aa2c99172742641c[m
+Merge: b0859d0 dfb3cb1
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jul 9 10:12:20 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit b0859d00f81cb066ec244cfcd3d89c8bddaa5fe1[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jul 9 10:12:13 2020 +0900
+
+    자산관리 ui 수정
+
+[33mcommit dfb3cb17f789a5c6f9734ef03ace2ba0d0c1266a[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 9 09:54:24 2020 +0900
+
+    고객사 관리 snackbar 수정
+
+[33mcommit 99735daaa0d4ed27d9238f06caa77aa40cc9084b[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 9 09:08:05 2020 +0900
+
+    bradcrumb 수정
+
+[33mcommit da893787761d7974c160e41373d4c6db709318f0[m
+Merge: 3f0cd34 b24cc42
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 9 09:00:50 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 3f0cd34eef7c1d78fb4555cf20ede1157f137e99[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 9 09:00:37 2020 +0900
+
+    이메일 인증 수정
+
+[33mcommit b24cc428bbe5af41eebebc9eca1fbc647d6f7b22[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 8 21:01:43 2020 +0900
+
+    add subnet list table row css
+
+[33mcommit 7232e6fa990c55a284445a9fda8682f1ecb1a022[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 8 19:35:44 2020 +0900
+
+    fix to bug : dashboard presentation.
+
+[33mcommit 7bb086814e9c393f8bd68e7fdec587a6c783f59f[m
+Merge: ba1b6e7 910d682
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 8 19:07:23 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit ba1b6e7f3049e0e46176690bb23fda1d0d88f419[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 8 19:07:10 2020 +0900
+
+    Theme customizer 버튼 삭제
+
+[33mcommit 910d682c8c03d2e608f806ca0807607d2bed2c44[m
+Merge: 410c029 d513503
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jul 8 18:12:22 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 410c0299ef1cb4821250dd399bd7f0e7811eb779[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jul 8 18:12:14 2020 +0900
+
+    enter key 시 리랜더링 에러 수정
+    계정 삭제시 snackbar 출력
+    계정 등록시 필수 항목 check 수정
+
+[33mcommit d5135032bbd3307665580104baadcbf6896545aa[m
+Merge: 7563d3d a79ccbc
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 8 18:00:18 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 7563d3db1f1cf00cd6a3b92ab9ea593fab596b24[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 8 18:00:07 2020 +0900
+
+    시연 전 bug 수정 : breadcrumbs 미표시 현상, 계정별 dashboard 화면 미변경, 관리자 대시보드 카운트 문제 등
+
+[33mcommit a79ccbc7f969b738950f70b37fa3103a10a0be68[m
+Merge: f2cac37 2585de7
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jul 8 17:02:38 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit f2cac374177f06c3e8a8cb53a740cb0a38605b01[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jul 8 17:02:28 2020 +0900
+
+    자산 UI 수정
+
+[33mcommit 2585de7f45d00bb37f76d52c6d4cbb9af7e04489[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jul 8 15:29:45 2020 +0900
+
+    중복된 URL 정보 삭제
+
+[33mcommit b6e87bb498bedf46ba334c2dcfc1a92ca4c294f1[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jul 8 13:41:47 2020 +0900
+
+    계정 화면 수정
+
+[33mcommit d679536abec2f534e78a441374e246b31343f109[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jul 8 11:46:34 2020 +0900
+
+    이메일 인증 수정
+
+[33mcommit 3676a71d374854e6eb9811ac653823b30c45d80d[m
+Merge: 95963ac 1da38c2
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jul 8 09:17:10 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 95963ac0a46c64d7ffb0e27efefb00ca95f93bd3[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jul 8 09:17:02 2020 +0900
+
+    로그인 안되는 문제 수정
+
+[33mcommit 1da38c2f822f298512deefccf18e669d29919316[m
+Merge: db09e9c b9ebfe7
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jul 7 21:18:21 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit db09e9c20c18065179856afb7355204dd6a450c3[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jul 7 21:17:59 2020 +0900
+
+    Modify subnet list
+
+[33mcommit b9ebfe7f4116d1b00057ebedf2d971869885eb22[m
+Merge: 2f4dde9 5b29608
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jul 7 20:48:11 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 2f4dde984b984832f3c468dc4edcc51a1926e900[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jul 7 20:48:04 2020 +0900
+
+    이메일 인증 로그인 관련 수정
+
+[33mcommit 5b29608606492a0b771e34c8da17d81374b3d3ff[m
+Merge: cf5cf58 5de78be
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Tue Jul 7 19:24:18 2020 +0900
+
+    자산관리 UI 수정
+
+[33mcommit cf5cf581180aef74f9e3b30f0822927643fc4254[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Tue Jul 7 19:22:48 2020 +0900
+
+    자산관리 UI 수정
+
+[33mcommit 5de78beca4263050511ae0a869a9892559b32843[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jul 7 15:14:26 2020 +0900
+
+    Fix to warning.
+
+[33mcommit fe8afa5bef3e98f7a23c8b2f4fceb71c9deefc37[m
+Merge: c717a0e ade3e40
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jul 7 14:05:50 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit c717a0e799d7b2e24f408a82f4fe981c870526d9[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jul 7 14:05:41 2020 +0900
+
+    계정/고객사 삭제 구현
+
+[33mcommit ade3e40dce2e595e32c88475427bdf6f2672cf52[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jul 7 10:42:10 2020 +0900
+
+    [breadcrumbs] url 주소 문제로 발생하는 문제 수정
+
+[33mcommit eb75f8cc72cc3e828806bae8047facff0eb44fdc[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 6 22:54:30 2020 +0900
+
+    error 수정
+
+[33mcommit 9e4b2ae2c8c420be6cdbceebc81d94ac4b273768[m
+Merge: b0a01a5 efa8509
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 6 22:49:17 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit b0a01a5add4fce37d60c18d4816e816e087266f1[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 6 22:49:10 2020 +0900
+
+    계정관리 - 검색 구현중
+
+[33mcommit efa8509177b8665940f2e8de61e974562a73cf90[m
+Merge: 038aa56 6bfebbb
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jul 6 17:40:37 2020 +0900
+
+    fix to conflict
+
+[33mcommit 038aa56e4fd6a68babc24c86321e18a83d6a157b[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jul 6 17:37:24 2020 +0900
+
+    [breadcrumbs] breadcrumbs 추가
+
+[33mcommit 6bfebbb1d64f033458de5c40f55445dfa2dbde8b[m
+Merge: fc93be7 fe8bd8a
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 6 15:02:35 2020 +0900
+
+    merge conflict 수정
+
+[33mcommit fc93be71f9b849149fbb69ec91be21ba2304fb2f[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jul 6 15:01:44 2020 +0900
+
+    계정 등록 수정
+
+[33mcommit fe8bd8ab7afb29a655119d2174d128a4ead13573[m
+Merge: 9dd331c ef4b753
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jul 6 10:22:51 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 9dd331c50df9df4bb30f0c3f9086defde3608fb4[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jul 6 10:22:34 2020 +0900
+
+    Modify subnet list css
+
+[33mcommit ef4b7533c6c238905072a593c5961807ecf6ca8a[m
+Merge: 34bfe02 2764429
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jul 6 09:23:46 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 2764429b0572d866864ed175fb5c99b9e5a8c98c[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jul 6 09:18:26 2020 +0900
+
+    Remove unnecessary code
+
+[33mcommit 34bfe02ee7113a7b21cddd765ab901cc831dc1cb[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jul 6 08:53:01 2020 +0900
+
+    refs #57: 자산 상세 화면 디자인- 댓글완료
+
+[33mcommit 355ae26a0a9e2c8a00f32cd0ca4ef74505b1900f[m
+Author: lkh42088 <lkh42088@gmail.com>
+Date:   Sun Jul 5 23:45:06 2020 +0900
+
+    refs #83 subnet list 기능 수정 중
+
+[33mcommit f9a30f6cc9282a75296726b3b090cfbfcb07cd71[m
+Author: lkh42088 <lkh42088@gmail.com>
+Date:   Sun Jul 5 16:32:16 2020 +0900
+
+    [sidebar] 사이드바 window 항목 클릭 시 window 닫힘
+
+[33mcommit e0750f8c14ddc1015cb8688afd9d11360c9234a2[m
+Merge: 7c9028a d03336f
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jul 3 10:46:17 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 7c9028aa5b83bb03d288cc201731bb794ffeb53e[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jul 3 10:46:09 2020 +0900
+
+    refs #57: 자산 상세 화면 디자인- 댓글
+
+[33mcommit d03336f4a21e5f01030995c0be8303f39fc8d2f3[m
+Merge: 6014dc1 dedf0d5
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 2 21:22:13 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 6014dc1026bbe79de9c44a053ff48817447982dc[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 2 21:22:05 2020 +0900
+
+    계정 리스트 구현중
+
+[33mcommit dedf0d5ea1a25786862dafff4939803615115ebd[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 2 19:38:04 2020 +0900
+
+    [CSS] 자산관리 리스트 체크박스 열맞춤, 고객사/유저 list shaodw 추가
+
+[33mcommit 919604d299e7885f8e3bb7c6a9787d7ff08802a4[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 2 19:13:51 2020 +0900
+
+    [CSS] reactTooltip customizing too
+
+[33mcommit dee93f5ce3f1613a25e0e7c90609267139088dc7[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 2 18:42:40 2020 +0900
+
+    [CSS] reactTooltip customizing.
+
+[33mcommit bf149efed664ac385f8c8b37db64dc2378c7c9dd[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 2 16:34:00 2020 +0900
+
+    버그 수정
+
+[33mcommit d3b19649d43407fbd15dfb97ddfd82bd8df9b992[m
+Merge: 7ce07f5 760ad9b
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 2 16:25:31 2020 +0900
+
+    conflict 수정
+
+[33mcommit 7ce07f526580e98b1741072e28950daa5e2a07e4[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jul 2 16:20:05 2020 +0900
+
+    계정 리스트 수정중
+
+[33mcommit 760ad9b5fe2e92ade15f91d84e3393634cd2c4b5[m
+Merge: f63c53d 75bac43
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 2 15:20:15 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit f63c53df6881c48044a36fab0940438d0a46e03c[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jul 2 15:20:00 2020 +0900
+
+    [CSS] 자산관리, 고객사, 유저 테이블 간격 조정 및 CSS 변경
+
+[33mcommit 75bac43be85d877276592ad89570d50deaed969a[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jul 2 11:51:59 2020 +0900
+
+    refs #57: 자산 상세 화면 디자인
+
+[33mcommit 0e55295aed7897b90f046c580ae3b7e951dca1ba[m
+Merge: e47a43f 38327ee
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jul 1 13:49:05 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit e47a43f14ce37201a47c6feda9669d3fc9abc509[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jul 1 13:48:57 2020 +0900
+
+    refs #57: 자산 모달 변경 및 디자인
+
+[33mcommit 38327ee276ee8bf2f04c8991f51a733809465a0a[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 30 17:46:15 2020 +0900
+
+    [sidebar] fix to error : do not open collapse sidebar window
+
+[33mcommit aac35dde61df3f66cecf356c6de3c73b71d11b62[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 30 17:03:33 2020 +0900
+
+    [sidebar] 사이드바 클릭 없이 window 가 발생하는 현상 수정
+
+[33mcommit 9cebe57348fd820b05de5bdeca12c0fbde87cc77[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 30 15:16:26 2020 +0900
+
+    [dashboard] 서버/네트워크 장비 수 card 추가
+
+[33mcommit d1912b1edab8045efc9dad64362cb9d1f6b8e654[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 30 12:22:38 2020 +0900
+
+    [dashboard] Customer dashboard design 완료
+
+[33mcommit 50c070c3dc22a59c8c55b8559bdf0af47988acd1[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 30 08:56:01 2020 +0900
+
+    [dashboard] fix to error
+
+[33mcommit 88829be862e80916ef82b7bf6113deeff7444638[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 30 00:38:14 2020 +0900
+
+    [dashboard] billing 수정 중
+
+[33mcommit acfeb2d351f0882474fd99aec6064a11b6322f5f[m
+Merge: b9180d2 b31feb8
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jun 29 21:05:44 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit b9180d2f3d2460f1d105e26c250e336f9eb2e632[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jun 29 21:05:34 2020 +0900
+
+    refs #51 계정 목록 구현 중
+
+[33mcommit b31feb8a8d4f07cba44a72c87866a2cbeacaf27c[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jun 29 20:55:16 2020 +0900
+
+    [dashboard] dashboard customer billing 구현 중
+
+[33mcommit 4ea8d3ee42eaa005fe927cfd28f60493493eaf6f[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jun 29 10:25:44 2020 +0900
+
+    [dashboard] log in 시 level check 하여 dashboard form 변경
+
+[33mcommit 9f3b927f9fab2c16553dd5ee1cc6111c728d2bb5[m
+Merge: 4437897 36dfe5f
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jun 29 09:25:06 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 44378977e666b439a7f362429ac4b7ae1aa9cea7[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jun 29 09:25:02 2020 +0900
+
+    form css edit
+
+[33mcommit 36dfe5f26111d8b2be424d4df7eadeb063703557[m
+Merge: bf1bd78 9dd2edb
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jun 29 09:05:44 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit bf1bd7875d4461ff776133c9760179cb6d8f61e6[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jun 29 01:24:26 2020 +0900
+
+    refs #51 계정 등록 구현
+
+[33mcommit 9dd2edbe0c3bef67b6746225cca317f7a7f128a6[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Sun Jun 28 23:29:35 2020 +0900
+
+    [dashboard] 대시보드 고객용 구현 중
+
+[33mcommit d1fb88234d3638056b7219e4332a4eb5e7e3794d[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Sun Jun 28 01:56:26 2020 +0900
+
+    고객등록 구현 중
+
+[33mcommit a972f2f8edf06f41be70ea0a70ac7216972827a9[m
+Merge: 1b2b7eb 4c30e50
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jun 26 20:52:00 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 1b2b7ebaf9adb7bb8ece11fc2078fa9154c1d599[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jun 26 20:51:37 2020 +0900
+
+    refs #51 고객사 등록 구현중
+
+[33mcommit 4c30e50bece5c203819c922fbef8efc5380215b6[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jun 26 20:12:46 2020 +0900
+
+    [dashboard] 고객사 대시보드 생성 중
+
+[33mcommit 41a54da89a2363c6cf17c8189ae6b57b883d5038[m
+Merge: 43e346f 175ab0e
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jun 26 17:46:34 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 43e346f7628a21cb81b242dfee33e24140d5c537[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jun 26 17:46:25 2020 +0900
+
+    refs #57: 자산 수정페이지 모달로 변경- 디자인 필요
+
+[33mcommit 175ab0e819264b8666a2c29b88f20633e2fe4cd3[m
+Merge: 7758fb5 cd567d7
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jun 26 10:10:14 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 7758fb534ce46fa0eec353b74913fcfa5f0b6bc9[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jun 26 10:09:57 2020 +0900
+
+    계정 등록시 stackbar 추가
+
+[33mcommit cd567d77eb3b6028302c71b29ac9b13e84df4c24[m
+Merge: 664d846 07e79b9
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jun 26 09:50:23 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 664d846bdf9495ba6d6ac2722b4d42dc18e5c2a7[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jun 26 09:50:15 2020 +0900
+
+    refs #57: 자산 로그 추가 - 수정중
+
+[33mcommit 07e79b931d10d353a0e597dc570a923f0fb64d6a[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jun 26 08:32:57 2020 +0900
+
+    user 등록시 버그 수정
+
+[33mcommit aa2dcf950db82e4719c774fad777b99ca0423112[m
+Author: 정병화 <byeonghwa.jung@gmail.com>
+Date:   Fri Jun 26 01:18:50 2020 +0900
+
+    계정 등록 수정
+
+[33mcommit dc3cd7e774eb08b933ded2337a2beeb1fef94b1e[m
+Merge: 18f6b21 068bc66
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 25 20:01:54 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 18f6b2171729dace5b5298b24a2a51a3ea544376[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 25 20:01:37 2020 +0900
+
+    [dashboard] CUSTOM DASHBOARD UI 진행 중
+
+[33mcommit 068bc66f7717c68fcdb5ea1fcfab07fd601730f1[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 25 19:58:54 2020 +0900
+
+    refs #51 고객사 관리 구현중
+
+[33mcommit 231915b05121eb980a8d2d2c9bd80595d64f1e5d[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 25 16:55:31 2020 +0900
+
+    [CSS][sidebar] company title 추가 및 색상 변경
+
+[33mcommit a93e55fa9242330256da859fc8e52354899293af[m
+Merge: 6a706f4 a6a596f
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 25 16:18:07 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 6a706f408f853da8d91c774443cfe8bf0dede133[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 25 16:17:58 2020 +0900
+
+    refs
+
+[33mcommit a6a596f03e40341a09ee85af611802f26fa6108e[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 25 15:00:16 2020 +0900
+
+    [sidebar] dashboard link 추가
+
+[33mcommit b1a61fad302fc027e366c01fd02efa62196bb3c4[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jun 25 09:25:38 2020 +0900
+
+    자산관리 메뉴 이동 수정
+
+[33mcommit 4609435f1c910d1d39be9a94fb7592d09265c1a3[m
+Merge: e322839 e040452
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 25 08:48:33 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit e322839f73f9ab6fd1187b00fe0f39c2428acc83[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 25 08:48:11 2020 +0900
+
+    [sidebar] get user props
+
+[33mcommit e0404522d2f6600ec10d8d97761d01041126db39[m
+Merge: d4c3a1a 8dacda5
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 25 08:35:58 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit d4c3a1a113f8c1a04185f46440948dbb441eaba2[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 25 08:35:49 2020 +0900
+
+    merge 오류 수정
+
+[33mcommit 8dacda5c29cbadb78404cefe66e2c8f215d167ff[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 25 01:38:27 2020 +0900
+
+    refs #83 subnet 관리 기능 수정
+
+[33mcommit b172be4872e2c1e641584959c2ab9686a38997ec[m
+Merge: 511be8b 548524d
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 24 21:25:59 2020 +0900
+
+    fix to conflict
+
+[33mcommit 511be8b4b07f7339272210b3829d503a79a67d4b[m
+Merge: 696a625 5d70756
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 24 21:17:37 2020 +0900
+
+    fix to conflict
+
+[33mcommit 548524d3c776e7fe6bd05f2e7c08e476615bfda1[m
+Merge: 29b72e5 772bc16
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jun 24 21:07:06 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 29b72e50f25473613261b7703a60106965534895[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jun 24 21:06:49 2020 +0900
+
+    refs #51 고객사 관리 구현중
+
+[33mcommit 772bc166ed2fff52c9fece4ab7be79a849aa9634[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jun 24 21:03:15 2020 +0900
+
+    layout conflict edit
+
+[33mcommit 696a6254a0918ed99cd7cc367e9c58738dc507c8[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 24 21:02:08 2020 +0900
+
+    [CSS][sidebar] 사이드바 CSS 수정(font, width, backgroud-color, mouse-over 등)
+
+[33mcommit 5d70756a0bf7852d327a3f5bf13806106c3ac485[m
+Merge: 4d2216d 374c3b6
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jun 24 20:47:56 2020 +0900
+
+    refs #57: 자산 모달-> 페이지 변환
+
+[33mcommit 4d2216d380f077e17e0f011b88dd6342188ed8dd[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jun 24 20:44:35 2020 +0900
+
+    refs #57: 자산 모달-> 페이지 변환
+
+[33mcommit 374c3b6412f0e863ddd24a500433fd4837571246[m
+Merge: 70237f1 62bb675
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jun 24 10:37:06 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 70237f154af25e65d9715a27383eac6647fb84af[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jun 24 10:36:54 2020 +0900
+
+    소스 정리 및 계정 리스트에 avata 적용
+
+[33mcommit 62bb67501d37fa24dfb61523eecca09ec3d5f39d[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 24 08:35:01 2020 +0900
+
+    [CSS][sidebar] 마우스오버 시 색상 변경(color-bar)
+
+[33mcommit 61de3889a597f9ee24d32962b8eb913ad3d0a9fc[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 24 00:53:34 2020 +0900
+
+    refs #83 Modify to binding DB data in subnet list
+
+[33mcommit 181a0a353e559c9d820dd261b5c456fe4eeb5563[m
+Merge: a7996e4 43e9d09
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 23 21:25:28 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 43e9d09164690213c7580a760f2fb4cffad939f7[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jun 23 21:27:00 2020 +0900
+
+    user 정보를 cookie 값을 통해 topbar에 전달
+
+[33mcommit a7996e4a67eab4edaeed038c7ff7c13cf3befcc7[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 23 21:25:14 2020 +0900
+
+    [CSS][sidebar] 사이드바 마우스 오버시 색상 변경
+
+[33mcommit 09c3e22ae1b89e7fc58d41f5415e5b46c3318a33[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jun 23 20:29:26 2020 +0900
+
+    불필요한 파일 삭제 및 topbar에서 user name 추가
+
+[33mcommit 2b49c6be94f6691a5b62d1933b36670565a3bd9f[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jun 23 20:06:44 2020 +0900
+
+    refs #51 고객사 관리 구현중
+
+[33mcommit 1250fb39521f15b41546dd7689d48fcf645e4008[m
+Merge: ff27dfc 9dd777e
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jun 23 20:06:04 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit ff27dfc1d59a8876ec47c2e443040533c4f46781[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jun 23 20:05:55 2020 +0900
+
+    refs #51 고객사 관리 구현중
+
+[33mcommit 9dd777eed55ce238038fe3e0c5d663849dab17ec[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 23 19:46:00 2020 +0900
+
+    [CSS][sidebar] 사이드바 CSS 변경(간격조정, shadow 추가, window 크기 조정)
+
+[33mcommit 4a2c62ef76fbaa6493fe74326579775f8c10c4f4[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 23 13:53:03 2020 +0900
+
+    Modify to Subnet list
+
+[33mcommit 78f3e1bf0bad526770d8230178868e80cd3fec52[m
+Merge: 43e518f 8d0c386
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 23 13:43:59 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 43e518fdede3daf2ce19576c8185f5f96237cb4d[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 23 13:43:48 2020 +0900
+
+    refs #83 Modify to Subnet management function
+
+[33mcommit 8d0c3861cb61d7772bc90e1f99649ea00b1c11e4[m
+Merge: 36c316c 562e759
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jun 23 09:38:03 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 36c316cfd3d7b40218279ad2879ad8983d3ab7e4[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jun 23 09:37:53 2020 +0900
+
+    refs #51 고객사 관리 구현중
+
+[33mcommit 562e759603bab598feaec26e5f98cb87f8d0b14c[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 23 09:33:17 2020 +0900
+
+    Fix to dashboard problem
+
+[33mcommit a504e328eb40a58b3732e4a9ddbe56b6158d11b6[m
+Merge: 3f80182 609c251
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 23 08:55:49 2020 +0900
+
+    fix to conflict
+
+[33mcommit 609c2513c09edc9fa2cb4f2283ccb563112af5e2[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 23 00:36:31 2020 +0900
+
+    pagination test
+
+[33mcommit 3f80182b3dddc3b15f3c2c6760e0202e153d9713[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jun 22 23:09:15 2020 +0900
+
+    Bug fix
+
+[33mcommit 87b9b295e462e6afb453ebed1c47c0f979a21ce5[m
+Merge: 6e6170b c7a8a6f
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jun 22 20:34:18 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit c7a8a6ff4e411664cf016a453cdbacc8936131e9[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jun 22 20:36:30 2020 +0900
+
+    refs #51 고객사 관리 구현중
+
+[33mcommit 6e6170b3f234ea072326a28d7fb8fe0259b4fcbd[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jun 22 20:33:48 2020 +0900
+
+    refs #83 Subnet 관리 기능 구현 중
+
+[33mcommit 4d1a174c478bdccc918949c5ff64705bad4bcca8[m
+Merge: 53da7ae c250904
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jun 22 15:25:43 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 53da7ae1b9d9445e4016bb15e5df40ce3a503098[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jun 22 15:25:37 2020 +0900
+
+    refs #51 고객사 관리 구현중
+
+[33mcommit c250904cf6691ae727dfd60529a9ac3be1d68cd9[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jun 22 12:27:09 2020 +0900
+
+    [FONT] Card font 변경 : global 설정
+
+[33mcommit 5eaed96aed6dd25c7cafee4bd317e9d9529868d6[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jun 22 12:26:08 2020 +0900
+
+    refs #83 Sidebar 에 Subnet 관리 등록
+
+[33mcommit cf6d1eed3643b2f0532ffede803c327c3f6f0811[m
+Merge: 316e4d2 8afa4ea
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jun 22 10:48:04 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into custom_db
+
+[33mcommit 316e4d2a14cddf94fdbfb4332114e693e7503cf2[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jun 22 10:47:43 2020 +0900
+
+    refs #83 Subnet list custom header.
+
+[33mcommit 8afa4ea1d200e2006d86a747e1a34c8bd2035cc4[m
+Merge: b3a63b8 dfd847e
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jun 22 10:45:18 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit dfd847e8340884c2cef5d44b62bebcc33124f20c[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jun 22 10:45:23 2020 +0900
+
+    refs #51 고객사 관리 구현중
+
+[33mcommit b3a63b8cfb46b16865d7816f594c281c4c4e3062[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jun 22 10:45:02 2020 +0900
+
+    refs #57: 자산 로그 데이터 추가 - 수정중
+
+[33mcommit 656e51cb15f0a22b3ee86258af527af43f3a1245[m
+Merge: f86e03b f91c832
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jun 22 09:10:12 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit f91c8325563e6258bfce66e778c17a038b08db0b[m
+Merge: ac78e40 e2861ee
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jun 22 00:24:00 2020 +0900
+
+    Merge branch 'custom_db' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit e2861eed62aa9a8966d7ac9178633148360591cb[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jun 22 00:22:41 2020 +0900
+
+    refs #83 Subnet list pagination 커스터마이징
+
+[33mcommit ac78e40b6e6eda5d19cd207da2d32ffd8cefa894[m
+Author: 정병화 <byeonghwa.jung@gmail.com>
+Date:   Mon Jun 22 00:09:34 2020 +0900
+
+    refs #51 고객사 등록 구현 중
+
+[33mcommit 12b12a69d89847b8ba4ec18cc8efb12040ba5db2[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Sun Jun 21 19:25:25 2020 +0900
+
+    refs #83 Subnet list 데이터 연동
+
+[33mcommit f86e03beefb94ad51317d3e7c7531c39291cbbdc[m
+Merge: 8a5d0d1 522577e
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jun 19 16:50:19 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 8a5d0d1d077bf4af19b7a8fed941a01f1b64815a[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jun 19 16:50:01 2020 +0900
+
+    refs #57: 자산 UI - 수정중
+
+[33mcommit a35b59cc2ac22ee59a73915f7c2e6dfc3a3ff2e6[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jun 19 16:43:21 2020 +0900
+
+    test : Pagination bar
+
+[33mcommit 833198648a694f4c3eb868b45048b3c6ba95df10[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jun 19 14:23:14 2020 +0900
+
+    semantic-ui-react test
+
+[33mcommit c1588ba14f7cdf6a0e33eee68b14d3c37a8506de[m
+Merge: 5763d7e 522577e
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jun 19 10:26:36 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into custom_db
+
+[33mcommit 522577ed208c73c028cabaef2256e47e3f278da6[m
+Merge: 9cc96a3 053f30d
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jun 19 10:26:09 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 9cc96a3fe31e17176e5c2c519b8f0845839529f0[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jun 19 10:25:48 2020 +0900
+
+    Fix to conflict.
+
+[33mcommit 5763d7ef1d9447e4b2b143f9e573b8f52241ee62[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jun 19 10:20:52 2020 +0900
+
+    semantic-ui-react 추가
+
+[33mcommit 053f30d57f7bc6101759af4b0b78ed6f3c9b4f2c[m
+Merge: ca9c856 e9a6852
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jun 19 08:43:29 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit ca9c856a33635b08f51e9663b8635c66e4497689[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jun 19 08:43:17 2020 +0900
+
+    refs #57: 자산 검색 및 페이징, 운영&반출 기능 추가 - 디자인 필요
+
+[33mcommit e9a68528711b1f8e15fd0574947fbc49b44b3fe4[m
+Merge: 84d63bf 0d342e2
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 18 21:13:49 2020 +0900
+
+    merge conflict 수정
+
+[33mcommit 84d63bfa6125356bbd7a5243cf91a04fa1dbc4f1[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 18 21:11:14 2020 +0900
+
+    refs #51 고객사 등록 구현 중
+
+[33mcommit bd23f498283e73303aba0a74a1b7573a87da07d7[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 18 21:07:49 2020 +0900
+
+    test: Subnet list
+
+[33mcommit 0d342e2642002041a28ac1daac201fc3554c3e8a[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 18 10:43:46 2020 +0900
+
+    refs #84 Subnet 등록 기능 추가
+
+[33mcommit d6ea751f4330c21e4d1f3c3ef0fb15db83d074b0[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 17 19:44:56 2020 +0900
+
+    test code for subnet-create.
+
+[33mcommit 2abb67803b319d43414237d4a1b53337f47ef246[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 16 20:31:48 2020 +0900
+
+    Subnet create funtion 구현 중
+
+[33mcommit b4cea2dc06c8cf1de4adf369b344e7e13aa2ebe8[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 16 09:56:01 2020 +0900
+
+    Add to redux devtools extension.
+
+[33mcommit 48b93b65e37063c48c3f4c2b7265c796da5177a9[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 16 02:18:04 2020 +0900
+
+    Modify to create subnet.
+
+[33mcommit 39eb418566ab9b63b02c5e59d9f74da57225fbf7[m
+Merge: 722e1c2 e3912d3
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jun 15 21:12:06 2020 +0900
+
+    fix to conflict.
+
+[33mcommit 722e1c2a216d7d4d9a4efe1cf8cd54716ba2203f[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jun 15 21:06:25 2020 +0900
+
+    fix to comment.
+
+[33mcommit e3912d36e053c3524090312c00f8c1a87b475103[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jun 15 19:59:14 2020 +0900
+
+    refs #57: 자산 페이징 - 수정중
+
+[33mcommit 86241987a70b81609f12817490a88f124b37b6c9[m
+Merge: e55ef1a 7261506
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jun 15 11:58:31 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit e55ef1ad84d3a5bf282481e470d6cfa36f697c6c[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jun 15 11:58:19 2020 +0900
+
+    favicon, title edit
+
+[33mcommit 7261506cf7a0bcd0d13bf77e8b036a62fecec776[m
+Author: 정병화 <byeonghwa.jung@gmail.com>
+Date:   Mon Jun 15 00:07:53 2020 +0900
+
+    cb-modal 수정
+
+[33mcommit 068ebdbefb22bb9b5569f6d7a39b7cb94f8c2ef2[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Sun Jun 14 22:14:58 2020 +0900
+
+    Subnet 등록을 위한 redux 준비 작업
+
+[33mcommit 8b84178eb8215a9e6ae1173aff71849e5c6622d3[m
+Merge: a2c8178 a279703
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jun 12 20:55:53 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit a2c8178d49540fb409492cdb85db690ed77c6435[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jun 12 20:55:46 2020 +0900
+
+    refs #51 고객사 등록 구현 중
+
+[33mcommit 3cba2b1fb505919a39dfeb492dedc587e98edaa8[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jun 12 20:29:12 2020 +0900
+
+    Rollback unnecessary code.
+
+[33mcommit 714ef16803da0165e3fd04a9efe8b5fd4e4a2599[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jun 12 17:10:35 2020 +0900
+
+    Rollback side-bar code.
+
+[33mcommit 8a7ba2614ca85e7a2f456f07e6753c949ac6b8bf[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jun 12 16:17:16 2020 +0900
+
+    merge to solve conflict
+
+[33mcommit a279703813b6fa9a92c95429faa23da9b5c6d548[m
+Merge: 0a27563 641a351
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jun 12 14:17:40 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 0a275631e6899f2a7929cd3950975fcb2811e63c[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Jun 12 14:17:30 2020 +0900
+
+    refs #78: 대시보드 UI - 초안
+
+[33mcommit 641a35171be687849d99a3bfa4827ae1c6de3ab8[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jun 12 10:55:21 2020 +0900
+
+    table padding bar 수정
+
+[33mcommit 898c6a711443c672953ddbf6936f78ba86684bdb[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jun 12 10:51:57 2020 +0900
+
+    table padding bar 수정
+
+[33mcommit 412ded63f3bdd39d58bfbc2e7961ff899d271ca1[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jun 12 10:26:30 2020 +0900
+
+    table dense padding 수정
+
+[33mcommit 47c4383a602000644435f08a55e791a0ceb1753b[m
+Merge: 4a40230 6ed5bb3
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 11 21:48:25 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 4a40230ee28ef5736ad913f33e4f3239bdb56d16[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 11 21:48:10 2020 +0900
+
+    logo dark 적용
+
+[33mcommit 6ed5bb3d8b8fe0a8703cc4e7a2f2480a1c227da4[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 11 21:44:09 2020 +0900
+
+    [CSS] Modify to CSS for dark theme.
+
+[33mcommit 8bf1b2a10d941886ada0317bdcc561f40198cfd3[m
+Merge: f7b4929 0bf089a
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jun 11 20:11:53 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit f7b49296a382c661eff96ffb84d65c9b53cfb5b1[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jun 11 20:11:18 2020 +0900
+
+    refs #57: 자산관리 리팩토링 - 수정중
+
+[33mcommit 0bf089a6f34970ed39a65b46a58b01f9981b90f1[m
+Merge: 3396302 2dd62c8
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 11 19:55:39 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 3396302ad4b95aba7a1c680bb7ade0497fafde4a[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 11 19:55:23 2020 +0900
+
+    [CSS][ICON] Modify to side-bar css file.
+
+[33mcommit 2dd62c8ca33e9bce18004166da68dd1ef0bd1653[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 11 17:38:05 2020 +0900
+
+    merge
+
+[33mcommit 1871fecaa9d901c801ad07d12fdaee9523fe49c1[m
+Merge: 8b5261a faf59e9
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 11 17:35:50 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 8b5261aa3affb77abe38643427915bf45ffb8e13[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 11 17:35:39 2020 +0900
+
+    table head/toolbar refactoring
+
+[33mcommit faf59e9fcb9b95a411121306a0df4f86291cadbb[m
+Merge: 613f518 62ef090
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 11 17:29:16 2020 +0900
+
+    Merge branch 'custom_db' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 613f51811cd43bcea76ddf193940e8b6fe5b94e8[m
+Merge: 09f6db7 1bc79fa
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 11 17:28:58 2020 +0900
+
+    fix to conflict
+
+[33mcommit 62ef090abe53eab9f8aaad6032fd55c37239b3a6[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 11 17:26:46 2020 +0900
+
+    Add side-bar icon
+
+[33mcommit bbc3f3374ca7b3d54800607b35a4a13302486438[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 11 16:58:08 2020 +0900
+
+    Modify to sidebar icon
+
+[33mcommit 1bc79faa522ce344b75f4163cc8ee94ccca9410c[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 11 16:49:47 2020 +0900
+
+    table head/toolbar refactoring
+
+[33mcommit 8f6fbf3adb98dc4453af81084a5071282b5de57b[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 11 16:45:58 2020 +0900
+
+    table head/toolbar refactoring
+
+[33mcommit 9796f590272fb749d29567a65ec100cea98d22c7[m
+Merge: e16f42a 2690797
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 11 15:51:05 2020 +0900
+
+    Solve to conflict.
+
+[33mcommit 26907972d3bc1f68ac1a3dd924c0891426f8fef7[m
+Merge: 157e602 60d8d5d
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 11 15:47:28 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 157e602daf60a6b918c7b343084ad746783055ad[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 11 15:47:08 2020 +0900
+
+    refs #76 고객사목록 수정
+
+[33mcommit 60d8d5d7d50054bb1b6a58507962f87b466d5116[m
+Merge: a6aa189 c88670c
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jun 11 15:42:21 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit a6aa189d04fd318b087468689051e2586217d272[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu Jun 11 15:42:13 2020 +0900
+
+    sidebar edit
+
+[33mcommit c88670c6604bb46fa2cfeb20511c53b38b39bea2[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 11 14:57:39 2020 +0900
+
+    refs #76 고객사목록 수정
+
+[33mcommit e16f42aae701a566d79d6df465779b4f51fa5be2[m
+Merge: dd3af0d 897f85a
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Thu Jun 11 09:19:05 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into custom_db
+
+[33mcommit 897f85aba380bb62be1763d52f561143678835e8[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jun 10 20:45:25 2020 +0900
+
+    sidebar link 수정
+
+[33mcommit 8986ba09d63e193feb9a99db1b2bd44b996d131f[m
+Merge: 61df695 60c6e60
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jun 10 19:18:22 2020 +0900
+
+    sidebar 완료
+
+[33mcommit 61df69581ab6235d82f176b672de561fe21d267f[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jun 10 19:16:06 2020 +0900
+
+    sidebar 완료
+
+[33mcommit dd3af0d896a94e92b8a0c03e0302c9eebdda903c[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 10 16:53:00 2020 +0900
+
+    [FONT] 누락 정보 추가
+
+[33mcommit 1715cb2fd91da722a42efb1afcd97308e2f33cdb[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 10 16:50:03 2020 +0900
+
+    [FONT] 누락 정보 추가
+
+[33mcommit 09f6db7c96b8bd1e818044154e676f3a6175d3ac[m
+Merge: 3d5959e 60c6e60
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 10 15:58:28 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 3d5959e6326872ae2c89e2b63d1f8567f66f0171[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 10 15:57:22 2020 +0900
+
+    [STYLE][FONT] Add padding to table cell. (2020.06.10)
+
+[33mcommit 92b578b7460de8376c14f68291580aff6f768e87[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 10 15:46:21 2020 +0900
+
+    [FONT] Table Font 변경 : 추후 수정 필요(2020.06.10)
+
+[33mcommit bc8dacd01a92ba7f1ac28af1f626d4574726a5ec[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 10 15:28:55 2020 +0900
+
+    Add to Subnet table in router.
+
+[33mcommit 60c6e601b2ac1af5608b681ff2f6478fafba5947[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jun 10 12:13:55 2020 +0900
+
+    nb-material-table 삭제
+
+[33mcommit aaf2c2a53e131968f3faef0a2740922037688be0[m
+Merge: ba1d4de 38f20aa
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 10 09:43:15 2020 +0900
+
+    Merge branch 'develop' into custom_db
+
+[33mcommit 38f20aaa3fef10b4a20e721a0847b8a55bbddd0f[m
+Merge: ba30dd3 a81da7b
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 10 09:42:37 2020 +0900
+
+    merge
+
+[33mcommit ba1d4deab6c07f9b7a18860ce647b6dd7c71d87f[m
+Merge: 87d1a7b ba30dd3
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 10 09:41:05 2020 +0900
+
+    Merge branch 'develop' into custom_db
+
+[33mcommit 87d1a7b69a29491e05efd64f8da72f014031ed02[m
+Merge: 4f3bd14 a81da7b
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 10 09:36:39 2020 +0900
+
+    merge
+
+[33mcommit a81da7b9784c251937a7d8ae5332d61c43265eef[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed Jun 10 09:34:59 2020 +0900
+
+    원본 템플릿 복구
+
+[33mcommit f5eb736ed24753a2e95f76ac73571eb76c9f4223[m
+Merge: 4f4a78b 05909f0
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jun 10 09:01:06 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 4f4a78bf7f4d6483b0882b0081cc04472f9dfec7[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jun 10 09:00:55 2020 +0900
+
+    store edit
+
+[33mcommit 05909f04d9336733bb44494784d064d39dce09e4[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jun 9 20:55:33 2020 +0900
+
+    템플릿 원본코드 삭제된 것 복구
+
+[33mcommit 63ba15709f8e7eac52db5d445a03200ff93472e1[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jun 9 19:00:51 2020 +0900
+
+    refs #76 고객사 목록 구현
+
+[33mcommit 57a9596677c483975db0c3c1a1eabde32636f6d4[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jun 9 13:31:47 2020 +0900
+
+    refs #49 고객관리- css 수정
+
+[33mcommit 4f3bd14480e45409ee795283afc6ab7f9fe53c2c[m
+Merge: 746f6e0 57a9596
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 9 13:30:51 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into custom_db
+
+[33mcommit 746f6e0aff1414f19c02514f6bf3834bcf650402[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 9 13:30:38 2020 +0900
+
+    test commit
+
+[33mcommit b746e0b64d5b3d1b30f5013c81630287a919a5c5[m
+Merge: 15fc66d c6cab5e
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Tue Jun 9 08:50:46 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into custom_db
+
+[33mcommit c6cab5eeb7206671921309291d64c1d39070a363[m
+Merge: af2f07e e448a84
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jun 8 21:30:26 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit af2f07e23efce56dbd58c495497b95bfbca255e7[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jun 8 21:30:14 2020 +0900
+
+    refs #49 고객관리 - font-family 추가
+
+[33mcommit e448a84bfae7218bf1a2cb20808944ce157ca8b5[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jun 8 20:54:37 2020 +0900
+
+    refs #57: ui 수정 - 작업중
+
+[33mcommit 15fc66d2a7d23a7f82a2fd2d9aa726471c50d1f1[m
+Merge: 3fae0e7 68e784b
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jun 8 20:43:14 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into custom_db
+
+[33mcommit 3fae0e74db800faad880a42e13d00b0df23446c6[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jun 8 20:42:52 2020 +0900
+
+    Make test UI : Subnet write.
+
+[33mcommit 68e784b183b7156416cc72183a06f9ca6bf50a74[m
+Merge: cd8bd40 07e7af1
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jun 8 17:16:36 2020 +0900
+
+    refs #57: 자산 반출 - 수정중
+
+[33mcommit cd8bd40c1691e7eed54d589f88215c567440c6f5[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Jun 8 17:15:32 2020 +0900
+
+    refs #57: 자산 반출 - 수정중
+
+[33mcommit 07e7af1474d051948bceb613aac9794f6fd57865[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon Jun 8 17:09:13 2020 +0900
+
+    refs #49 고객관리- paging 수정
+
+[33mcommit 299f62ce3b40fdd97470825c6a3d9d12763b828a[m
+Merge: 145f9be 328eea8
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Mon Jun 8 08:35:53 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into custom_db
+
+[33mcommit 328eea8aff735f72dbd1096bb6260241bea1ba18[m
+Merge: 8b38313 0702a3f
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Sat Jun 6 19:19:02 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 8b38313f30433c2d7b568d9a85f4be07f5867404[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Sat Jun 6 19:18:49 2020 +0900
+
+    refs #49 고객관리 - paging 수정
+
+[33mcommit 145f9be00ad0729db95b943699d07fe7356b6294[m
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Sat Jun 6 16:37:16 2020 +0900
+
+    Subnet management UI 제작 중
+
+[33mcommit 0702a3f6aaa030a73079573bd7e3ac2cce4967fd[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Sat Jun 6 15:37:34 2020 +0900
+
+    refs #57: 자산관리 수정 - 리팩토링 필요
+
+[33mcommit d3f40c09f4a11bcb20f505febe61f33c3fb424ee[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Sat Jun 6 11:34:24 2020 +0900
+
+    refs #49 고객관리 - paging 수정
+
+[33mcommit e00b99094c5e43f8e00f41fc1586aa4562d379e5[m
+Merge: 0bec302 bbf6b47
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Sat Jun 6 11:09:51 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 0bec302586f3f5e1707e4c8323814358bad7c9a0[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Sat Jun 6 11:08:43 2020 +0900
+
+    refs #49 고객관리 - paging 수정
+
+[33mcommit bbf6b47ca2eb6a086714932d789ee1a798addc9b[m
+Merge: 4a5b857 db0ffd4
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Sat Jun 6 10:51:18 2020 +0900
+
+    refs #57: 자산관리 수정 - store edit
+
+[33mcommit 4a5b857dcf6447800db675a27a509aa14a702710[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Sat Jun 6 10:49:17 2020 +0900
+
+    refs #57: 자산관리 수정 - 작업중
+
+[33mcommit db0ffd4322ed8a34abb19d799fbf88c11b22becd[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jun 5 21:04:56 2020 +0900
+
+    pagination redux 구현중
+
+[33mcommit 09994940608258e3647f0d785ccf76ddb5f59bc2[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jun 5 14:26:26 2020 +0900
+
+    variable.scss 수정
+
+[33mcommit ba30dd3d5850651df803c0b58df155de2e14aae7[m
+Merge: afefc85 93e203c
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri Jun 5 12:10:20 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 93e203c00bd42d3b867ea4c9b639f90fcfdb3eb5[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri Jun 5 12:01:05 2020 +0900
+
+    material table 수정
+
+[33mcommit 17ac3e67b1f4380173c08abc287e4ca2ed95f0d6[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 4 21:18:40 2020 +0900
+
+    paging 수정
+
+[33mcommit 901ea47a609b4e3cad819d300e4f6d10074d410f[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 4 15:25:11 2020 +0900
+
+    로그 수정
+
+[33mcommit e12845d29b2f965b96cccd0c9b1012b36481337e[m
+Merge: bab576b 3ce1514
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 4 15:19:46 2020 +0900
+
+    conflict 수정
+
+[33mcommit bab576b694653b24a15d06c72ad737227747ebe3[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu Jun 4 15:15:43 2020 +0900
+
+    refs #52 paging 적용, #65 오류수정
+
+[33mcommit afefc85c2e8831601db2c102a2c5086cb6d9af94[m
+Merge: f592af4 3ce1514
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 3 16:53:25 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit 3ce151467ac5fd2fb4eba6465475471ad73fd4bf[m
+Merge: e33dc76 f08548c
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jun 3 16:52:28 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit e33dc760121d7ab36b661b5c67546734fbb6eeb7[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Jun 3 16:52:15 2020 +0900
+
+    refs #57: 자산관리 수정 - 작업중
+
+[33mcommit f592af4497a9f760702de60b6fcf4fe2d8f06890[m
+Merge: 1ece1ad f08548c
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Wed Jun 3 11:06:17 2020 +0900
+
+    Merge branch 'develop' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit f08548cfbe3570e186781fe56e9c6121225dbec0[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jun 2 12:22:34 2020 +0900
+
+    refs #49 user redux를 account로 변경
+
+[33mcommit 5c29c20efb1b91f0532fa0bd19944e99826defe0[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue Jun 2 10:18:21 2020 +0900
+
+    refs #75 임시 계정 등록 기능
+
+[33mcommit a111c733656ce585505d044bdd803a8c5208a6ef[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Author: 정병화 <byeonghwa.jung@gmail.com>
+Date:   Mon Jun 1 00:14:55 2020 +0900
+
+    refs #65 login email 인증
+
+[33mcommit 371129ab2c0526d1d5a8e459347284a5a8543280[m
+Author: 정병화 <byeonghwa.jung@gmail.com>
+Date:   Sun May 31 02:21:45 2020 +0900
+
+    refs #65 [web] login email 인증 기능
+
+[33mcommit e9dbc5e7e6efcd6dc0f43545bfec160e5893fc03[m
+Merge: 292e75f ac15392
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri May 29 20:04:43 2020 +0900
+
+    Merge branch 'develop' into custom_db
+
+[33mcommit 292e75ff0e13aa0f97a1dacbadcceb4f274839c7[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri May 29 20:03:04 2020 +0900
+
+    refs #65 [web] login 기능 구현
+
+[33mcommit 1ece1adf41673ce159e7f4dfb16833adf35d22e0[m
+Merge: ac15392 3a2eaa4
+Author: khlee <khlee@nubes-bridge.com>
+Date:   Fri May 29 19:47:59 2020 +0900
+
+    Merge branch 'custom_db' of http://119.206.205.111:7000/cmp/cmpWeb into develop
+
+[33mcommit ac15392d5a061f6cdde9180df4521b32b48d3c1b[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri May 29 17:39:31 2020 +0900
+
+    refs #57: 자산관리등록 - UI 개선 필요
+
+[33mcommit 3a2eaa4b13eb4d47498745f877cec63100a7aa65[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu May 28 13:32:10 2020 +0900
+
+    refs #65 login 수정
+
+[33mcommit b2cda2be9d9c03653fa21b53a2ce2b8bf245466a[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu May 28 10:49:36 2020 +0900
+
+    rm workspace.xml
+
+[33mcommit 77faa2836697556c96da1dab7d0766d635932478[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Tue May 26 20:46:07 2020 +0900
+
+    assets write add 수정중
+
+[33mcommit 335baadd01663435e133e8fa828f257e66e94056[m
+Merge: 33b96a4 680459a
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon May 25 11:10:27 2020 +0900
+
+    Merge branch 'master' of http://119.206.205.111:7000/cmp/cmpWeb
+
+[33mcommit 33b96a44794ab35c1e96c85b949afad74204ddf6[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon May 25 11:09:54 2020 +0900
+
+    assets edit
+
+[33mcommit 680459a433fbbc1b124a7706c43f2da46042b17a[m
+Author: 정병화 <byeonghwa.jung@gmail.com>
+Date:   Sun May 24 23:46:53 2020 +0900
+
+    refs #65 login email 인증 - registration
+
+[33mcommit 2b2c78984b34fc0c52df144ccfdd9a9990aab69f[m
+Merge: 20ad7cd b2b6b66
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri May 22 22:10:10 2020 +0900
+
+    Merge branch 'master' of http://119.206.205.111:7000/cmp/cmpWeb
+
+[33mcommit 20ad7cdfd449550a8ab92a09b5605a2418d94cb2[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Fri May 22 22:09:49 2020 +0900
+
+    refs #65 login email 인증 - 인증 url
+
+[33mcommit b2b6b667104e29a9d904de6fef48b4591d603ecd[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu May 21 20:31:21 2020 +0900
+
+    refs #57 : 페이징 완료 - 속도 개선 필요
+
+[33mcommit ac25c3f2ad1cad1bf1e05e56ff6193361e475f87[m
+Merge: 7c788e3 0f4f92b
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu May 21 15:27:44 2020 +0900
+
+    Merge branch 'master' of http://119.206.205.111:7000/cmp/cmpWeb
+
+[33mcommit 7c788e3546de25f9c304ba6b1d91be3614634d52[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu May 21 15:27:15 2020 +0900
+
+    refs #57 : comment - user 제외 완료
+
+[33mcommit 0f4f92bbfc9f0e1deb0ffba77fb52f68786b3ffb[m
+Merge: 46df120 b913092
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed May 20 19:40:37 2020 +0900
+
+    Merge branch 'master' of http://119.206.205.111:7000/cmp/cmpWeb
+
+[33mcommit 46df1208e4d40b11e21d8b0d69ba7652edc30792[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed May 20 17:27:00 2020 +0900
+
+    refs #64: logout 기능구현
+
+[33mcommit b913092b5df218dd6d1e10f296cf61f2193eef68[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed May 20 17:27:00 2020 +0900
+
+    #64 : logout 기능 구현
+
+[33mcommit f23912f30c088313665ec211435d61c631d8236f[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Tue May 19 17:50:18 2020 +0900
+
+    assets edit
+
+[33mcommit 662a2855adcf02ef2c5bd0ab20c9790b669cc4ac[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue May 19 16:21:55 2020 +0900
+
+    modified topbar
+
+[33mcommit a134328d5486d7414e6e5f9572a4dd983f587e0d[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Tue May 19 12:12:53 2020 +0900
+
+    modified register process
+
+[33mcommit a94e2800a7b5e3dc58fa05dc6ee2b19e066e2ec7[m
+Merge: 7b54eb7 d3535e0
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon May 18 20:34:57 2020 +0900
+
+    pagination add
+
+[33mcommit 7b54eb777e15aa171621c4c62acc316da80af310[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon May 18 20:34:29 2020 +0900
+
+    pagination add
+
+[33mcommit d3535e02134e02c1f6ee3e5ec373ce29b3de32f4[m
+Author: 정병화 <byeonghwa.jung@gmail.com>
+Date:   Mon May 18 00:06:31 2020 +0900
+
+    modified register form
+
+[33mcommit 0ef61efa5e90b0ba377cf97c341150af89e54c64[m
+Merge: 7f25953 3094f80
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu May 14 20:00:05 2020 +0900
+
+    assets paging edit
+
+[33mcommit 7f25953c754acab81d3116058d8ea26796bec661[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Thu May 14 19:59:34 2020 +0900
+
+    assets paging edit
+
+[33mcommit 3094f801b5cea05d8a53a4ef2c8266b3562e4a60[m
+Author: byeonghwa jung <bhjung@nubes-bridge.com>
+Date:   Thu May 14 06:57:19 2020 -0400
+
+    delete untracked file or unused file
+
+[33mcommit aeaebe512a3fdf2665ac9f6c838c35ff504cc145[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Thu May 14 17:57:52 2020 +0900
+
+    add withCredentials to axios config for cookies
+
+[33mcommit bb4e879189c78b56aef0c2b5b3486a133b39381a[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed May 13 20:25:17 2020 +0900
+
+    added doing sagaMiddleware
+
+[33mcommit bcf6508cf49c2fb72a1275cdb9bc039e12fdb8d5[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Wed May 13 19:15:57 2020 +0900
+
+    apply redux auth,user,loading to login
+
+[33mcommit bc9654356b00cc3687313f887cd729122589c276[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed May 13 10:17:54 2020 +0900
+
+    assets 수정중
+
+[33mcommit f510196f6a8a6e765c34147b2653d6faba9e2cd7[m
+Merge: f6b19e0 774f59d
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Tue May 12 16:44:42 2020 +0900
+
+    assets list...view
+
+[33mcommit f6b19e0ddf9a33fc3d0d5800af4f4f48c5eaa700[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Tue May 12 16:43:55 2020 +0900
+
+    assets list ... view
+
+[33mcommit 774f59d54d6412b785e0aa2de95d7702b1e16a74[m
+Author: 정병화 <bhjung@nubes-bridge.com>
+Date:   Mon May 11 18:57:27 2020 +0900
+
+    delete OAuth code and changed from class to function related to login code
+
+[33mcommit c40c99b346457690c1e24966f6f2b47abe50f66d[m
+Author: 정병화 <byeonghwa.jung@gmail.com>
+Date:   Sun May 10 23:25:09 2020 +0900
+
+    route Login
+
+[33mcommit 3ab4a23618a7227ae071cfe122c7d8ead0963be1[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri May 8 17:31:58 2020 +0900
+
+    자산관리 view 작업중
+
+[33mcommit 6cfade2988336da8e22c0f036d92615bb2d90c31[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed May 6 21:07:42 2020 +0900
+
+    redux list dispatch
+
+[33mcommit b9391c5ff7d665aa7eab7a595c27628e78837eb3[m
+Merge: 586292c 4ad540b
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Apr 29 17:38:42 2020 +0900
+
+    readme 추가
+
+[33mcommit 586292cecb6b45930002cfeed06746c248bd73a5[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Apr 29 17:38:03 2020 +0900
+
+    readme 추가
+
+[33mcommit 4ad540b545285939412600d95d7b153f47350da2[m
+Author: byeonghwa jung <bhjung@nubes-bridge.com>
+Date:   Wed Apr 29 04:19:40 2020 -0400
+
+    delete .idea
+
+[33mcommit 6d574e492800544fa0b707a6024aa21765041609[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Wed Apr 29 17:14:21 2020 +0900
+
+    reducer 작업중 (immutable)
+
+[33mcommit 90df25a4f237952949a74259e5cd4a493c6e8e19[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Tue Apr 28 09:32:06 2020 +0900
+
+    자산관리 redux 적용중
+
+[33mcommit d6aa0e9821abefdb490c43afe35d0becb6882da6[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Mon Apr 27 11:21:21 2020 +0900
+
+    gitignore
+
+[33mcommit 1c18808d1371198b07493123c378c6724713485f[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Apr 24 17:33:57 2020 +0900
+
+    redux 적용중
+
+[33mcommit 6389ae0837eb7208978bf0af5d3f59f5f22756cc[m
+Author: ebjee <ebjee@nubes-bridge.com>
+Date:   Fri Apr 24 14:41:45 2020 +0900
+
+    Initial commit

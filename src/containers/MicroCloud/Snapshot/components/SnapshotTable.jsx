@@ -19,8 +19,11 @@ import {
     pagingChangeCurrentPagePrev, pagingChangeOrder, pagingChangeOrderBy, pagingChangeRowsPerPage, pagingChangeSelected,
     pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
-import {deleteSnapshotList, getMcVmSnapshot, unregisterMcVm} from "../../../../lib/api/microCloud";
+import {
+    deleteSnapshotList, getMcVmSnapshot, recoveryMcVm,
+} from "../../../../lib/api/microCloud";
 import {OPERATOR} from "../../../../lib/var/globalVariable";
+import SnapshotRecoveryModal from "./SnapshotRecoveryModal";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -93,6 +96,7 @@ const SnapshotTable = () => {
     const [data, setData] = useState([]);
     const [paging, setPaging] = useState(null);
     const [adminLevel, setAdminLevel] = useState(true);
+    const [openRecovery, setOpenRecovery] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
 
     const dispatch = useDispatch();
@@ -271,6 +275,35 @@ const SnapshotTable = () => {
         console.log("after copyData:", copyData);
     };
 
+    const handleOpenRecovery = () => {
+        setOpenRecovery(true);
+    };
+
+    const handleCloseRecovery = () => {
+        setOpenRecovery(false);
+    };
+
+    const asyncRecoveryVm = async (snap) => {
+      try {
+          const response = await recoveryMcVm({
+              idx: snap.idx,
+              serverIdx: snap.serverIdx,
+              vmName: snap.vmName,
+              name: snap.name,
+          });
+          handleSnackbarSuccess("Snapshot 복구에 등록에 성공하였습니다.");
+          getPageData();
+      } catch (e) {
+          handleSnackbarFailure("Snapshot 복구에 실패하였습니다.");
+      }
+    };
+
+    const handleSubmitRecovery = (snap) => {
+        setOpenRecovery(false);
+        console.log("submit: ", snap);
+        asyncRecoveryVm(snap);
+    };
+
     useEffect(() => {
         /** Pagination */
         getPageData();
@@ -295,6 +328,7 @@ const SnapshotTable = () => {
         const cellIcon = isSelected ? "cb-material-table__cell-right" : cellClassName;
         const [openCollapse, setOpenCollapse] = useState(false);
         const [checkboxColor, setCheckboxColor] = useState('');
+        const [recoveryColor, setRecoveryColor] = useState("action");
         return (
             <React.Fragment>
                 <TableRow
@@ -356,29 +390,42 @@ const SnapshotTable = () => {
                             >
                                 {row.serialNumber}
                             </TableCell>
-                            <TableCell
-                                className={cellClassName}
-                                style={{width: "5%"}}
-                            >
-                                {row.vmName}
-                            </TableCell>
-                            <TableCell
-                                className={cellClassName}
-                                style={{width: "5%"}}
-                            >
-                                {row.name}
-                            </TableCell>
-                            <TableCell
-                                className={cellClassName}
-                                style={{width: "5%"}}
-                            >
-                                {row.current ? <RadioButtonCheckedIcon color="Secondary"/> : <RadioButtonUncheckedIcon/>}
-                            </TableCell>
+
                         </React.Fragment>
                     )}
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "5%"}}
+                    >
+                        {row.vmName}
+                    </TableCell>
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "5%"}}
+                    >
+                        {row.name}
+                    </TableCell>
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "5%"}}
+                    >
+                        {row.current ? <RadioButtonCheckedIcon color="secondary" />
+                            : (
+                                <RadioButtonUncheckedIcon
+                                    color={recoveryColor}
+                                    onMouseOver={(e) => { setRecoveryColor("secondary"); }}
+                                    onMouseLeave={(e) => { setRecoveryColor("action"); }}
+                                    onClick={handleOpenRecovery}/>
+                            )}
+                    </TableCell>
+                    <SnapshotRecoveryModal
+                        open={openRecovery}
+                        snap={row}
+                        handleClose={handleCloseRecovery}
+                        handleSubmit={handleSubmitRecovery}
+                    />
                 </TableRow>
             </React.Fragment>
-
         );
     };
 
