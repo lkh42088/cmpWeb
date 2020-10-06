@@ -1,17 +1,18 @@
 import React, {useEffect} from 'react';
-import { Col, Container, Row } from 'reactstrap';
+import {Col, Container, Row} from 'reactstrap';
 import {useDispatch, useSelector} from "react-redux";
 import VmSidebar from "./VmSidebar";
 import VmVncViewer from "./VmVncViewer";
 import {changeVmPage} from "../../../../redux/actions/vmsActions";
+import VmTable from "./VmTable";
 
-const VmPage = () => {
+const VmPage = ({schVm}) => {
     const dispatch = useDispatch();
-    const {data} = useSelector(({vmsRd}) => ({
-       data: vmsRd.data,
+    const {data, page} = useSelector(({vmsRd}) => ({
+        data: vmsRd.data,
+        page: vmsRd.pageType,
     }));
 
-    console.log("vmPage:", data);
     useEffect(() => {
         // if (data === null || data.length() === 0) {
         //     console.log("vmPage: dispatch list");
@@ -25,16 +26,18 @@ const VmPage = () => {
     return (
         <Container>
             <div>
-                <Row>
-                    <Col style={{
-                        flexGrow: "0",
-                    }}>
-                        <Row>
-                            <VmSidebar vm={data} />
-                        </Row>
-                    </Col>
-                    <VmVncViewer vm={data}/>
-                </Row>
+                {data !== null ? (
+                    <Row>
+                        <Col style={{
+                            flexGrow: "0",
+                        }}>
+                            <Row>
+                                <VmSidebar vm={data}/>
+                            </Row>
+                        </Col>
+                        <VmVncViewer vm={data}/>
+                    </Row>
+                ) : false}
             </div>
         </Container>
     );

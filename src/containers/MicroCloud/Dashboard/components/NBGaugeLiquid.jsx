@@ -11,10 +11,10 @@ import {themes} from "../../../../shared/helpers";
 const NBGaugeLiquid = (props) => {
     const ref = useRef();
     const {
-        height, title, pieColor, mac, warringUsed, data,
+        title, data, refresh,
     } = props;
     const [state, setState] = useState();
-    const [radius, setRadius] = useState();
+    const [radius, setRadius] = useState(0);
 
     /**************************************************************
      * Handle Function
@@ -22,7 +22,7 @@ const NBGaugeLiquid = (props) => {
     const startColor = '#6495ed'; // cornflowerblue
     const endColor = '#dc143c'; // crimson
     const interpolate = interpolateRgb(startColor, endColor);
-    const fillColor = interpolate(data / 100);
+    const fillColor = interpolate(Number(data) / 100);
     const gradientStops = [
         {
             key: '0%',
@@ -90,7 +90,7 @@ const NBGaugeLiquid = (props) => {
                     </Fragment>
                 ) : (
                     <LiquidFillGauge
-                        style={{ margin: '0 auto', marginBottom: 20 }}
+                        style={{ margin: '20px auto'}}
                         width={radius * 2}
                         height={radius * 2}
                         value={data}
@@ -108,7 +108,6 @@ const NBGaugeLiquid = (props) => {
                             const percentStyle = {
                                 fontSize: textPixels * 0.6,
                             };
-
                             return (
                                 <tspan>
                                     <tspan className="value" style={valueStyle}>{value}</tspan>
@@ -136,9 +135,7 @@ const NBGaugeLiquid = (props) => {
                             fill: color('#fff').toString(),
                             fontFamily: 'Arial',
                         }}
-                        // onClick={() => {
-                        //     setTemp({ value: Math.random() * 100 });
-                        // }}
+                        onClick={refresh}
                     />
                 )}
             </CardBody>

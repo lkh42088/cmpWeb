@@ -130,13 +130,13 @@ const SidebarContent = ({
 
             // user level display
             if (levelFlag) {
-/*
-                if (level === userLevel) {
-                    menuDisplay.display = "block";
-                } else {
-                    menuDisplay.display = "none";
-                }
-*/
+                /*
+                                if (level === userLevel) {
+                                    menuDisplay.display = "block";
+                                } else {
+                                    menuDisplay.display = "none";
+                                }
+                */
                 if (level <= UNREGISTERED_USER && level >= CUSTOMER_MANAGER) {
                     menuDisplay.display = "block";
                 } else {
@@ -167,7 +167,7 @@ const SidebarContent = ({
 
                 {/*COMMON DASHBOARD*/}
                 {/*sidebar-dropdown false*/}
-               {/* <Link to={getDashBoardLink()}
+                {/* <Link to={getDashBoardLink()}
                       onClick={() => changeMenuTitle('DASHBOARD', '', '')}
                 >
                     <SidebarCategory title="DASHBOARD00"
@@ -184,7 +184,7 @@ const SidebarContent = ({
 
                 {/*HYBRID CLOUD DASHBOARD*/}
                 {/*sidebar-dropdown false*/}
-               {/* <Link to={getMCDashBoardLink()}
+                {/* <Link to={getMCDashBoardLink()}
                       onClick={() => changeMenuTitle('MICRO CLOUD', 'DASHBOARD', '')}
                 >
                     <SidebarCategory title="DASHBOARD22"
@@ -255,21 +255,24 @@ const SidebarContent = ({
 
                 <SidebarLink title="VM CARD" icon={gridChartSolid}
                              route="/micro/vmsCard"
-                             onClick={() => changeMenuTitle('VM CARD', '', '')}
-                             style={authMenuDisplay(sidebarDropdown, true, UNREGISTERED_USER, true)}
+                             onClick={() => changeMenuTitle('VM CARD', '', 'card')}
+                             style={authMenuDisplay(sidebarDropdown, true,
+                                 UNREGISTERED_USER, true)}
                 />
-                <SidebarLink title="VM VNC(개발중)" icon={monitorMultiple}
-                             route="/micro/dashboard"
-                             onClick={() => changeMenuTitle('VM VNC', '', '')}
-                             style={authMenuDisplay(sidebarDropdown, true, UNREGISTERED_USER, true)}
+                <SidebarLink title="VM VNC" icon={monitorMultiple}
+                             route="/micro/vmsPage"
+                             onClick={() => changeMenuTitle('VM PAGE', '', 'page')}
+                             style={authMenuDisplay(sidebarDropdown, true,
+                                 UNREGISTERED_USER, true)}
                 />
-                <SidebarLink title="SNAPSHOT(개발중)" icon={outlineRestore}
+                <SidebarLink title="SNAPSHOT" icon={outlineRestore}
                              route="/micro/snapshot"
                              onClick={() => changeMenuTitle('SNAPSHOT', '', '')}/>
                 <SidebarLink title="VM Inventory" icon={thList}
                              route="/micro/vms"
-                             onClick={() => changeMenuTitle('VM Inventory', '', '')}
-                             style={authMenuDisplay(sidebarDropdown, true, UNREGISTERED_USER, true)}
+                             onClick={() => changeMenuTitle('VM Inventory', '', 'list')}
+                             style={authMenuDisplay(sidebarDropdown, true,
+                                 UNREGISTERED_USER, true)}
                 />
             </ul>
         </div>

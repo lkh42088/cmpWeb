@@ -62,6 +62,7 @@ const PAGE_URL = {
     "micro/images": {title: "HYBRID CLOUD", subTitle: "IMAGE", icon: null},
     "micro/vms": {title: "HYBRID CLOUD", subTitle: "VM", icon: null},
     "micro/vmsCard": {title: "HYBRID CLOUD", subTitle: "VM", icon: null},
+    "micro/vmsPage": {title: "HYBRID CLOUD", subTitle: "VM", icon: null},
     "micro/vnc": {title: "HYBRID CLOUD", subTitle: "VNC", icon: null},
     "assets/server": {title: "SERVER", subTitle: "온프레미스", icon: serverOutlineBadged},
     "assets/network": {title: "NETWORK", subTitle: "네트워크", icon: routerNetwork},

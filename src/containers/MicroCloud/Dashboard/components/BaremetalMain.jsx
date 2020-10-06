@@ -20,6 +20,7 @@ import {getMcNetworksMem} from "../../../../lib/api/microCloudMem";
 import {getMcNetworksCpu} from "../../../../lib/api/microCloudCpu";
 import {getMcNetworksDisk} from "../../../../lib/api/microCloudDisk";
 import NBCarousel from "./NBCarousel";
+import NBSimpleCarousel from "./NBSimpleCarousel";
 
 const pieColor = {
     defaultColor: '#d4d7dd',
@@ -49,9 +50,9 @@ const BaremetalMain = (props) => {
     const [snapshotCount, setSnapshotCount] = useState(0);
     const [backupCount, setBackupCount] = useState(0);
     // Resource data
-    const [cpu, setCpu] = useState();
-    const [mem, setMem] = useState();
-    const [disk, setDisk] = useState();
+    const [cpu, setCpu] = useState(0);
+    const [mem, setMem] = useState(0);
+    const [disk, setDisk] = useState(0);
 
 
     /**************************************************************
@@ -83,18 +84,48 @@ const BaremetalMain = (props) => {
             // cpu
             const cpuVal = await getMcNetworksCpu(mac);
             const value = (100 - cpuVal.data[0].usage_idle).toFixed(0);
-            setCpu(value);
+            setCpu(Number(value));
             // mem
             const memVal = await getMcNetworksMem(mac);
-            setMem(100 - memVal.data[0].available_percent.toFixed(0));
+            setMem(Number(100 - memVal.data[0].available_percent.toFixed(0)));
             // disk
             const diskVal = await getMcNetworksDisk(mac);
-            setDisk(diskVal.data[0].used_percent.toFixed(0));
+            setDisk(Number(diskVal.data[0].used_percent.toFixed(0)));
         } catch (e) {
-            console.log("getPageData error!");
+            console.log("getResourceData error!");
         }
     };
 
+    const getCpuData = async () => {
+        setCpu(0);
+        try {
+            const cpuVal = await getMcNetworksCpu(mac);
+            const value = (100 - cpuVal.data[0].usage_idle).toFixed(0);
+            setCpu(Number(value));
+        } catch (e) {
+            console.log("getCpuData error!");
+        }
+    };
+
+    const getMemData = async () => {
+        setMem(0);
+        try {
+            const memVal = await getMcNetworksMem(mac);
+            setMem(Number(100 - memVal.data[0].available_percent.toFixed(0)));
+        } catch (e) {
+            console.log("getMemData error!");
+        }
+    };
+
+    const getDiskData = async () => {
+        setDisk(0);
+        try {
+            const diskVal = await getMcNetworksDisk(mac);
+            setDisk(Number(diskVal.data[0].used_percent.toFixed(0)));
+        } catch (e) {
+            console.log("getDiskData error!");
+        }
+    };
 
     /**************************************************************
      * useEffect
@@ -110,7 +141,7 @@ const BaremetalMain = (props) => {
         <Fragment>
             <Row className="classes.row">
                 <Col md={12} lg={12} xs={12} sm={12} xl={12} style={{padding: 10}}>
-                    <NBCarousel
+                    <NBSimpleCarousel
                         itemVal={3}
                         activeVal={1}
                         vmCount={vmCount}
@@ -148,30 +179,24 @@ const BaremetalMain = (props) => {
                 {/*</Col>*/}
                 <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
                     <NBGaugeLiquid
-                        height={150}
-                        mac={mac}
                         title="CPU"
                         data={cpu}
-                        pieColor={pieColor}
-                        warringUsed={80}/>
+                        refresh={getCpuData}
+                    />
                 </Col>
                 <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
                     <NBGaugeLiquid
-                        height={150}
-                        mac={mac}
                         title="MEMORY"
                         data={mem}
-                        pieColor={pieColor}
-                        warringUsed={80}/>
+                        refresh={getMemData}
+                    />
                 </Col>
                 <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
                     <NBGaugeLiquid
-                        height={150}
-                        mac={mac}
                         title="DISK"
                         data={disk}
-                        pieColor={pieColor}
-                        warringUsed={80}/>
+                        refresh={getDiskData}
+                    />
                 </Col>
             </Row>
             <Row>
