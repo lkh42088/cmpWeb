@@ -266,7 +266,7 @@ const MicroCloudVmTable = () => {
     }, []);
 
     useEffect(() => {
-        if (page === "page") {
+        if (page === 'page' && pageType === 'vmsPage') {
             getVmList("all");
         }
     }, [window.location.href]);
@@ -296,9 +296,9 @@ const MicroCloudVmTable = () => {
                     </div>
                 ) : false}
             </Row>
-            {/*---{pageType}---
+            ---{pageType}---
             <br/>
-            👉👉👉{page}👈👈👈*/}
+            👉👉👉{page}👈👈👈
             <Row>
                 <SnackbarProvider maxSnack={3}>
                     {/*eslint-disable-next-line no-nested-ternary*/}

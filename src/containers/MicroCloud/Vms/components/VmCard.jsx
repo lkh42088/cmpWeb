@@ -68,9 +68,10 @@ const VmCardContent = (props) => {
     });
 
     const handleView = (val) => {
+        console.log("😡😡😡😡 val : ", val);
         dispatch(changeVmPage({
             pageType: 'page',
-            data: row,
+            data: val,
         }));
     };
 
@@ -154,7 +155,7 @@ const VmCardContent = (props) => {
                     {row.name}
                     <NavLink
                         to="/micro/vms"
-                        onClick={event => handleView(row.idx)}
+                        onClick={event => handleView(row)}
                         activeClassName="cb_sidebar__link-active"
                     >
                         <TooltipMat title="상세">
