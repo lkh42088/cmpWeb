@@ -77,14 +77,17 @@ const VmCardContent = (props) => {
 
     // eslint-disable-next-line consistent-return
     const dpOsImage = (os) => {
-        switch (os) {
-            case "win10":
-                return (<img className="vm__os-img" src={WindowsImg} alt="os"/>);
-            case "linux":
-                return (<img className="vm__os-img" src={LinuxImg} alt="os"/>);
-            default:
-                break;
+        let reData = "";
+
+        if (os.indexOf("win") !== -1) {
+            reData = <img className="vm__os-img" src={WindowsImg} alt="os"/>;
         }
+
+        if (os.indexOf("ubuntu") !== -1) {
+            reData = <img className="vm__os-img" src={LinuxImg} alt="os"/>;
+        }
+
+        return (reData);
     };
 
     const funcPercent = (total, val) => {

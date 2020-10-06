@@ -86,6 +86,8 @@ export const getSystemInfoByMac = mac => client.get(`/v1/micro/dashboard/system/
 
 export const getMcVmsCountByCpName = cpName => client.get(`/v1/micro/dashboard/vmcnt/${cpName}`).then(response => response);
 
+export const getMcSnapshotCountByCpIdx = cpIdx => client.get(`/v1/micro/dashboard/snapshotcnt/${cpIdx}`).then(response => response);
+
 // 관리자 대시보드를 위한 Baremetal total count, VM total count 조회
 export const getTotalCount = () => client.get(`/v1/micro/dashboard/total-cnt`).then(response => response);
 

@@ -66,6 +66,7 @@ const MicroCloudDashboard = () => {
     const [serverList, setServerList] = useState([]);
     const [mac, setMac] = useState(""); //52:54:00:01:b5:b7
     const [schCompany, setSchCompany] = useState("");
+    const [schCompanyIdx, setSchCompanyIdx] = useState("");
     const [selectCompany, setSelectCompany] = useState();
 
     /**************************************************************
@@ -90,6 +91,7 @@ const MicroCloudDashboard = () => {
                 setServerList(response.data.data);
                 setMac(response.data.data[0].mac);
                 setSchCompany(val);
+                setSchCompanyIdx(response.data.data[0].cpIdx);
             }
         } catch (error) {
             setServerList([]);
@@ -113,7 +115,8 @@ const MicroCloudDashboard = () => {
         setSchCompany(e.target.value);
         getServerMac(e.target.value);
 
-        //console.log("e.target.value : ", e.target.value);
+        const reDataCompany = companyList.filter(item => item.name === e.target.value);
+        setSchCompanyIdx(reDataCompany[0].idx);
     };
 
     const handleAuthSelectDisplay = () => {
@@ -192,7 +195,7 @@ const MicroCloudDashboard = () => {
             {/* eslint-disable-next-line no-nested-ternary */}
             {schCompany === "all" ? (
                 <TopManagerMain/>
-            ) : mac ? (<BaremetalMain mac={mac} company={schCompany}/>) : false}
+            ) : mac ? (<BaremetalMain mac={mac} company={schCompany} cpIdx={schCompanyIdx}/>) : false}
         </Container>
     );
 };

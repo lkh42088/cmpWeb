@@ -35,6 +35,7 @@ const CountInfo = (props) => {
             }}>
                 <p style={{
                     color: "white",
+                    fontSize: "0.7rem",
                 }}>{title}</p>
                 <Fragment>
                     <p style={{

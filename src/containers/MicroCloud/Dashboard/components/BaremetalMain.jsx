@@ -11,7 +11,7 @@ import MyResponsiveInfo from "./MyResponsiveInfo";
 import CountInfo from "./CountInfo";
 import {OPERATOR} from "../../../../lib/var/globalVariable";
 import {
-    getMcServers, getMcVms, getMcVmsCountByCpName,
+    getMcServers, getMcVms, getMcVmsCountByCpName, getMcSnapshotCountByCpIdx,
 } from "../../../../lib/api/microCloud";
 import NBGaugeGraph from "./NBGaugeGraph";
 import NBGaugeLiquid from "./NBGaugeLiquid";
@@ -42,7 +42,7 @@ const pieColor = {
 
 const BaremetalMain = (props) => {
     const {
-        mac, company,
+        mac, company, cpIdx,
     } = props;
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -63,15 +63,22 @@ const BaremetalMain = (props) => {
      * Axios Function
      **************************************************************/
     let companyName;
+    let companyIdx;
     const getData = async () => {
         if (user.level <= OPERATOR) { //관리자
             companyName = company;
+            companyIdx = cpIdx;
         } else {
             companyName = user.cpName;
+            companyIdx = user.cpIdx;
         }
         try {
             const vm = await getMcVmsCountByCpName(companyName);
+            const snapshot = await getMcSnapshotCountByCpIdx(companyIdx);
             setVmCount(vm.data.vm);
+            setSnapshotCount(snapshot.data.snapshot);
+            //GetMcVmSnapshotByCpIdx
+            //GetMcVmSnapshotByMcServerIdx
         } catch (e) {
             console.log("getPageData error!");
         }
