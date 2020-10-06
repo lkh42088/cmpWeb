@@ -13,6 +13,7 @@ const responsive = {
         breakpoint: { max: 3000, min: 1024 },
         items: 4,
         paritialVisibilityGutter: 20,
+        // slidesToSlide: 3,
     },
     tablet: {
         breakpoint: { max: 1024, min: 464 },
@@ -76,6 +77,12 @@ const NBSimpleCarousel = (props) => {
         }
     };
 
+    // useEffect(() => {
+    //     if (vms.length !== 0) {
+    //         responsive.desktop.items = vms.length;
+    //     }
+    // }, [vms]);
+
     useEffect(() => {
         getPageData();
     }, []);
@@ -84,7 +91,7 @@ const NBSimpleCarousel = (props) => {
         <div className="nb-carousel-container">
             <Carousel
                 ssr
-                partialVisbile
+                // partialVisbile
                 deviceType="desktop"
                 responsive={responsive}
                 showDots
