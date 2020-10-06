@@ -268,7 +268,7 @@ const SidebarContent = ({
                 <SidebarLink title="SNAPSHOT" icon={outlineRestore}
                              route="/micro/snapshot"
                              onClick={() => changeMenuTitle('SNAPSHOT', '', '')}/>
-                <SidebarLink title="VM Inventory" icon={thList}
+                <SidebarLink title="VM INVENTORY" icon={thList}
                              route="/micro/vms"
                              onClick={() => changeMenuTitle('VM Inventory', '', 'list')}
                              style={authMenuDisplay(sidebarDropdown, true,

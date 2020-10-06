@@ -98,6 +98,7 @@ const SnapshotTable = () => {
     const [adminLevel, setAdminLevel] = useState(true);
     const [openRecovery, setOpenRecovery] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
+    const [recoveryRow, setRecoveryRow] = useState(null);
 
     const dispatch = useDispatch();
 
@@ -283,13 +284,13 @@ const SnapshotTable = () => {
         setOpenRecovery(false);
     };
 
-    const asyncRecoveryVm = async (snap) => {
+    const asyncRecoveryVm = async (obj) => {
       try {
           const response = await recoveryMcVm({
-              idx: snap.idx,
-              serverIdx: snap.serverIdx,
-              vmName: snap.vmName,
-              name: snap.name,
+              idx: obj.idx,
+              serverIdx: obj.serverIdx,
+              vmName: obj.vmName,
+              name: obj.name,
           });
           handleSnackbarSuccess("Snapshot 복구에 등록에 성공하였습니다.");
           getPageData();
@@ -413,14 +414,19 @@ const SnapshotTable = () => {
                             : (
                                 <RadioButtonUncheckedIcon
                                     color={recoveryColor}
-                                    onMouseOver={(e) => { setRecoveryColor("secondary"); }}
-                                    onMouseLeave={(e) => { setRecoveryColor("action"); }}
+                                    onMouseOver={(e) => {
+                                        setRecoveryRow(row);
+                                        setRecoveryColor("secondary");
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        setRecoveryColor("action");
+                                    }}
                                     onClick={handleOpenRecovery}/>
                             )}
                     </TableCell>
                     <SnapshotRecoveryModal
                         open={openRecovery}
-                        snap={row}
+                        snap={recoveryRow}
                         handleClose={handleCloseRecovery}
                         handleSubmit={handleSubmitRecovery}
                     />
