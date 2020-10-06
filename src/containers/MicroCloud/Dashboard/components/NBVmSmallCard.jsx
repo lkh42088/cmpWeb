@@ -4,13 +4,13 @@ import NumberFormat from "react-number-format";
 
 const NBVmSmallCard = (props) => {
     const {vm} = props;
-    const color = () => {
-        console.log(vm.currentStatus);
-        if (vm.currentStatus === 'running') {
-            return "#63a4ff";
-        }
-        return "#999999";
-    };
+    // const color = () => {
+    //     console.log(vm.currentStatus);
+    //     if (vm.currentStatus === 'running') {
+    //         return "#63a4ff";
+    //     }
+    //     return "#999999";
+    // };
 
     /**************************************************************
      * Handle Function
@@ -26,9 +26,13 @@ const NBVmSmallCard = (props) => {
 
     return (
         <Card className="nb-card-carousel">
-            <CardBody className="nb-carousel-card" style={{
-                background: color(),
-            }}>
+            {/*<CardBody className="nb-carousel-card" style={{*/}
+            {/*    background: color(),*/}
+            {/*}}>*/}
+            <CardBody className={vm.currentStatus === "running"
+                ? "nb-carousel-card nb-carousel-card-back-on"
+                : "nb-carousel-card nb-carousel-card-back-off"
+            }>
                 {/*title*/}
                 <p style={{
                     color: "white",
