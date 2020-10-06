@@ -64,8 +64,16 @@ const MyResponsiveInfo = (props) => {
               style={data ? {} : {height: "calc(100%)"}}>
             {data ? (
                 <Fragment>
-                    <CardBody className="cb-card-body">
-                        <p>{title} [{data.hostname}]</p>
+                    <CardBody className="nb-card-body-graph">
+                        <p
+                            style={{
+                                fontWeight: "bold",
+                                fontSize: 12,
+                                textAlign: "center",
+                            }}
+                        >
+                            {data.hostname}
+                        </p>
                         <Container
                             className="dashboard"
                             style={{
@@ -87,6 +95,14 @@ const MyResponsiveInfo = (props) => {
                                     <td colSpan={2}>{data.cpuCore} cores</td>
                                 </tr>
                                 <tr>
+                                    <td><p className="bold-text dashboard__btc">MEMORY</p></td>
+                                    <td colSpan={2}>{mem}GB</td>
+                                </tr>
+                                <tr>
+                                    <td><p className="bold-text dashboard__btc">DISK</p></td>
+                                    <td colSpan={2}>{disk}GB</td>
+                                </tr>
+                                <tr>
                                     <td><p className="bold-text dashboard__ste">Architecture</p></td>
                                     <td colSpan={2}>{data.kernelArch}</td>
                                 </tr>
@@ -96,7 +112,7 @@ const MyResponsiveInfo = (props) => {
                                 </tr>
                                 <tr>
                                     <td><p className="bold-text dashboard__eth">Interface</p></td>
-                                    <td colSpan={2}>{data.ifName}&nbsp;{data.ifMac}</td>
+                                    <td colSpan={2}><b>{data.ifName}</b>&nbsp;&nbsp;({data.ifMac})</td>
                                 </tr>
                                 <tr>
                                     <td><p className="bold-text dashboard__eth">IP</p></td>
@@ -110,13 +126,6 @@ const MyResponsiveInfo = (props) => {
                                     <td><p className="bold-text dashboard__lit">Total Disk</p></td>
                                     <td colSpan={2}>{disk}GB</td>
                                 </tr>*/}
-                                <tr>
-                                    <td rowSpan={3}><p className="bold-text dashboard__lit">Total</p></td>
-                                    <td colSpan={2}>{mem}GB (Memory)</td>
-                                </tr>
-                                <tr>
-                                    <td colSpan={2}>{disk}GB (Disk)</td>
-                                </tr>
                                 </tbody>
                             </Table>
                         </Container>

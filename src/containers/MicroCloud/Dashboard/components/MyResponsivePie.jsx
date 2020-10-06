@@ -12,7 +12,7 @@ const MyResponsivePie = (props) => {
 
     return (
         <Card className="cb-card">
-            <CardBody className="cb-card-body">
+            <CardBody className="nb-card-body-graph">
                 <p>Micro Cloud</p>
 
                 <Row>

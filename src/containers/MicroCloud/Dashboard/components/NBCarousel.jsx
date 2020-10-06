@@ -10,7 +10,7 @@ const NBCarousel = (props) => {
 
     return (
         <div className="nb-carousel-container">
-            <ReactCardCarousel autoplay autoplay_speed={5000}>
+            <ReactCardCarousel spread="wide">
                 <div className="nb-carousel-card">
                     <CountInfo title="VM 개수" count={vmCount}
                                color="#00bcd4"/>

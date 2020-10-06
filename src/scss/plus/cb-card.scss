@@ -20,6 +20,34 @@
   }
 }
 
+// [05Oct2020,khlee]
+.nb-card-carousel {
+  width: 90%;
+  padding-bottom: 0px; //[24June2020,khlee]
+  height: 100%;
+  border: none;
+  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
+  transition: background-color 1.5s 0s;
+
+  @include themify($themes) {
+    box-shadow: 2px 10px 10px themed('colorShadow');
+    background-color: themed('colorBackground');
+  }
+
+  &.cb-card--not-full-height {
+    height: auto;
+  }
+
+  &:hover {
+    //text-decoration: none;
+
+    // 사이드바 마우스 오버 시 CARD SHADOW [24June2020,khlee]
+    @include themify($themes) {
+      box-shadow: 2px 13px 10px themed('colorShadow');
+    }
+  }
+}
+
 // [22July2020,khlee]
 .cb-card-subnet {
   width: 100%;
@@ -66,30 +94,19 @@
   font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
 
   @include themify($themes) {
-    // ServQuick
-    //background: #485563;  /* fallback for old browsers */
-    //background: -webkit-linear-gradient(to right, #29323c, #485563);  /* Chrome 10-25, Safari 5.1-6 */
-    //background: linear-gradient(to right, #29323c, #485563); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+    transition: background-color 1.5s 0s;
+    box-shadow: 1px 5px 10px themed('colorShadow');
+    background-color: themed('colorBackground');
 
     // Metallic
-    background: #8e9eab;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #eef2f3, #8e9eab);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #eef2f3, #8e9eab); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-    // Friday
-    //background: #83a4d4;  /* fallback for old browsers */
-    //background: -webkit-linear-gradient(to right, #b6fbff, #83a4d4);  /* Chrome 10-25, Safari 5.1-6 */
-    //background: linear-gradient(to right, #b6fbff, #83a4d4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-    //background: #0F2027;  /* fallback for old browsers */
-    //background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  /* Chrome 10-25, Safari 5.1-6 */
-    //background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    //background: #8e9eab;  /* fallback for old browsers */
+    //background: -webkit-linear-gradient(to right, #eef2f3, #8e9eab);  /* Chrome 10-25, Safari 5.1-6 */
+    //background: linear-gradient(to right, #eef2f3, #8e9eab); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   }
 }
 
 .nb-card-body-graph-title {
-  font-size: 18px;
+  font-size: 15px;
   text-align: center;
   padding: 10px;
   @include themify($themes) {
