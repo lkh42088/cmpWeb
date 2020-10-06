@@ -22,11 +22,12 @@
 
 // [05Oct2020,khlee]
 .nb-card-carousel {
-  width: 90%;
-  padding-bottom: 0px; //[24June2020,khlee]
+  width: 220px;
+  //width: 90%;
+  padding-bottom: 0px;
   height: 100%;
   border: none;
-  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif;
   transition: background-color 1.5s 0s;
 
   @include themify($themes) {
@@ -41,7 +42,7 @@
   &:hover {
     //text-decoration: none;
 
-    // 사이드바 마우스 오버 시 CARD SHADOW [24June2020,khlee]
+    // 사이드바 마우스 오버 시 CARD SHADOW
     @include themify($themes) {
       box-shadow: 2px 13px 10px themed('colorShadow');
     }

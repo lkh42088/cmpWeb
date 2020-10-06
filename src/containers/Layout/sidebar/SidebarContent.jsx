@@ -214,7 +214,7 @@ const SidebarContent = ({
                                  onClick={() => changeMenuTitle('HYBRID CLOUD', 'VM', '')}/>
                     <SidebarLink title="VM-CARD" route="/micro/vmsCard"
                                  onClick={() => changeMenuTitle('HYBRID CLOUD', 'VM', 'card')}/>
-                    <SidebarLink title="Snapshot" route="/micro/snapshot"
+                    <SidebarLink title="SNAPSHOT" route="/micro/snapshot"
                                  onClick={() => changeMenuTitle('HYBRID CLOUD', 'VM', 'snapshot')}/>
                 </SidebarCategory>
                 <SidebarCategory title="SERVER" icon={serverOutlineBadged}
@@ -268,7 +268,7 @@ const SidebarContent = ({
                 <SidebarLink title="SNAPSHOT" icon={outlineRestore}
                              route="/micro/snapshot"
                              onClick={() => changeMenuTitle('SNAPSHOT', '', '')}/>
-                <SidebarLink title="VM Inventory" icon={thList}
+                <SidebarLink title="VM INVENTORY" icon={thList}
                              route="/micro/vms"
                              onClick={() => changeMenuTitle('VM Inventory', '', 'list')}
                              style={authMenuDisplay(sidebarDropdown, true,

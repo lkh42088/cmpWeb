@@ -15,8 +15,13 @@ import routerNetwork from '@iconify/icons-mdi/router-network';
 import monitorDashboard from '@iconify/icons-mdi/monitor-dashboard';
 import usersIcon from '@iconify/icons-fa-solid/users';
 import listAlt from '@iconify/icons-el/list-alt';
+import thList from "@iconify/icons-fa-solid/th-list";
+import gridChartSolid from "@iconify/icons-clarity/grid-chart-solid";
+import monitorMultiple from "@iconify/icons-mdi/monitor-multiple";
+import outlineRestore from "@iconify/icons-ic/outline-restore";
+import cloudServerOutlined from '@iconify/icons-ant-design/cloud-server-outlined';
 import {themes} from "../../../shared/helpers";
-import {SEPARATION_URL} from "../../../lib/var/globalVariable";
+import {OPERATOR, SEPARATION_URL} from "../../../lib/var/globalVariable";
 
 const StyledBreadcrumb = withStyles(theme => ({
     root: {
@@ -53,17 +58,41 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const PAGE_URL = {
+const USER_URL = {
     "dashboards/manager": {title: "관리자 대시보드", subTitle: null, icon: outlineDashboard},
     "dashboards/customer": {title: "사용자 대시보드", subTitle: null, icon: outlineDashboard},
-    "micro/dashboard": {title: "HYBRID CLOUD", subTitle: "DASHBOARD", icon: null},
-    "micro/servers": {title: "HYBRID CLOUD", subTitle: "SERVER", icon: serverOutlineBadged},
-    "micro/networks": {title: "HYBRID CLOUD", subTitle: "NETWORK", icon: null},
-    "micro/images": {title: "HYBRID CLOUD", subTitle: "IMAGE", icon: null},
-    "micro/vms": {title: "HYBRID CLOUD", subTitle: "VM", icon: null},
-    "micro/vmsCard": {title: "HYBRID CLOUD", subTitle: "VM", icon: null},
-    "micro/vmsPage": {title: "HYBRID CLOUD", subTitle: "VM", icon: null},
-    "micro/vnc": {title: "HYBRID CLOUD", subTitle: "VNC", icon: null},
+    "micro/dashboard": {title: "사용자 대시보드", subTitle: null, icon: null},
+    "micro/servers": {title: "SERVER", subTitle: null, icon: serverOutlineBadged},
+    "micro/networks": {title: "NETWORK", subTitle: null, icon: routerNetwork},
+    "micro/images": {title: "IMAGE", subTitle: null, icon: null},
+    "micro/vms": {title: "VM INVENTORY", subTitle: null, icon: thList},
+    "micro/vmsCard": {title: "VM CARD", subTitle: null, icon: gridChartSolid},
+    "micro/vmsPage": {title: "VM VNC", subTitle: null, icon: monitorMultiple},
+    "micro/vnc": {title: "VM VNC", subTitle: null, icon: monitorMultiple},
+    "micro/snapshot": {title: "SNAPSHOT", subTitle: null, icon: outlineRestore},
+    "assets/server": {title: "SERVER", subTitle: "온프레미스", icon: serverOutlineBadged},
+    "assets/network": {title: "NETWORK", subTitle: "네트워크", icon: routerNetwork},
+    "assets/part": {title: "NETWORK", subTitle: "파트 & 기타", icon: routerNetwork},
+    billing: {title: "BILLING", subTitle: "", icon: fileInvoiceDollar},
+    board: {title: "BOARD", subTitle: "", icon: listAlt},
+    "customers/users": {title: "MANAGER", subTitle: "계정 관리", icon: usersIcon},
+    "customers/companies": {title: "MANAGER", subTitle: "고객사 관리", icon: usersIcon},
+    subnet: {title: "MANAGER", subTitle: "서브넷 관리", icon: usersIcon},
+    setting: {title: "SETTING", subTitle: "", icon: monitorDashboard},
+};
+
+const MANAGER_URL = {
+    "dashboards/manager": {title: "관리자 대시보드", subTitle: null, icon: outlineDashboard},
+    "dashboards/customer": {title: "사용자 대시보드", subTitle: null, icon: outlineDashboard},
+    "micro/dashboard": {title: "HYBRID CLOUD", subTitle: "DASHBOARD", icon: cloudServerOutlined},
+    "micro/servers": {title: "HYBRID CLOUD", subTitle: "SERVER", icon: cloudServerOutlined},
+    "micro/networks": {title: "HYBRID CLOUD", subTitle: "NETWORK", icon: cloudServerOutlined},
+    "micro/images": {title: "HYBRID CLOUD", subTitle: "IMAGE", icon: cloudServerOutlined},
+    "micro/vms": {title: "HYBRID CLOUD", subTitle: "VM", icon: cloudServerOutlined},
+    "micro/vmsCard": {title: "HYBRID CLOUD", subTitle: "VM CARD", icon: cloudServerOutlined},
+    "micro/vmsPage": {title: "HYBRID CLOUD", subTitle: "VM VNC", icon: cloudServerOutlined},
+    "micro/vnc": {title: "HYBRID CLOUD", subTitle: "VNC", icon: cloudServerOutlined},
+    "micro/snapshot": {title: "HYBRID CLOUD", subTitle: "SNAPSHOT", icon: cloudServerOutlined},
     "assets/server": {title: "SERVER", subTitle: "온프레미스", icon: serverOutlineBadged},
     "assets/network": {title: "NETWORK", subTitle: "네트워크", icon: routerNetwork},
     "assets/part": {title: "NETWORK", subTitle: "파트 & 기타", icon: routerNetwork},
@@ -83,6 +112,9 @@ export default function RouterBreadcrumbs(props) {
     // const handleClick = () => {
     //     setOpen(prevOpen => !prevOpen);
     // };
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    const PAGE_URL = (user.level <= OPERATOR ? MANAGER_URL : USER_URL);
 
     const seperateUrl = (tmpUrl) => {
         let tmp = tmpUrl;
@@ -134,7 +166,7 @@ export default function RouterBreadcrumbs(props) {
                     {({ location }) => (
                         // const pathnames = location.pathname.split('/').filter(x => x);
                         <Breadcrumbs aria-label="breadcrumb">
-                            <StyledBreadcrumb href="/" label="HOME" icon={<HomeIcon fontSize="small"/>}/>
+                            {/*<StyledBreadcrumb href="/" label="HOME" icon={<HomeIcon fontSize="small"/>}/>*/}
                             {(url && getTitle(url) !== null)
                                 ? (<StyledBreadcrumb icon={<Icon icon={getIcon(url)}/>} label={getTitle(url)} />)
                                 : null
