@@ -1,6 +1,11 @@
 import React, {useEffect, useState, Fragment} from "react";
-import {Card, CardBody} from "reactstrap";
+import {
+    Card, CardBody, CardHeader, Progress,
+} from "reactstrap";
 import NumberFormat from "react-number-format";
+import {NavLink} from "react-router-dom";
+import {Tooltip as TooltipMat} from "@material-ui/core";
+import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
 
 const NBVmSmallCard = (props) => {
     const {vm} = props;
@@ -32,7 +37,7 @@ const NBVmSmallCard = (props) => {
             {/*    background: color(),*/}
             {/*}}>*/}
 
-                <div className={vm.currentStatus.toString() === "running"
+                {/*<div className={vm.currentStatus.toString() === "running"
                     ? "nb-card nb-carousel-card-back-on"
                     : "nb-card nb-carousel-card-back-off"
                 }>
@@ -43,7 +48,25 @@ const NBVmSmallCard = (props) => {
                         <li>{vm.ipAddr}</li>
                         <li>{vm.remoteAddr}</li>
                     </p>
+                </div>*/}
+            <CardHeader
+                className={vm.currentStatus.toString() === 'running'
+                    ? "vm__card_header-running" : "vm__card_header"}
+            >
+                {vm.name}
+            </CardHeader>
+            <CardBody className="vm__card">
+                <div className="vm__stats_border-none">
+                    <div className="vm__stat_border-none">
+                        <div className="vm__stat-title">
+                            <p>{vm.ipAddr}</p>
+                        </div>
+                        <div className="vm__stat-title">
+                            <p>{vm.remoteAddr}</p>
+                        </div>
+                    </div>
                 </div>
+            </CardBody>
             {/*<div className={vm.currentStatus.toString() === "running"
                 ? "nb-card nb-carousel-card-back-on"
                 : "nb-card nb-carousel-card-back-off"
