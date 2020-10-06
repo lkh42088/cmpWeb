@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState, Fragment} from "react";
 import Dialog from "@material-ui/core/Dialog";
 import {Card, CardBody} from "reactstrap";
 import Grid from "@material-ui/core/Grid";
@@ -53,6 +53,9 @@ const SnapshotRecoveryModal = (props) => {
         handleSubmit,
     } = props;
 
+    const [vmName, setVmName] = useState("");
+    const [snapName, setSnapName] = useState("");
+
     const handleCancel = () => {
         handleClose();
     };
@@ -61,12 +64,23 @@ const SnapshotRecoveryModal = (props) => {
         handleSubmit(snap);
     };
 
+    useEffect(() => {
+        if ((snap !== null) && (snap.vmName !== null)) {
+            setVmName(snap.vmName);
+        }
+        if ((snap !== null) && (snap.name !== null)) {
+            setSnapName(snap.name);
+        }
+    }, []);
+
     const variant = "filled";
     const fieldSize = "small";
     const buttonSize = "large";
     const formClassName = "cb-material-form";
     const labelClassName = "cb-material-form__label";
     const fieldClassName = "cb-material-form__field";
+
+    // console.log(snap);
 
     return (
         <Dialog open={open}>
@@ -90,8 +104,8 @@ const SnapshotRecoveryModal = (props) => {
                                     <div style={{
                                         margin: "0px 0px 20px 30px",
                                     }}>
-                                        <h4>- VM 이름: {snap.vmName}</h4>
-                                        <h4>- snapshot 날짜: {snap.name}</h4>
+                                        <h4>- VM 이름: {vmName}</h4>
+                                        <h4>- snapshot 날짜: {snapName}</h4>
                                     </div>
                                 </Grid>
                                 <Grid item xs={12}>

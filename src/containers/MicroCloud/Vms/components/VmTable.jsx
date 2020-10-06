@@ -163,6 +163,9 @@ const actionList = [
     { value: 1, name: "Shutdown" },
     { value: 2, name: "Start" },
     { value: 3, name: "Restart" },
+    { value: 4, name: "Suspend" },
+    { value: 5, name: "Resume" },
+    { value: 6, name: "Snapshot" },
 ];
 
 const VmTable = () => {
