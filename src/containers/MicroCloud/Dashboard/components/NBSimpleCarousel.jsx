@@ -83,7 +83,7 @@ const NBSimpleCarousel = (props) => {
                 infinite
                 keyBoardControl
                 customTransition="all .5"
-                transitionDuration={500}
+                transitionDuration={100}
                 removeArrowOnDeviceType={["tablet", "mobile"]}
                 dotListClass="custom-dot-list-style"
                 itemClass="carousel-item-padding-40-px"

@@ -30,7 +30,7 @@
   transition: background-color 1.5s 0s;
 
   @include themify($themes) {
-    box-shadow: 1px 5px 10px themed('colorShadow');
+    box-shadow: 2px 10px 10px themed('colorShadow');
     background-color: themed('colorBackground');
   }
 
@@ -43,7 +43,7 @@
 
     // 사이드바 마우스 오버 시 CARD SHADOW [24June2020,khlee]
     @include themify($themes) {
-      box-shadow: 1px 2px 5px themed('colorShadow');
+      box-shadow: 2px 13px 10px themed('colorShadow');
     }
   }
 }

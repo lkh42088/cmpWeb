@@ -29,17 +29,24 @@ const NBVmSmallCard = (props) => {
             <CardBody className="nb-carousel-card" style={{
                 background: color(),
             }}>
+                {/*title*/}
                 <p style={{
                     color: "white",
-                }}>{vm.name}</p>
-                <p style={{
+                    fontWeight: "bold",
+                    border: "4px solid transparent",
+                    borderLeftColor: "#4ce1b6",
+                }}>
+                    &nbsp;&nbsp;&nbsp;{vm.name}
+                </p>
+                {/*ip contents*/}
+                <div style={{
                     textAlign: "center",
                     margin: "5px auto",
                     color: "white",
                 }}>
-                    <p style={{fontSize: "0.6rem", color: "white"}}>{vm.ipAddr}</p>
-                    <p style={{fontSize: "0.6rem", color: "white"}}>{vm.remoteAddr}</p>
-                </p>
+                    <p style={{fontSize: "0.8rem", color: "white"}}>{vm.ipAddr}</p>
+                    <p style={{fontSize: "0.8rem", color: "white"}}>{vm.remoteAddr}</p>
+                </div>
             </CardBody>
         </Card>
     );
