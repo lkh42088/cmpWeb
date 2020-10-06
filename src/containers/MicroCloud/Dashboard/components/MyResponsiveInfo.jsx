@@ -166,7 +166,7 @@ const MyResponsiveInfo = (props) => {
                 </Fragment>
             ) : (
                 <Fragment>
-                    <CardBody className="cb-card-body">
+                    <CardBody className="nb-card-body-graph">
                         <p>{title}</p>
 
                         <Fragment>

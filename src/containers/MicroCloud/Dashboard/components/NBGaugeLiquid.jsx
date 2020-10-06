@@ -11,9 +11,8 @@ import {themes} from "../../../../shared/helpers";
 const NBGaugeLiquid = (props) => {
     const ref = useRef();
     const {
-        title, data, refresh,
+        title, data, refresh, err,
     } = props;
-    const [state, setState] = useState();
     const [radius, setRadius] = useState(0);
 
     /**************************************************************
@@ -60,6 +59,10 @@ const NBGaugeLiquid = (props) => {
     });
 
     useEffect(() => {
+        // for rendering
+    }, [data, err]);
+
+    useEffect(() => {
         setRadius(ref.current.clientWidth / 2 - 50);
     }, []);
 
@@ -67,11 +70,11 @@ const NBGaugeLiquid = (props) => {
         <Card className="cb-card" innerRef={ref}>
             <CardBody className="nb-card-body-graph">
                 <div className="nb-card-body-graph-title">{title}</div>
-                {state === "nodata" ? (
+                {err === "nodata" ? (
                     <Fragment>
                         <p style={{
                             textAlign: "center",
-                            margin: "110px auto",
+                            margin: "80px auto",
                         }}>
                             <span style={{
                                 fontSize: "1.3rem",

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import Carousel from 'react-multi-carousel';
 import {NavLink} from "react-router-dom";
@@ -29,6 +29,7 @@ const responsive = {
 
 const NBSimpleCarousel = (props) => {
     const dispatch = useDispatch();
+    const {cpName, vmCount} = props;
     const [vms, setVms] = useState([]);
     const user = JSON.parse(localStorage.getItem("user"));
     const {
@@ -57,12 +58,13 @@ const NBSimpleCarousel = (props) => {
         if (currentPage > 0) {
             offset = rowsPerPage * currentPage;
         }
-        let companyName;
-        if (user.level <= OPERATOR) { //관리자
-            companyName = "all";
-        } else {
-            companyName = user.cpName;
-        }
+        // let companyName;
+        // if (user.level <= OPERATOR) { //관리자
+            // companyName = "all";
+        // } else {
+        //     companyName = user.cpName;
+            const companyName = user.cpName;
+        // }
         try {
             const response = await getMcVms({
                 rows: rowsPerPage,
@@ -84,12 +86,38 @@ const NBSimpleCarousel = (props) => {
     }, [vms]);
 
     useEffect(() => {
+
+    }, [cpName]);
+
+    useEffect(() => {
         getPageData();
     }, []);
 
     return (
         <div className="nb-carousel-container">
-            <Carousel
+            {vmCount === 0 ? (
+                <Fragment>
+                    <p style={{
+                        textAlign: "center",
+                        margin: "40px auto",
+                    }}>
+                            <span style={{
+                                fontSize: "1.3rem",
+                                color: "red",
+                            }}>
+                                NO DATA
+                            </span>
+                        <br/>
+                        <span textAnchor="middle"
+                              style={{
+                                  fontSize: "0.8rem",
+                              }}>
+                                데이터가 없습니다.
+                            </span>
+                    </p>
+                </Fragment>
+            ) : (
+                <Carousel
                 ssr
                 // partialVisbile
                 deviceType="desktop"
@@ -113,6 +141,7 @@ const NBSimpleCarousel = (props) => {
                     </NavLink>
                     ))}
             </Carousel>
+            )}
         </div>
     );
 };
