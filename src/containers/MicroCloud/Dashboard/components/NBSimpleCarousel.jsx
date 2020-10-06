@@ -77,11 +77,11 @@ const NBSimpleCarousel = (props) => {
         }
     };
 
-    // useEffect(() => {
-    //     if (vms.length !== 0) {
-    //         responsive.desktop.items = vms.length;
-    //     }
-    // }, [vms]);
+    useEffect(() => {
+        if (vms.length > 0 && vms.length < 4) {
+            responsive.desktop.items = vms.length;
+        }
+    }, [vms]);
 
     useEffect(() => {
         getPageData();
