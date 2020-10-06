@@ -258,6 +258,10 @@ const MicroCloudVmTable = () => {
         }
 
         setPageType(tempPageType);
+
+        if (page === 'page' && tempPageType === 'vmsPage') {
+            getVmList("all");
+        }
     }, [window.location.href]);
 
     useEffect(() => {
@@ -265,11 +269,8 @@ const MicroCloudVmTable = () => {
         //getVmList("all");
     }, []);
 
-    useEffect(() => {
-        if (page === "page") {
-            getVmList("all");
-        }
-    }, [window.location.href]);
+    /*useEffect(() => {
+    }, [window.location.href]);*/
 
     useEffect(() => {
         setSchVm("");
