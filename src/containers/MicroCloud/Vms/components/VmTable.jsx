@@ -292,12 +292,9 @@ const VmTable = () => {
             companyName = user.cpName;
         }
         try {
-            console.log("companyName : ", companyName);
             const response = await getMcVms({
                 rows: rowsPerPage, offset, orderBy, order, cpName: companyName,
             });
-            console.log("response: data ", response.data.data);
-            console.log("response: page ", response.data.page);
             setData(response.data.data);
             setPaging(response.data.page);
         } catch (e) {
@@ -366,13 +363,11 @@ const VmTable = () => {
     };
 
     const handleSubmitAddVm = (vm) => {
-        console.log("handleSubmit() : vm", vm);
         asyncAddVm(vm);
         handleCloseAddVm();
     };
 
     const handleSubmitSearch = (params) => {
-        console.log("handleSubmitSearch() params ", params);
         setSearchParam(params);
     };
 

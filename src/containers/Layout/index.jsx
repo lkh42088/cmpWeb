@@ -138,6 +138,8 @@ const Layout = ({
 
         if (val === "card") {
             dispatch(changeVmPage({pageType: 'card', data: null}));
+        } else if (val === "page") {
+            dispatch(changeVmPage({pageType: 'page', data: null}));
         } else {
             dispatch(changeVmPage({pageType: 'list', data: null}));
         }
