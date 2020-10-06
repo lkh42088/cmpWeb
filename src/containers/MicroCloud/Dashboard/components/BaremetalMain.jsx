@@ -53,7 +53,7 @@ const BaremetalMain = (props) => {
     const [cpu, setCpu] = useState(0);
     const [mem, setMem] = useState(0);
     const [disk, setDisk] = useState(0);
-
+    const [err, setErr] = useState();
 
     /**************************************************************
      * Handle Function
@@ -62,8 +62,8 @@ const BaremetalMain = (props) => {
     /**************************************************************
      * Axios Function
      **************************************************************/
+    let companyName;
     const getData = async () => {
-        let companyName;
         if (user.level <= OPERATOR) { //관리자
             companyName = company;
         } else {
@@ -88,6 +88,11 @@ const BaremetalMain = (props) => {
             setMem(Number(100 - memVal.data[0].available_percent.toFixed(0)));
             // disk
             const diskVal = await getMcNetworksDisk(mac);
+            if (diskVal.data[0].err === "nodata" || memVal.data[0].err === "nodata" || cpuVal.data[0].err === "nodata") {
+                setErr("nodata");
+            } else {
+                setErr("");
+            }
             setDisk(Number(diskVal.data[0].used_percent.toFixed(0)));
         } catch (e) {
             console.log("getResourceData error!");
@@ -98,6 +103,11 @@ const BaremetalMain = (props) => {
         setCpu(0);
         try {
             const cpuVal = await getMcNetworksCpu(mac);
+            if (cpuVal.data[0].err === "nodata") {
+                setErr("nodata");
+            } else {
+                setErr("");
+            }
             const value = (100 - cpuVal.data[0].usage_idle).toFixed(0);
             setCpu(Number(value));
         } catch (e) {
@@ -109,7 +119,12 @@ const BaremetalMain = (props) => {
         setMem(0);
         try {
             const memVal = await getMcNetworksMem(mac);
-            setMem(Number(100 - memVal.data[0].available_percent.toFixed(0)));
+            if (memVal.data[0].err === "nodata") {
+                setErr("nodata");
+            } else {
+                setErr("");
+            }
+        setMem(Number(100 - memVal.data[0].available_percent.toFixed(0)));
         } catch (e) {
             console.log("getMemData error!");
         }
@@ -119,6 +134,11 @@ const BaremetalMain = (props) => {
         setDisk(0);
         try {
             const diskVal = await getMcNetworksDisk(mac);
+            if (diskVal.data[0].err === "nodata") {
+                setErr("nodata");
+            } else {
+                setErr("");
+            }
             setDisk(Number(diskVal.data[0].used_percent.toFixed(0)));
         } catch (e) {
             console.log("getDiskData error!");
@@ -142,9 +162,8 @@ const BaremetalMain = (props) => {
                     <NBSimpleCarousel
                         itemVal={3}
                         activeVal={1}
+                        cpName={companyName}
                         vmCount={vmCount}
-                        snapshotCount={snapshotCount}
-                        backupCount={backupCount}
                     />
                 </Col>
             </Row>
@@ -179,6 +198,7 @@ const BaremetalMain = (props) => {
                     <NBGaugeLiquid
                         title="CPU"
                         data={cpu}
+                        err={err}
                         refresh={getCpuData}
                     />
                 </Col>
@@ -186,6 +206,7 @@ const BaremetalMain = (props) => {
                     <NBGaugeLiquid
                         title="MEMORY"
                         data={mem}
+                        err={err}
                         refresh={getMemData}
                     />
                 </Col>
@@ -193,6 +214,7 @@ const BaremetalMain = (props) => {
                     <NBGaugeLiquid
                         title="DISK"
                         data={disk}
+                        err={err}
                         refresh={getDiskData}
                     />
                 </Col>
