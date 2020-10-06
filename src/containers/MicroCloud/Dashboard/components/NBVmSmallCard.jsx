@@ -37,7 +37,7 @@ const NBVmSmallCard = (props) => {
             {/*    background: color(),*/}
             {/*}}>*/}
 
-                {/*<div className={vm.currentStatus.toString() === "running"
+            {/*<div className={vm.currentStatus.toString() === "running"
                     ? "nb-card nb-carousel-card-back-on"
                     : "nb-card nb-carousel-card-back-off"
                 }>
@@ -55,13 +55,18 @@ const NBVmSmallCard = (props) => {
             >
                 {vm.name}
             </CardHeader>
-            <CardBody className="vm__card">
+            {/*#00bcd4*/}
+            <CardBody className="vm__card-carousel"
+                      style={vm.currentStatus.toString() === 'running'
+                          ? {background: "#00bcd4"} : {}}>
                 <div className="vm__stats_border-none">
                     <div className="vm__stat_border-none">
-                        <div className="vm__stat-title">
+                        <div className={vm.currentStatus.toString() === 'running'
+                            ? "vm__stat-carousel-on" : "vm__stat-title"}>
                             <p>{vm.ipAddr}</p>
                         </div>
-                        <div className="vm__stat-title">
+                        <div className={vm.currentStatus.toString() === 'running'
+                            ? "vm__stat-carousel-on" : "vm__stat-title"}>
                             <p>{vm.remoteAddr}</p>
                         </div>
                     </div>

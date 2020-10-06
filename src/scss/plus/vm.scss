@@ -65,6 +65,20 @@
   }*/
 }
 
+.vm__card-carousel {
+  height: 100%;
+  padding: 0.5rem;
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+
+  @include themify($themes) {
+    background-color: themed('colorBackground');
+    /*border: 1px solid themed('colorBorder');*/
+    color: themed('colorText');
+  }
+}
+
 .vm__stat-mainTitle {
   font-weight: 700;
   font-size: 10px;
@@ -153,6 +167,15 @@
   line-height: 1.5;
 /*  display: inline-block;
   vertical-align: middle;*/
+}
+
+.vm__stat-carousel-on {
+  margin: 0;
+  font-size: 8px;
+  line-height: 1.5;
+  p {
+    color: white;
+  }
 }
 
 .vm__stat-graph {
