@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Carousel from 'react-multi-carousel';
-import CountInfo from "./CountInfo";
+import {NavLink} from "react-router-dom";
 import {OPERATOR} from "../../../../lib/var/globalVariable";
 import {getMcVms} from "../../../../lib/api/microCloud";
 import 'react-multi-carousel/lib/styles.css';
 import NBVmSmallCard from "./NBVmSmallCard";
+import {changeVmPage} from "../../../../redux/actions/vmsActions";
 
 const responsive = {
     desktop: {
@@ -26,7 +27,7 @@ const responsive = {
 };
 
 const NBSimpleCarousel = (props) => {
-    const [state, setState] = useState();
+    const dispatch = useDispatch();
     const [vms, setVms] = useState([]);
     const user = JSON.parse(localStorage.getItem("user"));
     const {
@@ -41,6 +42,13 @@ const NBSimpleCarousel = (props) => {
         orderBy: pagingRd.orderBy,
         order: pagingRd.order,
     }));
+
+    const handleView = (val) => {
+        dispatch(changeVmPage({
+            pageType: 'page',
+            data: val,
+        }));
+    };
 
     const getPageData = async () => {
         console.log("getPageData start!");
@@ -88,7 +96,14 @@ const NBSimpleCarousel = (props) => {
                 dotListClass="custom-dot-list-style"
                 itemClass="carousel-item-padding-40-px"
             >
-                {vms.map(vm => (<NBVmSmallCard vm={vm}/>))}
+                {vms.map(vm => (
+                    <NavLink
+                        to="/micro/vms"
+                        onClick={e => handleView(vm)}
+                    >
+                        <NBVmSmallCard vm={vm}/>
+                    </NavLink>
+                    ))}
             </Carousel>
         </div>
     );
