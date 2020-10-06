@@ -19,7 +19,7 @@ const VmSidebar = ({vm}) => {
     const [rxTitle, setRxTitle] = useState("RX (Kbytes)");
     const [txTitle, setTxTitle] = useState("TX (Kbytes)");
 
-    console.log("🙉🙉 VMSIDEBAR : ", vm);
+    //console.log("🙉🙉 VMSIDEBAR : ", vm);
 
     const getData = async () => {
         if (!mac) {

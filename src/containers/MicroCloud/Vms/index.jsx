@@ -258,6 +258,10 @@ const MicroCloudVmTable = () => {
         }
 
         setPageType(tempPageType);
+
+        if (page === 'page' && tempPageType === 'vmsPage') {
+            getVmList("all");
+        }
     }, [window.location.href]);
 
     useEffect(() => {
@@ -265,11 +269,8 @@ const MicroCloudVmTable = () => {
         //getVmList("all");
     }, []);
 
-    useEffect(() => {
-        if (page === 'page' && pageType === 'vmsPage') {
-            getVmList("all");
-        }
-    }, [window.location.href]);
+    /*useEffect(() => {
+    }, [window.location.href]);*/
 
     useEffect(() => {
         setSchVm("");
@@ -296,9 +297,9 @@ const MicroCloudVmTable = () => {
                     </div>
                 ) : false}
             </Row>
-            ---{pageType}---
+            {/*---{pageType}---
             <br/>
-            👉👉👉{page}👈👈👈
+            👉👉👉{page}👈👈👈*/}
             <Row>
                 <SnackbarProvider maxSnack={3}>
                     {/*eslint-disable-next-line no-nested-ternary*/}
