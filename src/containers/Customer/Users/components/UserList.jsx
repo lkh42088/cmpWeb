@@ -150,7 +150,7 @@ const UserList = () => {
      * User Data
      */
     const {
-        /** Paging User Data */
+        /** paging User Data */
         data,
         getPage,
         /** Register User */

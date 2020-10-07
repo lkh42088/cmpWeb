@@ -44,7 +44,7 @@ const menuLevel = [
     },
     {
         path: '/test',
-        level: 1,
+        level: 10,
         component: Test,
     },
 ];
