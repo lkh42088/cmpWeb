@@ -50,6 +50,7 @@
 
     "react/jsx-first-prop-n": "off",
     "react/jsx-first-prop-new-line": "off",
+    "react/jsx-filename-extension": [0],
 
     "react/jsx-max-props-per-line": "off",
 
