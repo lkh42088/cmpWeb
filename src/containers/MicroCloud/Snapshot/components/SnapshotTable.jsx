@@ -411,7 +411,7 @@ const SnapshotTable = () => {
                         className={cellClassName}
                         style={{width: "5%"}}
                     >
-                        {row.year}년 {row.month}월 {row.day}일 {row.hour}시{row.minute}분{row.second}초
+                        {row.year}년{row.month}월{row.day}일, {row.hour}시{row.minute}분{row.second}초
                     </TableCell>
                     <TableCell
                         className={cellClassName}
