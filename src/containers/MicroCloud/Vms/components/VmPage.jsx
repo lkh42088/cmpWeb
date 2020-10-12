@@ -8,6 +8,9 @@ import VmTable from "./VmTable";
 
 const VmPage = ({schVm}) => {
     const dispatch = useDispatch();
+    const user = JSON.parse(localStorage.getItem("user"));
+    const {level} = user;
+
     const {data, page} = useSelector(({vmsRd}) => ({
         data: vmsRd.data,
         page: vmsRd.pageType,
@@ -31,7 +34,7 @@ const VmPage = ({schVm}) => {
                         <Col style={{
                             flexGrow: "0",
                         }}>
-                            <Row>
+                            <Row style={level >= 5 ? {display: "none"} : {display: ""}}>
                                 <VmSidebar vm={data}/>
                             </Row>
                         </Col>
