@@ -269,9 +269,6 @@ const MicroCloudVmTable = () => {
         //getVmList("all");
     }, []);
 
-    /*useEffect(() => {
-    }, [window.location.href]);*/
-
     useEffect(() => {
         setSchVm("");
     }, [data]);
