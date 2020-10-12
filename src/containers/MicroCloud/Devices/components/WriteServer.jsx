@@ -61,6 +61,10 @@ const MenuProps = {
     },
 };
 
+const registerTypeList = [
+    { value: 1, name: "Domain" },
+];
+
 const WriteServer = (props) => {
     /************************************************************************************
      * Props
@@ -85,40 +89,55 @@ const WriteServer = (props) => {
         cpName: '',
         cpIdx: 0,
         serialNumber: '',
-        type: '0',
         ipAddr: '',
+        registerType: 0,
+        domainPrefix: '',
+        domainId: '',
+        domainPassword: '',
     });
 
     const [requires, setRequireds] = useState({
         cpName: true,
         cpIdx: true,
         serialNumber: true,
-        type: true,
-        ipAddr: true,
+        ipAddr: false,
+        registerType: true,
+        domainPrefix: false,
+        domainId: false,
+        domainPassword: false,
     });
 
     const [disables, setDisables] = useState({
         cpName: false,
         cpIdx: false,
         serialNumber: false,
-        type: false,
         ipAddr: false,
+        registerType: false,
+        domainPrefix: false,
+        domainId: false,
+        domainPassword: false,
     });
 
     const [helpers, setHelpers] = useState({
         cpName: "",
         cpIdx: "",
         serialNumber: "",
-        type: "",
         ipAddr: "",
+        registerType: "",
+        domainPrefix: "",
+        domainId: "",
+        domainPassword: "",
     });
 
     const [errors, setErrors] = useState({
         cpName: false,
         cpIdx: false,
         serialNumber: false,
-        type: false,
         ipAddr: false,
+        registerType: false,
+        domainPrefix: false,
+        domainId: false,
+        domainPassword: false,
     });
 
     /*******************
@@ -136,22 +155,31 @@ const WriteServer = (props) => {
             cpName: '',
             cpIdx: 0,
             serialNumber: '',
-            type: '0',
             ipAddr: '',
+            registerType: 0,
+            domainPrefix: '',
+            domainId: '',
+            domainPassword: '',
         });
         setHelpers({
             cpName: "",
             cpIdx: "",
             serialNumber: "",
-            type: "",
             ipAddr: "",
+            registerType: "",
+            domainPrefix: "",
+            domainId: "",
+            domainPassword: "",
         });
         setErrors({
             cpName: false,
             cpIdx: false,
             serialNumber: false,
-            type: false,
             ipAddr: false,
+            registerType: false,
+            domainPrefix: false,
+            domainId: false,
+            domainPassword: false,
         });
     };
 
@@ -268,7 +296,9 @@ const WriteServer = (props) => {
                                             name="cpIdx"
                                             value={fields.cpIdx}
                                             error={errors.cpIdx}
-                                            onChange={(e) => { handleChangeField("cpIdx", e.target.value); }}
+                                            onChange={(e) => {
+                                                handleChangeField("cpIdx", e.target.value);
+                                            }}
                                             onClick={handleMenuCompany}
                                             MenuProps={MenuProps}
                                         >
@@ -328,58 +358,130 @@ const WriteServer = (props) => {
                                 helperText={helpers.serialNumber}
                                 name="serialNumber"
                                 value={fields.serialNumber}
-                                onChange={(e) => { handleChangeField("serialNumber", e.target.value); }}
+                                onChange={(e) => {
+                                    handleChangeField("serialNumber", e.target.value);
+                                }}
                                 variant={variant}
                                 size={fieldSize}
                             />
                         </div>
                     </Grid>
-                    {/*<Grid item xs={6}>*/}
-                    {/*    <div>*/}
-                    {/*        <span className={labelClassName}>* Type</span>*/}
-                    {/*        <FormControl*/}
-                    {/*            size={fieldSize}*/}
-                    {/*            className={fieldClassName}*/}
-                    {/*            variant="filled"*/}
-                    {/*            error={errors.type}*/}
-                    {/*            disabled={disables.type}*/}
-                    {/*        >*/}
-                    {/*            <Select*/}
-                    {/*                required={errors.type}*/}
-                    {/*                disabled={disables.type}*/}
-                    {/*                name="type"*/}
-                    {/*                value={fields.type}*/}
-                    {/*                onChange={(e) => { handleChangeField("type", e.target.value); }}*/}
-                    {/*                MenuProps={MenuProps}*/}
-                    {/*            >*/}
-                    {/*                <MenuItem key={0} value="0">*/}
-                    {/*                    <em>None</em>*/}
-                    {/*                </MenuItem>*/}
-                    {/*                <MenuItem key={1} value="1">Light</MenuItem>*/}
-                    {/*                <MenuItem key={2} value="1">Standard</MenuItem>*/}
-                    {/*                <MenuItem key={3} value="2">Advance</MenuItem>*/}
-                    {/*            </Select>*/}
-                    {/*            <FormHelperText>{helpers.type}</FormHelperText>*/}
-                    {/*        </FormControl>*/}
-                    {/*    </div>*/}
-                    {/*</Grid>*/}
                     <Grid item xs={6}>
                         <div>
-                            <span className={labelClassName}>* IP Address</span>
-                            <TextField
-                                className={fieldClassName}
-                                error={errors.ipAddr}
-                                required={requires.ipAddr}
-                                disabled={disables.ipAddr}
-                                helperText={helpers.ipAddr}
-                                name="ipAddr"
-                                value={fields.ipAddr}
-                                onChange={(e) => { handleChangeField("ipAddr", e.target.value); }}
-                                variant={variant}
+                            <span className={labelClassName}>* Register Type</span>
+                            <FormControl
                                 size={fieldSize}
-                            />
+                                className={fieldClassName}
+                                variant="filled"
+                                error={errors.registerType}
+                                disabled={disables.registerType}
+                            >
+                                <Select
+                                    required={requires.registerType}
+                                    name="registerType"
+                                    value={fields.registerType}
+                                    error={errors.registerType}
+                                    onChange={(e) => {
+                                        handleChangeField("registerType", e.target.value);
+                                    }}
+                                    onClick={handleMenuCompany}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem key={0} value={0}>
+                                        <em>IP Address</em>
+                                    </MenuItem>
+                                    {registerTypeList && registerTypeList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                                <FormHelperText>{helpers.registerType}</FormHelperText>
+                            </FormControl>
                         </div>
                     </Grid>
+                    { fields.registerType === 0 ? (
+                        <Grid item xs={6}>
+                            <div>
+                                <span className={labelClassName}>* IP Address</span>
+                                <TextField
+                                    className={fieldClassName}
+                                    error={errors.ipAddr}
+                                    required={requires.ipAddr}
+                                    disabled={disables.ipAddr}
+                                    helperText={helpers.ipAddr}
+                                    name="ipAddr"
+                                    value={fields.ipAddr}
+                                    onChange={(e) => {
+                                        handleChangeField("ipAddr", e.target.value);
+                                    }}
+                                    variant={variant}
+                                    size={fieldSize}
+                                />
+                            </div>
+                        </Grid>
+                    ) : (
+                        <React.Fragment>
+                            <Grid item xs={6}>
+                                <div>
+                                    <span className={labelClassName}>* Domain Prefix</span>
+                                    <TextField
+                                        className={fieldClassName}
+                                        error={errors.domainPrefix}
+                                        required={requires.domainPrefix}
+                                        disabled={disables.domainPrefix}
+                                        helperText={helpers.domainPrefix}
+                                        name="domainPrefix"
+                                        value={fields.domainPrefix}
+                                        onChange={(e) => {
+                                            handleChangeField("domainPrefix", e.target.value);
+                                        }}
+                                        variant={variant}
+                                        size={fieldSize}
+                                    />
+                                </div>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <div>
+                                    <span className={labelClassName}>* Domain ID</span>
+                                    <TextField
+                                        className={fieldClassName}
+                                        error={errors.domainId}
+                                        required={requires.domainId}
+                                        disabled={disables.domainId}
+                                        helperText={helpers.domainId}
+                                        name="domainId"
+                                        value={fields.domainId}
+                                        onChange={(e) => {
+                                            handleChangeField("domainId", e.target.value);
+                                        }}
+                                        variant={variant}
+                                        size={fieldSize}
+                                    />
+                                </div>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <div>
+                                    <span className={labelClassName}>* Domain Password</span>
+                                    <TextField
+                                        className={fieldClassName}
+                                        error={errors.domainPassword}
+                                        required={requires.domainPassword}
+                                        disabled={disables.domainPassword}
+                                        helperText={helpers.domainPassword}
+                                        name="domainPassword"
+                                        value={fields.domainPassword}
+                                        onChange={(e) => {
+                                            handleChangeField("domainPassword", e.target.value);
+                                        }}
+                                        variant={variant}
+                                        size={fieldSize}
+                                    />
+                                </div>
+                            </Grid>
+                        </React.Fragment>
+                    )}
                     <Grid item xs={12}>
                         <div>
                             <Button

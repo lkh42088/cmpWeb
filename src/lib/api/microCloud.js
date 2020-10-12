@@ -2,9 +2,9 @@ import client from "./client";
 
 // Servers
 export const registerMcServer = ({
-    cpIdx, serialNumber, type, ipAddr,
+    cpIdx, serialNumber, type, ipAddr, registerType, domainPrefix, domainId, domainPassword,
 }) => client.post('/v1/micro/servers/register', {
-    cpIdx, serialNumber, type, ipAddr,
+    cpIdx, serialNumber, type, ipAddr, registerType, domainPrefix, domainId, domainPassword,
 });
 
 export const unregisterMcServer = ({

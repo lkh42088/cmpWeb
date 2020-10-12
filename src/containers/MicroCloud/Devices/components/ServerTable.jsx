@@ -250,10 +250,11 @@ const ServerTable = () => {
     const asyncAddServer = async (server) => {
         const {
             cpIdx, cpName, serialNumber, type, ipAddr,
+            registerType, domainPrefix, domainId, domainPassword,
         } = server;
         try {
             const response = await registerMcServer({
-                cpIdx, cpName, serialNumber, type, ipAddr,
+                cpIdx, cpName, serialNumber, type, ipAddr, registerType, domainPrefix, domainId, domainPassword,
             });
             handleSnackbarSuccess("서버 등록에 성공하였습니다.");
             getPageData();
