@@ -34,11 +34,14 @@ import {OPERATOR} from "../../../../lib/var/globalVariable";
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
     {id: 'sn', disablePadding: false, label: '시리얼넘버'},
-    {id: 'type', disablePadding: false, label: '장비 타입'},
     {id: 'company', disablePadding: false, label: '회사명'},
     {id: 'status', disablePadding: false, label: '상태'},
     {id: 'vms', disablePadding: false, label: 'VM 개수'},
-    {id: 'ipaddr', disablePadding: false, label: 'IP Address'},
+    {id: 'ipaAddr', disablePadding: false, label: 'Internal IP'},
+    {id: 'publicIp', disablePadding: false, label: 'Public IP'},
+    {id: 'domainPrefix', disablePadding: false, label: 'Domain Prefix'},
+    {id: 'domainId', disablePadding: false, label: 'Domain Id'},
+    {id: 'domainPassword', disablePadding: false, label: 'Domain Password'},
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -382,40 +385,57 @@ const ServerTable = () => {
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "20%"}}
+                        style={{width: "10%"}}
                     >
                         {row.serialNumber}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "15%"}}
-                    >
-                        {/*{row.type}*/}
-                        Standard
-                    </TableCell>
-                    <TableCell
-                        className={cellClassName}
-                        style={{width: "15%"}}
+                        style={{width: "10%"}}
                     >
                         {row.cpName}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "15%"}}
+                        style={{width: "5%"}}
                     >
                         {row.status ? "Active" : "InActive"}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "15%"}}
+                        style={{width: "5%"}}
                     >
                         {row.vmCount}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "15%"}}
+                        style={{width: "10%"}}
                     >
-                        {row.ip}
+                        {row.ipAddr}
+                    </TableCell>
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "10%"}}
+                    >
+                        {row.publicIp}
+                    </TableCell>
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "5%"}}
+                    >
+                        {row.domainPrefix}
+                    </TableCell>
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "5%"}}
+                    >
+                        {row.domainId}
+                    </TableCell>
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "10%"}}
+                    >
+                        {row.domainPassword}
                     </TableCell>
                 </TableRow>
             </React.Fragment>
