@@ -19,6 +19,7 @@ import VmTable from "./components/VmTable";
 import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
 import VmPage from "./components/VmPage";
 import VmCard from "./components/VmCard";
+import VmInfo from "./components/VmInfo";
 
 import {changeVmPage} from "../../../redux/actions/vmsActions";
 import {getCompanies} from "../../../lib/api/company";
@@ -80,7 +81,10 @@ const MicroCloudVmTable = () => {
 
                 setVmFirstIndex(temp[0].idx);
                 setSchVm(temp[0].idx);
-                dispatch(changeVmPage({ pageType: 'page', data: temp[0]}));
+                dispatch(changeVmPage({
+                    pageType: 'page',
+                    data: temp[0],
+                }));
             }
         } catch (error) {
             setVmList([]);
@@ -94,7 +98,10 @@ const MicroCloudVmTable = () => {
         setSchVm(e.target.value);
 
         const res = vmList.filter(item => item.idx === e.target.value);
-        dispatch(changeVmPage({ pageType: 'page', data: res[0]}));
+        dispatch(changeVmPage({
+            pageType: 'page',
+            data: res[0],
+        }));
     };
 
     const handleChangeCompany = (e) => {
@@ -300,14 +307,18 @@ const MicroCloudVmTable = () => {
             <Row>
                 <SnackbarProvider maxSnack={3}>
                     {/*eslint-disable-next-line no-nested-ternary*/}
-                    {page !== 'card'
+                    {/*{page === 'card'
                         ? (
+                            <VmCard/>
+                        ) : (
                             page === 'list'
                                 ? <VmTable/> : <VmPage schVm={schVm}/>
-                        ) : (
-                            <VmCard/>
                         )
-                    }
+                    }*/}
+                    {page === 'card' ? <VmCard/> : false}
+                    {page === 'list' ? <VmTable/> : false}
+                    {page === 'page' ? <VmPage/> : false}
+                    {page === 'info' ? <VmInfo/> : false}
                 </SnackbarProvider>
             </Row>
         </Container>

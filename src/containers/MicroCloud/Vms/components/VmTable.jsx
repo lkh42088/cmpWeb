@@ -415,8 +415,8 @@ const VmTable = () => {
 
     const handleVmPage = (idx) => {
         const res = data.filter(item => item.idx === idx);
-        console.log(`idx:${idx}, res:${res}`);
-        dispatch(changeVmPage({ pageType: 'page', data: res[0]}));
+        //dispatch(changeVmPage({ pageType: 'page', data: res[0]}));
+        dispatch(changeVmPage({ pageType: 'info', data: res[0]}));
     };
 
     const handleSendVmAction = (vm, vmAction) => {

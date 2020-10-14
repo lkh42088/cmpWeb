@@ -11,7 +11,7 @@ import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import {useSnackbar} from "notistack";
 import {useDispatch, useSelector} from "react-redux";
-import SnapTableToolbar from "./SnapTableToolbar";
+import TableToolbarSnapshot from "./TableToolbarSnapshot";
 import CommonTableHead from "../../../Common/CommonTableHead";
 import {
     pagingChangeCurrentPage,
@@ -23,16 +23,24 @@ import {
     deleteSnapshotList, getMcVmSnapshot, recoveryMcVm,
 } from "../../../../lib/api/microCloud";
 import {OPERATOR} from "../../../../lib/var/globalVariable";
-import SnapshotRecoveryModal from "./SnapshotRecoveryModal";
+//import SnapshotRecoveryModal from "./SnapshotRecoveryModal";
 
 const headRows = [
-    {id: 'idx', disablePadding: false, label: 'Index'},
-    {id: 'cpName', disablePadding: false, label: '회사명'},
-    {id: 'serialNumber', disablePadding: false, label: '서버 SN'},
-    {id: 'vmName', disablePadding: false, label: 'VM Name'},
-    {id: 'name', disablePadding: false, label: 'Snapshot Name'},
-    {id: 'date', disablePadding: false, label: 'Snapshot 날짜'},
-    {id: 'current', disablePadding: false, label: '현재 Snapshot 위치'},
+    {
+        id: 'idx',
+        disablePadding: false,
+        label: 'Index',
+    },
+    {
+        id: 'date',
+        disablePadding: false,
+        label: 'Snapshot 날짜',
+    },
+    {
+        id: 'current',
+        disablePadding: false,
+        label: '현재 Snapshot 위치',
+    },
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -65,13 +73,9 @@ const useStyles = makeStyles(theme => ({
             theme.palette.type === 'light'
                 ? {
                     boxShadow: "4px 2px 3px #999999",
-                    // border: "1px solid #e0e0e0",
-                    // borderRight: "1px solid #e0e0e0",
                 }
                 : {
                     boxShadow: "4px 2px 3px #000000",
-                    // border: "1px solid #000000",
-                    // borderRight: "1px solid #e0e0e0",
                 },
     },
     spanSubject: {
@@ -90,7 +94,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const SnapshotTable = () => {
+const VmInfoTableSnapshot = () => {
     const classes = useStyles();
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -98,7 +102,7 @@ const SnapshotTable = () => {
     const [paging, setPaging] = useState(null);
     const [adminLevel, setAdminLevel] = useState(true);
     const [openRecovery, setOpenRecovery] = useState(false);
-    const { enqueueSnackbar } = useSnackbar();
+    const {enqueueSnackbar} = useSnackbar();
     const [recoveryRow, setRecoveryRow] = useState(null);
 
     const dispatch = useDispatch();
@@ -219,7 +223,11 @@ const SnapshotTable = () => {
         try {
             console.log("companyName : ", companyName);
             const response = await getMcVmSnapshot({
-                rows: rowsPerPage, offset, orderBy, order, cpName: companyName,
+                rows: rowsPerPage,
+                offset,
+                orderBy,
+                order,
+                cpName: companyName,
             });
             console.log("response: data ", response.data.data);
             console.log("response: page ", response.data.page);
@@ -240,7 +248,7 @@ const SnapshotTable = () => {
     };
 
     const handleSnackbarSuccess = (snackMsg) => {
-        enqueueSnackbar(snackMsg, { variant: "success" });
+        enqueueSnackbar(snackMsg, {variant: "success"});
     };
 
     const deleteData = async (items) => {
@@ -256,25 +264,19 @@ const SnapshotTable = () => {
 
     const handleDeleteSelected = () => {
         let copyData = [...data];
-        console.log("deleted Selected:");
-        console.log("copyData:", copyData);
-        console.log("SELECTED:", selected);
         const delList = [];
         if (selected !== null) {
             selected.forEach((value, key, mapObject) => {
-                console.log("selected: key ", key, ", value ", value);
                 if (value) {
                     delList.push(key);
                 }
             });
         }
-        console.log("delList: ", delList);
         deleteData(delList);
 
         for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
             copyData = copyData.filter(obj => obj.id !== selected[i]);
         }
-        console.log("after copyData:", copyData);
     };
 
     const handleOpenRecovery = () => {
@@ -286,18 +288,18 @@ const SnapshotTable = () => {
     };
 
     const asyncRecoveryVm = async (obj) => {
-      try {
-          const response = await recoveryMcVm({
-              idx: obj.idx,
-              serverIdx: obj.serverIdx,
-              vmName: obj.vmName,
-              name: obj.name,
-          });
-          handleSnackbarSuccess("Snapshot 복구에 성공하였습니다.");
-          getPageData();
-      } catch (e) {
-          handleSnackbarFailure("Snapshot 복구에 실패하였습니다.");
-      }
+        try {
+            const response = await recoveryMcVm({
+                idx: obj.idx,
+                serverIdx: obj.serverIdx,
+                vmName: obj.vmName,
+                name: obj.name,
+            });
+            handleSnackbarSuccess("Snapshot 복구에 성공하였습니다.");
+            getPageData();
+        } catch (e) {
+            handleSnackbarFailure("Snapshot 복구에 실패하였습니다.");
+        }
     };
 
     const handleSubmitRecovery = (snap) => {
@@ -380,33 +382,8 @@ const SnapshotTable = () => {
                             >
                                 {row.idx}
                             </TableCell>
-                            <TableCell
-                                className={cellClassName}
-                                style={{width: "10%"}}
-                            >
-                                {row.cpName}
-                            </TableCell>
-                            <TableCell
-                                className={cellClassName}
-                                style={{width: "5%"}}
-                            >
-                                {row.serialNumber}
-                            </TableCell>
-
                         </React.Fragment>
                     )}
-                    <TableCell
-                        className={cellClassName}
-                        style={{width: "5%"}}
-                    >
-                        {row.vmName}
-                    </TableCell>
-                    <TableCell
-                        className={cellClassName}
-                        style={{width: "5%"}}
-                    >
-                        {row.name}
-                    </TableCell>
                     <TableCell
                         className={cellClassName}
                         style={{width: "5%"}}
@@ -417,7 +394,7 @@ const SnapshotTable = () => {
                         className={cellClassName}
                         style={{width: "5%"}}
                     >
-                        {row.current ? <RadioButtonCheckedIcon color="secondary" />
+                        {row.current ? <RadioButtonCheckedIcon color="secondary"/>
                             : (
                                 <RadioButtonUncheckedIcon
                                     color={recoveryColor}
@@ -431,66 +408,60 @@ const SnapshotTable = () => {
                                     onClick={handleOpenRecovery}/>
                             )}
                     </TableCell>
-                    <SnapshotRecoveryModal
-                        open={openRecovery}
-                        snap={recoveryRow}
-                        handleClose={handleCloseRecovery}
-                        handleSubmit={handleSubmitRecovery}
-                    />
                 </TableRow>
             </React.Fragment>
         );
     };
 
     return (
-        <Col md={12} lg={12}>
-            <Card className="cb-card">
-                <CardBody className="cb-card-body">
-                    <SnapTableToolbar
-                        numSelected={[...selected].filter(el => el[1]).length}
-                        handleDeleteSelected={handleDeleteSelected}
-                        handleRefresh={handleRefresh}
-                        onRequestSort={handleRequestSort}
-                        rows={headRows}
-                        contents="Snapshot"
-                        count={totalCount}
-                        rowsPerPage={rowsPerPage}
-                        page={currentPage}
-                        onChangePage={handleChangePage}
-                        onChangeRowsPerPage={handleChangeRowsPerPage}
-                        rowsPerPageOptions={displayRowsList}
-                    />
-                    <div className="cb-material-table__wrap">
-                        <TableContainer>
-                            <Table
-                                className="cb-material-table"
-                                size={densePadding ? 'small' : 'medium'}
-                            >
-                                <CommonTableHead
-                                    classes={classes}
-                                    numSelected={[...selected].filter(el => el[1]).length}
-                                    order={order}
-                                    orderBy={orderBy}
-                                    onSelectAllClick={handleSelectAllClick}
-                                    onRequestSort={handleRequestSort}
-                                    rowCount={data && data.length ? data.length : 0}
-                                    rows={headRows}
-                                />
-                                <TableBody>
-                                    { data && data.map((row, index) => {
-                                        const keyId = index;
-                                        return (
-                                            <ContentsRow key={keyId} row={row} />
-                                        );
-                                    })}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </div>
-                </CardBody>
-            </Card>
-        </Col>
+        <Card>
+            <CardBody className="vm__card" style={{
+                padding: "0.2rem",
+            }}>
+                <TableToolbarSnapshot
+                    numSelected={[...selected].filter(el => el[1]).length}
+                    handleDeleteSelected={handleDeleteSelected}
+                    handleRefresh={handleRefresh}
+                    onRequestSort={handleRequestSort}
+                    rows={headRows}
+                    contents="Snapshot"
+                    count={totalCount}
+                    rowsPerPage={rowsPerPage}
+                    page={currentPage}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    rowsPerPageOptions={displayRowsList}
+                />
+                <div className="cb-material-table__wrap">
+                    <TableContainer>
+                        <Table
+                            className="cb-material-table"
+                            size="{densePadding ? 'small' : 'medium'}"
+                        >
+                            <CommonTableHead
+                                classes={classes}
+                                numSelected={[...selected].filter(el => el[1]).length}
+                                order={order}
+                                orderBy={orderBy}
+                                onSelectAllClick={handleSelectAllClick}
+                                onRequestSort={handleRequestSort}
+                                rowCount={data && data.length ? data.length : 0}
+                                rows={headRows}
+                            />
+                            <TableBody>
+                                {data && data.map((row, index) => {
+                                    const keyId = index;
+                                    return (
+                                        <ContentsRow key={keyId} row={row}/>
+                                    );
+                                })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
+            </CardBody>
+        </Card>
     );
 };
 
-export default SnapshotTable;
+export default VmInfoTableSnapshot;
