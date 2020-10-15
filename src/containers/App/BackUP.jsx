@@ -1,381 +1,341 @@
-import React, {useEffect, useState, Fragment} from 'react';
+import React, {useState, Fragment} from 'react';
 import {
-    Col, Container, Row,
+    Card, CardBody, Col,
 } from 'reactstrap';
-import {makeStyles} from "@material-ui/core/styles";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import Grid from "@material-ui/core/Grid";
+import AddIcon from "@material-ui/icons/Add";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import RefreshIcon from "@material-ui/icons/Refresh";
+import {Button} from "@material-ui/core";
 
-import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
-import MyResponsiveLine from "./components/MyResponsiveLine";
-import MyResponsiveCpu from "./components/MyResponsiveCpu";
-import MyResponsiveMem from "./components/MyResponsiveMem";
-import MyResponsiveDisk from "./components/MyResponsiveDisk";
-import NBSmallAreaChart from "./components/NBSmallAreaChart";
-import MyResponsiveInfo from "./components/MyResponsiveInfo";
-
-import {
-    getVmInterfaceTraffic, getServeries, unregisterMcServer, getMcServers,
-} from "../../../lib/api/microCloud";
-import {getCompanies} from "../../../lib/api/company";
-import {
-    NB_MANAGER, TOP_MANAGER, UNREGISTERED_USER,
-} from "../../../lib/var/globalVariable";
-
-const useStyles = makeStyles(theme => ({
-    container: {
-        display: 'grid',
-        gridTemplateColumns: 'repeat(12, 1fr)',
-        gridGap: theme.spacing(2),
-        color: 'red',
-        marginBottom: theme.spacing(10),
-    },
-    paper: {
-        padding: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-        whiteSpace: 'nowrap',
-        marginBottom: theme.spacing(10),
-    },
-    divider: {
-        margin: theme.spacing(2, 0),
-    },
-    row: {
-        paddingBottom: 15,
-    },
-}));
-
-const pieColor = {
-    defaultColor: '#d4d7dd',
-    textColor: '#414141',
-    warringColor: '#ec0101',
-    cpuColor: {
-        use: '#3f51b5',
-        free: '#63686e',
-    },
-    memColor: {
-        use: '#2fc4b2',
-        free: '#63686e',
-    },
-    diskColor: {
-        use: '#ff8364',
-        free: '#63686e',
-    },
+const selectListStyle = {
+    fontSize: "small",
+    padding: "0",
 };
 
-const MicroCloudDashboard = () => {
-    const classes = useStyles();
+const selectLabel = {
+    position: "relative",
+    bottom: "15px",
+};
 
-    //const mac = "52:54:00:01:b5:b7"; //todo: need to fix
-    const user = JSON.parse(localStorage.getItem("user"));
-    const [data, setData] = useState({
-        stats: [{
-            id: "RX",
-            data: [],
-        }, {
-            id: "TX",
-            data: [],
-        },
-        ],
-    });
-    const [rx, setRx] = useState([]);
-    const [tx, setTx] = useState([]);
-    const [hostname, setHostname] = useState("");
+const snapDayList = [
+    { value: 0, name: "0 days" },
+    { value: 1, name: "1 days" },
+    { value: 2, name: "2 days" },
+    { value: 3, name: "3 days" },
+    { value: 4, name: "4 days" },
+    { value: 5, name: "5 days" },
+    { value: 6, name: "6 days" },
+    { value: 7, name: "1 week" },
+    { value: 30, name: "1 month" },
+];
+
+const snapHourList = [
+    { value: 0, name: "0" },
+    { value: 1, name: "1" },
+    { value: 2, name: "2" },
+    { value: 3, name: "3" },
+    { value: 4, name: "4" },
+    { value: 5, name: "5" },
+    { value: 6, name: "6" },
+    { value: 7, name: "7" },
+    { value: 8, name: "8" },
+    { value: 9, name: "9" },
+    { value: 10, name: "10" },
+    { value: 11, name: "11" },
+    { value: 12, name: "12" },
+    { value: 13, name: "13" },
+    { value: 14, name: "14" },
+    { value: 15, name: "15" },
+    { value: 16, name: "16" },
+    { value: 17, name: "17" },
+    { value: 18, name: "18" },
+    { value: 19, name: "19" },
+    { value: 20, name: "20" },
+    { value: 21, name: "21" },
+    { value: 22, name: "22" },
+    { value: 23, name: "23" },
+];
+
+const snapMinList = [
+    { value: 0, name: "0" },
+    { value: 5, name: "5" },
+    { value: 10, name: "10" },
+    { value: 15, name: "15" },
+    { value: 20, name: "20" },
+    { value: 25, name: "25" },
+    { value: 30, name: "30" },
+    { value: 35, name: "35" },
+    { value: 40, name: "40" },
+    { value: 45, name: "45" },
+    { value: 50, name: "50" },
+    { value: 55, name: "55" },
+];
+
+const VmInfoSetting = (props) => {
+    const {
+        type, vm, handleSubmit,
+    } = props;
+    const variant = "filled";
+    const fieldSize = "small";
+    const buttonSize = "large";
+    const formClassName = "cb-material-form";
+    const labelClassName = "cb-material-form__label";
+    const fieldClassName = "cb-material-form__field";
+
+    console.log("★ ~~~~ > : ", vm);
 
     /*******************
-     * Etc.
+     * Field
      *******************/
-    const [companyList, setCompanyList] = useState([]);
-    const [serverList, setServerList] = useState([]);
-    const [mac, setMac] = useState("52:54:00:01:b5:b7");
-    const [dashDp, setDashDp] = useState("all");
-    const [schCompany, setSchCompany] = useState("all");
+    const [fields, setFields] = useState({
+        idx: vm.idx,
+        cpIdx: vm.cpIdx,
+        cpName: vm.cpName,
+        vmIndex: vm.vmIndex,
+        serverIdx: 0,
+        snapDays: vm.snapDays,
+        snapHours: vm.snapHours,
+        snapMinutes: vm.snapMinutes,
+        backupDays: 1,
+        backupHours: 0,
+        backupMinutes: 0,
+    });
 
-    /**************************************************************
-     * Axios Function
-     **************************************************************/
-    const getData = async () => {
-        if (!mac) {
-            return;
-        }
+    const [errors, setErrors] = useState({
+        snapDays: false,
+        snapHours: false,
+        snapMinutes: false,
+    });
 
-        try {
-            const response = await getVmInterfaceTraffic({mac});
-            //console.log("TEST RESPONSE1: ", response.data.stats[0].data);
-            setData({
-                stats: (
-                    response.data.stats.map(val => ({
-                        id: val.id,
-                        data: val.data.map(s => ({
-                            // ...s,
-                            x: new Date(s.x),
-                            y: s.y,
-                        })),
-                    }))),
+    /*******************
+     * Change
+     *******************/
+    const handleChangeField = (name, value) => {
+        console.log("change field: name ", name, ", value", value);
+        if (name === "cpIdx") {
+            setFields({
+                ...fields,
+                [name]: value,
             });
-            setRx(
-                response.data.stats[0].data.map(val => ({
-                    x: new Date(val.x).toLocaleTimeString()
-                        .split(" ")[1],
-                    y: val.y,
-                })),
-            );
-            setTx(
-                response.data.stats[1].data.map(val => ({
-                    x: new Date(val.x).toLocaleTimeString()
-                        .split(" ")[1],
-                    y: val.y,
-                })),
-            );
-            setHostname(response.data.hostname);
-        } catch {
-            setData({
-                ...data,
-                data: [],
+        } else if (name === "snapType") {
+            setFields({
+                ...fields,
+                [name]: value,
+                snapDays: 1,
+                snapHours: 0,
+                snapMinutes: 0,
+            });
+        } else if (name === "backupType") {
+            setFields({
+                ...fields,
+                [name]: value,
+                backupDays: 1,
+                backupHours: 0,
+                backupMinutes: 0,
+            });
+        } else {
+            setFields({
+                ...fields,
+                [name]: value,
             });
         }
-    };
-
-    const getCompanyList = async () => {
-        try {
-            const response = await getCompanies();
-            setCompanyList(response.data);
-        } catch (error) {
-            setCompanyList([]);
-        }
-    };
-
-    /*연관된 코드 주석처리 됨*/
-    const getServerList = async (company) => {
-        try {
-            //"/v1/micro/servers-paging/10/0//desc/신용회복위원회"
-            const response = await getMcServers({
-                rows: 0,
-                offset: 0,
-                orderBy: '',
-                order: 'desc',
-                cpName: company,
-            });
-            setServerList(response.data.data);
-            // console.log("server response : ", response.data.data);
-        } catch (error) {
-            setServerList([]);
-        }
-    };
-
-    /**************************************************************
-     * Handle Function
-     **************************************************************/
-
-    const handleChangeCompany = (e) => {
-        //getServerList(e.target.value);
-        setSchCompany(e.target.value);
-    };
-
-    const handleChangeServer = (e) => {
-        setMac(e.target.value);
-    };
-
-    const handleAuthSelectDisplay = (val, flag) => {
-        let topSelect;
-        console.log("👲👲👲 user -> val : ", val);
-        if (val) {
-            const {level} = user;
-            console.log("👲👲👲 companyList -> companyList : ", companyList);
-            switch (level) {
-                case TOP_MANAGER:
-                    topSelect = (
-                        <Row>
-                            <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                                <select name="company" onChange={handleChangeCompany}>
-                                    <option key="all" value="all">:: ALL DATA ::</option>
-                                    {companyList && companyList.map((item, index) => {
-                                        const key = index;
-                                        return (
-                                            <option key={key} value={item.name}>{item.name}</option>
-                                        );
-                                    })}
-                                </select>
-                                {/*&nbsp;
-                            <select onChange={handleChangeServer}>
-                                {serverList && serverList.map((item, index) => {
-                                    const key = index;
-                                    return (
-                                        <option key={key} value={item.mac}>{item.serialNumber} / {item.mac}</option>
-                                    );
-                                })}
-                            </select>*/}
-                            </Col>
-                        </Row>
-                    );
-                    break;
-                case NB_MANAGER:
-                    topSelect = (
-                        <Row>
-                            <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                                <select name="company" onChange={handleChangeCompany}>
-                                    <option key="all" value="all">:: ALL DATA ::</option>
-                                    {companyList && companyList.map((item, index) => {
-                                        const key = index;
-                                        return (
-                                            <option key={key} value={item.name}>{item.name}</option>
-                                        );
-                                    })}
-                                </select>
-                                {/*&nbsp;
-                            <select onChange={handleChangeServer}>
-                                {serverList && serverList.map((item, index) => {
-                                    const key = index;
-                                    return (
-                                        <option key={key} value={item.mac}>{item.serialNumber} / {item.mac}</option>
-                                    );
-                                })}
-                            </select>*/}
-                            </Col>
-                        </Row>
-                    );
-                    break;
-                case UNREGISTERED_USER:
-                    //console.log("serverList : ", serverList); //cpName
-                    /*topSelect = (
-                        <Fragment>
-                            <select
-                                onChange={handleChangeServer}
-                                defaultValue={user.cpName} /!*여기 작업중이었음 이 부분 ~ 20200921 2020년도까지 server 1*!/
-                            >
-                                {serverList && serverList.map((item, index) => {
-                                    const key = index;
-                                    return (
-                                        <option key={key} value={item.mac}>{item.serialNumber} / {item.mac}</option>
-                                    );
-                                })}
-                            </select>
-                        </Fragment>
-                    );*/
-                    topSelect = "";
-                    break;
-                default:
-                    break;
-            }
-        }
-        return topSelect;
+        setErrors({
+            ...errors,
+            [name]: false,
+        });
     };
 
 
-    const handleAuthDisplay = (val) => {
-        let component;
-        const allComponent = (
-            <Fragment>
-                {handleAuthSelectDisplay(user)}
-                All DASHBOARD
-            </Fragment>
-        );
-        const schComponent = (
-            <Fragment>
-                {handleAuthSelectDisplay(user)}
-                <Row className="classes.row">
-                    <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                        <MyResponsiveCpu
-                            height={150}
-                            mac={mac}
-                            title="CPU" pieColor={pieColor} warringUsed={80}/>
-                    </Col>
-                    <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                        <MyResponsiveMem
-                            height={150}
-                            mac={mac}
-                            title="MEMORY" pieColor={pieColor} warringUsed={80}/>
-                    </Col>
-                    <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                        <MyResponsiveDisk
-                            height={150}
-                            mac={mac}
-                            title="DISK" pieColor={pieColor} warringUsed={80}/>
-                    </Col>
-                    <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                        <MyResponsiveInfo
-                            height={150}
-                            title="HOSTNAME"
-                        />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col md={3} sm={12} style={{padding: 10}}>
-                        <NBSmallAreaChart data={rx} hostname="RX"/>
-                    </Col>
-                    <Col md={3} sm={12} style={{padding: 10}}>
-                        <NBSmallAreaChart data={tx} hostname="TX"/>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col md={12} style={{padding: 10}}>
-                        <MyResponsiveLine height={400}
-                                          title="BareMetal Out Interface"
-                                          data={data}
-                                          hostname={hostname}
-                        />
-                    </Col>
-                </Row>
-            </Fragment>
-        );
-
-        console.log("😤😤😤 schCompany : ", schCompany);
-        if (val) {
-            const {level} = user;
-            switch (level) {
-                case TOP_MANAGER:
-                    component = (
-                        <Fragment>
-                            {schCompany === "all" ? allComponent : schComponent}
-                        </Fragment>
-                    );
-                    break;
-                case NB_MANAGER:
-                    component = (
-                        <Fragment>
-                            {schCompany === "all" ? allComponent : schComponent}
-                        </Fragment>
-                    );
-                    break;
-                case UNREGISTERED_USER:
-                    component = (
-                        <Fragment>
-                            UNREGISTERED_USER
-                            {schComponent}
-                        </Fragment>
-                    );
-                    break;
-                default:
-                    break;
-            }
-        }
-        setDashDp(component);
+    const handleSubmitInternal = () => {
+        console.log("handleSubmitInternal() fields", fields);
+        handleSubmit(fields);
+        //reset();
     };
-
-    /**************************************************************
-     * useEffect
-     **************************************************************/
-
-    useEffect(() => {
-        handleAuthDisplay(user);
-    }, []);
-
-    useEffect(() => {
-        getData();
-        getCompanyList();
-        getServerList('all');
-        const timer = setInterval(getData, 5000);
-        return () => clearInterval(timer);
-    }, []);
 
     return (
-        <Container fluid style={{
-            overflowY: "hidden",
+        <Card style={{
+            height: "20vh",
         }}>
-            <Row className={classes.row}>
-                <RouterBreadcrumbs url={window.location.href}/>
-            </Row>
-            {dashDp}
-        </Container>
+            {type === "snapshot" ? (
+                <CardBody className="vm__card" style={{
+                    padding: "0.2rem",
+                    background: "transition",
+                    backgroundColor: "rgba( 47, 138, 241, 0.5 )",
+                }}>
+                    <div className="vm__stats" style={{
+                        borderBottom: "none",
+                        paddingTop: "0.5rem",
+                    }}>
+                        <div className="vm__stat" style={{
+                            padding: "10px",
+                            borderRight: "0px",
+                        }}>
+                            <p className="vm__stat-mainTitle" style={{
+                                textAlign: "left",
+                            }}>Snapshot 설정</p>
+                        </div>
+
+                        <span style={{
+                            float: "right",
+                        }}>
+                                    <Tooltip title="수정" aria-label="수정">
+                                    <IconButton
+                                        type="button"
+                                        onClick={handleSubmitInternal}
+                                    >
+                                        <AddIcon/>
+                                    </IconButton>
+                                </Tooltip>
+                            </span>
+                    </div>
+
+                    <div className="vm__stats" style={{
+                        borderBottom: "none",
+                        position: "relative",
+                        top: "30%",
+                        left: "50%",
+                        transform: "translate(-40%, -40%)",
+
+                    }}>
+                        <form className={formClassName}>
+                            <Grid container spacing={1}>
+                                <Grid item xs={3}>
+                                    <div>
+                                        <span className={labelClassName} style={selectLabel}>* Days </span>
+                                        <FormControl
+                                            size={fieldSize}
+                                            className={fieldClassName}
+                                            variant="filled"
+                                            error={errors.snapDays}
+                                            style={{
+                                                marginTop: "-15px",
+                                            }}
+                                        >
+                                            <Select
+                                                required={errors.snapDays}
+                                                name="snapDays"
+                                                value={fields.snapDays}
+                                                onChange={(e) => {
+                                                    handleChangeField("snapDays", e.target.value);
+                                                }}
+                                                style={selectListStyle}
+                                            >
+                                                {/* <MenuItem key={0} value={0}>
+                                                    <em>0 day</em>
+                                                </MenuItem>*/}
+                                                {snapDayList.map((item, index) => {
+                                                    const key = index;
+                                                    return (
+                                                        <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                                    );
+                                                })}
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <div>
+                                        <span className={labelClassName} style={selectLabel}>* Hours </span>
+                                        <FormControl
+                                            size={fieldSize}
+                                            className={fieldClassName}
+                                            variant="filled"
+                                            error={errors.snapHours}
+                                            style={{
+                                                marginTop: "-15px",
+                                            }}
+                                        >
+                                            <Select
+                                                required={errors.snapHours}
+                                                name="snapHours"
+                                                value={fields.snapHours}
+                                                onChange={(e) => {
+                                                    handleChangeField("snapHours", e.target.value);
+                                                }}
+                                                style={selectListStyle}
+                                            >
+                                                {/*<MenuItem key={0} value={0}>
+                                                    <em>0</em>
+                                                </MenuItem>*/}
+                                                {snapHourList.map((item, index) => {
+                                                    const key = index;
+                                                    return (
+                                                        <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                                    );
+                                                })}
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <div>
+                                        <span className={labelClassName} style={selectLabel}>* Minutes </span>
+                                        <FormControl
+                                            size={fieldSize}
+                                            className={fieldClassName}
+                                            variant="filled"
+                                            error={errors.snapMinutes}
+                                            style={{
+                                                marginTop: "-15px",
+                                            }}
+                                        >
+                                            <Select
+                                                required={errors.snapMinutes}
+                                                name="snapMinutes"
+                                                value={fields.snapMinutes}
+                                                onChange={(e) => {
+                                                    handleChangeField("snapMinutes", e.target.value);
+                                                }}
+                                                style={selectListStyle}
+                                            >
+                                                {/*<MenuItem key={0} value={0}>
+                                                    <em>0</em>
+                                                </MenuItem>*/}
+                                                {snapMinList.map((item, index) => {
+                                                    const key = index;
+                                                    return (
+                                                        <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                                    );
+                                                })}
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                </Grid>
+                            </Grid>
+                        </form>
+                    </div>
+                </CardBody>
+            ) : (
+                <CardBody className="vm__card">
+                    <div className="vm__stats" style={{
+                        borderBottom: "none",
+                    }}>
+                        <div className="vm__stat">
+                            <p className="vm__stat-mainTitle" style={{
+                                textAlign: "left",
+                            }}>Backup 설정</p>
+                        </div>
+                    </div>
+
+                    <div className="vm__stats" style={{
+                        borderBottom: "none",
+                    }}>
+                        <div className="vm__stat">
+                            <p className="vm__stat-title" style={{
+                                fontSize: "1.5rem",
+                            }}> -</p>
+                        </div>
+                    </div>
+                </CardBody>
+            )}
+        </Card>
     );
 };
 
-export default MicroCloudDashboard;
+export default VmInfoSetting;

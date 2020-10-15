@@ -386,7 +386,7 @@ const VmInfoTableSnapshot = () => {
                     )}
                     <TableCell
                         className={cellClassName}
-                        style={{width: "5%"}}
+                        style={{width: "85%"}}
                     >
                         {row.year}년{row.month}월{row.day}일, {row.hour}시{row.minute}분{row.second}초
                     </TableCell>
@@ -414,10 +414,19 @@ const VmInfoTableSnapshot = () => {
     };
 
     return (
-        <Card>
+        <Card style={{
+            height: "auto",
+        }}>
             <CardBody className="vm__card" style={{
-                padding: "0.2rem",
+                flex: "none",
             }}>
+                <div className="vm__stats">
+                    <div className="vm__stat">
+                        <p className="vm__stat-mainTitle" style={{
+                            textAlign: "left",
+                        }}>Snapshot</p>
+                    </div>
+                </div>
                 <TableToolbarSnapshot
                     numSelected={[...selected].filter(el => el[1]).length}
                     handleDeleteSelected={handleDeleteSelected}
@@ -436,7 +445,7 @@ const VmInfoTableSnapshot = () => {
                     <TableContainer>
                         <Table
                             className="cb-material-table"
-                            size="{densePadding ? 'small' : 'medium'}"
+                            size="small"
                         >
                             <CommonTableHead
                                 classes={classes}

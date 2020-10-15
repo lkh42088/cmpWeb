@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, Fragment} from 'react';
 import {
     Card, CardBody, Col,
 } from 'reactstrap';
@@ -13,7 +13,20 @@ import IconButton from "@material-ui/core/IconButton";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import {Button} from "@material-ui/core";
 
-const snapDayList = [
+import HistoryIcon from '@material-ui/icons/History';
+import SettingsBackupRestoreIcon from '@material-ui/icons/SettingsBackupRestore';
+
+const selectListStyle = {
+    fontSize: "small",
+    padding: "0",
+};
+
+const selectLabel = {
+    position: "relative",
+    bottom: "15px",
+};
+
+const dayList = [
     { value: 0, name: "0 days" },
     { value: 1, name: "1 days" },
     { value: 2, name: "2 days" },
@@ -25,7 +38,7 @@ const snapDayList = [
     { value: 30, name: "1 month" },
 ];
 
-const snapHourList = [
+const hourList = [
     { value: 0, name: "0" },
     { value: 1, name: "1" },
     { value: 2, name: "2" },
@@ -52,7 +65,7 @@ const snapHourList = [
     { value: 23, name: "23" },
 ];
 
-const snapMinList = [
+const minList = [
     { value: 0, name: "0" },
     { value: 5, name: "5" },
     { value: 10, name: "10" },
@@ -149,61 +162,35 @@ const VmInfoSetting = (props) => {
     };
 
     return (
-        <Card style={{
-            height: "20vh",
-        }}>
+        <div>
             {type === "snapshot" ? (
-                <CardBody className="vm__card" style={{
-                    padding: "0.2rem",
+                <div style={{
+                    padding: "1rem 0 0 1rem",
+                    background: "transition",
                 }}>
-                    <div className="vm__stats" style={{
-                        borderBottom: "none",
-                        paddingTop: "0.5rem",
-                    }}>
-                        <div className="vm__stat" style={{
-                            padding: "10px",
-                            borderRight: "0px",
-                        }}>
-                            <p className="vm__stat-mainTitle" style={{
-                                textAlign: "left",
-                            }}>Snapshot 설정</p>
-                        </div>
-
-                        <span style={{
-                            float: "right",
-                        }}>
-                                    <Tooltip title="수정" aria-label="수정">
-                                    <IconButton
-                                        type="button"
-                                        onClick={handleSubmitInternal}
-                                    >
-                                        <AddIcon/>
-                                    </IconButton>
-                                </Tooltip>
-                            </span>
-                    </div>
-
-                    <div className="vm__stats" style={{
-                        borderBottom: "none",
-                        position: "relative",
-                        top: "30%",
-                        left: "50%",
-                        transform: "translate(-40%, -40%)",
-
-                    }}>
+                    <div className="vm__stats">
                         <form className={formClassName}>
                             <Grid container spacing={1}>
+                                <Grid item xs={1} style={{
+                                    margin: "10px 15px 10px 0",
+                                    color: "#2d6187",
+                                }}>
+                                    <HistoryIcon/>
+                                    <span style={{
+                                        margin: "0 -9px",
+                                        color: "#686d76",
+                                    }}>Snapshot</span>
+                                </Grid>
                                 <Grid item xs={3}>
                                     <div>
-                                        <span className={labelClassName}>* Days </span>
+                                        <span className={labelClassName} style={selectLabel}>* Days </span>
                                         <FormControl
                                             size={fieldSize}
                                             className={fieldClassName}
                                             variant="filled"
                                             error={errors.snapDays}
                                             style={{
-                                                width: "100px",
-                                                paddingRight: "0",
+                                                marginTop: "-15px",
                                             }}
                                         >
                                             <Select
@@ -213,11 +200,12 @@ const VmInfoSetting = (props) => {
                                                 onChange={(e) => {
                                                     handleChangeField("snapDays", e.target.value);
                                                 }}
+                                                style={selectListStyle}
                                             >
                                                {/* <MenuItem key={0} value={0}>
                                                     <em>0 day</em>
                                                 </MenuItem>*/}
-                                                {snapDayList.map((item, index) => {
+                                                {dayList.map((item, index) => {
                                                     const key = index;
                                                     return (
                                                         <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
@@ -229,14 +217,14 @@ const VmInfoSetting = (props) => {
                                 </Grid>
                                 <Grid item xs={3}>
                                     <div>
-                                        <span className={labelClassName}>* Hours </span>
+                                        <span className={labelClassName} style={selectLabel}>* Hours </span>
                                         <FormControl
                                             size={fieldSize}
                                             className={fieldClassName}
                                             variant="filled"
                                             error={errors.snapHours}
                                             style={{
-                                                width: "100px",
+                                                marginTop: "-15px",
                                             }}
                                         >
                                             <Select
@@ -246,11 +234,12 @@ const VmInfoSetting = (props) => {
                                                 onChange={(e) => {
                                                     handleChangeField("snapHours", e.target.value);
                                                 }}
+                                                style={selectListStyle}
                                             >
                                                 {/*<MenuItem key={0} value={0}>
                                                     <em>0</em>
                                                 </MenuItem>*/}
-                                                {snapHourList.map((item, index) => {
+                                                {hourList.map((item, index) => {
                                                     const key = index;
                                                     return (
                                                         <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
@@ -262,14 +251,14 @@ const VmInfoSetting = (props) => {
                                 </Grid>
                                 <Grid item xs={3}>
                                     <div>
-                                        <span className={labelClassName}>* Minutes </span>
+                                        <span className={labelClassName} style={selectLabel}>* Minutes </span>
                                         <FormControl
                                             size={fieldSize}
                                             className={fieldClassName}
                                             variant="filled"
                                             error={errors.snapMinutes}
                                             style={{
-                                                width: "100px",
+                                                marginTop: "-15px",
                                             }}
                                         >
                                             <Select
@@ -279,11 +268,12 @@ const VmInfoSetting = (props) => {
                                                 onChange={(e) => {
                                                     handleChangeField("snapMinutes", e.target.value);
                                                 }}
+                                                style={selectListStyle}
                                             >
                                                 {/*<MenuItem key={0} value={0}>
                                                     <em>0</em>
                                                 </MenuItem>*/}
-                                                {snapMinList.map((item, index) => {
+                                                {minList.map((item, index) => {
                                                     const key = index;
                                                     return (
                                                         <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
@@ -293,34 +283,131 @@ const VmInfoSetting = (props) => {
                                         </FormControl>
                                     </div>
                                 </Grid>
+                                <Grid item xs={1}>
+                                    <Tooltip title="수정" aria-label="수정">
+                                        <IconButton
+                                            type="button"
+                                            onClick={handleSubmitInternal}
+                                        >
+                                            <AddIcon/>
+                                        </IconButton>
+                                    </Tooltip>
+                                </Grid>
                             </Grid>
                         </form>
                     </div>
-                </CardBody>
+                </div>
             ) : (
-                <CardBody className="vm__card">
-                    <div className="vm__stats" style={{
-                        borderBottom: "none",
-                    }}>
-                        <div className="vm__stat">
-                            <p className="vm__stat-mainTitle" style={{
-                                textAlign: "left",
-                            }}>Backup 설정</p>
-                        </div>
+                <div style={{
+                    padding: "1rem 0 0 1rem",
+                    background: "transition",
+                }}>
+                    <div className="vm__stats">
+                        <form className={formClassName}>
+                            <Grid container spacing={1}>
+                                <Grid item xs={1} style={{
+                                    margin: "10px 15px 10px 0",
+                                    color: "#b83b5e",
+                                }}>
+                                    <SettingsBackupRestoreIcon/>
+                                    <span style={{
+                                        margin: "0 -5px",
+                                        color: "#f08a5d",
+                                    }}>Backup</span>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <div>
+                                        <span className={labelClassName} style={selectLabel}>* Days </span>
+                                        <FormControl
+                                            size={fieldSize}
+                                            className={fieldClassName}
+                                            variant="filled"
+                                            style={{
+                                                marginTop: "-15px",
+                                            }}
+                                        >
+                                            <Select
+                                                name="backDays"
+                                                style={selectListStyle}
+                                                value={0}
+                                            >
+                                                {dayList.map((item, index) => {
+                                                    const key = index;
+                                                    return (
+                                                        <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                                    );
+                                                })}
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <div>
+                                        <span className={labelClassName} style={selectLabel}>* Hours </span>
+                                        <FormControl
+                                            size={fieldSize}
+                                            className={fieldClassName}
+                                            variant="filled"
+                                            style={{
+                                                marginTop: "-15px",
+                                            }}
+                                            value={0}
+                                        >
+                                            <Select
+                                                name="backHours"
+                                                style={selectListStyle}
+                                            >
+                                                {hourList.map((item, index) => {
+                                                    const key = index;
+                                                    return (
+                                                        <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                                    );
+                                                })}
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <div>
+                                        <span className={labelClassName} style={selectLabel}>* Minutes </span>
+                                        <FormControl
+                                            size={fieldSize}
+                                            className={fieldClassName}
+                                            variant="filled"
+                                            style={{
+                                                marginTop: "-15px",
+                                            }}
+                                            value={0}
+                                        >
+                                            <Select
+                                                name="backMinutes"
+                                                style={selectListStyle}
+                                            >
+                                                {dayList.map((item, index) => {
+                                                    const key = index;
+                                                    return (
+                                                        <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                                    );
+                                                })}
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <Tooltip title="수정" aria-label="수정">
+                                        <IconButton
+                                            type="button"
+                                        >
+                                            <AddIcon/>
+                                        </IconButton>
+                                    </Tooltip>
+                                </Grid>
+                            </Grid>
+                        </form>
                     </div>
-
-                    <div className="vm__stats" style={{
-                        borderBottom: "none",
-                    }}>
-                        <div className="vm__stat">
-                            <p className="vm__stat-title" style={{
-                                fontSize: "1.5rem",
-                            }}> -</p>
-                        </div>
-                    </div>
-                </CardBody>
+                </div>
             )}
-        </Card>
+        </div>
     );
 };
 
