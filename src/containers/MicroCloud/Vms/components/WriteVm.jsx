@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {useSelector} from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
@@ -9,15 +10,18 @@ import SearchIcon from "@material-ui/icons/Search";
 import TextField from "@material-ui/core/TextField";
 import {makeStyles} from "@material-ui/core/styles";
 import SendIcon from "@material-ui/icons/Send";
+import CheckIcon from '@material-ui/icons/Check';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import {getCompanies} from "../../../../lib/api/company";
+import {getUserList} from "../../../../lib/api/users";
 import LookupCompany from "../../../Common/LookupCompany";
 import {
     getMcServersByCpIdx,
     getMcImagesByServerIdx,
     getMcNetworksByServerIdx,
+    checkUserCheck,
 } from "../../../../lib/api/microCloud";
 import {CUSTOMER_MANAGER} from "../../../../lib/var/globalVariable";
 
@@ -191,6 +195,7 @@ const WriteVm = (props) => {
         backupDays: 1,
         backupHours: 0,
         backupMinutes: 0,
+        vmUserId: '',
     });
 
     const [requires, setRequireds] = useState({
@@ -213,6 +218,7 @@ const WriteVm = (props) => {
         backupDays: false,
         backupHours: false,
         backupMinutes: false,
+        vmUserId: false,
     });
 
     const [disables, setDisables] = useState({
@@ -235,6 +241,7 @@ const WriteVm = (props) => {
         backupDays: true,
         backupHours: true,
         backupMinutes: true,
+        vmUserId: true,
     });
 
     const [helpers, setHelpers] = useState({
@@ -257,6 +264,7 @@ const WriteVm = (props) => {
         backupDays: "",
         backupHours: "",
         backupMinutes: "",
+        vmUserId: "",
     });
 
     const [errors, setErrors] = useState({
@@ -279,6 +287,7 @@ const WriteVm = (props) => {
         backupDays: false,
         backupHours: false,
         backupMinutes: false,
+        vmUserId: false,
     });
 
     /*******************
@@ -313,6 +322,7 @@ const WriteVm = (props) => {
             backupDays: 1,
             backupHours: 0,
             backupMinutes: 0,
+            vmUserId: '',
         });
 
         setDisables({
@@ -335,6 +345,7 @@ const WriteVm = (props) => {
             backupDays: true,
             backupHours: true,
             backupMinutes: true,
+            vmUserId: true,
         });
 
         setHelpers({
@@ -357,6 +368,7 @@ const WriteVm = (props) => {
             backupDays: "",
             backupHours: "",
             backupMinutes: "",
+            vmUserId: '',
         });
 
         setErrors({
@@ -379,6 +391,7 @@ const WriteVm = (props) => {
             backupDays: false,
             backupHours: false,
             backupMinutes: false,
+            vmUserId: false,
         });
         setServerList([]);
     };
@@ -404,7 +417,7 @@ const WriteVm = (props) => {
      * Change
      *******************/
     const handleChangeField = (name, value) => {
-        console.log("change field: name ", name, ", value", value);
+        console.log("★ change field: name ", name, ", value", value);
         if (name === "cpIdx") {
             setFields({
                 ...fields,
@@ -417,6 +430,15 @@ const WriteVm = (props) => {
                 networkName: "",
                 [name]: value,
             });
+
+            setDisables({
+                ...disables,
+                vmUserId: !value,
+            });
+            /*setHelpers({
+                ...helpers,
+                vmUserId: "",
+            });*/
         } else if (name === "serverIdx") {
             setFields({
                 ...fields,
@@ -481,10 +503,19 @@ const WriteVm = (props) => {
             ...errors,
             [name]: false,
         });
-        setHelpers({
-            ...helpers,
-            [name]: "",
-        });
+
+        if (name === "cpIdx") {
+            setHelpers({
+                ...helpers,
+                vmUserId: "",
+                [name]: "",
+            });
+        } else {
+            setHelpers({
+                ...helpers,
+                [name]: "",
+            });
+        }
     };
 
     /*******************
@@ -494,31 +525,10 @@ const WriteVm = (props) => {
         console.log("getCompanyList()-----------------------");
         try {
             const response = await getCompanies();
-            console.log("getCompanyList() data: ", response.data);
             setCompanyList(response.data);
         } catch (error) {
             setCompanyList([]);
         }
-    };
-
-    const handleMenuCompany = () => {
-        if (companyList.length === 0) {
-            getCompanyList();
-        }
-        setMenuCompany(!menuCompany);
-    };
-
-    const handleOpenSearchCompany = () => {
-        setOpenSearchCompany(true);
-    };
-
-    const handleCloseSearchCompany = () => {
-        setOpenSearchCompany(false);
-    };
-
-    const handleCompleteSearchCompany = (idx, name) => {
-        console.log("handleCompleteSearchCompany: ", idx, name);
-        handleChangeField("cpIdx", idx);
     };
 
     const getMcServers = async () => {
@@ -561,6 +571,67 @@ const WriteVm = (props) => {
             console.log("fail.. ");
             setImageList([]);
         }
+    };
+
+    /*******************
+     * User Check
+     *******************/
+
+    const getUserCheck = async () => {
+      try {
+          console.log("async start");
+          // 넘기는 값 -> fields.vmUserId, fields.cpIdx
+          const response = await checkUserCheck({
+              id: fields.vmUserId,
+              cpIdx: fields.cpIdx,
+          });
+          console.log("😡😡😡😡 response : ", response);
+      } catch (e) {
+          console.log("async error");
+      }
+    };
+
+    const handleMenuCompany = () => {
+        if (companyList.length === 0) {
+            getCompanyList();
+        }
+        setMenuCompany(!menuCompany);
+    };
+
+    const handleOpenSearchCompany = () => {
+        setOpenSearchCompany(true);
+    };
+
+    const handleSearchUser = () => {
+        const name = "vmUserId";
+        if (fields.cpIdx !== 0) {
+            getUserCheck();
+            setHelpers({
+                ...helpers,
+                [name]: "",
+            });
+        } else {
+            console.log("false");
+
+            setErrors({
+                ...errors,
+                [name]: true,
+            });
+
+            setHelpers({
+                ...helpers,
+                [name]: "회사를 선택해주세요.",
+            });
+        }
+    };
+
+    const handleCloseSearchCompany = () => {
+        setOpenSearchCompany(false);
+    };
+
+    const handleCompleteSearchCompany = (idx, name) => {
+        console.log("handleCompleteSearchCompany: ", idx, name);
+        handleChangeField("cpIdx", idx);
     };
 
     useEffect(() => {
@@ -1203,6 +1274,52 @@ const WriteVm = (props) => {
                                 <FormHelperText>{helpers.backupMinutes}</FormHelperText>
                             </FormControl>
                         </div>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <div>
+                            <span className={labelClassName}>VM 사용자&nbsp;
+                                <span style={{
+                                    color: "gray",
+                                    fontSize: "x-small",
+                                }}>ID 입력</span>
+                            </span>
+                            <TextField
+                                className={fieldClassName}
+                                error={errors.vmUserId}
+                                required={requires.vmUserId}
+                                disabled={disables.vmUserId}
+                                helperText={helpers.vmUserId}
+                                name="name"
+                                value={fields.vmUserId}
+                                onChange={(e) => { handleChangeField("vmUserId", e.target.value); }}
+                                variant={variant}
+                                size={fieldSize}
+                            />
+                        </div>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <span className={labelClassName}/>
+                        <Button
+                            disabled={disables.cpIdx}
+                            className={classes.margin}
+                            variant="contained"
+                            color="primary"
+                            onClick={handleSearchUser}
+                            size={buttonSize}
+                            endIcon={<CheckIcon/>}
+                            style={{
+                                maxWidth: '105px',
+                                maxHeight: '45px',
+                                minWidth: '105px',
+                                minHeight: '45px',
+                                margin: '20px 0px 0px 0px',
+                            }}
+                        >
+                            체크
+                        </Button>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <div/>
                     </Grid>
                     <Grid item xs={12}>
                         <div>

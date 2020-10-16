@@ -162,3 +162,10 @@ export const updateMcVmSnapshot = ({
     snapHours,
     snapMinutes,
 });
+
+// id 중복체크 ()
+/*
+* 1. user 테이블에 해당 id 존재하는지 확인
+* 2. 해당 회사의 vm에 user가 등록되어 있는지 중복체크
+* */
+export const checkUserCheck = ({id, cpIdx}) => client.get(`/v1/micro/vms/check/user/${id}/${cpIdx}`);

@@ -164,6 +164,8 @@ const UserList = () => {
         msg: usersRd.msg,
         msgError: usersRd.msgError,
     }));
+    
+    console.log("data : ", data);
 
     /**
      * Pagination
