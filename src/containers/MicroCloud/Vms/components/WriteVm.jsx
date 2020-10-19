@@ -409,8 +409,18 @@ const WriteVm = (props) => {
         //     return;
         // }
         console.log("handleSubmitInternal() success");
-        handleSubmit(fields);
-        reset();
+
+        // 만약 vmUserId 값이 있다면 error 값이 false인지 true 인지 체크해야함
+
+        console.log("값을 체크해 보자!!!!---------------");
+        console.log("vmUserId : ", fields.vmUserId);
+        console.log("vmUserId error : ", errors.vmUserId);
+        if (fields.vmUserId !== undefined && errors.vmUserId === false) {
+            console.log("응?");
+        }
+
+        /*handleSubmit(fields);
+        reset();*/
     };
 
     /*******************
@@ -586,6 +596,58 @@ const WriteVm = (props) => {
               cpIdx: fields.cpIdx,
           });
           console.log("😡😡😡😡 response : ", response);
+          console.log("😡😡 response : ", response.data.status);
+          console.log("😡😡 response : ", response.data.type);
+
+          const {status} = response.data;
+          const {type} = response.data;
+          let helper = "";
+          let error = false;
+          // status : success
+          // type : user, vm
+
+          switch (type) {
+              case "user":
+                  if (status === "fail") {
+                    console.log("등록되지 않은 사용자 입니다. ");
+                    helper = "※ 등록되지 않은 사용자 입니다.";
+                    error = true;
+                  }
+                  break;
+              case "vm":
+                  if (status === "fail") {
+                      console.log("이미 사용자가 등록되어 있습니다.");
+                      helper = "※ 이미 사용자가 등록되어 있습니다.";
+                      error = true;
+                  } else {
+                      console.log("성공!");
+                      helper = "※ 성공!";
+                      error = false;
+                  }
+                  break;
+              default:
+                  console.log("error");
+                  break;
+          }
+
+          console.log("에러 확인 방법 error : ", error);
+
+          if (error) {
+              setFields({
+                  ...fields,
+                  vmUserId: "",
+              });
+          }
+
+          setErrors({
+              ...errors,
+              vmUserId: error,
+          });
+
+          setHelpers({
+              ...helpers,
+              vmUserId: helper,
+          });
       } catch (e) {
           console.log("async error");
       }
@@ -1289,7 +1351,7 @@ const WriteVm = (props) => {
                                 required={requires.vmUserId}
                                 disabled={disables.vmUserId}
                                 helperText={helpers.vmUserId}
-                                name="name"
+                                name="vmUserId"
                                 value={fields.vmUserId}
                                 onChange={(e) => { handleChangeField("vmUserId", e.target.value); }}
                                 variant={variant}
