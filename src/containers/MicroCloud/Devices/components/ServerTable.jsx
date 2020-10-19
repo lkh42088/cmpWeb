@@ -254,10 +254,11 @@ const ServerTable = () => {
         const {
             cpIdx, cpName, serialNumber, type, ipAddr,
             registerType, domainPrefix, domainId, domainPassword,
+            accessKey, secretKey, projectId, ktDomainId, nasUrl, nasId, nasPassword,
         } = server;
         try {
             const response = await registerMcServer({
-                cpIdx, cpName, serialNumber, type, ipAddr, registerType, domainPrefix, domainId, domainPassword,
+                cpIdx, cpName, serialNumber, type, ipAddr, registerType, domainPrefix, domainId, domainPassword, accessKey, secretKey, projectId, ktDomainId, nasUrl, nasId, nasPassword,
             });
             handleSnackbarSuccess("서버 등록에 성공하였습니다.");
             getPageData();
