@@ -336,11 +336,15 @@ const VmTable = () => {
     const asyncAddVm = async (vm) => {
         const {
             name, cpIdx, serialNumber, serverIdx, cpu, ram, hdd, image, imageName, os, networkName,
-            snapType, snapDays, snapHours, snapMinutes, vmUserId,
+            snapType, snapDays, snapHours, snapMinutes, vmUserId, vmUserFlag,
         } = vm;
         try {
-            console.log("★★★★★ vmUserId : ", vmUserId);
-            /*const response = await registerMcVm({
+            console.log("👿👿👿 vmUserId : ", vmUserId, ", vmUserFlag : ", vmUserFlag);
+            let tempVmUserId = vmUserId;
+            if (!vmUserFlag) {
+                tempVmUserId = "";
+            }
+            const response = await registerMcVm({
                 name,
                 cpIdx,
                 serialNumber,
@@ -358,8 +362,11 @@ const VmTable = () => {
                 snapDays,
                 snapHours,
                 snapMinutes,
+                vmUserId: tempVmUserId,
             });
-            handleSnackbarSuccess("VM 등록에 성공하였습니다.");
+
+            console.log("🤑🤑🤑🤑🤑🤑🤑response : ", response);
+            /*handleSnackbarSuccess("VM 등록에 성공하였습니다.");
             getPageData();*/
         } catch (e) {
             handleSnackbarFailure("VM 등록에 실패하였습니다.");

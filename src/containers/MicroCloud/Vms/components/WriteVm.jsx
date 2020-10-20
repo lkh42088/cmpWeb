@@ -11,6 +11,13 @@ import TextField from "@material-ui/core/TextField";
 import {makeStyles} from "@material-ui/core/styles";
 import SendIcon from "@material-ui/icons/Send";
 import CheckIcon from '@material-ui/icons/Check';
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -168,6 +175,7 @@ const WriteVm = (props) => {
     const [networkList, setNetworkList] = useState([]);
     const [menuCompany, setMenuCompany] = useState(false);
     const [openSearchCompany, setOpenSearchCompany] = useState(false);
+    const [open, setOpen] = React.useState(false);
 
     /*******************
      * Field
@@ -196,6 +204,7 @@ const WriteVm = (props) => {
         backupHours: 0,
         backupMinutes: 0,
         vmUserId: '',
+        vmUserFlag: false,
     });
 
     const [requires, setRequireds] = useState({
@@ -287,7 +296,7 @@ const WriteVm = (props) => {
         backupDays: false,
         backupHours: false,
         backupMinutes: false,
-        vmUserId: false,
+        vmUserId: true,
     });
 
     /*******************
@@ -323,6 +332,7 @@ const WriteVm = (props) => {
             backupHours: 0,
             backupMinutes: 0,
             vmUserId: '',
+            vmUserFlag: false,
         });
 
         setDisables({
@@ -391,9 +401,17 @@ const WriteVm = (props) => {
             backupDays: false,
             backupHours: false,
             backupMinutes: false,
-            vmUserId: false,
+            vmUserId: true,
         });
         setServerList([]);
+    };
+
+    const handleDialogClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDialogClose = () => {
+        setOpen(false);
     };
 
     const handleCancel = () => {
@@ -410,24 +428,49 @@ const WriteVm = (props) => {
         // }
         console.log("handleSubmitInternal() success");
 
-        // 만약 vmUserId 값이 있다면 error 값이 false인지 true 인지 체크해야함
+        handleSubmit(fields);
+        reset();
+    };
 
+    const handleSubmitCheck = (flag) => {
         console.log("값을 체크해 보자!!!!---------------");
         console.log("vmUserId : ", fields.vmUserId);
         console.log("vmUserId error : ", errors.vmUserId);
-        if (fields.vmUserId !== undefined && errors.vmUserId === false) {
-            console.log("응?");
-        }
+        console.log("flag : ", flag);
 
-        /*handleSubmit(fields);
-        reset();*/
+/*
+        값을 체크해 보자!!!!---------------
+        vmUserId :  test
+        vmUserId error :  false
+        flag :  true
+*/
+
+        if (flag) {
+            if (fields.vmUserId !== undefined && fields.vmUserId !== "") {
+                if (errors.vmUserId === true) {
+                    console.log("빈값이 아니고 트루일 경우다~");
+                    handleDialogClickOpen();
+                } else {
+                    handleSubmitInternal();
+                }
+            } else {
+                handleSubmitInternal();
+            }
+        } else {
+            setFields({
+                ...fields,
+                vmUserId: "",
+            }); // 비동기라 어차피 적용되지 않음....
+
+            handleSubmitInternal();
+        }
     };
 
     /*******************
      * Change
      *******************/
     const handleChangeField = (name, value) => {
-        console.log("★ change field: name ", name, ", value", value);
+        //console.log("★ change field: name ", name, ", value", value);
         if (name === "cpIdx") {
             setFields({
                 ...fields,
@@ -509,10 +552,13 @@ const WriteVm = (props) => {
                 [name]: value,
             });
         }
-        setErrors({
-            ...errors,
-            [name]: false,
-        });
+
+        if (name !== "vmUserId") {
+            setErrors({
+                ...errors,
+                [name]: false,
+            });
+        }
 
         if (name === "cpIdx") {
             setHelpers({
@@ -609,18 +655,15 @@ const WriteVm = (props) => {
           switch (type) {
               case "user":
                   if (status === "fail") {
-                    console.log("등록되지 않은 사용자 입니다. ");
                     helper = "※ 등록되지 않은 사용자 입니다.";
                     error = true;
                   }
                   break;
               case "vm":
                   if (status === "fail") {
-                      console.log("이미 사용자가 등록되어 있습니다.");
                       helper = "※ 이미 사용자가 등록되어 있습니다.";
                       error = true;
                   } else {
-                      console.log("성공!");
                       helper = "※ 성공!";
                       error = false;
                   }
@@ -636,6 +679,12 @@ const WriteVm = (props) => {
               setFields({
                   ...fields,
                   vmUserId: "",
+                  vmUserFlag: false,
+              });
+          } else {
+              setFields({
+                  ...fields,
+                  vmUserFlag: true,
               });
           }
 
@@ -1397,7 +1446,9 @@ const WriteVm = (props) => {
                                 variant="contained"
                                 color="primary"
                                 size={buttonSize}
-                                onClick={handleSubmitInternal}
+                                onClick={(e) => {
+                                    handleSubmitCheck(true);
+                                }}
                                 endIcon={<SendIcon/>}
                             >
                                 전송
@@ -1406,6 +1457,32 @@ const WriteVm = (props) => {
                     </Grid>
                 </Grid>
             </form>
+            <Dialog
+                open={open}
+                onClose={handleDialogClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">title?</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        VM 사용자의 등록 가능 여부를 체크하지 않았습니다.<br/>
+                        그대로 진행할 경우 VM 사용자의 정보는 등록되지 않습니다.<br/>
+                        진행하시겠습니까?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogClose} color="primary">
+                        Disagree
+                    </Button>
+                    <Button
+                        onClick={(e) => {
+                            handleSubmitCheck(false);
+                        }} color="primary" autoFocus>
+                        Agree
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </React.Fragment>
     );
 };

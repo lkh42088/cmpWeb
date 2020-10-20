@@ -30,7 +30,7 @@ export const getMcServersByCpIdx = ({
 
 // VMs
 export const registerMcVm = ({
-                                 name, cpIdx, serialNumber, serverIdx, os, image, cpu, ram, hdd, network, snapType, snapDays, snapHours, snapMinutes,
+                                 name, cpIdx, serialNumber, serverIdx, os, image, cpu, ram, hdd, network, snapType, snapDays, snapHours, snapMinutes, vmUserId,
                              }) => client.post('/v1/micro/vms/register', {
     name,
     cpIdx,
@@ -46,6 +46,7 @@ export const registerMcVm = ({
     snapDays,
     snapHours,
     snapMinutes,
+    vmUserId,
 });
 
 export const sendVmAction = ({
