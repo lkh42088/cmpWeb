@@ -84,6 +84,11 @@ const snapTypeList = [
     { value: true, name: "Enable" },
 ];
 
+const backupTypeList = [
+    { value: 1, name: "KT UCLOUD" },
+    { value: 2, name: "NAS" },
+];
+
 const snapDayList = [
     { value: 2, name: "2 days" },
     { value: 3, name: "3 days" },
@@ -1257,7 +1262,7 @@ const WriteVm = (props) => {
                                     onChange={(e) => {
                                         console.log("event target:", e.target);
                                         console.log("event value:", e.target.value);
-                                        const res = snapTypeList.filter(item => item.value === e.target.value);
+                                        const res = backupTypeList.filter(item => item.value === e.target.value);
                                         if (res.length === 0) {
                                             handleChangeField("backupType", false);
                                         } else {
@@ -1267,10 +1272,10 @@ const WriteVm = (props) => {
                                     }}
                                     MenuProps={MenuProps}
                                 >
-                                    <MenuItem key={0} value={false}>
+                                    <MenuItem key={0} value={0}>
                                         <em>Disable</em>
                                     </MenuItem>
-                                    {snapTypeList.map((item, index) => {
+                                    {backupTypeList.map((item, index) => {
                                         const key = index;
                                         return (
                                             <MenuItem key={key} value={item.value}>{item.name}</MenuItem>

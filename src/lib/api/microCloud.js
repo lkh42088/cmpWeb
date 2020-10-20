@@ -2,8 +2,9 @@ import client from "./client";
 
 // Servers
 export const registerMcServer = ({
-                                     cpIdx, serialNumber, type, ipAddr, registerType, domainPrefix, domainId, domainPassword,
-                                 }) => client.post('/v1/micro/servers/register', {
+    cpIdx, serialNumber, type, ipAddr, registerType, domainPrefix, domainId, domainPassword,
+    accessKey, secretKey, projectId, ktDomainId, nasUrl, nasId, nasPassword,
+}) => client.post('/v1/micro/servers/register', {
     cpIdx,
     serialNumber,
     type,
@@ -12,6 +13,13 @@ export const registerMcServer = ({
     domainPrefix,
     domainId,
     domainPassword,
+    accessKey,
+    secretKey,
+    projectId,
+    ktDomainId,
+    nasUrl,
+    nasId,
+    nasPassword,
 });
 
 export const unregisterMcServer = ({
