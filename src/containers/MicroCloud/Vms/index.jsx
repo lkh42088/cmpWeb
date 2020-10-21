@@ -2,7 +2,6 @@ import React, {Fragment, useEffect, useState} from 'react';
 import {SnackbarProvider} from "notistack";
 import {Col, Container, Row} from 'reactstrap';
 import {useSelector, useDispatch} from "react-redux";
-import {Field} from "redux-form";
 
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -11,9 +10,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 
 import * as common from "../../../lib/common";
-import {
-    NB_MANAGER, TOP_MANAGER, UNREGISTERED_USER,
-} from "../../../lib/var/globalVariable";
 
 import VmTable from "./components/VmTable";
 import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
@@ -45,9 +41,6 @@ const MicroCloudVmTable = () => {
 
     const [vmFirstIndex, setVmFirstIndex] = useState("");
 
-
-    //const br = vmList.slice(0, vmList.length - 1);
-
     /**************************************************************
      * Axios Function
      **************************************************************/
@@ -62,7 +55,6 @@ const MicroCloudVmTable = () => {
 
     const getVmList = async (company) => {
         try {
-            //"/v1/micro/servers-paging/10/0//desc/신용회복위원회"
             const response = await getMcVms({
                 rows: 0,
                 offset: 0,
@@ -106,10 +98,8 @@ const MicroCloudVmTable = () => {
 
     const handleChangeCompany = (e) => {
         setSchCompany(e.target.value);
-        //getServerList(e.target.value);
         let tempContent;
-        //getServerMac(e.target.value);
-        //console.log("e.target.value : ", e.target.value);
+
         if (e.target.value) {
             const hasSubCode = vmList.some(d => (d.cpName === e.target.value));
 
@@ -288,12 +278,9 @@ const MicroCloudVmTable = () => {
         <Container fluid>
             <Row>
                 <RouterBreadcrumbs url={window.location.href}/>
-                {/*{page && page === 'page'}*/}
                 {pageType && pageType === 'vmsPage' ? (
                     <div style={{
                         margin: "-19px 0px 0px -240px",
-                        /*margin: "-19px 0px 0px 210px",
-                        position: "absolute",*/
                     }}>
                         <Breadcrumbs aria-label="breadcrumb">
                             {handleAuthSelectDisplay(user)}
@@ -301,20 +288,9 @@ const MicroCloudVmTable = () => {
                     </div>
                 ) : false}
             </Row>
-            {/*---{pageType}---
-            <br/>
-            👉👉👉{page}👈👈👈*/}
             <Row>
                 <SnackbarProvider maxSnack={3}>
                     {/*eslint-disable-next-line no-nested-ternary*/}
-                    {/*{page === 'card'
-                        ? (
-                            <VmCard/>
-                        ) : (
-                            page === 'list'
-                                ? <VmTable/> : <VmPage schVm={schVm}/>
-                        )
-                    }*/}
                     {page === 'card' ? <VmCard/> : false}
                     {page === 'list' ? <VmTable/> : false}
                     {page === 'page' ? <VmPage/> : false}

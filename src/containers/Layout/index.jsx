@@ -42,6 +42,7 @@ import {
 import {setUserPage} from "../../redux/actions/usersActions";
 import {setCompanyPage} from "../../redux/actions/companiesActions";
 import {changeVmPage, initVmPage} from "../../redux/actions/vmsActions";
+import {NORMAL_USER} from "../../lib/var/globalVariable";
 
 let notification = null;
 
@@ -53,17 +54,23 @@ const showNotification = (rtl) => {
         />,
         duration: 5,
         closable: true,
-        style: {top: 0, left: 'calc(100vw - 100%)'},
+        style: {
+            top: 0,
+            left: 'calc(100vw - 100%)',
+        },
         className: `right-up ${rtl}-support`,
     });
 };
 
 const Layout = ({
-    customizer, sidebar, theme, rtl,
-}) => {
+                    customizer, sidebar, theme, rtl,
+                }) => {
     const dispatch = useDispatch();
-    const [user, setUser] = useState('');
-    const getUser = () => {
+    //const [user, setUser] = useState('');
+    const user = JSON.parse(localStorage.getItem("user"));
+    const {level} = user;
+    /*const getUser = () => {
+        console.log("겟유저 함수를 실행합니까?>");
         const xuser = localStorage.getItem('user');
         if (xuser !== null) {
             if (typeof xuser === "string") {
@@ -72,11 +79,11 @@ const Layout = ({
             }
             setUser(xuser);
         }
-    };
+    };*/
 
     useEffect(() => {
         NotificationSystem.newInstance({style: {top: 65}}, n => notification = n);
-        getUser();
+        //getUser();
     }, []);
 
     const changeSidebarVisibilityFunc = () => {
@@ -137,11 +144,20 @@ const Layout = ({
         }
 
         if (val === "card") {
-            dispatch(changeVmPage({pageType: 'card', data: null}));
+            dispatch(changeVmPage({
+                pageType: 'card',
+                data: null,
+            }));
         } else if (val === "page") {
-            dispatch(changeVmPage({pageType: 'page', data: null}));
+            dispatch(changeVmPage({
+                pageType: 'page',
+                data: null,
+            }));
         } else {
-            dispatch(changeVmPage({pageType: 'list', data: null}));
+            dispatch(changeVmPage({
+                pageType: 'list',
+                data: null,
+            }));
         }
     };
 
@@ -198,14 +214,16 @@ const Layout = ({
     };
 
     const layoutClass = classNames({
-        layout: true,
+        layout: false,
         'layout--collapse': sidebar.collapse,
         'layout--top-navigation': customizer.topNavigation,
     });
 
+    console.log("customizer.topNavigation : ", customizer.topNavigation);
+    console.log("sidebar : ", sidebar);
+
     return (
         <div className={layoutClass}>
-            {/*<CustomUI/>*/} {/*20200903 보류 - ebjee*/}
             <Customizer
                 customizer={customizer}
                 sidebar={sidebar}
@@ -240,17 +258,24 @@ const Layout = ({
                     />
                 )
             }
-            {customizer.topNavigation
-                ? (
+            {/* eslint-disable-next-line no-nested-ternary */}
+            {level !== NORMAL_USER ? (
+                    <SidebarMobile
+                        style={{
+                            display: "none",
+                        }}
+                    />
+                )
+                : customizer.topNavigation ? (
                     <SidebarMobile
                         sidebar={sidebar}
                         changeToDark={changeToDarkFunc}
                         changeToLight={changeToLightFunc}
                         changeMobileSidebarVisibility={changeMobileSidebarVisibilityFunc}
+                        changeMenuTitle={changeMenuTitleFunc}
                         user={user}
                     />
-                )
-                : (
+                ) : (
                     <Sidebar
                         sidebar={sidebar}
                         changeToDark={changeToDarkFunc}
@@ -259,8 +284,30 @@ const Layout = ({
                         changeMenuTitle={changeMenuTitleFunc}
                         user={user}
                     />
+                )}
+            {/*{level !== NORMAL_USER ? (customizer.topNavigation
+                    ? (
+                        <SidebarMobile
+                            sidebar={sidebar}
+                            changeToDark={changeToDarkFunc}
+                            changeToLight={changeToLightFunc}
+                            changeMobileSidebarVisibility={changeMobileSidebarVisibilityFunc}
+                            changeMenuTitle={changeMenuTitleFunc}
+                            user={user}
+                        />
+                    )
+                    : (
+                        <Sidebar
+                            sidebar={sidebar}
+                            changeToDark={changeToDarkFunc}
+                            changeToLight={changeToLightFunc}
+                            changeMobileSidebarVisibility={changeMobileSidebarVisibilityFunc}
+                            changeMenuTitle={changeMenuTitleFunc}
+                            user={user}
+                        />
+                    )
                 )
-            }
+             : false}*/}
         </div>
     );
 };

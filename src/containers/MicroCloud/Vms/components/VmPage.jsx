@@ -5,6 +5,7 @@ import VmSidebar from "./VmSidebar";
 import VmVncViewer from "./VmVncViewer";
 import {changeVmPage} from "../../../../redux/actions/vmsActions";
 import VmTable from "./VmTable";
+import {CUSTOMER_MANAGER} from "../../../../lib/var/globalVariable";/*5*/
 
 const VmPage = ({schVm}) => {
     const dispatch = useDispatch();
@@ -34,7 +35,7 @@ const VmPage = ({schVm}) => {
                         <Col style={{
                             flexGrow: "0",
                         }}>
-                            <Row style={level >= 5 ? {display: "none"} : {display: ""}}>
+                            <Row style={level >= CUSTOMER_MANAGER ? {display: "none"} : {display: ""}}>
                                 <VmSidebar vm={data}/>
                             </Row>
                         </Col>

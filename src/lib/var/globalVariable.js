@@ -23,5 +23,6 @@ export const NB_MANAGER = 2;
 export const OPERATOR = 4;
 export const CUSTOMER_MANAGER = 5;
 export const CUSTOMER_USER = 6;
+export const NORMAL_USER = 8;
 export const TEMP_USER = 9;
 export const UNREGISTERED_USER = 10;

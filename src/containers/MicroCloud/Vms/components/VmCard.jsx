@@ -68,7 +68,7 @@ const VmCardContent = (props) => {
     });
 
     const handleView = (val) => {
-        //console.log("😡😡😡😡 val : ", val);
+        console.log("😡😡😡😡 val : ", val);
         dispatch(changeVmPage({
             pageType: 'page',
             data: val,
