@@ -16,7 +16,7 @@ import {
 } from "../../../lib/api/microCloud";
 import {getCompanies} from "../../../lib/api/company";
 import {
-    NB_MANAGER, TOP_MANAGER, UNREGISTERED_USER,
+    NB_MANAGER, TOP_MANAGER, UNREGISTERED_USER, CUSTOMER_MANAGER,
 } from "../../../lib/var/globalVariable";
 
 import TopManagerMain from "./components/TopManagerMain";
@@ -55,7 +55,6 @@ const useStyles = makeStyles(theme => ({
 const MicroCloudDashboard = () => {
     const classes = useStyles();
 
-    //const mac = "52:54:00:01:b5:b7"; //todo: need to fix
     const user = JSON.parse(localStorage.getItem("user"));
     const {level} = user;
 
@@ -95,6 +94,7 @@ const MicroCloudDashboard = () => {
             }
         } catch (error) {
             setServerList([]);
+            console.log("getServerMac error ");
         }
     };
 
@@ -120,7 +120,7 @@ const MicroCloudDashboard = () => {
     };
 
     const handleAuthSelectDisplay = () => {
-        if (level >= 5) {
+        if (level >= CUSTOMER_MANAGER) {
             getServerMac(user.cpName);
         } else {
             setSchCompany("all");
@@ -150,7 +150,7 @@ const MicroCloudDashboard = () => {
             <br/>
             ★mac  :{mac}*/}
 
-            {level < 5 ? (
+            {level < CUSTOMER_MANAGER ? (
                 <Row style={{
                     marginTop: "-8px",
                 }}>
@@ -193,9 +193,14 @@ const MicroCloudDashboard = () => {
             ) : false}
 
             {/* eslint-disable-next-line no-nested-ternary */}
+            {/*{schCompany === "all" ? (
+                <TopManagerMain/>
+            ) : mac ? (<BaremetalMain mac={mac} company={schCompany} cpIdx={schCompanyIdx}/>) : <div>mac({mac}) 정보 오류</div>}*/}
             {schCompany === "all" ? (
                 <TopManagerMain/>
-            ) : mac ? (<BaremetalMain mac={mac} company={schCompany} cpIdx={schCompanyIdx}/>) : false}
+            ) : (
+                <BaremetalMain mac={mac} company={schCompany} cpIdx={schCompanyIdx}/>
+            )}
         </Container>
     );
 };

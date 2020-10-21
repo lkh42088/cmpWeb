@@ -44,6 +44,7 @@ const BaremetalMain = (props) => {
     const {
         mac, company, cpIdx,
     } = props;
+    //console.log("BAREMETALMAIN : ", mac);
     const user = JSON.parse(localStorage.getItem("user"));
 
     const [vmCount, setVmCount] = useState(0);

@@ -14,18 +14,10 @@ const Sidebar = ({
   });
 
   return (
-    <div className={sidebarClass} style={{
-      border: "1px solid red",
-      background: "blue",
-      color: "green",
-    }}>
+    <div className={sidebarClass}>
       <button className="sidebar__back" type="button" onClick={changeMobileSidebarVisibility} />
       <Scrollbar className="sidebar__scroll scroll">
-        <div className="sidebar__wrapper sidebar__wrapper--mobile" style={{
-          border: "1px solid red",
-          background: "blue",
-          color: "green",
-        }}>
+        <div className="sidebar__wrapper sidebar__wrapper--mobile">
           <SidebarContent
             onClick={changeMobileSidebarVisibility}
             changeToDark={changeToDark}

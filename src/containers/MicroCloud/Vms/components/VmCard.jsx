@@ -21,7 +21,6 @@ import {OPERATOR} from "../../../../lib/var/globalVariable";
 const WindowsImg = `${process.env.PUBLIC_URL}/img/OS_Windows.ico`;
 const LinuxImg = `${process.env.PUBLIC_URL}/img/OS_Linux.ico`;
 
-
 const BounceRateArea = (props) => {
     const {
         title, height, mac, data, hostname,
@@ -68,7 +67,7 @@ const VmCardContent = (props) => {
     });
 
     const handleView = (val) => {
-        console.log("😡😡😡😡 val : ", val);
+        //console.log("😡😡😡😡 val : ", val);
         dispatch(changeVmPage({
             pageType: 'page',
             data: val,

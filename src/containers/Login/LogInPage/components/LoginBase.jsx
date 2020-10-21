@@ -34,7 +34,7 @@ const LoginBase = ({history}) => {
             console.log('useEffect: check API 성공 Level : ', user);
             if (hybridCloud) {
                 if (user.level === NORMAL_USER) {
-                    history.push('/micro/vmsCard');
+                    history.push('/micro/vmsPage');
                 } else if (user.level >= TOP_MANAGER) {
                     history.push('/micro/dashboard');
                 }
@@ -49,7 +49,7 @@ const LoginBase = ({history}) => {
     }, [user]);
 
     useEffect(() => {
-        console.log("LoginBase: init pageNum ", pageNum);
+        //console.log("LoginBase: init pageNum ", pageNum);
         dispatch(checkLoginUser());
     }, []);
 

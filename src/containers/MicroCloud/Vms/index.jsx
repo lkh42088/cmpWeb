@@ -20,6 +20,7 @@ import VmInfo from "./components/VmInfo";
 import {changeVmPage} from "../../../redux/actions/vmsActions";
 import {getCompanies} from "../../../lib/api/company";
 import {getMcServers, getMcVms} from "../../../lib/api/microCloud";
+import {NORMAL_USER, CUSTOMER_MANAGER} from "../../../lib/var/globalVariable";
 
 const MicroCloudVmTable = () => {
     const dispatch = useDispatch();
@@ -28,6 +29,7 @@ const MicroCloudVmTable = () => {
         page: vmsRd.pageType,
     }));
     const user = JSON.parse(localStorage.getItem("user"));
+    const {level} = user;
 
     /*******************
      * Etc.
@@ -54,6 +56,7 @@ const MicroCloudVmTable = () => {
     };
 
     const getVmList = async (company) => {
+        console.log("😡😡😡 getVmList start");
         try {
             const response = await getMcVms({
                 rows: 0,
@@ -69,14 +72,23 @@ const MicroCloudVmTable = () => {
             setVmList(reData);
 
             if (reDataCompany.length > 0) {
-                const temp = reDataCompany.slice(0, reDataCompany.length - (reDataCompany.length - 1));
+                console.log("user : ", user);
+                if (level === NORMAL_USER) {
+                    const red = reDataCompany.filter(item => item.vmUserId === user.id);
+                    dispatch(changeVmPage({
+                        pageType: 'page',
+                        data: red[0],
+                    }));
+                } else {
+                    const temp = reDataCompany.slice(0, reDataCompany.length - (reDataCompany.length - 1));
 
-                setVmFirstIndex(temp[0].idx);
-                setSchVm(temp[0].idx);
-                dispatch(changeVmPage({
-                    pageType: 'page',
-                    data: temp[0],
-                }));
+                    setVmFirstIndex(temp[0].idx);
+                    setSchVm(temp[0].idx);
+                    dispatch(changeVmPage({
+                        pageType: 'page',
+                        data: temp[0],
+                    }));
+                }
             }
         } catch (error) {
             setVmList([]);
@@ -150,9 +162,11 @@ const MicroCloudVmTable = () => {
     const handleAuthSelectDisplay = (val, flag) => {
         let topSelect;
         if (val) {
-            const {level} = user;
+            //const {level} = user;
 
-            if (level < 5) {
+            if (level === NORMAL_USER) {
+                topSelect = ""; // 일반 사용자는 VmVncViewer 화면만 보여준다
+            } else if (level < CUSTOMER_MANAGER) {
                 topSelect = (
                     <div>
                         <FormControl>
@@ -188,7 +202,7 @@ const MicroCloudVmTable = () => {
                         {vmCom}
                     </div>
                 );
-            } else if (level >= 5) {
+            } else if (level >= CUSTOMER_MANAGER) {
                 topSelect = (
                     <div>
                         <FormControl>
@@ -256,7 +270,15 @@ const MicroCloudVmTable = () => {
 
         setPageType(tempPageType);
 
+        console.log("useEffect---------------");
+        console.log("page : ", page);
+        console.log("tempPageType : ", tempPageType);
+
         if (page === 'page' && tempPageType === 'vmsPage') {
+            getVmList("all");
+        }
+
+        if (level === NORMAL_USER) {
             getVmList("all");
         }
     }, [window.location.href]);
@@ -275,7 +297,11 @@ const MicroCloudVmTable = () => {
     }, [schVm]);
 
     return (
-        <Container fluid>
+        <Container fluid
+                   style={level === NORMAL_USER ? {
+                       width: "80%",
+                       margin: "0 auto",
+                   } : {}}>
             <Row>
                 <RouterBreadcrumbs url={window.location.href}/>
                 {pageType && pageType === 'vmsPage' ? (

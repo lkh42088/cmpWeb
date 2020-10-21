@@ -219,8 +219,8 @@ const Layout = ({
         'layout--top-navigation': customizer.topNavigation,
     });
 
-    console.log("customizer.topNavigation : ", customizer.topNavigation);
-    console.log("sidebar : ", sidebar);
+    /*console.log("customizer.topNavigation : ", customizer.topNavigation);
+    console.log("sidebar : ", sidebar);*/
 
     return (
         <div className={layoutClass}>
@@ -259,12 +259,14 @@ const Layout = ({
                 )
             }
             {/* eslint-disable-next-line no-nested-ternary */}
-            {level !== NORMAL_USER ? (
+            {level === NORMAL_USER ? (
                     <SidebarMobile
-                        style={{
-                            display: "none",
-                        }}
-                    />
+                        sidebar={sidebar}
+                        changeToDark={changeToDarkFunc}
+                        changeToLight={changeToLightFunc}
+                        changeMobileSidebarVisibility={changeMobileSidebarVisibilityFunc}
+                        changeMenuTitle={changeMenuTitleFunc}
+                        user={user}/>
                 )
                 : customizer.topNavigation ? (
                     <SidebarMobile
