@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import Router from './Router';
 import store from './store';
 import ScrollToTop from './ScrollToTop';
+
 import {config as i18nextConfig} from '../../translations';
 import Loading from '../../shared/components/Loading';
 

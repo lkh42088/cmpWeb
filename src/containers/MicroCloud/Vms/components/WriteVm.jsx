@@ -2,20 +2,20 @@ import React, {useEffect, useState} from 'react';
 import {useSelector} from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
+
 import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import {Button} from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import TextField from "@material-ui/core/TextField";
 import {makeStyles} from "@material-ui/core/styles";
 import SendIcon from "@material-ui/icons/Send";
 import CheckIcon from '@material-ui/icons/Check';
-
+import DialogContentText from '@material-ui/core/DialogContentText';
+import Select from "@material-ui/core/Select";
+import TextField from "@material-ui/core/TextField";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import FormGroup from '@material-ui/core/FormGroup';

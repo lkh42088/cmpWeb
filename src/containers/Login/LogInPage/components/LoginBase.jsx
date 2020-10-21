@@ -3,7 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 import LoginInputEmailFormWrap from "./LoginInputEmailForm";
 import {
     GV_LOGIN_PAGE_INPUT_EMAIL,
-    GV_LOGIN_PAGE_CONFIRM_EMAIL, OPERATOR, UNREGISTERED_USER, TOP_MANAGER,
+    GV_LOGIN_PAGE_CONFIRM_EMAIL,
+    OPERATOR, UNREGISTERED_USER, TOP_MANAGER, NORMAL_USER,
 } from "../../../../lib/var/globalVariable";
 import {checkLoginUser, logout} from "../../../../redux/actions/loginActions";
 import LoginConfirmEmailForm from "./LoginConfirmEmailForm";
@@ -32,7 +33,9 @@ const LoginBase = ({history}) => {
              ********************************************************************/
             console.log('useEffect: check API 성공 Level : ', user);
             if (hybridCloud) {
-                if (user.level >= TOP_MANAGER) {
+                if (user.level === NORMAL_USER) {
+                    history.push('/micro/vmsCard');
+                } else if (user.level >= TOP_MANAGER) {
                     history.push('/micro/dashboard');
                 }
             } else if (user.level <= OPERATOR) {

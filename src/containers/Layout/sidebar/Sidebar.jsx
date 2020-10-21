@@ -6,6 +6,7 @@ import {Collapse} from "reactstrap";
 import {useSelector} from "react-redux";
 import SidebarContent from './SidebarContent';
 import { SidebarProps } from '../../../shared/prop-types/ReducerProps';
+import {NORMAL_USER} from "../../../lib/var/globalVariable";
 
 const Sidebar = ({
     changeToDark, changeToLight, changeMobileSidebarVisibility,
@@ -17,6 +18,7 @@ const Sidebar = ({
         'cb_sidebar--collapse': sidebar.collapse,
     });
     const {collapse} = sidebar;
+    const {level} = user;
 
     const getCpName = () => {
         if (user) {
@@ -29,7 +31,10 @@ const Sidebar = ({
     };
 
     return (
-        <div className={sidebarClass}>
+        <div
+            className={sidebarClass}
+            /*style={level === NORMAL_USER ? {display: "none"} : {display: ""}}*/
+        >
             <button className="cb_sidebar__back" type="button" onClick={changeMobileSidebarVisibility} />
             <Scrollbar className="cb_sidebar__scroll scroll">
                 {/*company-name TAG*/}

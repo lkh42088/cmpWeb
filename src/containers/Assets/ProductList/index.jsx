@@ -57,7 +57,7 @@ const MaterialTable = () => {
     }, []);
 
     useEffect(() => {
-        console.log("😡  : ", common.assetsGetUrlMenu(window.location.href));
+        //console.log("😡  : ", common.assetsGetUrlMenu(window.location.href));
         setMenuUrl(common.assetsGetUrlMenu(window.location.href));
         dispatch(setDeviceSearchDivision(false));
     }, [window.location.href]);
