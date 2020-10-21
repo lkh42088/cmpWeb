@@ -85,8 +85,7 @@ const snapTypeList = [
 ];
 
 const backupTypeList = [
-    { value: 1, name: "KT UCLOUD" },
-    { value: 2, name: "NAS" },
+    { value: true, name: "Enable" },
 ];
 
 const snapDayList = [
