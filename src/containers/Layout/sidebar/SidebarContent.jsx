@@ -267,10 +267,12 @@ const SidebarContent = ({
                                  UNREGISTERED_USER, true)}/>
                 <SidebarLink title="SNAPSHOT" icon={outlineRestore}
                              route="/micro/snapshot"
-                             onClick={() => changeMenuTitle('SNAPSHOT', '', '')}/>
+                             onClick={() => changeMenuTitle('SNAPSHOT', '', '')}
+                             style={authMenuDisplay(sidebarDropdown, true, OPERATOR, true)}/>
                 <SidebarLink title="BACKUP" icon={backupRestore}
                              route="/micro/backup"
-                             onClick={() => changeMenuTitle('BACKUP', '', '')}/>
+                             onClick={() => changeMenuTitle('BACKUP', '', '')}
+                             style={authMenuDisplay(sidebarDropdown, true, OPERATOR, true)}/>
                 <SidebarLink title="VM INVENTORY" icon={thList}
                              route="/micro/vms"
                              onClick={() => changeMenuTitle('VM Inventory', '', 'list')}
