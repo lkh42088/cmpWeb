@@ -17,6 +17,7 @@ import monitorMultiple from '@iconify/icons-mdi/monitor-multiple';
 import thList from '@iconify/icons-fa-solid/th-list';
 //snapshot
 import outlineRestore from '@iconify/icons-ic/outline-restore';
+import backupRestore from '@iconify/icons-mdi/backup-restore';
 import {
     TOP_MANAGER, CUSTOMER_MANAGER, NB_MANAGER, OPERATOR, UNREGISTERED_USER,
 } from "../../../lib/var/globalVariable";
@@ -215,6 +216,8 @@ const SidebarContent = ({
                                  onClick={() => changeMenuTitle('HYBRID CLOUD', 'VM', 'card')}/>
                     <SidebarLink title="SNAPSHOT" route="/micro/snapshot"
                                  onClick={() => changeMenuTitle('HYBRID CLOUD', 'VM', 'snapshot')}/>
+                    <SidebarLink title="BACKUP" route="/micro/backup"
+                                 onClick={() => changeMenuTitle('HYBRID CLOUD', 'VM', 'backup')}/>
                 </SidebarCategory>
                 <SidebarCategory title="SERVER" icon={serverOutlineBadged}
                                  dropdown={dropdown}
@@ -256,23 +259,23 @@ const SidebarContent = ({
                              route="/micro/vmsCard"
                              onClick={() => changeMenuTitle('VM CARD', '', 'card')}
                              style={authMenuDisplay(sidebarDropdown, true,
-                                 UNREGISTERED_USER, true)}
-                />
+                                 UNREGISTERED_USER, true)}/>
                 <SidebarLink title="VM VNC" icon={monitorMultiple}
                              route="/micro/vmsPage"
                              onClick={() => changeMenuTitle('VM PAGE', '', 'page')}
                              style={authMenuDisplay(sidebarDropdown, true,
-                                 UNREGISTERED_USER, true)}
-                />
+                                 UNREGISTERED_USER, true)}/>
                 <SidebarLink title="SNAPSHOT" icon={outlineRestore}
                              route="/micro/snapshot"
                              onClick={() => changeMenuTitle('SNAPSHOT', '', '')}/>
+                <SidebarLink title="BACKUP" icon={backupRestore}
+                             route="/micro/backup"
+                             onClick={() => changeMenuTitle('BACKUP', '', '')}/>
                 <SidebarLink title="VM INVENTORY" icon={thList}
                              route="/micro/vms"
                              onClick={() => changeMenuTitle('VM Inventory', '', 'list')}
                              style={authMenuDisplay(sidebarDropdown, true,
-                                 UNREGISTERED_USER, true)}
-                />
+                                 UNREGISTERED_USER, true)}/>
             </ul>
         </div>
     );
