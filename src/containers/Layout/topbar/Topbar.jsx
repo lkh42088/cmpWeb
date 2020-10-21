@@ -11,6 +11,7 @@ import TopbarNotification from './TopbarNotification';
 import TopbarSearch from './TopbarSearch';
 import TopbarLanguage from './TopbarLanguage';
 import {UserProps, MenuTitleProps} from '../../../shared/prop-types/ReducerProps';
+import {NORMAL_USER, CUSTOMER_MANAGER} from "../../../lib/var/globalVariable";
 
 class Topbar extends PureComponent {
     static propTypes = {
@@ -24,16 +25,19 @@ class Topbar extends PureComponent {
         const {
             changeMobileSidebarVisibility, changeSidebarVisibility, user, logout,
         } = this.props;
+        const {level} = user;
 
         //log
         return (
             <div className="topbar">
                 <div className="topbar__wrapper">
                     <div className="topbar__left">
-                        <TopbarSidebarButton
-                            changeMobileSidebarVisibility={changeMobileSidebarVisibility}
-                            changeSidebarVisibility={changeSidebarVisibility}
-                        />
+                        {level !== NORMAL_USER ? (
+                            <TopbarSidebarButton
+                                changeMobileSidebarVisibility={changeMobileSidebarVisibility}
+                                changeSidebarVisibility={changeSidebarVisibility}
+                            />
+                        ) : false}
                         <Link className="topbar__logo" to="/micro/dashboard" >Nubes Bridge</Link>
                         {/*<div style={{paddingLeft: '10px'}}>
                             <span className="text-danger">-</span>
