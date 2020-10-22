@@ -16,6 +16,9 @@ import * as common from "../../../../lib/common";
 
 import {API_ROUTE, API_ROUTE_SERVER_IMAGE} from "../../../../lib/api/client";
 import {setUser, setUserIdx, setUserPage} from "../../../../redux/actions/usersActions";
+import {
+    TOP_MANAGER, CUSTOMER_MANAGER, NB_MANAGER, OPERATOR, UNREGISTERED_USER,
+} from "../../../../lib/var/globalVariable";
 import {getAuthList, modifyUser} from "../../../../lib/api/users";
 import ModifyUserPage from "./ModifyUserPage";
 
@@ -29,6 +32,10 @@ const ProfileMain = () => {
         userPage: usersRd.userPage,
         userIdx: usersRd.userIdx,
     }));
+
+    /*login info*/
+    const userInfo = JSON.parse(localStorage.getItem("user"));
+    const {levelInfo} = userInfo;
 
     const dispatch = useDispatch();
     const {enqueueSnackbar} = useSnackbar();
@@ -285,7 +292,7 @@ const ProfileMain = () => {
                                 <TocIcon/>*/}
 
                                 <ul className="social-icons">
-                                    <li>
+                                    <li style={levelInfo <= OPERATOR ? {display: ""} : {display: "none"}}>
                                         <Tooltip title="목록">
                                             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                             <a href="#"><i><ListIcon style={{

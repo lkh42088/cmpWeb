@@ -17,7 +17,6 @@ import TopbarWithNavigation from './topbar_with_navigation/TopbarWithNavigation'
 import Sidebar from './sidebar/Sidebar';
 import SidebarMobile from './topbar_with_navigation/sidebar_mobile/SidebarMobile';
 import Customizer from './customizer/Customizer';
-import CustomUI from '../Test/CustomUI';
 
 import {BasicNotification} from '../../shared/components/Notification';
 import {changeMobileSidebarVisibility, changeSidebarVisibility} from '../../redux/actions/sidebarActions';
@@ -214,7 +213,7 @@ const Layout = ({
     };
 
     const layoutClass = classNames({
-        layout: false,
+        layout: true,
         'layout--collapse': sidebar.collapse,
         'layout--top-navigation': customizer.topNavigation,
     });

@@ -6,20 +6,21 @@ import KeyVariantIcon from 'mdi-react/KeyVariantIcon';
 import AccountOutlineIcon from 'mdi-react/AccountOutlineIcon';
 import {useDispatch, useSelector} from "react-redux";
 import {
-    checkLoginUser,
-    changeLoginField,
-    initLoginForm,
-    changeLoginPage,
-    logout,
+    checkLoginUser, changeLoginField, initLoginForm,
+    changeLoginPage, logout,
 } from "../../../../redux/actions/loginActions";
 import {login} from "../../../../lib/api/login";
-import {GV_LOGIN_PAGE_CONFIRM_EMAIL, GV_LOGIN_PAGE_INPUT_EMAIL} from "../../../../lib/var/globalVariable";
+import {
+    GV_LOGIN_PAGE_CONFIRM_EMAIL,
+    GV_LOGIN_PAGE_INPUT_EMAIL,
+} from "../../../../lib/var/globalVariable";
 import GoogleRecaptcha from "../../Captcha/components/GoogleRecaptcha";
 
 const LoginForm = () => {
     const typeFieldUser = 'text';
     const defaultErrMsg = "* ID 또는 Password가 일치하지 않습니다!";
     const captchaErrMsg = "* ReCAPTCHA 확인이 필요합니다!";
+    const authErrMsg = "* 해지고객은 로그인할 수 없습니다.";
     const [showPassword, setShowPassword] = useState(false);
     const [resultError, setResultError] = useState(false);
     // For ReCAPTCHA
@@ -53,7 +54,7 @@ const LoginForm = () => {
     };
 
     const doLogin = async (username, password) => {
-        console.log("doLogin: username: ", username, ", password ", password);
+        //console.log("doLogin: username: ", username, ", password ", password);
         try {
             const response = await login({
                 username,
@@ -63,8 +64,17 @@ const LoginForm = () => {
              * response.data.success : {false, true}
              * response.data.msg : {id, password, email, result}
              * */
+
             if (response.data.success) {
                 // logout on captcha failed
+
+                /*해지 고객일 경우 */
+                if (response.data.user.level === 10) {
+                    setErrorMessage(authErrMsg);
+                    dispatch(logout());
+                    return;
+                }
+
                 if (loginFailCount >= 3 && checkReCaptcha() === false) {
                     setErrorMessage(captchaErrMsg);
                     dispatch(logout());
@@ -72,8 +82,8 @@ const LoginForm = () => {
                 }
                 dispatch(checkLoginUser());
             } else if (response.data.msg.result === 251) {
-                console.log("email: ", response.data.msg.email);
-                console.log("changeLoginPage ", GV_LOGIN_PAGE_CONFIRM_EMAIL);
+                //console.log("email: ", response.data.msg.email);
+                //console.log("changeLoginPage ", GV_LOGIN_PAGE_CONFIRM_EMAIL);
                 dispatch(changeLoginPage({value: GV_LOGIN_PAGE_CONFIRM_EMAIL}));
                 dispatch(
                     changeLoginField({
@@ -82,7 +92,7 @@ const LoginForm = () => {
                     }),
                 );
             } else if (response.data.msg.result === 252) {
-                console.log("changeLoginPage ", GV_LOGIN_PAGE_INPUT_EMAIL);
+                //console.log("changeLoginPage ", GV_LOGIN_PAGE_INPUT_EMAIL);
                 dispatch(changeLoginPage({value: GV_LOGIN_PAGE_INPUT_EMAIL}));
             }
             if (resultError) {
@@ -102,12 +112,12 @@ const LoginForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         const {username, password} = form;
-        console.log('>>>>>> onSubmit: username ', username, ", password ", password);
+        //console.log('>>>>>> onSubmit: username ', username, ", password ", password);
         doLogin(username, password);
     };
 
     useEffect(() => {
-        console.log('[LoginForm 1] ');
+        //console.log('[LoginForm 1] ');
         dispatch(initLoginForm());
     }, []);
 

@@ -53,7 +53,7 @@ const LoginBase = ({history}) => {
         dispatch(checkLoginUser());
     }, []);
 
-    console.log("LoginBase: current pageNum ", pageNum);
+    //console.log("LoginBase: current pageNum ", pageNum);
     return (
         <div className="account__wrapper">
             {/*<div className="account__logo-area">

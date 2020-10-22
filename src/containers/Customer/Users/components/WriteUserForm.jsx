@@ -37,6 +37,7 @@ import LookupZipcode from "../../../Common/LookupZipcode";
 import ChangePasswordDialog from "../../Company/components/ChangePasswordDialog";
 
 import {API_ROUTE, API_ROUTE_SERVER_IMAGE} from "../../../../lib/api/client";
+import {CUSTOMER_MANAGER, OPERATOR} from "../../../../lib/var/globalVariable";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -100,6 +101,8 @@ const WriteUserForm = (props) => {
      * Variable
      ************************************************************************************/
     const classes = useStyles();
+    const userInfo = JSON.parse(localStorage.getItem("user"));
+    const {level} = userInfo;
 
     /*******************
      * Field
@@ -1033,44 +1036,46 @@ const WriteUserForm = (props) => {
                             />
                         </div>
                     </Grid>
-                    <Grid item xs={6}>
-                        <div>
-                            <span className={labelClassName}>* 권한</span>
-                            <FormControl
-                                size={fieldSize}
-                                className={fieldClassName}
-                                variant="filled"
-                                error={errors.level}
-                                disabled={disables.level}
-                            >
-                                <Select
-                                    required={errors.level}
+                    {!isRegister && level <= OPERATOR ? (
+                        <Grid item xs={6}>
+                            <div>
+                                <span className={labelClassName}>* 권한</span>
+                                <FormControl
+                                    size={fieldSize}
+                                    className={fieldClassName}
+                                    variant="filled"
+                                    error={errors.level}
                                     disabled={disables.level}
-                                    name="level"
-                                    value={fields.level}
-                                    onChange={(e) => {
-                                        handleChangeField("level", e.target.value);
-                                    }}
-                                    MenuProps={MenuProps}
                                 >
-                                    <MenuItem key={0} value={0}>
-                                        <em>None</em>
-                                    </MenuItem>
-                                    {authList && authList.map((item, index) => {
-                                        const key = index;
-                                        if (item.tag !== '') {
-                                            return (
-                                                <MenuItem key={key} value={item.level}>{item.tag}</MenuItem>
-                                            );
-                                        }
-                                        return '';
-                                    })}
-                                </Select>
-                                <FormHelperText>{helpers.level}</FormHelperText>
-                            </FormControl>
-                        </div>
-                    </Grid>
-                    <Grid item xs={6}>
+                                    <Select
+                                        required={errors.level}
+                                        disabled={disables.level}
+                                        name="level"
+                                        value={fields.level}
+                                        onChange={(e) => {
+                                            handleChangeField("level", e.target.value);
+                                        }}
+                                        MenuProps={MenuProps}
+                                    >
+                                        <MenuItem key={0} value={0}>
+                                            <em>None</em>
+                                        </MenuItem>
+                                        {authList && authList.map((item, index) => {
+                                            const key = index;
+                                            if (item.tag !== '') {
+                                                return (
+                                                    <MenuItem key={key} value={item.level}>{item.tag}</MenuItem>
+                                                );
+                                            }
+                                            return '';
+                                        })}
+                                    </Select>
+                                    <FormHelperText>{helpers.level}</FormHelperText>
+                                </FormControl>
+                            </div>
+                        </Grid>
+                    ) : false}
+                    <Grid item xs={!isRegister && level <= OPERATOR ? 6 : 12}>
                         <div>
                             <span className={labelClassName}>우편번호</span>
                             <FormControl
