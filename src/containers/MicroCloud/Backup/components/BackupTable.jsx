@@ -18,7 +18,7 @@ import {
     pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
 import {
-    deleteSnapshotList, getMcVmSnapshot, recoveryMcVm,
+    deleteBackupList, getMcVmBackup, recoveryBackupMcVm,
 } from "../../../../lib/api/microCloud";
 import {OPERATOR} from "../../../../lib/var/globalVariable";
 import BackupRecoveryModal from "./BackupRecoveryModal";
@@ -26,11 +26,11 @@ import BackupRecoveryModal from "./BackupRecoveryModal";
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
     {id: 'cpName', disablePadding: false, label: '회사명'},
-    {id: 'serialNumber', disablePadding: false, label: '서버 SN'},
-    {id: 'vmName', disablePadding: false, label: 'VM Name'},
-    {id: 'name', disablePadding: false, label: 'Backup Name'},
-    {id: 'date', disablePadding: false, label: 'Backup 날짜'},
-    {id: 'container', disablePadding: false, label: 'Container 이름'},
+    {id: 'mcServerSn', disablePadding: false, label: '서버 SN'},
+    {id: 'vmName', disablePadding: false, label: 'VM 이름'},
+    {id: 'filename', disablePadding: false, label: 'Backup 이름'},
+    {id: 'registerDate', disablePadding: false, label: 'Backup 날짜'},
+    {id: 'containerName', disablePadding: false, label: 'Container 이름'},
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -216,7 +216,7 @@ const BackupTable = () => {
         }
         try {
             console.log("companyName : ", companyName);
-            const response = await getMcVmSnapshot({
+            const response = await getMcVmBackup({
                 rows: rowsPerPage, offset, orderBy, order, cpName: companyName,
             });
             console.log("response: data ", response.data.data);
@@ -243,12 +243,12 @@ const BackupTable = () => {
 
     const deleteData = async (items) => {
         try {
-            const response = await deleteSnapshotList({idx: items});
+            const response = await deleteBackupList({idx: items});
             getPageData();
-            handleSnackbarSuccess("Snapshot 삭제에 성공하였습니다.");
+            handleSnackbarSuccess("Backup 삭제에 성공하였습니다.");
         } catch (error) {
             getPageData();
-            handleSnackbarFailure("Snapshot 삭제에 실패하였습니다.");
+            handleSnackbarFailure("Backup 삭제에 실패하였습니다.");
         }
     };
 
@@ -275,34 +275,34 @@ const BackupTable = () => {
         console.log("after copyData:", copyData);
     };
 
-    const handleOpenRecovery = () => {
-        setOpenRecovery(true);
-    };
+    // const handleOpenRecovery = () => {
+    //     setOpenRecovery(true);
+    // };
+    //
+    // const handleCloseRecovery = () => {
+    //     setOpenRecovery(false);
+    // };
 
-    const handleCloseRecovery = () => {
-        setOpenRecovery(false);
-    };
+    // const asyncRecoveryVm = async (obj) => {
+    //   try {
+    //       const response = await recoveryBackupMcVm({
+    //           idx: obj.idx,
+    //           serverIdx: obj.serverIdx,
+    //           vmName: obj.vmName,
+    //           name: obj.name,
+    //       });
+    //       handleSnackbarSuccess("Backup 복구에 성공하였습니다.");
+    //       getPageData();
+    //   } catch (e) {
+    //       handleSnackbarFailure("Backup 복구에 실패하였습니다.");
+    //   }
+    // };
 
-    const asyncRecoveryVm = async (obj) => {
-      try {
-          const response = await recoveryMcVm({
-              idx: obj.idx,
-              serverIdx: obj.serverIdx,
-              vmName: obj.vmName,
-              name: obj.name,
-          });
-          handleSnackbarSuccess("Backup 복구에 성공하였습니다.");
-          getPageData();
-      } catch (e) {
-          handleSnackbarFailure("Backup 복구에 실패하였습니다.");
-      }
-    };
-
-    const handleSubmitRecovery = (snap) => {
-        setOpenRecovery(false);
-        console.log("submit: ", snap);
-        asyncRecoveryVm(snap);
-    };
+    // const handleSubmitRecovery = (snap) => {
+    //     setOpenRecovery(false);
+    //     console.log("submit: ", snap);
+    //     asyncRecoveryVm(snap);
+    // };
 
     useEffect(() => {
         /** Pagination */
@@ -417,12 +417,12 @@ const BackupTable = () => {
                     >
                         {row.container}
                     </TableCell>
-                    <BackupRecoveryModal
-                        open={openRecovery}
-                        snap={recoveryRow}
-                        handleClose={handleCloseRecovery}
-                        handleSubmit={handleSubmitRecovery}
-                    />
+                    {/*<BackupRecoveryModal*/}
+                    {/*    open={openRecovery}*/}
+                    {/*    snap={recoveryRow}*/}
+                    {/*    handleClose={handleCloseRecovery}*/}
+                    {/*    handleSubmit={handleSubmitRecovery}*/}
+                    {/*/>*/}
                 </TableRow>
             </React.Fragment>
         );
