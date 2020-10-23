@@ -27,12 +27,12 @@ const VmPage = ({schVm}) => {
                             </Row>
                         </Col>
                         <Col style={level === NORMAL_USER ? {
-                                 flexGrow: "0",
-                                 paddingLeft: "0",
-                                 width: '100vw',
-                                 height: '90vh',
-                                 margin: "0 auto",
-                             } : {paddingRight: 0}}
+                            flexGrow: "0",
+                            paddingLeft: "0",
+                            width: '100vw',
+                            height: '90vh',
+                            margin: "0 auto",
+                        } : {paddingRight: 0}}
                         >
                             <VmVncViewer vm={data}/>
                         </Col>

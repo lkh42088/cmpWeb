@@ -4,23 +4,26 @@ import {
     CardBody,
     Col,
 } from 'reactstrap';
+import {useDispatch, useSelector} from "react-redux";
+
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
-import {useDispatch, useSelector} from "react-redux";
 import TableBody from "@material-ui/core/TableBody";
-import {Button, TableRow} from "@material-ui/core";
+import {Button, TableRow, Tooltip} from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import TableCell from "@material-ui/core/TableCell";
 import {makeStyles, withStyles} from "@material-ui/core/styles";
 import {useSnackbar} from "notistack";
+import Select from '@material-ui/core/Select';
+import InputBase from '@material-ui/core/InputBase';
 import FormControl from "@material-ui/core/FormControl";
 import NativeSelect from '@material-ui/core/NativeSelect';
-import Select from '@material-ui/core/Select';
+import Menu from '@material-ui/core/Menu';
 import MenuItem from "@material-ui/core/MenuItem";
-import InputBase from '@material-ui/core/InputBase';
 import FormHelperText from "@material-ui/core/FormHelperText";
 import SendIcon from "@material-ui/icons/Send";
 import IconButton from "@material-ui/core/IconButton";
+import EditIcon from "@material-ui/icons/Edit";
 import Grid from "@material-ui/core/Grid";
 import {
     pagingChangeCurrentPage,
@@ -55,6 +58,7 @@ const headRows = [
     {id: 'remoteAddr', disablePadding: false, label: 'Remote RDP'},
     // {id: 'snapshot', disablePadding: false, label: 'Snapshot'},
     {id: 'colspan', disablePadding: false, label: 'Action'},
+    {id: 'button', disablePadding: false, label: ''},
     /*{id: 'action', disablePadding: false, label: 'Action'},*/
 ];
 
@@ -178,6 +182,7 @@ const VmTable = () => {
     const [searchParam, setSearchParam] = useState(null);
     const [adminLevel, setAdminLevel] = useState(true);
     const { enqueueSnackbar } = useSnackbar();
+    const [anchorEl, setAnchorEl] = React.useState(null);
 
     const dispatch = useDispatch();
 
@@ -339,7 +344,7 @@ const VmTable = () => {
             snapType, snapDays, snapHours, snapMinutes, vmUserId, vmUserFlag,
         } = vm;
         try {
-            console.log("👿👿👿 vmUserId : ", vmUserId, ", vmUserFlag : ", vmUserFlag);
+            //console.log("👿👿👿 vmUserId : ", vmUserId, ", vmUserFlag : ", vmUserFlag);
             let tempVmUserId = vmUserId;
             if (!vmUserFlag) {
                 tempVmUserId = "";
@@ -365,9 +370,8 @@ const VmTable = () => {
                 vmUserId: tempVmUserId,
             });
 
-            console.log("🤑🤑🤑🤑🤑🤑🤑response : ", response);
-            /*handleSnackbarSuccess("VM 등록에 성공하였습니다.");
-            getPageData();*/
+            handleSnackbarSuccess("VM 등록에 성공하였습니다.");
+            getPageData();
         } catch (e) {
             handleSnackbarFailure("VM 등록에 실패하였습니다.");
         }
@@ -400,25 +404,25 @@ const VmTable = () => {
 
     const handleDeleteSelected = () => {
         let copyData = [...data];
-        console.log("deleted Selected:");
+        /*console.log("deleted Selected:");
         console.log("copyData:", copyData);
-        console.log("SELECTED:", selected);
+        console.log("SELECTED:", selected);*/
         const delList = [];
         if (selected !== null) {
             selected.forEach((value, key, mapObject) => {
-                console.log("selected: key ", key, ", value ", value);
+                //console.log("selected: key ", key, ", value ", value);
                 if (value) {
                     delList.push(key);
                 }
             });
         }
-        console.log("delList: ", delList);
+        //console.log("delList: ", delList);
         deleteData(delList);
 
         for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
             copyData = copyData.filter(obj => obj.id !== selected[i]);
         }
-        console.log("after copyData:", copyData);
+        //console.log("after copyData:", copyData);
     };
 
     const handleVmPage = (idx) => {
@@ -428,8 +432,8 @@ const VmTable = () => {
     };
 
     const handleSendVmAction = (vm, vmAction) => {
-        console.log("handleSendVmAction:", vm);
-        console.log("handleSendVmAction: vmAction", vmAction);
+        /*console.log("handleSendVmAction:", vm);
+        console.log("handleSendVmAction: vmAction", vmAction);*/
         // vm.idx, vmAction
         asyncSendVmAction(vm.idx, vmAction);
     };
@@ -468,12 +472,12 @@ const VmTable = () => {
         }
     }, []);
 
-    const variant = "filled";
+   /* const variant = "filled";
     const fieldSize = "small";
     const buttonSize = "small";
     const formClassName = "cb-material-form";
     const labelClassName = "cb-material-form__label";
-    const fieldClassName = "cb-material-form__field";
+    const fieldClassName = "cb-material-form__field";*/
 
     const ContentsRow = (props) => {
         const {row} = props;
@@ -486,6 +490,26 @@ const VmTable = () => {
         const [spacing, setSpacing] = useState(0);
         return (
             <React.Fragment>
+                {/*<div style={{
+                    border: "1px solid red",
+                    padding: "0 0 0 20px",
+                }}>
+                    <Button aria-controls={`simple-menu${row.idx}`}
+                            aria-haspopup="true"
+                            onClick={handleAnchorElClick}>
+                        {row.vmUserId}
+                    </Button>
+                    <Menu
+                        id={`simple-menu${row.idx}`}
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleAnchorElClose}
+                    >
+                        <MenuItem>Profile</MenuItem>
+                        <MenuItem>My account</MenuItem>
+                    </Menu>
+                </div>*/}
                 <TableRow
                     hover
                     // className="cb-material-table__row"
@@ -556,7 +580,15 @@ const VmTable = () => {
                                  onClick={event => handleVmPage(row.idx)}
                                  onKeyDown={event => handleVmPage(row.idx)}
                                  role="button" tabIndex="0"><span className="circle__ste"/>
-                                {row.name} </div>
+                                {row.name}
+                            </div>
+
+                            {/*<Tooltip title="수정">
+                                 eslint-disable-next-line jsx-a11y/anchor-is-valid
+                                <a href="#"><i><EditIcon style={{
+                                    fontSize: "1.3rem",
+                                }}/></i></a>
+                            </Tooltip>*/}
                         </b>
                     </TableCell>
                     <TableCell
@@ -611,21 +643,16 @@ const VmTable = () => {
                         className={cellClassName}
                         style={{width: "5%"}}
                     >
-                        <FormControl
-                            // size={fieldSize}
-                            /*className={classes.margin}*/
-                            // variant="filled"
-                        >
+                        <FormControl>
                             <Select
                                 name="vmAction"
                                 value={vmAction}
                                 onChange={(e) => {
-                                    console.log("action value ", e.target.value);
+                                    /*console.log("action value ", e.target.value);*/
                                     setVmAction(e.target.value);
                                 }}
                                 MenuProps={MenuProps}
-                                input={<BootstrapInput />}
-                            >
+                                input={<BootstrapInput />}>
                                 <MenuItem value={0}>
                                     <em>Select</em>
                                 </MenuItem>
@@ -641,8 +668,7 @@ const VmTable = () => {
                     <TableCell
                         className={cellClassName}
                         style={{width: "5%"}}
-                        /*style={{width: "20%"}}*/
-                    >
+                        /*style={{width: "20%"}}*/>
                         {/*<Grid container>
                             <Grid item xs={12}>
                                 <Grid container justify="center" spacing={spacing}>
@@ -680,6 +706,19 @@ const VmTable = () => {
                                 </Grid>
                             </Grid>
                         </Grid>*/}
+                    </TableCell>
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "5%"}}
+                    >
+                        <b className="text_cor_green mouse_over_list_blue">
+                            <div className="assets_add_modal_div"
+                                 onClick={event => handleVmPage(row.idx)}
+                                 onKeyDown={event => handleVmPage(row.idx)}
+                                 role="button" tabIndex="0"><span className="circle__ste"/>
+                                Edit
+                            </div>
+                        </b>
                     </TableCell>
                 </TableRow>
             </React.Fragment>

@@ -25,9 +25,6 @@ export default ({history}) => {
                 <div className="container__wrap"
                      style={level === NORMAL_USER ? {
                          padding: "90px 0 0 0",
-                         /*width: "100%",
-                         top: "90px",
-                         margin: "0 auto",*/
                      } : {}}>
                     {menuLevel && menuLevel.map((row, index) => {
                         const keyId = index;

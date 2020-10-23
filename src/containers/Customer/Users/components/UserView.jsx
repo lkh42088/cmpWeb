@@ -5,22 +5,26 @@ import ProfileMain from './ProfileMain';
 import ProfileBtn from './ProfileBtn';
 import ProfileTasks from './ProfileTasks';
 import ProfileTabs from './ProfileTabs';
+import {NORMAL_USER} from "../../../../lib/var/globalVariable";
 
-const UserView = () => (
+const UserView = () => {
+    console.log("UserView start");
+    return (
         <Container>
             <div className="profile">
                 <Row>
-                    <Col md={12} lg={12} xl={4}>
+                    <Col md={12} lg={12} xl={4} >
                         <Row>
                             <ProfileMain/>
                             {/*<ProfileBtn />*/}
                             {/*<ProfileTasks />*/}
                         </Row>
                     </Col>
-                    <ProfileTabs />
+                    <ProfileTabs/>
                 </Row>
             </div>
         </Container>
     );
+};
 
 export default UserView;

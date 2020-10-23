@@ -35,7 +35,6 @@ const ProfileMain = () => {
 
     /*login info*/
     const userInfo = JSON.parse(localStorage.getItem("user"));
-    const {levelInfo} = userInfo;
 
     const dispatch = useDispatch();
     const {enqueueSnackbar} = useSnackbar();
@@ -290,9 +289,8 @@ const ProfileMain = () => {
                                     borderRadios: "5px",
                                 }}/>
                                 <TocIcon/>*/}
-
                                 <ul className="social-icons">
-                                    <li style={levelInfo <= OPERATOR ? {display: ""} : {display: "none"}}>
+                                    <li style={userInfo.level <= OPERATOR ? {display: ""} : {display: "none"}}>
                                         <Tooltip title="목록">
                                             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                                             <a href="#"><i><ListIcon style={{

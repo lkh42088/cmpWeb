@@ -56,7 +56,7 @@ const MicroCloudVmTable = () => {
     };
 
     const getVmList = async (company) => {
-        console.log("😡😡😡 getVmList start");
+        //console.log("😡😡😡 getVmList start");
         try {
             const response = await getMcVms({
                 rows: 0,

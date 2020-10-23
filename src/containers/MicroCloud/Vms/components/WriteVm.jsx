@@ -437,18 +437,6 @@ const WriteVm = (props) => {
     };
 
     const handleSubmitCheck = (flag) => {
-        console.log("값을 체크해 보자!!!!---------------");
-        console.log("vmUserId : ", fields.vmUserId);
-        console.log("vmUserId error : ", errors.vmUserId);
-        console.log("flag : ", flag);
-
-/*
-        값을 체크해 보자!!!!---------------
-        vmUserId :  test
-        vmUserId error :  false
-        flag :  true
-*/
-
         if (flag) {
             if (fields.vmUserId !== undefined && fields.vmUserId !== "") {
                 if (errors.vmUserId === true) {
@@ -582,7 +570,6 @@ const WriteVm = (props) => {
      * Open
      *******************/
     const getCompanyList = async () => {
-        console.log("getCompanyList()-----------------------");
         try {
             const response = await getCompanies();
             setCompanyList(response.data);
@@ -607,7 +594,6 @@ const WriteVm = (props) => {
 
     const getMcNetworks = async () => {
         try {
-            console.log("serverIdx.. ", fields.serverIdx);
             const response = await getMcNetworksByServerIdx({
                 serverIdx: fields.serverIdx,
             });
@@ -639,15 +625,11 @@ const WriteVm = (props) => {
 
     const getUserCheck = async () => {
       try {
-          console.log("async start");
           // 넘기는 값 -> fields.vmUserId, fields.cpIdx
           const response = await checkUserCheck({
               id: fields.vmUserId,
               cpIdx: fields.cpIdx,
           });
-          console.log("😡😡😡😡 response : ", response);
-          console.log("😡😡 response : ", response.data.status);
-          console.log("😡😡 response : ", response.data.type);
 
           const {status} = response.data;
           const {type} = response.data;
@@ -792,6 +774,11 @@ const WriteVm = (props) => {
                         ...fields,
                         cpIdx,
                         cpName,
+                });
+
+                setDisables({
+                    ...disables,
+                    vmUserId: false,
                 });
             }
         }

@@ -274,11 +274,11 @@ const VmTableToolbar = (props) => {
                                         <AddIcon/>
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title="더보기" aria-label="more">
+                                {/*<Tooltip title="더보기" aria-label="more">
                                     <IconButton type="button" onClick={handleOpen}>
                                         <MoreVertIcon/>
                                     </IconButton>
-                                </Tooltip>
+                                </Tooltip>*/}
                             </Grid>
                             <Grid item md={4} zeroMinWidth>
                                 <Paper component="div" className={classes.paper}>
@@ -329,7 +329,7 @@ const VmTableToolbar = (props) => {
                                     </IconButton>
                                     <Divider className={classes.divider} orientation="vertical" />
                                     <IconButton color="primary" className={classes.iconButton} aria-label="directions">
-                                        <DirectionsIcon />
+                                        <DirectionsIcon />A
                                     </IconButton>
                                 </Paper>
                             </Grid>

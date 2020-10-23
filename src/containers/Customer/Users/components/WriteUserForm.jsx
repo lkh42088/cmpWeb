@@ -1036,7 +1036,7 @@ const WriteUserForm = (props) => {
                             />
                         </div>
                     </Grid>
-                    {!isRegister && level <= OPERATOR ? (
+                    {level <= OPERATOR ? (
                         <Grid item xs={6}>
                             <div>
                                 <span className={labelClassName}>* 권한</span>
@@ -1075,7 +1075,7 @@ const WriteUserForm = (props) => {
                             </div>
                         </Grid>
                     ) : false}
-                    <Grid item xs={!isRegister && level <= OPERATOR ? 6 : 12}>
+                    <Grid item xs={level <= OPERATOR ? 6 : 12}>
                         <div>
                             <span className={labelClassName}>우편번호</span>
                             <FormControl

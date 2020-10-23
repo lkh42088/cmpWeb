@@ -10,6 +10,7 @@ import Dashboards from "./Dashboards";
 //import Account from "./_Account";
 import Test from "./Test";
 import RouteIf from '../RouteIf';
+import {NORMAL_USER} from "../../../../lib/var/globalVariable";
 
 const menuLevel = [
     {
@@ -50,18 +51,24 @@ const menuLevel = [
 ];
 
 export default ({history}) => {
-    const existSession = localStorage.getItem("user");
-    if (existSession) {
+    //const existSession = localStorage.getItem("user");
+    const user = JSON.parse(localStorage.getItem("user"));
+    const {level} = user;
+
+    if (user) {
         return (
             <div>
                 <Layout/>
-                <div className="container__wrap">
+                <div className="container__wrap"
+                     style={level === NORMAL_USER ? {
+                         padding: "90px 0 0 0",
+                     } : {}}>
                     {menuLevel && menuLevel.map((row, index) => {
                         const keyId = index;
                         return (
                             <RouteIf
                                 key={keyId}
-                                path={row.path} role={JSON.parse(existSession)}
+                                path={row.path} role={user}
                                 menuLevel={row} history={history}
                             />
                         );

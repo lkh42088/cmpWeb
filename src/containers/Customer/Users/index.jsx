@@ -7,15 +7,22 @@ import UserView from "./components/UserView";
 import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
 import AssetsList from "../../Assets/ProductList/components/AssetsList";
 import AssetsView from "../../Assets/ProductList/components/AssetsView";
+import {NORMAL_USER} from "../../../lib/var/globalVariable";
 
 const MaterialTable = () => {
     //console.log("계정관리 index start");
     const {page} = useSelector(({usersRd}) => ({
         page: usersRd.userPage,
     }));
+    const user = JSON.parse(localStorage.getItem("user"));
+    const {level} = user;
 
     return (
-        <Container fluid>
+        <Container fluid
+                   style={level === NORMAL_USER ? {
+                       width: "80%",
+                       margin: "0 auto",
+                   } : {}}>
             <Row>
                 <RouterBreadcrumbs url={window.location.href}/>
             </Row>

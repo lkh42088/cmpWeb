@@ -528,6 +528,17 @@
     color: $color-materal-secondary;
     background-color: #f6eedf;
     text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.mouse_over_list_blue {
+  color: #646777;
+  &:hover {
+    color: $color-blue;
+    background-color: #f6eedf;
+    text-decoration: underline;
+    cursor: pointer;
   }
 }
 
