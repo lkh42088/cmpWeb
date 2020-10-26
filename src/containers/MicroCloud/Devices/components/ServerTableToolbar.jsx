@@ -280,110 +280,59 @@ const ServerTableToolbar = (props) => {
                                     </IconButton>
                                 </Tooltip>
                             </Grid>
-                            <Grid item md={4} zeroMinWidth>
-                                <Paper component="div" className={classes.paper}>
-                                    <Tooltip title="검색조건" aria-label="searchCondition">
-                                        <IconButton
-                                            className={classes.iconButton}
-                                            aria-label="menu"
-                                            onClick={handleClickMenu}
-                                        >
-                                            <MenuIcon />
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Menu
-                                        id="long-menu"
-                                        anchorEl={anchorMenu}
-                                        keepMounted
-                                        open={openMenu}
-                                        onClose={handleCloseMenu}
-                                        PaperProps={{
-                                            style: {
-                                                maxHeight: ITEM_HEIGHT * 4.5,
-                                                width: '20ch',
-                                            },
-                                        }}
-                                     >
-                                        {searchConditions.map(condition => (
-                                            <MenuItem key={condition}
-                                                      selected={condition === selectSearch}
-                                                      onClick={() => handleSelectItem(condition)}>
-                                                {condition}
-                                            </MenuItem>
-                                        ))}
-                                    </Menu>
-                                    <InputBase
-                                        className={classes.input}
-                                        placeholder={searchPlaceHolder}
-                                        inputProps={{ 'aria-label': `search google maps` }}
-                                        value={searchContent}
-                                        onChange={handleChangeSearch}
-                                    />
-                                    <IconButton
-                                        // type="submit"
-                                        className={classes.iconButton}
-                                        aria-label="search"
-                                        onClick={handleClickSearchIcon}
-                                    >
-                                        <SearchIcon />
-                                    </IconButton>
-                                    <Divider className={classes.divider} orientation="vertical" />
-                                    <IconButton color="primary" className={classes.iconButton} aria-label="directions">
-                                        <DirectionsIcon />
-                                    </IconButton>
-                                    {/*<div>*/}
-                                    {/*    <FormControl*/}
-                                    {/*        className={classes.formControl}*/}
-                                    {/*        variant="outlined"*/}
-                                    {/*        size="small"*/}
-                                    {/*    >*/}
-                                    {/*        <InputLabel id="demo-simple-select-outlined-label">이메일 인증</InputLabel>*/}
-                                    {/*        <Select*/}
-                                    {/*            labelId="demo-simple-select-outlined-label"*/}
-                                    {/*            id="demo-simple-select-outlined"*/}
-                                    {/*            // value={age}*/}
-                                    {/*            onChange={handleChange}*/}
-                                    {/*            label="email-auth"*/}
-                                    {/*        >*/}
-                                    {/*            <MenuItem value="">*/}
-                                    {/*                <em>None</em>*/}
-                                    {/*            </MenuItem>*/}
-                                    {/*            <MenuItem value={10}>개인 이메일 인증</MenuItem>*/}
-                                    {/*            <MenuItem value={20}>그룹 이메일 인증</MenuItem>*/}
-                                    {/*        </Select>*/}
-                                    {/*    </FormControl>*/}
-                                    {/*</div>*/}
-                                    {/*<div>*/}
-                                    {/*    <FormControl*/}
-                                    {/*        className={classes.formControl}*/}
-                                    {/*        variant="outlined"*/}
-                                    {/*        size="small"*/}
-                                    {/*    >*/}
-                                    {/*        <InputLabel id="demo-simple-select-outlined-label">권한</InputLabel>*/}
-                                    {/*        <Select*/}
-                                    {/*            labelId="demo-simple-select-outlined-label"*/}
-                                    {/*            id="demo-simple-select-outlined"*/}
-                                    {/*            // value={age}*/}
-                                    {/*            onChange={handleChange}*/}
-                                    {/*            label="auth-level"*/}
-                                    {/*        >*/}
-                                    {/*            <MenuItem value="">*/}
-                                    {/*                <em>None</em>*/}
-                                    {/*            </MenuItem>*/}
-                                    {/*            <MenuItem value={1}>1</MenuItem>*/}
-                                    {/*            <MenuItem value={2}>2</MenuItem>*/}
-                                    {/*            <MenuItem value={3}>3</MenuItem>*/}
-                                    {/*            <MenuItem value={4}>4</MenuItem>*/}
-                                    {/*            <MenuItem value={5}>5</MenuItem>*/}
-                                    {/*            <MenuItem value={6}>6</MenuItem>*/}
-                                    {/*        </Select>*/}
-                                    {/*    </FormControl>*/}
-                                    {/*</div>*/}
-                                    {/*<UserSearchBar*/}
-                                    {/*    handleSubmit={handleSubmitSearch}*/}
-                                    {/*/>*/}
-                                </Paper>
-                            </Grid>
+                            {/*<Grid item md={4} zeroMinWidth>*/}
+                            {/*    <Paper component="div" className={classes.paper}>*/}
+                            {/*        <Tooltip title="검색조건" aria-label="searchCondition">*/}
+                            {/*            <IconButton*/}
+                            {/*                className={classes.iconButton}*/}
+                            {/*                aria-label="menu"*/}
+                            {/*                onClick={handleClickMenu}*/}
+                            {/*            >*/}
+                            {/*                <MenuIcon />*/}
+                            {/*            </IconButton>*/}
+                            {/*        </Tooltip>*/}
+                            {/*        <Menu*/}
+                            {/*            id="long-menu"*/}
+                            {/*            anchorEl={anchorMenu}*/}
+                            {/*            keepMounted*/}
+                            {/*            open={openMenu}*/}
+                            {/*            onClose={handleCloseMenu}*/}
+                            {/*            PaperProps={{*/}
+                            {/*                style: {*/}
+                            {/*                    maxHeight: ITEM_HEIGHT * 4.5,*/}
+                            {/*                    width: '20ch',*/}
+                            {/*                },*/}
+                            {/*            }}*/}
+                            {/*         >*/}
+                            {/*            {searchConditions.map(condition => (*/}
+                            {/*                <MenuItem key={condition}*/}
+                            {/*                          selected={condition === selectSearch}*/}
+                            {/*                          onClick={() => handleSelectItem(condition)}>*/}
+                            {/*                    {condition}*/}
+                            {/*                </MenuItem>*/}
+                            {/*            ))}*/}
+                            {/*        </Menu>*/}
+                            {/*        <InputBase*/}
+                            {/*            className={classes.input}*/}
+                            {/*            placeholder={searchPlaceHolder}*/}
+                            {/*            inputProps={{ 'aria-label': `search google maps` }}*/}
+                            {/*            value={searchContent}*/}
+                            {/*            onChange={handleChangeSearch}*/}
+                            {/*        />*/}
+                            {/*        <IconButton*/}
+                            {/*            // type="submit"*/}
+                            {/*            className={classes.iconButton}*/}
+                            {/*            aria-label="search"*/}
+                            {/*            onClick={handleClickSearchIcon}*/}
+                            {/*        >*/}
+                            {/*            <SearchIcon />*/}
+                            {/*        </IconButton>*/}
+                            {/*        <Divider className={classes.divider} orientation="vertical" />*/}
+                            {/*        <IconButton color="primary" className={classes.iconButton} aria-label="directions">*/}
+                            {/*            <DirectionsIcon />*/}
+                            {/*        </IconButton>*/}
+                            {/*    </Paper>*/}
+                            {/*</Grid>*/}
                             <Grid item md={5} zeroMinWidth>
                             <TablePagination
                                 component="div"

@@ -280,59 +280,59 @@ const VmTableToolbar = (props) => {
                                     </IconButton>
                                 </Tooltip>*/}
                             </Grid>
-                            <Grid item md={4} zeroMinWidth>
-                                <Paper component="div" className={classes.paper}>
-                                    <Tooltip title="검색조건" aria-label="searchCondition">
-                                        <IconButton
-                                            className={classes.iconButton}
-                                            aria-label="menu"
-                                            onClick={handleClickMenu}
-                                        >
-                                            <MenuIcon />
-                                        </IconButton>
-                                    </Tooltip>
-                                    <Menu
-                                        id="long-menu"
-                                        anchorEl={anchorMenu}
-                                        keepMounted
-                                        open={openMenu}
-                                        onClose={handleCloseMenu}
-                                        PaperProps={{
-                                            style: {
-                                                maxHeight: ITEM_HEIGHT * 4.5,
-                                                width: '20ch',
-                                            },
-                                        }}
-                                     >
-                                        {searchConditions.map(condition => (
-                                            <MenuItem key={condition}
-                                                      selected={condition === selectSearch}
-                                                      onClick={() => handleSelectItem(condition)}>
-                                                {condition}
-                                            </MenuItem>
-                                        ))}
-                                    </Menu>
-                                    <InputBase
-                                        className={classes.input}
-                                        placeholder={searchPlaceHolder}
-                                        inputProps={{ 'aria-label': `search google maps` }}
-                                        value={searchContent}
-                                        onChange={handleChangeSearch}
-                                    />
-                                    <IconButton
-                                        // type="submit"
-                                        className={classes.iconButton}
-                                        aria-label="search"
-                                        onClick={handleClickSearchIcon}
-                                    >
-                                        <SearchIcon />
-                                    </IconButton>
-                                    <Divider className={classes.divider} orientation="vertical" />
-                                    <IconButton color="primary" className={classes.iconButton} aria-label="directions">
-                                        <DirectionsIcon />A
-                                    </IconButton>
-                                </Paper>
-                            </Grid>
+                            {/*<Grid item md={4} zeroMinWidth>*/}
+                            {/*    <Paper component="div" className={classes.paper}>*/}
+                            {/*        <Tooltip title="검색조건" aria-label="searchCondition">*/}
+                            {/*            <IconButton*/}
+                            {/*                className={classes.iconButton}*/}
+                            {/*                aria-label="menu"*/}
+                            {/*                onClick={handleClickMenu}*/}
+                            {/*            >*/}
+                            {/*                <MenuIcon />*/}
+                            {/*            </IconButton>*/}
+                            {/*        </Tooltip>*/}
+                            {/*        <Menu*/}
+                            {/*            id="long-menu"*/}
+                            {/*            anchorEl={anchorMenu}*/}
+                            {/*            keepMounted*/}
+                            {/*            open={openMenu}*/}
+                            {/*            onClose={handleCloseMenu}*/}
+                            {/*            PaperProps={{*/}
+                            {/*                style: {*/}
+                            {/*                    maxHeight: ITEM_HEIGHT * 4.5,*/}
+                            {/*                    width: '20ch',*/}
+                            {/*                },*/}
+                            {/*            }}*/}
+                            {/*         >*/}
+                            {/*            {searchConditions.map(condition => (*/}
+                            {/*                <MenuItem key={condition}*/}
+                            {/*                          selected={condition === selectSearch}*/}
+                            {/*                          onClick={() => handleSelectItem(condition)}>*/}
+                            {/*                    {condition}*/}
+                            {/*                </MenuItem>*/}
+                            {/*            ))}*/}
+                            {/*        </Menu>*/}
+                            {/*        <InputBase*/}
+                            {/*            className={classes.input}*/}
+                            {/*            placeholder={searchPlaceHolder}*/}
+                            {/*            inputProps={{ 'aria-label': `search google maps` }}*/}
+                            {/*            value={searchContent}*/}
+                            {/*            onChange={handleChangeSearch}*/}
+                            {/*        />*/}
+                            {/*        <IconButton*/}
+                            {/*            // type="submit"*/}
+                            {/*            className={classes.iconButton}*/}
+                            {/*            aria-label="search"*/}
+                            {/*            onClick={handleClickSearchIcon}*/}
+                            {/*        >*/}
+                            {/*            <SearchIcon />*/}
+                            {/*        </IconButton>*/}
+                            {/*        <Divider className={classes.divider} orientation="vertical" />*/}
+                            {/*        <IconButton color="primary" className={classes.iconButton} aria-label="directions">*/}
+                            {/*            <DirectionsIcon />A*/}
+                            {/*        </IconButton>*/}
+                            {/*    </Paper>*/}
+                            {/*</Grid>*/}
                             <Grid item md={5} zeroMinWidth>
                             <TablePagination
                                 component="div"
