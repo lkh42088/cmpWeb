@@ -1258,7 +1258,7 @@ const WriteVm = (props) => {
                                     }}
                                     MenuProps={MenuProps}
                                 >
-                                    <MenuItem key={0} value={0}>
+                                    <MenuItem key={0} value={false}>
                                         <em>Disable</em>
                                     </MenuItem>
                                     {backupTypeList.map((item, index) => {
