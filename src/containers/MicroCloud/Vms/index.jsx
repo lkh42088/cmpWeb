@@ -72,7 +72,6 @@ const MicroCloudVmTable = () => {
             setVmList(reData);
 
             if (reDataCompany.length > 0) {
-                console.log("user : ", user);
                 if (level === NORMAL_USER) {
                     const red = reDataCompany.filter(item => item.vmUserId === user.id);
                     dispatch(changeVmPage({
@@ -269,10 +268,6 @@ const MicroCloudVmTable = () => {
         }
 
         setPageType(tempPageType);
-
-        console.log("useEffect---------------");
-        console.log("page : ", page);
-        console.log("tempPageType : ", tempPageType);
 
         if (page === 'page' && tempPageType === 'vmsPage') {
             getVmList("all");

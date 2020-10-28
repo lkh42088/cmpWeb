@@ -327,10 +327,10 @@ const VmTableToolbar = (props) => {
                                     >
                                         <SearchIcon />
                                     </IconButton>
-                                    <Divider className={classes.divider} orientation="vertical" />
+                                    {/*<Divider className={classes.divider} orientation="vertical" />
                                     <IconButton color="primary" className={classes.iconButton} aria-label="directions">
                                         <DirectionsIcon />A
-                                    </IconButton>
+                                    </IconButton>*/}
                                 </Paper>
                             </Grid>
                             <Grid item md={5} zeroMinWidth>

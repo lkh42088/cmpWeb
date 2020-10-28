@@ -14,39 +14,8 @@ import LookupCompany from "../../../Common/LookupCompany";
 import {CUSTOMER_MANAGER} from "../../../../lib/var/globalVariable";
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
     margin: {
         margin: theme.spacing(1),
-    },
-    withoutLabel: {
-        marginTop: theme.spacing(3),
-    },
-    textField: {
-        width: '25ch',
-    },
-    list: {
-        width: '100%',
-        maxWidth: 360,
-        backgroundColor: theme.palette.background.paper,
-    },
-    chip: {
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        '& > *': {
-            margin: theme.spacing(0.5),
-        },
-    },
-    paper: {
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        '& > *': {
-            margin: theme.spacing(0.5),
-        },
     },
 }));
 
@@ -86,6 +55,7 @@ const WriteServer = (props) => {
      * Field
      *******************/
     const [fields, setFields] = useState({
+        idx: '',
         cpName: '',
         cpIdx: 0,
         serialNumber: '',
@@ -100,7 +70,7 @@ const WriteServer = (props) => {
         ktDomainId: '',
         nasUrl: '',
         nasId: '',
-        nacPassword: '',
+        nasPassword: '',
     });
 
     const [requires, setRequireds] = useState({
@@ -118,7 +88,7 @@ const WriteServer = (props) => {
         ktDomainId: false,
         nasUrl: false,
         nasId: false,
-        nacPassword: false,
+        nasPassword: false,
     });
 
     const [disables, setDisables] = useState({
@@ -136,7 +106,7 @@ const WriteServer = (props) => {
         ktDomainId: false,
         nasUrl: false,
         nasId: false,
-        nacPassword: false,
+        nasPassword: false,
     });
 
     const [helpers, setHelpers] = useState({
@@ -154,7 +124,7 @@ const WriteServer = (props) => {
         ktDomainId: "",
         nasUrl: "",
         nasId: "",
-        nacPassword: "",
+        nasPassword: "",
     });
 
     const [errors, setErrors] = useState({
@@ -172,7 +142,7 @@ const WriteServer = (props) => {
         ktDomainId: false,
         nasUrl: false,
         nasId: false,
-        nacPassword: false,
+        nasPassword: false,
     });
 
     /*******************
@@ -201,7 +171,7 @@ const WriteServer = (props) => {
             ktDomainId: '',
             nasUrl: '',
             nasId: '',
-            nacPassword: '',
+            nasPassword: '',
         });
         setHelpers({
             cpName: "",
@@ -218,7 +188,7 @@ const WriteServer = (props) => {
             ktDomainId: "",
             nasUrl: "",
             nasId: "",
-            nacPassword: "",
+            nasPassword: "",
         });
         setErrors({
             cpName: false,
@@ -235,7 +205,7 @@ const WriteServer = (props) => {
             ktDomainId: false,
             nasUrl: false,
             nasId: false,
-            nacPassword: false,
+            nasPassword: false,
         });
     };
 
@@ -247,11 +217,6 @@ const WriteServer = (props) => {
 
     const handleSubmitInternal = () => {
         console.log("handleSubmitInternal() fields", fields);
-        // if (!checkValidation()) {
-        //     console.log("handleSubmitInternal() failed");
-        //     return;
-        // }
-        console.log("handleSubmitInternal() success");
         handleSubmit(fields);
         reset();
     };
@@ -278,10 +243,8 @@ const WriteServer = (props) => {
      * Open
      *******************/
     const getCompanyList = async () => {
-        console.log("getCompanyList()-----------------------");
         try {
             const response = await getCompanies();
-            console.log("getCompanyList() data: ", response.data);
             setCompanyList(response.data);
         } catch (error) {
             setCompanyList([]);
@@ -321,6 +284,36 @@ const WriteServer = (props) => {
                     cpName,
                 });
             }
+        }
+
+        if (isRegister === false) {
+            console.log("isRegister data : ", data);
+            setFields({
+                ...fields,
+                idx: data.idx,
+                cpName: data.cpName,
+                cpIdx: data.cpIdx,
+                serialNumber: data.serialNumber,
+                ipAddr: data.ipAddr,
+                registerType: data.registerType,
+                domainPrefix: data.domainPrefix,
+                domainId: data.domainId,
+                domainPassword: data.domainPassword,
+                accessKey: data.accessKey,
+                secretKey: data.secretKey,
+                projectId: data.projectId,
+                ktDomainId: data.ktDomainId,
+                nasUrl: data.nasUrl,
+                nasId: data.nasId,
+                nasPassword: data.nasPassword,
+            });
+
+            setDisables({
+                ...disables,
+                cpName: true,
+                cpIdx: true,
+                serialNumber: true,
+            });
         }
     }, []);
 
@@ -377,27 +370,29 @@ const WriteServer = (props) => {
                                     </FormControl>
                                 </div>
                             </Grid>
-                            <Grid item xs={2}>
-                                <span className={labelClassName}/>
-                                <Button
-                                    disabled={disables.cpIdx}
-                                    className={classes.margin}
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={handleOpenSearchCompany}
-                                    size={buttonSize}
-                                    endIcon={<SearchIcon/>}
-                                    style={{
-                                        maxWidth: '105px',
-                                        maxHeight: '45px',
-                                        minWidth: '105px',
-                                        minHeight: '45px',
-                                        margin: '20px 0px 0px 0px',
-                                    }}
-                                >
-                                    검색
-                                </Button>
-                            </Grid>
+                            {isRegister ? (
+                                <Grid item xs={2}>
+                                    <span className={labelClassName}/>
+                                    <Button
+                                        disabled={disables.cpIdx}
+                                        className={classes.margin}
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={handleOpenSearchCompany}
+                                        size={buttonSize}
+                                        endIcon={<SearchIcon/>}
+                                        style={{
+                                            maxWidth: '105px',
+                                            maxHeight: '45px',
+                                            minWidth: '105px',
+                                            minHeight: '45px',
+                                            margin: '20px 0px 0px 0px',
+                                        }}
+                                    >
+                                        검색
+                                    </Button>
+                                </Grid>
+                            ) : false}
                             <Grid item xs={4}>
                                 <div/>
                             </Grid>
@@ -685,16 +680,30 @@ const WriteServer = (props) => {
                             >
                                 취소
                             </Button>
-                            <Button
-                                className={classes.margin}
-                                variant="contained"
-                                color="primary"
-                                size={buttonSize}
-                                onClick={handleSubmitInternal}
-                                endIcon={<SendIcon/>}
-                            >
-                                전송
-                            </Button>
+
+                            {isRegister ? (
+                                <Button
+                                    className={classes.margin}
+                                    variant="contained"
+                                    color="primary"
+                                    size={buttonSize}
+                                    onClick={handleSubmitInternal}
+                                    endIcon={<SendIcon/>}
+                                >
+                                    전송
+                                </Button>
+                            ) : (
+                                <Button
+                                    className={classes.margin}
+                                    variant="contained"
+                                    color="primary"
+                                    size={buttonSize}
+                                    onClick={handleSubmitInternal}
+                                    endIcon={<SendIcon/>}
+                                >
+                                    수정
+                                </Button>
+                            )}
                         </div>
                     </Grid>
                 </Grid>

@@ -3,11 +3,12 @@ import Dialog from "@material-ui/core/Dialog";
 import {Card, CardBody} from "reactstrap";
 import Grid from "@material-ui/core/Grid";
 import DnsRoundedIcon from "@material-ui/icons/DnsRounded";
+import ModifyFormVm from "./ModifyFormVm";
 import WriteVm from "./WriteVm";
 
 const ModifyVm = (props) => {
     const {
-        open, handleClose, handleSubmit,
+        open, handleClose, handleSubmit, data, user,
     } = props;
 
     return (
@@ -28,9 +29,11 @@ const ModifyVm = (props) => {
                     </div>
                     <WriteVm
                         open={open}
+                        user={user}
                         handleClose={handleClose}
                         handleSubmit={handleSubmit}
                         isRegister={false}
+                        data={data}
                     />
                 </CardBody>
             </Card>

@@ -18,11 +18,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import {getCompanies} from "../../../../lib/api/company";
-import {getUserList} from "../../../../lib/api/users";
 import LookupCompany from "../../../Common/LookupCompany";
 import {
     getMcServersByCpIdx,
@@ -150,13 +146,11 @@ const WriteVm = (props) => {
     const [menuCompany, setMenuCompany] = useState(false);
     const [openSearchCompany, setOpenSearchCompany] = useState(false);
     const [open, setOpen] = React.useState(false);
-    const [compareVmUser, setCompareVmUser] = useState('');
 
     /*******************
      * Field
      *******************/
     const [fields, setFields] = useState({
-        idx: '',
         cpName: '',
         cpIdx: 0,
         serverIdx: 0,
@@ -411,16 +405,9 @@ const WriteVm = (props) => {
     const handleSubmitCheck = (flag) => {
         if (flag) {
             if (fields.vmUserId !== undefined && fields.vmUserId !== "") {
-                console.log("compareVmUser : ", compareVmUser);
-                console.log("fields.vmUserId : ", fields.vmUserId);
-                console.log("true? false? : ", compareVmUser === fields.vmUserId);
-                console.log("errors.vmUserId : ", errors.vmUserId);
-                if (compareVmUser !== fields.vmUserId) {
-                    if (errors.vmUserId) {
-                        handleDialogClickOpen();
-                    } else {
-                        handleSubmitInternal();
-                    }
+                if (errors.vmUserId === true) {
+                    console.log("빈값이 아니고 트루일 경우다~");
+                    handleDialogClickOpen();
                 } else {
                     handleSubmitInternal();
                 }
@@ -586,14 +573,11 @@ const WriteVm = (props) => {
 
     const getMcImages = async () => {
         try {
-            console.log("serverIdx.. ", fields.serverIdx);
             const response = await getMcImagesByServerIdx({
                 serverIdx: fields.serverIdx,
             });
-            console.log("get.. ", response);
             setImageList(response.data);
         } catch (e) {
-            console.log("fail.. ");
             setImageList([]);
         }
     };
@@ -603,71 +587,70 @@ const WriteVm = (props) => {
      *******************/
 
     const getUserCheck = async () => {
-      try {
-          // 넘기는 값 -> fields.vmUserId, fields.cpIdx
-          const response = await checkUserCheck({
-              id: fields.vmUserId,
-              cpIdx: fields.cpIdx,
-          });
+        try {
+            // 넘기는 값 -> fields.vmUserId, fields.cpIdx
+            const response = await checkUserCheck({
+                id: fields.vmUserId,
+                cpIdx: fields.cpIdx,
 
-          const {status} = response.data;
-          const {type} = response.data;
-          let helper = "";
-          let error = false;
-          // status : success
-          // type : user, vm
+            });
 
-          switch (type) {
-              case "user":
-                  if (status === "fail") {
-                    helper = "※ 등록되지 않은 사용자 입니다.";
-                    error = true;
-                  }
-                  break;
-              case "vm":
-                  if (status === "fail") {
-                      helper = "※ 이미 사용자가 등록되어 있습니다.";
-                      error = true;
-                  } else {
-                      helper = "※ 성공!";
-                      error = false;
-                  }
-                  break;
-              default:
-                  console.log("error");
-                  break;
-          }
+            const {status} = response.data;
+            const {type} = response.data;
+            let helper = "";
+            let error = false;
+            // status : success
+            // type : user, vm
 
-          if (error) {
-              setFields({
-                  ...fields,
-                  vmUserId: "",
-                  vmUserFlag: false,
-              });
-          } else {
-              setFields({
-                  ...fields,
-                  vmUserFlag: true,
-              });
-          }
+            switch (type) {
+                case "user":
+                    if (status === "fail") {
+                        helper = "※ 등록되지 않은 사용자 입니다.";
+                        error = true;
+                    }
+                    break;
+                case "vm":
+                    if (status === "fail") {
+                        helper = "※ 이미 사용자가 등록되어 있습니다.";
+                        error = true;
+                    } else {
+                        helper = "※ 성공!";
+                        error = false;
+                    }
+                    break;
+                default:
+                    console.log("error");
+                    break;
+            }
 
-          setErrors({
-              ...errors,
-              vmUserId: error,
-          });
+            console.log("에러 확인 방법 error : ", error);
 
-          setHelpers({
-              ...helpers,
-              vmUserId: helper,
-          });
-      } catch (e) {
-          console.log("async error");
-      }
+            if (error) {
+                setFields({
+                    ...fields,
+                    vmUserId: "",
+                    vmUserFlag: false,
+                });
+            } else {
+                setFields({
+                    ...fields,
+                    vmUserFlag: true,
+                });
+            }
+
+            setErrors({
+                ...errors,
+                vmUserId: error,
+            });
+
+            setHelpers({
+                ...helpers,
+                vmUserId: helper,
+            });
+        } catch (e) {
+            console.log("async error");
+        }
     };
-
-    /**************************************************************
-     * Handle Function
-     **************************************************************/
 
     const handleMenuCompany = () => {
         if (companyList.length === 0) {
@@ -676,45 +659,17 @@ const WriteVm = (props) => {
         setMenuCompany(!menuCompany);
     };
 
-    const handleOpenSearchCompany = () => {
-        setOpenSearchCompany(true);
-    };
-
     const handleSearchUser = () => {
         const name = "vmUserId";
-        if (fields.cpIdx !== 0) { // company값이 존재한다면
-            if (!isRegister) {
-                if (compareVmUser !== fields.vmUserId) {
-                    getUserCheck();
-                }
-            } else {
-                getUserCheck();
-            }
-
+        if (fields.cpIdx !== 0) {
+            getUserCheck();
             setHelpers({
                 ...helpers,
                 [name]: "",
             });
-
-           /* if (isRegister) {
-                getUserCheck();
-                setHelpers({
-                    ...helpers,
-                    [name]: "",
-                });
-            } else if (compareVmUser === fields.vmUserId) {
-                setHelpers({
-                    ...helpers,
-                    [name]: "",
-                });
-            } else {
-                getUserCheck();
-                setHelpers({
-                    ...helpers,
-                    [name]: "",
-                });
-            }*/
         } else {
+            console.log("false");
+
             setErrors({
                 ...errors,
                 [name]: true,
@@ -736,11 +691,8 @@ const WriteVm = (props) => {
         handleChangeField("cpIdx", idx);
     };
 
-    /**************************************************************
-     * useEffect
-     **************************************************************/
-
     useEffect(() => {
+        console.log("change cpIdx: ", fields.cpIdx);
         if (fields.serverIdx > 0) {
             getMcImages();
             getMcNetworks();
@@ -751,6 +703,7 @@ const WriteVm = (props) => {
     }, [fields.serverIdx]);
 
     useEffect(() => {
+        console.log("change image: ", fields.image);
         if (fields.image > 0) {
             const entry = imageList.find(item => item.idx === fields.image);
             handleChangeField("hdd", entry ? entry.hdd : 0);
@@ -770,65 +723,27 @@ const WriteVm = (props) => {
     }, [fields.cpIdx]);
 
     useEffect(() => {
-        if (isRegister === false) {
-            if (imageList !== null && imageList.length > 0) {
-                const img = imageList.find(item => item.name === fields.imageName);
+        if (companyList.length > 0) {
+            console.log("companyList : ", companyList);
+            getMcServers();
+            getMcImages();
+            getMcNetworks();
 
-                setFields({
-                    ...fields,
-                    image: img.idx,
-                });
-            }
-        }
-    }, [imageList]);
-
-    useEffect(() => {
-        if (isRegister === false) {
-            if (networkList !== null && networkList.length > 0) {
-                const net = networkList.find(item => item.name === fields.networkName);
-
-                setFields({
-                    ...fields,
-                    network: net.idx,
-                });
-            }
-        }
-    }, [networkList]);
-
-    useEffect(() => {
-        if (companyList === null || companyList.length === 0) {
-            getCompanyList();
-        }
-        if (user) {
-            const {level, cpIdx, cpName} = user;
-            if (level >= CUSTOMER_MANAGER) {
-                setFields({
-                        ...fields,
-                        cpIdx,
-                        cpName,
-                });
-
-                setDisables({
-                    ...disables,
-                    vmUserId: false,
-                });
-            }
-        }
-
-        if (isRegister === false) {
             console.log("data : ", data);
+
+            console.log("data.companyIdx : ", data.cpIdx);
+
             setFields({
                 ...fields,
-                idx: data.idx,
                 cpName: data.cpName,
                 cpIdx: data.cpIdx,
                 serverIdx: data.serverIdx,
                 serialNumber: data.serialNumber,
                 name: data.name,
                 image: data.image,
-                imageName: data.image,
+                imageName: data.imageName,
                 network: data.network,
-                networkName: data.network,
+                networkName: data.networkName,
                 os: data.os,
                 cpu: data.cpu,
                 ram: data.ram,
@@ -843,22 +758,8 @@ const WriteVm = (props) => {
                 backupHours: data.backupHours,
                 backupMinutes: data.backupMinutes,
                 vmUserId: data.vmUserId,
+                vmUserFlag: data.vmUserFlag,
             });
-
-            setCompareVmUser(data.vmUserId);
-
-            //snapType
-            //bckupType
-            let snapTypeDisable = true;
-            let bckupTypeDisable = true;
-
-            if (data.snapType) {
-                snapTypeDisable = false;
-            }
-
-            if (data.backupType) {
-                bckupTypeDisable = false;
-            }
 
             setDisables({
                 ...disables,
@@ -869,20 +770,28 @@ const WriteVm = (props) => {
                 image: true,
                 cpu: true,
                 ram: true,
-                vmUserId: false,
-                vmUserFlag: false,
-                snapDays: snapTypeDisable,
-                snapHours: snapTypeDisable,
-                snapMinutes: snapTypeDisable,
-                backupDays: bckupTypeDisable,
-                backupHours: bckupTypeDisable,
-                backupMinutes: bckupTypeDisable,
             });
+        }
+    }, [companyList]);
 
-            /*setErrors({
-                ...errors,
-                vmUserId: false,
-            });*/
+    useEffect(() => {
+        if (companyList === null || companyList.length === 0) {
+            getCompanyList();
+        }
+        if (user) {
+            const {level, cpIdx, cpName} = user;
+            if (level >= CUSTOMER_MANAGER) {
+                setFields({
+                    ...fields,
+                    cpIdx,
+                    cpName,
+                });
+
+                setDisables({
+                    ...disables,
+                    vmUserId: false,
+                });
+            }
         }
     }, []);
 
@@ -897,76 +806,72 @@ const WriteVm = (props) => {
         <React.Fragment>
             <form className={formClassName}>
                 <Grid container spacing={1}>
-                    { user && user.level < CUSTOMER_MANAGER && (
-                        <React.Fragment>
-                            <Grid item xs={6}>
-                                <div>
-                                    <span className={labelClassName}>* 회사</span>
-                                    <FormControl
-                                        size={fieldSize}
-                                        className={fieldClassName}
-                                        variant="filled"
+                    <React.Fragment>
+                        <Grid item xs={6}>
+                            <div>
+                                <span className={labelClassName}>* 회사</span>
+                                <FormControl
+                                    size={fieldSize}
+                                    className={fieldClassName}
+                                    variant="filled"
+                                    error={errors.cpIdx}
+                                    disabled={disables.cpIdx}
+                                >
+                                    <Select
+                                        required={requires.cpIdx}
+                                        name="cpIdx"
+                                        value={fields.cpIdx}
                                         error={errors.cpIdx}
-                                        disabled={disables.cpIdx}
-                                    >
-                                        <Select
-                                            required={requires.cpIdx}
-                                            name="cpIdx"
-                                            value={fields.cpIdx}
-                                            error={errors.cpIdx}
-                                            onChange={(e) => {
-                                                handleChangeField("cpIdx", e.target.value);
-                                            }}
-                                            onClick={handleMenuCompany}
-                                            MenuProps={MenuProps}
-                                        >
-                                            <MenuItem key={0} value={0}>
-                                                <em>None</em>
-                                            </MenuItem>
-                                            {companyList && companyList.map((item, index) => {
-                                                const key = index;
-                                                return (
-                                                    <MenuItem key={key} value={item.idx}>{item.name}</MenuItem>
-                                                );
-                                            })}
-                                        </Select>
-                                        <FormHelperText>{helpers.cpIdx}</FormHelperText>
-                                        <LookupCompany
-                                            open={openSearchCompany}
-                                            handleClose={handleCloseSearchCompany}
-                                            handleComplete={handleCompleteSearchCompany}
-                                        />
-                                    </FormControl>
-                                </div>
-                            </Grid>
-                            {isRegister ? (
-                                <Grid item xs={2}>
-                                    <span className={labelClassName}/>
-                                    <Button
-                                        disabled={disables.cpIdx}
-                                        className={classes.margin}
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={handleOpenSearchCompany}
-                                        size={buttonSize}
-                                        endIcon={<SearchIcon/>}
-                                        style={{
-                                            maxWidth: '105px',
-                                            maxHeight: '45px',
-                                            minWidth: '105px',
-                                            minHeight: '45px',
-                                            margin: '20px 0px 0px 0px',
+                                        onChange={(e) => {
+                                            handleChangeField("cpIdx", e.target.value);
                                         }}
+                                        onClick={handleMenuCompany}
+                                        MenuProps={MenuProps}
                                     >
-                                        검색
-                                    </Button>
-                                </Grid>
-                            ) : false}
-                            <Grid item xs={4}>
-                                <div/>
-                            </Grid>
-                        </React.Fragment>
-                    )}
+                                        <MenuItem key={0} value={0}>
+                                            <em>None</em>
+                                        </MenuItem>
+                                        {companyList && companyList.map((item, index) => {
+                                            const key = index;
+                                            return (
+                                                <MenuItem key={key} value={item.idx}>{item.name}</MenuItem>
+                                            );
+                                        })}
+                                    </Select>
+                                    <FormHelperText>{helpers.cpIdx}</FormHelperText>
+                                    <LookupCompany
+                                        open={openSearchCompany}
+                                        handleClose={handleCloseSearchCompany}
+                                        handleComplete={handleCompleteSearchCompany}
+                                    />
+                                </FormControl>
+                            </div>
+                        </Grid>
+                        {/*<Grid item xs={2}>
+                            <span className={labelClassName}/>
+                            <Button
+                                disabled={disables.cpIdx}
+                                className={classes.margin}
+                                variant="contained"
+                                color="primary"
+                                onClick={handleOpenSearchCompany}
+                                size={buttonSize}
+                                endIcon={<SearchIcon/>}
+                                style={{
+                                    maxWidth: '105px',
+                                    maxHeight: '45px',
+                                    minWidth: '105px',
+                                    minHeight: '45px',
+                                    margin: '20px 0px 0px 0px',
+                                }}
+                            >
+                                검색
+                            </Button>
+                        </Grid>*/}
+                        <Grid item xs={4}>
+                            <div/>
+                        </Grid>
+                    </React.Fragment>
                     <Grid item xs={6}>
                         <div>
                             <span className={labelClassName}>* Micro Cloud Server</span>
@@ -1090,23 +995,6 @@ const WriteVm = (props) => {
                             </FormControl>
                         </div>
                     </Grid>
-                    {/*<Grid item xs={4}>*/}
-                    {/*    <div>*/}
-                    {/*        <span className={labelClassName}>* HDD (G)</span>*/}
-                    {/*        <TextField*/}
-                    {/*            className={fieldClassName}*/}
-                    {/*            error={errors.hdd}*/}
-                    {/*            required={requires.hdd}*/}
-                    {/*            disabled={disables.hdd}*/}
-                    {/*            helperText={helpers.hdd}*/}
-                    {/*            name="hdd"*/}
-                    {/*            value={fields.hdd}*/}
-                    {/*            onChange={(e) => { handleChangeField("hdd", e.target.value); }}*/}
-                    {/*            variant={variant}*/}
-                    {/*            size={fieldSize}*/}
-                    {/*        />*/}
-                    {/*    </div>*/}
-                    {/*</Grid>*/}
                     <Grid item xs={6}>
                         <div>
                             <span className={labelClassName}>* CPU</span>
@@ -1404,7 +1292,7 @@ const WriteVm = (props) => {
                                         const key = index;
                                         return (
                                             <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
-                                    );
+                                        );
                                     })}
                                 </Select>
                                 <FormHelperText>{helpers.backupDays}</FormHelperText>
@@ -1506,7 +1394,7 @@ const WriteVm = (props) => {
                     <Grid item xs={2}>
                         <span className={labelClassName}/>
                         <Button
-                            disabled={disables.vmUserFlag}
+                            disabled={disables.cpIdx}
                             className={classes.margin}
                             variant="contained"
                             color="primary"
@@ -1514,14 +1402,14 @@ const WriteVm = (props) => {
                             size={buttonSize}
                             endIcon={<CheckIcon/>}
                             style={{
-                                maxWidth: '135px',
+                                maxWidth: '105px',
                                 maxHeight: '45px',
-                                minWidth: '135px',
+                                minWidth: '105px',
                                 minHeight: '45px',
                                 margin: '20px 0px 0px 0px',
                             }}
                         >
-                            중복확인
+                            체크
                         </Button>
                     </Grid>
                     <Grid item xs={4}>
@@ -1532,36 +1420,22 @@ const WriteVm = (props) => {
                             <Button
                                 variant="contained"
                                 size={buttonSize}
-                                onClick={handleCancel}>
+                                onClick={handleCancel}
+                            >
                                 취소
                             </Button>
-                            {isRegister ? (
-                                <Button
-                                    className={classes.margin}
-                                    variant="contained"
-                                    color="primary"
-                                    size={buttonSize}
-                                    onClick={(e) => {
-                                        handleSubmitCheck(true);
-                                    }}
-                                    endIcon={<SendIcon/>}
-                                >
-                                    전송
-                                </Button>
-                            ) : (
-                                <Button
-                                    className={classes.margin}
-                                    variant="contained"
-                                    color="primary"
-                                    size={buttonSize}
-                                    onClick={(e) => {
-                                        handleSubmitCheck(true);
-                                    }}
-                                    endIcon={<SendIcon/>}
-                                >
-                                    수정
-                                </Button>
-                            )}
+                            <Button
+                                className={classes.margin}
+                                variant="contained"
+                                color="primary"
+                                size={buttonSize}
+                                onClick={(e) => {
+                                    handleSubmitCheck(true);
+                                }}
+                                endIcon={<SendIcon/>}
+                            >
+                                전송
+                            </Button>
                         </div>
                     </Grid>
                 </Grid>
@@ -1570,12 +1444,13 @@ const WriteVm = (props) => {
                 open={open}
                 onClose={handleDialogClose}
                 aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description">
-                {/*<DialogTitle id="alert-dialog-title">&nbsp;</DialogTitle>*/}
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">title?</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         VM 사용자의 등록 가능 여부를 체크하지 않았습니다.<br/>
-                        그대로 진행할 경우 VM 사용자의 정보는 변경되지 않습니다.<br/>
+                        그대로 진행할 경우 VM 사용자의 정보는 등록되지 않습니다.<br/>
                         진행하시겠습니까?
                     </DialogContentText>
                 </DialogContent>

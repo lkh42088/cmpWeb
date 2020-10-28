@@ -5,6 +5,12 @@ import {
 } from 'reactstrap';
 import {useDispatch, useSelector} from "react-redux";
 import {useSnackbar} from "notistack";
+import { makeStyles } from '@material-ui/core/styles';
+import Fab from '@material-ui/core/Fab';
+import ListIcon from "@material-ui/icons/List";
+import {Tooltip} from "@material-ui/core";
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import NavigationIcon from '@material-ui/icons/Navigation';
 
 import VmInfoTable from "./VmInfoTable";
 import VmInfoSetting from "./VmInfoSetting";
@@ -13,19 +19,22 @@ import VmInfoTableBackup from "./VmInfoTableBackup";
 import WriteVm from "./WriteVm";
 import {updateMcVmSnapshot} from "../../../../lib/api/microCloud";
 
-import image1 from "../../../../shared/img/temp/cubes.jpg";
-import image5 from "../../../../shared/img/temp/alarm.png";
-import image6 from "../../../../shared/img/temp/timearrow.png";
-
-import imageSrc1 from "../../../../shared/img/temp/webdesign.jpg";
-import imageSrc2 from "../../../../shared/img/temp/computer1.jpg";
-import imageSrc3 from "../../../../shared/img/temp/battery.jpg";
-import imageSrc4 from "../../../../shared/img/temp/laptop.jpg";
 import imageSrc5 from "../../../../shared/img/temp/computer2.jpg";
-import imageSrc6 from "../../../../shared/img/temp/online.png";
-import imageSrc7 from "../../../../shared/img/temp/statistics.jpg";
+import {changeVmPage} from "../../../../redux/actions/vmsActions";
+
+const useStyles = makeStyles(theme => ({
+    root: {
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+    },
+    extendedIcon: {
+        marginRight: theme.spacing(1),
+    },
+}));
 
 const VmInfo = ({schVm}) => {
+    const classes = useStyles();
     const dispatch = useDispatch();
     const user = JSON.parse(localStorage.getItem("user"));
     const {level} = user;
@@ -35,6 +44,13 @@ const VmInfo = ({schVm}) => {
         data: vmsRd.data,
         page: vmsRd.pageType,
     }));
+
+    const handlePage = () => {
+        dispatch(changeVmPage({
+            pageType: 'list',
+            data: null,
+        }));
+    };
 
     const handleSubmit = async (fields) => {
       const {
@@ -87,11 +103,11 @@ const VmInfo = ({schVm}) => {
                                             display: "block",
                                             border: "none",
                                         }}>
-                                            <div className="vm__stat">
+                                            {/*<div className="vm__stat">
                                                 <p className="vm__stat-title">Company</p>
-                                            </div>
+                                            </div>*/}
                                             <div className="vm__stat">
-                                                <p className="vm__stat-contents">{data.cpName}</p>
+                                                <p className="vm__stat-accent">{data.cpName}</p>
                                             </div>
                                         </div>
 
@@ -123,8 +139,19 @@ const VmInfo = ({schVm}) => {
                             </Card>
 
                             <VmInfoTable type="setting" vm={data}/>
-
                             <VmInfoTable type="status" vm={data}/>
+                            {/*<Tooltip title="목록">
+                                 eslint-disable-next-line jsx-a11y/anchor-is-valid
+                                <a href="#"><i><ListIcon style={{
+                                    fontSize: "1.3rem",
+                                }} onClick={handlePage}/></i></a>
+                            </Tooltip>*/}
+                            <Fab variant="extended"
+                                 size="small"
+                                 onClick={handlePage}>
+                                <ListIcon className={classes.extendedIcon} />
+                                목록
+                            </Fab>
                         </Col>
                         <Col md={12} lg={12} xl={5}>
                             <VmInfoSetting
@@ -132,7 +159,7 @@ const VmInfo = ({schVm}) => {
                                 vm={data}
                                 handleSubmit={handleSubmit}
                             />
-                            <VmInfoTableSnapshot/>
+                            <VmInfoTableSnapshot vm={data}/>
                         </Col>
                         <Col md={12} lg={12} xl={5}>
                             <VmInfoSetting type="backup" vm={data}/>

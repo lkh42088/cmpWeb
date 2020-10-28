@@ -4,10 +4,11 @@ import {Card, CardBody} from "reactstrap";
 import Grid from "@material-ui/core/Grid";
 import DnsRoundedIcon from "@material-ui/icons/DnsRounded";
 import WriteServer from "./WriteServer";
+import WriteVm from "../../Vms/components/WriteVm";
 
 const ModifyServer = (props) => {
     const {
-        open, handleClose, handleSubmit,
+        open, handleClose, handleSubmit, data, user,
     } = props;
 
     return (
@@ -22,15 +23,17 @@ const ModifyServer = (props) => {
                                 <DnsRoundedIcon/>
                             </Grid>
                             <Grid item>
-                                <h3 className="bold-text">서버 수정</h3>
+                                <h3 className="bold-text">서버 수정 (개발중)</h3>
                             </Grid>
                         </Grid>
                     </div>
                     <WriteServer
                         open={open}
+                        user={user}
                         handleClose={handleClose}
                         handleSubmit={handleSubmit}
                         isRegister={false}
+                        data={data}
                     />
                 </CardBody>
             </Card>

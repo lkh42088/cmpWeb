@@ -26,8 +26,9 @@ import {
 import CommonTableHead from "../../../Common/CommonTableHead";
 import ServerTableToolbar from "./ServerTableToolbar";
 import RegisterServer from "./RegisterServer";
+import ModifyServer from "./ModifyServer";
 import {
-    getMcServers, registerMcServer, unregisterMcServer,
+    getMcServers, registerMcServer, unregisterMcServer, modifyMcServer,
 } from "../../../../lib/api/microCloud";
 import {OPERATOR} from "../../../../lib/var/globalVariable";
 
@@ -42,6 +43,7 @@ const headRows = [
     {id: 'domainPrefix', disablePadding: false, label: 'Domain Prefix'},
     {id: 'domainId', disablePadding: false, label: 'Domain Id'},
     {id: 'domainPassword', disablePadding: false, label: 'Domain Password'},
+    {id: 'button', disablePadding: false, label: ''},
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -99,8 +101,10 @@ const ServerTable = () => {
     const [data, setData] = useState([]);
     const [paging, setPaging] = useState(null);
     const [openAddServer, setOpenAddServer] = useState(false);
+    const [openEditServer, setOpenEditServer] = useState(false);
     const [searchParam, setSearchParam] = useState(null);
-    const { enqueueSnackbar } = useSnackbar();
+    const {enqueueSnackbar} = useSnackbar();
+    const [modifyData, setModifyData] = React.useState(null);
 
     const dispatch = useDispatch();
 
@@ -221,12 +225,6 @@ const ServerTable = () => {
             const response = await getMcServers({
                 rows: rowsPerPage, offset, orderBy, order, cpName: companyName,
             });
-            console.log("getPageData response:", response.data.data);
-            console.log("getPageData rowsPerPage:", rowsPerPage);
-            console.log("getPageData offset:", offset);
-            console.log("getPageData orderBy:", orderBy);
-            console.log("getPageData order:", order);
-            console.log("getPageData companyName:", companyName);
             setData(response.data.data);
             setPaging(response.data.page);
         } catch (e) {
@@ -240,6 +238,14 @@ const ServerTable = () => {
 
     const handleCloseAddServer = () => {
         setOpenAddServer(false);
+    };
+
+    const handleOpenEditServer = () => {
+        setOpenEditServer(true);
+    };
+
+    const handleCloseEditServer = () => {
+        setOpenEditServer(false);
     };
 
     const handleSnackbarFailure = (snackMsg) => {
@@ -258,7 +264,22 @@ const ServerTable = () => {
         } = server;
         try {
             const response = await registerMcServer({
-                cpIdx, cpName, serialNumber, type, ipAddr, registerType, domainPrefix, domainId, domainPassword, accessKey, secretKey, projectId, ktDomainId, nasUrl, nasId, nasPassword,
+                cpIdx,
+                cpName,
+                serialNumber,
+                type,
+                ipAddr,
+                registerType,
+                domainPrefix,
+                domainId,
+                domainPassword,
+                accessKey,
+                secretKey,
+                projectId,
+                ktDomainId,
+                nasUrl,
+                nasId,
+                nasPassword,
             });
             handleSnackbarSuccess("서버 등록에 성공하였습니다.");
             getPageData();
@@ -267,15 +288,55 @@ const ServerTable = () => {
         }
     };
 
+    const asyncEditServer = async (server) => {
+        const {
+            idx, type, ipAddr,
+            registerType, domainPrefix, domainId, domainPassword,
+            accessKey, secretKey, projectId, ktDomainId, nasUrl, nasId, nasPassword,
+        } = server;
+        console.log("★★★★ asyncEditServer : ", server);
+        try {
+            const response = await modifyMcServer({
+                idx,
+                type,
+                ipAddr,
+                registerType,
+                domainPrefix,
+                domainId,
+                domainPassword,
+                accessKey,
+                secretKey,
+                projectId,
+                ktDomainId,
+                nasUrl,
+                nasId,
+                nasPassword,
+            });
+            handleSnackbarSuccess("서버 수정에 성공하였습니다.");
+            getPageData();
+        } catch (e) {
+            handleSnackbarFailure("서버 수정에 실패하였습니다.");
+        }
+    };
+
     const handleSubmitAddServer = (server) => {
-        console.log("handleSubmit() : server", server);
         asyncAddServer(server);
         handleCloseAddServer();
     };
 
+    const handleSubmitEditServer = (server) => {
+        asyncEditServer(server);
+        handleCloseEditServer();
+    };
+
     const handleSubmitSearch = (params) => {
-        console.log("handleSubmitSearch() params ", params);
         setSearchParam(params);
+    };
+
+    const handleModifySelectedServer = (idx) => {
+        const res = data.filter(item => item.idx === idx);
+        setModifyData(res[0]);
+        handleOpenEditServer();
     };
 
     /** Pagination */
@@ -296,9 +357,6 @@ const ServerTable = () => {
 
     const handleDeleteSelected = () => {
         let copyData = [...data];
-        console.log("deleted Selected:");
-        console.log("copyData:", copyData);
-        console.log("SELECTED:", selected);
         const delList = [];
         if (selected !== null) {
             selected.forEach((value, key, mapObject) => {
@@ -383,6 +441,14 @@ const ServerTable = () => {
                         style={{width: "5%"}}
                     >
                         {row.idx}
+                       {/* <b className="text_cor_green mouse_over_list_blue">
+                                    <div className="assets_add_modal_div"
+                                         onClick={event => handleModifySelectedServer(row.idx)}
+                                         onKeyDown={event => handleModifySelectedServer(row.idx)}
+                                         role="button" tabIndex="0"><span className="circle__ste"/>
+                                        Edit
+                                    </div>
+                                </b>*/}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
@@ -437,6 +503,18 @@ const ServerTable = () => {
                         style={{width: "10%"}}
                     >
                         {row.domainPassword}
+                    </TableCell>
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "5%"}}>
+                        <b className="text_cor_green mouse_over_list_blue">
+                            <div className="assets_add_modal_div"
+                                 onClick={event => handleModifySelectedServer(row.idx)}
+                                 onKeyDown={event => handleModifySelectedServer(row.idx)}
+                                 role="button" tabIndex="0"><span className="circle__ste"/>
+                                Edit
+                            </div>
+                        </b>
                     </TableCell>
                 </TableRow>
             </React.Fragment>
@@ -495,6 +573,13 @@ const ServerTable = () => {
                         user={user}
                         handleClose={handleCloseAddServer}
                         handleSubmit={handleSubmitAddServer}
+                    />
+                    <ModifyServer
+                        open={openEditServer}
+                        user={user}
+                        handleClose={handleCloseEditServer}
+                        handleSubmit={handleSubmitEditServer}
+                        data={modifyData}
                     />
                 </CardBody>
             </Card>

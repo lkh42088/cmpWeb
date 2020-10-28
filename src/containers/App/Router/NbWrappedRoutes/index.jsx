@@ -53,7 +53,12 @@ const menuLevel = [
 export default ({history}) => {
     //const existSession = localStorage.getItem("user");
     const user = JSON.parse(localStorage.getItem("user"));
-    const {level} = user;
+    let level = '';
+
+    if (user) {
+        // eslint-disable-next-line prefer-destructuring
+        level = user.level;
+    }
 
     if (user) {
         return (

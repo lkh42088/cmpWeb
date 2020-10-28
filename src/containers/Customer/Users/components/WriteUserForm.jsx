@@ -40,31 +40,13 @@ import {API_ROUTE, API_ROUTE_SERVER_IMAGE} from "../../../../lib/api/client";
 import {CUSTOMER_MANAGER, OPERATOR} from "../../../../lib/var/globalVariable";
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
     margin: {
         margin: theme.spacing(1),
-    },
-    withoutLabel: {
-        marginTop: theme.spacing(3),
-    },
-    textField: {
-        width: '25ch',
     },
     list: {
         width: '100%',
         maxWidth: 360,
         backgroundColor: theme.palette.background.paper,
-    },
-    chip: {
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        '& > *': {
-            margin: theme.spacing(0.5),
-        },
     },
     paper: {
         display: 'flex',

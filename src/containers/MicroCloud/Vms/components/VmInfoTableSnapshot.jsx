@@ -20,7 +20,7 @@ import {
     pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
 import {
-    deleteSnapshotList, getMcVmSnapshot, recoveryMcVm,
+    deleteSnapshotList, getMcVmSnapshot, recoveryMcVm, getMcVmSnapshotParam,
 } from "../../../../lib/api/microCloud";
 import {OPERATOR} from "../../../../lib/var/globalVariable";
 //import SnapshotRecoveryModal from "./SnapshotRecoveryModal";
@@ -94,7 +94,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const VmInfoTableSnapshot = () => {
+const VmInfoTableSnapshot = ({vm}) => {
     const classes = useStyles();
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -221,16 +221,16 @@ const VmInfoTableSnapshot = () => {
             companyName = user.cpName;
         }
         try {
-            console.log("companyName : ", companyName);
-            const response = await getMcVmSnapshot({
+            const response = await getMcVmSnapshotParam({
                 rows: rowsPerPage,
                 offset,
                 orderBy,
                 order,
-                cpName: companyName,
+                cpIdx: vm.cpIdx,
+                serverIdx: vm.serverIdx,
+                name: vm.name,
             });
-            console.log("response: data ", response.data.data);
-            console.log("response: page ", response.data.page);
+            console.log("★★★★ response: data ", response.data.data);
             setData(response.data.data);
             setPaging(response.data.page);
         } catch (e) {
@@ -308,6 +308,10 @@ const VmInfoTableSnapshot = () => {
         asyncRecoveryVm(snap);
     };
 
+    /**************************************************************
+     * useEffect
+     **************************************************************/
+
     useEffect(() => {
         /** Pagination */
         getPageData();
@@ -320,10 +324,6 @@ const VmInfoTableSnapshot = () => {
             updatePagingTotalCount({count});
         }
     }, [paging]);
-
-    useEffect(() => {
-
-    }, []);
 
     const ContentsRow = (props) => {
         const {row} = props;
@@ -419,6 +419,7 @@ const VmInfoTableSnapshot = () => {
         }}>
             <CardBody className="vm__card" style={{
                 flex: "none",
+                height: "650px",
             }}>
                 <div className="vm__stats">
                     <div className="vm__stat">

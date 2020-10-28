@@ -114,9 +114,11 @@ const VmInfoTableBackup = () => {
     return (
         <Card style={{
             height: "auto",
+            /*height: "calc(50% -10%)",*/
         }}>
             <CardBody className="vm__card" style={{
                 flex: "none",
+                height: "650px",
             }}>
                 <div className="vm__stats">
                     <div className="vm__stat">

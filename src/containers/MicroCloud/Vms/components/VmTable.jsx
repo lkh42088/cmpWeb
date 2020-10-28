@@ -39,10 +39,11 @@ import VmTableToolbar from "./VmTableToolbar";
 import CommonTableHead from "../../../Common/CommonTableHead";
 import RegisterVm from "./RegisterVm";
 import {
-    getMcVms, registerMcVm, sendVmAction, unregisterMcVm,
+    getMcVms, registerMcVm, sendVmAction, unregisterMcVm, modifyMcVm,
 } from "../../../../lib/api/microCloud";
 import {changeVmPage} from "../../../../redux/actions/vmsActions";
 import {CUSTOMER_MANAGER, OPERATOR, TOP_MANAGER} from "../../../../lib/var/globalVariable";
+import ModifyVm from "./ModifyVm";
 
 const headRows = [
     {id: 'idx', disablePadding: false, label: 'Index'},
@@ -179,10 +180,12 @@ const VmTable = () => {
     const [data, setData] = useState([]);
     const [paging, setPaging] = useState(null);
     const [openAddVm, setOpenAddVm] = useState(false);
+    const [openEditVm, setOpenEditVm] = useState(false);
     const [searchParam, setSearchParam] = useState(null);
     const [adminLevel, setAdminLevel] = useState(true);
-    const { enqueueSnackbar } = useSnackbar();
+    const {enqueueSnackbar} = useSnackbar();
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [modifyData, setModifyData] = React.useState(null);
 
     const dispatch = useDispatch();
 
@@ -318,6 +321,14 @@ const VmTable = () => {
         setOpenAddVm(false);
     };
 
+    const handleOpenEditVm = () => {
+        setOpenEditVm(true);
+    };
+
+    const handleCloseEditVm = () => {
+        setOpenEditVm(false);
+    };
+
     const handleSnackbarFailure = (snackMsg) => {
         enqueueSnackbar(snackMsg);
     };
@@ -341,10 +352,12 @@ const VmTable = () => {
     const asyncAddVm = async (vm) => {
         const {
             name, cpIdx, serialNumber, serverIdx, cpu, ram, hdd, image, imageName, os, networkName,
-            snapType, snapDays, snapHours, snapMinutes, vmUserId, vmUserFlag,
+            snapType, snapDays, snapHours, snapMinutes,
+            backupType, backupDays, backupHours, backupMinutes,
+            vmUserId, vmUserFlag,
         } = vm;
+        //console.log("💍💍💍💍💍💍 asyncAddVm : ", vm);
         try {
-            //console.log("👿👿👿 vmUserId : ", vmUserId, ", vmUserFlag : ", vmUserFlag);
             let tempVmUserId = vmUserId;
             if (!vmUserFlag) {
                 tempVmUserId = "";
@@ -367,6 +380,10 @@ const VmTable = () => {
                 snapDays,
                 snapHours,
                 snapMinutes,
+                backupType,
+                backupDays,
+                backupHours,
+                backupMinutes,
                 vmUserId: tempVmUserId,
             });
 
@@ -377,9 +394,56 @@ const VmTable = () => {
         }
     };
 
+
+    const asyncEditVm = async (vm) => {
+        const {
+            idx, cpIdx,
+            snapType, snapDays, snapHours, snapMinutes,
+            vmUserId, vmUserFlag, networkName,
+            backupType, backupDays, backupHours, backupMinutes,
+        } = vm;
+        //console.log("🤖🤖🤖🤖🤖🤖🤖 asyncEditVm : ", vm);
+        try {
+            let tempVmUserId = vmUserId;
+            if (!vmUserFlag) {
+                tempVmUserId = "";
+            }
+            const response = await modifyMcVm({
+                idx,
+                network: networkName,
+                snapType,
+                snapDays,
+                snapHours,
+                snapMinutes,
+                backupType,
+                backupDays,
+                backupHours,
+                backupMinutes,
+                vmUserId: tempVmUserId,
+            });
+
+            handleSnackbarSuccess("VM 수정에 성공하였습니다.");
+            getPageData();
+        } catch (e) {
+            handleSnackbarFailure("VM 수정에 실패하였습니다.");
+        }
+    };
+
     const handleSubmitAddVm = (vm) => {
         asyncAddVm(vm);
         handleCloseAddVm();
+    };
+
+    const handleSubmitEditVm = (vm) => {
+        console.log("handleSubmitEditVm start");
+        asyncEditVm(vm);
+        handleCloseEditVm();
+    };
+
+    const handleModifySelectedVm = (idx) => {
+        const res = data.filter(item => item.idx === idx);
+        setModifyData(res[0]);
+        handleOpenEditVm();
     };
 
     const handleSubmitSearch = (params) => {
@@ -556,6 +620,14 @@ const VmTable = () => {
                                 style={{width: "5%"}}
                             >
                                 {row.idx}
+                                {/*<b className="text_cor_green mouse_over_list_blue">
+                                    <div className="assets_add_modal_div"
+                                         onClick={event => handleModifySelectedVm(row.idx)}
+                                         onKeyDown={event => handleModifySelectedVm(row.idx)}
+                                         role="button" tabIndex="0"><span className="circle__ste"/>
+                                        Edit
+                                    </div>
+                                </b>*/}
                             </TableCell>
                             <TableCell
                                 className={cellClassName}
@@ -673,48 +745,47 @@ const VmTable = () => {
                             <Grid item xs={12}>
                                 <Grid container justify="center" spacing={spacing}>
                                     <Grid item>*/}
-                                    {/*</Grid>
+                        {/*</Grid>
                                     <Grid item>*/}
-                                        {/*<Button*/}
-                                        {/*    className={classes.margin}*/}
-                                        {/*    variant="contained"*/}
-                                        {/*    color="primary"*/}
-                                        {/*    // onClick={handleOpenSearchCompany}*/}
-                                        {/*    endIcon={<SendIcon fontSize="small" />}*/}
-                                        {/*    style={{*/}
-                                        {/*        maxWidth: '40px',*/}
-                                        {/*        maxHeight: '40px',*/}
-                                        {/*        minWidth: '40px',*/}
-                                        {/*        minHeight: '40px',*/}
-                                        {/*        margin: '0px 0px 0px 3px',*/}
-                                        {/*    }}*/}
-                                        {/*/>*/}
-                                        <IconButton
-                                            onClick={() => handleSendVmAction(row, vmAction)}
-                                            color="primary"
-                                                style={{
-                                                    maxWidth: '40px',
-                                                    maxHeight: '40px',
-                                                    minWidth: '40px',
-                                                    minHeight: '40px',
-                                                    margin: '0px 0px 0px 3px',
-                                                }}
-                                        >
-                                            <SendIcon/>
-                                        </IconButton>
-                                    {/*</Grid>
+                        {/*<Button*/}
+                        {/*    className={classes.margin}*/}
+                        {/*    variant="contained"*/}
+                        {/*    color="primary"*/}
+                        {/*    // onClick={handleOpenSearchCompany}*/}
+                        {/*    endIcon={<SendIcon fontSize="small" />}*/}
+                        {/*    style={{*/}
+                        {/*        maxWidth: '40px',*/}
+                        {/*        maxHeight: '40px',*/}
+                        {/*        minWidth: '40px',*/}
+                        {/*        minHeight: '40px',*/}
+                        {/*        margin: '0px 0px 0px 3px',*/}
+                        {/*    }}*/}
+                        {/*/>*/}
+                        <IconButton
+                            onClick={() => handleSendVmAction(row, vmAction)}
+                            color="primary"
+                            style={{
+                                maxWidth: '40px',
+                                maxHeight: '40px',
+                                minWidth: '40px',
+                                minHeight: '40px',
+                                margin: '0px 0px 0px 3px',
+                            }}
+                        >
+                            <SendIcon/>
+                        </IconButton>
+                        {/*</Grid>
                                 </Grid>
                             </Grid>
                         </Grid>*/}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "5%"}}
-                    >
+                        style={{width: "5%"}}>
                         <b className="text_cor_green mouse_over_list_blue">
                             <div className="assets_add_modal_div"
-                                 onClick={event => handleVmPage(row.idx)}
-                                 onKeyDown={event => handleVmPage(row.idx)}
+                                 onClick={event => handleModifySelectedVm(row.idx)}
+                                 onKeyDown={event => handleModifySelectedVm(row.idx)}
                                  role="button" tabIndex="0"><span className="circle__ste"/>
                                 Edit
                             </div>
@@ -777,6 +848,13 @@ const VmTable = () => {
                         user={user}
                         handleClose={handleCloseAddVm}
                         handleSubmit={handleSubmitAddVm}
+                    />
+                    <ModifyVm
+                        open={openEditVm}
+                        user={user}
+                        handleClose={handleCloseEditVm}
+                        handleSubmit={handleSubmitEditVm}
+                        data={modifyData}
                     />
                 </CardBody>
             </Card>
