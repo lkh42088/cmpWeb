@@ -280,6 +280,7 @@ const VmTableToolbar = (props) => {
                                     </IconButton>
                                 </Tooltip>*/}
                             </Grid>
+
                             <Grid item md={4} zeroMinWidth>
                                 <Paper component="div" className={classes.paper}>
                                     <Tooltip title="검색조건" aria-label="searchCondition">

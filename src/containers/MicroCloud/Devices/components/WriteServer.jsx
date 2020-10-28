@@ -34,6 +34,11 @@ const registerTypeList = [
     { value: 1, name: "Domain" },
 ];
 
+const backupTypeList = [
+    { value: 1, name: "Kt Cloud" },
+    { value: 2, name: "NAS" },
+];
+
 const WriteServer = (props) => {
     /************************************************************************************
      * Props
@@ -64,6 +69,7 @@ const WriteServer = (props) => {
         domainPrefix: '',
         domainId: '',
         domainPassword: '',
+        backupType: 0,
         accessKey: '',
         secretKey: '',
         projectId: '',
@@ -82,6 +88,7 @@ const WriteServer = (props) => {
         domainPrefix: false,
         domainId: false,
         domainPassword: false,
+        backupType: true,
         accessKey: false,
         secretKey: false,
         projectId: false,
@@ -100,6 +107,7 @@ const WriteServer = (props) => {
         domainPrefix: false,
         domainId: false,
         domainPassword: false,
+        backupType: false,
         accessKey: false,
         secretKey: false,
         projectId: false,
@@ -118,6 +126,7 @@ const WriteServer = (props) => {
         domainPrefix: "",
         domainId: "",
         domainPassword: "",
+        backupType: "",
         accessKey: "",
         secretKey: "",
         projectId: "",
@@ -136,6 +145,7 @@ const WriteServer = (props) => {
         domainPrefix: false,
         domainId: false,
         domainPassword: false,
+        backupType: false,
         accessKey: false,
         secretKey: false,
         projectId: false,
@@ -165,6 +175,7 @@ const WriteServer = (props) => {
             domainPrefix: '',
             domainId: '',
             domainPassword: '',
+            backupType: 0,
             accessKey: '',
             secretKey: '',
             projectId: '',
@@ -182,6 +193,7 @@ const WriteServer = (props) => {
             domainPrefix: "",
             domainId: "",
             domainPassword: "",
+            backupType: "",
             accessKey: "",
             secretKey: "",
             projectId: "",
@@ -199,6 +211,7 @@ const WriteServer = (props) => {
             domainPrefix: false,
             domainId: false,
             domainPassword: false,
+            backupType: false,
             accessKey: false,
             secretKey: false,
             projectId: false,
@@ -533,144 +546,185 @@ const WriteServer = (props) => {
                             </Grid>
                         </React.Fragment>
                     )}
+                    <Grid item xs={6}>
+                        <div>
+                            <span className={labelClassName}>* Backup Type</span>
+                            <FormControl
+                                size={fieldSize}
+                                className={fieldClassName}
+                                variant="filled"
+                                error={errors.backupType}
+                                disabled={disables.backupType}
+                            >
+                                <Select
+                                    required={requires.backupType}
+                                    name="backupType"
+                                    value={fields.backupType}
+                                    error={errors.backupType}
+                                    onChange={(e) => {
+                                        handleChangeField("backupType", e.target.value);
+                                    }}
+                                    onClick={handleMenuCompany}
+                                    MenuProps={MenuProps}
+                                >
+                                    <MenuItem key={0} value={0}>
+                                        <em>None</em>
+                                    </MenuItem>
+                                    {backupTypeList && backupTypeList.map((item, index) => {
+                                        const key = index;
+                                        return (
+                                            <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
+                                        );
+                                    })}
+                                </Select>
+                                <FormHelperText>{helpers.backupType}</FormHelperText>
+                            </FormControl>
+                        </div>
+                    </Grid>
                     <Grid item xs={6} />
-                    <hr className="cb_sidebar__horizon"/>
-                    {/*KT Storage config*/}
-                    <Grid item xs={6}>
-                        <div>
-                            <span className={labelClassName}>* KT Ucloud Access Key</span>
-                            <TextField
-                                className={fieldClassName}
-                                error={errors.accessKey}
-                                required={requires.accessKey}
-                                disabled={disables.accessKey}
-                                helperText={helpers.accessKey}
-                                name="accessKey"
-                                value={fields.accessKey}
-                                onChange={(e) => {
-                                    handleChangeField("accessKey", e.target.value);
-                                }}
-                                variant={variant}
-                                size={fieldSize}
-                            />
-                        </div>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <div>
-                            <span className={labelClassName}>* KT Ucloud Secret Key</span>
-                            <TextField
-                                className={fieldClassName}
-                                error={errors.secretKey}
-                                required={requires.secretKey}
-                                disabled={disables.secretKey}
-                                helperText={helpers.secretKey}
-                                name="secretKey"
-                                value={fields.secretKey}
-                                onChange={(e) => {
-                                    handleChangeField("secretKey", e.target.value);
-                                }}
-                                variant={variant}
-                                size={fieldSize}
-                            />
-                        </div>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <div>
-                            <span className={labelClassName}>* KT Ucloud Project ID</span>
-                            <TextField
-                                className={fieldClassName}
-                                error={errors.projectId}
-                                required={requires.projectId}
-                                disabled={disables.projectId}
-                                helperText={helpers.projectId}
-                                name="projectId"
-                                value={fields.projectId}
-                                onChange={(e) => {
-                                    handleChangeField("projectId", e.target.value);
-                                }}
-                                variant={variant}
-                                size={fieldSize}
-                            />
-                        </div>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <div>
-                            <span className={labelClassName}>* KT Ucloud Domain ID</span>
-                            <TextField
-                                className={fieldClassName}
-                                error={errors.ktDomainId}
-                                required={requires.ktDomainId}
-                                disabled={disables.ktDomainId}
-                                helperText={helpers.ktDomainId}
-                                name="ktDomainId"
-                                value={fields.ktDomainId}
-                                onChange={(e) => {
-                                    handleChangeField("ktDomainId", e.target.value);
-                                }}
-                                variant={variant}
-                                size={fieldSize}
-                            />
-                        </div>
-                    </Grid>
-                    <hr className="cb_sidebar__horizon"/>
-                    {/*NAS CONFIG*/}
-                    <Grid item xs={6}>
-                        <div>
-                            <span className={labelClassName}>* NAS URL</span>
-                            <TextField
-                                className={fieldClassName}
-                                error={errors.nasUrl}
-                                required={requires.nasUrl}
-                                disabled={disables.nasUrl}
-                                helperText={helpers.nasUrl}
-                                name="nasUrl"
-                                value={fields.nasUrl}
-                                onChange={(e) => {
-                                    handleChangeField("nasUrl", e.target.value);
-                                }}
-                                variant={variant}
-                                size={fieldSize}
-                            />
-                        </div>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <div>
-                            <span className={labelClassName}>* NAS ID</span>
-                            <TextField
-                                className={fieldClassName}
-                                error={errors.nasId}
-                                required={requires.nasId}
-                                disabled={disables.nasId}
-                                helperText={helpers.nasId}
-                                name="nasId"
-                                value={fields.nasId}
-                                onChange={(e) => {
-                                    handleChangeField("nasId", e.target.value);
-                                }}
-                                variant={variant}
-                                size={fieldSize}
-                            />
-                        </div>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <div>
-                            <span className={labelClassName}>* NAS Password</span>
-                            <TextField
-                                className={fieldClassName}
-                                error={errors.nasPassword}
-                                required={requires.nasPassword}
-                                disabled={disables.nasPassword}
-                                helperText={helpers.nasPassword}
-                                name="nasPassword"
-                                value={fields.nasPassword}
-                                onChange={(e) => {
-                                    handleChangeField("nasPassword", e.target.value);
-                                }}
-                                variant={variant}
-                                size={fieldSize}
-                            />
-                        </div>
-                    </Grid>
+                    {fields.backupType === 1 ? (
+                        <>
+                            <hr className="cb_sidebar__horizon"/>
+                            <Grid item xs={6}>
+                                <div>
+                                    <span className={labelClassName}>* KT Ucloud Access Key</span>
+                                    <TextField
+                                        className={fieldClassName}
+                                        error={errors.accessKey}
+                                        required={requires.accessKey}
+                                        disabled={disables.accessKey}
+                                        helperText={helpers.accessKey}
+                                        name="accessKey"
+                                        value={fields.accessKey}
+                                        onChange={(e) => {
+                                            handleChangeField("accessKey", e.target.value);
+                                        }}
+                                        variant={variant}
+                                        size={fieldSize}
+                                    />
+                                </div>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <div>
+                                    <span className={labelClassName}>* KT Ucloud Secret Key</span>
+                                    <TextField
+                                        className={fieldClassName}
+                                        error={errors.secretKey}
+                                        required={requires.secretKey}
+                                        disabled={disables.secretKey}
+                                        helperText={helpers.secretKey}
+                                        name="secretKey"
+                                        value={fields.secretKey}
+                                        onChange={(e) => {
+                                            handleChangeField("secretKey", e.target.value);
+                                        }}
+                                        variant={variant}
+                                        size={fieldSize}
+                                    />
+                                </div>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <div>
+                                    <span className={labelClassName}>* KT Ucloud Project ID</span>
+                                    <TextField
+                                        className={fieldClassName}
+                                        error={errors.projectId}
+                                        required={requires.projectId}
+                                        disabled={disables.projectId}
+                                        helperText={helpers.projectId}
+                                        name="projectId"
+                                        value={fields.projectId}
+                                        onChange={(e) => {
+                                            handleChangeField("projectId", e.target.value);
+                                        }}
+                                        variant={variant}
+                                        size={fieldSize}
+                                    />
+                                </div>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <div>
+                                    <span className={labelClassName}>* KT Ucloud Domain ID</span>
+                                    <TextField
+                                        className={fieldClassName}
+                                        error={errors.ktDomainId}
+                                        required={requires.ktDomainId}
+                                        disabled={disables.ktDomainId}
+                                        helperText={helpers.ktDomainId}
+                                        name="ktDomainId"
+                                        value={fields.ktDomainId}
+                                        onChange={(e) => {
+                                            handleChangeField("ktDomainId", e.target.value);
+                                        }}
+                                        variant={variant}
+                                        size={fieldSize}
+                                    />
+                                </div>
+                            </Grid>
+                        </>
+                    ) : <div/>}
+                    {fields.backupType === 2 ? (
+                        <>
+                            <hr className="cb_sidebar__horizon"/>
+                            <Grid item xs={6}>
+                                <div>
+                                    <span className={labelClassName}>* NAS URL</span>
+                                    <TextField
+                                        className={fieldClassName}
+                                        error={errors.nasUrl}
+                                        required={requires.nasUrl}
+                                        disabled={disables.nasUrl}
+                                        helperText={helpers.nasUrl}
+                                        name="nasUrl"
+                                        value={fields.nasUrl}
+                                        onChange={(e) => {
+                                            handleChangeField("nasUrl", e.target.value);
+                                        }}
+                                        variant={variant}
+                                        size={fieldSize}
+                                    />
+                                </div>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <div>
+                                    <span className={labelClassName}>* NAS ID</span>
+                                    <TextField
+                                        className={fieldClassName}
+                                        error={errors.nasId}
+                                        required={requires.nasId}
+                                        disabled={disables.nasId}
+                                        helperText={helpers.nasId}
+                                        name="nasId"
+                                        value={fields.nasId}
+                                        onChange={(e) => {
+                                            handleChangeField("nasId", e.target.value);
+                                        }}
+                                        variant={variant}
+                                        size={fieldSize}
+                                    />
+                                </div>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <div>
+                                    <span className={labelClassName}>* NAS Password</span>
+                                    <TextField
+                                        className={fieldClassName}
+                                        error={errors.nasPassword}
+                                        required={requires.nasPassword}
+                                        disabled={disables.nasPassword}
+                                        helperText={helpers.nasPassword}
+                                        name="nasPassword"
+                                        value={fields.nasPassword}
+                                        onChange={(e) => {
+                                            handleChangeField("nasPassword", e.target.value);
+                                        }}
+                                        variant={variant}
+                                        size={fieldSize}
+                                    />
+                                </div>
+                            </Grid>
+                        </>
+                    ) : <div/>}
                     <Grid item xs={12}>
                         <div>
                             <Button
