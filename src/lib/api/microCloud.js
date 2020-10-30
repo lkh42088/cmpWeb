@@ -236,12 +236,12 @@ export const deleteBackupList = ({
 });
 
 export const recoveryBackupMcVm = ({
-                                       idx, serverIdx, vmName, name,
-                                   }) => client.post('/v1/micro/vms/backup/recovery', {
+                                       idx, serverIdx, vmName, filename,
+                                   }) => client.post('/v1/micro/vms/backup/restore', {
     idx,
     serverIdx,
     vmName,
-    name,
+    filename,
 });
 
 export const updateMcVmBackup = ({

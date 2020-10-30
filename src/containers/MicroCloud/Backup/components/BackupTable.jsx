@@ -9,6 +9,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import {makeStyles} from "@material-ui/core/styles";
 import {useSnackbar} from "notistack";
 import {useDispatch, useSelector} from "react-redux";
+import Button from '@material-ui/core/Button';
 import BackupTableToolbar from "./BackupTableToolbar";
 import CommonTableHead from "../../../Common/CommonTableHead";
 import {
@@ -31,6 +32,7 @@ const headRows = [
     {id: 'filename', disablePadding: false, label: 'Backup 이름'},
     {id: 'registerDate', disablePadding: false, label: 'Backup 날짜'},
     {id: 'containerName', disablePadding: false, label: 'Container 이름'},
+    {id: 'restore', disablePadding: false, label: '복원'},
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -275,34 +277,34 @@ const BackupTable = () => {
         console.log("after copyData:", copyData);
     };
 
-    // const handleOpenRecovery = () => {
-    //     setOpenRecovery(true);
-    // };
-    //
-    // const handleCloseRecovery = () => {
-    //     setOpenRecovery(false);
-    // };
+    const handleOpenRecovery = () => {
+        setOpenRecovery(true);
+    };
 
-    // const asyncRecoveryVm = async (obj) => {
-    //   try {
-    //       const response = await recoveryBackupMcVm({
-    //           idx: obj.idx,
-    //           serverIdx: obj.serverIdx,
-    //           vmName: obj.vmName,
-    //           name: obj.name,
-    //       });
-    //       handleSnackbarSuccess("Backup 복구에 성공하였습니다.");
-    //       getPageData();
-    //   } catch (e) {
-    //       handleSnackbarFailure("Backup 복구에 실패하였습니다.");
-    //   }
-    // };
+    const handleCloseRecovery = () => {
+        setOpenRecovery(false);
+    };
 
-    // const handleSubmitRecovery = (snap) => {
-    //     setOpenRecovery(false);
-    //     console.log("submit: ", snap);
-    //     asyncRecoveryVm(snap);
-    // };
+    const asyncRestoreVm = async (obj) => {
+      try {
+          const response = await recoveryBackupMcVm({
+              idx: obj.idx,
+              serverIdx: obj.serverIdx,
+              vmName: obj.vmName,
+              name: obj.filename,
+          });
+          handleSnackbarSuccess("Backup 복원이 진행 중입니다...");
+          getPageData();
+      } catch (e) {
+          handleSnackbarFailure("Backup 복원에 실패하였습니다.");
+      }
+    };
+
+    const handleSubmitRecovery = (rowData) => {
+        setOpenRecovery(false);
+        console.log("submit: ", rowData);
+        asyncRestoreVm(rowData);
+    };
 
     useEffect(() => {
         /** Pagination */
@@ -374,13 +376,13 @@ const BackupTable = () => {
                         <React.Fragment>
                             <TableCell
                                 className={cellClassName}
-                                style={{width: "5%"}}
+                                style={{width: "3%"}}
                             >
                                 {row.idx}
                             </TableCell>
                             <TableCell
                                 className={cellClassName}
-                                style={{width: "10%"}}
+                                style={{width: "5%"}}
                             >
                                 {row.cpName}
                             </TableCell>
@@ -388,7 +390,7 @@ const BackupTable = () => {
                                 className={cellClassName}
                                 style={{width: "5%"}}
                             >
-                                {row.serialNumber}
+                                {row.mcServerSn}
                             </TableCell>
 
                         </React.Fragment>
@@ -401,9 +403,9 @@ const BackupTable = () => {
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "5%"}}
+                        style={{width: "20%"}}
                     >
-                        {row.name}
+                        {row.filename}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
@@ -415,14 +417,25 @@ const BackupTable = () => {
                         className={cellClassName}
                         style={{width: "5%"}}
                     >
-                        {row.container}
+                        {row.containerName}
                     </TableCell>
-                    {/*<BackupRecoveryModal*/}
-                    {/*    open={openRecovery}*/}
-                    {/*    snap={recoveryRow}*/}
-                    {/*    handleClose={handleCloseRecovery}*/}
-                    {/*    handleSubmit={handleSubmitRecovery}*/}
-                    {/*/>*/}
+                    <TableCell
+                        className={cellClassName}
+                        style={{width: "5%"}}
+                    >
+                            <Button
+                                color="secondary"
+                                onMouseOver={(e) => { setRecoveryRow(row); }}
+                                onClick={handleOpenRecovery}>
+                                RESTORE
+                            </Button>
+                    </TableCell>
+                    <BackupRecoveryModal
+                        open={openRecovery}
+                        backup={recoveryRow}
+                        handleClose={handleCloseRecovery}
+                        handleSubmit={handleSubmitRecovery}
+                    />
                 </TableRow>
             </React.Fragment>
         );

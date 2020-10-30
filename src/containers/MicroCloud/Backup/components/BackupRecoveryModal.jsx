@@ -1,11 +1,12 @@
 import React, {useEffect, useState, Fragment} from "react";
 import Dialog from "@material-ui/core/Dialog";
-import {Card, CardBody} from "reactstrap";
+import {Card, CardBody, CardHeader} from "reactstrap";
 import Grid from "@material-ui/core/Grid";
 import {Button} from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 import {makeStyles} from "@material-ui/core/styles";
-import RestoreIcon from '@material-ui/icons/Restore';
+import BackupRestoreIcon from "mdi-react/BackupRestoreIcon";
+import TableCell from "@material-ui/core/TableCell";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -48,28 +49,32 @@ const BackupRecoveryModal = (props) => {
     const classes = useStyles();
     const {
         open,
-        snap,
+        backup,
         handleClose,
         handleSubmit,
     } = props;
 
     const [vmName, setVmName] = useState("");
-    const [snapName, setSnapName] = useState("");
+    const [fileName, setFileName] = useState("");
+    const [registerDate, setRegisterDate] = useState("");
 
     const handleCancel = () => {
         handleClose();
     };
 
     const handleSubmitInternal = () => {
-        handleSubmit(snap);
+        handleSubmit(backup);
     };
 
     useEffect(() => {
-        if ((snap !== null) && (snap.vmName !== null)) {
-            setVmName(snap.vmName);
+        if ((backup !== null) && (backup.vmName !== null)) {
+            setVmName(backup.vmName);
         }
-        if ((snap !== null) && (snap.name !== null)) {
-            setSnapName(snap.name);
+        if ((backup !== null) && (backup.name !== null)) {
+            setFileName(backup.filename);
+        }
+        if (backup !== null) {
+            setRegisterDate(`${backup.year}년 ${backup.month}월 ${backup.day}일 ${backup.hour}:${backup.minute}:${backup.second}`);
         }
     }, []);
 
@@ -85,27 +90,27 @@ const BackupRecoveryModal = (props) => {
     return (
         <Dialog open={open}>
             <Card>
-                <CardBody>
-                    <div className="card__title">
+                <CardHeader>
                         <Grid container alignItems="center" spacing={1}>
-                            <Grid item>
-                                <RestoreIcon/>
-                            </Grid>
-                            <Grid item>
-                                <h3 className="bold-text">VM Snapshot Recovery</h3>
-                            </Grid>
+                            <Grid item md={1}><BackupRestoreIcon/></Grid>
+                            <Grid><h3 className="bold-text">VM Backup Restore</h3></Grid>
                         </Grid>
-                    </div>
+                </CardHeader>
+                <CardBody>
                     <React.Fragment>
                         <form className={formClassName}>
                             {/*<Grid container alignItems="center" spacing={1}>*/}
-                                <Grid container>
-                                <Grid item xs={12}>
+                            <Grid>
+                                <Grid item>
                                     <div style={{
-                                        margin: "0px 0px 20px 30px",
+                                        margin: "20px 50px 30px 50px",
                                     }}>
-                                        <h4>- VM 이름: {vmName}</h4>
-                                        <h4>- snapshot 날짜: {snapName}</h4>
+                                        <h4>- VM NAME : <b>{vmName}</b></h4>
+                                        <h4>- 파일 이름 : <b>{fileName}</b></h4>
+                                        <h4>- 최종 날짜 : <b>{registerDate}</b></h4>
+                                    </div>
+                                    <div style={{margin: "20px 50px 30px 50px", color: "red"}}>
+                                        <h4><b>* 진행 시 PC가 백업 시점으로 Rollback 되며 되돌릴 수 없습니다.</b></h4>
                                     </div>
                                 </Grid>
                                 <Grid item xs={12}>
@@ -123,9 +128,8 @@ const BackupRecoveryModal = (props) => {
                                             color="primary"
                                             size={buttonSize}
                                             onClick={handleSubmitInternal}
-                                            endIcon={<SendIcon/>}
                                         >
-                                            전송
+                                             확인
                                         </Button>
                                     </div>
                                 </Grid>
