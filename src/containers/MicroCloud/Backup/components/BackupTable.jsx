@@ -25,13 +25,13 @@ import {OPERATOR} from "../../../../lib/var/globalVariable";
 import BackupRecoveryModal from "./BackupRecoveryModal";
 
 const headRows = [
-    {id: 'idx', disablePadding: false, label: 'Index'},
+    {id: 'idx', disablePadding: false, label: 'INDEX'},
     {id: 'cpName', disablePadding: false, label: '회사명'},
     {id: 'mcServerSn', disablePadding: false, label: '서버 SN'},
     {id: 'vmName', disablePadding: false, label: 'VM 이름'},
-    {id: 'filename', disablePadding: false, label: 'Backup 이름'},
-    {id: 'registerDate', disablePadding: false, label: 'Backup 날짜'},
-    {id: 'containerName', disablePadding: false, label: 'Container 이름'},
+    {id: 'filename', disablePadding: false, label: '백업 이름'},
+    {id: 'registerDate', disablePadding: false, label: '백업 날짜'},
+    {id: 'backupType', disablePadding: false, label: '백업 타입'},
     {id: 'restore', disablePadding: false, label: '복원'},
 ];
 
@@ -415,9 +415,9 @@ const BackupTable = () => {
                     </TableCell>
                     <TableCell
                         className={cellClassName}
-                        style={{width: "5%"}}
+                        style={{width: "10%"}}
                     >
-                        {row.containerName}
+                        {row.filename ? "KT 스토리지" : "NAS" }
                     </TableCell>
                     <TableCell
                         className={cellClassName}

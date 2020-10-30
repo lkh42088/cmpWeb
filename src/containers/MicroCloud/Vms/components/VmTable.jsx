@@ -171,6 +171,7 @@ const actionList = [
     { value: 4, name: "Suspend" },
     { value: 5, name: "Resume" },
     { value: 6, name: "Snapshot" },
+    { value: 7, name: "Backup" },
 ];
 
 const VmTable = () => {
