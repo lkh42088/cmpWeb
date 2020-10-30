@@ -10,7 +10,7 @@
   //width: 240px;   // Origin
   width: 200px;   // [23June2020,khlee]
   box-shadow: 0 1px 30px 1px rgba(0, 0, 0, 0.11);
-  padding-top: 60px;
+  padding-top: 40px;
   // Add sidebar collapse animation [21July2020,khlee]
   transition: transform 0.3s, width 0.3s;
   //transition-timing-function: ease-in-out;
@@ -375,13 +375,41 @@
 }
 
 // 사이드바 company name [11June2020,khlee]
-.cb_sidebar__wrapper--company {
+/*.cb_sidebar__wrapper--company {
   height: 25px;
   font-size: 15px;
   font-weight: bold;
   padding-top: 20px;
   padding-bottom: 30px;
   margin: 5px;
+  text-align: center;
+  font-family: "Source Han Serif KR Medium", Roboto, sans-serif; // [21July2020,khlee]
+
+  @include themify($themes) {
+    //color: themed('colorEmoji');
+    //text-shadow: 1px 1px 1px #CCCCCC;
+    color: themed('colorFitness');
+    //text-shadow: 1px 1px 1px themed('colorShadow');
+  }
+}*/
+
+.nb_sidebar__wrapper__main--company {
+  @include themify($themes) {
+    background-color: themed('colorSidebarCompany');
+  }
+}
+
+.cb_sidebar__wrapper--company2 {
+}
+
+.cb_sidebar__wrapper--company {
+  height: 40px;
+  font-size: 15px;
+  font-weight: bold;
+  /*padding-top: 20px;
+  padding-bottom: 30px;
+  margin: 5px;*/
+  padding: 5px 0;
   text-align: center;
   font-family: "Source Han Serif KR Medium", Roboto, sans-serif; // [21July2020,khlee]
 

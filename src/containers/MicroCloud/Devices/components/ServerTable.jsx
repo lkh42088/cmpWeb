@@ -294,7 +294,6 @@ const ServerTable = () => {
             registerType, domainPrefix, domainId, domainPassword,
             accessKey, secretKey, projectId, ktDomainId, nasUrl, nasId, nasPassword,
         } = server;
-        console.log("★★★★ asyncEditServer : ", server);
         try {
             const response = await modifyMcServer({
                 idx,

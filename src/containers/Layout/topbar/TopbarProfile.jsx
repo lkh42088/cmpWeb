@@ -107,7 +107,7 @@ const TopbarProfile = (props) => {
                     <Avatar
                         className="topbar__avatar-img-list"
                         name={user.id}
-                        size="40"
+                        size="23"
                         style={{
                             margin: "7px",
                         }}
@@ -116,7 +116,7 @@ const TopbarProfile = (props) => {
                     <Avatar
                         className="topbar__avatar-img-list"
                         name={user.id}
-                        size="40"
+                        size="23"
                         src={`${API_ROUTE_SERVER_IMAGE}/${avata}`}
                         style={{
                             margin: "7px",

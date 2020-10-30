@@ -5,13 +5,13 @@ import PropTypes from 'prop-types';
 import {Collapse} from "reactstrap";
 import {useSelector} from "react-redux";
 import SidebarContent from './SidebarContent';
-import { SidebarProps } from '../../../shared/prop-types/ReducerProps';
+import {SidebarProps} from '../../../shared/prop-types/ReducerProps';
 import {NORMAL_USER} from "../../../lib/var/globalVariable";
 
 const Sidebar = ({
-    changeToDark, changeToLight, changeMobileSidebarVisibility,
-    sidebar, changeMenuTitle, user,
-}) => {
+                     changeToDark, changeToLight, changeMobileSidebarVisibility,
+                     sidebar, changeMenuTitle, user,
+                 }) => {
     const sidebarClass = classNames({
         sidebar: true,
         'cb_sidebar--show': sidebar.show,
@@ -35,18 +35,20 @@ const Sidebar = ({
             className={sidebarClass}
             /*style={level === NORMAL_USER ? {display: "none"} : {display: ""}}*/
         >
-            <button className="cb_sidebar__back" type="button" onClick={changeMobileSidebarVisibility} />
+            <button className="cb_sidebar__back" type="button" onClick={changeMobileSidebarVisibility}/>
             <Scrollbar className="cb_sidebar__scroll scroll">
                 {/*company-name TAG*/}
-                <Collapse isOpen={!collapse} >
+                <Collapse isOpen={!collapse}
+                          className="nb_sidebar__wrapper__main--company">
                     <div className="cb_sidebar__wrapper cb_sidebar__wrapper--company">
                         {getCpName()}
                     </div>
-                    <hr className="cb_sidebar__horizon"/>
+                    {/*<hr className="cb_sidebar__horizon"/>*/}
                 </Collapse>
                 <div className="cb_sidebar__wrapper cb_sidebar__wrapper--desktop">
                     <SidebarContent
-                        onClick={() => {}}
+                        onClick={() => {
+                        }}
                         changeToDark={changeToDark}
                         changeToLight={changeToLight}
                         changeMenuTitle={changeMenuTitle}

@@ -4,6 +4,7 @@ import {
 } from 'reactstrap';
 import CustomActiveShapePieChart from './CustomActiveShapePieChart';
 import LineChartWithReferenceLines from './LineChartWithReferenceLines';
+import ChartPie2 from './ChatPie2';
 
 // eslint-disable-next-line no-undef
 //const {PieChart, Pie, Sector} = Recharts;
@@ -18,13 +19,14 @@ const ChatCard = () => (
                 </h3>
             </Col>
         </Row>
+        {/*<Row>
+            <CustomActiveShapePieChart/>
+            <CustomActiveShapePieChart/>
+            <CustomActiveShapePieChart/>
+        </Row>*/}
         <Row>
-            <CustomActiveShapePieChart/>
-            <CustomActiveShapePieChart/>
-            <CustomActiveShapePieChart/>
-        </Row>
-        <Row>
-            <LineChartWithReferenceLines/>
+            {/*<LineChartWithReferenceLines/>*/}
+            <ChartPie2/>
         </Row>
     </Container>
 );

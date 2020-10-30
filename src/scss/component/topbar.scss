@@ -2,24 +2,24 @@
   width: 100%;
   position: fixed;
   top: 0;
-  height: 60px;
+  height: 40px;
   z-index: 101;
   box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.05);
 
   @include themify($themes) {
-    background: themed('colorBackground');
+    background: themed('colorBackgroundTopbar');
   }
 }
 
 .topbar__wrapper {
   position: relative;
   display: flex;
-  height: 60px;
+  height: 40px;
 }
 
 .topbar__button {
   width: 60px;
-  height: 60px;
+  height: 40px;
   display: flex;
   background: transparent;
   border: none;
@@ -51,7 +51,8 @@
 .topbar__logo {
   width: 150px;
   height: 38px;
-  margin: 8px 15px;
+  /*margin: 8px 15px;*/
+  margin-left: 10px;
   background-repeat: no-repeat;
   background-position-y: center;
   background-position-x: left;
@@ -59,8 +60,11 @@
   display: none;
   font-size: x-large;
   font-weight: bold;
-/*
-  @include themify($themes) {
+  color: white;
+  text-shadow: 2px 2px 4px $color-black;
+  line-height: 35px;
+
+  /*@include themify($themes) {
     background-image: themed('logoImg');
   }*/
 
@@ -119,6 +123,12 @@
     @include themify($themes) {
       background-color: themed('colorHover');
     }
+
+    .topbar__avatar-name {
+      @include themify($themes) {
+        color: themed('colorCompany');
+      }
+    }
   }
 
   &:focus {
@@ -152,6 +162,13 @@
   width: 36px;
 }
 
+.ltr-support .topbar__avatar-name {
+  color: white;
+  &:hover {
+    color: gray;
+  }
+}
+
 .topbar__avatar-name {
   font-size: 13px;
   line-height: 18px;
@@ -159,10 +176,6 @@
   display: none;
   @include directify($directions) {
     #{directed('margin-left')}: 10px;
-  }
-
-  @include themify($themes) {
-    color: themed('colorText');
   }
 }
 
