@@ -218,6 +218,8 @@ const SidebarContent = ({
                                  onClick={() => changeMenuTitle('HYBRID CLOUD', 'VM', 'snapshot')}/>
                     <SidebarLink title="BACKUP" route="/micro/backup"
                                  onClick={() => changeMenuTitle('HYBRID CLOUD', 'VM', 'backup')}/>
+                    <SidebarLink title="SECURITY" route="/micro/security"
+                                 onClick={() => changeMenuTitle('HYBRID CLOUD', 'VM', 'security')}/>
                 </SidebarCategory>
                 <SidebarCategory title="SERVER" icon={serverOutlineBadged}
                                  dropdown={dropdown}
@@ -272,6 +274,10 @@ const SidebarContent = ({
                 <SidebarLink title="BACKUP" icon={backupRestore}
                              route="/micro/backup"
                              onClick={() => changeMenuTitle('BACKUP', '', '')}
+                             style={authMenuDisplay(sidebarDropdown, true, OPERATOR, true)}/>
+                <SidebarLink title="SECURITY" icon={outlineRestore}
+                             route="/micro/security"
+                             onClick={() => changeMenuTitle('SECURITY', '', '')}
                              style={authMenuDisplay(sidebarDropdown, true, OPERATOR, true)}/>
                 <SidebarLink title="VM INVENTORY" icon={thList}
                              route="/micro/vms"
