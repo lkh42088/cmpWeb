@@ -182,7 +182,8 @@
 
 .sidebar__submenu {
   transition: height 0.5s 0s, padding 0.5s 0s, opacity 0.4s 0.1s;
-  padding: 15px 0;
+  //padding: 15px 0;
+  padding: 0;  // [02Nov2020,ebjee]
 
   & .sidebar__submenu {
     margin-bottom: 0;
@@ -328,7 +329,8 @@
       }
 
       .sidebar__submenu {
-        padding: 0 0 15px 0;
+        padding: 0;
+        //padding: 0 0 15px 0;
         transition: 0s;
       }
 

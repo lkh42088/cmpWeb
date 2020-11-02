@@ -1,14 +1,13 @@
 import React, {Component, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
+import {useDispatch, useSelector} from "react-redux";
+
 import emojiPeopleIcon from '@material-ui/icons/EmojiPeople';
 import outlineDashboard from '@iconify/icons-ic/outline-dashboard';
 import serverOutlineBadged from '@iconify/icons-clarity/server-outline-badged';
 import routerNetwork from '@iconify/icons-mdi/router-network';
 import monitorDashboard from '@iconify/icons-mdi/monitor-dashboard';
 import usersIcon from '@iconify/icons-fa-solid/users';
-import {Link} from "react-router-dom";
-import listAlt from '@iconify/icons-el/list-alt';
-import {useDispatch, useSelector} from "react-redux";
 //vm card
 import gridChartSolid from '@iconify/icons-clarity/grid-chart-solid';
 //vm vnc
@@ -18,20 +17,27 @@ import thList from '@iconify/icons-fa-solid/th-list';
 //snapshot
 import outlineRestore from '@iconify/icons-ic/outline-restore';
 import backupRestore from '@iconify/icons-mdi/backup-restore';
+
 import {
-    TOP_MANAGER, CUSTOMER_MANAGER, NB_MANAGER, OPERATOR, UNREGISTERED_USER,
+    TOP_MANAGER, CUSTOMER_MANAGER, NB_MANAGER, OPERATOR, UNREGISTERED_USER, NORMAL_USER,
 } from "../../../lib/var/globalVariable";
-import {initVmPage} from "../../../redux/actions/vmsActions";
+import * as common from "../../../lib/common";
+
+import {changeVmPage, initVmPage} from "../../../redux/actions/vmsActions";
 import {setCompanyPage} from "../../../redux/actions/companiesActions";
 import {setUserPage} from "../../../redux/actions/usersActions";
 import SidebarLink from './SidebarLink';
 import SidebarCategory from './SidebarCategory';
 
 const SidebarContent = ({
-    changeToLight, changeToDark, changeMenuTitle, onClick,
-    user, dropdown, changeHybridCloud,
-}) => {
+                            changeToLight, changeToDark, changeMenuTitle, onClick,
+                            user, dropdown, changeHybridCloud,
+                        }) => {
     const dispatch = useDispatch();
+    const boolValueTrue = true;
+    const boolValueFalse = false;
+
+    const sidebarTitle = common.sidebarGetTitle(window.location.href);
 
     const hideSidebar = () => {
         onClick();
@@ -153,7 +159,8 @@ const SidebarContent = ({
         <div className="cb_sidebar__content">
             <ul className="cb_sidebar__block">
                 {user.id === 'ebjee' && (
-                    <SidebarCategory title="EBJEE" icon={emojiPeopleIcon} dropdown={dropdown}>
+                    <SidebarCategory title="EBJEE" icon={emojiPeopleIcon} dropdown={dropdown}
+                                     downState={false}>
                         <SidebarLink title="CHART" route="/test/chart"
                                      onClick={() => changeMenuTitle('TEST', 'CHART', '')}/>
                         <SidebarLink title="CODE" route="/test/code"
@@ -199,8 +206,15 @@ const SidebarContent = ({
                              style={authMenuDisplay(true, true, UNREGISTERED_USER)}
                 />
                 {/*before : UNREGISTERED_USER , after : OPERATOR*/}
+                {/**************
+                 HYBRID CLOUD
+                 **************/}
                 <SidebarCategory title="HYBRID CLOUD" icon={serverOutlineBadged}
                                  dropdown={dropdown}
+                                 downState={{
+                                     hybridCloud: (sidebarTitle === 'HYBRID CLOUD'),
+                                     manager: false,
+                                 }}
                                  style={authMenuDisplay(sidebarDropdown, true, OPERATOR)}>
                     <SidebarLink title="SERVER" route="/micro/servers"
                                  onClick={() => changeMenuTitle('HYBRID CLOUD', 'SERVER', '')}/>
@@ -219,6 +233,9 @@ const SidebarContent = ({
                     <SidebarLink title="BACKUP" route="/micro/backup"
                                  onClick={() => changeMenuTitle('HYBRID CLOUD', 'VM', 'backup')}/>
                 </SidebarCategory>
+                {/**************
+                 CB
+                 **************/}
                 <SidebarCategory title="SERVER" icon={serverOutlineBadged}
                                  dropdown={dropdown}
                                  style={authMenuDisplay(sidebarDropdown, false, UNREGISTERED_USER)}>
@@ -237,8 +254,15 @@ const SidebarContent = ({
                                      onClick={() => changeMenuTitle('BILLING', '', '')}/>
                 <SidebarLink title="BOARD" icon={listAlt} route="/board"
                                      onClick={() => changeMenuTitle('BOARD', '', '')}/>*/}
+                {/**************
+                 계정관리
+                 **************/}
                 <SidebarCategory title="MANAGER" icon={usersIcon}
                                  dropdown={dropdown}
+                                 downState={{
+                                     hybridCloud: false,
+                                     manager: (sidebarTitle === 'MANAGER'),
+                                 }}
                                  style={authMenuDisplay(sidebarDropdown, hybridCloud, OPERATOR)}>
                     <SidebarLink title="계정 관리" route="/customers/users"
                                  onClick={hideSidebar}/>
@@ -250,6 +274,7 @@ const SidebarContent = ({
                 </SidebarCategory>
                 <SidebarCategory title="SETTING" icon={monitorDashboard}
                                  dropdown={dropdown}
+                                 downState={false}
                                  style={authMenuDisplay(sidebarDropdown, false, UNREGISTERED_USER)}>
                     <SidebarLink title="SETTING" route="/setting"
                                  onClick={() => changeMenuTitle('SETTING', '', '')}/>

@@ -1,10 +1,77 @@
-import {SEPARATION_URL} from "./var/globalVariable";
+import outlineDashboard from "@iconify/icons-ic/outline-dashboard";
+import serverOutlineBadged from "@iconify/icons-clarity/server-outline-badged";
+import routerNetwork from "@iconify/icons-mdi/router-network";
+import thList from "@iconify/icons-fa-solid/th-list";
+import gridChartSolid from "@iconify/icons-clarity/grid-chart-solid";
+import monitorMultiple from "@iconify/icons-mdi/monitor-multiple";
+import outlineRestore from "@iconify/icons-ic/outline-restore";
+import backupRestore from "@iconify/icons-mdi/backup-restore";
+import fileInvoiceDollar from "@iconify/icons-fa-solid/file-invoice-dollar";
+import listAlt from "@iconify/icons-el/list-alt";
+import usersIcon from "@iconify/icons-fa-solid/users";
+import monitorDashboard from "@iconify/icons-mdi/monitor-dashboard";
+import cloudServerOutlined from "@iconify/icons-ant-design/cloud-server-outlined";
+import {OPERATOR, SEPARATION_URL} from "./var/globalVariable";
+
+const COMMON_USER_URL = {
+    "dashboards/manager": {title: "관리자 대시보드", subTitle: null, icon: outlineDashboard},
+    "dashboards/customer": {title: "사용자 대시보드", subTitle: null, icon: outlineDashboard},
+    "micro/dashboard": {title: "사용자 대시보드", subTitle: null, icon: null},
+    "micro/servers": {title: "SERVER", subTitle: null, icon: serverOutlineBadged},
+    "micro/networks": {title: "NETWORK", subTitle: null, icon: routerNetwork},
+    "micro/images": {title: "IMAGE", subTitle: null, icon: null},
+    "micro/vms": {title: "VM INVENTORY", subTitle: null, icon: thList},
+    "micro/vmsCard": {title: "VM CARD", subTitle: null, icon: gridChartSolid},
+    "micro/vmsPage": {title: "VM VNC", subTitle: null, icon: monitorMultiple},
+    "micro/vnc": {title: "VM VNC", subTitle: null, icon: monitorMultiple},
+    "micro/snapshot": {title: "SNAPSHOT", subTitle: null, icon: outlineRestore},
+    "micro/backup": {title: "BACKUP", subTitle: null, icon: backupRestore},
+    "assets/server": {title: "SERVER", subTitle: "온프레미스", icon: serverOutlineBadged},
+    "assets/network": {title: "NETWORK", subTitle: "네트워크", icon: routerNetwork},
+    "assets/part": {title: "NETWORK", subTitle: "파트 & 기타", icon: routerNetwork},
+    billing: {title: "BILLING", subTitle: "", icon: fileInvoiceDollar},
+    board: {title: "BOARD", subTitle: "", icon: listAlt},
+    "customers/users": {title: "MANAGER", subTitle: "계정 관리", icon: usersIcon},
+    "customers/companies": {title: "MANAGER", subTitle: "고객사 관리", icon: usersIcon},
+    subnet: {title: "MANAGER", subTitle: "서브넷 관리", icon: usersIcon},
+    setting: {title: "SETTING", subTitle: "", icon: monitorDashboard},
+};
+
+const COMMON_MANAGER_URL = {
+    "dashboards/manager": {title: "관리자 대시보드", subTitle: null, icon: outlineDashboard},
+    "dashboards/customer": {title: "사용자 대시보드", subTitle: null, icon: outlineDashboard},
+    "micro/dashboard": {title: "HYBRID CLOUD", subTitle: "DASHBOARD", icon: cloudServerOutlined},
+    "micro/servers": {title: "HYBRID CLOUD", subTitle: "SERVER", icon: cloudServerOutlined},
+    "micro/networks": {title: "HYBRID CLOUD", subTitle: "NETWORK", icon: cloudServerOutlined},
+    "micro/images": {title: "HYBRID CLOUD", subTitle: "IMAGE", icon: cloudServerOutlined},
+    "micro/vms": {title: "HYBRID CLOUD", subTitle: "VM", icon: cloudServerOutlined},
+    "micro/vmsCard": {title: "HYBRID CLOUD", subTitle: "VM CARD", icon: cloudServerOutlined},
+    "micro/vmsPage": {title: "HYBRID CLOUD", subTitle: "VM VNC", icon: cloudServerOutlined},
+    "micro/vnc": {title: "HYBRID CLOUD", subTitle: "VNC", icon: cloudServerOutlined},
+    "micro/snapshot": {title: "HYBRID CLOUD", subTitle: "SNAPSHOT", icon: cloudServerOutlined},
+    "micro/backup": {title: "HYBRID CLOUD", subTitle: "BACKUP", icon: cloudServerOutlined},
+    "assets/server": {title: "SERVER", subTitle: "온프레미스", icon: serverOutlineBadged},
+    "assets/network": {title: "NETWORK", subTitle: "네트워크", icon: routerNetwork},
+    "assets/part": {title: "NETWORK", subTitle: "파트 & 기타", icon: routerNetwork},
+    billing: {title: "BILLING", subTitle: "", icon: fileInvoiceDollar},
+    board: {title: "BOARD", subTitle: "", icon: listAlt},
+    "customers/users": {title: "MANAGER", subTitle: "계정 관리", icon: usersIcon},
+    "customers/companies": {title: "MANAGER", subTitle: "고객사 관리", icon: usersIcon},
+    subnet: {title: "MANAGER", subTitle: "서브넷 관리", icon: usersIcon},
+    setting: {title: "SETTING", subTitle: "", icon: monitorDashboard},
+};
 
 // eslint-disable-next-line import/prefer-default-export
 export function setIgnoredYellowBox() {
     console.ignoredYellowBox = [
         'Remote debugger is in a background tab which may cause apps to perform slowly. Fix this by foregrounding the tab (or opening it in a separate window).',
     ];
+}
+
+const user = JSON.parse(localStorage.getItem("user"));
+let PAGE_URL = '';
+if (user) {
+    PAGE_URL = (user.level <= OPERATOR ? COMMON_MANAGER_URL : COMMON_USER_URL);
 }
 
 export function textDateCut(val, type) {
@@ -93,7 +160,9 @@ export function formatBytes(bytes, formatType) {
     return returnVal;
 }
 
-/** ----------------------------------------------------assets 에서만 사용 start **/
+/** ----------------------------------------------------start **/
+
+
 export function assetsSeperateUrl(tmpUrl) {
     let tmp = tmpUrl;
     tmp = tmp.replace(SEPARATION_URL, "");
@@ -105,4 +174,31 @@ export function assetsGetUrlMenu(tmpUrl) {
     const tmp = assetsSeperateUrl(tmpUrl);
     return tmp;
 }
-/** -----------------------------------------------------assets 에서만 사용 end **/
+
+export const sidebarSeperateUrl = (tmpUrl) => {
+    let tmp = tmpUrl;
+    tmp = tmp.replace(SEPARATION_URL, "");
+    if (tmp && tmp.length > 1 && PAGE_URL[tmp]) {
+        return tmp;
+    }
+    return null;
+};
+
+export const sidebarGetTitle = (tmpUrl) => {
+    const tmp = sidebarSeperateUrl(tmpUrl);
+    if (tmp) {
+        const pageTitle = PAGE_URL[tmp].title;
+        return pageTitle;
+    }
+    return null;
+};
+
+export const sidebarGetSubTitle = (tmpUrl) => {
+    const tmp = sidebarSeperateUrl(tmpUrl);
+    if (tmp) {
+        const pageTitle = PAGE_URL[tmp].subTitle;
+        return pageTitle;
+    }
+    return null;
+};
+/** -----------------------------------------------------end **/

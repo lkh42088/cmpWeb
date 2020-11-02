@@ -8,6 +8,7 @@ import {useSnackbar} from "notistack";
 import { makeStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import ListIcon from "@material-ui/icons/List";
+import Button from '@material-ui/core/Button';
 import {Tooltip} from "@material-ui/core";
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import NavigationIcon from '@material-ui/icons/Navigation';
@@ -30,6 +31,9 @@ const useStyles = makeStyles(theme => ({
     },
     extendedIcon: {
         marginRight: theme.spacing(1),
+    },
+    button: {
+        margin: theme.spacing(1),
     },
 }));
 
@@ -146,12 +150,22 @@ const VmInfo = ({schVm}) => {
                                     fontSize: "1.3rem",
                                 }} onClick={handlePage}/></i></a>
                             </Tooltip>*/}
-                            <Fab variant="extended"
+                           {/* <Fab variant="extended"
                                  size="small"
                                  onClick={handlePage}>
                                 <ListIcon className={classes.extendedIcon} />
                                 목록
-                            </Fab>
+                            </Fab>*/}
+
+                            <Button
+                                variant="contained"
+                                color="default"
+                                className={classes.button}
+                                startIcon={<ListIcon />}
+                                onClick={handlePage}
+                            >
+                                목록
+                            </Button>
                         </Col>
                         <Col md={12} lg={12} xl={5}>
                             <VmInfoSetting

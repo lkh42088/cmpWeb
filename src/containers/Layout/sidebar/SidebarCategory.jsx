@@ -1,11 +1,15 @@
 import React, {
-    Component, useCallback, useEffect, useState,
+    useEffect, useState,
 } from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import {Badge, Collapse} from 'reactstrap';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+
 import {Icon, InlineIcon} from '@iconify/react';
-import {useDispatch, useSelector} from "react-redux";
+
+import * as common from "../../../lib/common";
+
 import {clearSidebarWindows} from "../../../redux/actions/sidebarActions";
 
 const flexStyle = {
@@ -13,19 +17,22 @@ const flexStyle = {
 };
 
 const SidebarCategory = ({
-    title, icon, isNew, children, dropdown, style,
-}) => {
+                             title, icon, isNew, children, dropdown, style, downState,
+                         }) => {
     const dispatch = useDispatch();
+
     const [show, setShow] = useState(false);
     const [hover, setHover] = useState(false);
     const [state, setState] = useState(false);
     // const {sidebarDropdown} = useSelector(({customizer}) => ({
     //     sidebarDropdown: customizer.sidebarDropdown,
     // }));
+
     const {collapse} = state;
     const {clearWindow} = useSelector(({sidebar}) => ({
         clearWindow: sidebar.clearWindow,
     }));
+
     const categoryClass = classNames({
         'cb_sidebar__category-wrap': true,
         'cb_sidebar__category-wrap--open': collapse,
@@ -76,6 +83,10 @@ const SidebarCategory = ({
         toggle(e, title);
     };
 
+    const toggleDropdown = () => {
+        setState({collapse: !collapse});
+    };
+
     // 사이드바 window 항목 클릭 시 window 닫힘
     useEffect(() => {
         if (clearWindow && clearWindow === true) {
@@ -87,17 +98,37 @@ const SidebarCategory = ({
         }
     }, [clearWindow]);
 
-    const toggleDropdown = () => {
-        setState({collapse: !collapse});
-    };
+    useEffect(() => {
+        if (title === "HYBRID CLOUD") {
+            if (downState.hybridCloud) {
+                if (common.sidebarGetSubTitle(window.location.href) !== "DASHBOARD") {
+                    setState({collapse: !collapse});
+                }
+            }
+        }
+
+        if (title === "MANAGER") {
+            if (downState.manager) {
+                setState({collapse: !collapse});
+            }
+        }
+    }, []);
 
     return (
         // sidebar toggle : dropdown
         (sidebarDropdown)
             ? (
                 <div style={style}>
-                    <button className={categoryClass} type="button" onClick={toggleDropdown} style={{zIndex: "120"}}>
-                        {icon ? <span className="cb_sidebar__link-icon"><Icon icon={icon}/></span> : ''}
+                    <button
+                        className={categoryClass}
+                        type="button"
+                        onClick={toggleDropdown}
+                        style={{zIndex: "120"}}>
+                        {icon ? (
+                            <span className="cb_sidebar__link-icon">
+                                <Icon icon={icon}/>
+                            </span>
+                        ) : ''}
                         <p className="cb_sidebar__link-title">
                             {title}
                             {isNew && <span className="cb_sidebar__hr"/>}
@@ -115,7 +146,7 @@ const SidebarCategory = ({
             )
             : (
                 // sidebar toggle window
-            /*<input className={`form-control round-lg ${this.state.valid ? '' : 'error'}`} />*/
+                /*<input className={`form-control round-lg ${this.state.valid ? '' : 'error'}`} />*/
                 <div style={style}
                      onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                     <button className={categoryClass} type="button" onClick={handleClick} style={{zIndex: "120"}}>

@@ -50,7 +50,9 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         width: 360,
-        paddingBottom: 30,
+        paddingBottom: 17,
+        paddingLeft: 10,
+        fontSize: 10,
     },
     lists: {
         backgroundColor: theme.palette.background.paper,

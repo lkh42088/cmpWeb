@@ -220,6 +220,7 @@ const Layout = ({
 
     /*console.log("customizer.topNavigation : ", customizer.topNavigation);
     console.log("sidebar : ", sidebar);*/
+    //.container__wrap sidebar__submenu .customizer__wrap
 
     return (
         <div className={layoutClass}>
