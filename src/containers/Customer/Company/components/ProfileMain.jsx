@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {
-    Card, CardBody, Col, Button,
+    Card, CardBody, Col,
 } from 'reactstrap';
 import {useDispatch, useSelector} from "react-redux";
 import Avatar from "react-avatar";
 import EditIcon from "@material-ui/icons/Edit";
 import ListIcon from "@material-ui/icons/List";
 import {Tooltip} from "@material-ui/core";
-import MatButton from "@material-ui/core/Button";
+import Button from '@material-ui/core/Button';
 import {useSnackbar} from "notistack";
 
 import * as common from "../../../../lib/common";
@@ -177,22 +177,37 @@ const ProfileMain = () => {
                             }}>
                                 <ul className="social-icons">
                                     <li>
-                                        <Tooltip title="목록">
-                                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                        {/*<Tooltip title="목록">
                                             <a href="#"><i><ListIcon style={{
                                                 fontSize: "1.3rem",
                                             }} onClick={handleCompanyPage}/></i>
                                             </a>
-                                        </Tooltip>
+                                        </Tooltip>*/}
+                                        <Button
+                                            variant="contained"
+                                            color="default"
+                                            startIcon={<ListIcon />}
+                                            onClick={handleCompanyPage}
+                                        >
+                                            목록
+                                        </Button>
+                                        &nbsp;&nbsp;&nbsp;
                                     </li>
                                     <li>
-                                        <Tooltip title="수정">
-                                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                        {/*<Tooltip title="수정">
                                             <a href="#"><i><EditIcon style={{
                                                 fontSize: "1.3rem",
                                             }} onClick={event => handleModifySelectedCompany(companyIdx)}/></i>
                                             </a>
-                                        </Tooltip>
+                                        </Tooltip>*/}
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={event => handleModifySelectedCompany(companyIdx)}
+                                            endIcon={<EditIcon>send</EditIcon>}
+                                        >
+                                            수정
+                                        </Button>
                                     </li>
                                 </ul>
 

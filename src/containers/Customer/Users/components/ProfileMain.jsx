@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {
-    Card, CardBody, Col, Button,
+    Card, CardBody, Col,
 } from 'reactstrap';
 import {useDispatch, useSelector} from "react-redux";
 import FileSaver from "file-saver";
-import MatButton from '@material-ui/core/Button';
 import SendIcon from "@material-ui/icons/Send";
 import ListIcon from '@material-ui/icons/List';
 import EditIcon from '@material-ui/icons/Edit';
+import Button from '@material-ui/core/Button';
 import {IconButton, Tooltip} from "@material-ui/core";
 import Avatar from "react-avatar";
 import {useSnackbar} from "notistack";
@@ -39,15 +39,6 @@ const ProfileMain = () => {
     const dispatch = useDispatch();
     const {enqueueSnackbar} = useSnackbar();
 
-    /*
-        const {
-            userIdx,
-            user,
-        } = useSelector(({usersRd}) => ({
-            userIdx: usersRd.userIdx,
-            user: usersRd.user,
-        }));
-    */
     const [authList, setAuthList] = useState([]);
     const [authTag, setAuthTag] = useState('');
     const [modifyData, setModifyData] = useState(null);
@@ -68,7 +59,6 @@ const ProfileMain = () => {
     };
 
     const handleModifySelectedUser = (idx) => {
-        // console.log("modify user: ", idx);
         setModifyData(user);
         handleOpenModifyUser();
     };
@@ -115,6 +105,7 @@ const ProfileMain = () => {
                 memo,
                 avata,
             });
+
             const submitData = ({
                 companyIdx: cpIdx,
                 cpName,
@@ -291,20 +282,36 @@ const ProfileMain = () => {
                                 <TocIcon/>*/}
                                 <ul className="social-icons">
                                     <li style={userInfo.level <= OPERATOR ? {display: ""} : {display: "none"}}>
-                                        <Tooltip title="목록">
-                                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                        {/*<Tooltip title="목록">
                                             <a href="#"><i><ListIcon style={{
                                                 fontSize: "1.3rem",
                                             }} onClick={handleUserPage}/></i></a>
-                                        </Tooltip>
+                                        </Tooltip>*/}
+
+                                        <Button
+                                            variant="contained"
+                                            color="default"
+                                            startIcon={<ListIcon />}
+                                            onClick={handleUserPage}
+                                        >
+                                            목록
+                                        </Button>
+                                        &nbsp;&nbsp;&nbsp;
                                     </li>
                                     <li>
-                                        <Tooltip title="수정">
-                                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                                        {/*<Tooltip title="수정">
                                             <a href="#"><i><EditIcon style={{
                                                 fontSize: "1.3rem",
                                             }} onClick={event => handleModifySelectedUser(userIdx)}/></i></a>
-                                        </Tooltip>
+                                        </Tooltip>*/}
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={event => handleModifySelectedUser(userIdx)}
+                                            endIcon={<EditIcon>send</EditIcon>}
+                                        >
+                                            수정
+                                        </Button>
                                     </li>
                                 </ul>
 

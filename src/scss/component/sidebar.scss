@@ -188,7 +188,8 @@
 
 .sidebar__submenu {
   transition: height 0.5s 0s, padding 0.5s 0s, opacity 0.4s 0.1s;
-  padding: 15px 0;
+  /*padding: 15px 0;*/
+  padding: 0;
 
   & .sidebar__submenu {
     margin-bottom: 0;

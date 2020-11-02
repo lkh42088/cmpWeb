@@ -52,6 +52,11 @@
     background: themed('colorBubbleActive');  // [23June2020,khlee]
   }
 
+  p {
+    font-weight: bold;
+    text-shadow: 0px 1px 2px $color-accent;
+  }
+
   .cb_sidebar__link {
 
     &:before {
@@ -97,7 +102,8 @@
 }
 
 .cb_sidebar__content {
-  padding-top: 15px;
+  border-top: 1px solid #bbbfca;
+  /*padding-top: 15px;*/
   height: 100%;
   overflow: auto;
 
@@ -238,7 +244,11 @@
   height: 17px;   // Add [24June2020,khlee]
   font-size: 17px;
   padding-top: 3px;
-  color: #4a4e52;
+  //color: #4a4e52;
+
+  @include themify($themes) {
+    color: themed('colorText');
+  }
 }
 
 // 사이드바 Window
@@ -403,7 +413,7 @@
 }
 
 .cb_sidebar__wrapper--company {
-  height: 40px;
+  height: 50px;
   font-size: 15px;
   font-weight: bold;
   /*padding-top: 20px;
@@ -411,6 +421,7 @@
   margin: 5px;*/
   padding: 5px 0;
   text-align: center;
+  line-height: 2.5;
   font-family: "Source Han Serif KR Medium", Roboto, sans-serif; // [21July2020,khlee]
 
   @include themify($themes) {

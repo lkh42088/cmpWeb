@@ -62,7 +62,7 @@
   font-weight: bold;
   color: white;
   text-shadow: 2px 2px 4px $color-black;
-  line-height: 35px;
+  line-height: 40px;
 
   /*@include themify($themes) {
     background-image: themed('logoImg');
@@ -219,7 +219,7 @@
   z-index: 101;
   position: absolute;
   width: 100%;
-  min-width: 210px;
+  /*min-width: 210px;*/
   @include directify($directions) {
     #{directed('right')}: 0px;
   }
@@ -257,6 +257,14 @@
       background-color: themed('colorHover');
     }
 
+    span {
+      color: $color-accent;
+    }
+
+    p {
+      color: $color-accent;
+    }
+
     &:before {
       opacity: 1;
     }
@@ -266,7 +274,11 @@
 .topbar__link-title {
   margin: 0;
   font-size: 14px;
-  line-height: 16px;
+  line-height: 10px;
+
+  /*&:hover {
+    color: $color-accent;
+  }*/
 }
 
 .topbar__link-icon {
