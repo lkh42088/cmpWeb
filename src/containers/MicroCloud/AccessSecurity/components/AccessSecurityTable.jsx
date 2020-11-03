@@ -20,7 +20,9 @@ import {
     pagingChangeTotalCount, pagingDump,
 } from "../../../../redux/actions/pagingActions";
 import {
-    deleteSnapshotList, getMcVmSnapshot, recoveryMcVm,
+    addMcAccessSecurity,
+    deleteMcAccessSecurity,
+    deleteSnapshotList, getMcAccessSecurity, getMcVmSnapshot, recoveryMcVm,
 } from "../../../../lib/api/microCloud";
 import {OPERATOR} from "../../../../lib/var/globalVariable";
 import RegisterAccessSecurity from "./RegisterAccessSecurity";
@@ -221,7 +223,7 @@ const AccessSecurityTable = () => {
         }
         try {
             console.log("companyName : ", companyName);
-            const response = await getMcVmSnapshot({
+            const response = await getMcAccessSecurity({
                 rows: rowsPerPage, offset, orderBy, order, cpName: companyName,
             });
             console.log("response: data ", response.data.data);
@@ -262,7 +264,27 @@ const AccessSecurityTable = () => {
         setOpenModifySecurity(false);
     };
 
-    const handleSubmitAddSecurity = () => {
+    const addData = async (item) => {
+        try {
+            const response = await addMcAccessSecurity({
+                cpIdx: item.cpIdx,
+                serialNumber: item.serialNumber,
+                ipAddr: item.ipAddr,
+                comments: item.comments,
+            });
+            console.log("response:", response);
+            getPageData();
+            handleSnackbarSuccess("Snapshot 삭제에 성공하였습니다.");
+        } catch (e) {
+            handleSnackbarFailure("Snapshot 삭제에 실패하였습니다.");
+        }
+    };
+
+    const handleSubmitAddSecurity = (item) => {
+        /**
+         * Add Access Security
+         */
+        addData(item);
         handleCloseAddSecurity();
     };
 
@@ -277,8 +299,11 @@ const AccessSecurityTable = () => {
     };
 
     const deleteData = async (items) => {
+        /**
+         * Delete Access Security
+         */
         try {
-            const response = await deleteSnapshotList({idx: items});
+            const response = await deleteMcAccessSecurity({idx: items});
             getPageData();
             handleSnackbarSuccess("Snapshot 삭제에 성공하였습니다.");
         } catch (error) {

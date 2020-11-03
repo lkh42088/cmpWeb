@@ -22,7 +22,7 @@ const RegisterAccessSecurity = (props) => {
                                 <DnsRoundedIcon/>
                             </Grid>
                             <Grid item>
-                                <h3 className="bold-text">서버 등록</h3>
+                                <h3 className="bold-text">IP 접근제어 설정</h3>
                             </Grid>
                         </Grid>
                     </div>
