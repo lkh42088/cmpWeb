@@ -10,6 +10,7 @@ import MicroCloudDashboard from "../../../MicroCloud/Dashboard/index";
 import MicroCloudSnapshot from "../../../MicroCloud/Snapshot/index";
 import MicroCloudBackup from "../../../MicroCloud/Backup";
 import MicroCloudSecurity from "../../../MicroCloud/AccessSecurity";
+import SystemControl from "../../../MicroCloud/SystemControl";
 
 export default () => (
     <Switch>
@@ -24,5 +25,6 @@ export default () => (
         <Route path="/micro/backup" component={MicroCloudBackup}/>
         <Route path="/micro/security" component={MicroCloudSecurity}/>
         <Route path="/micro/vmsPage" component={MicroCloudVms}/>
+        <Route path="/micro/env" component={SystemControl}/>
     </Switch>
 );

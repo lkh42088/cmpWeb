@@ -70,8 +70,10 @@ const BackupRecoveryModal = (props) => {
         if ((backup !== null) && (backup.vmName !== null)) {
             setVmName(backup.vmName);
         }
-        if ((backup !== null) && (backup.name !== null)) {
+        if ((backup !== null) && (backup.filename !== "")) {
             setFileName(backup.filename);
+        } else if ((backup !== null) && (backup.nasBackupName !== "")) {
+            setFileName(backup.nasBackupName);
         }
         if (backup !== null) {
             setRegisterDate(`${backup.year}년 ${backup.month}월 ${backup.day}일 ${backup.hour}:${backup.minute}:${backup.second}`);

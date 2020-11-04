@@ -405,7 +405,7 @@ const BackupTable = () => {
                         className={cellClassName}
                         style={{width: "20%"}}
                     >
-                        {row.filename}
+                        {row.filename || row.nasBackupName}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
