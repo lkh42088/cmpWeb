@@ -21,6 +21,7 @@ import {getMcNetworksCpu} from "../../../../lib/api/microCloudCpu";
 import {getMcNetworksDisk} from "../../../../lib/api/microCloudDisk";
 import NBCarousel from "./NBCarousel";
 import NBSimpleCarousel from "./NBSimpleCarousel";
+import GraphSpeedometer from "./GraphSpeedometer";
 
 const pieColor = {
     defaultColor: '#d4d7dd',
@@ -202,7 +203,7 @@ const BaremetalMain = (props) => {
                 {/*        mac={mac}*/}
                 {/*        title="DISK" pieColor={pieColor} warringUsed={80}/>*/}
                 {/*</Col>*/}
-                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                {/*<Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
                     <NBGaugeLiquid
                         title="CPU"
                         data={cpu}
@@ -220,6 +221,30 @@ const BaremetalMain = (props) => {
                 </Col>
                 <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
                     <NBGaugeLiquid
+                        title="DISK"
+                        data={disk}
+                        err={err}
+                        refresh={getDiskData}
+                    />
+                </Col>*/}
+                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <GraphSpeedometer
+                        title="CPU"
+                        data={cpu}
+                        err={err}
+                        refresh={getCpuData}
+                    />
+                </Col>
+                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <GraphSpeedometer
+                        title="MEMORY"
+                        data={mem}
+                        err={err}
+                        refresh={getMemData}
+                    />
+                </Col>
+                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    <GraphSpeedometer
                         title="DISK"
                         data={disk}
                         err={err}

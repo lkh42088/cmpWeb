@@ -168,6 +168,10 @@
     //color: #dddddd; //[04Oct2020,khlee]
   }
 
+  p {
+    font-weight: bold;
+  }
+
   // 사이드바 mouse over 시 color-bar 생성 [23June2020,khlee]
   &:before {
     content: "";

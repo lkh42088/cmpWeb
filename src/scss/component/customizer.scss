@@ -4,7 +4,7 @@
   @include directify($directions) {
     #{directed('right')}: 0px;
   }
-  z-index: 102;
+  z-index: 1500;
 
   .customizer__toggle {
 
