@@ -5,9 +5,16 @@ import {
 import CustomActiveShapePieChart from './CustomActiveShapePieChart';
 import LineChartWithReferenceLines from './LineChartWithReferenceLines';
 import ChartPie2 from './ChatPie2';
+import BarChart from './BarChart';
 
 // eslint-disable-next-line no-undef
 //const {PieChart, Pie, Sector} = Recharts;
+
+const data = [
+    [10, 30, 40, 20],
+    [10, 40, 30, 20, 50, 10],
+    [60, 30, 40, 20, 30],
+];
 
 const ChatCard = () => (
     <Container>
@@ -26,7 +33,7 @@ const ChatCard = () => (
         </Row>*/}
         <Row>
             {/*<LineChartWithReferenceLines/>*/}
-            <ChartPie2/>
+            <BarChart width={600} height={400} data={data}/>
         </Row>
     </Container>
 );
