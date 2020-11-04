@@ -229,6 +229,13 @@ const WriteAccessSecurity = (props) => {
     }, [fields.cpIdx]);
 
     useEffect(() => {
+        if (serverList && fields.serverIdx) {
+            const serv = serverList.find(item => item.idx === fields.serverIdx);
+            handleChangeField("serialNumber", serv.serialNumber);
+        }
+    }, [fields.serverIdx]);
+
+    useEffect(() => {
         if (companyList === null || companyList.length === 0) {
             getCompanyList();
         }

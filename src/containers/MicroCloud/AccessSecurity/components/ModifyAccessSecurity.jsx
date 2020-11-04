@@ -23,7 +23,7 @@ const ModifyAccessSecurity = (props) => {
                                 <DnsRoundedIcon/>
                             </Grid>
                             <Grid item>
-                                <h3 className="bold-text">서버 수정 (개발중)</h3>
+                                <h3 className="bold-text">IP 접근제어 설정 수정 (사용 안함)</h3>
                             </Grid>
                         </Grid>
                     </div>
