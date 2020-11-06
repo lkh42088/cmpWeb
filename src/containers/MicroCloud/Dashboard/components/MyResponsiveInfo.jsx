@@ -44,7 +44,7 @@ const MyResponsiveInfo = (props) => {
                 const subContentDisk = `${(Number(responseDisk.data[0].total) / gigaBytes).toFixed(decimal)}`;
                 const subContentMem = `${(Number(responseMem.data[0].total) / gigaBytes).toFixed(decimal)}`;
 
-                console.log("responseSys.data : ", responseSys.data);
+                //console.log("responseSys.data : ", responseSys.data);
 
                 setData(responseSys.data);
                 setDisk(subContentDisk);
@@ -65,7 +65,7 @@ const MyResponsiveInfo = (props) => {
             {data ? (
                 <Fragment>
                     <CardBody className="nb-card-body-graph">
-                        <p
+                        {/*<p
                             style={{
                                 fontWeight: "bold",
                                 fontSize: 12,
@@ -73,7 +73,8 @@ const MyResponsiveInfo = (props) => {
                             }}
                         >
                             {data.hostname}
-                        </p>
+                        </p>*/}
+                        <div className="nb-card-body-graph-title">{data.hostname}</div>
                         <Container
                             className="dashboard"
                             style={{

@@ -6,7 +6,6 @@
 //vendor...
 @import './vendor';
 
-
 //base...
 @import 'generic/normalize.scss';
 @import 'generic/box-sizing.scss';
@@ -102,3 +101,6 @@
 @import './plus/graph';                // (31aug2020,ebjee)
 @import './plus/vm';                // (20200901,ebjee)
 @import './plus/test';                // (20201029,ebjee)
+
+/*@import './plus/slick';                // (20201029,ebjee)*/
+/*@import './plus/slick-theme';                // (20201029,ebjee)*/
