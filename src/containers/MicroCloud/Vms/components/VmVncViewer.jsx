@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Col} from 'reactstrap';
 import {makeStyles} from "@material-ui/core/styles";
 import VncDisplay from "react-vnc-display";
-import {API_SERVER_IP, API_SERVER_WEBSOCK_PORT} from "../../../../lib/var/globalVariable";
+import {API_SERVER_IP, API_SERVER_WEBSOCK_PORT, HCMP_PUBLIC_MODE} from "../../../../lib/var/globalVariable";
 
 const useStyles = makeStyles(theme => ({
     canvas: {
@@ -18,8 +18,15 @@ const VmVncViewer = ({vm}) => {
     const [vncComponent, setVncComponent] = useState();
 
     useEffect(() => {
+        console.log("vm:", vm);
         setVncComponent("");
-        const vncUrl = `ws://${API_SERVER_IP}:${API_SERVER_WEBSOCK_PORT}/vnc/${vm.remoteAddr.split(':')[0]}/${vm.vncPort}`;
+        let vncUrl;
+        if (HCMP_PUBLIC_MODE === "yes") {
+            vncUrl = `ws://${API_SERVER_IP}:${API_SERVER_WEBSOCK_PORT}/vnc/${vm.publicRemoteAddr.split(':')[0]}/${vm.vncPort}`;
+        } else {
+            vncUrl = `ws://${API_SERVER_IP}:${API_SERVER_WEBSOCK_PORT}/vnc/${vm.remoteAddr.split(':')[0]}/${vm.vncPort}`;
+        }
+        console.log("vncUrl:", vncUrl);
 
         setTimeout(() => {
             setVncComponent(<VncDisplay className={classes.canvas} url={vncUrl}/>);

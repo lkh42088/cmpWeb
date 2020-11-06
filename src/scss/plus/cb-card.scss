@@ -4,7 +4,7 @@
   height: 100%;
   border: none;
   background-color: transparent;
-  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif; // [21July2020,khlee]
 
   &.cb-card--not-full-height {
     height: auto;
@@ -81,7 +81,7 @@
   height: 100%;
   padding: 5px; // 20 -> 5px [02Sep2020,khlee]
   border-radius: 5px;
-  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif; // [21July2020,khlee]
 
   @include themify($themes) {
     background-color: themed('colorBackground');
@@ -92,7 +92,7 @@
   height: 100%;
   padding: 5px; // 20 -> 5px [02Sep2020,khlee]
   border-radius: 5px;
-  font-family: 'Noto Sans KR R', Roboto, sans-serif;  // [21July2020,khlee]
+  font-family: 'Noto Sans KR R', Roboto, sans-serif; // [21July2020,khlee]
 
   @include themify($themes) {
     transition: background-color 1.5s 0s;
@@ -132,9 +132,11 @@
   @include directify($directions) {
     text-align: directed('left');
   }
+
   h5.card__title-center {
     text-align: center;
   }
+
   margin-bottom: 30px;
   text-transform: uppercase;
   position: relative;

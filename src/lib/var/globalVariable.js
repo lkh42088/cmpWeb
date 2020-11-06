@@ -11,6 +11,8 @@ export const API_SERVER_IP = process.env.API_SERVER_IP || '127.0.0.1';
 export const API_SERVER_PORT = process.env.API_SERVER_PORT || '8081';
 export const API_SERVER_WEBSOCK_PORT = process.env.API_SERVER_WEBSOCK_PORT || '8083';
 
+export const HCMP_PUBLIC_MODE = process.env.HCMP_PUBLIC_MODE || 'no';
+
 // For ReCAPTCHA
 export const SITE_KEY = process.env.RECAPTCHA_SITE_KEY || "";
 export const {RECAPTCHA_ENABLE} = process.env;

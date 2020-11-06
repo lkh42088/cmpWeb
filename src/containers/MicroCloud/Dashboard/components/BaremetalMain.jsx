@@ -22,24 +22,7 @@ import {getMcNetworksDisk} from "../../../../lib/api/microCloudDisk";
 import NBCarousel from "./NBCarousel";
 import NBSimpleCarousel from "./NBSimpleCarousel";
 import GraphSpeedometer from "./GraphSpeedometer";
-
-const pieColor = {
-    defaultColor: '#d4d7dd',
-    textColor: '#414141',
-    warringColor: '#ec0101',
-    cpuColor: {
-        use: '#3f51b5',
-        free: '#63686e',
-    },
-    memColor: {
-        use: '#2fc4b2',
-        free: '#63686e',
-    },
-    diskColor: {
-        use: '#ff8364',
-        free: '#63686e',
-    },
-};
+import NBSimpleCarouselTemp from "./NBSimpleCarouselTemp";
 
 const BaremetalMain = (props) => {
     const {
@@ -103,6 +86,7 @@ const BaremetalMain = (props) => {
                 setErr("");
             }
             setDisk(Number(diskVal.data[0].used_percent.toFixed(0)));
+            //console.log("CPU : ", Number(value), "MEM : ", Number(100 - memVal.data[0].available_percent.toFixed(0)), "DISK : ", Number(diskVal.data[0].used_percent.toFixed(0)));
         } catch (e) {
             console.log("getResourceData error!");
         }
@@ -160,7 +144,15 @@ const BaremetalMain = (props) => {
     useEffect(() => {
         getData();
         getResourceData();
+        /*
         const timer = setInterval(getData, 10000);
+        */
+
+        const timer = setInterval(() => {
+            getData();
+            getResourceData();
+        }, 10000);
+
         return () => clearInterval(timer);
     }, [mac]);
 
@@ -174,6 +166,12 @@ const BaremetalMain = (props) => {
                         cpName={companyName}
                         vmCount={vmCount}
                     />
+                    {/*<NBSimpleCarouselTemp
+                        itemVal={3}
+                        activeVal={1}
+                        cpName={companyName}
+                        vmCount={vmCount}
+                    />*/}
                 </Col>
             </Row>
             <Row className="classes.row">
