@@ -88,7 +88,11 @@ function getClientEnvironment(publicUrl) {
         API_SERVER_PORT: process.env.API_SERVER_PORT,
         API_SERVER_WEBSOCK_PORT: process.env.API_SERVER_WEBSOCK_PORT,
         RECAPTCHA_SITE_KEY: process.env.RECAPTCHA_SITE_KEY,
+<<<<<<< HEAD
+        RECAPTCHA_ENABLE: process.env.RECAPTCHA_ENABLE,
+=======
         HCMP_PUBLIC_MODE: process.env.HCMP_PUBLIC_MODE,
+>>>>>>> 4b3067d680d26335acab3877ff7895cabc8ca1db
       },
     );
   // Stringify all values so we can feed into Webpack DefinePlugin

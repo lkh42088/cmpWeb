@@ -15,6 +15,7 @@ export const HCMP_PUBLIC_MODE = process.env.HCMP_PUBLIC_MODE || 'no';
 
 // For ReCAPTCHA
 export const SITE_KEY = process.env.RECAPTCHA_SITE_KEY || "";
+export const {RECAPTCHA_ENABLE} = process.env;
 
 // For Assets and Breadcrumbs
 export const SEPARATION_URL = `http://${API_SERVER_IP}:${SERVER_PORT}/`;
