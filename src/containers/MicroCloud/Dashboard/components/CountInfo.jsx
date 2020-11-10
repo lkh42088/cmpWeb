@@ -13,19 +13,6 @@ const CountInfo = (props) => {
         count, title, color, mac, warringUsed,
     } = props;
 
-    /**************************************************************
-     * Handle Function
-     **************************************************************/
-
-    /**************************************************************
-     * Axios Function
-     **************************************************************/
-
-
-    /**************************************************************
-     * useEffect
-     **************************************************************/
-
     return (
         <Card className="cb-card"
               style={title !== "Backup 개수" ? {marginBottom: "10px"} : {marginBottom: "0"}}
@@ -40,11 +27,13 @@ const CountInfo = (props) => {
                 <Fragment>
                     <p style={{
                         textAlign: "center",
-                        margin: "30px auto",
+                        margin: "10px auto",
                         color: "white",
                     }}>
                             <span style={{
-                                fontSize: "1.3rem",
+                                fontSize: "1.5rem",
+                                fontWeight: "bold",
+                                textShadow: "2px 2px 4px black",
                             }}>
                                 {/*{Number(count)}*/}
                                 <NumberFormat value={count} displayType="text" thousandSeparator/>

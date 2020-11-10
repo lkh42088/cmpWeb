@@ -124,11 +124,11 @@ function GraphSpeedometer(props) {
                     <div>
                         <div style={{
                             width: radius,
-                            height: radius - 70,
+                            height: radius - 20,
                             display: "block",
                             margin: "auto",
                             marginLeft: "10px",
-                            paddingTop: "20px",
+                            paddingTop: "10px",
                         }}>
                             <ReactSpeedometer
                                 forceRender

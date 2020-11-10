@@ -4,6 +4,9 @@ import {
 } from 'reactstrap';
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+
 import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Grid from "@material-ui/core/Grid";
@@ -11,7 +14,6 @@ import AddIcon from "@material-ui/icons/Add";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import RefreshIcon from "@material-ui/icons/Refresh";
-import {Button} from "@material-ui/core";
 
 import HistoryIcon from '@material-ui/icons/History';
 import SettingsBackupRestoreIcon from '@material-ui/icons/SettingsBackupRestore';
@@ -80,7 +82,14 @@ const minList = [
     { value: 55, name: "55" },
 ];
 
+const useStyles = makeStyles(theme => ({
+    button: {
+        margin: theme.spacing(1),
+    },
+}));
+
 const VmInfoSetting = (props) => {
+    const classes = useStyles();
     const {
         type, vm, handleSubmit,
     } = props;
@@ -180,6 +189,26 @@ const VmInfoSetting = (props) => {
                                         margin: "0 -9px",
                                         color: "#686d76",
                                     }}>Snapshot</span>
+
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+                                        color="default"
+                                        className={classes.button}
+                                        startIcon={<HistoryIcon />}
+                                    >
+                                        Upload
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        disabled
+                                        size="small"
+                                        color="secondary"
+                                        className={classes.button}
+                                        startIcon={<HistoryIcon />}
+                                    >
+                                        Talk
+                                    </Button>
                                 </Grid>
                                 <Grid item xs={3}>
                                     <div>

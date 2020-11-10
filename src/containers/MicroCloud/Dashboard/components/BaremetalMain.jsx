@@ -23,6 +23,31 @@ import NBCarousel from "./NBCarousel";
 import NBSimpleCarousel from "./NBSimpleCarousel";
 import GraphSpeedometer from "./GraphSpeedometer";
 
+const CountInfoStyle = {
+    /*vm: "#ee6f57",
+    snapshot: "#ffa931",
+    backup: "#0f4c75",*/
+    color: {
+        /*vm: "#a2d5f2",
+        snapshot: "#3f72af",
+        backup: "#112d4e",*/
+        vm: "#ffb400",
+        snapshot: "#2994b2",
+        backup: "#474744",
+        /*vm: "#14274e",
+        snapshot: "#394867",
+        backup: "#9ba4b4",*/
+        /*vm: "#9ba4b4",
+        snapshot: "#2d6187",
+        backup: "#056674",*/
+    },
+    size: {
+        padding: "0 15px",
+        marginBottom: "1%",
+        height: "33%",
+    },
+};
+
 const BaremetalMain = (props) => {
     const {
         mac, company, cpIdx,
@@ -116,7 +141,7 @@ const BaremetalMain = (props) => {
             } else {
                 setErr("");
             }
-        setMem(Number(100 - memVal.data[0].available_percent.toFixed(0)));
+            setMem(Number(100 - memVal.data[0].available_percent.toFixed(0)));
         } catch (e) {
             console.log("getMemData error!");
         }
@@ -168,13 +193,6 @@ const BaremetalMain = (props) => {
                 </Col>
             </Row>
             <Row className="classes.row">
-                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <MyResponsiveInfo
-                        height={150}
-                        mac={mac}
-                        title="HOSTNAME"
-                    />
-                </Col>
                 {/*todo Pie graph도 하나의 component로 변경 필요*/}
                 {/*<Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>*/}
                 {/*    <MyResponsiveCpu*/}
@@ -242,23 +260,38 @@ const BaremetalMain = (props) => {
                         refresh={getDiskData}
                     />
                 </Col>
-            </Row>
-            <Row>
-                <Col md={2} style={{padding: 10}}>
-                    <Row style={{padding: "0 15px"}}>
+                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                    {/*<MyResponsiveInfo
+                        height={150}
+                        mac={mac}
+                        title="HOSTNAME"
+                    />*/}
+                    <Row style={CountInfoStyle.size}>
                         <CountInfo title="VM 개수" count={vmCount}
-                                   color="#00bcd4"/>
+                                   color={CountInfoStyle.color.vm}/>
                     </Row>
-                    <Row style={{padding: "0 15px"}}>
+                    <Row style={CountInfoStyle.size}>
                         <CountInfo title="Snapshot 개수" count={snapshotCount}
-                                   color="#ffa931"/>
+                                   color={CountInfoStyle.color.snapshot}/>
                     </Row>
-                    <Row style={{padding: "0 15px"}}>
+                    <Row style={CountInfoStyle.size}>
                         <CountInfo title="Backup 개수" count={backupCount}
-                                   color="#0f4c75"/>
+                                   color={CountInfoStyle.color.backup}/>
                     </Row>
                 </Col>
-                <Col md={10} style={{padding: "10px 10px 0", marginBottom: "10px"}}>
+            </Row>
+            <Row>
+                <Col md={3} style={{padding: 10}}>
+                    <MyResponsiveInfo
+                        height={150}
+                        mac={mac}
+                        title="HOSTNAME"
+                    />
+                </Col>
+                <Col md={9} style={{
+                    padding: "10px 10px 0",
+                    marginBottom: "10px",
+                }}>
                     <MyResponsiveLine height={350}
                                       title="BareMetal Out Interface"
                                       mac={mac}
