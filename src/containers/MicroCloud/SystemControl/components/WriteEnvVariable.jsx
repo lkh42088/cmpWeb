@@ -7,8 +7,6 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import {Button} from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import {makeStyles} from "@material-ui/core/styles";
-import SendIcon from "@material-ui/icons/Send";
-import {getCompanies} from "../../../../lib/api/company";
 import {CUSTOMER_MANAGER} from "../../../../lib/var/globalVariable";
 
 const useStyles = makeStyles(theme => ({
@@ -39,7 +37,7 @@ const WriteEnvVariable = (props) => {
      * Props
      ************************************************************************************/
     const {
-        handleClose, handleSubmit, isRegister, data, user,
+        handleSubmit, handleRestart, user,
     } = props;
 
     /************************************************************************************
@@ -47,39 +45,40 @@ const WriteEnvVariable = (props) => {
      ************************************************************************************/
     const classes = useStyles();
 
-    const [companyList, setCompanyList] = useState([]);
-    const [menuCompany, setMenuCompany] = useState(false);
-    const [openSearchCompany, setOpenSearchCompany] = useState(false);
-
     /*******************
      * Field
      *******************/
     const [fields, setFields] = useState({
         agentType: 0,
+        ipAddr: "",
         fieldName: "",
         value: "",
     });
 
     const [requires, setRequireds] = useState({
         agentType: true,
+        ipAddr: true,
         fieldName: true,
         value: true,
     });
 
     const [disables, setDisables] = useState({
         agentType: false,
+        ipAddr: false,
         fieldName: false,
         value: false,
     });
 
     const [helpers, setHelpers] = useState({
         agentType: "",
+        ipAddr: "",
         fieldName: "",
         value: "",
     });
 
     const [errors, setErrors] = useState({
         agentType: false,
+        ipAddr: false,
         fieldName: false,
         value: false,
     });
@@ -87,9 +86,6 @@ const WriteEnvVariable = (props) => {
     /*******************
      * Validation
      *******************/
-    const checkValidation = () => {
-
-    };
 
     /*******************
      * Close & Send
@@ -97,16 +93,19 @@ const WriteEnvVariable = (props) => {
     const reset = () => {
         setFields({
             agentType: 0,
+            ipAddr: '',
             fieldName: '',
             value: '',
         });
         setHelpers({
             agentType: "전송할 에이전트",
+            ipAddr: "에이전트 IP 어드레스",
             fieldName: "컨피그 파일 필드 이름",
             value: "변경할 값",
         });
         setErrors({
             agentType: false,
+            ipAddr: false,
             fieldName: false,
             value: false,
         });
@@ -115,12 +114,17 @@ const WriteEnvVariable = (props) => {
     const handleCancel = () => {
         console.log("handleCancel() ");
         reset();
-        handleClose();
     };
 
     const handleSubmitInternal = () => {
         console.log("handleSubmitInternal() fields", fields);
         handleSubmit(fields);
+        reset();
+    };
+
+    const handleRestartInternal = () => {
+        console.log("handleRestartInternal() agent", fields.agentType);
+        handleRestart(fields.agentType, fields.ipAddr);
         reset();
     };
 
@@ -145,39 +149,7 @@ const WriteEnvVariable = (props) => {
     /*******************
      * Open
      *******************/
-    const getCompanyList = async () => {
-        try {
-            const response = await getCompanies();
-            setCompanyList(response.data);
-        } catch (error) {
-            setCompanyList([]);
-        }
-    };
-
-    const handleMenuCompany = () => {
-        if (companyList.length === 0) {
-            getCompanyList();
-        }
-        setMenuCompany(!menuCompany);
-    };
-
-    const handleOpenSearchCompany = () => {
-        setOpenSearchCompany(true);
-    };
-
-    const handleCloseSearchCompany = () => {
-        setOpenSearchCompany(false);
-    };
-
-    const handleCompleteSearchCompany = (idx, name) => {
-        console.log("handleCompleteSearchCompany: ", idx, name);
-        handleChangeField("cpIdx", idx);
-    };
-
     useEffect(() => {
-        if (companyList === null || companyList.length === 0) {
-            getCompanyList();
-        }
         if (user) {
             const {level, cpIdx, cpName} = user;
             if (level >= CUSTOMER_MANAGER) {
@@ -187,36 +159,6 @@ const WriteEnvVariable = (props) => {
                     cpName,
                 });
             }
-        }
-
-        if (isRegister === false) {
-            console.log("isRegister data : ", data);
-            setFields({
-                ...fields,
-                idx: data.idx,
-                cpName: data.cpName,
-                cpIdx: data.cpIdx,
-                serialNumber: data.serialNumber,
-                ipAddr: data.ipAddr,
-                registerType: data.registerType,
-                domainPrefix: data.domainPrefix,
-                domainId: data.domainId,
-                domainPassword: data.domainPassword,
-                accessKey: data.accessKey,
-                secretKey: data.secretKey,
-                projectId: data.projectId,
-                ktDomainId: data.ktDomainId,
-                nasUrl: data.nasUrl,
-                nasId: data.nasId,
-                nasPassword: data.nasPassword,
-            });
-
-            setDisables({
-                ...disables,
-                cpName: true,
-                cpIdx: true,
-                serialNumber: true,
-            });
         }
     }, []);
 
@@ -231,7 +173,12 @@ const WriteEnvVariable = (props) => {
         <React.Fragment>
             <form className={formClassName}>
                 <Grid container spacing={3}>
-                    <Grid item xs={4}>
+                    <Grid item xs={12}>
+                        <div style={{color: "red"}}>
+                            <b>잘못된 변수 수정 시 통신이 끊어질 수 있으니 신중히 입력 하시길 바랍니다!</b>
+                        </div>
+                    </Grid>
+                    <Grid item xs={6}>
                         <div>
                             <span className={labelClassName}>* 전송 AGENT</span>
                             <FormControl
@@ -249,7 +196,6 @@ const WriteEnvVariable = (props) => {
                                     onChange={(e) => {
                                         handleChangeField("agentType", e.target.value);
                                     }}
-                                    onClick={handleMenuCompany}
                                     MenuProps={MenuProps}
                                 >
                                     <MenuItem key={0} value={0}>
@@ -266,7 +212,26 @@ const WriteEnvVariable = (props) => {
                             </FormControl>
                         </div>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
+                        <div>
+                            <span className={labelClassName}>* IP Address</span>
+                            <TextField
+                                className={fieldClassName}
+                                error={errors.ipAddr}
+                                required={requires.ipAddr}
+                                disabled={disables.ipAddr}
+                                helperText={helpers.ipAddr}
+                                name="ipAddr"
+                                value={fields.ipAddr}
+                                onChange={(e) => {
+                                    handleChangeField("ipAddr", e.target.value);
+                                }}
+                                variant={variant}
+                                size={fieldSize}
+                            />
+                        </div>
+                    </Grid>
+                    <Grid item xs={6}>
                         <div>
                             <span className={labelClassName}>* 필드 이름</span>
                             <TextField
@@ -285,7 +250,7 @@ const WriteEnvVariable = (props) => {
                             />
                         </div>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={6}>
                         <div>
                             <span className={labelClassName}>* 값</span>
                             <TextField
@@ -313,29 +278,20 @@ const WriteEnvVariable = (props) => {
                             >
                                 취소
                             </Button>
-
-                            {isRegister ? (
-                                <Button
-                                    className={classes.margin}
-                                    variant="contained"
-                                    color="primary"
-                                    size={buttonSize}
-                                    onClick={handleSubmitInternal}
-                                    endIcon={<SendIcon/>}
-                                >
-                                    전송
-                                </Button>
-                            ) : (
-                                <Button
-                                    className={classes.margin}
-                                    variant="contained"
-                                    color="primary"
-                                    size={buttonSize}
-                                    onClick={handleSubmitInternal}
-                                >
-                                    수정
-                                </Button>
-                            )}
+                            <Button
+                                className={classes.margin}
+                                variant="contained"
+                                color="primary"
+                                size={buttonSize}
+                                onClick={handleSubmitInternal}
+                            >
+                                수정
+                            </Button>
+                            <Button
+                                color="secondary"
+                                onClick={handleRestartInternal}>
+                                RESTART!
+                            </Button>
                         </div>
                     </Grid>
                 </Grid>

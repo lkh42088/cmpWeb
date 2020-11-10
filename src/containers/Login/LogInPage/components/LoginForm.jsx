@@ -13,6 +13,8 @@ import {login} from "../../../../lib/api/login";
 import {
     GV_LOGIN_PAGE_CONFIRM_EMAIL,
     GV_LOGIN_PAGE_INPUT_EMAIL,
+    // eslint-disable-next-line import/named
+    RECAPTCHA_ENABLE,
 } from "../../../../lib/var/globalVariable";
 import GoogleRecaptcha from "../../Captcha/components/GoogleRecaptcha";
 
@@ -75,7 +77,7 @@ const LoginForm = () => {
                     return;
                 }
 
-                if (loginFailCount >= 3 && checkReCaptcha() === false) {
+                if (RECAPTCHA_ENABLE === "true" && loginFailCount >= 3 && checkReCaptcha() === false) {
                     setErrorMessage(captchaErrMsg);
                     dispatch(logout());
                     return;
@@ -174,10 +176,13 @@ const LoginForm = () => {
                         &nbsp;http://nubes-bridge.com&nbsp;
                     </a></p>
                 </div>
-                <GoogleRecaptcha
-                    visible={captchaVisible}
-                    setCaptchaOk={setCaptchaOk}
-                />
+                {RECAPTCHA_ENABLE === "true" ? (
+                    <GoogleRecaptcha
+                        visible={captchaVisible}
+                        setCaptchaOk={setCaptchaOk}
+                    />
+                    ) : ""
+                }
             </div>
             <div className="form__form-group">
                 <ButtonToolbar>
