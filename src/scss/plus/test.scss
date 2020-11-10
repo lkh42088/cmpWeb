@@ -7,18 +7,18 @@ body {
 
 .widget {
   margin: 0 auto;
-  width:350px;
-  margin-top:50px;
+  width: 350px;
+  margin-top: 50px;
   background-color: #222D3A;
   border-radius: 5px;
   box-shadow: 0px 0px 1px 0px #06060d;
 
 }
 
-.header{
+.header {
   background-color: #29384D;
-  height:40px;
-  color:#929DAF;
+  height: 40px;
+  color: #929DAF;
   text-align: center;
   line-height: 40px;
   border-top-left-radius: 7px;
@@ -28,13 +28,13 @@ body {
   text-shadow: 1px 1px #06060d;
 }
 
-.chart-container{
-  padding:25px;
+.chart-container {
+  padding: 25px;
 }
 
 .shadow {
-  -webkit-filter: drop-shadow( 0px 3px 3px rgba(0,0,0,.5) );
-  filter: drop-shadow( 0px 3px 3px rgba(0,0,0,.5) );
+  -webkit-filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, .5));
+  filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, .5));
 }
 
 /*---------------------------------------------------------------------------------------------*/
@@ -126,15 +126,6 @@ body {
     border: 1px solid transparent;
   }
 }
-
-!* Icons *!
-
-@font-face {
-  font-family: "slick";
-  font-weight: normal;
-  font-style: normal;
-}
-
 
 !* Arrows *!
 
@@ -247,31 +238,6 @@ body {
   }
 }
 
-// DEMO styling //////////////////////////////////////////
-.content {
-  width: 80%;
-  margin: auto;
-}
-
-.blue, html {
-  background: #3498db;
-  color: #fff;
-
-
-  h3 {
-    background: #fff;
-    color: #3498db;
-    font-size: 36px;
-    line-height: 100px;
-    margin: 10px;
-    padding: 2%;
-    position: relative;
-    text-align: center;
-    border: 1px solid #999;
-  }
-}
-
-
 !* Dots *!
 
 .slick-slider {
@@ -333,4 +299,44 @@ body {
       opacity: 0.75;
     }
   }
-}*/
+}
+*/
+
+.slick-track {
+  margin: 0px;
+}
+
+.slick-slider .slick-arrow:before {
+  border-radius: 5px;
+  @include themify($themes) {
+    color: themed('colorText');
+    background-color: themed('colorBackgroundBody');
+  }
+}
+.ltr-support .slick-slider .slick-arrow.slick-next {
+  right: 22px;
+}
+
+.slick-slider .slick-arrow:before {
+  /*content: "";*/
+  right: 22px;
+  text-align: center;
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+
+.ltr-support .slick-slider .slick-arrow.slick-prev {
+  left: 5px;
+}
+
+.slick-dots {
+  padding-right: 20px;
+}
+
+.slick-slider .slick-dots li.slick-active button:before {
+  color: #646777;
+}
+
+.slick-slider .slick-dots li button:before {
+  color: #AAAAAA;
+}

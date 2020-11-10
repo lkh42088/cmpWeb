@@ -37,10 +37,10 @@ const options = {
     },
 };
 
-const GraphBar = (prop) => {
+const GraphBarTemp = (prop) => {
     const {height, data} = prop;
-   /* console.log("GraphBar data : ", data);
-    console.log("GraphBar height : ", height);*/
+    /*console.log("GraphBarTemp data : ", data);
+    console.log("GraphBarTemp height : ", height);*/
     return (
         <Fragment>
             <Card className="cb-card">
@@ -52,4 +52,4 @@ const GraphBar = (prop) => {
     );
 };
 
-export default GraphBar;
+export default GraphBarTemp;

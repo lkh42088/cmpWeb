@@ -5,7 +5,6 @@ import Carousel from 'react-multi-carousel';
 import {NavLink} from "react-router-dom";
 import Slider from "react-slick";
 import 'react-multi-carousel/lib/styles.css';
-import {makeStyles} from "@material-ui/core/styles";
 
 import {OPERATOR} from "../../../../lib/var/globalVariable";
 import {getMcVms} from "../../../../lib/api/microCloud";
@@ -30,21 +29,6 @@ const responsive = {
         paritialVisibilityGutter: 30,
     },
 };
-
-const useStyles = makeStyles(theme => ({
-    dotStyle: {
-        color: "yellow",
-        "&:before": {
-            color: "red",
-        },
-        "&:active": {
-            color: "hotpink",
-        },
-        "&:hover": {
-            color: "skyblue",
-        },
-    },
-}));
 
 function SampleNextArrow(props) {
     const {className, style, onClick} = props;
@@ -78,9 +62,8 @@ function SamplePrevArrow(props) {
     );
 }
 
-const NBSimpleCarousel = (props) => {
+const _NBSimpleCarouselTemp = (props) => {
     const dispatch = useDispatch();
-    const classes = useStyles();
     const {cpName, vmCount} = props;
     const [vms, setVms] = useState([]);
     const user = JSON.parse(localStorage.getItem("user"));
@@ -99,7 +82,7 @@ const NBSimpleCarousel = (props) => {
 
     const settings = {
         // 아래 dots 줄 것인가
-        dots: true,
+        /*dots: true,*/
         // 좌우 화살표 줄 것인가
         arrows: true,
         /*nextArrow: <SampleNextArrow/>,
@@ -120,32 +103,22 @@ const NBSimpleCarousel = (props) => {
         lazyLoad: true,
         nextArrow: <SampleNextArrow/>,
         prevArrow: <SamplePrevArrow/>,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    infinite: true,
-                    dots: true,
-                },
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2,
-                    initialSlide: 2,
-                },
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                },
-            },
-        ],
+        // dots를 감싸고 있는
+        /*appendDots: dots => (
+            <div
+                style={{
+                    padding: "50px",
+                    color: "pink",
+                    background: "green",
+                }}
+            >
+                <ul style={{
+                    margin: "0px",
+                    color: "red",
+                    background: "blue",
+                }}> {dots} </ul>
+            </div>
+        ),*/
     };
 
     const handleView = (val) => {
@@ -230,7 +203,7 @@ const NBSimpleCarousel = (props) => {
                             <NBVmSmallCard vm={vm}/>
                         </NavLink>
                     ))}
-                    {/*<div>
+                    <div>
                         <Card className="nb-card-carousel-slick">
                             <CardHeader className="vm__card_header">
                                 00.name
@@ -295,7 +268,7 @@ const NBSimpleCarousel = (props) => {
                                 </div>
                             </CardBody>
                         </Card>
-                    </div>*/}
+                    </div>
                 </Slider>
                 /*<Carousel
                     ssr
@@ -326,4 +299,4 @@ const NBSimpleCarousel = (props) => {
     );
 };
 
-export default NBSimpleCarousel;
+export default _NBSimpleCarouselTemp;

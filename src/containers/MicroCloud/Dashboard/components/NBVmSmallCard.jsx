@@ -30,9 +30,7 @@ const NBVmSmallCard = (props) => {
      **************************************************************/
 
     return (
-        <Card className="nb-card-carousel" style={{
-            borderRadius: "10px",
-        }}>
+        <Card className="nb-card-carousel-slick">
             {/*<CardBody className="nb-carousel-card" style={{*/}
             {/*    background: color(),*/}
             {/*}}>*/}

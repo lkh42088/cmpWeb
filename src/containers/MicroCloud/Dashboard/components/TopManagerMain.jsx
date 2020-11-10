@@ -5,6 +5,7 @@ import {
 import {makeStyles} from "@material-ui/core/styles";
 import MyResponsivePie from "./MyResponsivePie";
 import GraphBar from "./GraphBar";
+import GraphBarTemp from "./GraphBarTemp";
 import {getRankingData, getTotalCount, getVmInfo} from "../../../../lib/api/microCloud";
 
 const useStyles = makeStyles(theme => ({
@@ -209,6 +210,7 @@ const TopManagerMain = () => {
             <Row>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
                     <GraphBar height={220} data={cpu}/>
+                    {/*<GraphBarTemp height={220} data={cpu}/>*/}
                 </Col>
                 <Col md={3} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
                     <GraphBar height={220} data={mem}/>

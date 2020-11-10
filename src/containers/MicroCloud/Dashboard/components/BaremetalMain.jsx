@@ -22,7 +22,6 @@ import {getMcNetworksDisk} from "../../../../lib/api/microCloudDisk";
 import NBCarousel from "./NBCarousel";
 import NBSimpleCarousel from "./NBSimpleCarousel";
 import GraphSpeedometer from "./GraphSpeedometer";
-import NBSimpleCarouselTemp from "./NBSimpleCarouselTemp";
 
 const BaremetalMain = (props) => {
     const {
@@ -166,12 +165,6 @@ const BaremetalMain = (props) => {
                         cpName={companyName}
                         vmCount={vmCount}
                     />
-                    {/*<NBSimpleCarouselTemp
-                        itemVal={3}
-                        activeVal={1}
-                        cpName={companyName}
-                        vmCount={vmCount}
-                    />*/}
                 </Col>
             </Row>
             <Row className="classes.row">
