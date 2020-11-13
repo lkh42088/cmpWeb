@@ -54,7 +54,8 @@ const headRows = [
     {id: 'ram', disablePadding: false, label: 'RAM'},
     {id: 'hdd', disablePadding: false, label: 'HDD'},
     {id: 'status', disablePadding: false, label: 'Status'},
-    {id: 'network', disablePadding: false, label: 'Network'},
+    {id: 'mac', disablePadding: false, label: 'MAC'},
+    // {id: 'network', disablePadding: false, label: 'Network'},
     {id: 'ipAddr', disablePadding: false, label: 'IP Address'},
     {id: 'remoteAddr', disablePadding: false, label: 'Remote RDP'},
     // {id: 'snapshot', disablePadding: false, label: 'Snapshot'},
@@ -692,7 +693,7 @@ const VmTable = () => {
                         className={cellClassName}
                         style={{width: "5%"}}
                     >
-                        {row.network}
+                        {row.mac}
                     </TableCell>
                     <TableCell
                         className={cellClassName}
