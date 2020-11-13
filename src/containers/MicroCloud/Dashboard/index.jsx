@@ -119,6 +119,9 @@ const MicroCloudDashboard = () => {
         getServerMac(e.target.value);
 
         const reDataCompany = companyList.filter(item => item.name === e.target.value);
+        //console.log("reDataCompany[0] : ", reDataCompany[0]);
+        // 굳이 안사용해도 될듯
+        setSchCompany(reDataCompany[0].name);
         setSchCompanyIdx(reDataCompany[0].idx);
     };
 

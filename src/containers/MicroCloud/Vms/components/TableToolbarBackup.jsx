@@ -160,6 +160,8 @@ const TableToolbarBackup = (props) => {
         contents, handleRefresh,
         count, rowsPerPage, page, onChangePage, onChangeRowsPerPage, rowsPerPageOptions,
     } = props;
+    
+    console.log(contents, "....numSelected : ", numSelected);
 
     useEffect(() => {
     }, []);

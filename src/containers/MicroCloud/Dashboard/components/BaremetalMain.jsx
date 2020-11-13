@@ -52,7 +52,6 @@ const BaremetalMain = (props) => {
     const {
         mac, company, cpIdx,
     } = props;
-    //console.log("BAREMETALMAIN : ", mac);
     const user = JSON.parse(localStorage.getItem("user"));
     console.log("BaremetalMain start mac : ", mac);
 
@@ -64,6 +63,8 @@ const BaremetalMain = (props) => {
     const [mem, setMem] = useState(0);
     const [disk, setDisk] = useState(0);
     const [err, setErr] = useState();
+    //const [co, setErr] = useState();
+    const [cpName, setCpName] = useState(company);
 
     /**************************************************************
      * Handle Function
@@ -82,6 +83,9 @@ const BaremetalMain = (props) => {
             companyName = user.cpName;
             companyIdx = user.cpIdx;
         }
+
+        setCpName(companyName);
+
         try {
             const vm = await getMcVmsCountByCpName(companyName);
             const snapshot = await getMcSnapshotCountByCpIdx(companyIdx);
@@ -168,6 +172,7 @@ const BaremetalMain = (props) => {
      * useEffect
      **************************************************************/
     useEffect(() => {
+        console.log("USE EFFECT mac : ", mac);
         getData();
         getResourceData();
         /*
@@ -189,7 +194,7 @@ const BaremetalMain = (props) => {
                     <NBSimpleCarousel
                         itemVal={3}
                         activeVal={1}
-                        cpName={companyName}
+                        cpName={cpName}
                         vmCount={vmCount}
                     />
                 </Col>

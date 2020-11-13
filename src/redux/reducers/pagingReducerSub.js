@@ -1,0 +1,190 @@
+/**
+ * Contents Bridge Company
+ * Created Date: 2020-11-12
+ * Author: eun-been ji
+ * E-mail: ebjee@nubes-bridge.com
+ */
+
+import {handleActions} from "redux-actions";
+import {
+    PAGING_SUB_CHANGE_CURRENT_PAGE,
+    PAGING_SUB_CHANGE_CURRENT_PAGE_NEXT,
+    PAGING_SUB_CHANGE_CURRENT_PAGE_PREV,
+    PAGING_SUB_CHANGE_DENSE,
+    PAGING_SUB_CHANGE_ORDER,
+    PAGING_SUB_CHANGE_ORDER_BY,
+    PAGING_SUB_CHANGE_ORDER_AND_ORDERBY,
+    PAGING_SUB_CHANGE_ORDER_BY_WITH_RESET,
+    PAGING_SUB_CHANGE_ROWS_PER_PAGE,
+    PAGING_SUB_CHANGE_SELECTED,
+    PAGING_SUB_CHANGE_TOTAL_COUNT,
+    PAGING_SUB_DUMP,
+    PAGING_SUB_SET_LOG,
+    PAGING_SUB_SETUP,
+} from "../actions/pagingSubActions";
+
+const initialState = {
+    rowsPerPage: 10,
+    currentPage: 0,
+    totalPage: 1,
+    totalCount: 1,
+    pageBeginRow: 0,
+    pageEndRow: 10,
+    displayRowsList: [10, 20, 30, 50, 100],
+    selected: new Map([]),
+    dense: false,
+    orderBy: '',
+    order: 'desc', // asc, desc
+    enableLog: false,
+};
+
+const pagingReducerSub = handleActions(
+    {
+        [PAGING_SUB_DUMP]: (state) => {
+            if (state.enableLog) {
+                console.log("[pagination dump]-------------");
+                console.log("rowsPerPage:", state.rowsPerPage);
+                console.log("currentPage:", state.currentPage);
+                console.log("totalPage:", state.totalPage);
+                console.log("totalCount:", state.totalCount);
+                console.log("pageBeginRow:", state.pageBeginRow);
+                console.log("pageEndRow:", state.pageEndRow);
+                console.log("selected:", state.selected);
+                console.log("dense:", state.dense);
+                console.log("orderBy:", state.orderBy);
+                console.log("order:", state.order);
+            }
+            return {
+                ...state,
+            };
+        },
+        [PAGING_SUB_SET_LOG]: (state, {payload}) => ({
+            ...state,
+            enableLog: payload.enableLog,
+        }),
+        [PAGING_SUB_SETUP]: (state, {payload}) => ({
+            ...state,
+            rowsPerPage: payload.rowsPerPage,
+            currentPage: payload.currentPage,
+            totalPage: payload.totalPage,
+            totalCount: payload.totalCount,
+        }),
+        [PAGING_SUB_CHANGE_CURRENT_PAGE_PREV]: state => ({
+            ...state,
+            currentPage: (
+                (state.currentPage > 0)
+                    ? (state.currentPage - 1) : state.currentPage
+            ),
+            pageBeginRow: (
+                (state.currentPage > 0)
+                    ? (state.pageBeginRow - state.rowsPerPage) : state.pageBeginRow
+            ),
+            pageEndRow: (
+                (state.currentPage > 0)
+                    ? (state.pageEndRow - state.rowsPerPage) : state.pageEndRow
+            ),
+            selected: new Map([]),
+        }),
+        [PAGING_SUB_CHANGE_CURRENT_PAGE_NEXT]: state => ({
+            ...state,
+            currentPage: (
+                (state.currentPage >= state.totalPage)
+                    ? state.currentPage : (state.currentPage + 1)
+            ),
+            pageBeginRow: (
+                (state.currentPage >= state.totalPage)
+                    ? state.pageBeginRow : (state.pageBeginRow + state.rowsPerPage)
+            ),
+            pageEndRow: (
+                (state.currentPage >= state.totalPage)
+                    ? state.pageEndRow : (state.pageEndRow + state.rowsPerPage)
+            ),
+            selected: new Map([]),
+        }),
+        [PAGING_SUB_CHANGE_CURRENT_PAGE]: (state, action) => {
+            const pageNum = action.payload.currentPage;
+            if (state.currentPage === pageNum) {
+                return {
+                    ...state,
+                };
+            }
+            let beginRow;
+            let endRow;
+            if (pageNum === 0) {
+                beginRow = 0;
+                endRow = state.rowsPerPage;
+            } else {
+                beginRow = state.rowsPerPage * pageNum;
+                endRow = state.rowsPerPage * (pageNum + 1);
+            }
+            return {
+                ...state,
+                selected: new Map([]),
+                currentPage: pageNum,
+                pageBeginRow: beginRow,
+                pageEndRow: endRow,
+            };
+        },
+        [PAGING_SUB_CHANGE_ROWS_PER_PAGE]: (state, action) => ({
+            ...state,
+            rowsPerPage: action.payload.rowsPerPage,
+            currentPage: 0,
+            totalPage: (
+                (action.payload.totalCount === 0 || state.rowsPerPage === 0)
+                    ? 1 : Math.ceil(state.totalCount / action.payload.rowsPerPage)
+            ),
+            pageBeginRow: 0,
+            pageEndRow: action.payload.rowsPerPage,
+            selected: new Map([]),
+        }),
+        [PAGING_SUB_CHANGE_TOTAL_COUNT]: (state, action) => ({
+            ...state,
+            totalCount: action.payload.totalCount,
+            totalPage: (
+                (action.payload.totalCount === 0 || state.rowsPerPage === 0)
+                    ? 1 : Math.ceil(action.payload.totalCount / state.rowsPerPage)
+            ),
+            currentPage: 0,
+            pageBeginRow: 0,
+            pageEndRow: state.rowsPerPage,
+            selected: new Map([]),
+        }),
+        [PAGING_SUB_CHANGE_SELECTED]: (state, action) => ({
+            ...state,
+            selected: action.payload.selected,
+        }),
+        [PAGING_SUB_CHANGE_DENSE]: (state, action) => ({
+            ...state,
+            dense: action.payload.checked,
+        }),
+        [PAGING_SUB_CHANGE_ORDER_BY_WITH_RESET]: (state, action) => ({
+            rowsPerPage: 10,
+            currentPage: 0,
+            totalPage: 1,
+            totalCount: 1,
+            pageBeginRow: 0,
+            pageEndRow: 10,
+            displayRowsList: [10, 20, 30, 50, 100],
+            selected: new Map([]),
+            dense: false,
+            order: 'desc', // asc, desc
+            orderBy: action.payload.orderBy,
+        }),
+        [PAGING_SUB_CHANGE_ORDER_BY]: (state, action) => ({
+            ...state,
+            orderBy: action.payload.orderBy,
+        }),
+        [PAGING_SUB_CHANGE_ORDER]: (state, action) => ({
+            ...state,
+            order: action.payload.order,
+        }),
+        [PAGING_SUB_CHANGE_ORDER_AND_ORDERBY]: (state, action) => ({
+            ...state,
+            order: action.payload.order,
+            orderBy: action.payload.orderBy,
+        }),
+    },
+    initialState,
+);
+
+export default pagingReducerSub;

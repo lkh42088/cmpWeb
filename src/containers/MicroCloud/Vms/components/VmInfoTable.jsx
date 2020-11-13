@@ -52,7 +52,7 @@ const VmInfoTable = (props) => {
 
                         <div className="vm__stats">
                             <div className="vm__stat">
-                                <p className="vm__stat-title">Micro Cloud SN</p>
+                                <p className="vm__stat-title">Micro Cloud <br/>SN</p>
                             </div>
                             <div className="vm__stat">
                                 <p className="vm__stat-contents">{vm.serialNumber}</p>
@@ -145,8 +145,6 @@ const VmInfoTable = (props) => {
                         <div className="vm__stats">
                             <div className="vm__stat">
                                 <p className="vm__stat-title">IP Address</p>
-                            </div>
-                            <div className="vm__stat">
                                 <p className="vm__stat-contents">{vm.ipAddr}</p>
                             </div>
                         </div>
@@ -154,8 +152,6 @@ const VmInfoTable = (props) => {
                         <div className="vm__stats">
                             <div className="vm__stat">
                                 <p className="vm__stat-title">MAC Address</p>
-                            </div>
-                            <div className="vm__stat">
                                 <p className="vm__stat-contents">{vm.mac}</p>
                             </div>
                         </div>
@@ -163,18 +159,13 @@ const VmInfoTable = (props) => {
                         <div className="vm__stats">
                             <div className="vm__stat">
                                 <p className="vm__stat-title">내부접속</p>
-                            </div>
-                            <div className="vm__stat">
                                 <p className="vm__stat-contents">{vm.remoteAddr}</p>
                             </div>
                         </div>
-
                         <div className="vm__stats">
                             <div className="vm__stat">
                                 <p className="vm__stat-title">외부접속</p>
-                            </div>
-                            <div className="vm__stat">
-                                <p className="vm__stat-contents">-</p>
+                                <p className="vm__stat-contents">{vm.publicRemoteAddr}</p>
                             </div>
                         </div>
                     </Fragment>

@@ -269,7 +269,7 @@ const VmCardContent = (props) => {
                             <div className="vm__stat-title"><p>외부접속 IP</p></div>
                         </div>
                         <div className="vm__stat">
-                            <div className="vm__stat-title">-</div>
+                            <div className="vm__stat-title">{row.publicRemoteAddr}</div>
                         </div>
                     </div>
 
