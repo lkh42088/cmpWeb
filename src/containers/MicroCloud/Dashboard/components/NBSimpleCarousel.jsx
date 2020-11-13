@@ -176,6 +176,8 @@ const NBSimpleCarousel = (props) => {
                 order,
                 cpName: companyName,
             });
+            console.log("response : ", response);
+            console.log("response.data.data : ", response.data.data);
             setVms(response.data.data);
         } catch (e) {
             console.log("getPageData error!");

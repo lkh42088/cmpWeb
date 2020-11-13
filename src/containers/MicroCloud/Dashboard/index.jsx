@@ -82,11 +82,14 @@ const MicroCloudDashboard = () => {
                 cpName: val,
             });
 
+            console.log("getServerMac response data : ", response.data.data);
+
             if (response.data.data[0] === undefined) {
                 setServerList([]);
                 setMac("nodata");
                 //setSchCompany(user.cpName);
             } else {
+                console.log("MAC!! : ", response.data.data[0].mac);
                 setServerList(response.data.data);
                 setMac(response.data.data[0].mac);
                 setSchCompany(val);

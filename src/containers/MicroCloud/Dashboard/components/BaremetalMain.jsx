@@ -54,6 +54,7 @@ const BaremetalMain = (props) => {
     } = props;
     //console.log("BAREMETALMAIN : ", mac);
     const user = JSON.parse(localStorage.getItem("user"));
+    console.log("BaremetalMain start mac : ", mac);
 
     const [vmCount, setVmCount] = useState(0);
     const [snapshotCount, setSnapshotCount] = useState(0);
@@ -84,6 +85,7 @@ const BaremetalMain = (props) => {
         try {
             const vm = await getMcVmsCountByCpName(companyName);
             const snapshot = await getMcSnapshotCountByCpIdx(companyIdx);
+            console.log("vm.data.vm : ", vm.data.vm);
             setVmCount(vm.data.vm);
             setSnapshotCount(snapshot.data.snapshot);
             //GetMcVmSnapshotByCpIdx
