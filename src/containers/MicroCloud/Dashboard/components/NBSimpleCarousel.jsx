@@ -6,6 +6,7 @@ import {NavLink} from "react-router-dom";
 import Slider from "react-slick";
 import 'react-multi-carousel/lib/styles.css';
 import {makeStyles} from "@material-ui/core/styles";
+import LoadingIcon from "mdi-react/LoadingIcon";
 
 import {OPERATOR} from "../../../../lib/var/globalVariable";
 import {getMcVms} from "../../../../lib/api/microCloud";
@@ -83,6 +84,7 @@ const NBSimpleCarousel = (props) => {
     const classes = useStyles();
     const {cpName, vmCount} = props;
     const [vms, setVms] = useState([]);
+    const [loading, setLoading] = useState(true);
     const user = JSON.parse(localStorage.getItem("user"));
     const {
         rowsPerPage,
@@ -156,18 +158,23 @@ const NBSimpleCarousel = (props) => {
     };
 
     const getPageData = async () => {
-        console.log("getPageData start!");
+        console.log("NBSimpleCarousel getPageData start!");
         let offset = 0;
         if (currentPage > 0) {
             offset = rowsPerPage * currentPage;
         }
+        let companyName = "";
         // let companyName;
-        // if (user.level <= OPERATOR) { //관리자
-        // companyName = "all";
-        // } else {
-        //     companyName = user.cpName;
-        const companyName = user.cpName;
-        // }
+        if (user.level <= OPERATOR) { //관리자일 경우
+            companyName = cpName; // 선택한 값
+        } else {
+            companyName = user.cpName; // 로그인한 사용자의 회사
+        }
+
+        console.log("user.cpName : ", user.cpName);
+        console.log("cpName : ", cpName);
+        console.log("FINAL - companyName : ", companyName);
+
         try {
             const response = await getMcVms({
                 rows: rowsPerPage,
@@ -177,8 +184,9 @@ const NBSimpleCarousel = (props) => {
                 cpName: companyName,
             });
             setVms(response.data.data);
+            setLoading(false);
         } catch (e) {
-            console.log("getPageData error!");
+            console.log("NBSimpleCarousel getPageData error!");
         }
     };
 
@@ -186,19 +194,25 @@ const NBSimpleCarousel = (props) => {
         if (vms.length > 0 && vms.length < 4) {
             responsive.desktop.items = vms.length;
         }
+        console.log("useEffect vms : ", vms);
     }, [vms]);
 
     useEffect(() => {
-
+        setLoading(true);
+        setVms([]);
+        getPageData();
     }, [cpName]);
 
-    useEffect(() => {
+    /*useEffect(() => {
+        console.log("useEffect ~!~~!!!");
         getPageData();
-    }, []);
+    }, []);*/
 
     return (
         <div>
-            {vmCount === 0 ? (
+            {/* eslint-disable-next-line no-nested-ternary */}
+            {loading ? <div className="panel__refresh"><LoadingIcon /></div> : ""}
+            {vms.length === 0 ? (
                 <Fragment>
                     <p style={{
                         textAlign: "center",
@@ -230,97 +244,7 @@ const NBSimpleCarousel = (props) => {
                             <NBVmSmallCard vm={vm}/>
                         </NavLink>
                     ))}
-                    {/*<div>
-                        <Card className="nb-card-carousel-slick">
-                            <CardHeader className="vm__card_header">
-                                00.name
-                            </CardHeader>
-                            <CardBody className="vm__card-carousel"
-                                      style={{
-                                          background: "#00bcd4",
-                                      }}>
-                                <div className="vm__stats_border-none">
-                                    <div className="vm__stat_border-none">
-                                        <div className="vm__stat-title">
-                                            <p>00.1</p>
-                                        </div>
-                                        <div className="vm__stat-carousel-on">
-                                            <p>00.2</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </CardBody>
-                        </Card>
-                    </div>
-                    <div>
-                        <Card className="nb-card-carousel-slick">
-                            <CardHeader className="vm__card_header">
-                                11.name
-                            </CardHeader>
-                            <CardBody className="vm__card-carousel"
-                                      style={{
-                                          background: "#2b580c",
-                                      }}>
-                                <div className="vm__stats_border-none">
-                                    <div className="vm__stat_border-none">
-                                        <div className="vm__stat-title">
-                                            <p>11.1</p>
-                                        </div>
-                                        <div className="vm__stat-carousel-on">
-                                            <p>11.2</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </CardBody>
-                        </Card>
-                    </div>
-                    <div>
-                        <Card className="nb-card-carousel-slick">
-                            <CardHeader className="vm__card_header">
-                                22.name
-                            </CardHeader>
-                            <CardBody className="vm__card-carousel"
-                                      style={{
-                                          background: "#ff1e56",
-                                      }}>
-                                <div className="vm__stats_border-none">
-                                    <div className="vm__stat_border-none">
-                                        <div className="vm__stat-title">
-                                            <p>22.1</p>
-                                        </div>
-                                        <div className="vm__stat-carousel-on">
-                                            <p>22.2</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </CardBody>
-                        </Card>
-                    </div>*/}
                 </Slider>
-                /*<Carousel
-                    ssr
-                    // partialVisbile
-                    deviceType="desktop"
-                    responsive={responsive}
-                    showDots
-                    infinite
-                    keyBoardControl
-                    customTransition="all .5"
-                    transitionDuration={100}
-                    removeArrowOnDeviceType={["tablet", "mobile"]}
-                    dotListClass="custom-dot-list-style"
-                    itemClass="carousel-item-padding-40-px"
-                >
-                    {vms.map(vm => (
-                        <NavLink
-                            to="/micro/vms"
-                            key={vm.name}
-                            onClick={e => handleView(vm)}
-                        >
-                            <NBVmSmallCard vm={vm}/>
-                        </NavLink>
-                    ))}
-                </Carousel>*/
             )}
         </div>
     );

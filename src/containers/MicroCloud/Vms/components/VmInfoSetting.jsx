@@ -16,7 +16,11 @@ import IconButton from "@material-ui/core/IconButton";
 import RefreshIcon from "@material-ui/icons/Refresh";
 
 import HistoryIcon from '@material-ui/icons/History';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Typography from '@material-ui/core/Typography';
 import SettingsBackupRestoreIcon from '@material-ui/icons/SettingsBackupRestore';
+import CustomizedSwitches from './Switch';
 
 const selectListStyle = {
     fontSize: "small",
@@ -91,7 +95,7 @@ const useStyles = makeStyles(theme => ({
 const VmInfoSetting = (props) => {
     const classes = useStyles();
     const {
-        type, vm, handleSubmit,
+        type, vm, handleSubmitSnapshot, handleSubmitBackup,
     } = props;
     const variant = "filled";
     const fieldSize = "small";
@@ -99,8 +103,6 @@ const VmInfoSetting = (props) => {
     const formClassName = "cb-material-form";
     const labelClassName = "cb-material-form__label";
     const fieldClassName = "cb-material-form__field";
-
-    console.log("★ ~~~~ > : ", vm);
 
     /*******************
      * Field
@@ -111,15 +113,18 @@ const VmInfoSetting = (props) => {
         cpName: vm.cpName,
         vmIndex: vm.vmIndex,
         serverIdx: 0,
+        snapType: vm.snapType,
         snapDays: vm.snapDays,
         snapHours: vm.snapHours,
         snapMinutes: vm.snapMinutes,
-        backupDays: 1,
-        backupHours: 0,
-        backupMinutes: 0,
+        backupType: vm.backupType,
+        backupDays: vm.backupDays,
+        backupHours: vm.backupHours,
+        backupMinutes: vm.backupMinutes,
     });
 
     const [errors, setErrors] = useState({
+        snapType: false,
         snapDays: false,
         snapHours: false,
         snapMinutes: false,
@@ -135,21 +140,15 @@ const VmInfoSetting = (props) => {
                 ...fields,
                 [name]: value,
             });
-        } else if (name === "snapType") {
+        } else if (name === "snapshot") {
             setFields({
                 ...fields,
-                [name]: value,
-                snapDays: 1,
-                snapHours: 0,
-                snapMinutes: 0,
+                snapType: value,
             });
-        } else if (name === "backupType") {
+        } else if (name === "backup") {
             setFields({
                 ...fields,
-                [name]: value,
-                backupDays: 1,
-                backupHours: 0,
-                backupMinutes: 0,
+                backupType: value,
             });
         } else {
             setFields({
@@ -163,20 +162,37 @@ const VmInfoSetting = (props) => {
         });
     };
 
+    // eslint-disable-next-line no-shadow
+    const handelChangeType = (type, val) => {
+        console.log("changeType type : ", type, ", val : ", val);
+        let reVal = 0;
+        if (val) {
+            reVal = 1;
+        }
+
+        handleChangeField(type, reVal);
+    };
 
     const handleSubmitInternal = () => {
         console.log("handleSubmitInternal() fields", fields);
-        handleSubmit(fields);
+
+        if (type === "snapshot") {
+            handleSubmitSnapshot(fields);
+        } else {
+            handleSubmitBackup(fields);
+        }
+
         //reset();
     };
 
     return (
-        <div>
+        <Card>
             {type === "snapshot" ? (
-                <div style={{
-                    padding: "1rem 0 0 1rem",
-                    background: "transition",
-                }}>
+                <CardBody className="vm__card"
+                          style={{
+                              padding: "1.5rem 0 0 1rem",
+                              background: "transition",
+                          }}>
                     <div className="vm__stats">
                         <form className={formClassName}>
                             <Grid container spacing={1}>
@@ -184,20 +200,20 @@ const VmInfoSetting = (props) => {
                                     margin: "10px 15px 10px 0",
                                     color: "#2d6187",
                                 }}>
-                                    <HistoryIcon/>
+                                    {/*<HistoryIcon/>
                                     <span style={{
                                         margin: "0 -9px",
                                         color: "#686d76",
-                                    }}>Snapshot</span>
+                                    }}>Snapshot</span>*/}
 
-                                    <Button
+                                    {/*<Button
                                         variant="contained"
                                         size="small"
                                         color="default"
                                         className={classes.button}
                                         startIcon={<HistoryIcon />}
                                     >
-                                        Upload
+                                        Snapshot
                                     </Button>
                                     <Button
                                         variant="contained"
@@ -207,8 +223,13 @@ const VmInfoSetting = (props) => {
                                         className={classes.button}
                                         startIcon={<HistoryIcon />}
                                     >
-                                        Talk
-                                    </Button>
+                                        Snapshot
+                                    </Button>*/}
+                                    <CustomizedSwitches
+                                        type="snapshot"
+                                        data={vm.snapType}
+                                        chHandelChangeType={handelChangeType}
+                                    />
                                 </Grid>
                                 <Grid item xs={3}>
                                     <div>
@@ -225,11 +246,11 @@ const VmInfoSetting = (props) => {
                                             <Select
                                                 required={errors.snapDays}
                                                 name="snapDays"
+                                                style={selectListStyle}
                                                 value={fields.snapDays}
                                                 onChange={(e) => {
                                                     handleChangeField("snapDays", e.target.value);
                                                 }}
-                                                style={selectListStyle}
                                             >
                                                {/* <MenuItem key={0} value={0}>
                                                     <em>0 day</em>
@@ -325,12 +346,13 @@ const VmInfoSetting = (props) => {
                             </Grid>
                         </form>
                     </div>
-                </div>
+                </CardBody>
             ) : (
-                <div style={{
-                    padding: "1rem 0 0 1rem",
-                    background: "transition",
-                }}>
+                <CardBody className="vm__card"
+                          style={{
+                              padding: "1.5rem 0 0 1rem",
+                              background: "transition",
+                          }}>
                     <div className="vm__stats">
                         <form className={formClassName}>
                             <Grid container spacing={1}>
@@ -338,11 +360,16 @@ const VmInfoSetting = (props) => {
                                     margin: "10px 15px 10px 0",
                                     color: "#b83b5e",
                                 }}>
-                                    <SettingsBackupRestoreIcon/>
+                                    {/*<SettingsBackupRestoreIcon/>
                                     <span style={{
                                         margin: "0 -5px",
                                         color: "#f08a5d",
-                                    }}>Backup</span>
+                                    }}>Backup</span>*/}
+                                    <CustomizedSwitches
+                                        type="backup"
+                                        data={vm.backupType}
+                                        chHandelChangeType={handelChangeType}
+                                    />
                                 </Grid>
                                 <Grid item xs={3}>
                                     <div>
@@ -356,9 +383,12 @@ const VmInfoSetting = (props) => {
                                             }}
                                         >
                                             <Select
-                                                name="backDays"
+                                                name="backupDays"
                                                 style={selectListStyle}
-                                                value={0}
+                                                value={fields.backupDays}
+                                                onChange={(e) => {
+                                                    handleChangeField("backupDays", e.target.value);
+                                                }}
                                             >
                                                 {dayList.map((item, index) => {
                                                     const key = index;
@@ -383,8 +413,12 @@ const VmInfoSetting = (props) => {
                                             value={0}
                                         >
                                             <Select
-                                                name="backHours"
+                                                name="backupHours"
                                                 style={selectListStyle}
+                                                value={fields.backupHours}
+                                                onChange={(e) => {
+                                                    handleChangeField("backupHours", e.target.value);
+                                                }}
                                             >
                                                 {hourList.map((item, index) => {
                                                     const key = index;
@@ -409,10 +443,14 @@ const VmInfoSetting = (props) => {
                                             value={0}
                                         >
                                             <Select
-                                                name="backMinutes"
+                                                name="backupMinutes"
                                                 style={selectListStyle}
+                                                value={fields.backupMinutes}
+                                                onChange={(e) => {
+                                                    handleChangeField("backupMinutes", e.target.value);
+                                                }}
                                             >
-                                                {dayList.map((item, index) => {
+                                                {minList.map((item, index) => {
                                                     const key = index;
                                                     return (
                                                         <MenuItem key={key} value={item.value}>{item.name}</MenuItem>
@@ -426,6 +464,7 @@ const VmInfoSetting = (props) => {
                                     <Tooltip title="수정" aria-label="수정">
                                         <IconButton
                                             type="button"
+                                            onClick={handleSubmitInternal}
                                         >
                                             <AddIcon/>
                                         </IconButton>
@@ -434,9 +473,9 @@ const VmInfoSetting = (props) => {
                             </Grid>
                         </form>
                     </div>
-                </div>
+                </CardBody>
             )}
-        </div>
+        </Card>
     );
 };
 

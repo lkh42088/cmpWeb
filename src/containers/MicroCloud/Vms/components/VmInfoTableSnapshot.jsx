@@ -230,11 +230,10 @@ const VmInfoTableSnapshot = ({vm}) => {
                 serverIdx: vm.serverIdx,
                 name: vm.name,
             });
-            console.log("★★★★ response: data ", response.data.data);
             setData(response.data.data);
             setPaging(response.data.page);
         } catch (e) {
-            console.log("getPageData error!");
+            console.log("SNAPSHOT getPageData error!");
         }
     };
 
@@ -304,7 +303,6 @@ const VmInfoTableSnapshot = ({vm}) => {
 
     const handleSubmitRecovery = (snap) => {
         setOpenRecovery(false);
-        console.log("submit: ", snap);
         asyncRecoveryVm(snap);
     };
 

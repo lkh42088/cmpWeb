@@ -120,7 +120,7 @@ const SidebarContent = ({
             // sidebar-dropdown & hybrid-cloud check
             if (sidebarDropdown === dropFlag && hybridCloud === hybridFlag) {
                 if (sidebarDropdown === true) {
-                    menuDisplay.display = "block";
+                    menuDisplay.display = "grid";
                 } else {
                     menuDisplay.display = "flex";
                 }
@@ -131,7 +131,7 @@ const SidebarContent = ({
                 if (level > userLevel) {
                     menuDisplay.display = "none";
                 } else {
-                    menuDisplay.display = "block";
+                    menuDisplay.display = "grid";
                 }
             }
 
@@ -145,7 +145,7 @@ const SidebarContent = ({
                                 }
                 */
                 if (level <= UNREGISTERED_USER && level >= CUSTOMER_MANAGER) {
-                    menuDisplay.display = "block";
+                    menuDisplay.display = "grid";
                 } else {
                     menuDisplay.display = "none";
                 }

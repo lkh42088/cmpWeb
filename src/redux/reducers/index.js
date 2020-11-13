@@ -11,6 +11,7 @@ import accountReducer from "./loginReducer";
 import loadingReducer from "./loadingReducer";
 import usersReducer from "./usersReducer";
 import pagingReducer from "./pagingReducer";
+import pagingReducerSub from "./pagingReducerSub";
 import companiesReducer from "./companiesReducer";
 import codeReducer from "./codeReducer";
 import vmsReducer from "./vmsReducer";
@@ -30,6 +31,7 @@ export {
     loadingReducer,
     usersReducer,
     pagingReducer,
+    pagingReducerSub,
     companiesReducer,
     codeReducer,
     vmsReducer,
