@@ -1,7 +1,7 @@
 import React, {Fragment, useEffect} from 'react';
 import {
     Badge,
-    Card, CardBody, Col, Container, Row,
+    Card, CardBody, Col, Container, Progress, Row,
 } from 'reactstrap';
 import {useDispatch, useSelector} from "react-redux";
 import {useSnackbar} from "notistack";
@@ -137,11 +137,53 @@ const VmInfo = ({schVm}) => {
                                             {/*<div className="vm__stat">
                                                 <p className="vm__stat-title">Company</p>
                                             </div>*/}
-                                            <div className="vm__stat">
-                                                <p className="vm__stat-accent">
-                                                    {data.name}
-                                                    <h6>{data.cpName}</h6>
-                                                </p>
+                                            <p className="vm__stat-accent-info" style={{
+                                                textAlign: "center",
+                                            }}>
+                                                {data.name}
+                                                &nbsp;&nbsp;
+                                                {data.currentStatus === 'running' ? (
+                                                    <Badge color="primary" style={{
+                                                        lineHeight: 1.2,
+                                                    }}>&nbsp;running&nbsp;</Badge>
+                                                ) : (
+                                                    <Badge color="secondary" style={{
+                                                        lineHeight: 1.2,
+                                                    }}>&nbsp;{data.currentStatus}&nbsp;</Badge>
+                                                )}
+                                            </p>
+                                            {/*<span style={{
+                                                fontSize: "x-small",
+                                            }}>{data.cpName}</span>*/}
+                                            {/*<p className="vm__stat-accent-info" style={{
+                                                float: "right",
+                                            }}>
+                                                {data.currentStatus === 'running' ? (
+                                                    <Badge color="primary" style={{
+                                                        lineHeight: 1.5,
+                                                    }}>&nbsp;running&nbsp;</Badge>
+                                                ) : (
+                                                    <Badge color="secondary" style={{
+                                                        lineHeight: 1.5,
+                                                    }}>&nbsp;{data.currentStatus}&nbsp;</Badge>
+                                                )}
+                                            </p>*/}
+                                            <div className="dashboard__sales-report">
+                                                <div className="progress-wrap progress-wrap--small">
+                                                    <p className="dashboard__sales-report-now" style={{
+                                                        textAlign: "center",
+                                                    }}>{data.cpName}</p>
+                                                    {/*<p className="dashboard__sales-report-plan">
+                                                        {data.currentStatus === 'running' ? (
+                                                        <Badge color="primary" style={{
+                                                            lineHeight: 2,
+                                                        }}>&nbsp;running&nbsp;</Badge>
+                                                    ) : (
+                                                        <Badge color="secondary" style={{
+                                                            lineHeight: 2,
+                                                        }}>&nbsp;{data.currentStatus}&nbsp;</Badge>
+                                                    )}</p>*/}
+                                                </div>
                                             </div>
                                         </div>
 
@@ -154,7 +196,7 @@ const VmInfo = ({schVm}) => {
                                             </div>
                                         </div>*/}
 
-                                        <div className="vm__stats">
+                                        {/*<div className="vm__stats">
                                             <div className="vm__stat">
                                                 <p className="vm__stat-title">VM 상태</p>
                                             </div>
@@ -167,7 +209,7 @@ const VmInfo = ({schVm}) => {
                                                     )}
                                                 </p>
                                             </div>
-                                        </div>
+                                        </div>*/}
                                     </div>
                                 </CardBody>
                             </Card>

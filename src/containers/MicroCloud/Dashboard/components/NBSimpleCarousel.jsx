@@ -164,16 +164,11 @@ const NBSimpleCarousel = (props) => {
             offset = rowsPerPage * currentPage;
         }
         let companyName = "";
-        // let companyName;
         if (user.level <= OPERATOR) { //관리자일 경우
             companyName = cpName; // 선택한 값
         } else {
             companyName = user.cpName; // 로그인한 사용자의 회사
         }
-
-        console.log("user.cpName : ", user.cpName);
-        console.log("cpName : ", cpName);
-        console.log("FINAL - companyName : ", companyName);
 
         try {
             const response = await getMcVms({
@@ -202,11 +197,6 @@ const NBSimpleCarousel = (props) => {
         setVms([]);
         getPageData();
     }, [cpName]);
-
-    /*useEffect(() => {
-        console.log("useEffect ~!~~!!!");
-        getPageData();
-    }, []);*/
 
     return (
         <div>

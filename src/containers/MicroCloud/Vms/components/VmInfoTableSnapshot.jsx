@@ -7,6 +7,7 @@ import {TableRow} from "@material-ui/core";
 import TableCell from "@material-ui/core/TableCell";
 import Checkbox from "@material-ui/core/Checkbox";
 import {makeStyles} from "@material-ui/core/styles";
+import LoadingIcon from "mdi-react/LoadingIcon";
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import {useSnackbar} from "notistack";
@@ -104,6 +105,7 @@ const VmInfoTableSnapshot = ({vm}) => {
     const [openRecovery, setOpenRecovery] = useState(false);
     const {enqueueSnackbar} = useSnackbar();
     const [recoveryRow, setRecoveryRow] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -232,8 +234,10 @@ const VmInfoTableSnapshot = ({vm}) => {
             });
             setData(response.data.data);
             setPaging(response.data.page);
+            setLoading(false);
         } catch (e) {
             console.log("SNAPSHOT getPageData error!");
+            setLoading(false);
         }
     };
 
@@ -262,6 +266,7 @@ const VmInfoTableSnapshot = ({vm}) => {
     };
 
     const handleDeleteSelected = () => {
+        setLoading(true);
         let copyData = [...data];
         const delList = [];
         if (selected !== null) {
@@ -441,6 +446,7 @@ const VmInfoTableSnapshot = ({vm}) => {
                     rowsPerPageOptions={displayRowsList}
                 />
                 <div className="cb-material-table__wrap">
+                    {loading ? <div className="panel__refresh"><LoadingIcon /></div> : ""}
                     <TableContainer>
                         <Table
                             className="cb-material-table"

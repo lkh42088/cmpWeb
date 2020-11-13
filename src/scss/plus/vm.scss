@@ -186,6 +186,15 @@
   text-shadow: 2px 2px 4px $color-gray;
 }
 
+.vm__stat-accent-info {
+  font-size: medium;
+  padding: 0.2rem 0.1rem;
+  /*box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);*/
+  font-weight: bold;
+  color: $color-black;
+  text-shadow: 2px 2px 4px $color-gray;
+}
+
 .vm__stat-carousel-on {
   margin: 0;
   font-size: 8px;
