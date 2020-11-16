@@ -17,6 +17,9 @@ import thList from '@iconify/icons-fa-solid/th-list';
 //snapshot
 import outlineRestore from '@iconify/icons-ic/outline-restore';
 import backupRestore from '@iconify/icons-mdi/backup-restore';
+//security
+import ipIcon from '@iconify-icons/mdi/ip';
+
 
 import {
     TOP_MANAGER, CUSTOMER_MANAGER, NB_MANAGER, OPERATOR, UNREGISTERED_USER, NORMAL_USER,
@@ -300,7 +303,7 @@ const SidebarContent = ({
                              route="/micro/backup"
                              onClick={() => changeMenuTitle('BACKUP', '', '')}
                              style={authMenuDisplay(sidebarDropdown, true, OPERATOR, true)}/>
-                <SidebarLink title="SECURITY" icon={outlineRestore}
+                <SidebarLink title="SECURITY" icon={ipIcon}
                              route="/micro/security"
                              onClick={() => changeMenuTitle('SECURITY', '', '')}
                              style={authMenuDisplay(sidebarDropdown, true, OPERATOR, true)}/>
