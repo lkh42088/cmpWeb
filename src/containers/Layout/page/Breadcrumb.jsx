@@ -21,6 +21,7 @@ import monitorMultiple from "@iconify/icons-mdi/monitor-multiple";
 import outlineRestore from "@iconify/icons-ic/outline-restore";
 import cloudServerOutlined from '@iconify/icons-ant-design/cloud-server-outlined';
 import backupRestore from '@iconify/icons-mdi/backup-restore';
+import ipIcon from '@iconify-icons/mdi/ip';
 import {themes} from "../../../shared/helpers";
 import {OPERATOR, SEPARATION_URL} from "../../../lib/var/globalVariable";
 
@@ -76,6 +77,7 @@ const USER_URL = {
     "micro/vnc": {title: "VM VNC", subTitle: null, icon: monitorMultiple},
     "micro/snapshot": {title: "SNAPSHOT", subTitle: null, icon: outlineRestore},
     "micro/backup": {title: "BACKUP", subTitle: null, icon: backupRestore},
+    "micro/security": {title: "SECURITY", subTitle: null, icon: ipIcon},
     "assets/server": {title: "SERVER", subTitle: "온프레미스", icon: serverOutlineBadged},
     "assets/network": {title: "NETWORK", subTitle: "네트워크", icon: routerNetwork},
     "assets/part": {title: "NETWORK", subTitle: "파트 & 기타", icon: routerNetwork},
@@ -100,6 +102,7 @@ const MANAGER_URL = {
     "micro/vnc": {title: "HYBRID CLOUD", subTitle: "VNC", icon: cloudServerOutlined},
     "micro/snapshot": {title: "HYBRID CLOUD", subTitle: "SNAPSHOT", icon: cloudServerOutlined},
     "micro/backup": {title: "HYBRID CLOUD", subTitle: "BACKUP", icon: cloudServerOutlined},
+    "micro/security": {title: "HYBRID CLOUD", subTitle: "SECURITY", icon: cloudServerOutlined},
     "assets/server": {title: "SERVER", subTitle: "온프레미스", icon: serverOutlineBadged},
     "assets/network": {title: "NETWORK", subTitle: "네트워크", icon: routerNetwork},
     "assets/part": {title: "NETWORK", subTitle: "파트 & 기타", icon: routerNetwork},
