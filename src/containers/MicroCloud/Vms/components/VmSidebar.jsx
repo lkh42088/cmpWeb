@@ -155,7 +155,7 @@ const VmSidebar = ({vm}) => {
                             <p className="vm__stat-title"><b>외부접속</b> </p>
                         </div>
                         <div className="vm__stat">
-                            <p className="vm__stat-title">-</p>
+                            <p className="vm__stat-title">{vm.publicRemoteAddr}</p>
                         </div>
                     </div>
 

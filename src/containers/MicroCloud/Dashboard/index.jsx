@@ -5,18 +5,14 @@ import {
 import {makeStyles} from "@material-ui/core/styles";
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-
-import RouterBreadcrumbs from "../../Layout/page/Breadcrumb";
-
 import {
-    getVmInterfaceTraffic, getServeries, unregisterMcServer, getMcServers,
+    getMcServers,
 } from "../../../lib/api/microCloud";
 import {getCompanies} from "../../../lib/api/company";
 import {
-    NB_MANAGER, TOP_MANAGER, UNREGISTERED_USER, CUSTOMER_MANAGER,
+    CUSTOMER_MANAGER,
 } from "../../../lib/var/globalVariable";
 
 import TopManagerMain from "./components/TopManagerMain";
@@ -82,14 +78,13 @@ const MicroCloudDashboard = () => {
                 cpName: val,
             });
 
-            console.log("getServerMac response data : ", response.data.data);
-
             if (response.data.data[0] === undefined) {
                 setServerList([]);
                 setMac("nodata");
                 //setSchCompany(user.cpName);
+                setSchCompany("all|");
+                setSchCompanyIdx("");
             } else {
-                console.log("MAC!! : ", response.data.data[0].mac);
                 setServerList(response.data.data);
                 setMac(response.data.data[0].mac);
                 setSchCompany(val);
@@ -115,21 +110,30 @@ const MicroCloudDashboard = () => {
      **************************************************************/
 
     const handleChangeCompany = (e) => {
-        setSchCompany(e.target.value);
-        getServerMac(e.target.value);
+        const schVal = e.target.value;
+        console.log("★ schVal : ", schVal);
+        const cpName = schVal.split("|")[0];
+        const cpIdx = schVal.split("|")[1];
 
-        const reDataCompany = companyList.filter(item => item.name === e.target.value);
+        setSchCompany(cpName);
+        setSchCompanyIdx(cpIdx);
+        getServerMac(cpName);
+
+        //const reDataCompany = companyList.filter(item => item.name === e.target.value);
         //console.log("reDataCompany[0] : ", reDataCompany[0]);
         // 굳이 안사용해도 될듯
+        /*console.log("reDataCompany : ", reDataCompany);
         setSchCompany(reDataCompany[0].name);
-        setSchCompanyIdx(reDataCompany[0].idx);
+        setSchCompanyIdx(reDataCompany[0].idx);*/
     };
 
     const handleAuthSelectDisplay = () => {
+        console.log("한번더 실행되니?");
         if (level >= CUSTOMER_MANAGER) {
             getServerMac(user.cpName);
         } else {
-            setSchCompany("all");
+            setSchCompany("all|");
+            setSchCompanyIdx("");
         }
     };
 
@@ -149,19 +153,13 @@ const MicroCloudDashboard = () => {
             overflowY: "hidden",
             board: "1px solid red",
         }}>
-            {/*<Row className={classes.row}>
-                <RouterBreadcrumbs url={window.location.href}/>
-            </Row>*/}
-            {/*★schCompany : {schCompany}
-            <br/>
-            ★mac  :{mac}*/}
-
             {level < CUSTOMER_MANAGER ? (
                 <Row style={{
                     marginTop: "-8px",
                 }}>
                     <Col md={6} lg={3} xs={12} sm={12} xl={3}>
                         <div>
+                            ★ {setSchCompany}
                             <FormControl className={classes.formControl}>
                                 <InputLabel id="demo-simple-select-autowidth-label"
                                             style={{
@@ -172,20 +170,24 @@ const MicroCloudDashboard = () => {
                                     id="demo-simple-select-autowidth"
                                     name="company"
                                     autoWidth
-                                    value={schCompany}
+                                    /*value={schCompany}*/
+                                    value={`${schCompany}|${schCompanyIdx}`}
                                     onChange={handleChangeCompany}
                                     style={{
                                         fontSize: "0.7rem",
                                         width: "100%",
                                     }}
                                 >
-                                    <MenuItem key="all" value="all">
+                                    <MenuItem key="all" value="all|">
                                         <em>:: ALL DATA ::</em>
                                     </MenuItem>
                                     {companyList && companyList.map((item, index) => {
                                         const key = index;
                                         return (
-                                            <MenuItem key={key} value={item.name}>
+                                            <MenuItem key={key}
+                                                /*value={item.name}*/
+                                                      value={`${item.name}|${item.idx}`}
+                                            >
                                                 {item.name}
                                             </MenuItem>
                                         );
@@ -197,16 +199,14 @@ const MicroCloudDashboard = () => {
                     </Col>
                 </Row>
             ) : false}
-
-            {/* eslint-disable-next-line no-nested-ternary */}
-            {/*{schCompany === "all" ? (
-                <TopManagerMain/>
-            ) : mac ? (<BaremetalMain mac={mac} company={schCompany} cpIdx={schCompanyIdx}/>) : <div>mac({mac}) 정보 오류</div>}*/}
-            {schCompany === "all" ? (
-                <TopManagerMain/>
-            ) : (
-                <BaremetalMain mac={mac} company={schCompany} cpIdx={schCompanyIdx}/>
-            )}
+            {/*eslint-disable-next-line no-nested-ternary*/}
+            {schCompany === "all" ? <TopManagerMain/>
+                : (mac !== "" ? (
+                    <BaremetalMain
+                        mac={mac}
+                        company={schCompany}
+                        cpIdx={schCompanyIdx}/>
+                ) : false)}
         </Container>
     );
 };

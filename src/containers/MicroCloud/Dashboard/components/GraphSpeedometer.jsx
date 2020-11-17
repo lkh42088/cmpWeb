@@ -49,14 +49,7 @@ function GraphSpeedometer(props) {
         return () => window.removeEventListener("resize", updateSize);
     });
 
-
     const widthSize = window.outerWidth;
-
-    /*useEffect(() => {
-        setTimeout(() => {
-            setInData(Math.round(Math.random() * 44) + 1);
-        }, 5000);
-    }, [inData]);*/
 
     useEffect(() => {
         updateSize();
@@ -67,7 +60,6 @@ function GraphSpeedometer(props) {
     }, [widthSize]);
 
     useEffect(() => {
-        //console.log(title, " data : ", data);
         setInData(data);
 
         switch (title) {
@@ -88,12 +80,10 @@ function GraphSpeedometer(props) {
         if (Number(data) >= 80) {
             setSegmentColors(warringSegmentColors);
             setTextColor(warringColor);
+        } else {
+            setTextColor(classes.valueColor.textColor);
         }
     }, [data]);
-
-    /*useEffect(() => {
-        setRadius(radius);
-    }, [radius]);*/
 
     return (
         <Card className="cb-card" innerRef={ref}>

@@ -225,7 +225,7 @@ const VmInfo = ({schVm}) => {
                             </Button>*/}
                             {/*<p ><ListIcon/>목록</p>
                             <Button variant="link">Link</Button>*/}
-                            <Button variant="primary" block
+                            <Button variant="text" block
                                     startIcon={<ListIcon/>}
                                     size="small" onClick={handlePage}>
                                 목록

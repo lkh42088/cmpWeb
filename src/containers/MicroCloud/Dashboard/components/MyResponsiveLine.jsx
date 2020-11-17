@@ -47,7 +47,6 @@ const MyResponsiveLine = (props) => {
      * Axios Function
      **************************************************************/
     const getData = async () => {
-        //console.log("👾👾 베어메탈 getData mac : ", mac);
         if (!mac || mac === "nodata") {
             setState("nodata");
             return;
