@@ -37,8 +37,6 @@ const SidebarContent = ({
                             user, dropdown, changeHybridCloud,
                         }) => {
     const dispatch = useDispatch();
-    const boolValueTrue = true;
-    const boolValueFalse = false;
 
     const sidebarTitle = common.sidebarGetTitle(window.location.href);
 
@@ -161,7 +159,7 @@ const SidebarContent = ({
     return (
         <div className="cb_sidebar__content">
             <ul className="cb_sidebar__block">
-                {user.id === 'ebjee' && (
+                {/*{user.id === 'ebjee' && (
                     <SidebarCategory title="EBJEE" icon={emojiPeopleIcon} dropdown={dropdown}
                                      downState={false}>
                         <SidebarLink title="CHART" route="/test/chart"
@@ -173,7 +171,7 @@ const SidebarContent = ({
                         <SidebarLink title="UI" route="/test/ui"
                                      onClick={() => changeMenuTitle('TEST', 'UI', '')}/>
                     </SidebarCategory>
-                )}
+                )}*/}
 
                 {/*COMMON DASHBOARD*/}
                 {/*sidebar-dropdown false*/}

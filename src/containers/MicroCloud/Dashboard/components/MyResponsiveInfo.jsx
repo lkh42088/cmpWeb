@@ -2,12 +2,6 @@ import React, {useEffect, useState, Fragment} from "react";
 import {
     Card, CardBody, Container, Table,
 } from "reactstrap";
-import {
-    PieChart, Pie, Sector, ResponsiveContainer,
-} from 'recharts';
-import TargetIcon from "mdi-react/TargetIcon";
-import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
-import InfoIcon from '@material-ui/icons/Info';
 
 import {getSystemInfoByMac} from "../../../../lib/api/microCloud";
 import {getMcNetworksDisk} from "../../../../lib/api/microCloudDisk";
@@ -29,12 +23,12 @@ const MyResponsiveInfo = (props) => {
 
     const getData = async () => {
         try {
-            //console.log("mac : ", mac);
             const marker = 1024; // Change to 1000 if required
             const decimal = 2; // Change as required
             const gigaBytes = marker * marker * marker; // One GB is 1024 MB
 
-            if (mac === "nodata") {
+            //console.log("mac : ", mac);
+            if (mac === "nodata" || mac === "") {
                 setData("");
             } else {
                 const responseSys = await getSystemInfoByMac(mac);
@@ -43,8 +37,6 @@ const MyResponsiveInfo = (props) => {
 
                 const subContentDisk = `${(Number(responseDisk.data[0].total) / gigaBytes).toFixed(decimal)}`;
                 const subContentMem = `${(Number(responseMem.data[0].total) / gigaBytes).toFixed(decimal)}`;
-
-                //console.log("responseSys.data : ", responseSys.data);
 
                 setData(responseSys.data);
                 setDisk(subContentDisk);

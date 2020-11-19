@@ -2,7 +2,7 @@ import React, {useEffect, useState, Fragment} from 'react';
 import {
     Col, Row,
 } from 'reactstrap';
-
+// getMcVms
 import MyResponsiveLine from "./MyResponsiveLine";
 import MyResponsiveCpu from "./MyResponsiveCpu";
 import MyResponsiveMem from "./MyResponsiveMem";
@@ -11,15 +11,12 @@ import MyResponsiveInfo from "./MyResponsiveInfo";
 import CountInfo from "./CountInfo";
 import {OPERATOR} from "../../../../lib/var/globalVariable";
 import {
-    getMcServers, getMcVms, getMcVmsCountByCpName, getMcSnapshotCountByCpIdx,
+    getMcVmsCountByCpName, getMcSnapshotCountByCpIdx,
 } from "../../../../lib/api/microCloud";
-import NBGaugeGraph from "./NBGaugeGraph";
-import NBGaugeLiquid from "./NBGaugeLiquid";
-import NBGaugeSvg from "./NBGaugeSvg";
+
 import {getMcNetworksMem} from "../../../../lib/api/microCloudMem";
 import {getMcNetworksCpu} from "../../../../lib/api/microCloudCpu";
 import {getMcNetworksDisk} from "../../../../lib/api/microCloudDisk";
-import NBCarousel from "./NBCarousel";
 import NBSimpleCarousel from "./NBSimpleCarousel";
 import GraphSpeedometer from "./GraphSpeedometer";
 
@@ -53,7 +50,6 @@ const BaremetalMain = (props) => {
         mac, company, cpIdx,
     } = props;
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log("BaremetalMain start mac : ", mac);
 
     const [vmCount, setVmCount] = useState(0);
     const [snapshotCount, setSnapshotCount] = useState(0);
@@ -63,7 +59,6 @@ const BaremetalMain = (props) => {
     const [mem, setMem] = useState(0);
     const [disk, setDisk] = useState(0);
     const [err, setErr] = useState();
-    //const [co, setErr] = useState();
     const [cpName, setCpName] = useState(company);
 
     /**************************************************************
@@ -79,21 +74,22 @@ const BaremetalMain = (props) => {
         if (user.level <= OPERATOR) { //관리자
             companyName = company;
             companyIdx = cpIdx;
+
+            if (company === "") { // first 예외 처리
+                companyName = user.cpName;
+                companyIdx = user.cpIdx;
+            }
         } else {
             companyName = user.cpName;
             companyIdx = user.cpIdx;
         }
 
-        setCpName(companyName);
-
         try {
+            setCpName(companyName);
             const vm = await getMcVmsCountByCpName(companyName);
             const snapshot = await getMcSnapshotCountByCpIdx(companyIdx);
-            console.log("vm.data.vm : ", vm.data.vm);
             setVmCount(vm.data.vm);
             setSnapshotCount(snapshot.data.snapshot);
-            //GetMcVmSnapshotByCpIdx
-            //GetMcVmSnapshotByMcServerIdx
         } catch (e) {
             console.log("getPageData error!");
         }
@@ -101,29 +97,30 @@ const BaremetalMain = (props) => {
 
     const getResourceData = async () => {
         try {
-            // cpu
-            const cpuVal = await getMcNetworksCpu(mac);
-            const value = (100 - cpuVal.data[0].usage_idle).toFixed(0);
-            setCpu(Number(value));
-            // mem
-            const memVal = await getMcNetworksMem(mac);
-            setMem(Number(100 - memVal.data[0].available_percent.toFixed(0)));
-            // disk
-            const diskVal = await getMcNetworksDisk(mac);
-            if (diskVal.data[0].err === "nodata" || memVal.data[0].err === "nodata" || cpuVal.data[0].err === "nodata") {
-                setErr("nodata");
-            } else {
-                setErr("");
+            if (mac !== "") {
+                // cpu
+                const cpuVal = await getMcNetworksCpu(mac);
+                const value = (100 - cpuVal.data[0].usage_idle).toFixed(0);
+                setCpu(Number(value));
+                // mem
+                const memVal = await getMcNetworksMem(mac);
+                setMem(Number(100 - memVal.data[0].available_percent.toFixed(0)));
+                // disk
+                const diskVal = await getMcNetworksDisk(mac);
+                if (diskVal.data[0].err === "nodata" || memVal.data[0].err === "nodata" || cpuVal.data[0].err === "nodata") {
+                    setErr("nodata");
+                } else {
+                    setErr("");
+                }
+                setDisk(Number(diskVal.data[0].used_percent.toFixed(0)));
             }
-            setDisk(Number(diskVal.data[0].used_percent.toFixed(0)));
-            //console.log("CPU : ", Number(value), "MEM : ", Number(100 - memVal.data[0].available_percent.toFixed(0)), "DISK : ", Number(diskVal.data[0].used_percent.toFixed(0)));
         } catch (e) {
             console.log("getResourceData error!");
         }
     };
 
     const getCpuData = async () => {
-        setCpu(0);
+        //setCpu(0);
         try {
             const cpuVal = await getMcNetworksCpu(mac);
             if (cpuVal.data[0].err === "nodata") {
@@ -139,7 +136,7 @@ const BaremetalMain = (props) => {
     };
 
     const getMemData = async () => {
-        setMem(0);
+        //setMem(0);
         try {
             const memVal = await getMcNetworksMem(mac);
             if (memVal.data[0].err === "nodata") {
@@ -154,7 +151,7 @@ const BaremetalMain = (props) => {
     };
 
     const getDiskData = async () => {
-        setDisk(0);
+        //setDisk(0);
         try {
             const diskVal = await getMcNetworksDisk(mac);
             if (diskVal.data[0].err === "nodata") {
@@ -172,12 +169,8 @@ const BaremetalMain = (props) => {
      * useEffect
      **************************************************************/
     useEffect(() => {
-        console.log("USE EFFECT mac : ", mac);
         getData();
         getResourceData();
-        /*
-        const timer = setInterval(getData, 10000);
-        */
 
         const timer = setInterval(() => {
             getData();
@@ -189,73 +182,77 @@ const BaremetalMain = (props) => {
 
     return (
         <Fragment>
-            <Row className="classes.row">
-                <Col md={12} lg={12} xs={12} sm={12} xl={12} style={{padding: 10}}>
-                    <NBSimpleCarousel
-                        itemVal={3}
-                        activeVal={1}
-                        cpName={cpName}
-                        vmCount={vmCount}
-                    />
-                </Col>
-            </Row>
-            <Row className="classes.row">
-                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphSpeedometer
-                        title="CPU"
-                        data={cpu}
-                        err={err}
-                        refresh={getCpuData}
-                    />
-                </Col>
-                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphSpeedometer
-                        title="MEMORY"
-                        data={mem}
-                        err={err}
-                        refresh={getMemData}
-                    />
-                </Col>
-                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <GraphSpeedometer
-                        title="DISK"
-                        data={disk}
-                        err={err}
-                        refresh={getDiskData}
-                    />
-                </Col>
-                <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
-                    <Row style={CountInfoStyle.size}>
-                        <CountInfo title="VM 개수" count={vmCount}
-                                   color={CountInfoStyle.color.vm}/>
+            {company !== "" ? (
+                <div>
+                    <Row className="classes.row">
+                        <Col md={12} lg={12} xs={12} sm={12} xl={12} style={{padding: 10}}>
+                            <NBSimpleCarousel
+                                itemVal={3}
+                                activeVal={1}
+                                cpName={cpName}
+                                vmCount={vmCount}
+                            />
+                        </Col>
                     </Row>
-                    <Row style={CountInfoStyle.size}>
-                        <CountInfo title="Snapshot 개수" count={snapshotCount}
-                                   color={CountInfoStyle.color.snapshot}/>
+                    <Row className="classes.row">
+                        <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                            <GraphSpeedometer
+                                title="CPU"
+                                data={cpu}
+                                err={err}
+                                refresh={getCpuData}
+                            />
+                        </Col>
+                        <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                            <GraphSpeedometer
+                                title="MEMORY"
+                                data={mem}
+                                err={err}
+                                refresh={getMemData}
+                            />
+                        </Col>
+                        <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                            <GraphSpeedometer
+                                title="DISK"
+                                data={disk}
+                                err={err}
+                                refresh={getDiskData}
+                            />
+                        </Col>
+                        <Col md={6} lg={3} xs={12} sm={12} xl={3} style={{padding: 10}}>
+                            <Row style={CountInfoStyle.size}>
+                                <CountInfo title="VM 개수" count={vmCount}
+                                           color={CountInfoStyle.color.vm}/>
+                            </Row>
+                            <Row style={CountInfoStyle.size}>
+                                <CountInfo title="Snapshot 개수" count={snapshotCount}
+                                           color={CountInfoStyle.color.snapshot}/>
+                            </Row>
+                            <Row style={CountInfoStyle.size}>
+                                <CountInfo title="Backup 개수" count={backupCount}
+                                           color={CountInfoStyle.color.backup}/>
+                            </Row>
+                        </Col>
                     </Row>
-                    <Row style={CountInfoStyle.size}>
-                        <CountInfo title="Backup 개수" count={backupCount}
-                                   color={CountInfoStyle.color.backup}/>
+                    <Row>
+                        <Col md={3} style={{padding: 10}}>
+                            <MyResponsiveInfo
+                                height={150}
+                                mac={mac}
+                                title="HOSTNAME"
+                            />
+                        </Col>
+                        <Col md={9} style={{
+                            padding: "10px 10px 0",
+                            marginBottom: "10px",
+                        }}>
+                            <MyResponsiveLine height={350}
+                                              title="BareMetal Out Interface"
+                                              mac={mac}/>
+                        </Col>
                     </Row>
-                </Col>
-            </Row>
-            <Row>
-                <Col md={3} style={{padding: 10}}>
-                    <MyResponsiveInfo
-                        height={150}
-                        mac={mac}
-                        title="HOSTNAME"
-                    />
-                </Col>
-                <Col md={9} style={{
-                    padding: "10px 10px 0",
-                    marginBottom: "10px",
-                }}>
-                    <MyResponsiveLine height={350}
-                                      title="BareMetal Out Interface"
-                                      mac={mac}/>
-                </Col>
-            </Row>
+                </div>
+            ) : false}
         </Fragment>
     );
 };

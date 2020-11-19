@@ -1,7 +1,5 @@
 import React, {Fragment, useEffect, useState} from 'react';
-import {Card, CardBody, CardHeader} from "reactstrap";
 import {useDispatch, useSelector} from "react-redux";
-import Carousel from 'react-multi-carousel';
 import {NavLink} from "react-router-dom";
 import Slider from "react-slick";
 import 'react-multi-carousel/lib/styles.css';
@@ -15,18 +13,26 @@ import NBVmSmallCard from "./NBVmSmallCard";
 
 const responsive = {
     desktop: {
-        breakpoint: { max: 3000, min: 1024 },
+        breakpoint: {
+            max: 3000,
+            min: 1024,
+        },
         items: 4,
         paritialVisibilityGutter: 20,
-        // slidesToSlide: 3,
     },
     tablet: {
-        breakpoint: { max: 1024, min: 464 },
+        breakpoint: {
+            max: 1024,
+            min: 464,
+        },
         items: 3,
         paritialVisibilityGutter: 50,
     },
     mobile: {
-        breakpoint: { max: 464, min: 0 },
+        breakpoint: {
+            max: 464,
+            min: 0,
+        },
         items: 1,
         paritialVisibilityGutter: 30,
     },
@@ -100,12 +106,8 @@ const NBSimpleCarousel = (props) => {
     }));
 
     const settings = {
-        // 아래 dots 줄 것인가
         dots: true,
-        // 좌우 화살표 줄 것인가
         arrows: true,
-        /*nextArrow: <SampleNextArrow/>,
-        prevArrow: <SamplePrevArrow/>,*/
         infinite: false,
         speed: 1000,
         rows: 1,
@@ -158,14 +160,18 @@ const NBSimpleCarousel = (props) => {
     };
 
     const getPageData = async () => {
-        console.log("NBSimpleCarousel getPageData start!");
         let offset = 0;
         if (currentPage > 0) {
             offset = rowsPerPage * currentPage;
         }
+
         let companyName = "";
         if (user.level <= OPERATOR) { //관리자일 경우
             companyName = cpName; // 선택한 값
+
+            if (companyName === "") { // first 예외 처리
+                companyName = user.cpName;
+            }
         } else {
             companyName = user.cpName; // 로그인한 사용자의 회사
         }
@@ -178,8 +184,6 @@ const NBSimpleCarousel = (props) => {
                 order,
                 cpName: companyName,
             });
-            console.log("response : ", response);
-            console.log("response.data.data : ", response.data.data);
             setVms(response.data.data);
             setLoading(false);
         } catch (e) {
@@ -191,7 +195,6 @@ const NBSimpleCarousel = (props) => {
         if (vms.length > 0 && vms.length < 4) {
             responsive.desktop.items = vms.length;
         }
-        console.log("useEffect vms : ", vms);
     }, [vms]);
 
     useEffect(() => {
@@ -203,7 +206,7 @@ const NBSimpleCarousel = (props) => {
     return (
         <div>
             {/* eslint-disable-next-line no-nested-ternary */}
-            {loading ? <div className="panel__refresh"><LoadingIcon /></div> : ""}
+            {loading ? <div className="panel__refresh"><LoadingIcon/></div> : ""}
             {vms.length === 0 ? (
                 <Fragment>
                     <p style={{

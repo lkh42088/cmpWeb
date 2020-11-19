@@ -31,7 +31,7 @@ const LoginBase = ({history}) => {
             /********************************************************************
              * 로그인 성공!
              ********************************************************************/
-            console.log('useEffect: check API 성공 Level : ', user);
+            //console.log('useEffect: check API 성공 Level : ', user);
             if (hybridCloud) {
                 if (user.level === NORMAL_USER) {
                     history.push('/micro/vmsPage');
