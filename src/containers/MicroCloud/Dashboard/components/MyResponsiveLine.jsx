@@ -4,7 +4,7 @@ import {linearGradientDef} from '@nivo/core';
 import {Card, CardBody} from "reactstrap";
 
 import {
-    getVmInterfaceTraffic,
+    getBaremetalInterfaceTraffic,
 } from "../../../../lib/api/microCloud";
 
 const lineTheme = ({
@@ -53,7 +53,7 @@ const MyResponsiveLine = (props) => {
         }
 
         try {
-            const response = await getVmInterfaceTraffic({mac});
+            const response = await getBaremetalInterfaceTraffic({mac});
             setData({
                 stats: (
                     response.data.stats.map(val => ({
