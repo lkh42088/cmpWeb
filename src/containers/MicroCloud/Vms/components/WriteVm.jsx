@@ -58,11 +58,6 @@ const backupTypeList = [
 ];
 
 const snapDayList = [
-    { value: 2, name: "2 days" },
-    { value: 3, name: "3 days" },
-    { value: 4, name: "4 days" },
-    { value: 5, name: "5 days" },
-    { value: 6, name: "6 days" },
     { value: 7, name: "1 week" },
     { value: 30, name: "1 month" },
 ];
@@ -517,6 +512,46 @@ const WriteVm = (props) => {
                 backupHours: !value,
                 backupMinutes: !value,
             });
+        } else if (name === "snapDays") {
+            setFields({
+                ...fields,
+                [name]: value,
+                snapHours: 0,
+                snapMinutes: 0,
+            });
+            if (value !== 1) {
+                setDisables({
+                    ...disables,
+                    snapHours: true,
+                    snapMinutes: true,
+                });
+            } else {
+                setDisables({
+                    ...disables,
+                    snapHours: false,
+                    snapMinutes: false,
+                });
+            }
+        } else if (name === "backupDays") {
+            setFields({
+                ...fields,
+                [name]: value,
+                backupHours: 0,
+                backupMinutes: 0,
+            });
+            if (value !== 1) {
+                setDisables({
+                    ...disables,
+                    backupHours: true,
+                    backupMinutes: true,
+                });
+            } else {
+                setDisables({
+                    ...disables,
+                    backupHours: false,
+                    backupMinutes: false,
+                });
+            }
         } else {
             setFields({
                 ...fields,
