@@ -4,7 +4,7 @@ import {linearGradientDef} from '@nivo/core';
 import {Card, CardBody} from "reactstrap";
 
 import {
-    getVmInterfaceTraffic,
+    getBaremetalInterfaceTraffic,
 } from "../../../../lib/api/microCloud";
 
 const lineTheme = ({
@@ -47,14 +47,14 @@ const MyResponsiveLine = (props) => {
      * Axios Function
      **************************************************************/
     const getData = async () => {
-        //console.log("👾👾 베어메탈 getData mac : ", mac);
+        // console.log("👾👾 베어메탈 getData mac : ", mac);
         if (!mac || mac === "nodata") {
             setState("nodata");
             return;
         }
 
         try {
-            const response = await getVmInterfaceTraffic({mac});
+            const response = await getBaremetalInterfaceTraffic({mac});
             setData({
                 stats: (
                     response.data.stats.map(val => ({
