@@ -82,13 +82,18 @@ const MicroCloudDashboard = () => {
                 setServerList([]);
                 setMac("nodata");
                 //setSchCompany(user.cpName);
-                setSchCompany("all|");
-                setSchCompanyIdx("");
+                /*setSchCompany("all");
+                setSchCompanyIdx("");*/
             } else {
                 setServerList(response.data.data);
                 setMac(response.data.data[0].mac);
                 setSchCompany(val);
                 setSchCompanyIdx(response.data.data[0].cpIdx);
+            }
+
+            if (val === "all") {
+                setSchCompany("all");
+                setSchCompanyIdx("");
             }
         } catch (error) {
             setServerList([]);
@@ -111,7 +116,6 @@ const MicroCloudDashboard = () => {
 
     const handleChangeCompany = (e) => {
         const schVal = e.target.value;
-        console.log("★ schVal : ", schVal);
         const cpName = schVal.split("|")[0];
         const cpIdx = schVal.split("|")[1];
 
@@ -128,11 +132,10 @@ const MicroCloudDashboard = () => {
     };
 
     const handleAuthSelectDisplay = () => {
-        console.log("한번더 실행되니?");
         if (level >= CUSTOMER_MANAGER) {
             getServerMac(user.cpName);
         } else {
-            setSchCompany("all|");
+            setSchCompany("all");
             setSchCompanyIdx("");
         }
     };
@@ -159,7 +162,6 @@ const MicroCloudDashboard = () => {
                 }}>
                     <Col md={6} lg={3} xs={12} sm={12} xl={3}>
                         <div>
-                            ★ {setSchCompany}
                             <FormControl className={classes.formControl}>
                                 <InputLabel id="demo-simple-select-autowidth-label"
                                             style={{
@@ -193,6 +195,7 @@ const MicroCloudDashboard = () => {
                                         );
                                     })}
                                 </Select>
+                                {/*★ {schCompany} | {schCompanyIdx} ★*/}
                                 {/*<FormHelperText>Auto width</FormHelperText>*/}
                             </FormControl>
                         </div>

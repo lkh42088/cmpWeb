@@ -18,8 +18,8 @@ import thList from '@iconify/icons-fa-solid/th-list';
 import outlineRestore from '@iconify/icons-ic/outline-restore';
 import backupRestore from '@iconify/icons-mdi/backup-restore';
 //security
-import ipIcon from '@iconify-icons/mdi/ip';
 
+import ipIcon from '@iconify-icons/mdi/ip';
 
 import {
     TOP_MANAGER, CUSTOMER_MANAGER, NB_MANAGER, OPERATOR, UNREGISTERED_USER, NORMAL_USER,

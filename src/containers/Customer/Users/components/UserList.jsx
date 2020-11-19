@@ -165,7 +165,7 @@ const UserList = () => {
         msgError: usersRd.msgError,
     }));
     
-    console.log("data : ", data);
+    //console.log("data : ", data);
 
     /**
      * Pagination
@@ -350,8 +350,8 @@ const UserList = () => {
     /** Pagination */
     const handleDeleteSelected = () => {
         let copyUser = [...data];
-        console.log("deleted Selected:");
-        console.log("copyUser:", copyUser);
+        /*console.log("deleted Selected:");
+        console.log("copyUser:", copyUser);*/
         //console.log("SELECTED:", selected);
         const delList = [];
         const delAvataList = [];
@@ -362,7 +362,7 @@ const UserList = () => {
                     delList.push(key);
 
                     copyUser.forEach((valueSub, keySub) => {
-                        //console.log("copyUser: key ", key, ", valueSub.idx ", valueSub.idx);
+                        console.log("copyUser: key ", key, ", valueSub.idx ", valueSub.idx);
                         if (key === valueSub.idx) {
                             //console.log("valueSub avata : ", valueSub.avata);
                             delAvataList.push(valueSub.avata);
@@ -496,6 +496,7 @@ const UserList = () => {
         const delAvataList = [];
         delList.push(idx);
         delAvataList.push(avata);
+        //console.log("♥♥♥ delList: ", delList);
 
         deleteUsers(delList, delAvataList);
     };
@@ -599,11 +600,11 @@ const UserList = () => {
 
     const ContentsRow = (props) => {
         const {row} = props;
-        const [openCollapse, setOpenCollapse] = React.useState(false);
         const isSelected = getSelected(row.idx);
         const address = getAddress(row);
         const cellClassName = "cb-material-table__cell";
         const cellIcon = isSelected ? "cb-material-table__cell-right" : cellClassName;
+        const [openCollapse, setOpenCollapse] = React.useState(false);
         const [checkboxColor, setCheckboxColor] = useState('');
         return (
             <React.Fragment>

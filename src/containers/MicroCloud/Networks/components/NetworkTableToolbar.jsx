@@ -274,13 +274,13 @@ const NetworkTableToolbar = (props) => {
                                         <AddIcon/>
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title="더보기" aria-label="more">
+                                {/*<Tooltip title="더보기" aria-label="more">
                                     <IconButton type="button" onClick={handleOpen}>
                                         <MoreVertIcon/>
                                     </IconButton>
-                                </Tooltip>
+                                </Tooltip>*/}
                             </Grid>
-                            <Grid item md={4} zeroMinWidth>
+                            {/*<Grid item md={4} zeroMinWidth>
                                 <Paper component="div" className={classes.paper}>
                                     <Tooltip title="검색조건" aria-label="searchCondition">
                                         <IconButton
@@ -332,7 +332,7 @@ const NetworkTableToolbar = (props) => {
                                         <DirectionsIcon />
                                     </IconButton>
                                 </Paper>
-                            </Grid>
+                            </Grid>*/}
                             <Grid item md={5} zeroMinWidth>
                             <TablePagination
                                 component="div"

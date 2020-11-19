@@ -10,7 +10,6 @@ import AssetsView from "../../Assets/ProductList/components/AssetsView";
 import {NORMAL_USER} from "../../../lib/var/globalVariable";
 
 const MaterialTable = () => {
-    //console.log("계정관리 index start");
     const {page} = useSelector(({usersRd}) => ({
         page: usersRd.userPage,
     }));

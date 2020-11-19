@@ -67,13 +67,13 @@ const ChangePasswordDialog = (props) => {
 
     const doCheckPassword = async () => {
         try {
-            console.log("check password: ", userId, ", ", fields.oldPassword);
+            //console.log("check password: ", userId, ", ", fields.oldPassword);
             const response = await checkPassword({
                 id: userId,
                 password: fields.oldPassword,
             });
-            console.log("docheck password... success", response);
-            console.log("docheck password... success data ", response.data);
+            //console.log("docheck password... success", response);
+            //console.log("docheck password... success data ", response.data);
             handleComplete(fields.newPassword);
             reset();
         } catch (e) {

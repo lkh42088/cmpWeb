@@ -243,7 +243,7 @@ const WriteUserForm = (props) => {
 
         fd.append('file', event.target.files[0], imgName);
 
-        console.log("fileChangedHandler fd : ", fd);
+        //console.log("fileChangedHandler fd : ", fd);
 
         setFields({
             ...fields,
@@ -467,10 +467,11 @@ const WriteUserForm = (props) => {
         if (fields.avataFlag) {
             if (fields.avata !== null && fields.avata !== "") {
                 const fd = new FormData();
-
                 const imgName = fields.avata;
 
                 fd.append('file', selectedFile, imgName);
+                console.log("selectedFile : ", selectedFile);
+                console.log("imgName : ", imgName);
                 //fd.append('id', fields.id);
 
                 const request = new XMLHttpRequest();
@@ -484,10 +485,12 @@ const WriteUserForm = (props) => {
                 };
 
                 request.open("POST", `${API_ROUTE}/users/fileUpload`, true);
+                console.log("fd : ", fd);
                 request.send(fd);
             }
         }
 
+        //console.log("fields : ", fields);
         // todo image file db store
         /*console.log("handleSubmitInternal fields : ", fields);
         console.log("handleSubmitInternal avataFile : ", fields.avataFile);*/
@@ -645,7 +648,7 @@ const WriteUserForm = (props) => {
 
     const handleCompleteChangePassword = (res) => {
         setOpenChangePassword(false);
-        // console.log("change password: ", res);
+        //console.log("user change password: ", res);
         setFields({
             ...fields,
             password: res,
@@ -934,7 +937,7 @@ const WriteUserForm = (props) => {
                                     </Button>
                                 </Grid>
                                 <ChangePasswordDialog
-                                    userId={fields.userId}
+                                    userId={fields.id}
                                     open={openChangePassword}
                                     handleClose={handleCloseChangePassword}
                                     handleComplete={handleCompleteChangePassword}

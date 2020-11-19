@@ -240,7 +240,7 @@ const WriteCompanyFrom = (props) => {
 
     const handleCompleteChangePassword = (res) => {
         setOpenChangePassword(false);
-        // console.log("change password: ", res);
+        //console.log("company change password: ", res);
         setFields({
             ...fields,
             userPassword: res,

@@ -30,12 +30,36 @@ import {
 } from "../../../../lib/api/microCloud";
 
 const headRows = [
-    {id: 'idx', disablePadding: false, label: 'Index'},
-    {id: 'cpName', disablePadding: false, label: '회사명'},
-    {id: 'serialNumber', disablePadding: false, label: '서버 SN'},
-    {id: 'name', disablePadding: false, label: 'Image 이름'},
-    {id: 'variant', disablePadding: false, label: 'Image Type'},
-    {id: 'hdd', disablePadding: false, label: 'HDD Size(G)'},
+    {
+        id: 'idx',
+        disablePadding: false,
+        label: 'Index',
+    },
+    {
+        id: 'cpName',
+        disablePadding: false,
+        label: '회사명',
+    },
+    {
+        id: 'serialNumber',
+        disablePadding: false,
+        label: '서버 SN',
+    },
+    {
+        id: 'name',
+        disablePadding: false,
+        label: 'Image 이름',
+    },
+    {
+        id: 'variant',
+        disablePadding: false,
+        label: 'Image Type',
+    },
+    {
+        id: 'hdd',
+        disablePadding: false,
+        label: 'HDD Size(G)',
+    },
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -97,7 +121,7 @@ const ImageTable = () => {
     const [paging, setPaging] = useState(null);
     const [openAddVm, setOpenAddVm] = useState(false);
     const [searchParam, setSearchParam] = useState(null);
-    const { enqueueSnackbar } = useSnackbar();
+    const {enqueueSnackbar} = useSnackbar();
 
     const dispatch = useDispatch();
 
@@ -194,6 +218,8 @@ const ImageTable = () => {
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
         const changeOrder = isAsc ? "desc" : "asc";
+        console.log("event : ", event);
+        console.log("property : ", property);
         if (property !== "collapse") {
             dispatch(pagingChangeOrder({order: changeOrder}));
             dispatch(pagingChangeOrderBy({orderBy: property}));
@@ -210,7 +236,10 @@ const ImageTable = () => {
         }
         try {
             const response = await getMcImages({
-                rows: rowsPerPage, offset, orderBy, order,
+                rows: rowsPerPage,
+                offset,
+                orderBy,
+                order,
             });
             console.log("response: data ", response.data.data);
             console.log("response: page ", response.data.page);
@@ -234,7 +263,7 @@ const ImageTable = () => {
     };
 
     const handleSnackbarSuccess = (snackMsg) => {
-        enqueueSnackbar(snackMsg, { variant: "success" });
+        enqueueSnackbar(snackMsg, {variant: "success"});
     };
     const handleSubmitSearch = (params) => {
         console.log("handleSubmitSearch() params ", params);
@@ -292,7 +321,6 @@ const ImageTable = () => {
             <React.Fragment>
                 <TableRow
                     hover
-                    // className="cb-material-table__row"
                     className={classes.rowCss}
                     role="checkbox"
                     aria-checked={isSelected}
@@ -407,10 +435,10 @@ const ImageTable = () => {
                                     rows={headRows}
                                 />
                                 <TableBody>
-                                    { data && data.map((row, index) => {
+                                    {data && data.map((row, index) => {
                                         const keyId = index;
                                         return (
-                                            <ContentsRow key={keyId} row={row} />
+                                            <ContentsRow key={keyId} row={row}/>
                                         );
                                     })}
                                 </TableBody>

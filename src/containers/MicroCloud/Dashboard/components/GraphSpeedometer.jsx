@@ -7,6 +7,8 @@ import React, {
 } from 'react';
 import {Card, CardBody, Row} from "reactstrap";
 import {makeStyles} from "@material-ui/core/styles";
+import LoadingIcon from "mdi-react/LoadingIcon";
+
 import LiquidFillGauge from "react-liquid-gauge";
 
 const useStyles = makeStyles(theme => ({

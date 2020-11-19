@@ -17,7 +17,7 @@ import * as common from "../../../../lib/common";
 import {API_ROUTE, API_ROUTE_SERVER_IMAGE} from "../../../../lib/api/client";
 import {setUser, setUserIdx, setUserPage} from "../../../../redux/actions/usersActions";
 import {
-    TOP_MANAGER, CUSTOMER_MANAGER, NB_MANAGER, OPERATOR, UNREGISTERED_USER,
+    OPERATOR,
 } from "../../../../lib/var/globalVariable";
 import {getAuthList, modifyUser} from "../../../../lib/api/users";
 import ModifyUserPage from "./ModifyUserPage";
@@ -125,6 +125,8 @@ const ProfileMain = () => {
                 memo,
                 avata,
             });
+
+            console.log("submitData : ", submitData);
 
             dispatch(setUser(submitData));
             handleSnackbarSuccess("계정 수정이 성공하였습니다.");

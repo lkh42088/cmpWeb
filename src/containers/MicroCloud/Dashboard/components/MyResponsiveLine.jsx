@@ -95,7 +95,6 @@ const MyResponsiveLine = (props) => {
      **************************************************************/
 
     useEffect(() => {
-        //console.log("useEffect !! mac 변화");
         getData();
         const timer = setInterval(getData, 10000);
         return () => clearInterval(timer);
