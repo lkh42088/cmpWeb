@@ -910,7 +910,7 @@ const WriteVm = (props) => {
         }
 
         if (isRegister === false) {
-            console.log("data : ", data);
+            //console.log("data : ", data);
             setFields({
                 ...fields,
                 idx: data.idx,
@@ -1077,8 +1077,8 @@ const WriteVm = (props) => {
                                     name="serverIdx"
                                     value={fields.serverIdx}
                                     onChange={(e) => {
-                                        console.log("serverIdx: ", e.target);
-                                        console.log("serverIdx: value ", e.target.value);
+                                        /*console.log("serverIdx: ", e.target);
+                                        console.log("serverIdx: value ", e.target.value);*/
                                         handleChangeField("serverIdx", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -1130,7 +1130,7 @@ const WriteVm = (props) => {
                                     name="image"
                                     value={fields.image}
                                     onChange={(e) => {
-                                        console.log("event:", e.target.value);
+                                        //console.log("event:", e.target.value);
                                         handleChangeField("image", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -1165,7 +1165,7 @@ const WriteVm = (props) => {
                                     name="network"
                                     value={fields.network}
                                     onChange={(e) => {
-                                        console.log("event:", e.target.value);
+                                        //console.log("event:", e.target.value);
                                         handleChangeField("network", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -1261,7 +1261,7 @@ const WriteVm = (props) => {
                                         if (res.length === 0) {
                                             handleChangeField("ram", 1024);
                                         } else {
-                                            console.log("name:", res[0].name);
+                                            //console.log("name:", res[0].name);
                                             handleChangeField("ram", e.target.value);
                                         }
                                     }}
@@ -1482,7 +1482,7 @@ const WriteVm = (props) => {
                                     name="backupDays"
                                     value={fields.backupDays}
                                     onChange={(e) => {
-                                        console.log("event:", e.target.value);
+                                        //console.log("event:", e.target.value);
                                         handleChangeField("backupDays", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -1517,7 +1517,7 @@ const WriteVm = (props) => {
                                     name="backupHours"
                                     value={fields.backupHours}
                                     onChange={(e) => {
-                                        console.log("event:", e.target.value);
+                                        //console.log("event:", e.target.value);
                                         handleChangeField("backupHours", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -1552,7 +1552,7 @@ const WriteVm = (props) => {
                                     name="backupMinutes"
                                     value={fields.backupMinutes}
                                     onChange={(e) => {
-                                        console.log("event:", e.target.value);
+                                        //console.log("event:", e.target.value);
                                         handleChangeField("backupMinutes", e.target.value);
                                     }}
                                     MenuProps={MenuProps}

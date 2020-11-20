@@ -165,7 +165,7 @@ const VmInfoTableBackup = ({vm}) => {
     };
 
     const handleChangePage = (event, newPage) => {
-        console.log("change page: ", newPage);
+        //console.log("change page: ", newPage);
         dispatch(pagingChangeCurrentPage({currentPage: newPage}));
     };
 
@@ -221,7 +221,7 @@ const VmInfoTableBackup = ({vm}) => {
             companyName = user.cpName;
         }
         try {
-            console.log("await start");
+            //console.log("await start");
             const response = await getMcVmBackupParam({
                 rows: rowsPerPage,
                 offset,

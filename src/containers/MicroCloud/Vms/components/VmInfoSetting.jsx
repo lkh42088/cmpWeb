@@ -1,5 +1,6 @@
 import React, {useState, Fragment} from 'react';
 import {
+    Badge,
     Card, CardBody, Col,
 } from 'reactstrap';
 import FormControl from "@material-ui/core/FormControl";
@@ -32,14 +33,16 @@ const selectLabel = {
     bottom: "15px",
 };
 
+const buttonSetting = {
+    lineHeight: 1.2,
+    padding: 7,
+    marginTop: 15,
+    fontSize: "0.7rem",
+    background: "#4e89ae",
+    cursor: "pointer",
+};
+
 const dayList = [
-    { value: 0, name: "0 days" },
-    { value: 1, name: "1 days" },
-    { value: 2, name: "2 days" },
-    { value: 3, name: "3 days" },
-    { value: 4, name: "4 days" },
-    { value: 5, name: "5 days" },
-    { value: 6, name: "6 days" },
     { value: 7, name: "1 week" },
     { value: 30, name: "1 month" },
 ];
@@ -252,9 +255,9 @@ const VmInfoSetting = (props) => {
                                                     handleChangeField("snapDays", e.target.value);
                                                 }}
                                             >
-                                               {/* <MenuItem key={0} value={0}>
-                                                    <em>0 day</em>
-                                                </MenuItem>*/}
+                                                <MenuItem key={1} value={1}>
+                                                    <em>1 day</em>
+                                                </MenuItem>
                                                 {dayList.map((item, index) => {
                                                     const key = index;
                                                     return (
@@ -334,14 +337,28 @@ const VmInfoSetting = (props) => {
                                     </div>
                                 </Grid>
                                 <Grid item xs={1}>
-                                    <Tooltip title="수정" aria-label="수정">
+                                    {/*<Tooltip title="수정" aria-label="수정">
                                         <IconButton
                                             type="button"
                                             onClick={handleSubmitInternal}
                                         >
                                             <AddIcon/>
                                         </IconButton>
-                                    </Tooltip>
+                                    </Tooltip>*/}
+                                    {/*<Button variant="contained"
+                                            onClick={handleSubmitInternal}
+                                            size="small"
+                                            style={{
+                                                marginTop: '11px',
+                                                position: "absolute",
+                                            }}
+                                            color="primary">
+                                        수정
+                                    </Button>*/}
+                                    <Badge color="primary"
+                                           style={buttonSetting}
+                                           onClick={handleSubmitInternal}
+                                    >&nbsp;수정&nbsp;</Badge>
                                 </Grid>
                             </Grid>
                         </form>
@@ -390,6 +407,9 @@ const VmInfoSetting = (props) => {
                                                     handleChangeField("backupDays", e.target.value);
                                                 }}
                                             >
+                                                <MenuItem key={1} value={1}>
+                                                    <em>1 day</em>
+                                                </MenuItem>
                                                 {dayList.map((item, index) => {
                                                     const key = index;
                                                     return (
@@ -461,14 +481,18 @@ const VmInfoSetting = (props) => {
                                     </div>
                                 </Grid>
                                 <Grid item xs={1}>
-                                    <Tooltip title="수정" aria-label="수정">
+                                    {/*<Tooltip title="수정" aria-label="수정">
                                         <IconButton
                                             type="button"
                                             onClick={handleSubmitInternal}
                                         >
                                             <AddIcon/>
                                         </IconButton>
-                                    </Tooltip>
+                                    </Tooltip>*/}
+                                    <Badge color="primary"
+                                           style={buttonSetting}
+                                           onClick={handleSubmitInternal}
+                                    >&nbsp;수정&nbsp;</Badge>
                                 </Grid>
                             </Grid>
                         </form>

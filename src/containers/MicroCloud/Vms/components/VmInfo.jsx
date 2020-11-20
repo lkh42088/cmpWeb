@@ -62,7 +62,7 @@ const VmInfo = ({schVm}) => {
         } = fields;
 
         try {
-            console.log("await start");
+            console.log("!! await start");
             const response = await updateMcVmSnapshot({
                 idx,
                 cpIdx,
@@ -88,7 +88,7 @@ const VmInfo = ({schVm}) => {
         } = fields;
 
         try {
-            console.log("await start");
+            console.log("?? await start");
             const response = await updateMcVmBackup({
                 idx,
                 cpIdx,
