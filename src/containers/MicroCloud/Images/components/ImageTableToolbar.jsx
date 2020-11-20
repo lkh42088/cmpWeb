@@ -269,11 +269,11 @@ const ImageTableToolbar = (props) => {
                                         <RefreshIcon/>
                                     </IconButton>
                                 </Tooltip>
-                                <Tooltip title={addComment} aria-label="add">
+                                {/*<Tooltip title={addComment} aria-label="add">
                                     <IconButton type="button" onClick={handleOpen}>
                                         <AddIcon/>
                                     </IconButton>
-                                </Tooltip>
+                                </Tooltip>*/}
                                 {/*<Tooltip title="더보기" aria-label="more">
                                     <IconButton type="button" onClick={handleOpen}>
                                         <MoreVertIcon/>

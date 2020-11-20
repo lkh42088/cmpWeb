@@ -279,7 +279,74 @@ const WriteVm = (props) => {
      * Validation
      *******************/
     const checkValidation = () => {
+        const tempHelperImage = "* 필수 입력사항입니다.";
 
+        /** Micro Cloud Server */
+        let errorServerIdx = false;
+        let helperServerIdx = '';
+        if (fields.serverIdx < 1) {
+            errorServerIdx = true;
+            helperServerIdx = tempHelperImage;
+        }
+
+        /** VM 이름 */
+        let errorName = false;
+        let helperName = '';
+        if (fields.name.length < 1) {
+            errorName = true;
+            helperName = tempHelperImage;
+        }
+        /** Image */
+        let errorImage = false;
+        let helperImage = '';
+        if (fields.image < 1) {
+            errorImage = true;
+            helperImage = tempHelperImage;
+        }
+        /** Network */
+        let errorNetwork = false;
+        let helperNetwork = '';
+        if (fields.network < 1) {
+            errorNetwork = true;
+            helperNetwork = tempHelperImage;
+        }
+        /** cpu */
+        let errorCpu = false;
+        let helperCpu = '';
+        if (fields.cpu < 1) {
+            errorCpu = true;
+            helperCpu = tempHelperImage;
+        }
+        /** ram */
+        let errorRam = false;
+        let helperRam = '';
+        if (fields.ram < 1) {
+            errorRam = true;
+            helperRam = tempHelperImage;
+        }
+
+        setErrors({
+            ...errors,
+            serverIdx: errorServerIdx,
+            name: errorName,
+            image: errorImage,
+            network: errorNetwork,
+            cpu: errorCpu,
+            ram: errorRam,
+        });
+
+        setHelpers({
+            ...helpers,
+            serialNumber: helperServerIdx,
+            name: helperName,
+            image: helperImage,
+            network: helperNetwork,
+            cpu: helperCpu,
+            ram: helperRam,
+        });
+
+        return !(errorServerIdx || errorName || errorImage
+            || errorNetwork || errorCpu || errorRam);
     };
 
     /*******************
@@ -391,18 +458,14 @@ const WriteVm = (props) => {
     };
 
     const handleCancel = () => {
-        console.log("handleCancel() ");
         reset();
         handleClose();
     };
 
     const handleSubmitInternal = () => {
-        console.log("handleSubmitInternal() fields", fields);
-        // if (!checkValidation()) {
-        //     console.log("handleSubmitInternal() failed");
-        //     return;
-        // }
-        console.log("handleSubmitInternal() success");
+        if (!checkValidation()) {
+            return;
+        }
 
         handleSubmit(fields);
         reset();
@@ -411,10 +474,6 @@ const WriteVm = (props) => {
     const handleSubmitCheck = (flag) => {
         if (flag) {
             if (fields.vmUserId !== undefined && fields.vmUserId !== "") {
-                console.log("compareVmUser : ", compareVmUser);
-                console.log("fields.vmUserId : ", fields.vmUserId);
-                console.log("true? false? : ", compareVmUser === fields.vmUserId);
-                console.log("errors.vmUserId : ", errors.vmUserId);
                 if (compareVmUser !== fields.vmUserId) {
                     if (errors.vmUserId) {
                         handleDialogClickOpen();
@@ -1189,7 +1248,7 @@ const WriteVm = (props) => {
                     </Grid>
                     <Grid item xs={6}>
                         <div>
-                            <span className={labelClassName}>* Snapshot </span>
+                            <span className={labelClassName}>Snapshot </span>
                             <FormControl
                                 size={fieldSize}
                                 className={fieldClassName}
@@ -1203,13 +1262,11 @@ const WriteVm = (props) => {
                                     name="snapType"
                                     value={fields.snapType}
                                     onChange={(e) => {
-                                        console.log("event target:", e.target);
-                                        console.log("event value:", e.target.value);
                                         const res = snapTypeList.filter(item => item.value === e.target.value);
                                         if (res.length === 0) {
                                             handleChangeField("snapType", false);
                                         } else {
-                                            console.log("name:", res[0].name);
+                                            //console.log("name:", res[0].name);
                                             handleChangeField("snapType", e.target.value);
                                         }
                                     }}
@@ -1231,7 +1288,7 @@ const WriteVm = (props) => {
                     </Grid>
                     <Grid item xs={2}>
                         <div>
-                            <span className={labelClassName}>* Days </span>
+                            <span className={labelClassName}>Days </span>
                             <FormControl
                                 size={fieldSize}
                                 className={fieldClassName}
@@ -1245,7 +1302,7 @@ const WriteVm = (props) => {
                                     name="snapDays"
                                     value={fields.snapDays}
                                     onChange={(e) => {
-                                        console.log("event:", e.target.value);
+                                        //console.log("event:", e.target.value);
                                         handleChangeField("snapDays", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -1266,7 +1323,7 @@ const WriteVm = (props) => {
                     </Grid>
                     <Grid item xs={2}>
                         <div>
-                            <span className={labelClassName}>* Hours </span>
+                            <span className={labelClassName}>Hours </span>
                             <FormControl
                                 size={fieldSize}
                                 className={fieldClassName}
@@ -1280,7 +1337,7 @@ const WriteVm = (props) => {
                                     name="snapHours"
                                     value={fields.snapHours}
                                     onChange={(e) => {
-                                        console.log("event:", e.target.value);
+                                        //console.log("event:", e.target.value);
                                         handleChangeField("snapHours", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -1301,7 +1358,7 @@ const WriteVm = (props) => {
                     </Grid>
                     <Grid item xs={2}>
                         <div>
-                            <span className={labelClassName}>* Minutes </span>
+                            <span className={labelClassName}>Minutes </span>
                             <FormControl
                                 size={fieldSize}
                                 className={fieldClassName}
@@ -1315,7 +1372,7 @@ const WriteVm = (props) => {
                                     name="snapMinutes"
                                     value={fields.snapMinutes}
                                     onChange={(e) => {
-                                        console.log("event:", e.target.value);
+                                        //console.log("event:", e.target.value);
                                         handleChangeField("snapMinutes", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -1336,7 +1393,7 @@ const WriteVm = (props) => {
                     </Grid>
                     <Grid item xs={6}>
                         <div>
-                            <span className={labelClassName}>* Backup</span>
+                            <span className={labelClassName}>Backup</span>
                             <FormControl
                                 size={fieldSize}
                                 className={fieldClassName}
@@ -1350,13 +1407,11 @@ const WriteVm = (props) => {
                                     name="backupType"
                                     value={fields.backupType}
                                     onChange={(e) => {
-                                        console.log("event target:", e.target);
-                                        console.log("event value:", e.target.value);
                                         const res = backupTypeList.filter(item => item.value === e.target.value);
                                         if (res.length === 0) {
                                             handleChangeField("backupType", false);
                                         } else {
-                                            console.log("name:", res[0].name);
+                                            //console.log("name:", res[0].name);
                                             handleChangeField("backupType", e.target.value);
                                         }
                                     }}
@@ -1378,7 +1433,7 @@ const WriteVm = (props) => {
                     </Grid>
                     <Grid item xs={2}>
                         <div>
-                            <span className={labelClassName}>* Days </span>
+                            <span className={labelClassName}>Days </span>
                             <FormControl
                                 size={fieldSize}
                                 className={fieldClassName}
@@ -1413,7 +1468,7 @@ const WriteVm = (props) => {
                     </Grid>
                     <Grid item xs={2}>
                         <div>
-                            <span className={labelClassName}>* Hours </span>
+                            <span className={labelClassName}>Hours </span>
                             <FormControl
                                 size={fieldSize}
                                 className={fieldClassName}
@@ -1448,7 +1503,7 @@ const WriteVm = (props) => {
                     </Grid>
                     <Grid item xs={2}>
                         <div>
-                            <span className={labelClassName}>* Minutes </span>
+                            <span className={labelClassName}>Minutes </span>
                             <FormControl
                                 size={fieldSize}
                                 className={fieldClassName}

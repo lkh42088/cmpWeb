@@ -134,7 +134,7 @@ const VmInfoSetting = (props) => {
      * Change
      *******************/
     const handleChangeField = (name, value) => {
-        console.log("change field: name ", name, ", value", value);
+        //console.log("change field: name ", name, ", value", value);
         if (name === "cpIdx") {
             setFields({
                 ...fields,
@@ -164,7 +164,7 @@ const VmInfoSetting = (props) => {
 
     // eslint-disable-next-line no-shadow
     const handelChangeType = (type, val) => {
-        console.log("changeType type : ", type, ", val : ", val);
+        //console.log("changeType type : ", type, ", val : ", val);
         let reVal = 0;
         if (val) {
             reVal = 1;
@@ -174,7 +174,7 @@ const VmInfoSetting = (props) => {
     };
 
     const handleSubmitInternal = () => {
-        console.log("handleSubmitInternal() fields", fields);
+        //console.log("handleSubmitInternal() fields", fields);
 
         if (type === "snapshot") {
             handleSubmitSnapshot(fields);

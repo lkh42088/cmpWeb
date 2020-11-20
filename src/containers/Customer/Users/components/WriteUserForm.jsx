@@ -464,15 +464,12 @@ const WriteUserForm = (props) => {
             return;
         }
 
-        if (fields.avataFlag) {
+        /*if (fields.avataFlag) {
             if (fields.avata !== null && fields.avata !== "") {
                 const fd = new FormData();
                 const imgName = fields.avata;
 
                 fd.append('file', selectedFile, imgName);
-                console.log("selectedFile : ", selectedFile);
-                console.log("imgName : ", imgName);
-                //fd.append('id', fields.id);
 
                 const request = new XMLHttpRequest();
 
@@ -485,10 +482,9 @@ const WriteUserForm = (props) => {
                 };
 
                 request.open("POST", `${API_ROUTE}/users/fileUpload`, true);
-                console.log("fd : ", fd);
                 request.send(fd);
             }
-        }
+        }*/
 
         //console.log("fields : ", fields);
         // todo image file db store
@@ -1241,18 +1237,8 @@ const WriteUserForm = (props) => {
                             rows={4}
                         />
                     </Grid>
-                    <Grid item xs={12}>
+                    {/*<Grid item xs={12}>
                         <span className={labelClassName}>아바타 이미지 업로드 : {fields.avataFlag}</span>
-                        {/*<ImageUploader
-                            withIcon
-                            withPreview
-                            singleImage
-                            onChange={onDrop}
-                            imgExtension={[".jpg", ".gif", ".png", ".gif"]}
-                            maxFileSize={5242880}
-                            fileSizeError=" file size is too big"
-                        />
-                        <br/>*/}
                         <div className="filebox">
                             <input className="upload-name" value={fields.avata === "" ? "파일 찾기" : fields.avata} disabled="disabled"/>
                             <label className="upload-name-span" htmlFor="ex_filename">업로드</label>
@@ -1263,8 +1249,6 @@ const WriteUserForm = (props) => {
                                    name="avatar"
                                    onChange={fileChangedHandler}/>
                         </div>
-                        {/*<input type="file" name="avatar" onChange={fileChangedHandler}/>*/}
-                        {/*<button type="button" onClick={submit}> Upload </button>*/}
                         {!isRegister && fields.avata !== "" ? (
                             <div>
                                 <div className="profile__avatar">
@@ -1285,7 +1269,6 @@ const WriteUserForm = (props) => {
                                         className="topbar__avatar-img-list"
                                         name="img"
                                         size="120"
-                                        /*src={`${API_ROUTE_SERVER_IMAGE}/${fields.avata}`}*/
                                         src={selectedFile !== null ? imagePreviewUrl : `${API_ROUTE_SERVER_IMAGE}/${fields.avata}`}
                                         style={{
                                             width: "100%",
@@ -1297,7 +1280,7 @@ const WriteUserForm = (props) => {
                         ) : (
                             $imagePreview
                         )}
-                    </Grid>
+                    </Grid>*/}
                     <Grid item xs={12}>
                         <div>
                             <Button

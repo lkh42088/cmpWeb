@@ -24,8 +24,8 @@ const LookupZipcode = (props) => {
      * Function
      ************************************************************************************/
     const onComplete = (data) => {
-        console.log("onComplete: zip ", data.zonecode);
-        console.log("onComplete: address ", data.address);
+        /*console.log("onComplete: zip ", data.zonecode);
+        console.log("onComplete: address ", data.address);*/
         setAddress(data.address);
         setZip(data.zonecode);
         handleComplete(data.zonecode, data.address);
@@ -41,7 +41,7 @@ const LookupZipcode = (props) => {
     /************************************************************************************
      * JSX Template
      ************************************************************************************/
-    console.log("LookupZip...");
+    //console.log("LookupZip...");
     return (
         <Dialog
             onClose={handleClose}
