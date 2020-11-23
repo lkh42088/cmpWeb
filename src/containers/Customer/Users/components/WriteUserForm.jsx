@@ -1132,6 +1132,9 @@ const WriteUserForm = (props) => {
                             />
                         </div>
                     </Grid>
+                    {/*{level <= OPERATOR ? (
+                    ) : false}*/}
+                    {level <= OPERATOR ? (
                     <Grid item xs={6}>
                         <div>
                             <span className={labelClassName}>이메일 인증</span>
@@ -1160,8 +1163,10 @@ const WriteUserForm = (props) => {
                             </FormControl>
                         </div>
                     </Grid>
-                    {
-                        fields.emailAuthValue === "2" ? (
+                    ) : false}
+
+                    {/* eslint-disable-next-line no-nested-ternary */}
+                    {level <= OPERATOR ? (fields.emailAuthValue === "2") ? (
                             <React.Fragment>
                                 <Grid item xs={6}>
                                     <div>
@@ -1190,8 +1195,7 @@ const WriteUserForm = (props) => {
                                         </FormControl>
                                     </div>
                                 </Grid>
-                                {
-                                    fields.emailAuthGroupList.length > 0 ? (
+                                {fields.emailAuthGroupList.length > 0 ? (
                                         <React.Fragment>
                                             <Grid item xs={12}>
                                                 <Paper className={classes.paper} variant="outlined"/>
@@ -1216,8 +1220,7 @@ const WriteUserForm = (props) => {
                                     ) : (<React.Fragment/>)
                                 }
                             </React.Fragment>
-                        ) : (<React.Fragment/>)
-                    }
+                        ) : (<React.Fragment/>) : false}
                     <Grid item xs={12}>
                         <span className={labelClassName}>메모</span>
                         <TextField

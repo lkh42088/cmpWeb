@@ -191,7 +191,7 @@ const TopManagerMain = () => {
                 <Col md={6} lg={6} xs={12} sm={12} xl={6} style={{padding: 10}}>
                     <MyResponsivePie
                         height={300}
-                        title="PIE" pieColor={pieColor}
+                        title="SERVER" pieColor={pieColor}
                         warringUsed={80}
                         count={serverCnt}
                         data={platform}
@@ -200,7 +200,7 @@ const TopManagerMain = () => {
                 <Col md={6} lg={6} xs={12} sm={12} xl={6} style={{padding: 10}}>
                     <MyResponsivePie
                         height={300}
-                        title="PIE" pieColor={pieColor}
+                        title="VM" pieColor={pieColor}
                         warringUsed={80}
                         count={vmCnt}
                         data={os}

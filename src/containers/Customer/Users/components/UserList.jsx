@@ -600,6 +600,8 @@ const UserList = () => {
 
     const ContentsRow = (props) => {
         const {row} = props;
+        console.log("row : ", row);
+
         const isSelected = getSelected(row.idx);
         const address = getAddress(row);
         const cellClassName = "cb-material-table__cell";

@@ -137,15 +137,15 @@ const ProfileDetail = () => {
                     <div className="col-md-6">
                         <div className={classNameMap.rowFormItem}>
                             <div className={classNameMap.itemContainer}>
-                                <div className={classNameMap.formInforLabel}>등록일
+                                <div className={classNameMap.formInforLabel}>해지일자
                                 </div>
                             </div>
                             <div className="col-lg-8 col-md-12">
                             <textarea
                                 className={classNameMap.textareaPreCont}
                                 rows="1"
-                                value={moment(company.registerDate)
-                                    .format('YYYY-MM-DD')}
+                                value={company.termDate !== "0001-01-01T00:00:00Z" ? moment(company.termDate)
+                                    .format('YYYY년 MM월 DD일 ') : ""}
                                 disabled/>
                             </div>
                         </div>

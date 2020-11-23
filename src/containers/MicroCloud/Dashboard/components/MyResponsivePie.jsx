@@ -7,13 +7,17 @@ import {ResponsiveContainer} from "recharts";
 import { linearGradientDef } from '@nivo/core';
 
 const MyResponsivePie = (props) => {
-    const {count, data, height} = props;
+    const {
+        count, data, height, title,
+    } = props;
     // console.log(count, data);
 
     return (
         <Card className="cb-card">
             <CardBody className="nb-card-body-graph">
-                <p>Micro Cloud</p>
+                <p>
+                    {title === "SERVER" ? "Micro Cloud" : "VM Total Count"}
+                </p>
 
                 <Row>
                     <Col md={3} lg={3} xs={12} sm={12} xl={3}

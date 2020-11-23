@@ -729,10 +729,10 @@ const CompanyList = () => {
                                                     <span className={classes.spanSubject}> 주소 </span>
                                                     <span className={classes.spanContents}> {address} </span>
                                                 </li>
-                                                <li>
+                                                {/*<li>
                                                     <span className={classes.spanSubject}> 등록일 </span>
-                                                    {/*<span className={classes.spanContents}> {row.} </span>*/}
-                                                </li>
+                                                    <span className={classes.spanContents}> {row.registerDate} </span>
+                                                </li>*/}
                                                 <li>
                                                     <span className={classes.spanSubject}> 홈페이지 </span>
                                                     <span className={classes.spanContents}> {row.homepage} </span>
