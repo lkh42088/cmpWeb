@@ -164,7 +164,7 @@ const ServerTable = () => {
 
     /** Pagination */
     const handleChangePage = (event, newPage) => {
-        console.log("change page: ", newPage);
+        //console.log("change page: ", newPage);
         dispatch(pagingChangeCurrentPage({currentPage: newPage}));
     };
 
@@ -359,19 +359,19 @@ const ServerTable = () => {
         const delList = [];
         if (selected !== null) {
             selected.forEach((value, key, mapObject) => {
-                console.log("selected: key ", key, ", value ", value);
+                //console.log("selected: key ", key, ", value ", value);
                 if (value) {
                     delList.push(key);
                 }
             });
         }
-        console.log("delList: ", delList);
+        //console.log("delList: ", delList);
         deleteData(delList);
 
         for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
             copyData = copyData.filter(obj => obj.id !== selected[i]);
         }
-        console.log("after copyData:", copyData);
+        //console.log("after copyData:", copyData);
     };
 
     useEffect(() => {

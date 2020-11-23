@@ -385,18 +385,18 @@ const WriteVm = (props) => {
     };
 
     const handleCancel = () => {
-        console.log("handleCancel() ");
+        //console.log("handleCancel() ");
         reset();
         handleClose();
     };
 
     const handleSubmitInternal = () => {
-        console.log("handleSubmitInternal() fields", fields);
+        //console.log("handleSubmitInternal() fields", fields);
         // if (!checkValidation()) {
         //     console.log("handleSubmitInternal() failed");
         //     return;
         // }
-        console.log("handleSubmitInternal() success");
+        //console.log("handleSubmitInternal() success");
 
         handleSubmit(fields);
         reset();
@@ -406,7 +406,6 @@ const WriteVm = (props) => {
         if (flag) {
             if (fields.vmUserId !== undefined && fields.vmUserId !== "") {
                 if (errors.vmUserId === true) {
-                    console.log("빈값이 아니고 트루일 경우다~");
                     handleDialogClickOpen();
                 } else {
                     handleSubmitInternal();
@@ -546,11 +545,11 @@ const WriteVm = (props) => {
 
     const getMcServers = async () => {
         try {
-            console.log("cpIdx.. ", fields.cpIdx);
+            //console.log("cpIdx.. ", fields.cpIdx);
             const response = await getMcServersByCpIdx({
                 cpIdx: fields.cpIdx,
             });
-            console.log("get.. ", response);
+            //console.log("get.. ", response);
             setServerList(response.data);
         } catch (e) {
             console.log("fail.. ");
@@ -563,7 +562,7 @@ const WriteVm = (props) => {
             const response = await getMcNetworksByServerIdx({
                 serverIdx: fields.serverIdx,
             });
-            console.log("get.. ", response);
+            //console.log("get.. ", response);
             setNetworkList(response.data);
         } catch (e) {
             console.log("fail.. ");
@@ -623,7 +622,7 @@ const WriteVm = (props) => {
                     break;
             }
 
-            console.log("에러 확인 방법 error : ", error);
+            //console.log("에러 확인 방법 error : ", error);
 
             if (error) {
                 setFields({
@@ -687,12 +686,12 @@ const WriteVm = (props) => {
     };
 
     const handleCompleteSearchCompany = (idx, name) => {
-        console.log("handleCompleteSearchCompany: ", idx, name);
+        //console.log("handleCompleteSearchCompany: ", idx, name);
         handleChangeField("cpIdx", idx);
     };
 
     useEffect(() => {
-        console.log("change cpIdx: ", fields.cpIdx);
+        //console.log("change cpIdx: ", fields.cpIdx);
         if (fields.serverIdx > 0) {
             getMcImages();
             getMcNetworks();
@@ -703,7 +702,7 @@ const WriteVm = (props) => {
     }, [fields.serverIdx]);
 
     useEffect(() => {
-        console.log("change image: ", fields.image);
+        //console.log("change image: ", fields.image);
         if (fields.image > 0) {
             const entry = imageList.find(item => item.idx === fields.image);
             handleChangeField("hdd", entry ? entry.hdd : 0);
@@ -724,14 +723,14 @@ const WriteVm = (props) => {
 
     useEffect(() => {
         if (companyList.length > 0) {
-            console.log("companyList : ", companyList);
+            //console.log("companyList : ", companyList);
             getMcServers();
             getMcImages();
             getMcNetworks();
 
-            console.log("data : ", data);
+            //console.log("data : ", data);
 
-            console.log("data.companyIdx : ", data.cpIdx);
+            //console.log("data.companyIdx : ", data.cpIdx);
 
             setFields({
                 ...fields,
@@ -888,8 +887,8 @@ const WriteVm = (props) => {
                                     name="serverIdx"
                                     value={fields.serverIdx}
                                     onChange={(e) => {
-                                        console.log("serverIdx: ", e.target);
-                                        console.log("serverIdx: value ", e.target.value);
+                                        //console.log("serverIdx: ", e.target);
+                                        //console.log("serverIdx: value ", e.target.value);
                                         handleChangeField("serverIdx", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -941,7 +940,7 @@ const WriteVm = (props) => {
                                     name="image"
                                     value={fields.image}
                                     onChange={(e) => {
-                                        console.log("event:", e.target.value);
+                                        //console.log("event:", e.target.value);
                                         handleChangeField("image", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -976,7 +975,7 @@ const WriteVm = (props) => {
                                     name="network"
                                     value={fields.network}
                                     onChange={(e) => {
-                                        console.log("event:", e.target.value);
+                                        //console.log("event:", e.target.value);
                                         handleChangeField("network", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -1055,7 +1054,7 @@ const WriteVm = (props) => {
                                         if (res.length === 0) {
                                             handleChangeField("ram", 1024);
                                         } else {
-                                            console.log("name:", res[0].name);
+                                            //console.log("name:", res[0].name);
                                             handleChangeField("ram", e.target.value);
                                         }
                                     }}
@@ -1091,13 +1090,13 @@ const WriteVm = (props) => {
                                     name="snapType"
                                     value={fields.snapType}
                                     onChange={(e) => {
-                                        console.log("event target:", e.target);
-                                        console.log("event value:", e.target.value);
+                                        //console.log("event target:", e.target);
+                                        //console.log("event value:", e.target.value);
                                         const res = snapTypeList.filter(item => item.value === e.target.value);
                                         if (res.length === 0) {
                                             handleChangeField("snapType", false);
                                         } else {
-                                            console.log("name:", res[0].name);
+                                            //console.log("name:", res[0].name);
                                             handleChangeField("snapType", e.target.value);
                                         }
                                     }}
@@ -1133,7 +1132,7 @@ const WriteVm = (props) => {
                                     name="snapDays"
                                     value={fields.snapDays}
                                     onChange={(e) => {
-                                        console.log("event:", e.target.value);
+                                        //console.log("event:", e.target.value);
                                         handleChangeField("snapDays", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -1168,7 +1167,7 @@ const WriteVm = (props) => {
                                     name="snapHours"
                                     value={fields.snapHours}
                                     onChange={(e) => {
-                                        console.log("event:", e.target.value);
+                                        //console.log("event:", e.target.value);
                                         handleChangeField("snapHours", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -1203,7 +1202,7 @@ const WriteVm = (props) => {
                                     name="snapMinutes"
                                     value={fields.snapMinutes}
                                     onChange={(e) => {
-                                        console.log("event:", e.target.value);
+                                        //console.log("event:", e.target.value);
                                         handleChangeField("snapMinutes", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -1238,13 +1237,13 @@ const WriteVm = (props) => {
                                     name="backupType"
                                     value={fields.backupType}
                                     onChange={(e) => {
-                                        console.log("event target:", e.target);
-                                        console.log("event value:", e.target.value);
+                                        //console.log("event target:", e.target);
+                                        //console.log("event value:", e.target.value);
                                         const res = backupTypeList.filter(item => item.value === e.target.value);
                                         if (res.length === 0) {
                                             handleChangeField("backupType", false);
                                         } else {
-                                            console.log("name:", res[0].name);
+                                            //console.log("name:", res[0].name);
                                             handleChangeField("backupType", e.target.value);
                                         }
                                     }}
@@ -1280,7 +1279,7 @@ const WriteVm = (props) => {
                                     name="backupDays"
                                     value={fields.backupDays}
                                     onChange={(e) => {
-                                        console.log("event:", e.target.value);
+                                        //console.log("event:", e.target.value);
                                         handleChangeField("backupDays", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -1315,7 +1314,7 @@ const WriteVm = (props) => {
                                     name="backupHours"
                                     value={fields.backupHours}
                                     onChange={(e) => {
-                                        console.log("event:", e.target.value);
+                                        //console.log("event:", e.target.value);
                                         handleChangeField("backupHours", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
@@ -1350,7 +1349,7 @@ const WriteVm = (props) => {
                                     name="backupMinutes"
                                     value={fields.backupMinutes}
                                     onChange={(e) => {
-                                        console.log("event:", e.target.value);
+                                        //console.log("event:", e.target.value);
                                         handleChangeField("backupMinutes", e.target.value);
                                     }}
                                     MenuProps={MenuProps}

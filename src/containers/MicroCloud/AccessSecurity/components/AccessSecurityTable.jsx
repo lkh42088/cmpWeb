@@ -164,7 +164,7 @@ const AccessSecurityTable = () => {
 
     /** Pagination */
     const handleChangePage = (event, newPage) => {
-        console.log("change page: ", newPage);
+        //console.log("change page: ", newPage);
         dispatch(pagingChangeCurrentPage({currentPage: newPage}));
     };
 
@@ -222,12 +222,12 @@ const AccessSecurityTable = () => {
             companyName = user.cpName;
         }
         try {
-            console.log("companyName : ", companyName);
+            //console.log("companyName : ", companyName);
             const response = await getMcAccessSecurity({
                 rows: rowsPerPage, offset, orderBy, order, cpName: companyName,
             });
-            console.log("response: data ", response.data.data);
-            console.log("response: page ", response.data.page);
+            //console.log("response: data ", response.data.data);
+            //console.log("response: page ", response.data.page);
             setData(response.data.data);
             setPaging(response.data.page);
         } catch (e) {
@@ -272,7 +272,7 @@ const AccessSecurityTable = () => {
                 ipAddr: item.ipAddr,
                 comments: item.comments,
             });
-            console.log("response:", response);
+            //console.log("response:", response);
             getPageData();
             handleSnackbarSuccess("Snapshot 삭제에 성공하였습니다.");
         } catch (e) {
@@ -314,25 +314,25 @@ const AccessSecurityTable = () => {
 
     const handleDeleteSelected = () => {
         let copyData = [...data];
-        console.log("deleted Selected:");
-        console.log("copyData:", copyData);
-        console.log("SELECTED:", selected);
+        //console.log("deleted Selected:");
+        //console.log("copyData:", copyData);
+        //console.log("SELECTED:", selected);
         const delList = [];
         if (selected !== null) {
             selected.forEach((value, key, mapObject) => {
-                console.log("selected: key ", key, ", value ", value);
+                //console.log("selected: key ", key, ", value ", value);
                 if (value) {
                     delList.push(key);
                 }
             });
         }
-        console.log("delList: ", delList);
+        //console.log("delList: ", delList);
         deleteData(delList);
 
         for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
             copyData = copyData.filter(obj => obj.id !== selected[i]);
         }
-        console.log("after copyData:", copyData);
+        //console.log("after copyData:", copyData);
     };
 
     useEffect(() => {

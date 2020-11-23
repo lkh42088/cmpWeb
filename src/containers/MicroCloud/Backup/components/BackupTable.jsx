@@ -159,7 +159,7 @@ const BackupTable = () => {
 
     /** Pagination */
     const handleChangePage = (event, newPage) => {
-        console.log("change page: ", newPage);
+        //console.log("change page: ", newPage);
         dispatch(pagingChangeCurrentPage({currentPage: newPage}));
     };
 
@@ -217,12 +217,12 @@ const BackupTable = () => {
             companyName = user.cpName;
         }
         try {
-            console.log("companyName : ", companyName);
+            //console.log("companyName : ", companyName);
             const response = await getMcVmBackup({
                 rows: rowsPerPage, offset, orderBy, order, cpName: companyName,
             });
-            console.log("response: data ", response.data.data);
-            console.log("response: page ", response.data.page);
+            //console.log("response: data ", response.data.data);
+            //console.log("response: page ", response.data.page);
             setData(response.data.data);
             setPaging(response.data.page);
         } catch (e) {
@@ -256,25 +256,25 @@ const BackupTable = () => {
 
     const handleDeleteSelected = () => {
         let copyData = [...data];
-        console.log("deleted Selected:");
-        console.log("copyData:", copyData);
-        console.log("SELECTED:", selected);
+        //console.log("deleted Selected:");
+        //console.log("copyData:", copyData);
+        //console.log("SELECTED:", selected);
         const delList = [];
         if (selected !== null) {
             selected.forEach((value, key, mapObject) => {
-                console.log("selected: key ", key, ", value ", value);
+                //console.log("selected: key ", key, ", value ", value);
                 if (value) {
                     delList.push(key);
                 }
             });
         }
-        console.log("delList: ", delList);
+        //console.log("delList: ", delList);
         deleteData(delList);
 
         for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
             copyData = copyData.filter(obj => obj.id !== selected[i]);
         }
-        console.log("after copyData:", copyData);
+        //console.log("after copyData:", copyData);
     };
 
     const handleOpenRecovery = () => {
@@ -302,7 +302,7 @@ const BackupTable = () => {
 
     const handleSubmitRecovery = (rowData) => {
         setOpenRecovery(false);
-        console.log("submit: ", rowData);
+        //console.log("submit: ", rowData);
         asyncRestoreVm(rowData);
     };
 

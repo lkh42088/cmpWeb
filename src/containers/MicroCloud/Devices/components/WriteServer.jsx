@@ -223,13 +223,13 @@ const WriteServer = (props) => {
     };
 
     const handleCancel = () => {
-        console.log("handleCancel() ");
+        //console.log("handleCancel() ");
         reset();
         handleClose();
     };
 
     const handleSubmitInternal = () => {
-        console.log("handleSubmitInternal() fields", fields);
+        //console.log("handleSubmitInternal() fields", fields);
         handleSubmit(fields);
         reset();
     };
@@ -280,7 +280,7 @@ const WriteServer = (props) => {
     };
 
     const handleCompleteSearchCompany = (idx, name) => {
-        console.log("handleCompleteSearchCompany: ", idx, name);
+        //console.log("handleCompleteSearchCompany: ", idx, name);
         handleChangeField("cpIdx", idx);
     };
 
@@ -300,7 +300,7 @@ const WriteServer = (props) => {
         }
 
         if (isRegister === false) {
-            console.log("isRegister data : ", data);
+            //console.log("isRegister data : ", data);
             setFields({
                 ...fields,
                 idx: data.idx,

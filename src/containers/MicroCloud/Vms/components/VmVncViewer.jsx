@@ -18,7 +18,6 @@ const VmVncViewer = ({vm}) => {
     const [vncComponent, setVncComponent] = useState();
 
     useEffect(() => {
-        console.log("vm:", vm);
         setVncComponent("");
         let vncUrl;
         if (HCMP_PUBLIC_MODE === "yes") {
@@ -26,7 +25,6 @@ const VmVncViewer = ({vm}) => {
         } else {
             vncUrl = `ws://${API_SERVER_IP}:${API_SERVER_WEBSOCK_PORT}/vnc/${vm.remoteAddr.split(':')[0]}/${vm.vncPort}`;
         }
-        console.log("vncUrl:", vncUrl);
 
         setTimeout(() => {
             setVncComponent(<VncDisplay className={classes.canvas} url={vncUrl}/>);

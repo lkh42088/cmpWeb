@@ -193,18 +193,18 @@ const WriteNet = (props) => {
     };
 
     const handleCancel = () => {
-        console.log("handleCancel() ");
+        //console.log("handleCancel() ");
         reset();
         handleClose();
     };
 
     const handleSubmitInternal = () => {
-        console.log("handleSubmitInternal() fields", fields);
+        //console.log("handleSubmitInternal() fields", fields);
         // if (!checkValidation()) {
         //     console.log("handleSubmitInternal() failed");
         //     return;
         // }
-        console.log("handleSubmitInternal() success");
+        //console.log("handleSubmitInternal() success");
         handleSubmit(fields);
         reset();
     };
@@ -213,7 +213,7 @@ const WriteNet = (props) => {
      * Change
      *******************/
     const handleChangeField = (name, value) => {
-        console.log("change field: name ", name, ", value", value);
+        //console.log("change field: name ", name, ", value", value);
         if (name === "cpIdx") {
             setFields({
                 ...fields,
@@ -255,10 +255,10 @@ const WriteNet = (props) => {
      * Open
      *******************/
     const getCompanyList = async () => {
-        console.log("getCompanyList()-----------------------");
+        //console.log("getCompanyList()-----------------------");
         try {
             const response = await getCompanies();
-            console.log("getCompanyList() data: ", response.data);
+            //console.log("getCompanyList() data: ", response.data);
             setCompanyList(response.data);
         } catch (error) {
             setCompanyList([]);
@@ -281,17 +281,17 @@ const WriteNet = (props) => {
     };
 
     const handleCompleteSearchCompany = (idx, name) => {
-        console.log("handleCompleteSearchCompany: ", idx, name);
+        //console.log("handleCompleteSearchCompany: ", idx, name);
         handleChangeField("cpIdx", idx);
     };
 
     const getMcServers = async () => {
         try {
-            console.log("cpIdx.. ", fields.cpIdx);
+            //console.log("cpIdx.. ", fields.cpIdx);
             const response = await getMcServersByCpIdx({
                 cpIdx: fields.cpIdx,
             });
-            console.log("get.. ", response);
+            //console.log("get.. ", response);
             setServerList(response.data);
         } catch (e) {
             console.log("fail.. ");
@@ -301,11 +301,11 @@ const WriteNet = (props) => {
 
     const getMcNetworks = async () => {
         try {
-            console.log("serverIdx.. ", fields.serverIdx);
+            //console.log("serverIdx.. ", fields.serverIdx);
             const response = await getMcNetworksByServerIdx({
                 serverIdx: fields.serverIdx,
             });
-            console.log("get.. ", response);
+            //console.log("get.. ", response);
             setNetworkList(response.data);
         } catch (e) {
             console.log("fail.. ");
@@ -315,11 +315,11 @@ const WriteNet = (props) => {
 
     const getMcImages = async () => {
         try {
-            console.log("serverIdx.. ", fields.serverIdx);
+            //console.log("serverIdx.. ", fields.serverIdx);
             const response = await getMcImagesByServerIdx({
                 serverIdx: fields.serverIdx,
             });
-            console.log("get.. ", response);
+            //console.log("get.. ", response);
             setImageList(response.data);
         } catch (e) {
             console.log("fail.. ");
@@ -328,7 +328,7 @@ const WriteNet = (props) => {
     };
 
     useEffect(() => {
-        console.log("change cpIdx: ", fields.cpIdx);
+        //console.log("change cpIdx: ", fields.cpIdx);
         if (fields.serverIdx > 0) {
             getMcImages();
             getMcNetworks();
@@ -339,7 +339,7 @@ const WriteNet = (props) => {
     }, [fields.serverIdx]);
 
     useEffect(() => {
-        console.log("change image: ", fields.image);
+        //console.log("change image: ", fields.image);
         if (fields.image > 0) {
             const entry = imageList.find(item => item.idx === fields.image);
             handleChangeField("hdd", entry ? entry.hdd : 0);
@@ -349,7 +349,7 @@ const WriteNet = (props) => {
     }, [fields.image]);
 
     useEffect(() => {
-        console.log("change cpIdx: ", fields.cpIdx);
+        //console.log("change cpIdx: ", fields.cpIdx);
         if (fields.cpIdx > 0) {
             getMcServers();
         } else {
@@ -456,8 +456,8 @@ const WriteNet = (props) => {
                                     name="serverIdx"
                                     value={fields.serverIdx}
                                     onChange={(e) => {
-                                        console.log("serverIdx: ", e.target);
-                                        console.log("serverIdx: value ", e.target.value);
+                                        //console.log("serverIdx: ", e.target);
+                                        //console.log("serverIdx: value ", e.target.value);
                                         handleChangeField("serverIdx", e.target.value);
                                     }}
                                     MenuProps={MenuProps}

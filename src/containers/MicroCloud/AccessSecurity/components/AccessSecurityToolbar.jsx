@@ -104,17 +104,17 @@ const TableFilterButton = (props) => {
     const { rows, onRequestSort } = props;
 
     const handleClick = (event) => {
-        console.log("TableFilterButton: handleClick");
+        //console.log("TableFilterButton: handleClick");
         setAnchorEl(event.currentTarget);
     };
 
     const handleClose = () => {
-        console.log("TableFilterButton: handleClose");
+        //console.log("TableFilterButton: handleClose");
         setAnchorEl(null);
     };
 
     const handleSort = property => (event) => {
-        console.log("TableFilterButton: handleSort");
+        //console.log("TableFilterButton: handleSort");
         onRequestSort(event, property);
     };
 
