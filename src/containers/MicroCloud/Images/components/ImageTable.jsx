@@ -181,7 +181,7 @@ const ImageTable = () => {
 
     /** Pagination */
     const handleChangePage = (event, newPage) => {
-        console.log("change page: ", newPage);
+        //console.log("change page: ", newPage);
         dispatch(pagingChangeCurrentPage({currentPage: newPage}));
     };
 
@@ -218,8 +218,8 @@ const ImageTable = () => {
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === "asc";
         const changeOrder = isAsc ? "desc" : "asc";
-        console.log("event : ", event);
-        console.log("property : ", property);
+        /*console.log("event : ", event);
+        console.log("property : ", property);*/
         if (property !== "collapse") {
             dispatch(pagingChangeOrder({order: changeOrder}));
             dispatch(pagingChangeOrderBy({orderBy: property}));
@@ -241,8 +241,8 @@ const ImageTable = () => {
                 orderBy,
                 order,
             });
-            console.log("response: data ", response.data.data);
-            console.log("response: page ", response.data.page);
+            /*console.log("response: data ", response.data.data);
+            console.log("response: page ", response.data.page);*/
             setData(response.data.data);
             setPaging(response.data.page);
         } catch (e) {
@@ -266,7 +266,7 @@ const ImageTable = () => {
         enqueueSnackbar(snackMsg, {variant: "success"});
     };
     const handleSubmitSearch = (params) => {
-        console.log("handleSubmitSearch() params ", params);
+        //console.log("handleSubmitSearch() params ", params);
         setSearchParam(params);
     };
 
@@ -277,9 +277,9 @@ const ImageTable = () => {
 
     const handleDeleteSelected = () => {
         let copyData = [...data];
-        console.log("deleted Selected:");
+        /*console.log("deleted Selected:");
         console.log("copyData:", copyData);
-        console.log("SELECTED:", selected);
+        console.log("SELECTED:", selected);*/
         const delList = [];
         if (selected !== null) {
             selected.forEach((value, key, mapObject) => {
@@ -289,12 +289,12 @@ const ImageTable = () => {
                 }
             });
         }
-        console.log("delList: ", delList);
+        //console.log("delList: ", delList);
 
         for (let i = 0; i < [...selected].filter(el => el[1]).length; i += 1) {
             copyData = copyData.filter(obj => obj.id !== selected[i]);
         }
-        console.log("after copyData:", copyData);
+        //console.log("after copyData:", copyData);
     };
 
     useEffect(() => {

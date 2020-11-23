@@ -247,7 +247,7 @@ const VmTable = () => {
 
     /** Pagination */
     const handleChangePage = (event, newPage) => {
-        console.log("change page: ", newPage);
+        //console.log("change page: ", newPage);
         dispatch(pagingChangeCurrentPage({currentPage: newPage}));
     };
 
@@ -358,7 +358,6 @@ const VmTable = () => {
             backupType, backupDays, backupHours, backupMinutes,
             vmUserId, vmUserFlag,
         } = vm;
-        //console.log("💍💍💍💍💍💍 asyncAddVm : ", vm);
         try {
             let tempVmUserId = vmUserId;
             if (!vmUserFlag) {
@@ -404,7 +403,6 @@ const VmTable = () => {
             vmUserId, vmUserFlag, networkName,
             backupType, backupDays, backupHours, backupMinutes,
         } = vm;
-        //console.log("🤖🤖🤖🤖🤖🤖🤖 asyncEditVm : ", vm);
         try {
             let tempVmUserId = vmUserId;
             if (!vmUserFlag) {
@@ -424,7 +422,7 @@ const VmTable = () => {
                 vmUserId: tempVmUserId,
             });
 
-            console.log("asyncEditVm response : ", response);
+            //console.log("asyncEditVm response : ", response);
             handleSnackbarSuccess("VM 수정에 성공하였습니다.");
             getPageData();
         } catch (e) {
@@ -438,7 +436,7 @@ const VmTable = () => {
     };
 
     const handleSubmitEditVm = (vm) => {
-        console.log("handleSubmitEditVm start");
+        //console.log("handleSubmitEditVm start");
         asyncEditVm(vm);
         handleCloseEditVm();
     };

@@ -495,7 +495,6 @@ const WriteVm = (props) => {
      * Change
      *******************/
     const handleChangeField = (name, value) => {
-        //console.log("★ change field: name ", name, ", value", value);
         if (name === "cpIdx") {
             setFields({
                 ...fields,
@@ -653,11 +652,9 @@ const WriteVm = (props) => {
 
     const getMcServers = async () => {
         try {
-            console.log("cpIdx.. ", fields.cpIdx);
             const response = await getMcServersByCpIdx({
                 cpIdx: fields.cpIdx,
             });
-            console.log("get.. ", response);
             setServerList(response.data);
         } catch (e) {
             console.log("fail.. ");
@@ -670,7 +667,6 @@ const WriteVm = (props) => {
             const response = await getMcNetworksByServerIdx({
                 serverIdx: fields.serverIdx,
             });
-            console.log("get.. ", response);
             setNetworkList(response.data);
         } catch (e) {
             console.log("fail.. ");
@@ -680,11 +676,10 @@ const WriteVm = (props) => {
 
     const getMcImages = async () => {
         try {
-            console.log("serverIdx.. ", fields.serverIdx);
             const response = await getMcImagesByServerIdx({
                 serverIdx: fields.serverIdx,
             });
-            console.log("get.. ", response);
+
             setImageList(response.data);
         } catch (e) {
             console.log("fail.. ");
@@ -826,7 +821,6 @@ const WriteVm = (props) => {
     };
 
     const handleCompleteSearchCompany = (idx, name) => {
-        console.log("handleCompleteSearchCompany: ", idx, name);
         handleChangeField("cpIdx", idx);
     };
 

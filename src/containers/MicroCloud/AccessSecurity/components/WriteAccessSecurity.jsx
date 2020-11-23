@@ -145,13 +145,13 @@ const WriteAccessSecurity = (props) => {
     };
 
     const handleCancel = () => {
-        console.log("handleCancel() ");
+        //console.log("handleCancel() ");
         reset();
         handleClose();
     };
 
     const handleSubmitInternal = () => {
-        console.log("handleSubmitInternal() fields", fields);
+        //console.log("handleSubmitInternal() fields", fields);
         handleSubmit(fields);
         reset();
     };
@@ -188,11 +188,11 @@ const WriteAccessSecurity = (props) => {
 
     const getMcServers = async () => {
         try {
-            console.log("cpIdx.. ", fields.cpIdx);
+            //console.log("cpIdx.. ", fields.cpIdx);
             const response = await getMcServersByCpIdx({
                 cpIdx: fields.cpIdx,
             });
-            console.log("get.. ", response);
+            //console.log("get.. ", response);
             setServerList(response.data);
         } catch (e) {
             console.log("fail.. ");
@@ -216,7 +216,7 @@ const WriteAccessSecurity = (props) => {
     };
 
     const handleCompleteSearchCompany = (idx, name) => {
-        console.log("handleCompleteSearchCompany: ", idx, name);
+        //console.log("handleCompleteSearchCompany: ", idx, name);
         handleChangeField("cpIdx", idx);
     };
 
@@ -251,7 +251,7 @@ const WriteAccessSecurity = (props) => {
         }
 
         if (isRegister === false) {
-            console.log("isRegister data : ", data);
+            //console.log("isRegister data : ", data);
             setFields({
                 ...fields,
                 idx: data.idx,
@@ -368,8 +368,8 @@ const WriteAccessSecurity = (props) => {
                                     name="serverIdx"
                                     value={fields.serverIdx}
                                     onChange={(e) => {
-                                        console.log("serverIdx: ", e.target);
-                                        console.log("serverIdx: value ", e.target.value);
+                                        //console.log("serverIdx: ", e.target);
+                                        //console.log("serverIdx: value ", e.target.value);
                                         handleChangeField("serverIdx", e.target.value);
                                     }}
                                     MenuProps={MenuProps}
