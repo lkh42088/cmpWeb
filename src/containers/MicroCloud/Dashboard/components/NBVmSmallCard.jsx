@@ -22,7 +22,7 @@ const NBVmSmallCard = (props) => {
                     <div className="vm__stat_border-none">
                         <div className={vm.currentStatus.toString() === 'running'
                             ? "vm__stat-carousel-on" : "vm__stat-title"}>
-                            <p>{vm.ipAddr}</p>
+                            <p>{vm.domainAddr}</p>
                         </div>
                         <div className={vm.currentStatus.toString() === 'running'
                             ? "vm__stat-carousel-on" : "vm__stat-title"}>
