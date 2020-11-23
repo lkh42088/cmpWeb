@@ -23,6 +23,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import SendIcon from "@material-ui/icons/Send";
 import IconButton from "@material-ui/core/IconButton";
+import LoadingIcon from "mdi-react/LoadingIcon";
 import EditIcon from "@material-ui/icons/Edit";
 import Grid from "@material-ui/core/Grid";
 import {
@@ -189,6 +190,8 @@ const VmTable = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [modifyData, setModifyData] = React.useState(null);
 
+    const [loading, setLoading] = useState(false);
+
     const dispatch = useDispatch();
 
     /**
@@ -310,7 +313,9 @@ const VmTable = () => {
             });
             setData(response.data.data);
             setPaging(response.data.page);
+            setLoading(false);
         } catch (e) {
+            setLoading(false);
             console.log("getPageData error!");
         }
     };
@@ -468,6 +473,7 @@ const VmTable = () => {
     };
 
     const handleDeleteSelected = () => {
+        setLoading(true);
         let copyData = [...data];
         /*console.log("deleted Selected:");
         console.log("copyData:", copyData);
@@ -818,6 +824,7 @@ const VmTable = () => {
                         rowsPerPageOptions={displayRowsList}
                     />
                     <div className="cb-material-table__wrap">
+                        {loading ? <div className="panel__refresh"><LoadingIcon /></div> : ""}
                         <TableContainer>
                             <Table
                                 className="cb-material-table"
